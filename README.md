@@ -1,6 +1,8 @@
-# Learnware Market 规范
+# Learnware Backend
 
 ## 1 提交规范
+
+> Copied from learnware engine group
 
 ### 1.1 Commit 内容
 
@@ -18,15 +20,21 @@
   * [DOC] Fix the document
   * [FIX, ENT] Fix the bug and add some feature
 
-### 1.2 格式
 
-提交前使用以下命令进行format：
-```
-black -l 120 .
-```
-其中black安装命令为：
-```
-pip install black
-```
 
-> Copied from Learnware market
+## 2 项目结构
+
+* api: 接口处理逻辑
+  * user.py: 用户接口逻辑
+  * admin.py: 管理员接口逻辑
+  * engine.py: 算法引擎接口逻辑
+* database: 数据库执行（允许兼容多种数据库）
+  * base.py: 数据库基类
+  * sqlite.py: SQLite数据库类
+* lib: 数据库、算法引擎的交互逻辑
+  * user.py: 与数据库交互
+  * engine.py: 与算法引擎交互
+* files: 保存数据
+* config.py: 全局配置与变量
+* main.py: 主程序
+* environment.yaml: 环境配置
