@@ -1,7 +1,6 @@
 import os
 import copy
 
-
 class Config:
     def __init__(self, default_conf):
         self.__dict__["_default_config"] = copy.deepcopy(default_conf)  # avoiding conflictions with __getattr__
