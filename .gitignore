@@ -6,4 +6,6 @@ __pycache__/
 *.so
 *.ipynb
 .ipynb_checkpoints
+files/*
+!files/.gitkeep
 
