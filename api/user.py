@@ -1,9 +1,6 @@
-import functools
-
 from flask import (
-    Blueprint, g, jsonify, redirect, request, session, url_for
+    Blueprint, g, jsonify, request, session
 )
-from werkzeug.security import check_password_hash, generate_password_hash
 
 from config import C
 from lib.user import *
@@ -17,7 +14,7 @@ def index():
     return f"User API Index {C.stats}"
 
 
-@user_api.route('/register', methods=['GET', 'POST'])
+@user_api.route('/register', methods=['POST'])
 def register():
     if request.method == 'POST':
         data = request.get_json()
@@ -35,12 +32,12 @@ def register():
             result['code'] = 2
             result['msg'] = 'Email already exist.'
         else:
-            add_user(username, generate_password_hash(password), email, 0, username)
+            add_user(username, password, email, 0, username)
 
         return jsonify(result)
 
 
-@user_api.route('/login', methods=['GET', 'POST'])
+@user_api.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         data = request.get_json()
@@ -52,7 +49,7 @@ def login():
         if user is None:
             result['code'] = 1
             result['msg'] = 'Account not exist.'
-        elif not check_password_hash(user['password'], data['password']):
+        elif not user['password'] == data['password']:
             result['code'] = 2
             result['msg'] = 'Incorrect password.'
         else:
@@ -71,18 +68,18 @@ def load_logged_in_user():
         g.user = get_user_info(by='id', value=user_id)
 
 
-@user_api.route('/logout')
+@user_api.route('/logout', methods=['POST'])
 def logout():
-    session.clear()
-    return redirect(url_for('index'))
+    if g.user is None:
+        result = {
+            'code': 1,
+            'msg': "Login required."
+        }
+    else:
+        session.clear()
+        result = {
+            'code': 0,
+            'msg': 'Logout success.'
+        }
 
-
-def login_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('user.login'))
-
-        return view(**kwargs)
-
-    return wrapped_view
+    return jsonify(result)
