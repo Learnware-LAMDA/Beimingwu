@@ -4,7 +4,11 @@ from config import C
 engine_api = Blueprint("Engine-API", __name__)
 
 
-@engine_api.route("/")
-def index():
-    C.stats += 1
-    return f"Engine API Index {C.stats}"
+@engine_api.route("/get_semantic_specification", methods=["GET"])
+def get_semantic_specification():
+    result = {
+        "code": 0, 
+        "msg": "Ok",
+        "data": C.engine.get_property_list(),
+    }
+    return jsonify(result)

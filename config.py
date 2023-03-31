@@ -47,8 +47,10 @@ class Config:
         self.__dict__["_config"].update(*args, **kwargs)
 
 
-ROOT_DIRPATH = os.path.dirname(os.path.abspath(__file__))
-SQLITE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "database.db")
+ROOT_DIRPATH  = os.path.dirname(os.path.abspath(__file__))
+SQLITE_PATH   = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "database.db")
+MARKET_PATH   = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "learnware")
+PROPERTY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "property.json")
 
 _DEFAULT_CONFIG = {
     # Global config
@@ -57,7 +59,10 @@ _DEFAULT_CONFIG = {
     "database_type": "sqlite",
     "sqlite_path": SQLITE_PATH,
     # Engine config
-    "engine_type": "market",
+    "engine_type": "basic",
+    "engine_market_path": MARKET_PATH,
+    "engine_property_path": PROPERTY_PATH,
+    "engine_load_mode": "database",
 }
 
 C = Config(_DEFAULT_CONFIG)
