@@ -14,6 +14,15 @@ def index():
     return f"User API Index {C.stats}"
 
 
+@user_api.before_app_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = get_user_info(by='id', value=user_id)
+
+
 @user_api.route('/register', methods=['POST'])
 def register():
     if request.method == 'POST':
@@ -57,15 +66,6 @@ def login():
             session['user_id'] = user['id']
 
         return jsonify(result)
-
-
-@user_api.before_app_request
-def load_logged_in_user():
-    user_id = session.get('user_id')
-    if user_id is None:
-        g.user = None
-    else:
-        g.user = get_user_info(by='id', value=user_id)
 
 
 @user_api.route('/logout', methods=['POST'])
