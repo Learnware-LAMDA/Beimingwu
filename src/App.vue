@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue'
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router'
+import Router from '@/router/index.js'
 import Drawer from './components/Drawer.vue'
 import AppBar from './components/AppBar.vue'
 
@@ -20,11 +21,9 @@ watch(() => route.path, () => {
 
 <template>
   <v-app>
-    <app-bar :loggedIn="loggedIn" v-model:drawerOpen="drawerOpen"></app-bar>
+    <app-bar :loggedIn="loggedIn" v-model:drawerOpen="drawerOpen" :routes="Router.getRoutes()"></app-bar>
 
-    <drawer
-      v-model:drawerOpen="drawerOpen"
-    ></drawer>
+    <drawer v-model:drawerOpen="drawerOpen" :routes="Router.getRoutes()"></drawer>
 
     <v-main>
       <router-view v-slot="{ Component, route }">
@@ -40,7 +39,9 @@ watch(() => route.path, () => {
 .fade-enter-active {
   transition: opacity 1s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}</style>
+}
+</style>
