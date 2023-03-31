@@ -24,8 +24,19 @@ def get_learnware_info(by, value):
     ret_cnt, ret = C.database.query(f"SELECT * FROM user_learnware_relation WHERE {by} = ?", (value,))
     return [ dict(zip(COLUMNS_LEARNWARE, ret[0])) for i in range(len(ret)) ]
 
+def add_learnware(user_id, learnware_id):
+    ret_cnt, ret = C.database.query(
+        'INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES(?, ?, strftime("%s"))', 
+        (user_id, learnware_id)
+    )
+    return ret_cnt
+
 def remove_learnware(by, value):
     ret_cnt, ret = C.database.query(f"DELETE FROM user_learnware_relation WHERE {by} = ?", (value,))
+    return ret_cnt
+
+def remove_user(by, value):
+    ret_cnt, ret = C.database.query(f"DELETE FROM user WHERE {by} = ?", (value,))
     return ret_cnt
 
 def get_all_user_info(columns):
