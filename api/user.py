@@ -83,3 +83,23 @@ def logout():
         }
 
     return jsonify(result)
+
+
+@user_api.route('/get_profile', methods=['POST'])
+def get_profile():
+    if g.user is None:
+        result = {
+            'code': 1,
+            'msg': "Login required."
+        }
+    else:
+        result = {
+            'code': 0,
+            'msg': 'Get profile success.',
+            'data': {
+                'username': g.user['username'],
+                'email': g.user['email']
+            }
+        }
+
+    return jsonify(result)
