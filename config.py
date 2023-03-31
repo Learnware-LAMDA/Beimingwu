@@ -1,6 +1,7 @@
 import os
 import copy
 
+
 class Config:
     def __init__(self, default_conf):
         self.__dict__["_default_config"] = copy.deepcopy(default_conf)  # avoiding conflictions with __getattr__
@@ -47,19 +48,16 @@ class Config:
 
 
 ROOT_DIRPATH = os.path.dirname(os.path.abspath(__file__))
-SQLITE_PATH  = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "database.db")
+SQLITE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "database.db")
 
 _DEFAULT_CONFIG = {
     # Global config
     "root_path": ROOT_DIRPATH,
-    
     # Database config
     "database_type": "sqlite",
     "sqlite_path": SQLITE_PATH,
-    
     # Engine config
-    "engine_type": "market", 
-    
+    "engine_type": "market",
 }
 
 C = Config(_DEFAULT_CONFIG)
