@@ -1,10 +1,8 @@
 from flask import Blueprint, g, jsonify, request, session
 
 from config import C
-import lib.user as user_interface
 from .utils import *
-
-
+if C.database_type == "sqlite": import lib.sql_user as user_db
 user_api = Blueprint("User-API", __name__)
 
 
@@ -17,14 +15,14 @@ def index():
 @user_api.before_app_request
 def load_logged_in_user():
     user_id = session.get("user_id")
-    g.user = None if user_id is None else user_interface.get_user_info(by="id", value=user_id)
+    g.user = None if user_id is None else user_db.get_user_info(by="id", value=user_id)
 
 
 @user_api.route("/register", methods=["POST"])
 def register():
     # Check & get parameters
-    data = request.get_json()
-    if not check_parameters(data, ["username", "password", "email"]):
+    data = get_parameters(request, ["username", "password", "email"])
+    if data is None:
         return jsonify({
             "code": 3,
             "msg" : "Request parameters error."
@@ -36,18 +34,18 @@ def register():
     result = {"code": 0, "msg": "Register success."}
     
     # Check uniqueness of user name
-    if user_interface.check_user_exist(by="username", value=username):
+    if user_db.check_user_exist(by="username", value=username):
         result["code"] = 1
         result["msg"] = "Username already exist."
         
     # Check uniqueness of email
-    if user_interface.check_user_exist(by="email", value=email):
+    if user_db.check_user_exist(by="email", value=email):
         result["code"] = 2
         result["msg"] = "Email already exist."
     
     # Add user
     if result["code"] == 0:
-        flag = user_interface.add_user(username, password, email, 0, username)
+        flag = user_db.add_user(username, password, email, 0, username)
         if not flag: 
             result["code"] = 4
             result["msg"] = "System error."
@@ -58,8 +56,8 @@ def register():
 @user_api.route("/login", methods=["POST"])
 def login():
     # Check & get parameters
-    data = request.get_json()
-    if not check_parameters(data, ["email", "password"]):
+    data = get_parameters(request, ["email", "password"])
+    if data is None:
         return jsonify({
             "code": 3,
             "msg" : "Request parameters error."
@@ -67,7 +65,7 @@ def login():
     
     # Try to login
     result = {"code": 0, "msg": "Login success."}
-    user = user_interface.get_user_info(by="email", value=data["email"])
+    user = user_db.get_user_info(by="email", value=data["email"])
     if user is None:
         result["code"] = 1
         result["msg"] = "Account not exist."
@@ -105,4 +103,55 @@ def get_profile():
         "msg": "Get profile success.",
         "data": {"username": g.user["username"], "email": g.user["email"]},
     }
+    return jsonify(result)
+
+@user_api.route("/get_learnware_list", methods=["POST"])
+def get_learnware_list():
+    # Check login status
+    if g.user is None:
+        return jsonify({"code": 1, "msg": "Login required."})
+    
+    # Return profile
+    result = {
+        "code": 0,
+        "msg": "Ok.",
+        "data": user_db.get_learnware_info("user_id", g.user["id"])
+    }
+    return jsonify(result)
+
+@user_api.route("/delete_learnware", methods=["POST"])
+def delete_learnware():
+    # Check login status
+    if g.user is None:
+        return jsonify({"code": 1, "msg": "Login required."})
+    
+    # Check & get parameters
+    data = get_parameters(request, ["learnware_id"])
+    if data is None:
+        return jsonify({
+            "code": 2,
+            "msg" : "Request parameters error."
+        })
+    learnware_id = data["learnware_id"]
+    
+    # Check permission
+    learnware = user_db.get_learnware_info("learnware_id", learnware_id)
+    if len(learnware) == 0 or learnware[0]["user_id"] != g.user["id"]:
+        return jsonify({
+            "code": 3,
+            "msg" : "You do not own this learnware."
+        })
+    
+    # Delete learnware
+    cnt = user_db.remove_learnware("learnware_id", learnware_id)
+    if cnt > 0:
+        result = {
+            "code": 0,
+            "msg": f"Delete {cnt} learnware.",
+        }
+    else:
+        result = {
+            "code": 4,
+            "msg": "System error.",
+        }
     return jsonify(result)
