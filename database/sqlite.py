@@ -22,7 +22,7 @@ class SQLite(Database):
     """
 
     LEARNWARE_INSTALL_SQL = """
-    CREATE TABLE user_learnware_raltion
+    CREATE TABLE user_learnware_relation
     (
         user_id INTEGER NOT NULL,
         learnware_id TEXT UNIQUE NOT NULL,
