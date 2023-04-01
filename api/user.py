@@ -115,8 +115,42 @@ def get_learnware_list():
     result = {
         "code": 0,
         "msg": "Ok.",
-        "data": user_db.get_learnware_info("user_id", g.user["id"])
+        "data": user_db.get_learnware_list("user_id", g.user["id"])
     }
+    return jsonify(result)
+
+@user_api.route("/add_learnware", methods=["POST"])
+def add_learnware():
+    # Check login status
+    if g.user is None:
+        return jsonify({"code": 1, "msg": "Login required."})
+    
+    # Check & get parameters
+    # data = get_parameters(request, ["description"])
+    # if data is None:
+    #     return jsonify({
+    #         "code": 2,
+    #         "msg" : "Request parameters error."
+    #     })
+    # learnware_id = data["learnware_id"]
+    # [TODO] Require code for engine
+    
+    user_id = g.user["id"]
+    learnware_id = generate_random_str(16)
+    
+    # Add learnware 
+    cnt = user_db.add_learnware(user_id, learnware_id)
+    if cnt > 0:
+        result = {
+            "code": 0,
+            "msg": f"Add {cnt} learnware.",
+            "data": learnware_id
+        }
+    else:
+        result = {
+            "code": 3,
+            "msg": "System error.",
+        }
     return jsonify(result)
 
 @user_api.route("/delete_learnware", methods=["POST"])
@@ -135,7 +169,7 @@ def delete_learnware():
     learnware_id = data["learnware_id"]
     
     # Check permission
-    learnware = user_db.get_learnware_info("learnware_id", learnware_id)
+    learnware = user_db.get_learnware_list("learnware_id", learnware_id)
     if len(learnware) == 0 or learnware[0]["user_id"] != g.user["id"]:
         return jsonify({
             "code": 3,
@@ -143,6 +177,7 @@ def delete_learnware():
         })
     
     # Delete learnware
+    # [TODO] Require code for engine
     cnt = user_db.remove_learnware("learnware_id", learnware_id)
     if cnt > 0:
         result = {
