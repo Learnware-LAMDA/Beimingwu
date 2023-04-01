@@ -51,8 +51,17 @@ function PrevStep() {
 </script>
 
 <template>
-  <v-container class="fill-height flex flex-col justify-center items-center">
-    <v-card class="max-w-1000px w-1/1" :class="{ 'elevation-10': display.name.value !== 'xs' }">
+  <v-container class="h-1/1">
+    <v-card class="max-w-1000px w-1/1">
+      <v-stepper-title
+        class="mt-2 mb-5 w-1/1"
+        :steps="steps"
+        :current-step="currentStep"
+        @active-step="activeStep"
+      />
+      
+      <v-divider class="border-black"></v-divider>
+      
       <div class="w-1/1 mx-auto p-2">
         <v-card-title class="!md:text-2xl text-1rem">
           <span>{{ steps[currentStep].title }}</span>
@@ -104,15 +113,6 @@ function PrevStep() {
           </v-btn>
         </v-card-actions>
       </div>
-
-      <v-divider class="border-black"></v-divider>
-
-      <v-stepper-title
-        class="mt-2 mb-5 w-1/1"
-        :steps="steps"
-        :current-step="currentStep"
-        @active-step="activeStep"
-      />
     </v-card>
   </v-container>
 </template>
