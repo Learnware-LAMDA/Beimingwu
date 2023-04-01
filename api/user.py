@@ -4,7 +4,15 @@ from config import C
 from .utils import *
 from .auth import login_required
 if C.database_type == "sqlite": import lib.sql_user as user_db
+
+__all__ = ["user_api", "remove_learnware"]
+
 user_api = Blueprint("User-API", __name__)
+
+def remove_learnware(learnware_id: str) -> bool:
+    # [TODO] Require code for engine
+    cnt = user_db.remove_learnware("learnware_id", learnware_id)
+    return cnt > 0
 
 @user_api.route("/get_profile", methods=["POST"])
 @login_required
@@ -49,7 +57,7 @@ def add_learnware():
     if cnt > 0:
         result = {
             "code": 0,
-            "msg": f"Add {cnt} learnware.",
+            "msg": f"Add success.",
             "data": learnware_id
         }
     else:
@@ -75,17 +83,16 @@ def delete_learnware():
     learnware = user_db.get_learnware_list("learnware_id", learnware_id)
     if len(learnware) == 0 or learnware[0]["user_id"] != g.user["id"]:
         return jsonify({
-            "code": 34,
+            "code": 51,
             "msg" : "You do not own this learnware."
         })
     
-    # Delete learnware
-    # [TODO] Require code for engine
-    cnt = user_db.remove_learnware("learnware_id", learnware_id)
-    if cnt > 0:
+    # Remove learnware
+    if remove_learnware(learnware_id):
         result = {
             "code": 0,
-            "msg": f"Delete {cnt} learnware.",
+            "msg": "Delete success.",
+            "data": learnware_id
         }
     else:
         result = {
