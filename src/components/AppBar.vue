@@ -29,7 +29,7 @@ const filteredRoutes = computed(() => {
             if (!route.meta.requiredLogin) {
                 return true
             } else {
-                return store.state.loggedIn
+                return store.getters.getloggedIn()
             }
         }
     })
