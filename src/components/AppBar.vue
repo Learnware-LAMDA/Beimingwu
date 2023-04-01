@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import lamdaLogo from '/lamda.png'
@@ -22,6 +23,10 @@ const props = defineProps({
 })
 
 const display = useDisplay()
+
+const filteredRoutes = computed(() => {
+    return props.routes.filter(route => route.meta.showInNavBar)
+})
 </script>
 
 <template>
@@ -38,7 +43,7 @@ const display = useDisplay()
             <v-spacer></v-spacer>
 
             <v-toolbar-items v-if="!['xs', 'sm'].includes(display.name.value)">
-                <v-btn v-for="route in props.routes" :key="route.name" class="mr-2" @click="() => router.push(route.path)" :variant="route.meta.variant" :class="route.meta.class">
+                <v-btn v-for="route in filteredRoutes" :key="route.name" class="mr-2" @click="() => router.push(route.path)" :variant="route.meta.variant" :class="route.meta.class">
                     {{ route.name }}
                 </v-btn>
             </v-toolbar-items>

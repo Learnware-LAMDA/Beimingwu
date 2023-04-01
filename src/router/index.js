@@ -7,6 +7,7 @@ const Router = createRouter({
     name: 'Home',
     component: () => import('@/views/Home/Home.vue'),
     meta: {
+      showInNavBar: true,
       icon: 'mdi-home'
     }
   },
@@ -15,6 +16,7 @@ const Router = createRouter({
     name: 'Submit',
     component: () => import ('@/views/Submit/Submit.vue'),
     meta: {
+      showInNavBar: true,
       icon: 'mdi-transfer'
     }
   },
@@ -23,7 +25,40 @@ const Router = createRouter({
     name: 'Search',
     component: () => import ('@/views/Search/Search.vue'),
     meta: {
+      showInNavBar: true,
       icon: 'mdi-magnify'
+    }
+  },
+  {
+    path: '/mylearnware',
+    name: 'My Learnware',
+    component: () => import ('@/views/MyLearnware/MyLearnware.vue'),
+    meta: {
+      icon: 'mdi-file-eye'
+    }
+  },
+  {
+    path: '/learnwaredetail',
+    name: 'Learnware Detail',
+    component: () => import ('@/views/LearnwareDetail/LearnwareDetail.vue'),
+    meta: {
+      icon: 'mdi-bullseye-arrow'
+    }
+  },
+  {
+    path: '/usermanage',
+    name: 'User Manage',
+    component: () => import ('@/views/UserManage/UserManage.vue'),
+    meta: {
+      icon: 'mdi-account-supervisor'
+    }
+  },
+  {
+    path: '/learnwaremanage',
+    name: 'Learnware Manage',
+    component: () => import ('@/views/LearnwareManage/LearnwareManage.vue'),
+    meta: {
+      icon: 'mdi-tools'
     }
   },
   {
@@ -31,6 +66,7 @@ const Router = createRouter({
     name: 'Login',
     component: () => import ('@/views/Login/Login.vue'),
     meta: {
+      showInNavBar: true,
       icon: 'mdi-account'
     }
   },
@@ -39,6 +75,7 @@ const Router = createRouter({
     name: 'Register',
     component: () => import ('@/views/Register/Register.vue'),
     meta: {
+      showInNavBar: true,
       icon: 'mdi-account-plus',
       variant: 'outlined',
       class: ['py-2.5 rounded border-2']
