@@ -38,3 +38,11 @@
 * config.py: 全局配置与变量
 * main.py: 主程序
 * environment.yaml: 环境配置
+
+## 3. Status Code
+0: 成功
+1x: 权限相关
+2x: 请求相关
+3x: 后端相关
+4x: 算法引擎相关
+5x: 具体操作相关

@@ -39,8 +39,14 @@ def remove_user(by, value):
     ret_cnt, ret = C.database.query(f"DELETE FROM user WHERE {by} = ?", (value,))
     return ret_cnt
 
-def get_all_user_info(columns):
+def get_all_user_list(columns):
     column_str = ", ".join(columns)
     ret_cnt, ret = C.database.query(f"SELECT {column_str} FROM user")
     return [dict(zip(columns, user)) for user in ret]
+
+def get_all_learnware_list(columns):
+    column_str = ", ".join(columns)
+    ret_cnt, ret = C.database.query(f"SELECT {column_str} FROM user_learnware_relation")
+    return [dict(zip(columns, user)) for user in ret]
+
 

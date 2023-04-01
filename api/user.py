@@ -35,7 +35,7 @@ def add_learnware():
     # data = get_parameters(request, ["description"])
     # if data is None:
     #     return jsonify({
-    #         "code": 2,
+    #         "code": 21,
     #         "msg" : "Request parameters error."
     #     })
     # learnware_id = data["learnware_id"]
@@ -54,7 +54,7 @@ def add_learnware():
         }
     else:
         result = {
-            "code": 3,
+            "code": 31,
             "msg": "System error.",
         }
     return jsonify(result)
@@ -66,7 +66,7 @@ def delete_learnware():
     data = get_parameters(request, ["learnware_id"])
     if data is None:
         return jsonify({
-            "code": 2,
+            "code": 21,
             "msg" : "Request parameters error."
         })
     learnware_id = data["learnware_id"]
@@ -75,7 +75,7 @@ def delete_learnware():
     learnware = user_db.get_learnware_list("learnware_id", learnware_id)
     if len(learnware) == 0 or learnware[0]["user_id"] != g.user["id"]:
         return jsonify({
-            "code": 3,
+            "code": 34,
             "msg" : "You do not own this learnware."
         })
     
@@ -89,7 +89,7 @@ def delete_learnware():
         }
     else:
         result = {
-            "code": 4,
+            "code": 31,
             "msg": "System error.",
         }
     return jsonify(result)
