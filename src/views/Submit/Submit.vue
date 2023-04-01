@@ -54,7 +54,7 @@ function PrevStep() {
   <v-container class="fill-height flex flex-col justify-center items-center">
     <v-card class="max-w-1000px w-1/1" :class="{ 'elevation-10': display.name.value !== 'xs' }">
       <div class="w-1/1 mx-auto p-2">
-        <v-card-title class="!md:text-2xl">
+        <v-card-title class="!md:text-2xl text-1rem">
           <span>{{ steps[currentStep].title }}</span>
         </v-card-title>
     
