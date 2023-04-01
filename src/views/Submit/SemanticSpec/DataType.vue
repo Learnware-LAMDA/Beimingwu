@@ -1,0 +1,53 @@
+<script setup>
+import { ref, watch } from 'vue'
+import GridBtns from './GridBtns.vue'
+import AudioBtn from './DataTypeBtn/AudioBtn.vue'
+import VideoBtn from './DataTypeBtn/VideoBtn.vue'
+import TextBtn from './DataTypeBtn/TextBtn.vue'
+import ImageBtn from './DataTypeBtn/ImageBtn.vue'
+import TableBtn from './DataTypeBtn/TableBtn.vue'
+
+const emit = defineEmits(['update:value'])
+
+const props = defineProps({
+  value: {
+    type: String,
+    required: true,
+  },
+})
+
+const value = ref(props.value)
+
+watch(
+  () => value.value,
+  (newVal) => emit('update:value', newVal)
+)
+
+const dataTypeBtns = [
+  {
+    title: 'Audio',
+    icon: AudioBtn,
+  },
+  {
+    title: 'Video',
+    icon: VideoBtn,
+  },
+  {
+    title: 'Text',
+    icon: TextBtn,
+  },
+  {
+    title: 'Image',
+    icon: ImageBtn,
+  },
+  {
+    title: 'Table',
+    icon: TableBtn,
+  }
+]
+</script>
+
+<template>
+  <grid-btns v-model:value="value" :btns="dataTypeBtns" title="Data Type" :cols="5" :md="4" :sm="4" :xs="2" />
+</template>
+

@@ -1,7 +1,8 @@
 <script setup>
-import VStepperTitle from './VStepperTitle.vue';
-import FileUpload from './FileUpload.vue';
 import { ref } from 'vue'
+import VStepperTitle from './VStepperTitle.vue'
+import FileUpload from './FileUpload.vue'
+import SemanticSpec from './SemanticSpec.vue'
 
 const currentStep = ref(0)
 
@@ -33,20 +34,25 @@ const steps = [
 function activeStep(index) {
   currentStep.value = index
 }
+
+function nextStep() {
+  if (currentStep.value < steps.length - 1) {
+    activeStep(currentStep.value + 1)
+  }
+}
+
+function PrevStep() {
+  if (currentStep.value > 0) {
+    activeStep(currentStep.value - 1)
+  }
+}
 </script>
 
 <template>
   <v-container class="fill-height flex flex-col justify-center items-center">
-    <v-card class="max-w-800px w-1/1 elevation-10">
-      <v-stepper-title
-        class="mt-5 w-1/1"
-        :steps="steps"
-        :current-step="currentStep"
-        @active-step="activeStep"
-      />
-      
+    <v-card class="max-w-1000px w-1/1 elevation-10">
       <div class="w-1/1 mx-auto p-2">
-        <v-card-title class="text-h6 font-weight-regular flex justify-space-between !md:text-lg !text-sm">
+        <v-card-title class="!md:text-2xl">
           <span>{{ steps[currentStep].title }}</span>
         </v-card-title>
     
@@ -61,8 +67,8 @@ function activeStep(index) {
           </v-window-item>
     
           <v-window-item :value="1">
-            <v-card-text>
-    
+            <v-card-text class="pt-0">
+              <semantic-spec />
             </v-card-text>
           </v-window-item>
     
@@ -84,11 +90,11 @@ function activeStep(index) {
         <v-divider></v-divider>
     
         <v-card-actions>
-          <v-btn v-if="currentStep > 0" variant="outlined" @click="currentStep > 0 ? currentStep-- : null">
+          <v-btn v-if="currentStep > 0" variant="outlined" @click="PrevStep">
             Back
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn v-if="currentStep < steps.length - 1" color="primary" variant="flat" @click="currentStep < steps.length - 1 ? currentStep++ : null">
+          <v-btn v-if="currentStep < steps.length - 1" color="primary" variant="flat" @click="nextStep">
             Next
           </v-btn>
           <v-btn v-else color="primary" variant="flat" @click="submit">
@@ -96,6 +102,15 @@ function activeStep(index) {
           </v-btn>
         </v-card-actions>
       </div>
+
+      <v-divider class="border-black"></v-divider>
+
+      <v-stepper-title
+        class="mt-2 mb-5 w-1/1"
+        :steps="steps"
+        :current-step="currentStep"
+        @active-step="activeStep"
+      />
     </v-card>
   </v-container>
 </template>
