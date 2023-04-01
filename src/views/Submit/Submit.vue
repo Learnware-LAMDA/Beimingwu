@@ -1,11 +1,13 @@
 <script setup>
 import { ref } from 'vue'
+import { useDisplay } from 'vuetify'
 import VStepperTitle from './VStepperTitle.vue'
 import FileUpload from './FileUpload.vue'
 import SemanticSpec from './SemanticSpec.vue'
 
-const currentStep = ref(0)
+const display = useDisplay()
 
+const currentStep = ref(0)
 const files = ref([])
 
 const steps = [
@@ -50,7 +52,7 @@ function PrevStep() {
 
 <template>
   <v-container class="fill-height flex flex-col justify-center items-center">
-    <v-card class="max-w-1000px w-1/1 elevation-10">
+    <v-card class="max-w-1000px w-1/1" :class="{ 'elevation-10': display.name.value !== 'xs' }">
       <div class="w-1/1 mx-auto p-2">
         <v-card-title class="!md:text-2xl">
           <span>{{ steps[currentStep].title }}</span>
