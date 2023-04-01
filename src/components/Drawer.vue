@@ -32,7 +32,7 @@ const router = useRouter()
     <v-list>
       <h1 class="ma-4">Pages</h1>
 
-      <v-list-item v-for="(route, i) in routes" :key="i" :value="item" active-color="primary" variant="plain"
+      <v-list-item v-for="(route, i) in routes" :key="i" :value="route.name" active-color="primary" variant="plain"
         @click="() => router.push(route.path)">
         <template v-slot:prepend>
           <v-icon :icon="route.meta.icon"></v-icon>
