@@ -2,16 +2,13 @@
 import { computed } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import lamdaLogo from '/lamda.png'
 
 const emit = defineEmits(['update:drawerOpen'])
 const router = useRouter()
 
 const props = defineProps({
-    loggedIn: {
-        type: Boolean,
-        required: true
-    },
     drawerOpen: {
         type: Boolean,
         required: true,
@@ -24,8 +21,18 @@ const props = defineProps({
 
 const display = useDisplay()
 
+const store = useStore()
+
 const filteredRoutes = computed(() => {
-    return props.routes.filter(route => route.meta.showInNavBar)
+    return props.routes.filter(route => {
+        if (route.meta.showInNavBar) {
+            if (!route.meta.requiredLogin) {
+                return true
+            } else {
+                return store.state.loggedIn
+            }
+        }
+    })
 })
 </script>
 

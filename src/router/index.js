@@ -34,6 +34,8 @@ const Router = createRouter({
     name: 'My Learnware',
     component: () => import ('@/views/MyLearnware/MyLearnware.vue'),
     meta: {
+      showInNavBar: true,
+      requiredLogin: true,
       icon: 'mdi-file-eye'
     }
   },
@@ -42,6 +44,7 @@ const Router = createRouter({
     name: 'Learnware Detail',
     component: () => import ('@/views/LearnwareDetail/LearnwareDetail.vue'),
     meta: {
+      showInNavBar: false,
       icon: 'mdi-bullseye-arrow'
     }
   },
@@ -50,6 +53,8 @@ const Router = createRouter({
     name: 'User Manage',
     component: () => import ('@/views/UserManage/UserManage.vue'),
     meta: {
+      showInNavBar: true,
+      requiredLogin: true,
       icon: 'mdi-account-supervisor'
     }
   },
@@ -58,6 +63,8 @@ const Router = createRouter({
     name: 'Learnware Manage',
     component: () => import ('@/views/LearnwareManage/LearnwareManage.vue'),
     meta: {
+      showInNavBar: true,
+      requiredLogin: true,
       icon: 'mdi-tools'
     }
   },
