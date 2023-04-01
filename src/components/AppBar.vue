@@ -26,10 +26,13 @@ const store = useStore()
 const filteredRoutes = computed(() => {
     return props.routes.filter(route => {
         if (route.meta.showInNavBar) {
+            if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
+                return false
+            }
             if (!route.meta.requiredLogin) {
                 return true
             } else {
-                return store.getters.getloggedIn()
+                return store.getters.getLoggedIn
             }
         }
     })

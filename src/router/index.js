@@ -74,6 +74,7 @@ const Router = createRouter({
     component: () => import ('@/views/Login/Login.vue'),
     meta: {
       showInNavBar: true,
+      hideWhenLoggedIn: true,
       icon: 'mdi-account'
     }
   },
@@ -83,6 +84,7 @@ const Router = createRouter({
     component: () => import ('@/views/Register/Register.vue'),
     meta: {
       showInNavBar: true,
+      hideWhenLoggedIn: true,
       icon: 'mdi-account-plus',
       variant: 'outlined',
       class: ['py-2.5 rounded border-2']

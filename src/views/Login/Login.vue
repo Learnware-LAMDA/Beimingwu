@@ -1,8 +1,14 @@
 <script setup>
 import { useDisplay } from 'vuetify'
 import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 const display = useDisplay()
+
+const store = useStore()
+
+const router = useRouter()
 
 const elevationClass = computed(() => {
   if (display.name.value === 'xs') {
@@ -11,6 +17,11 @@ const elevationClass = computed(() => {
     return 'elevation-8'
   }
 })
+
+function login() {
+    store.commit('setLoggedIn', true)
+    router.push('/')
+}
 </script>
 
 <template>
