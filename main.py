@@ -30,6 +30,7 @@ def main():
     # setattr(C, "engine", engine)
     
     # Init flask
+    app.register_blueprint(api.auth_api, url_prefix="/auth")
     app.register_blueprint(api.user_api, url_prefix="/user")
     app.register_blueprint(api.admin_api, url_prefix="/admin")
     app.register_blueprint(api.engine_api, url_prefix="/engine")
