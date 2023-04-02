@@ -35,7 +35,7 @@ const props = defineProps({
     @apply md: flex items-center;
 
     .title {
-      @apply xl: text-xl lg:text-lg md:text-1rem sm:text-sm xs:text-xs;
+      @apply xl: text-xl lg:text-lg md:text-1rem text-sm;
     }
 
     .card-text * {
