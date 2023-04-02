@@ -64,9 +64,12 @@ const props = defineProps({
         @apply px-2 border-gray-700 bg-gray-200 text-xs text-black rounded-1em;
       }
 
-      .active {
+      .label.active {
         @apply bg-gray-100 border-0;
         color: rgb(var(--v-theme-primary));
+      }
+      .tag.active {
+        @apply bg-gray-100 text-orange-600 border-0;
       }
     }
   }
