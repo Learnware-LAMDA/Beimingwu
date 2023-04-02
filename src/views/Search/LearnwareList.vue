@@ -57,11 +57,11 @@ const props = defineProps({
       }
 
       .label {
-        @apply px-2 border-gray-700 border-1 text-xs text-black rounded;
+        @apply px-2 border-gray-700 bg-gray-200 text-xs text-black rounded;
       }
 
       .tag {
-        @apply px-2 border-gray-700 border-1 text-xs text-black rounded-1em;
+        @apply px-2 border-gray-700 bg-gray-200 text-xs text-black rounded-1em;
       }
 
       .active {

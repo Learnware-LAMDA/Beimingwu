@@ -13,7 +13,7 @@ const hardwareType = ref('')
 const tagList = ref([])
 const files = ref([])
 
-const learnwareItems = Array(100).fill(0).map((_, i) => {
+const learnwareItems = Array(1000).fill(0).map((_, i) => {
   const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
   const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
   const allHardwareType = ['CPU', 'GPU']
@@ -25,7 +25,7 @@ const learnwareItems = Array(100).fill(0).map((_, i) => {
     dataType: allDataType[Math.floor(Math.random() * allDataType.length)],
     taskType: allTaskType[Math.floor(Math.random() * allTaskType.length)],
     hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
-    tagList: Array(3).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]),
+    tagList: Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]),
   }
 })
 
