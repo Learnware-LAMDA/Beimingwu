@@ -13,11 +13,9 @@ const props = defineProps({
       <v-card flat v-for="(item, i) in items" :key="i">
         <div class="first-row">
           <v-card-title class="title">{{ item.title }}</v-card-title>
-          <v-card-text class="card-text">
-            <div>{{ item.dataType }}</div>
-            <div>{{ item.taskType }}</div>
-            <div>{{ item.requirementType }}</div>
-          </v-card-text>
+          <div class="label">{{ item.dataType }}</div>
+          <div class="label">{{ item.taskType }}</div>
+          <div class="label">{{ item.requirementType }}</div>
         </div>
         <v-card-text class="card-text">
           <div>{{ item.description }}</div>
@@ -38,11 +36,11 @@ const props = defineProps({
     @apply flex flex-nowrap items-center;
 
     .title {
-      @apply pr-0 xl: text-xl lg:text-lg text-1rem;
+      @apply xl: text-xl lg:text-lg text-1rem;
     }
 
-    .card-text * {
-      @apply px-2 py-1 border-1 border-gray-700 text-gray-700 rounded;
+    .label {
+      @apply px-2 mr-2 border-1 border-gray-700 text-sm text-gray-700 rounded;
     }
   }
 
