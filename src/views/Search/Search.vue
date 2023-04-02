@@ -74,7 +74,7 @@ watch(
 
 <style scoped lang="scss">
 .search-container {
-  @apply md: (fixed flex) mx-auto w-1/1 overflow-hidden;
+  @apply md: (fixed flex) mx-auto w-1/1;
   height: calc(100% - var(--v-layout-top));
 
   .filter {
@@ -91,7 +91,6 @@ watch(
 
   .content {
     @apply w-1/1 md: h-1/1 overflow-y-scroll;
-    height: calc(100% - 300px)
   }
 }
 </style>

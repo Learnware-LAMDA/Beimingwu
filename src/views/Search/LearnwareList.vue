@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="learnware-list-container">
+  <div class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null">
     <TransitionGroup name="fade">
       <v-card flat v-for="(item, i) in items" :key="i">
         <div class="first-row">
@@ -24,12 +24,15 @@ const props = defineProps({
         </v-card-text>
       </v-card>
     </TransitionGroup>
+    <div flat v-if="items.length === 0" class="no-learnware">
+      Oops! There are no learnwares.
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .learnware-list-container {
-  @apply p-2 grid xl: grid-cols-2 grid-cols-1 gap-3;
+  @apply relative p-2 grid xl: grid-cols-2 grid-cols-1 gap-3;
 
   .first-row {
     @apply md: flex items-center;
@@ -49,6 +52,10 @@ const props = defineProps({
     * {
       @apply mr-3;
     }
+  }
+
+  .no-learnware {
+    @apply absolute flex flex-col justify-center items-center w-1/1 h-1/1 text-2xl;
   }
 }
 
