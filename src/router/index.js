@@ -17,6 +17,7 @@ const Router = createRouter({
     component: () => import ('@/views/Submit/Submit.vue'),
     meta: {
       showInNavBar: true,
+      requiredLogin: true,
       icon: 'mdi-transfer'
     }
   },
@@ -49,26 +50,6 @@ const Router = createRouter({
     }
   },
   {
-    path: '/usermanage',
-    name: 'User Manage',
-    component: () => import ('@/views/UserManage/UserManage.vue'),
-    meta: {
-      showInNavBar: true,
-      requiredLogin: true,
-      icon: 'mdi-account-supervisor'
-    }
-  },
-  {
-    path: '/learnwaremanage',
-    name: 'Learnware Manage',
-    component: () => import ('@/views/LearnwareManage/LearnwareManage.vue'),
-    meta: {
-      showInNavBar: true,
-      requiredLogin: true,
-      icon: 'mdi-tools'
-    }
-  },
-  {
     path: '/login',
     name: 'Login',
     component: () => import ('@/views/Login/Login.vue'),
@@ -86,6 +67,18 @@ const Router = createRouter({
       showInNavBar: true,
       hideWhenLoggedIn: true,
       icon: 'mdi-account-plus',
+      variant: 'outlined',
+      class: ['py-2.5 rounded border-2']
+    },
+  },
+  {
+    path: '/logout',
+    name: 'Logout', 
+    component: () => import ('@/views/Logout/Logout.vue'),
+    meta: {
+      showInNavBar: true,
+      requiredLogin: true,
+      icon: 'mdi-logout',
       variant: 'outlined',
       class: ['py-2.5 rounded border-2']
     },
