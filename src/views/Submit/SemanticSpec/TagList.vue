@@ -124,7 +124,7 @@ watch(
 
 watch(
   () => selections.value,
-  (newVal) => emit('update:value', newVal)
+  (newVal) => emit('update:value', newVal.map(item => item.text))
 )
 </script>
 
