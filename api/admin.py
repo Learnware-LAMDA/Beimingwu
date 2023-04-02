@@ -18,7 +18,7 @@ def get_user_list():
     result = {
         "code": 0, 
         "msg": "Get user list success.",
-        "data": user_db.get_all_user_list(columns=["username", "email"])
+        "data": user_db.get_all_user_list(columns=["id", "username", "email"])
     }
     return jsonify(result)
 
