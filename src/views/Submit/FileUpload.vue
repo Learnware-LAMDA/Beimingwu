@@ -1,5 +1,4 @@
 <script setup>
-import { advancePositionWithClone } from '@vue/compiler-core';
 import { ref, watch } from 'vue'
 
 const emit = defineEmits(['update:files'])
