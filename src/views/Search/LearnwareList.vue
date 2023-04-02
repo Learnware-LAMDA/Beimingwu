@@ -35,10 +35,10 @@ const props = defineProps({
   @apply relative p-2 grid xl: grid-cols-2 grid-cols-1 gap-3;
 
   .first-row {
-    @apply flex items-center;
+    @apply flex flex-nowrap items-center;
 
     .title {
-      @apply xl: text-xl lg:text-lg md:text-1rem text-sm;
+      @apply pr-0 xl: text-xl lg:text-lg text-1rem;
     }
 
     .card-text * {
