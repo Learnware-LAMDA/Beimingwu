@@ -9,19 +9,21 @@ const props = defineProps({
 
 <template>
   <div class="learnware-list-container">
-    <v-card flat v-for="item in items">
-      <div class="first-row">
-        <v-card-title class="title">{{ item.title }}</v-card-title>
+    <TransitionGroup name="fade">
+      <v-card flat v-for="(item, i) in items" :key="i">
+        <div class="first-row">
+          <v-card-title class="title">{{ item.title }}</v-card-title>
+          <v-card-text class="card-text">
+            <div>{{ item.dataType }}</div>
+            <div>{{ item.taskType }}</div>
+            <div>{{ item.requirementType }}</div>
+          </v-card-text>
+        </div>
         <v-card-text class="card-text">
-          <div>{{ item.dataType }}</div>
-          <div>{{ item.taskType }}</div>
-          <div>{{ item.requirementType }}</div>
+          <div>{{ item.description }}</div>
         </v-card-text>
-      </div>
-      <v-card-text class="card-text">
-        <div>{{ item.description }}</div>
-      </v-card-text>
-    </v-card>
+      </v-card>
+    </TransitionGroup>
   </div>
 </template>
 
@@ -48,5 +50,15 @@ const props = defineProps({
       @apply mr-3;
     }
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  @apply transition duration-500;
+}
+
+.fade-enter,
+.fade-leave-to {
+  @apply opacity-0;
 }
 </style>
