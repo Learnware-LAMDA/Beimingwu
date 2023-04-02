@@ -133,7 +133,7 @@ watch(
   <div class="title">Tag</div>
   <div class="items">
     <div class="item" v-for="(selection, i) in selections" :key="selection.text">
-      <v-chip class="chip bg-primary" closable @click:close="selected.splice(i, 1)">
+      <v-chip class="chip bg-orange-500 text-white" closable @click:close="selected.splice(i, 1)">
         <v-icon :icon="selection.icon" start></v-icon>
 
         {{ selection.text }}
