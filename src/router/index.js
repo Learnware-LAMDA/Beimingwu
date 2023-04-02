@@ -68,7 +68,7 @@ const Router = createRouter({
       hideWhenLoggedIn: true,
       icon: 'mdi-account-plus',
       variant: 'outlined',
-      class: ['py-2.5 rounded border-2']
+      class: ['py-2.5 bg-primary rounded-lg border-2']
     },
   },
   {
