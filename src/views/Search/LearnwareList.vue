@@ -45,7 +45,7 @@ const props = defineProps({
   }
 
   .card-text {
-    @apply flex flex-wrap py-2 text-gray-700;
+    @apply flex flex-wrap pt-0 pb-2 text-gray-700;
 
     * {
       @apply mr-3;
