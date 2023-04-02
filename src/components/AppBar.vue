@@ -40,7 +40,7 @@ const filteredRoutes = computed(() => {
 </script>
 
 <template>
-    <v-app-bar app :flat="display.name.value === 'xs'" class="bg-white">
+    <v-app-bar app flat class="bg-white">
         <div class="flex justify-start max-w-1200px w-md-1/1 m-auto md:px-5">
             <v-app-bar-nav-icon v-if="['xs', 'sm'].includes(display.name.value)"
                 @click="() => emit('update:drawerOpen', !drawerOpen)"></v-app-bar-nav-icon>
@@ -56,6 +56,9 @@ const filteredRoutes = computed(() => {
                 <v-btn v-for="route in filteredRoutes" :key="route.name" class="mr-2" @click="() => router.push(route.path)"
                     :variant="route.meta.variant" :class="route.meta.class">
                     {{ route.name }}
+                </v-btn>
+                <v-btn v-if="store.getters.getLoggedIn" class="mr-2" @click="() => router.push('/logout')">
+                    Logout
                 </v-btn>
             </v-toolbar-items>
         </div>
