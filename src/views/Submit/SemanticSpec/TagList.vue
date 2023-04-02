@@ -8,6 +8,22 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  cols: {
+    type: Number,
+    default: 4,
+  },
+  md: {
+    type: Number,
+    default: 4,
+  },
+  sm: {
+    type: Number,
+    default: 2,
+  },
+  xs: {
+    type: Number,
+    default: 1,
+  },
 })
 
 const items = [
@@ -115,7 +131,7 @@ watch(
 
   <v-divider v-if="!allSelected"></v-divider>
 
-  <v-list class="list">
+  <v-list class="list" :class="[`md:grid-cols-${props.md}`, `sm:grid-cols-${sm}`, `grid-cols-${xs}`]">
     <template v-for="item in categories">
       <v-list-item v-if="!selected.includes(item)" :key="item.text" @click="selected.push(item)">
         <template v-slot:prepend>
@@ -148,7 +164,7 @@ watch(
   }
   
   .list {
-    @apply grid md:grid-cols-4 gap-2 sm:grid-cols-2 grid-cols-1;
+    @apply grid gap-2;
   }
 }
 </style>
