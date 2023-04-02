@@ -1,6 +1,15 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 
+const emit = defineEmits(['update:value'])
+
+const props = defineProps({
+  value: {
+    type: Array,
+    required: true,
+  },
+})
+
 const items = [
   {
     text: 'Business',
@@ -60,7 +69,7 @@ const items = [
   },
 ]
 const search = ref('')
-const selected = ref([])
+const selected = ref(props.value)
 
 const allSelected = computed(() => selected.value.length === items.length)
 const categories = computed(() => {
@@ -79,6 +88,11 @@ const selections = computed(() => [...selected.value])
 watch(
   () => selected.value,
   () => search.value = ''
+)
+
+watch(
+  () => selections.value,
+  (newVal) => emit('update:value', newVal)
 )
 </script>
 

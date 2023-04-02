@@ -8,6 +8,7 @@ import TagList from './SemanticSpec/TagList.vue'
 const dataType = ref('')
 const taskType = ref('')
 const requirementType = ref('')
+const tagList = ref([])
 
 watch(
   () => dataType.value,
@@ -22,7 +23,7 @@ watch(
     <data-type v-model:value="dataType"/>
     <task-type v-model:value="taskType"/>
     <requirement-type v-model:value="requirementType"/>
-    <tag-list />
+    <tag-list v-model:value="tagList" />
   </div>
 </template>
 
