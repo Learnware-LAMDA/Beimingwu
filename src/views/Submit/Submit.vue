@@ -52,7 +52,7 @@ function PrevStep() {
 
 <template>
   <v-container class="h-1/1">
-    <v-card class="max-w-1000px w-1/1">
+    <v-card class="max-w-1000px w-1/1 m-auto">
       <v-stepper-title
         class="mt-2 mb-5 w-1/1"
         :steps="steps"
@@ -90,11 +90,11 @@ function PrevStep() {
           </v-window-item>
     
           <v-window-item :value="3">
-            <v-responsive class="p-4 m-auto" :aspect-ratio="4 / 1">
+            <div class="p-4 m-auto">
               <file-upload
                 v-model:files="files"
               ></file-upload>
-            </v-responsive>
+            </div>
           </v-window-item>
         </v-window>
     
