@@ -14,6 +14,22 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  cols: {
+    type: Number,
+    default: 5,
+  },
+  md: {
+    type: Number,
+    default: 4,
+  },
+  sm: {
+    type: Number,
+    default: 4,
+  },
+  xs: {
+    type: Number,
+    default: 2,
+  },
 })
 
 const value = ref(props.value)
@@ -43,11 +59,11 @@ const dataTypeBtns = [
   {
     title: 'Table',
     icon: TableBtn,
-  }
+  },
 ]
 </script>
 
 <template>
-  <grid-btns v-model:value="value" :btns="dataTypeBtns" title="Data Type" :cols="5" :md="4" :sm="4" :xs="2" />
+  <grid-btns v-model:value="value" :btns="dataTypeBtns" title="Data Type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
 </template>
 
