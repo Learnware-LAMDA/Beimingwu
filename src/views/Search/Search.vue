@@ -25,7 +25,7 @@ const learnwareItems = Array(1000).fill(0).map((_, i) => {
     dataType: allDataType[Math.floor(Math.random() * allDataType.length)],
     taskType: allTaskType[Math.floor(Math.random() * allTaskType.length)],
     hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
-    tagList: Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]),
+    tagList: Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
   }
 })
 
