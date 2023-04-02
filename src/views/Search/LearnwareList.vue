@@ -35,7 +35,7 @@ const props = defineProps({
 
 <style scoped lang="scss">
 .learnware-list-container {
-  @apply relative p-2 grid xl: grid-cols-2 grid-cols-1 gap-3;
+  @apply relative p-2 grid xl: grid-cols-3 lg:grid-cols-2 gap-3;
 
   .first-row {
     @apply flex items-center;
@@ -57,7 +57,7 @@ const props = defineProps({
     }
 
     .tag {
-      @apply px-2 border-1 border-gray-700 rounded-1em;
+      @apply mt-1 px-2 border-1 border-gray-700 rounded-1em;
     }
   }
 
