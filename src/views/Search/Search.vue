@@ -16,7 +16,7 @@ const files = ref([])
 const learnwareItems = Array(100).fill(0).map((_, i) => {
   const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
   const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
-  const allRequirementType = ['CPU', 'GPU']
+  const allHardwareType = ['CPU', 'GPU']
   const allTagList = ['Business', 'Financial', 'Health', 'Politics', 'Computer', 'Internet', 'Traffic', 'Nature', 'Fashion', 'Industry', 'Agriculture', 'Education']
 
   return {
@@ -24,7 +24,7 @@ const learnwareItems = Array(100).fill(0).map((_, i) => {
     description: `This is the description of learnware ${i + 1}`,
     dataType: allDataType[Math.floor(Math.random() * allDataType.length)],
     taskType: allTaskType[Math.floor(Math.random() * allTaskType.length)],
-    requirementType: allRequirementType[Math.floor(Math.random() * allRequirementType.length)],
+    hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
     tagList: Array(3).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]),
   }
 })
@@ -45,7 +45,7 @@ const filteredLearnwareItems = computed(() => {
     if (filters.value.taskType && filters.value.taskType !== item.taskType) {
       return false
     }
-    if (filters.value.hardwareType && filters.value.hardwareType !== item.requirementType) {
+    if (filters.value.hardwareType && filters.value.hardwareType !== item.hardwareType) {
       return false
     }
     if (filters.value.tagList.length > 0 && filters.value.tagList.filter((tag) => item.tagList.includes(tag)).length === 0) {
@@ -76,7 +76,7 @@ watch(
       </div>
     </div>
     <div class="content">
-      <learnware-list :items="filteredLearnwareItems" />
+      <learnware-list :items="filteredLearnwareItems" :filters="filters" />
     </div>
   </div>
 </template>

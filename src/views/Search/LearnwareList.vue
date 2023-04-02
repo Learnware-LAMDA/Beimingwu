@@ -19,10 +19,10 @@ const props = defineProps({
           <v-card-title class="title">{{ item.title }}</v-card-title>
         </div>
         <v-card-text class="card-text">
-          <div class="label">{{ item.dataType }}</div>
-          <div class="label">{{ item.taskType }}</div>
-          <div class="label">{{ item.requirementType }}</div>
-          <div class="tag" v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
+          <div class="label" :class="filters && filters.dataType && filters.dataType.includes(item.dataType) ? 'active' : null">{{ item.dataType }}</div>
+          <div class="label" :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : null">{{ item.taskType }}</div>
+          <div class="label" :class="filters && filters.hardwareType && filters.hardwareType.includes(item.hardwareType) ? 'active' : null">{{ item.hardwareType }}</div>
+          <div class="tag" :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : null" v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
         </v-card-text>
         <v-card-text class="card-text">
           <div>{{ item.description }}</div>
@@ -62,6 +62,11 @@ const props = defineProps({
 
       .tag {
         @apply px-2 border-gray-700 border-1 text-xs text-black rounded-1em;
+      }
+
+      .active {
+        @apply bg-gray-100 border-0;
+        color: rgb(var(--v-theme-primary));
       }
     }
   }
