@@ -76,10 +76,6 @@ const categories = computed(() => {
 })
 const selections = computed(() => [...selected.value])
 
-function clearAll() {
-  selected.value = []
-}
-
 watch(
   () => selected.value,
   () => search.value = ''
