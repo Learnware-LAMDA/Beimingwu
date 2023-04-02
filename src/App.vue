@@ -21,11 +21,11 @@ watch(() => route.path, () => {
 
 <template>
   <v-app>
-    <app-bar :loggedIn="loggedIn" v-model:drawerOpen="drawerOpen" :routes="Router.getRoutes()"></app-bar>
+    <app-bar v-model:drawerOpen="drawerOpen" :routes="Router.getRoutes()"></app-bar>
 
     <drawer v-model:drawerOpen="drawerOpen" :routes="Router.getRoutes()"></drawer>
 
-    <v-main class="sm:bg-white bg-gray-100">
+    <v-main class="bg-gray-100">
       <router-view v-slot="{ Component, route }">
         <transition name="fade" mode="out-in">
           <component :is="Component" :key="route.paty" />
