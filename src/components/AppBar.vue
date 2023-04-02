@@ -53,7 +53,7 @@ const filteredRoutes = computed(() => {
             <v-spacer></v-spacer>
 
             <v-toolbar-items v-if="!['xs', 'sm'].includes(display.name.value)">
-                <v-btn v-for="route in filteredRoutes" :key="route.name" class="mr-2 text-body-2" @click="() => router.push(route.path)"
+                <v-btn v-for="route in filteredRoutes" :key="route.name" class="mr-2 text-body-2 rounded" @click="() => router.push(route.path)"
                     :variant="route.meta.variant" :class="route.meta.class">
                     {{ route.name }}
                 </v-btn>
