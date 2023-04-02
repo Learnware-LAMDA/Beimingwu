@@ -1,7 +1,10 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useDisplay } from 'vuetify'
 
 const emit = defineEmits(['update:value'])
+
+const display = useDisplay()
 
 const props = defineProps({
   value: {
@@ -24,6 +27,19 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
+})
+
+const realCols = computed(() => {
+  console.log(display.xs.value)
+  let cols = props.cols
+  if (props.md && display.md.value) {
+    cols = props.md
+  } else if (props.sm && display.sm.value) {
+    cols = props.sm
+  } else if (props.xs && display.xs.value) {
+    cols = props.xs
+  }
+  return cols
 })
 
 const items = [
@@ -131,7 +147,7 @@ watch(
 
   <v-divider v-if="!allSelected"></v-divider>
 
-  <v-list class="list" :class="[`md:grid-cols-${props.md}`, `sm:grid-cols-${sm}`, `grid-cols-${xs}`]">
+  <v-list class="list" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <template v-for="item in categories">
       <v-list-item v-if="!selected.includes(item)" :key="item.text" @click="selected.push(item)">
         <template v-slot:prepend>
