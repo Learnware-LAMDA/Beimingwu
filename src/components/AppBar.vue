@@ -57,9 +57,6 @@ const filteredRoutes = computed(() => {
                     :variant="route.meta.variant" :class="route.meta.class">
                     {{ route.name }}
                 </v-btn>
-                <v-btn v-if="store.getters.getLoggedIn" class="mr-2" @click="() => router.push('/logout')">
-                    Logout
-                </v-btn>
             </v-toolbar-items>
         </div>
     </v-app-bar>
