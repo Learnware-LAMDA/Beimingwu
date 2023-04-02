@@ -3,14 +3,18 @@ const props = defineProps({
   items: {
     type: Array,
     required: true,
-  }
+  },
+  filters: {
+    type: Object,
+    required: true,
+  },
 })
 </script>
 
 <template>
   <div class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null">
     <TransitionGroup name="fade">
-      <v-card flat v-for="(item, i) in items" :key="i">
+      <v-card flat class="card" v-for="(item, i) in items" :key="i">
         <div class="first-row">
           <v-card-title class="title">{{ item.title }}</v-card-title>
         </div>
@@ -18,8 +22,6 @@ const props = defineProps({
           <div class="label">{{ item.dataType }}</div>
           <div class="label">{{ item.taskType }}</div>
           <div class="label">{{ item.requirementType }}</div>
-        </v-card-text>
-        <v-card-text class="card-text">
           <div class="tag" v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
         </v-card-text>
         <v-card-text class="card-text">
@@ -35,29 +37,32 @@ const props = defineProps({
 
 <style scoped lang="scss">
 .learnware-list-container {
-  @apply relative p-2 grid xl: grid-cols-3 lg:grid-cols-2 gap-3;
+  @apply relative p-2 grid xl: grid-cols-2 lg:grid-cols-2 gap-3;
 
-  .first-row {
-    @apply flex items-center;
+  .card {
+    @apply border-1;
+    .first-row {
+      @apply flex items-center;
 
-    .title {
-      @apply xl: text-xl lg:text-lg text-1rem;
-    }
-  }
-
-  .card-text {
-    @apply flex flex-wrap pt-0 pb-2 text-gray-700;
-
-    * {
-      @apply mr-3;
+      .title {
+        @apply xl: text-xl lg:text-lg text-1rem;
+      }
     }
 
-    .label {
-      @apply px-2 mr-2 border-1 border-gray-700 text-sm text-gray-700 rounded;
-    }
+    .card-text {
+      @apply flex flex-wrap items-center pt-0 pb-2 text-gray-700;
 
-    .tag {
-      @apply mt-1 px-2 border-1 border-gray-700 rounded-1em;
+      * {
+        @apply mr-2 mt-1;
+      }
+
+      .label {
+        @apply px-2 border-gray-700 border-1 text-xs text-black rounded;
+      }
+
+      .tag {
+        @apply px-2 border-gray-700 border-1 text-xs text-black rounded-1em;
+      }
     }
   }
 
