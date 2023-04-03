@@ -115,7 +115,11 @@ const categories = computed(() => {
     return text.indexOf(_search) > -1
   })
 })
-const selections = computed(() => [...selected.value])
+const selections = computed(() => {
+  return selected.value.map((s) => {
+    return items.find(item => item.text === s)
+  })
+})
 
 watch(
   () => selected.value,
@@ -149,7 +153,7 @@ watch(
 
   <v-list class="list" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <template v-for="item in categories">
-      <v-list-item v-if="!selected.includes(item)" :key="item.text" @click="selected.push(item)">
+      <v-list-item v-if="!selections.includes(item)" :key="item.text" @click="selected.push(item.text)">
         <template v-slot:prepend>
           <v-icon :icon="item.icon"></v-icon>
         </template>

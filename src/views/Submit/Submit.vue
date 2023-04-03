@@ -9,6 +9,12 @@ const route = useRoute()
 
 const currentStep = ref(0)
 const files = ref([])
+const name = ref('')
+const dataType = ref('')
+const taskType = ref('')
+const hardwareType = ref('')
+const tagList = ref([])
+const description = ref('')
 
 const steps = [
   { 
@@ -50,7 +56,25 @@ function PrevStep() {
 }
 
 onMounted(() => {
-  const { name, dataType, taskType, hardwareType, tagList, description } = route.query
+  if(route.query.name) {
+    name.value = route.query.name
+  }
+  if(route.query.dataType) {
+    dataType.value = route.query.dataType
+  }
+  if(route.query.taskType) {
+    taskType.value = route.query.taskType
+  }
+  if(route.query.hardwareType) {
+    hardwareType.value = route.query.hardwareType
+  }
+  if(route.query.tagList) {
+    console.log(route.query.tagList)
+    tagList.value = JSON.parse(route.query.tagList)
+  }
+  if(route.query.description) {
+    description.value = route.query.description
+  }
 })
 </script>
 
@@ -74,7 +98,7 @@ onMounted(() => {
         <v-window v-model="currentStep">
           <v-window-item :value="0">
             <v-card-text>
-              <v-text-field label="Name" placeholder="Awesome learnware"></v-text-field>
+              <v-text-field v-model="name" label="Name" placeholder="Awesome learnware"></v-text-field>
               <span class="text-caption text-grey-darken-1">
                 This is the name of the learnware you contribute.
               </span>
@@ -83,13 +107,13 @@ onMounted(() => {
     
           <v-window-item :value="1">
             <v-card-text class="pt-0">
-              <semantic-spec />
+              <semantic-spec v-model:data-type="dataType" v-model:task-type="taskType" v-model:hardware-type="hardwareType" v-model:tag-list="tagList" />
             </v-card-text>
           </v-window-item>
     
           <v-window-item :value="2">
             <div class="pa-4 text-center">
-              <v-textarea label="Description" placeholder="This is a description of the learnware"></v-textarea>
+              <v-textarea v-model="description" label="Description" placeholder="This is a description of the learnware"></v-textarea>
             </div>
           </v-window-item>
     
