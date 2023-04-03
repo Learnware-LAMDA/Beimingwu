@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import DataType from '@/views/Submit/SemanticSpec/DataType.vue'
 import TaskType from '@/views/Submit/SemanticSpec/TaskType.vue'
 import HardwareType from '@/views/Submit/SemanticSpec/HardwareType.vue'
@@ -13,22 +13,26 @@ const hardwareType = ref('')
 const tagList = ref([])
 const files = ref([])
 
-const learnwareItems = Array(100).fill(0).map((_, i) => {
-  const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
-  const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
-  const allHardwareType = ['CPU', 'GPU']
-  const allTagList = ['Business', 'Financial', 'Health', 'Politics', 'Computer', 'Internet', 'Traffic', 'Nature', 'Fashion', 'Industry', 'Agriculture', 'Education']
+const learnwareItems = ref([])
 
-  return {
-    id: Array(32).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
-    name: `Learnware ${i + 1}`,
-    description: `This is the description of learnware ${i + 1}`,
-    dataType: allDataType[Math.floor(Math.random() * allDataType.length)],
-    taskType: allTaskType[Math.floor(Math.random() * allTaskType.length)],
-    hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
-    tagList: Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
-  }
-})
+function generateLearnwareItems() {
+  return Array(100).fill(0).map((_, i) => {
+    const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
+    const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
+    const allHardwareType = ['CPU', 'GPU']
+    const allTagList = ['Business', 'Financial', 'Health', 'Politics', 'Computer', 'Internet', 'Traffic', 'Nature', 'Fashion', 'Industry', 'Agriculture', 'Education']
+
+    return {
+      id: Array(32).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
+      name: `Learnware ${i + 1}`,
+      description: `This is the description of learnware ${i + 1}`,
+      dataType: allDataType[Math.floor(Math.random() * allDataType.length)],
+      taskType: allTaskType[Math.floor(Math.random() * allTaskType.length)],
+      hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
+      tagList: Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
+    }
+  })
+}
 
 const filters = computed(() => ({
   dataType: dataType.value,
@@ -39,7 +43,7 @@ const filters = computed(() => ({
 }))
 
 const filteredLearnwareItems = computed(() => {
-  return learnwareItems.filter((item) => {
+  return learnwareItems.value.filter((item) => {
     if (filters.value.dataType && filters.value.dataType !== item.dataType) {
       return false
     }
@@ -62,6 +66,10 @@ watch(
     console.log(newVal)
   }
 )
+
+onMounted(() => {
+  learnwareItems.value = generateLearnwareItems()
+})
 </script>
 
 <template>

@@ -26,7 +26,9 @@ watch(() => route.path, () => {
     <v-main class="bg-gray-100">
       <router-view v-slot="{ Component, route }">
         <transition name="fade" mode="out-in">
-          <component :is="Component" :key="route.paty" />
+          <keep-alive>
+            <component :is="Component" :key="route.paty" />
+          </keep-alive>
         </transition>
       </router-view>
     </v-main>
