@@ -1,4 +1,5 @@
 import Vuex from 'vuex'
+import VuexPersistence from 'vuex-persist'
 
 export default new Vuex.Store({
   state: {
@@ -36,5 +37,6 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-  }
+  },
+  plugins: [new VuexPersistence().plugin],
 })
