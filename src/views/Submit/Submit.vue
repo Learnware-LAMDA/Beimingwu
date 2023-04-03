@@ -1,11 +1,8 @@
 <script setup>
 import { ref } from 'vue'
-import { useDisplay } from 'vuetify'
 import VStepperTitle from './VStepperTitle.vue'
 import FileUpload from './FileUpload.vue'
 import SemanticSpec from './SemanticSpec.vue'
-
-const display = useDisplay()
 
 const currentStep = ref(0)
 const files = ref([])
