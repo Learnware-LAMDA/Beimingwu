@@ -8,8 +8,8 @@ const deleteName = ref('')
 const deleteId = ref('')
 
 function confirmDelete(args) {
-  const { id, title } = args
-  deleteName.value = title
+  const { id, name } = args
+  deleteName.value = name
   deleteId.value = id
   dialog.value = true
 }

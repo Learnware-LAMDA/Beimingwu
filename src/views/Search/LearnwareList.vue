@@ -58,7 +58,7 @@ function deleteLearnware(id) {
 function confirmDelete(index) {
   dialog.value.confirmDelete({
     id: props.items[index].id,
-    title: props.items[index].title
+    name: props.items[index].name
   })
 }
 
@@ -80,7 +80,7 @@ function transformQuery(item) {
     <TransitionGroup name="fade">
       <v-card flat class="card" v-for="(item, i) in items" :key="i">
         <div class="first-row">
-          <v-card-title class="title">{{ item.title }}</v-card-title>
+          <v-card-title class="title">{{ item.name }}</v-card-title>
           <v-card-actions v-if="showActions" class="actions">
             <v-btn icon="mdi-pencil" @click="() => router.push({path: '/submit', query: transformQuery(item)})"></v-btn>
             <v-btn icon="mdi-delete" @click="() => confirmDelete(i)"></v-btn>
