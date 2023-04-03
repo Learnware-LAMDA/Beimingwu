@@ -8,6 +8,7 @@ const learnwareItems = Array(3).fill(0).map((_, i) => {
   const allTagList = ['Business', 'Financial', 'Health', 'Politics', 'Computer', 'Internet', 'Traffic', 'Nature', 'Fashion', 'Industry', 'Agriculture', 'Education']
 
   return {
+    id: Array(32).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
     title: `Learnware ${i + 1}`,
     description: `This is the description of learnware ${i + 1}`,
     dataType: allDataType[Math.floor(Math.random() * allDataType.length)],
