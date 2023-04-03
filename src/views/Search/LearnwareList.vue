@@ -1,6 +1,7 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
+import DeleteDialog from './DeleteDialog.vue'
 
 const display = useDisplay()
 
@@ -11,7 +12,10 @@ const props = defineProps({
   },
   filters: {
     type: Object,
-    required: true,
+  },
+  showActions: {
+    type: Boolean,
+    default: false,
   },
   cols: {
     type: Number,
@@ -31,6 +35,8 @@ const props = defineProps({
   }
 })
 
+const dialog = ref(null)
+
 const realCols = computed(() => {
   switch (display.name.value) {
     case 'md': if(props.md) return props.md
@@ -39,14 +45,27 @@ const realCols = computed(() => {
     default: return props.cols
   }
 })
+
+function deleteLearnware(index) {
+
+}
+
+function confirmDelete(index) {
+  dialog.value.confirmDelete(props.items[index].title)
+}
 </script>
 
 <template>
   <div class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
+    <delete-dialog ref="dialog" :delete-name="deleteName" />
     <TransitionGroup name="fade">
       <v-card flat class="card" v-for="(item, i) in items" :key="i">
         <div class="first-row">
           <v-card-title class="title">{{ item.title }}</v-card-title>
+          <v-card-actions v-if="showActions" class="actions">
+            <v-btn icon="mdi-pencil"></v-btn>
+            <v-btn icon="mdi-delete" @click="() => confirmDelete(i)"></v-btn>
+          </v-card-actions>
         </div>
         <v-card-text class="card-text">
           <div class="label" :class="filters && filters.dataType && filters.dataType.includes(item.dataType) ? 'active' : null">{{ item.dataType }}</div>
@@ -72,10 +91,14 @@ const realCols = computed(() => {
   .card {
     @apply border-1;
     .first-row {
-      @apply flex items-center;
+      @apply flex justify-between items-center;
 
       .title {
         @apply xl: text-xl lg:text-lg text-1rem;
+      }
+      
+      .actions {
+        @apply justify-end mt-1;
       }
     }
 
