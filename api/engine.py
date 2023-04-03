@@ -6,23 +6,26 @@ import os
 
 engine_api = Blueprint("Engine-API", __name__)
 
+
 @engine_api.route("/get_semantic_specification", methods=["GET"])
 def get_semantic_specification():
     result = {
-        "code": 0, 
+        "code": 0,
         "msg": "Ok",
         # "data": C.engine.get_property_list(),
     }
     return jsonify(result)
 
+
 @engine_api.route("/search_learnware", methods=["GET"])
 def search_learnware():
     result = {
-        "code": 0, 
+        "code": 0,
         "msg": "Ok",
         # "data": C.engine.get_property_list(),
     }
     return jsonify(result)
+
 
 @engine_api.route("/download_learnware", methods=["GET"])
 @login_required

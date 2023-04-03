@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask import Flask
 from database import SQLite
 import api
+
 # import learnware.market as market
 
 app = Flask(__name__)
@@ -19,7 +20,7 @@ def main():
         raise ValueError(f"Database type {C.database_type} is not supproted.")
     setattr(C, "database", database)
     setattr(C, "stats", 0)
-    
+
     # Init engine
     # engine = None
     # if C.engine_type == "basic":
@@ -28,7 +29,7 @@ def main():
     # if engine is None:
     #     raise ValueError(f"Learnware engine type {C.engine_type} is not supproted.")
     # setattr(C, "engine", engine)
-    
+
     # Init flask
     app.register_blueprint(api.auth_api, url_prefix="/auth")
     app.register_blueprint(api.user_api, url_prefix="/user")

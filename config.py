@@ -47,9 +47,9 @@ class Config:
         self.__dict__["_config"].update(*args, **kwargs)
 
 
-ROOT_DIRPATH  = os.path.dirname(os.path.abspath(__file__))
-SQLITE_PATH   = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "database.db")
-MARKET_PATH   = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "learnware")
+ROOT_DIRPATH = os.path.dirname(os.path.abspath(__file__))
+SQLITE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "database.db")
+MARKET_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "learnware")
 PROPERTY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "property.json")
 
 _DEFAULT_CONFIG = {
