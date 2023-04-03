@@ -13,7 +13,7 @@ const hardwareType = ref('')
 const tagList = ref([])
 const files = ref([])
 
-const learnwareItems = Array(1000).fill(0).map((_, i) => {
+const learnwareItems = Array(100).fill(0).map((_, i) => {
   const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
   const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
   const allHardwareType = ['CPU', 'GPU']
