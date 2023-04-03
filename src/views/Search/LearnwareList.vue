@@ -1,11 +1,14 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
+import { useRouter } from 'vue-router'
 import DeleteDialog from './DeleteDialog.vue'
 
 const emits = defineEmits(['delete'])
 
 const display = useDisplay()
+
+const router = useRouter()
 
 const props = defineProps({
   items: {
@@ -58,6 +61,17 @@ function confirmDelete(index) {
     title: props.items[index].title
   })
 }
+
+function transformQuery(item) {
+  return {
+    name: item.name,
+    dataType: item.dataType,
+    taskType: item.taskType,
+    hardwareType: item.hardWareType,
+    tagList: JSON.stringify(item.tagList),
+    description: item.description,
+  }
+}
 </script>
 
 <template>
@@ -68,7 +82,7 @@ function confirmDelete(index) {
         <div class="first-row">
           <v-card-title class="title">{{ item.title }}</v-card-title>
           <v-card-actions v-if="showActions" class="actions">
-            <v-btn icon="mdi-pencil"></v-btn>
+            <v-btn icon="mdi-pencil" @click="() => router.push({path: '/submit', query: transformQuery(item)})"></v-btn>
             <v-btn icon="mdi-delete" @click="() => confirmDelete(i)"></v-btn>
           </v-card-actions>
         </div>

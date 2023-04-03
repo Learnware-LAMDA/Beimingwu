@@ -1,8 +1,11 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import VStepperTitle from './VStepperTitle.vue'
 import FileUpload from './FileUpload.vue'
 import SemanticSpec from './SemanticSpec.vue'
+
+const route = useRoute()
 
 const currentStep = ref(0)
 const files = ref([])
@@ -45,6 +48,10 @@ function PrevStep() {
     activeStep(currentStep.value - 1)
   }
 }
+
+onMounted(() => {
+  const { name, dataType, taskType, hardwareType, tagList, description } = route.query
+})
 </script>
 
 <template>
