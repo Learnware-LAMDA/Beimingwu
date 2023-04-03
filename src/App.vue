@@ -5,8 +5,6 @@ import Router from '@/router/index.js'
 import Drawer from './components/Drawer.vue'
 import AppBar from './components/AppBar.vue'
 
-const loggedIn = ref(false)
-
 const drawerOpen = ref(false)
 
 const route = useRoute()
