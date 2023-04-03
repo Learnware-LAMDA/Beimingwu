@@ -27,22 +27,24 @@ const Router = createRouter({
     component: () => import ('@/views/Search/Search.vue'),
     meta: {
       showInNavBar: true,
+      keepAlive: true,
       icon: 'mdi-magnify'
     }
   },
   {
     path: '/mylearnware',
-    name: 'My Learnware',
+    name: 'MyLearnware',
     component: () => import ('@/views/MyLearnware/MyLearnware.vue'),
     meta: {
       showInNavBar: true,
       requiredLogin: true,
+      keepAlive: true,
       icon: 'mdi-file-eye'
     }
   },
   {
     path: '/learnwaredetail',
-    name: 'Learnware Detail',
+    name: 'LearnwareDetail',
     component: () => import ('@/views/LearnwareDetail/LearnwareDetail.vue'),
     meta: {
       showInNavBar: false,

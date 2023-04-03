@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import Router from '@/router/index.js'
 import Drawer from './components/Drawer.vue'
@@ -8,6 +8,10 @@ import AppBar from './components/AppBar.vue'
 const drawerOpen = ref(false)
 
 const route = useRoute()
+
+const keepAliveIncludes = computed(() => {
+  return Router.getRoutes().filter((route) => route.meta.keepAlive).map((route) => route.name)
+})
 
 watch(() => route.path, () => {
   drawerOpen.value = false
@@ -26,7 +30,7 @@ watch(() => route.path, () => {
     <v-main class="bg-gray-100">
       <router-view v-slot="{ Component, route }">
         <transition name="fade" mode="out-in">
-          <keep-alive>
+          <keep-alive :include="keepAliveIncludes">
             <component :is="Component" />
           </keep-alive>
         </transition>
