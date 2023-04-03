@@ -86,8 +86,8 @@ function transformQuery(item) {
         <div class="first-row">
           <v-card-title class="title">{{ item.name }}</v-card-title>
           <v-card-actions v-if="showActions" class="actions">
-            <v-btn icon="mdi-pencil" @click="() => router.push({path: '/submit', query: transformQuery(item)})"></v-btn>
-            <v-btn icon="mdi-delete" @click="() => confirmDelete(i)"></v-btn>
+            <v-btn icon="mdi-pencil" @click.stop="() => router.push({path: '/submit', query: transformQuery(item)})"></v-btn>
+            <v-btn icon="mdi-delete" @click.stop="() => confirmDelete(i)"></v-btn>
           </v-card-actions>
         </div>
         <v-card-text class="card-text">
