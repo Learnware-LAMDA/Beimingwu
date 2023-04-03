@@ -4,7 +4,7 @@ import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import DeleteDialog from './DeleteDialog.vue'
 
-const emits = defineEmits(['delete'])
+const emit = defineEmits(['delete'])
 
 const display = useDisplay()
 
@@ -52,7 +52,11 @@ const realCols = computed(() => {
 })
 
 function deleteLearnware(id) {
-  emits('delete', id)
+  emit('delete', id)
+}
+
+function showLearnwareDetail(id) {
+  router.push({ path: '/learnwaredetail', query: { id } })
 }
 
 function confirmDelete(index) {
@@ -78,7 +82,7 @@ function transformQuery(item) {
   <div class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <delete-dialog ref="dialog" @confirm="(id) => deleteLearnware(id)" />
     <TransitionGroup name="fade">
-      <v-card flat class="card" v-for="(item, i) in items" :key="i">
+      <v-card flat class="card" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
         <div class="first-row">
           <v-card-title class="title">{{ item.name }}</v-card-title>
           <v-card-actions v-if="showActions" class="actions">
