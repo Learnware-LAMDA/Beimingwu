@@ -116,9 +116,12 @@ const categories = computed(() => {
   })
 })
 const selections = computed(() => {
-  return selected.value.map((s) => {
-    return items.find(item => item.text === s)
-  })
+  if (selected.value) {
+    return selected.value.map((s) => {
+      return items.find(item => item.text === s)
+    })
+  }
+  return []
 })
 
 watch(
