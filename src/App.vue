@@ -27,7 +27,7 @@ watch(() => route.path, () => {
       <router-view v-slot="{ Component, route }">
         <transition name="fade" mode="out-in">
           <keep-alive>
-            <component :is="Component" :key="route.paty" />
+            <component :is="Component" />
           </keep-alive>
         </transition>
       </router-view>
