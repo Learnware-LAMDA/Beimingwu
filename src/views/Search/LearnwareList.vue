@@ -51,13 +51,16 @@ function deleteLearnware(index) {
 }
 
 function confirmDelete(index) {
-  dialog.value.confirmDelete(props.items[index].title)
+  dialog.value.confirmDelete({
+    id: props.items[index].id,
+    title: props.items[index].title
+  })
 }
 </script>
 
 <template>
   <div class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-    <delete-dialog ref="dialog" :delete-name="deleteName" />
+    <delete-dialog ref="dialog" />
     <TransitionGroup name="fade">
       <v-card flat class="card" v-for="(item, i) in items" :key="i">
         <div class="first-row">
