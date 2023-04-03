@@ -70,7 +70,7 @@ watch(
       <task-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="taskType" />
       <hardware-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="hardwareType" />
       <tag-list class="bg-transparent" v-model:value="tagList" :cols="2" :md="1" :sm="1" />
-      <div class="h-40">
+      <div>
         Upload statistical specification
         <file-upload />
       </div>
