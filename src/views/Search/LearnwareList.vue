@@ -3,6 +3,8 @@ import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
 import DeleteDialog from './DeleteDialog.vue'
 
+const emits = defineEmits(['delete'])
+
 const display = useDisplay()
 
 const props = defineProps({
@@ -46,8 +48,8 @@ const realCols = computed(() => {
   }
 })
 
-function deleteLearnware(index) {
-
+function deleteLearnware(id) {
+  emits('delete', id)
 }
 
 function confirmDelete(index) {
@@ -60,7 +62,7 @@ function confirmDelete(index) {
 
 <template>
   <div class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-    <delete-dialog ref="dialog" />
+    <delete-dialog ref="dialog" @confirm="(id) => deleteLearnware(id)" />
     <TransitionGroup name="fade">
       <v-card flat class="card" v-for="(item, i) in items" :key="i">
         <div class="first-row">

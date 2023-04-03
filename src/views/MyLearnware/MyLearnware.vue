@@ -1,7 +1,8 @@
 <script setup>
+import { ref } from 'vue'
 import LearnwareList from '@/views/Search/LearnwareList.vue'
 
-const learnwareItems = Array(3).fill(0).map((_, i) => {
+const learnwareItems = ref(Array(10).fill(0).map((_, i) => {
   const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
   const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
   const allHardwareType = ['CPU', 'GPU']
@@ -16,11 +17,15 @@ const learnwareItems = Array(3).fill(0).map((_, i) => {
     hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
     tagList: Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
   }
-})
+}))
+
+function deleteLearnware(id) {
+  learnwareItems.value.splice(learnwareItems.value.findIndex((item) => item.id === id), 1)
+}
 </script>
 
 <template>
   <div class="flex flex-col h-1/1 justify-start items-center">
-    <learnware-list class="w-1/1 max-w-900px" :items="learnwareItems" :cols="1" :show-actions="true" />
+    <learnware-list class="w-1/1 max-w-900px" :items="learnwareItems" :cols="1" :show-actions="true" @delete="(id) => deleteLearnware(id)" />
   </div>
 </template>
