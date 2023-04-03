@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import LearnwareList from '@/views/Search/LearnwareList.vue'
+import LearnwareList from '@/components/Learnware/LearnwareList.vue'
 
 const learnwareItems = ref([])
 

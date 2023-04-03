@@ -1,8 +1,8 @@
 <script setup>
-import Slogan from './Slogan.vue'
-import Why from './Why.vue'
-import How from './How.vue'
-import MyFooter from './MyFooter.vue'
+import Slogan from '@/components/Home/Slogan.vue'
+import Why from '@/components/Home/Why.vue'
+import How from '@/components/Home/How.vue'
+import MyFooter from '@/components/Home/MyFooter.vue'
 </script>
 
 <template>

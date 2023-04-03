@@ -1,9 +1,9 @@
 <script setup>
 import { ref, watch } from 'vue'
-import DataType from './SemanticSpec/DataType.vue'
-import TaskType from './SemanticSpec/TaskType.vue'
-import HardwareType from './SemanticSpec/HardwareType.vue'
-import TagList from './SemanticSpec/TagList.vue'
+import DataType from '@/components/Specification/SemanticSpec/DataType.vue'
+import TaskType from '@/components/Specification/SemanticSpec/TaskType.vue'
+import HardwareType from '@/components/Specification/SemanticSpec/HardwareType.vue'
+import TagList from '@/components/Specification/SemanticSpec/TagList.vue'
 
 const emit = defineEmits(['update:dataType', 'update:taskType', 'update:hardwareType', 'update:tagList'])
 

@@ -1,11 +1,11 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import DataType from '@/views/Submit/SemanticSpec/DataType.vue'
-import TaskType from '@/views/Submit/SemanticSpec/TaskType.vue'
-import HardwareType from '@/views/Submit/SemanticSpec/HardwareType.vue'
-import FileUpload from '@/views/Submit/FileUpload.vue'
-import TagList from '@/views/Submit/SemanticSpec/TagList.vue'
-import LearnwareList from './LearnwareList.vue'
+import DataType from '@/components/Specification/SemanticSpec/DataType.vue'
+import TaskType from '@/components/Specification/SemanticSpec/TaskType.vue'
+import HardwareType from '@/components/Specification/SemanticSpec/HardwareType.vue'
+import FileUpload from '@/components/Specification/FileUpload.vue'
+import TagList from '@/components/Specification/SemanticSpec/TagList.vue'
+import LearnwareList from '@/components/Learnware/LearnwareList.vue'
 
 const dataType = ref('')
 const taskType = ref('')
