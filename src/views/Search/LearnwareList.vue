@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import DeleteDialog from './DeleteDialog.vue'
+import { downloadLearnware } from '@/utils'
 
 const emit = defineEmits(['delete'])
 
@@ -44,9 +45,9 @@ const dialog = ref(null)
 
 const realCols = computed(() => {
   switch (display.name.value) {
-    case 'md': if(props.md) return props.md
-    case 'sm': if(props.sm) return props.sm
-    case 'xs': if(props.xs) return props.xs
+    case 'md': if (props.md) return props.md
+    case 'sm': if (props.sm) return props.sm
+    case 'xs': if (props.xs) return props.xs
     default: return props.cols
   }
 })
@@ -79,22 +80,33 @@ function transformQuery(item) {
 </script>
 
 <template>
-  <div class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
+  <div class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null"
+    :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <delete-dialog ref="dialog" @confirm="(id) => deleteLearnware(id)" />
     <TransitionGroup name="fade">
       <v-card flat class="card" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
         <div class="first-row">
           <v-card-title class="title">{{ item.name }}</v-card-title>
-          <v-card-actions v-if="showActions" class="actions">
-            <v-btn icon="mdi-pencil" @click.stop="() => router.push({path: '/submit', query: transformQuery(item)})"></v-btn>
-            <v-btn icon="mdi-delete" @click.stop="() => confirmDelete(i)"></v-btn>
+          <v-card-actions class="actions">
+            <v-btn icon="mdi-download"
+              @click.stop="() => downloadLearnware(item.id)"></v-btn>
+            <v-btn v-if="showActions" icon="mdi-pencil"
+              @click.stop="() => router.push({ path: '/submit', query: transformQuery(item) })"></v-btn>
+            <v-btn v-if="showActions" icon="mdi-delete" @click.stop="() => confirmDelete(i)"></v-btn>
           </v-card-actions>
         </div>
         <v-card-text class="card-text">
-          <div class="label" :class="filters && filters.dataType && filters.dataType.includes(item.dataType) ? 'active' : null">{{ item.dataType }}</div>
-          <div class="label" :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : null">{{ item.taskType }}</div>
-          <div class="label" :class="filters && filters.hardwareType && filters.hardwareType.includes(item.hardwareType) ? 'active' : null">{{ item.hardwareType }}</div>
-          <div class="tag" :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : null" v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
+          <div class="label"
+            :class="filters && filters.dataType && filters.dataType.includes(item.dataType) ? 'active' : null">{{
+              item.dataType }}</div>
+          <div class="label"
+            :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : null">{{
+              item.taskType }}</div>
+          <div class="label"
+            :class="filters && filters.hardwareType && filters.hardwareType.includes(item.hardwareType) ? 'active' : null">
+            {{ item.hardwareType }}</div>
+          <div class="tag" :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : null"
+            v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
         </v-card-text>
         <v-card-text class="card-text">
           <div>{{ item.description }}</div>
@@ -113,13 +125,14 @@ function transformQuery(item) {
 
   .card {
     @apply border-1;
+
     .first-row {
       @apply flex justify-between items-center;
 
       .title {
         @apply xl: text-xl lg:text-lg text-1rem;
       }
-      
+
       .actions {
         @apply justify-end mt-1;
       }
@@ -144,6 +157,7 @@ function transformQuery(item) {
         @apply bg-gray-100 border-0;
         color: rgb(var(--v-theme-primary));
       }
+
       .tag.active {
         @apply bg-gray-100 text-orange-600 border-0;
       }
@@ -163,5 +177,4 @@ function transformQuery(item) {
 .fade-enter,
 .fade-leave-to {
   @apply opacity-0;
-}
-</style>
+}</style>

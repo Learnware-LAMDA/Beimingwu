@@ -1,10 +1,11 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
-
+import { downloadLearnware } from '@/utils'
 const route = useRoute()
 
 const learnwareId = ref('')
+const downloading = ref(false)
 
 function getLearnwareDetailById(id) {
   return {
@@ -35,16 +36,16 @@ onMounted(() => {
         <v-card-title class="text-h4">
           {{ learnware.name }}
         </v-card-title>
-        
+
         <v-card-actions>
-          <v-btn icon="download-circle"></v-btn>
+          <v-btn icon="mdi-download" @click="() => downloadLearnware(learnware.id)" />
         </v-card-actions>
       </div>
 
       <v-card-subtitle>
         {{ learnware.id }}
       </v-card-subtitle>
-      
+
       <v-card-text class="text-xl !leading-7">
         <div>Data type: {{ learnware.dataType }}</div>
         <div>Task type: {{ learnware.taskType }}</div>
@@ -56,5 +57,8 @@ onMounted(() => {
         Description: {{ learnware.description }}
       </v-card-text>
     </v-card>
+    <v-overlay class="flex justify-center items-center" v-model="downloading">
+      <v-progress-circular size="80" width="8" indeterminate />
+    </v-overlay>
   </v-container>
 </template>
