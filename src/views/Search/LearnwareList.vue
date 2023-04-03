@@ -1,4 +1,9 @@
 <script setup>
+import { computed } from 'vue'
+import { useDisplay } from 'vuetify'
+
+const display = useDisplay()
+
 const props = defineProps({
   items: {
     type: Array,
@@ -8,11 +13,36 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  cols: {
+    type: Number,
+    default: 2,
+  },
+  md: {
+    type: Number,
+    default: 1,
+  },
+  sm: {
+    type: Number,
+    default: 1,
+  },
+  xs: {
+    type: Number,
+    default: 1,
+  }
+})
+
+const realCols = computed(() => {
+  switch (display.name.value) {
+    case 'md': if(props.md) return props.md
+    case 'sm': if(props.sm) return props.sm
+    case 'xs': if(props.xs) return props.xs
+    default: return props.cols
+  }
 })
 </script>
 
 <template>
-  <div class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null">
+  <div class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <TransitionGroup name="fade">
       <v-card flat class="card" v-for="(item, i) in items" :key="i">
         <div class="first-row">
