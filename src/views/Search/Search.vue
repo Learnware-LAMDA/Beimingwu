@@ -65,13 +65,6 @@ const filteredLearnwareItems = computed(() => {
   })
 })
 
-watch(
-  () => filters.value,
-  (newVal) => {
-    console.log(newVal)
-  }
-)
-
 onMounted(() => {
   learnwareItems.value = generateLearnwareItems()
 })
