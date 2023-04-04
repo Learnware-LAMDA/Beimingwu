@@ -20,12 +20,7 @@ const handleDrop = (event) => {
   uploadFile()
 }
 
-const uploadFile = () => {
-  console.log(files.value);
-}
-
 const chooseFile = () => {
-  console.log(fileInput.value)
   fileInput.value.click()
 }
 

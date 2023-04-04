@@ -30,7 +30,6 @@ const props = defineProps({
 })
 
 const realCols = computed(() => {
-  console.log(display.xs.value)
   let cols = props.cols
   if (props.md && display.md.value) {
     cols = props.md

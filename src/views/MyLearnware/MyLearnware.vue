@@ -28,7 +28,6 @@ function deleteLearnware(id) {
 }
 
 onMounted(() => {
-  console.log('MyLearnware Activated')
   learnwareItems.value = generateLearnwareItems()
 })
 </script>

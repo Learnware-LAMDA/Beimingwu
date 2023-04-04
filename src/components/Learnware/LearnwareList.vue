@@ -84,7 +84,6 @@ function saveScroll() {
 }
 
 onActivated(() => {
-  console.log(scrollY.value)
   window.scrollTo(0, scrollY.value)
   window.addEventListener('scroll', saveScroll)
 })

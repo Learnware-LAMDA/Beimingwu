@@ -88,7 +88,6 @@ const recommendLearnwareItems = ref(Array(6).fill(0).map((_, i) => {
 }).sort((a, b) => b.matchScore - a.matchScore))
 
 onActivated(() => {
-  console.log(scrollTop.value)
   contentRef.value.scrollTop = scrollTop.value
 })
 

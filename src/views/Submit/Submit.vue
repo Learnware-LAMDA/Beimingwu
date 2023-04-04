@@ -69,7 +69,6 @@ onMounted(() => {
     hardwareType.value = route.query.hardwareType
   }
   if(route.query.tagList) {
-    console.log(route.query.tagList)
     tagList.value = JSON.parse(route.query.tagList)
   }
   if(route.query.description) {
