@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick, onActivated } from 'vue'
 import DataType from '@/components/Specification/SemanticSpec/DataType.vue'
 import TaskType from '@/components/Specification/SemanticSpec/TaskType.vue'
 import HardwareType from '@/components/Specification/SemanticSpec/HardwareType.vue'
@@ -14,10 +14,13 @@ const hardwareType = ref('')
 const tagList = ref([])
 const files = ref([])
 
+const contentRef = ref(null)
 const learnwareItems = ref([])
 
+const scrollTop = ref(0)
+
 function generateLearnwareItems() {
-  return Array(1000).fill(0).map((_, i) => {
+  return Array(100).fill(0).map((_, i) => {
     const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
     const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
     const allHardwareType = ['CPU', 'GPU']
@@ -65,8 +68,18 @@ const filteredLearnwareItems = computed(() => {
   })
 })
 
+onActivated(() => {
+  console.log(scrollTop.value)
+  contentRef.value.scrollTop = scrollTop.value
+})
+
 onMounted(() => {
   learnwareItems.value = generateLearnwareItems()
+  nextTick(() => {
+    contentRef.value.addEventListener('scroll', () => {
+      scrollTop.value = contentRef.value.scrollTop
+    })
+  })
 })
 </script>
 
@@ -83,7 +96,7 @@ onMounted(() => {
         <file-upload />
       </div>
     </div>
-    <div class="content">
+    <div ref="contentRef" class="content">
       <learnware-list :items="filteredLearnwareItems" :filters="filters" />
     </div>
   </div>
