@@ -17,7 +17,7 @@ const files = ref([])
 const learnwareItems = ref([])
 
 function generateLearnwareItems() {
-  return Array(100).fill(0).map((_, i) => {
+  return Array(1000).fill(0).map((_, i) => {
     const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
     const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
     const allHardwareType = ['CPU', 'GPU']
