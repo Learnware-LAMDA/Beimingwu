@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import VStepperTitle from '@/components/VStepperTitle.vue'
 import FileUpload from '@/components/Specification/FileUpload.vue'
-import SemanticSpec from './SemanticSpec.vue'
+import SemanticSpec from '@/components/Specification/SemanticSpec.vue'
 
 const route = useRoute()
 
