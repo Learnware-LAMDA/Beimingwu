@@ -12,16 +12,6 @@ const Router = createRouter({
     }
   },
   {
-    path: '/submit',
-    name: 'Submit',
-    component: () => import ('@/views/Submit/Submit.vue'),
-    meta: {
-      showInNavBar: true,
-      requiredLogin: true,
-      icon: 'mdi-transfer'
-    }
-  },
-  {
     path: '/search',
     name: 'Search',
     component: () => import ('@/views/Search/Search.vue'),
@@ -29,6 +19,16 @@ const Router = createRouter({
       showInNavBar: true,
       keepAlive: true,
       icon: 'mdi-magnify'
+    }
+  },
+  {
+    path: '/submit',
+    name: 'Submit',
+    component: () => import ('@/views/Submit/Submit.vue'),
+    meta: {
+      showInNavBar: true,
+      requiredLogin: true,
+      icon: 'mdi-transfer'
     }
   },
   {
