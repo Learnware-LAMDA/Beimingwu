@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onActivated, onDeactivated } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import DeleteDialog from './DeleteDialog.vue'
@@ -42,6 +42,7 @@ const props = defineProps({
 })
 
 const dialog = ref(null)
+const scrollY = ref(0)
 
 const realCols = computed(() => {
   switch (display.name.value) {
@@ -77,6 +78,20 @@ function transformQuery(item) {
     description: item.description,
   }
 }
+
+function saveScroll() {
+  scrollY.value = window.scrollY
+}
+
+onActivated(() => {
+  console.log(scrollY.value)
+  window.scrollTo(0, scrollY.value)
+  window.addEventListener('scroll', saveScroll)
+})
+
+onDeactivated(() => {
+  window.removeEventListener('scroll', saveScroll)
+})
 </script>
 
 <template>

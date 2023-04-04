@@ -84,7 +84,10 @@ const Router = createRouter({
       variant: 'outlined',
       class: ['py-2.5 rounded border-2']
     },
-  },]
+  }],
+  scrollBehavior (to, from, savedPosition) {
+    return { top: 0 }
+  }
 })
 
 export default Router
