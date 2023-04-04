@@ -36,6 +36,7 @@ const Router = createRouter({
     name: 'MyLearnware',
     component: () => import ('@/views/MyLearnware/MyLearnware.vue'),
     meta: {
+      name: 'My Learnware',
       showInNavBar: true,
       requiredLogin: true,
       keepAlive: true,
