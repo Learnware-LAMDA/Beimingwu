@@ -103,8 +103,7 @@ onDeactivated(() => {
         <div class="first-row">
           <v-card-title class="title">{{ item.name }}</v-card-title>
           <v-card-actions class="actions">
-            <v-btn icon="mdi-download"
-              @click.stop="() => downloadLearnware(item.id)"></v-btn>
+            <v-btn icon="mdi-download" @click.stop="() => downloadLearnware(item.id)"></v-btn>
             <v-btn v-if="showActions" icon="mdi-pencil"
               @click.stop="() => router.push({ path: '/submit', query: transformQuery(item) })"></v-btn>
             <v-btn v-if="showActions" icon="mdi-delete" @click.stop="() => confirmDelete(i)"></v-btn>
@@ -125,6 +124,14 @@ onDeactivated(() => {
         </v-card-text>
         <v-card-text class="card-text">
           <div>{{ item.description }}</div>
+        </v-card-text>
+        <v-card-text v-if="item.matchScore">
+          <div class="score-container">
+            <div class="score" :style="{ width: `${item.matchScore}%` }" :class="item.matchScore > 80 ? 'bg-green-500' : item.matchScore > 50 ? 'bg-yellow-500' : 'bg-red-500'"></div>
+            <div class="score-text">
+              Match score {{ item.matchScore }}
+            </div>
+          </div>
         </v-card-text>
       </v-card>
     </TransitionGroup>
@@ -179,6 +186,14 @@ onDeactivated(() => {
     }
   }
 
+  .score-container {
+    @apply relative py-1 px-2 border-1 rounded;
+
+    .score {
+      @apply absolute left-0 top-0 bottom-0 -z-index-1 opacity-80
+    }
+  }
+
   .no-learnware {
     @apply absolute flex flex-col justify-center items-center w-1/1 h-1/1 text-2xl;
   }
@@ -192,4 +207,5 @@ onDeactivated(() => {
 .fade-enter,
 .fade-leave-to {
   @apply opacity-0;
-}</style>
+}
+</style>
