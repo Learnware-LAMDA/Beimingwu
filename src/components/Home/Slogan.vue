@@ -31,7 +31,7 @@ const router = useRouter()
           variant="outlined"
           size="large"
           @click="router.push('/submit')"
-        >Be a provider</v-btn>
+        >Be a developer</v-btn>
       </div>
     </div>
   </v-sheet>
