@@ -69,6 +69,24 @@ const filteredLearnwareItems = computed(() => {
   })
 })
 
+const recommendLearnwareItems = ref(Array(6).fill(0).map((_, i) => {
+  const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
+  const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
+  const allHardwareType = ['CPU', 'GPU']
+  const allTagList = ['Business', 'Financial', 'Health', 'Politics', 'Computer', 'Internet', 'Traffic', 'Nature', 'Fashion', 'Industry', 'Agriculture', 'Education']
+
+  return {
+    id: Array(32).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
+    name: `Learnware ${i + 1}`,
+    description: `This is the description of learnware ${i + 1}`,
+    dataType: allDataType[Math.floor(Math.random() * allDataType.length)],
+    taskType: allTaskType[Math.floor(Math.random() * allTaskType.length)],
+    hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
+    tagList: Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
+    matchScore: Math.floor(Math.random() * 100),
+  }
+}).sort((a, b) => b.matchScore - a.matchScore))
+
 onActivated(() => {
   console.log(scrollTop.value)
   contentRef.value.scrollTop = scrollTop.value
@@ -98,6 +116,10 @@ onMounted(() => {
       </div>
     </div>
     <div ref="contentRef" class="content">
+      <v-card flat class="m-2 mt-4 text-center border-green-500 border-3 box-border">
+        <v-card-title class="border-b-1">Recommended</v-card-title>
+        <learnware-list :items="recommendLearnwareItems" />
+      </v-card>
       <learnware-list :items="filteredLearnwareItems" :filters="filters" />
     </div>
   </div>
