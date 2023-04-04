@@ -7,6 +7,7 @@ import FileUpload from '@/components/Specification/FileUpload.vue'
 import TagList from '@/components/Specification/SemanticSpec/TagList.vue'
 import LearnwareList from '@/components/Learnware/LearnwareList.vue'
 
+const search = ref('')
 const dataType = ref('')
 const taskType = ref('')
 const hardwareType = ref('')
@@ -35,6 +36,7 @@ function generateLearnwareItems() {
 }
 
 const filters = computed(() => ({
+  name: search.value,
   dataType: dataType.value,
   taskType: taskType.value,
   hardwareType: hardwareType.value,
@@ -44,6 +46,9 @@ const filters = computed(() => ({
 
 const filteredLearnwareItems = computed(() => {
   return learnwareItems.value.filter((item) => {
+    if (filters.value.name && !item.name.includes(filters.value.name)) {
+      return false
+    }
     if (filters.value.dataType && filters.value.dataType !== item.dataType) {
       return false
     }
@@ -75,6 +80,7 @@ onMounted(() => {
 <template>
   <div class="search-container">
     <div class="filter">
+      <v-text-field v-model="search" label="Search by name" />
       <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
       <task-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="taskType" />
       <hardware-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="hardwareType" />
