@@ -1,10 +1,10 @@
 <script setup>
 import { ref, computed, onMounted, nextTick, onActivated } from 'vue'
-import DataType from '@/components/Specification/SemanticSpec/DataType.vue'
-import TaskType from '@/components/Specification/SemanticSpec/TaskType.vue'
-import HardwareType from '@/components/Specification/SemanticSpec/HardwareType.vue'
+import DataType from '@/components/Specification/SpecTag/DataType.vue'
+import TaskType from '@/components/Specification/SpecTag/TaskType.vue'
+import HardwareType from '@/components/Specification/SpecTag/HardwareType.vue'
 import FileUpload from '@/components/Specification/FileUpload.vue'
-import TagList from '@/components/Specification/SemanticSpec/TagList.vue'
+import TagList from '@/components/Specification/SpecTag/TagList.vue'
 import LearnwareList from '@/components/Learnware/LearnwareList.vue'
 
 const search = ref('')

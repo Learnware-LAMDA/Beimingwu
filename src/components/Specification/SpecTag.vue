@@ -1,9 +1,9 @@
 <script setup>
 import { ref, watch } from 'vue'
-import DataType from '@/components/Specification/SemanticSpec/DataType.vue'
-import TaskType from '@/components/Specification/SemanticSpec/TaskType.vue'
-import HardwareType from '@/components/Specification/SemanticSpec/HardwareType.vue'
-import TagList from '@/components/Specification/SemanticSpec/TagList.vue'
+import DataType from '@/components/Specification/SpecTag/DataType.vue'
+import TaskType from '@/components/Specification/SpecTag/TaskType.vue'
+import HardwareType from '@/components/Specification/SpecTag/HardwareType.vue'
+import TagList from '@/components/Specification/SpecTag/TagList.vue'
 
 const emit = defineEmits(['update:dataType', 'update:taskType', 'update:hardwareType', 'update:tagList'])
 
@@ -50,15 +50,10 @@ watch(
 </script>
 
 <template>
-  <div class="semantic-spec">
+  <div class="spec-tag">
     <data-type v-model:value="_dataType"/>
     <task-type v-model:value="_taskType"/>
     <hardware-type v-model:value="_hardwareType"/>
     <tag-list v-model:value="_tagList" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.semantic-spec {
-}
-</style>

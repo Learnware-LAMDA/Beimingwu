@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import VStepperTitle from '@/components/VStepperTitle.vue'
 import FileUpload from '@/components/Specification/FileUpload.vue'
-import SemanticSpec from '@/components/Specification/SemanticSpec.vue'
+import SpecTag from '@/components/Specification/SpecTag.vue'
 
 const route = useRoute()
 
@@ -23,8 +23,8 @@ const steps = [
     icon: 'mdi-rename'
   },
   {
-    title: 'Choose the semantic specification',
-    subtitle: 'Semantic',
+    title: 'Choose the tags',
+    subtitle: 'Tag',
     icon: 'mdi-label-multiple'
   },
   {
@@ -107,7 +107,7 @@ onMounted(() => {
     
           <v-window-item :value="1">
             <v-card-text class="pt-0">
-              <semantic-spec v-model:data-type="dataType" v-model:task-type="taskType" v-model:hardware-type="hardwareType" v-model:tag-list="tagList" />
+              <spec-tag v-model:data-type="dataType" v-model:task-type="taskType" v-model:hardware-type="hardwareType" v-model:tag-list="tagList" />
             </v-card-text>
           </v-window-item>
     
