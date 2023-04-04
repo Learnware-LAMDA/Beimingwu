@@ -125,9 +125,21 @@ onDeactivated(() => {
         <v-card-text class="card-text">
           <div>{{ item.description }}</div>
         </v-card-text>
-        <v-card-text v-if="item.matchScore">
+        <v-card-text class="placeholder" v-if="item.matchScore">
           <div class="score-container">
-            <div class="score" :style="{ width: `${item.matchScore}%` }" :class="item.matchScore > 80 ? 'bg-green-500' : item.matchScore > 50 ? 'bg-yellow-500' : 'bg-red-500'"></div>
+            <div class="score" :style="{ width: `${item.matchScore}%` }"
+              :class="item.matchScore > 80 ? 'bg-green-500' : item.matchScore > 50 ? 'bg-yellow-500' : 'bg-red-500'">
+            </div>
+            <div class="score-text">
+              Match score {{ item.matchScore }}
+            </div>
+          </div>
+        </v-card-text>
+        <v-card-text class="score-bottom" v-if="item.matchScore">
+          <div class="score-container">
+            <div class="score" :style="{ width: `${item.matchScore}%` }"
+              :class="item.matchScore > 80 ? 'bg-green-500' : item.matchScore > 50 ? 'bg-yellow-500' : 'bg-red-500'">
+            </div>
             <div class="score-text">
               Match score {{ item.matchScore }}
             </div>
@@ -184,13 +196,21 @@ onDeactivated(() => {
         @apply bg-gray-100 text-orange-600 border-0;
       }
     }
+
+    .placeholder {
+      @apply opacity-0;
+    }
   }
 
-  .score-container {
-    @apply relative py-1 px-2 border-1 rounded;
+  .score-bottom {
+    @apply absolute w-1/1 bottom-0 text-left;
 
-    .score {
-      @apply absolute left-0 top-0 bottom-0 -z-index-1 opacity-80
+    .score-container {
+      @apply relative py-1 px-2 border-1 rounded;
+
+      .score {
+        @apply absolute left-0 top-0 bottom-0 -z-index-1 opacity-80
+      }
     }
   }
 
@@ -207,5 +227,4 @@ onDeactivated(() => {
 .fade-enter,
 .fade-leave-to {
   @apply opacity-0;
-}
-</style>
+}</style>
