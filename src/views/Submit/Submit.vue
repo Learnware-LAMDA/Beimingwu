@@ -33,7 +33,7 @@ const steps = [
     icon: 'mdi-image-text'
   },
   {
-    title: 'Upload your statistical specification',
+    title: 'Upload your Learnware',
     subtitle: 'Upload',
     icon: 'mdi-paperclip-plus'
   },
