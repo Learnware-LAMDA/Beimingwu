@@ -42,7 +42,7 @@ def get_learnware_list():
     # Calculate the page limit
     limit = data["limit"]
     page  = 0 if "page" not in data else data["page"]
-    ret, cnt = database.get_learnware_list("user_id", g.user["id"], f"LIMIT {limit} OFFSET {limit * page}")
+    ret, cnt = database.get_learnware_list("user_id", g.user["id"], limit, page)
     result = {
         "code": 0, 
         "msg": "Ok.", 

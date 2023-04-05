@@ -22,8 +22,9 @@ def add_user(username, password, email, role, nickname):
     return ret_cnt > 0
 
 
-def get_learnware_list(by, value, suffix=""):
+def get_learnware_list(by, value, limit=None, page=None):
     _, cnt = C.database.query(f"SELECT COUNT(*) FROM user_learnware_relation WHERE {by} = ?", (value,))
+    suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
     _, ret = C.database.query(f"SELECT * FROM user_learnware_relation WHERE {by} = ? {suffix}", (value,))
     return [dict(zip(COLUMNS_LEARNWARE, ret[i])) for i in range(len(ret))], cnt[0][0]
 
@@ -45,10 +46,12 @@ def remove_user(by, value):
     return ret_cnt
 
 
-def get_all_user_list(columns):
+def get_all_user_list(columns, limit=None, page=None):
     column_str = ", ".join(columns)
-    ret_cnt, ret = C.database.query(f"SELECT {column_str} FROM user")
-    return [dict(zip(columns, user)) for user in ret]
+    _, cnt = C.database.query(f"SELECT COUNT(*) FROM user")
+    suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
+    _, ret = C.database.query(f"SELECT {column_str} FROM user {suffix}")
+    return [dict(zip(columns, user)) for user in ret], cnt[0][0]
 
 
 def get_all_learnware_list(columns):
