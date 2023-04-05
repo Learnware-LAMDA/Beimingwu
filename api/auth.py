@@ -101,3 +101,10 @@ def logout():
     session.clear()
     result = {"code": 0, "msg": "Logout success."}
     return jsonify(result)
+
+@auth_api.route("/get_role", methods=["POST"])
+@login_required
+def get_role():
+    # Get role
+    result = {"code": 0, "msg": "Request success.", "data": g.user["role"]}
+    return jsonify(result)
