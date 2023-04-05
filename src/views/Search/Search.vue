@@ -118,7 +118,7 @@ onMounted(() => {
         <hardware-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="hardwareType" />
         <tag-list class="bg-transparent text-h6 !text-1rem" v-model:value="tagList" :cols="2" :md="1" :sm="1" />
       </div>
-      <div class="m-2 rounded">
+      <div class="p-5 pt-0 bg-gray-100">
         <div class="mt-3 mb-5 text-h6 text-sm">
           Upload statistical specification
         </div>
