@@ -1,8 +1,10 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { downloadLearnware } from '@/utils'
+
 const route = useRoute()
+const router = useRouter()
 
 const learnwareId = ref('')
 const downloading = ref(false)
@@ -30,10 +32,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-container class="max-w-800px">
-    <v-card v-if="learnware" class="p-2">
+  <v-container class="md:flex max-w-1500px">
+    <v-btn class="md:mx-3 <md:my-3" icon="mdi-arrow-left" @click="() => router.go(-1)" size="50" />
+    <v-card v-if="learnware" class="p-2 w-1/1">
       <div class="flex justify-between">
-        <v-card-title class="text-h4">
+        <v-card-title class="text-h4 !md:text-3xl !text-xl">
           {{ learnware.name }}
         </v-card-title>
 
@@ -46,14 +49,14 @@ onMounted(() => {
         {{ learnware.id }}
       </v-card-subtitle>
 
-      <v-card-text class="text-xl !leading-7">
+      <v-card-text class="md:(text-xl !leading-7) text-sm">
         <div>Data type: {{ learnware.dataType }}</div>
         <div>Task type: {{ learnware.taskType }}</div>
         <div>Hardware type: {{ learnware.hardwareType }}</div>
         <div>Tags: {{ learnware.tagList.join(', ') }}</div>
       </v-card-text>
 
-      <v-card-text class="text-xl !leading-7">
+      <v-card-text class="md:(text-xl !leading-7) text-sm">
         Description: {{ learnware.description }}
       </v-card-text>
     </v-card>
