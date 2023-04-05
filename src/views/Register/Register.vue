@@ -15,12 +15,6 @@ const elevationClass = computed(() => {
 })
 
 const { handleSubmit, meta } = useForm({
-  initialValues: {
-    userName: 'aa',
-    email: 'a@a.a',
-    password: 'aaaaaaaa',
-    password2: 'aaaaaaaa',
-  },
   validationSchema: {
     userName(value) {
       if (value?.length >= 2) return true
