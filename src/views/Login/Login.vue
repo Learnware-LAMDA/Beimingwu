@@ -31,8 +31,8 @@ function login() {
                 <h1 class="text-lg-h4 text-h5 m-2">Login</h1>
             </v-card-title>
             <v-card-text>
-                <v-form ref="form" v-model="valid" lazy-validation>
-                    <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+                <v-form ref="form" v-model="valid">
+                    <v-text-field v-model="email" label="E-mail"></v-text-field>
                     <v-text-field v-model="password" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                         :rules="passwordRules" :type="showPassword ? 'text' : 'password'" label="Password" required
                         @click:append="showPassword = !showPassword"></v-text-field>
