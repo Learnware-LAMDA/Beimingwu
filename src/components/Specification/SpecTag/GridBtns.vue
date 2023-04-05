@@ -74,7 +74,7 @@ watch(
 <style scoped lang="scss">
 .grid-container {
   .title {
-    @apply my-4;
+    @apply mt-7 mb-5;
   }
 
   .btn-container {

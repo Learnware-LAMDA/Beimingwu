@@ -106,10 +106,13 @@ onMounted(() => {
 
 <template>
   <div class="search-container">
-    <div class="flex flex-col w-1/1 md:max-w-460px bg-white">
+    <div class="flex flex-col w-1/1 md:max-w-460px">
       <div class="filter">
-        <div class="my-3 text-h6">Semantic specification</div>
-        <v-text-field v-model="search" label="Search by name" />
+        <div class="my-3 text-h6">Choose semantic specification</div>
+        <div>
+          <div class="mt-7 mb-3 text-h6 !text-1rem">Search by name</div>
+          <v-text-field v-model="search" label="Search by name" hide-details="" />
+        </div>
         <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
         <task-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="taskType" />
         <hardware-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="hardwareType" />

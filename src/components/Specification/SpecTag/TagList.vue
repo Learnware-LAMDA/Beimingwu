@@ -136,7 +136,7 @@ watch(
 
 <template>
 <v-card class="container" flat>
-  <div class="title">Tag</div>
+  <div class="title text-h6 !text-1rem">Tag</div>
   <div class="items">
     <div class="item" v-for="(selection, i) in selections" :key="selection.text">
       <v-chip class="chip bg-orange-600 text-white" closable @click:close="selected.splice(i, 1)">
@@ -170,7 +170,7 @@ watch(
 <style scoped lang="scss">
 .container {
   .title {
-    @apply my-2;
+    @apply mt-7 mb-3;
   }
 
   .items {
