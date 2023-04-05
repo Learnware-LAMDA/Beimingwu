@@ -127,15 +127,15 @@ onMounted(() => {
         <v-card-title v-if="!recommended">Recommended</v-card-title>
         <v-card-text v-if="recommended" class="!p-2">
           <v-alert v-model="recommended" type="success" title="Recommended"
-            text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus! Eaque cupiditate minima, at placeat totam, magni doloremque veniam neque porro libero rerum unde voluptatem!" closable></v-alert>
+            text="The learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to great effectiveness." closable></v-alert>
         </v-card-text>
         <learnware-list :items="recommendLearnwareItems" />
       </v-card>
       <v-card flat class="m-2 mt-4 bg-transparent">
         <v-card-title v-if="!unrecommended">Others</v-card-title>
         <v-card-text v-if="unrecommended" class="!p-2">
-          <v-alert v-model="unrecommended" type="info" title="Unrecommended"
-            text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus! Eaque cupiditate minima, at placeat totam, magni doloremque veniam neque porro libero rerum unde voluptatem!" closable></v-alert>
+          <v-alert v-model="unrecommended" type="info" title="Not recommended"
+            text="The listed learnwares are not highly recommended as they may not precisely match your task requirements in terms of statistical specifications. However, they are still available for your use." closable></v-alert>
         </v-card-text>
         <learnware-list :items="filteredLearnwareItems" :filters="filters" />
       </v-card>
