@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useField, useForm } from 'vee-validate'
-
+import RegSucDialog from '@/components/User/RegSucDialog.vue'
 
 const display = useDisplay()
 
@@ -15,11 +15,17 @@ const elevationClass = computed(() => {
 })
 
 const { handleSubmit, meta } = useForm({
+  initialValues: {
+    userName: 'aa',
+    email: 'a@a.a',
+    password: 'aaaaaaaa',
+    password2: 'aaaaaaaa',
+  },
   validationSchema: {
-    name(value) {
+    userName(value) {
       if (value?.length >= 2) return true
 
-      return 'Name needs to be at least 2 characters.'
+      return 'Username needs to be at least 2 characters.'
     },
     email(value) {
       if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
@@ -39,33 +45,51 @@ const { handleSubmit, meta } = useForm({
   },
 })
 
-const name = useField('name')
+const userName = useField('userName')
 const email = useField('email')
 const password = useField('password')
 const password2 = useField('password2')
 
 const showPassword = ref(false)
 const showPassword2 = ref(false)
+const success = ref(false)
 
 const valid = computed(() => {
   return meta.value.valid
 })
 
 const submit = handleSubmit(values => {
-  alert(JSON.stringify(values, null, 2))
+  const data = {
+    username: values.userName,
+    email: values.email,
+    password: values.password,
+  }
+  fetch('/api/auth/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  })
+    .then((res) => res.json())
+    .then(console.log)
+
+  success.value = true
 })
 </script>
 
 <template>
   <div class="flex flex-row justify-center items-center fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100">
+    <reg-suc-dialog v-if="success" />
+
     <v-card flat class="mx-auto w-1/1 p-4" :class="elevationClass" max-width="500">
       <v-card-title>
         <h1 class="text-lg-h4 text-h5 my-2">Register</h1>
       </v-card-title>
       <v-card-text>
         <v-form ref="form">
-          <v-text-field v-model="name.value.value" label="Name" :counter="20"
-            :error-messages="name.errorMessage.value"></v-text-field>
+          <v-text-field v-model="userName.value.value" label="Username" :counter="20"
+            :error-messages="userName.errorMessage.value"></v-text-field>
           <v-text-field v-model="email.value.value" label="E-mail"
             :error-messages="email.errorMessage.value"></v-text-field>
           <v-text-field v-model="password.value.value" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
