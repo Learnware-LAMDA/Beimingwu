@@ -64,6 +64,6 @@ const dataTypeBtns = [
 </script>
 
 <template>
-  <grid-btns v-model:value="value" :btns="dataTypeBtns" title="Data Type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
+  <grid-btns v-model:value="value" :btns="dataTypeBtns" title="Data type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
 </template>
 

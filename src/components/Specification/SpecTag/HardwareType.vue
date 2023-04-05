@@ -49,6 +49,6 @@ const requirementTypeBtns = [
 </script>
 
 <template>
-  <grid-btns v-model:value="value" :btns="requirementTypeBtns" title="Requirement" :cols="cols" :md="md" :sm="sm" :xs="xs" />
+  <grid-btns v-model:value="value" :btns="requirementTypeBtns" title="Hardware type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
 </template>
 

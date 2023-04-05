@@ -79,6 +79,6 @@ const taskTypeBtns = [
 </script>
 
 <template>
-  <grid-btns v-model:value="value" :btns="taskTypeBtns" title="Task Type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
+  <grid-btns v-model:value="value" :btns="taskTypeBtns" title="Task type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
 </template>
 
