@@ -98,7 +98,7 @@ onDeactivated(() => {
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <delete-dialog ref="dialog" @confirm="(id) => deleteLearnware(id)" />
     <TransitionGroup name="fade">
-      <v-card flat class="card hover:(border-1 border-purple-500)" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
+      <v-card flat class="card" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
         <div class="first-row">
           <v-card-title class="title">{{ item.name }}</v-card-title>
           <v-card-actions class="actions">
@@ -157,7 +157,7 @@ onDeactivated(() => {
   @apply relative p-2 grid xl: grid-cols-2 lg:grid-cols-2 gap-3;
 
   .card {
-    @apply border-1;
+    @apply border-1 hover:(border-1 border-purple-500);
 
     .first-row {
       @apply flex justify-between items-center;

@@ -107,7 +107,7 @@ onMounted(() => {
 <template>
   <div class="search-container">
     <div class="flex flex-col w-1/1 md:max-w-460px bg-white">
-      <div class="filter text-gray-600">
+      <div class="filter">
         <div class="my-3 text-h6 text-sm">Semantic specification</div>
         <v-text-field v-model="search" label="Search by name" />
         <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
@@ -125,7 +125,7 @@ onMounted(() => {
     <div ref="contentRef" class="content">
       <v-card flat class="m-2 mt-4 bg-transparent">
         <v-card-title v-if="!recommended">Recommended</v-card-title>
-        <v-card-text v-if="recommended">
+        <v-card-text v-if="recommended" class="!p-2">
           <v-alert v-model="recommended" type="success" title="Recommended"
             text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus! Eaque cupiditate minima, at placeat totam, magni doloremque veniam neque porro libero rerum unde voluptatem!" closable></v-alert>
         </v-card-text>
@@ -133,7 +133,7 @@ onMounted(() => {
       </v-card>
       <v-card flat class="m-2 mt-4 bg-transparent">
         <v-card-title v-if="!unrecommended">Others</v-card-title>
-        <v-card-text v-if="unrecommended">
+        <v-card-text v-if="unrecommended" class="!p-2">
           <v-alert v-model="unrecommended" type="info" title="Unrecommended"
             text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus! Eaque cupiditate minima, at placeat totam, magni doloremque veniam neque porro libero rerum unde voluptatem!" closable></v-alert>
         </v-card-text>
@@ -149,7 +149,7 @@ onMounted(() => {
   height: calc(100% - var(--v-layout-top));
 
   .filter {
-    @apply p-2 w-1/1 md: (h-1/1 overflow-y-scroll);
+    @apply p-2 w-1/1 md: (h-1/1 overflow-y-scroll) text-gray-600;
 
     * {
       @apply mt-2;
