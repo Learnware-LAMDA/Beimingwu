@@ -135,36 +135,37 @@ watch(
 </script>
 
 <template>
-<v-card class="container" flat>
-  <div class="title text-h6 !text-1rem">Tag</div>
-  <div class="items">
-    <div class="item" v-for="(selection, i) in selections" :key="selection.text">
-      <v-chip class="chip bg-orange-600 text-white" closable @click:close="selected.splice(i, 1)">
-        <v-icon :icon="selection.icon" start></v-icon>
+  <v-card class="container" flat>
+    <div class="title text-h6 !text-1rem">Tag</div>
+    <div class="items">
+      <div class="item" v-for="(selection, i) in selections" :key="selection.text">
+        <v-chip class="chip bg-orange-600 text-white" closable @click:close="selected.splice(i, 1)">
+          <v-icon :icon="selection.icon" start></v-icon>
 
-        {{ selection.text }}
-      </v-chip>
+          {{ selection.text }}
+        </v-chip>
+      </div>
     </div>
-  </div>
 
-  <div class="search" v-if="!allSelected" cols="12">
-    <v-text-field v-model="search" hide-details label="Search" single-line append-inner-icon="mdi-close" @click:append-inner="search = ''"></v-text-field>
-  </div>
+    <div class="search" v-if="!allSelected" cols="12">
+      <v-text-field v-model="search" hide-details label="Search" single-line append-inner-icon="mdi-close"
+        @click:append-inner="search = ''"></v-text-field>
+    </div>
 
-  <v-divider v-if="!allSelected"></v-divider>
+    <v-divider v-if="!allSelected"></v-divider>
 
-  <v-list class="list" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-    <template v-for="item in categories">
-      <v-list-item v-if="!selections.includes(item)" :key="item.text" @click="selected.push(item.text)" class="bg-gray-400 text-white">
-        <template v-slot:prepend>
-          <v-icon :icon="item.icon"></v-icon>
-        </template>
+    <v-list class="list" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
+      <template v-for="item in categories">
+        <v-list-item v-if="!selections.includes(item)" :key="item.text" @click="selected.push(item.text)" class="item">
+          <template v-slot:prepend>
+            <v-icon :icon="item.icon"></v-icon>
+          </template>
 
-        <v-list-item-title v-text="item.text"></v-list-item-title>
-      </v-list-item>
-    </template>
-  </v-list>
-</v-card>
+          <v-list-item-title v-text="item.text"></v-list-item-title>
+        </v-list-item>
+      </template>
+    </v-list>
+  </v-card>
 </template>
 
 <style scoped lang="scss">
@@ -184,9 +185,13 @@ watch(
       }
     }
   }
-  
+
   .list {
     @apply grid gap-2 bg-transparent;
+
+    .item {
+      @apply bg-gray-400 text-white rounded-2em;
+    }
   }
 }
 </style>

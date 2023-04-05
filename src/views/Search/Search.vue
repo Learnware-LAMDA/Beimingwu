@@ -119,7 +119,7 @@ onMounted(() => {
         <tag-list class="bg-transparent text-h6 !text-1rem" v-model:value="tagList" :cols="2" :md="1" :sm="1" />
       </div>
       <div class="m-2 rounded">
-        <div class="my-3 text-h6 text-sm">
+        <div class="mt-3 mb-5 text-h6 text-sm">
           Upload statistical specification
         </div>
         <file-upload />
