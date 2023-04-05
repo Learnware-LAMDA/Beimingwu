@@ -214,7 +214,7 @@ onDeactivated(() => {
   }
 
   .no-learnware {
-    @apply absolute flex flex-col justify-center items-center w-1/1 h-1/1 text-2xl;
+    @apply py-5 w-1/1 text-center text-2xl;
   }
 }
 

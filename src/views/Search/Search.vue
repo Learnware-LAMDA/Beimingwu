@@ -164,7 +164,7 @@ onMounted(() => {
   }
 
   .content {
-    @apply w-1/1 md: h-1/1 overflow-y-scroll;
+    @apply w-1/1 overflow-y-scroll;
   }
 }
 </style>
