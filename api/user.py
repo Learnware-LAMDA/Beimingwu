@@ -33,8 +33,26 @@ def get_profile():
 @user_api.route("/get_learnware_list", methods=["POST"])
 @login_required
 def get_learnware_list():
-    # Return learnware list
-    result = {"code": 0, "msg": "Ok.", "data": {"learnware_list": database.get_learnware_list("user_id", g.user["id"])}}
+    data = get_parameters(request, [])
+    # Return learnware list directly
+    if data is None or "limit" not in data:
+        ret, cnt = database.get_learnware_list("user_id", g.user["id"])
+        result = {"code": 0, "msg": "Ok.", "data": {"learnware_list": ret}}
+        return jsonify(result)
+    # Calculate the page limit
+    limit = data["limit"]
+    page  = 0 if "page" not in data else data["page"]
+    ret, cnt = database.get_learnware_list("user_id", g.user["id"], f"LIMIT {limit} OFFSET {limit * page}")
+    result = {
+        "code": 0, 
+        "msg": "Ok.", 
+        "data": {
+            "learnware_list": ret,
+            "page": page,
+            "limit": limit,
+            "total_pages": (cnt + limit - 1) // limit
+        }
+    }
     return jsonify(result)
 
 

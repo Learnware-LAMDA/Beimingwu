@@ -22,10 +22,10 @@ def add_user(username, password, email, role, nickname):
     return ret_cnt > 0
 
 
-def get_learnware_list(by, value):
-    ret_cnt, ret = C.database.query(f"SELECT * FROM user_learnware_relation WHERE {by} = ?", (value,))
-    return [dict(zip(COLUMNS_LEARNWARE, ret[i])) for i in range(len(ret))]
-
+def get_learnware_list(by, value, suffix=""):
+    _, cnt = C.database.query(f"SELECT COUNT(*) FROM user_learnware_relation WHERE {by} = ?", (value,))
+    _, ret = C.database.query(f"SELECT * FROM user_learnware_relation WHERE {by} = ? {suffix}", (value,))
+    return [dict(zip(COLUMNS_LEARNWARE, ret[i])) for i in range(len(ret))], cnt[0][0]
 
 def add_learnware(user_id, learnware_id):
     ret_cnt, ret = C.database.query(
