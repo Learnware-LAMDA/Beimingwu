@@ -98,7 +98,7 @@ onDeactivated(() => {
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <delete-dialog ref="dialog" @confirm="(id) => deleteLearnware(id)" />
     <TransitionGroup name="fade">
-      <v-card flat class="card" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
+      <v-card flat class="card hover:(border-1 border-purple-500)" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
         <div class="first-row">
           <v-card-title class="title">{{ item.name }}</v-card-title>
           <v-card-actions class="actions">
@@ -124,7 +124,7 @@ onDeactivated(() => {
         <v-card-text class="card-text">
           <div>{{ item.description }}</div>
         </v-card-text>
-        <v-card-text class="placeholder" v-if="item.matchScore">
+        <v-card-text class="placeholder" v-if="false && item.matchScore">
           <div class="score-container">
             <div class="score" :style="{ width: `${item.matchScore}%` }"
               :class="item.matchScore > 80 ? 'bg-green-500' : item.matchScore > 50 ? 'bg-yellow-500' : 'bg-red-500'">
@@ -134,7 +134,7 @@ onDeactivated(() => {
             </div>
           </div>
         </v-card-text>
-        <v-card-text class="score-bottom" v-if="item.matchScore">
+        <v-card-text class="score-bottom" v-if="false && item.matchScore">
           <div class="score-container">
             <div class="score" :style="{ width: `${item.matchScore}%` }"
               :class="item.matchScore > 80 ? 'bg-green-500' : item.matchScore > 50 ? 'bg-yellow-500' : 'bg-red-500'">
@@ -205,7 +205,7 @@ onDeactivated(() => {
     @apply absolute w-1/1 bottom-0 text-left;
 
     .score-container {
-      @apply relative py-1 px-2 border-1 rounded;
+      @apply relative py-1 px-3 border-1 rounded-1em overflow-hidden;
 
       .score {
         @apply absolute left-0 top-0 bottom-0 -z-index-1 opacity-80

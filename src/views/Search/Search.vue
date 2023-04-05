@@ -19,6 +19,9 @@ const learnwareItems = ref([])
 
 const scrollTop = ref(0)
 
+const recommended = ref(true)
+const unrecommended = ref(true)
+
 function generateLearnwareItems() {
   return Array(100).fill(0).map((_, i) => {
     const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
@@ -103,23 +106,39 @@ onMounted(() => {
 
 <template>
   <div class="search-container">
-    <div class="filter">
-      <v-text-field v-model="search" label="Search by name" />
-      <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
-      <task-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="taskType" />
-      <hardware-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="hardwareType" />
-      <tag-list class="bg-transparent" v-model:value="tagList" :cols="2" :md="1" :sm="1" />
-      <div>
-        Upload statistical specification
+    <div class="flex flex-col w-1/1 md:max-w-460px bg-white">
+      <div class="filter text-gray-600">
+        <div class="my-3 text-h6 text-sm">Semantic specification</div>
+        <v-text-field v-model="search" label="Search by name" />
+        <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
+        <task-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="taskType" />
+        <hardware-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="hardwareType" />
+        <tag-list class="bg-transparent" v-model:value="tagList" :cols="2" :md="1" :sm="1" />
+      </div>
+      <div class="m-2 rounded">
+        <div class="my-3 text-h6 text-sm text-gray-600">
+          Upload statistical specification
+        </div>
         <file-upload />
       </div>
     </div>
     <div ref="contentRef" class="content">
-      <v-card flat class="m-2 mt-4 text-center border-green-500 border-3 box-border">
-        <v-card-title class="border-b-1">Recommended</v-card-title>
+      <v-card flat class="m-2 mt-4 bg-transparent">
+        <v-card-title v-if="!recommended">Recommended</v-card-title>
+        <v-card-text v-if="recommended">
+          <v-alert v-model="recommended" type="success" title="Recommended"
+            text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus! Eaque cupiditate minima, at placeat totam, magni doloremque veniam neque porro libero rerum unde voluptatem!" closable></v-alert>
+        </v-card-text>
         <learnware-list :items="recommendLearnwareItems" />
       </v-card>
-      <learnware-list :items="filteredLearnwareItems" :filters="filters" />
+      <v-card flat class="m-2 mt-4 bg-transparent">
+        <v-card-title v-if="!unrecommended">Others</v-card-title>
+        <v-card-text v-if="unrecommended">
+          <v-alert v-model="unrecommended" type="info" title="Unrecommended"
+            text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus! Eaque cupiditate minima, at placeat totam, magni doloremque veniam neque porro libero rerum unde voluptatem!" closable></v-alert>
+        </v-card-text>
+        <learnware-list :items="filteredLearnwareItems" :filters="filters" />
+      </v-card>
     </div>
   </div>
 </template>
@@ -130,7 +149,7 @@ onMounted(() => {
   height: calc(100% - var(--v-layout-top));
 
   .filter {
-    @apply p-2 w-1/1 md: (h-1/1 w-150 overflow-y-scroll);
+    @apply p-2 w-1/1 md: (h-1/1 overflow-y-scroll);
 
     * {
       @apply mt-2;
