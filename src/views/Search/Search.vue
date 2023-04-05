@@ -19,8 +19,9 @@ const learnwareItems = ref([])
 
 const scrollTop = ref(0)
 
-const recommended = ref(true)
-const unrecommended = ref(true)
+const showRecommended = computed(() => files.value.length > 0)
+const recommendedTips = ref(true)
+const unrecommendedTips = ref(true)
 
 function generateLearnwareItems() {
   return Array(100).fill(0).map((_, i) => {
@@ -122,22 +123,22 @@ onMounted(() => {
         <div class="mt-3 mb-5 text-h6 text-sm">
           Upload statistical specification
         </div>
-        <file-upload />
+        <file-upload v-model:files="files" />
       </div>
     </div>
     <div ref="contentRef" class="content">
-      <v-card flat class="m-2 mt-4 bg-transparent">
-        <v-card-title v-if="!recommended">Recommended</v-card-title>
-        <v-card-text v-if="recommended" class="!p-2">
-          <v-alert v-model="recommended" type="success" title="Recommended"
+      <v-card v-if="showRecommended" flat class="m-2 mt-4 bg-transparent">
+        <v-card-title v-if="!recommendedTips">Recommended</v-card-title>
+        <v-card-text v-if="recommendedTips" class="!p-2">
+          <v-alert v-model="recommendedTips" type="success" title="Recommended"
             text="The learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to great effectiveness." closable></v-alert>
         </v-card-text>
         <learnware-list :items="recommendLearnwareItems" />
       </v-card>
       <v-card flat class="m-2 mt-4 bg-transparent">
-        <v-card-title v-if="!unrecommended">Others</v-card-title>
-        <v-card-text v-if="unrecommended" class="!p-2">
-          <v-alert v-model="unrecommended" type="info" title="Not recommended"
+        <v-card-title v-if="showRecommended && !unrecommendedTips">Others</v-card-title>
+        <v-card-text v-if="showRecommended && unrecommendedTips" class="!p-2">
+          <v-alert v-model="unrecommendedTips" type="info" title="Not recommended"
             text="The listed learnwares are not highly recommended as they may not precisely match your task requirements in terms of statistical specifications. However, they are still available for your use." closable></v-alert>
         </v-card-text>
         <learnware-list :items="filteredLearnwareItems" :filters="filters" />
