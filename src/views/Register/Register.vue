@@ -1,6 +1,8 @@
 <script setup>
+import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
-import { computed } from 'vue'
+import { useField, useForm } from 'vee-validate'
+
 
 const display = useDisplay()
 
@@ -11,29 +13,72 @@ const elevationClass = computed(() => {
     return 'elevation-8'
   }
 })
+
+const { handleSubmit, meta } = useForm({
+  validationSchema: {
+    name(value) {
+      if (value?.length >= 2) return true
+
+      return 'Name needs to be at least 2 characters.'
+    },
+    email(value) {
+      if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
+
+      return 'Must be a valid e-mail.'
+    },
+    password(value) {
+      if (value?.length >= 8) return true
+
+      return 'Password needs to be at least 8 characters.'
+    },
+    password2(value) {
+      if (value && value === password.value.value) return true
+      if (!value) return 'Password cannot be empty.'
+      return 'Password does not match.'
+    },
+  },
+})
+
+const name = useField('name')
+const email = useField('email')
+const password = useField('password')
+const password2 = useField('password2')
+
+const showPassword = ref(false)
+const showPassword2 = ref(false)
+
+const valid = computed(() => {
+  return meta.value.valid
+})
+
+const submit = handleSubmit(values => {
+  alert(JSON.stringify(values, null, 2))
+})
 </script>
 
 <template>
-    <div class="flex flex-row justify-center items-center fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100">
-        <v-card flat class="mx-auto w-1/1 p-4" :class="elevationClass" max-width="500">
-            <v-card-title>
-                <h1 class="text-lg-h4 text-h5 my-2">Register</h1>
-            </v-card-title>
-            <v-card-text>
-                <v-form ref="form" v-model="valid" lazy-validation>
-                    <v-text-field v-model="name" :rules="nameRules" label="Name" required></v-text-field>
-                    <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
-                    <v-text-field v-model="password" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                        :rules="passwordRules" :type="showPassword ? 'text' : 'password'" label="Password" required
-                        @click:append="showPassword = !showPassword"></v-text-field>
-                    <v-text-field v-model="password2" :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
-                        :rules="password2Rules" :type="showPassword2 ? 'text' : 'password'" label="Confirm Password"
-                        required @click:append="showPassword2 = !showPassword2"></v-text-field>
-                </v-form>
-            </v-card-text>
-            <v-card-actions>
-                <v-btn block class="bg-primary py-5" color="white" @click="register">Register</v-btn>
-            </v-card-actions>
-        </v-card>
-    </div>
+  <div class="flex flex-row justify-center items-center fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100">
+    <v-card flat class="mx-auto w-1/1 p-4" :class="elevationClass" max-width="500">
+      <v-card-title>
+        <h1 class="text-lg-h4 text-h5 my-2">Register</h1>
+      </v-card-title>
+      <v-card-text>
+        <v-form ref="form">
+          <v-text-field v-model="name.value.value" label="Name" :counter="20"
+            :error-messages="name.errorMessage.value"></v-text-field>
+          <v-text-field v-model="email.value.value" label="E-mail"
+            :error-messages="email.errorMessage.value"></v-text-field>
+          <v-text-field v-model="password.value.value" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="showPassword ? 'text' : 'password'" label="Password" :error-messages="password.errorMessage.value"
+            @click:append="showPassword = !showPassword"></v-text-field>
+          <v-text-field v-model="password2.value.value" :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="showPassword2 ? 'text' : 'password'" label="Confirm Password"
+            :error-messages="password2.errorMessage.value" @click:append="showPassword2 = !showPassword2"></v-text-field>
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn block class="bg-primary py-5" color="white" @click="submit" :disabled="!valid">Register</v-btn>
+      </v-card-actions>
+    </v-card>
+  </div>
 </template>
