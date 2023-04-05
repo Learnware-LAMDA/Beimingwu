@@ -63,7 +63,7 @@ watch(
 
 <template>
   <div class="grid-container">
-    <div class="title">{{ title }}</div>
+    <div class="title text-h6 !text-1rem">{{ title }}</div>
     <div class="btn-container" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
       <icon-btn v-for="(btn, i) in btns" :icon-component="btn.icon" :title="btn.title" :active="btn.title === value"
         :key="i" @click="() => clickBtn(btn)" />
@@ -74,7 +74,7 @@ watch(
 <style scoped lang="scss">
 .grid-container {
   .title {
-    @apply my-2;
+    @apply my-4;
   }
 
   .btn-container {

@@ -38,7 +38,7 @@ const props = defineProps({
   color: rgb(var(--v-theme-on-primary));
 
   .responsive {
-    @apply w-1/1 lg:max-w-10 md:max-w-8 sm:max-w-6 max-w-5 md:mr-5 ml-3 sm:mr-1 mr-4;
+    @apply w-1/1 lg:max-w-6 md:max-w-8 sm:max-w-6 max-w-5 md:mr-5 ml-3 sm:mr-1 mr-4;
 
     .icon {
       @apply w-1/1 h-1/1;

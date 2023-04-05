@@ -108,15 +108,15 @@ onMounted(() => {
   <div class="search-container">
     <div class="flex flex-col w-1/1 md:max-w-460px bg-white">
       <div class="filter">
-        <div class="my-3 text-h6 text-sm">Semantic specification</div>
+        <div class="my-3 text-h6">Semantic specification</div>
         <v-text-field v-model="search" label="Search by name" />
         <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
         <task-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="taskType" />
         <hardware-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="hardwareType" />
-        <tag-list class="bg-transparent" v-model:value="tagList" :cols="2" :md="1" :sm="1" />
+        <tag-list class="bg-transparent text-h6 !text-1rem" v-model:value="tagList" :cols="2" :md="1" :sm="1" />
       </div>
       <div class="m-2 rounded">
-        <div class="my-3 text-h6 text-sm text-gray-600">
+        <div class="my-3 text-h6 text-sm">
           Upload statistical specification
         </div>
         <file-upload />
@@ -149,7 +149,7 @@ onMounted(() => {
   height: calc(100% - var(--v-layout-top));
 
   .filter {
-    @apply p-2 w-1/1 md: (h-1/1 overflow-y-scroll) text-gray-600;
+    @apply p-2 w-1/1 md: (h-1/1 overflow-y-scroll);
 
     * {
       @apply mt-2;
