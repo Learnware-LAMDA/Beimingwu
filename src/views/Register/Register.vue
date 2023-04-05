@@ -70,12 +70,12 @@ const submit = handleSubmit(values => {
   })
     .then((res) => res.json())
     .then((res) => {
-      switch(res.code) {
+      switch (res.code) {
         case 0: return success.value = true
         case 21: {
           systemError.value = true
           systemErrorText.value = res.msg
-          
+
           setTimeout(() => {
             systemError.value = false
           }, 3000)
@@ -97,7 +97,7 @@ const submit = handleSubmit(values => {
         <h1 class="text-lg-h4 text-h5 my-2">Register</h1>
       </v-card-title>
       <v-card-text>
-        <v-form ref="form">
+        <v-form>
           <v-text-field v-model="userName.value.value" label="Username" :counter="20"
             :error-messages="userName.errorMessage.value"></v-text-field>
           <v-text-field v-model="email.value.value" label="E-mail"
