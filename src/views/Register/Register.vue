@@ -52,6 +52,8 @@ const password2 = useField('password2')
 
 const showPassword = ref(false)
 const showPassword2 = ref(false)
+const systemError = ref(false)
+const systemErrorText = ref('')
 const success = ref(false)
 
 const valid = computed(() => {
@@ -64,6 +66,7 @@ const submit = handleSubmit(values => {
     email: values.email,
     password: values.password,
   }
+
   fetch('/api/auth/register', {
     method: 'POST',
     headers: {
@@ -72,9 +75,22 @@ const submit = handleSubmit(values => {
     body: JSON.stringify(data)
   })
     .then((res) => res.json())
-    .then(console.log)
-
-  success.value = true
+    .then((res) => {
+      switch(res.code) {
+        case 0: return success.value = true
+        case 21: {
+          systemError.value = true
+          systemErrorText.value = res.msg
+          
+          setTimeout(() => {
+            systemError.value = false
+          }, 3000)
+          return
+        }
+        case 51: return userName.setErrors(res.msg)
+        case 52: return email.setErrors(res.msg)
+      }
+    })
 })
 </script>
 
@@ -100,6 +116,9 @@ const submit = handleSubmit(values => {
             :error-messages="password2.errorMessage.value" @click:append="showPassword2 = !showPassword2"></v-text-field>
         </v-form>
       </v-card-text>
+      <v-card-actions v-if="systemError">
+        <v-alert closable :text="systemErrorText" type="error" />
+      </v-card-actions>
       <v-card-actions>
         <v-btn block class="bg-primary py-5" color="white" @click="submit" :disabled="!valid">Register</v-btn>
       </v-card-actions>
