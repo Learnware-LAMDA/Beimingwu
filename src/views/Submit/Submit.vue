@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import VStepperTitle from '@/components/VStepperTitle.vue'
+import VStepperTitle from '@/components/Public/VStepperTitle.vue'
 import FileUpload from '@/components/Specification/FileUpload.vue'
 import SpecTag from '@/components/Specification/SpecTag.vue'
 

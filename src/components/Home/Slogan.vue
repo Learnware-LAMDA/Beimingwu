@@ -1,5 +1,5 @@
 <script setup>
-import BigTitle from '@/components/BigTitle.vue'
+import BigTitle from '@/components/Public/BigTitle.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

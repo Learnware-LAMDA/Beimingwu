@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import Router from '@/router/index.js'
-import Drawer from './components/Drawer.vue'
-import AppBar from './components/AppBar.vue'
+import Drawer from '@/components/App/Drawer.vue'
+import AppBar from '@/components/App/AppBar.vue'
 
 const drawerOpen = ref(false)
 
