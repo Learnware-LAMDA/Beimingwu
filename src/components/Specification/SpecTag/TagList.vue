@@ -155,7 +155,7 @@ watch(
 
   <v-list class="list" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <template v-for="item in categories">
-      <v-list-item v-if="!selections.includes(item)" :key="item.text" @click="selected.push(item.text)">
+      <v-list-item v-if="!selections.includes(item)" :key="item.text" @click="selected.push(item.text)" class="bg-gray-400 text-white">
         <template v-slot:prepend>
           <v-icon :icon="item.icon"></v-icon>
         </template>

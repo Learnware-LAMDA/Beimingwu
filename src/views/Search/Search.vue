@@ -107,7 +107,7 @@ onMounted(() => {
 <template>
   <div class="search-container">
     <div class="flex flex-col w-1/1 md:max-w-460px">
-      <div class="filter">
+      <div class="filter px-5">
         <div class="my-3 text-h6">Choose semantic specification</div>
         <div>
           <div class="mt-7 mb-3 text-h6 !text-1rem">Search by name</div>

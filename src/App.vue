@@ -17,7 +17,7 @@ const keepAliveIncludes = computed(() => {
 
     <drawer v-model:drawerOpen="drawerOpen" :routes="Router.getRoutes()"></drawer>
 
-    <v-main class="bg-gray-100">
+    <v-main class="bg-gray-100 bg-opacity-50">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <keep-alive :include="keepAliveIncludes">
