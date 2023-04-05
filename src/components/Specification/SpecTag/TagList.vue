@@ -186,7 +186,7 @@ watch(
   }
   
   .list {
-    @apply grid gap-2;
+    @apply grid gap-2 bg-transparent;
   }
 }
 </style>
