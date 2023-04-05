@@ -33,8 +33,8 @@ def get_profile():
 @user_api.route("/get_learnware_list", methods=["POST"])
 @login_required
 def get_learnware_list():
-    # Return profile
-    result = {"code": 0, "msg": "Ok.", "data": database.get_learnware_list("user_id", g.user["id"])}
+    # Return learnware list
+    result = {"code": 0, "msg": "Ok.", "data": {"learnware_list": database.get_learnware_list("user_id", g.user["id"])}}
     return jsonify(result)
 
 
