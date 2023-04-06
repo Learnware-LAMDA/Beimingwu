@@ -135,7 +135,7 @@ watch(
 </script>
 
 <template>
-  <v-card class="container" flat>
+  <v-card class="tag-container" flat>
     <div class="title text-h6 !text-1rem">Scenario</div>
     <div class="items">
       <div class="item" v-for="(selection, i) in selections" :key="selection.text">
@@ -169,7 +169,7 @@ watch(
 </template>
 
 <style scoped lang="scss">
-.container {
+.tag-container {
   .title {
     @apply mt-7 mb-3;
   }

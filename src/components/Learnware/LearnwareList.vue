@@ -196,7 +196,7 @@ onDeactivated(() => {
   }
 
   .score{
-    @apply xl: '!text-lg' lg: '!text-lg' '!text-0.8rem';
+    @apply lg: '!text-1rem' '!text-0.8rem';
   }
 
   .no-learnware {
