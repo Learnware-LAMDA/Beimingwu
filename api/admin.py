@@ -82,10 +82,31 @@ def delete_user():
 @admin_api.route("/get_learnware_list", methods=["POST"])
 @admin_login_required
 def get_learnware_list():
+    data = get_parameters(request, [])
+    # Return whole user list directly
+    if data is None or "limit" not in data:
+        ret, cnt = database.get_all_learnware_list(columns=["user_id", "learnware_id", "last_modify"])
+        result = {
+            "code": 0,
+            "msg": "Get learnware list success.",
+            "data": {
+                "learnware_list": ret
+            }
+        }
+        return jsonify(result)
+    # Calculate the page limit
+    limit = data["limit"]
+    page  = 0 if "page" not in data else data["page"]
+    ret, cnt = database.get_all_learnware_list(columns=["user_id", "learnware_id", "last_modify"], limit=limit, page=page)
     result = {
         "code": 0,
         "msg": "Get learnware list success.",
-        "data": database.get_all_learnware_list(columns=["user_id", "learnware_id", "last_modify"]),
+        "data": {
+            "user_list": ret,
+            "page": page,
+            "limit": limit,
+            "total_pages": (cnt + limit - 1) // limit
+        }
     }
     return jsonify(result)
 

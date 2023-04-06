@@ -102,6 +102,7 @@ def logout():
     result = {"code": 0, "msg": "Logout success."}
     return jsonify(result)
 
+
 @auth_api.route("/get_role", methods=["POST"])
 @login_required
 def get_role():
