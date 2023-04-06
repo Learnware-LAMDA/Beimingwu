@@ -131,7 +131,7 @@ onDeactivated(() => {
         <v-card-text class="card-text">
           <div class="description">{{ item.description }}</div>
         </v-card-text>
-        <v-card-title v-if="item.matchScore" class="!text-1rem">
+        <v-card-title v-if="item.matchScore" class="score">
           Match score <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{ item.matchScore }}</span>
         </v-card-title>
       </v-card>
@@ -195,16 +195,8 @@ onDeactivated(() => {
     }
   }
 
-  .score-bottom {
-    @apply absolute w-1/1 bottom-0 text-left;
-
-    .score-container {
-      @apply relative py-1 px-3 border-1 rounded-1em overflow-hidden;
-
-      .score {
-        @apply absolute left-0 top-0 bottom-0 -z-index-1 opacity-80
-      }
-    }
+  .score{
+    @apply xl: '!text-lg' lg: '!text-lg' '!text-0.8rem';
   }
 
   .no-learnware {
