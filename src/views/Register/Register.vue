@@ -46,9 +46,11 @@ const password2 = useField('password2')
 
 const showPassword = ref(false)
 const showPassword2 = ref(false)
-const systemError = ref(false)
-const systemErrorText = ref('')
+const showError = ref(false)
+const errorMsg = ref('')
 const success = ref(false)
+
+const errorTimer = ref(null)
 
 const valid = computed(() => {
   return meta.value.valid
@@ -79,16 +81,18 @@ const submit = handleSubmit(values => {
       switch (res.code) {
         case 0: return success.value = true
         case 21: {
-          systemError.value = true
-          systemErrorText.value = res.msg
-
           throw new Error('System error')
         }
         case 51: return userName.setErrors(res.msg)
         case 52: return email.setErrors(res.msg)
       }
     })
-    .catch()
+    .catch((err) => {
+      showError.value = true
+      errorMsg.value = err.message
+      clearTimeout(errorTimer.value)
+      errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
+    })
 })
 </script>
 
@@ -114,9 +118,11 @@ const submit = handleSubmit(values => {
             :error-messages="password2.errorMessage.value" @click:append="showPassword2 = !showPassword2"></v-text-field>
         </v-form>
       </v-card-text>
-      <v-card-actions v-if="systemError">
-        <v-alert closable :text="systemErrorText" type="error" />
-      </v-card-actions>
+      <v-scale-transition>
+        <v-card-actions v-if="showError">
+          <v-alert v-model="showError" closable :text="errorMsg" type="error" @click:close="() => closeErrorAlert" />
+        </v-card-actions>
+      </v-scale-transition>
       <v-card-actions>
         <v-btn block class="bg-primary py-5" color="white" @click="submit" :disabled="!valid">Register</v-btn>
       </v-card-actions>
