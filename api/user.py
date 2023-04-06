@@ -75,7 +75,7 @@ def add_learnware():
     # Add learnware
     cnt = database.add_learnware(user_id, learnware_id)
     if cnt > 0:
-        result = {"code": 0, "msg": f"Add success.", "data": learnware_id}
+        result = {"code": 0, "msg": f"Add success."}
     else:
         result = {
             "code": 31,
@@ -100,7 +100,7 @@ def delete_learnware():
 
     # Remove learnware
     if remove_learnware(learnware_id):
-        result = {"code": 0, "msg": "Delete success.", "data": learnware_id}
+        result = {"code": 0, "msg": "Delete success."}
     else:
         result = {
             "code": 31,

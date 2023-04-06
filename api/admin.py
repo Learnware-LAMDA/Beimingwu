@@ -63,14 +63,18 @@ def delete_user():
     # Check learnware
     learnware_list = database.get_learnware_list("user_id", user_id)
     if len(learnware_list) > 0:
-        return jsonify(
-            {"code": 52, "msg": "Learnware list is not empty.", "data": [x["learnware_id"] for x in learnware_list]}
-        )
+        return jsonify({
+            "code": 52, 
+            "msg": "Learnware list is not empty.", 
+            "data": {
+                "learnware_list": [x["learnware_id"] for x in learnware_list]
+            }
+        })
 
     # Delete user
     cnt = database.remove_user("id", user_id)
     if cnt > 0:
-        result = {"code": 0, "msg": "Delete success.", "data": user_id}
+        result = {"code": 0, "msg": "Delete success."}
     else:
         result = {
             "code": 31,
@@ -127,7 +131,7 @@ def delete_learnware():
 
     # Remove learnware
     if remove_learnware(learnware_id):
-        result = {"code": 0, "msg": "Delete success.", "data": learnware_id}
+        result = {"code": 0, "msg": "Delete success."}
     else:
         result = {
             "code": 31,
