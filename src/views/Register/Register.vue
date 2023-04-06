@@ -61,13 +61,19 @@ const submit = handleSubmit(values => {
     password: values.password,
   }
 
-  fetch('/api/auth/register', {
+  fetch('/api/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data)
   })
+    .then((res) => {
+      if (res.status === 200) {
+        return res
+      }
+      throw new Error('Network error')
+    })
     .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
@@ -76,15 +82,13 @@ const submit = handleSubmit(values => {
           systemError.value = true
           systemErrorText.value = res.msg
 
-          setTimeout(() => {
-            systemError.value = false
-          }, 3000)
-          return
+          throw new Error('System error')
         }
         case 51: return userName.setErrors(res.msg)
         case 52: return email.setErrors(res.msg)
       }
     })
+    .catch()
 })
 </script>
 
