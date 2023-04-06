@@ -37,6 +37,8 @@
   * sqlite.py: 与 SQLite 数据库交互
   * engine.py: 与算法引擎交互（暂未完成）
 * files: 保存临时文件，例如：SQLite 数据库文件
+  * database.db
+  * market: 学件库
 * config.py: 全局配置与变量
 * main.py: 主程序
 * environment.yaml: 环境配置
