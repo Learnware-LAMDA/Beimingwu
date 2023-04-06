@@ -41,7 +41,7 @@ const filteredRoutes = computed(() => {
 
 <template>
     <v-app-bar app flat class="bg-white border-b-1">
-        <div class="flex justify-start w-md-1/1 m-auto md:px-5">
+        <div class="flex justify-start max-w-1500px w-md-1/1 m-auto md:px-5">
             <v-app-bar-nav-icon v-if="['xs', 'sm'].includes(display.name.value)"
                 @click="() => emit('update:drawerOpen', !drawerOpen)"></v-app-bar-nav-icon>
             <v-toolbar-items class="cursor-pointer" @click="() => router.push('/')">
