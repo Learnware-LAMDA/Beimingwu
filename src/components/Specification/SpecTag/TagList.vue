@@ -136,7 +136,7 @@ watch(
 
 <template>
   <v-card class="container" flat>
-    <div class="title text-h6 !text-1rem">Tag</div>
+    <div class="title text-h6 !text-1rem">Scenario</div>
     <div class="items">
       <div class="item" v-for="(selection, i) in selections" :key="selection.text">
         <v-chip class="chip bg-orange-600 text-white" closable @click:close="selected.splice(i, 1)">
@@ -148,7 +148,7 @@ watch(
     </div>
 
     <div class="search" v-if="!allSelected" cols="12">
-      <v-text-field v-model="search" hide-details label="Search" single-line append-inner-icon="mdi-close"
+      <v-text-field v-model="search" hide-details label="Search for scenario" single-line append-inner-icon="mdi-close"
         @click:append-inner="search = ''"></v-text-field>
     </div>
 

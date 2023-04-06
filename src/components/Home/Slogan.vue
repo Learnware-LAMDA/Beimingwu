@@ -19,7 +19,7 @@ const router = useRouter()
                         lg:text-2xl
                         sm:text-lg">
         <div class="mt-6">
-          Learnware attempts to systematically reuse small models to do things that may even be beyond their original
+          Learnware systematically reuses small models to do things that may even be beyond their original
           purposes, <br>and enables users not need to build their machine learning models from scratch.
         </div>
       </div>

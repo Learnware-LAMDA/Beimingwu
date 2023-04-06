@@ -48,8 +48,16 @@ const taskTypeBtns = [
     icon: ClassificationBtn,
   },
   {
+    title: 'Regression',
+    icon: RegressionBtn,
+  },
+  {
     title: 'Clustering',
     icon: ClusteringBtn,
+  },
+  {
+    title: 'Ranking',
+    icon: RankingBtn,
   },
   {
     title: 'Detection',
@@ -64,16 +72,8 @@ const taskTypeBtns = [
     icon: GenerationBtn,
   },
   {
-    title: 'Regression',
-    icon: RegressionBtn,
-  },
-  {
     title: 'Segmentation',
     icon: SegmantationBtn,
-  },
-  {
-    title: 'Ranking',
-    icon: RankingBtn,
   },
 ]
 </script>

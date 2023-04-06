@@ -1,11 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import VStepperTitle from '@/components/Public/VStepperTitle.vue'
 import FileUpload from '@/components/Specification/FileUpload.vue'
 import SpecTag from '@/components/Specification/SpecTag.vue'
 
 const route = useRoute()
+const router = useRouter()
 
 const currentStep = ref(0)
 const files = ref([])
@@ -33,8 +34,8 @@ const steps = [
     icon: 'mdi-image-text'
   },
   {
-    title: 'Upload your Learnware',
-    subtitle: 'Upload',
+    title: 'Upload your model & statistical specification',
+    subtitle: 'File',
     icon: 'mdi-paperclip-plus'
   },
 ]
@@ -97,7 +98,7 @@ onMounted(() => {
         <v-window v-model="currentStep">
           <v-window-item :value="0">
             <v-card-text>
-              <v-text-field v-model="name" label="Name" placeholder="Awesome learnware"></v-text-field>
+              <v-text-field v-model="name" label="Name" placeholder="Awesome learnware" append-inner-icon="mdi-close" @click:append-inner="name = ''"></v-text-field>
               <span class="text-caption text-grey-darken-1">
                 This is the name of the learnware you contribute.
               </span>
@@ -122,6 +123,9 @@ onMounted(() => {
                 v-model:files="files"
               ></file-upload>
             </div>
+            <v-card-text class="text-lg">
+              <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for instructions on how to create the required zip file.
+            </v-card-text>
           </v-window-item>
         </v-window>
     

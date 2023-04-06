@@ -83,6 +83,12 @@ function saveScroll() {
   scrollY.value = window.scrollY
 }
 
+function getColorByScore(score) {
+  if (score > 80) return 'success'
+  if (score > 50) return 'warning'
+  return 'error'
+}
+
 onActivated(() => {
   window.scrollTo(0, scrollY.value)
   window.addEventListener('scroll', saveScroll)
@@ -124,25 +130,8 @@ onDeactivated(() => {
         <v-card-text class="card-text">
           <div>{{ item.description }}</div>
         </v-card-text>
-        <v-card-text class="placeholder" v-if="false && item.matchScore">
-          <div class="score-container">
-            <div class="score" :style="{ width: `${item.matchScore}%` }"
-              :class="item.matchScore > 80 ? 'bg-green-500' : item.matchScore > 50 ? 'bg-yellow-500' : 'bg-red-500'">
-            </div>
-            <div class="score-text">
-              Match score {{ item.matchScore }}
-            </div>
-          </div>
-        </v-card-text>
-        <v-card-text class="score-bottom" v-if="false && item.matchScore">
-          <div class="score-container">
-            <div class="score" :style="{ width: `${item.matchScore}%` }"
-              :class="item.matchScore > 80 ? 'bg-green-500' : item.matchScore > 50 ? 'bg-yellow-500' : 'bg-red-500'">
-            </div>
-            <div class="score-text">
-              Match score {{ item.matchScore }}
-            </div>
-          </div>
+        <v-card-text v-if="item.matchScore" class="text-h6 !text-1rem">
+          Match score <span class="ml-2 text-xl" :style="`color: rgb(var(--v-theme-${getColorByScore(item.matchScore)}))`">{{ item.matchScore }}</span>
         </v-card-text>
       </v-card>
     </TransitionGroup>

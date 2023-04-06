@@ -41,24 +41,24 @@ watch(
 
 const dataTypeBtns = [
   {
-    title: 'Audio',
-    icon: AudioBtn,
-  },
-  {
-    title: 'Video',
-    icon: VideoBtn,
-  },
-  {
-    title: 'Text',
-    icon: TextBtn,
+    title: 'Table',
+    icon: TableBtn,
   },
   {
     title: 'Image',
     icon: ImageBtn,
   },
   {
-    title: 'Table',
-    icon: TableBtn,
+    title: 'Text',
+    icon: TextBtn,
+  },
+  {
+    title: 'Video',
+    icon: VideoBtn,
+  },
+  {
+    title: 'Audio',
+    icon: AudioBtn,
   },
 ]
 </script>

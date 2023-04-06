@@ -33,7 +33,7 @@ function generateLearnwareItems() {
     return {
       id: Array(32).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
       name: `Learnware ${i + 1}`,
-      description: `This is the description of learnware ${i + 1}`,
+      description: `This is the description of learnware ${i + 1}. `,
       dataType: allDataType[Math.floor(Math.random() * allDataType.length)],
       taskType: allTaskType[Math.floor(Math.random() * allTaskType.length)],
       hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
@@ -73,7 +73,7 @@ const filteredLearnwareItems = computed(() => {
   })
 })
 
-const recommendLearnwareItems = ref(Array(6).fill(0).map((_, i) => {
+const recommendLearnwareItems = ref(Array(4).fill(0).map((_, i) => {
   const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
   const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
   const allHardwareType = ['CPU', 'GPU']
@@ -112,14 +112,14 @@ onMounted(() => {
         <div class="my-3 text-h6">Choose semantic specification</div>
         <div>
           <div class="mt-7 mb-3 text-h6 !text-1rem">Search by name</div>
-          <v-text-field v-model="search" label="Search by name" hide-details="" />
+          <v-text-field v-model="search" label="Search by name" hide-details append-inner-icon="mdi-close" @click:append-inner="search = ''" />
         </div>
         <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
         <task-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="taskType" />
         <hardware-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="hardwareType" />
         <tag-list class="bg-transparent text-h6 !text-1rem" v-model:value="tagList" :cols="2" :md="1" :sm="1" />
       </div>
-      <div class="p-5 pt-0 bg-gray-100">
+      <div class="p-5 pt-0">
         <div class="mt-3 mb-5 text-h6 text-sm">
           Upload statistical specification
         </div>
@@ -128,18 +128,26 @@ onMounted(() => {
     </div>
     <div ref="contentRef" class="content">
       <v-card v-if="showRecommended" flat class="m-2 mt-4 bg-transparent">
-        <v-card-title v-if="!recommendedTips">Recommended</v-card-title>
+        <v-card-title v-if="!recommendedTips">Recommended multiple learnwares</v-card-title>
         <v-card-text v-if="recommendedTips" class="!p-2">
-          <v-alert v-model="recommendedTips" type="success" title="Recommended"
-            text="The learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to great effectiveness." closable></v-alert>
+          <v-alert v-model="recommendedTips" title="Recommended multiple learnwares"
+            text="The learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to great effectiveness." closable color="success">
+            <template #prepend>
+              <v-icon icon="mdi-hexagon-multiple" size="x-large"></v-icon>
+            </template>
+          </v-alert>
         </v-card-text>
         <learnware-list :items="recommendLearnwareItems" />
       </v-card>
       <v-card flat class="m-2 mt-4 bg-transparent">
-        <v-card-title v-if="showRecommended && !unrecommendedTips">Others</v-card-title>
+        <v-card-title v-if="showRecommended && !unrecommendedTips">Recommended single learnwares</v-card-title>
         <v-card-text v-if="showRecommended && unrecommendedTips" class="!p-2">
-          <v-alert v-model="unrecommendedTips" type="info" title="Not recommended"
-            text="The listed learnwares are not highly recommended as they may not precisely match your task requirements in terms of statistical specifications. However, they are still available for your use." closable></v-alert>
+          <v-alert v-model="unrecommendedTips" title="Recommended single learnware"
+            text="The listed learnwares are not highly recommended as they may not precisely match your task requirements in terms of statistical specifications. However, they are still available for your use." closable color="info">
+            <template #prepend>
+              <v-icon icon="mdi-hexagon" size="x-large"></v-icon>
+            </template>
+          </v-alert>
         </v-card-text>
         <learnware-list :items="filteredLearnwareItems" :filters="filters" />
       </v-card>
