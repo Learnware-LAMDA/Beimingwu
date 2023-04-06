@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
@@ -47,6 +47,8 @@ const showError = ref(false)
 const errorMsg = ref('')
 const success = ref(false)
 
+const errorTimer = ref(null)
+
 const valid = computed(() => {
   return meta.value.valid
 })
@@ -64,6 +66,12 @@ const login = handleSubmit(values => {
     },
     body: JSON.stringify(data)
   })
+    .then((res) => {
+      if (res.status === 200) {
+        return res
+      }
+      throw new Error('Network error')
+    })
     .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
@@ -82,7 +90,17 @@ const login = handleSubmit(values => {
         }
       }
     })
+    .catch((err) => {
+      showError.value = true
+      errorMsg.value = err.message
+      clearTimeout(errorTimer.value)
+      errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
+    })
 })
+
+function closeErrorAlert() {
+  clearTimeout(errorTimer.value)
+}
 </script>
 
 <template>
@@ -103,9 +121,11 @@ const login = handleSubmit(values => {
       <v-card-actions v-if="success">
         <v-alert closable text="Login successfully" type="success" />
       </v-card-actions>
-      <v-card-actions v-if="showError">
-        <v-alert closable :text="errorMsg" type="error" />
-      </v-card-actions>
+      <v-scale-transition>
+        <v-card-actions v-if="showError">
+          <v-alert v-model="showError" closable :text="errorMsg" type="error" @click:close="() => closeErrorAlert" />
+        </v-card-actions>
+      </v-scale-transition>
       <v-card-actions>
         <v-btn block class="bg-primary py-5" color="white" @click="login" :disabled="!valid">Login</v-btn>
       </v-card-actions>
