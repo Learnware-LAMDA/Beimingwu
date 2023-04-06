@@ -107,5 +107,5 @@ def logout():
 @login_required
 def get_role():
     # Get role
-    result = {"code": 0, "msg": "Request success.", "data": g.user["role"]}
+    result = {"code": 0, "msg": "Request success.", "data": {"role": g.user["role"]} }
     return jsonify(result)
