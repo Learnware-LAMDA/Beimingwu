@@ -102,7 +102,7 @@ def get_learnware_list():
         "code": 0,
         "msg": "Get learnware list success.",
         "data": {
-            "user_list": ret,
+            "learnware_list": ret,
             "page": page,
             "limit": limit,
             "total_pages": (cnt + limit - 1) // limit
