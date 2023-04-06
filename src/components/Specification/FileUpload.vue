@@ -42,19 +42,17 @@ watch(() => files.value, (val) => {
 </script>
 
 <template>
-  <v-card class="bg-transparent" @dragover.prevent @dragenter.prevent="dragging = true" @dragleave.prevent="dragging = false"
-    @drop.prevent="handleDrop" @click="chooseFile" flat>
+  <v-card class="bg-transparent" @dragover.prevent @dragenter.prevent="dragging = true"
+    @dragleave.prevent="dragging = false" @drop.prevent="handleDrop" @click="chooseFile" flat>
     <v-card-text
       class="h-40 drag rounded-lg border-gray-500 border-2 border-dashed flex flex-column justify-center items-center md:text-xl text-sm"
       :class="{ 'drag-hover': dragging }">
       <p v-if="files.length === 0">
         <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>Drag your file here
       </p>
-      <div v-else>
-        <div>
-          <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ files[0].name }} <span class="ml-2 text-sm">{{
-            computeFileSize(files[0].size) }}</span>
-        </div>
+      <div v-else class="truncate">
+        <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ files[0].name }} <span class="ml-2 text-sm">{{
+          computeFileSize(files[0].size) }}</span>
       </div>
     </v-card-text>
     <v-file-input ref="fileInput" v-show="false" v-model="files" label="select a file">
