@@ -86,7 +86,7 @@ function saveScroll() {
 
 function getColorByScore(score) {
   if (score > 80) return colors.green.base
-  if (score > 50) return colors.yellow.darken2
+  if (score > 50) return colors.orange.base
   return colors.red.base
 }
 
