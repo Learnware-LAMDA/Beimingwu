@@ -10,13 +10,13 @@ const props = defineProps({
   }
 })
 
-const files = ref([])
+const _files = ref([])
 const dragging = ref(false)
 const fileInput = ref(null)
 
 const handleDrop = (event) => {
   dragging.value = false
-  files.value = Array.from(event.dataTransfer.files)
+  _files.value = Array.from(event.dataTransfer.files)
   uploadFile()
 }
 
@@ -36,7 +36,7 @@ const computeFileSize = (byte) => {
   return Math.round(byte / Math.pow(1000, k)) + unit[k]
 }
 
-watch(() => files.value, (val) => {
+watch(() => _files.value, (val) => {
   emit('update:files', val)
 })
 </script>
@@ -47,15 +47,18 @@ watch(() => files.value, (val) => {
     <v-card-text
       class="h-40 drag rounded-lg border-gray-500 border-2 border-dashed flex flex-column justify-center items-center md:text-xl text-sm"
       :class="{ 'drag-hover': dragging }">
-      <p v-if="files.length === 0">
-        <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>Drag your file here
-      </p>
-      <div v-else class="truncate">
-        <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ files[0].name }} <span class="ml-2 text-sm">{{
-          computeFileSize(files[0].size) }}</span>
+      <div class="flex justify-center items-center max-w-1/1">
+        <p v-if="_files.length === 0">
+          <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>Drag your file here
+        </p>
+        <div v-else class="w-1/1 truncate">
+          <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ _files[0].name }} <span class="ml-2 text-sm">{{
+            computeFileSize(_files[0].size) }}</span>
+        </div>
+        <v-btn flat v-if="_files.length > 0" icon="mdi-close" @click.stop="() => _files = []"></v-btn>
       </div>
     </v-card-text>
-    <v-file-input ref="fileInput" v-show="false" v-model="files" label="select a file">
+    <v-file-input ref="fileInput" v-show="false" v-model="_files" label="select a file">
     </v-file-input>
   </v-card>
 </template>
