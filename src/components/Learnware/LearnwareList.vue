@@ -4,6 +4,7 @@ import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import DeleteDialog from './DeleteDialog.vue'
 import { downloadLearnware } from '@/utils'
+import colors from 'vuetify/lib/util/colors'
 
 const emit = defineEmits(['delete'])
 
@@ -84,9 +85,9 @@ function saveScroll() {
 }
 
 function getColorByScore(score) {
-  if (score > 80) return 'success'
-  if (score > 50) return 'warning'
-  return 'error'
+  if (score > 80) return colors.green.base
+  if (score > 50) return colors.yellow.darken2
+  return colors.red.base
 }
 
 onActivated(() => {
@@ -128,11 +129,11 @@ onDeactivated(() => {
             v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
         </v-card-text>
         <v-card-text class="card-text">
-          <div>{{ item.description }}</div>
+          <div class="description">{{ item.description }}</div>
         </v-card-text>
-        <v-card-text v-if="item.matchScore" class="text-h6 !text-1rem">
-          Match score <span class="ml-2 text-xl" :style="`color: rgb(var(--v-theme-${getColorByScore(item.matchScore)}))`">{{ item.matchScore }}</span>
-        </v-card-text>
+        <v-card-title v-if="item.matchScore" class="!text-1rem">
+          Match score <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{ item.matchScore }}</span>
+        </v-card-title>
       </v-card>
     </TransitionGroup>
     <div flat v-if="items.length === 0" class="no-learnware">
@@ -182,6 +183,10 @@ onDeactivated(() => {
 
       .tag.active {
         @apply bg-gray-100 text-orange-600 border-0;
+      }
+
+      .description {
+        @apply truncate;
       }
     }
 

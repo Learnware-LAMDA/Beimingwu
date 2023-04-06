@@ -33,7 +33,7 @@ function generateLearnwareItems() {
     return {
       id: Array(32).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
       name: `Learnware ${i + 1}`,
-      description: `This is the description of learnware ${i + 1}. `,
+      description: `This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. `,
       dataType: allDataType[Math.floor(Math.random() * allDataType.length)],
       taskType: allTaskType[Math.floor(Math.random() * allTaskType.length)],
       hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
@@ -82,7 +82,7 @@ const recommendLearnwareItems = ref(Array(4).fill(0).map((_, i) => {
   return {
     id: Array(32).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
     name: `Learnware ${i + 1}`,
-    description: `This is the description of learnware ${i + 1}`,
+    description: `This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. `,
     dataType: allDataType[Math.floor(Math.random() * allDataType.length)],
     taskType: allTaskType[Math.floor(Math.random() * allTaskType.length)],
     hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
