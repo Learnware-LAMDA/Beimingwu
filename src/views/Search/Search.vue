@@ -1,5 +1,6 @@
 <script setup>
-import { ref, computed, onMounted, nextTick, onActivated } from 'vue'
+import { ref, computed, watch, onMounted, nextTick, onActivated } from 'vue'
+import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import DataType from '@/components/Specification/SpecTag/DataType.vue'
 import TaskType from '@/components/Specification/SpecTag/TaskType.vue'
 import HardwareType from '@/components/Specification/SpecTag/HardwareType.vue'
@@ -7,11 +8,22 @@ import FileUpload from '@/components/Specification/FileUpload.vue'
 import TagList from '@/components/Specification/SpecTag/TagList.vue'
 import LearnwareList from '@/components/Learnware/LearnwareList.vue'
 
-const search = ref('')
-const dataType = ref('')
-const taskType = ref('')
-const hardwareType = ref('')
-const tagList = ref([])
+const route = useRoute()
+const router = useRouter()
+
+const search = ref(route.query.search)
+const dataType = ref(route.query.dataType)
+const taskType = ref(route.query.taskType)
+const hardwareType = ref(route.query.hardwareType)
+let _tagList
+try {
+  _taglist = JSON.parse(route.query.tagList)
+}
+catch {
+  _tagList = []
+}
+const tagList = ref(_tagList)
+
 const files = ref([])
 
 const contentRef = ref(null)
@@ -91,6 +103,48 @@ const recommendLearnwareItems = ref(Array(4).fill(0).map((_, i) => {
   }
 }).sort((a, b) => b.matchScore - a.matchScore))
 
+function loadQuery() {
+  if (route.query.search) {
+    search.value = route.query.search
+  }
+  if (route.query.dataType) {
+    dataType.value = route.query.dataType
+  }
+  if (route.query.taskType) {
+    taskType.value = route.query.taskType
+  }
+  if (route.query.hardwareType) {
+    hardwareType.value = route.query.hardwareType
+  }
+  if (route.query.tagList) {
+    tagList.value = JSON.parse(route.query.tagList)
+  }
+}
+
+function saveQuery() {
+  router.replace({
+    query: {
+      search: search.value,
+      dataType: dataType.value,
+      taskType: taskType.value,
+      hardwareType: hardwareType.value,
+      tagList: JSON.stringify(tagList.value),
+    }
+  })
+}
+
+watch(
+  () => filters.value,
+  () => {
+    if (contentRef.value) {
+      contentRef.value.scrollTop = 0
+    }
+
+    saveQuery()
+  },
+  { deep: true }
+)
+
 onActivated(() => {
   contentRef.value.scrollTop = scrollTop.value
 })
@@ -101,6 +155,8 @@ onMounted(() => {
     contentRef.value.addEventListener('scroll', () => {
       scrollTop.value = contentRef.value.scrollTop
     })
+
+    loadQuery()
   })
 })
 </script>
@@ -112,7 +168,8 @@ onMounted(() => {
         <div class="my-3 text-h6">Choose semantic specification</div>
         <div>
           <div class="mt-7 mb-3 text-h6 !text-1rem">Search by name</div>
-          <v-text-field v-model="search" label="Search by name" hide-details append-inner-icon="mdi-close" @click:append-inner="search = ''" />
+          <v-text-field v-model="search" label="Search by name" hide-details append-inner-icon="mdi-close"
+            @click:append-inner="search = ''" />
         </div>
         <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
         <task-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="taskType" />
@@ -131,7 +188,8 @@ onMounted(() => {
         <v-card-title v-if="!recommendedTips">Recommended multiple learnwares</v-card-title>
         <v-card-text v-if="recommendedTips" class="!p-2">
           <v-alert v-model="recommendedTips" title="Recommended multiple learnwares"
-            text="The learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to great effectiveness." closable color="success">
+            text="The learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to great effectiveness."
+            closable color="success">
             <template #prepend>
               <v-icon icon="mdi-hexagon-multiple" size="x-large"></v-icon>
             </template>
@@ -143,7 +201,8 @@ onMounted(() => {
         <v-card-title v-if="showRecommended && !unrecommendedTips">Recommended single learnwares</v-card-title>
         <v-card-text v-if="showRecommended && unrecommendedTips" class="!p-2">
           <v-alert v-model="unrecommendedTips" title="Recommended single learnware"
-            text="The listed learnwares are not highly recommended as they may not precisely match your task requirements in terms of statistical specifications. However, they are still available for your use." closable color="info">
+            text="The listed learnwares are not highly recommended as they may not precisely match your task requirements in terms of statistical specifications. However, they are still available for your use."
+            closable color="info">
             <template #prepend>
               <v-icon icon="mdi-hexagon" size="x-large"></v-icon>
             </template>
@@ -175,5 +234,4 @@ onMounted(() => {
   .content {
     @apply w-1/1 overflow-y-scroll;
   }
-}
-</style>
+}</style>
