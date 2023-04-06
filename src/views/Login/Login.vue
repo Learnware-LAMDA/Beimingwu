@@ -86,7 +86,8 @@ const login = handleSubmit(values => {
         default: {
           showError.value = true
           errorMsg.value = res.msg
-          setTimeout(() => showError.value = false, 3000)
+          clearTimeout(errorTimer.value)
+          errorTimer.value = setTimeout(() => showError.value = false, 3000)
         }
       }
     })
