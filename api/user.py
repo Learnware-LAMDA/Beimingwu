@@ -1,6 +1,8 @@
 from flask import Blueprint, g, jsonify, request, session
-
+import json
+import os, time
 from config import C
+import hashlib
 from .utils import *
 from .auth import login_required
 
@@ -59,19 +61,28 @@ def get_learnware_list():
 @user_api.route("/add_learnware", methods=["POST"])
 @login_required
 def add_learnware():
-    # Check & get parameters
-    # data = get_parameters(request, ["description"])
-    # if data is None:
-    #     return jsonify({
-    #         "code": 21,
-    #         "msg" : "Request parameters error."
-    #     })
-    # learnware_id = data["learnware_id"]
-    # [TODO] Require code for engine
+    learnware_name = request.form.get("learnware_name")
+    semantic_specification = request.form.get("semantic_specification")
+    if 'learnware_file' not in request.files or learnware_name is None or semantic_specification is None:
+        return jsonify({"code": 21, "msg": f"Request parameters error."})
+    
+    learnware_file = request.files['learnware_file']
+    if learnware_file.filename == '' or not learnware_file:
+        return jsonify({"code": 21, "msg": f"Request parameters error."})
 
+    leareware_filename = f"{int(time.time())}_" + hashlib.md5(learnware_file.read()).hexdigest() + ".zip"
+    learnware_path = os.path.join(C.upload_path, leareware_filename)
+    learnware_file.seek(0)
+    learnware_file.save(learnware_path)
+    try:
+        semantic_specification = json.loads(semantic_specification)
+    except:
+        return jsonify({"code": 41, "msg": "Semantic specification error"})
+    
     user_id = g.user["id"]
     learnware_id = generate_random_str(16)
-
+    # [TODO] Add learnware
+    
     # Add learnware
     cnt = database.add_learnware(user_id, learnware_id)
     if cnt > 0:
@@ -81,6 +92,8 @@ def add_learnware():
             "code": 31,
             "msg": "System error.",
         }
+    
+    if C.remove_upload_file: os.remove(learnware_path)
     return jsonify(result)
 
 
@@ -97,7 +110,7 @@ def delete_learnware():
     learnware = database.get_learnware_list("learnware_id", learnware_id)
     if len(learnware) == 0 or learnware[0]["user_id"] != g.user["id"]:
         return jsonify({"code": 51, "msg": "You do not own this learnware."})
-
+    
     # Remove learnware
     if remove_learnware(learnware_id):
         result = {"code": 0, "msg": "Delete success."}
