@@ -48,6 +48,7 @@ class Config:
 
 
 ROOT_DIRPATH = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "upload")
 SQLITE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "database.db")
 MARKET_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "learnware")
 PROPERTY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "property.json")
@@ -55,11 +56,13 @@ PROPERTY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files"
 _DEFAULT_CONFIG = {
     # Global config
     "root_path": ROOT_DIRPATH,
+    "upload_path": UPLOAD_PATH,
+    "remove_upload_file": False,
     # Database config
     "database_type": "sqlite",
     "sqlite_path": SQLITE_PATH,
     # Engine config
-    "engine_type": "basic",
+    "engine_type": "easymarket",
     "engine_market_path": MARKET_PATH,
     "engine_property_path": PROPERTY_PATH,
     "engine_load_mode": "database",

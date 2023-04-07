@@ -3,11 +3,11 @@ from flask_cors import CORS
 from flask import Flask
 from database import SQLite
 import api
-
-# import learnware.market as market
+from learnware import market
 
 app = Flask(__name__)
 app.secret_key = "my_secret_key"
+app.config['UPLOAD_FOLDER'] = C.upload_path
 CORS(app)
 
 
@@ -22,13 +22,12 @@ def main():
     setattr(C, "stats", 0)
 
     # Init engine
-    # engine = None
-    # if C.engine_type == "basic":
-    #     engine = market.BaseMarket()
-    #     engine.reload_market(C.engine_market_path, C.engine_property_path, C.engine_load_mode)
-    # if engine is None:
-    #     raise ValueError(f"Learnware engine type {C.engine_type} is not supproted.")
-    # setattr(C, "engine", engine)
+    engine = None
+    if C.engine_type == "easymarket":
+        engine = market.EasyMarket()
+    if engine is None:
+        raise ValueError(f"Learnware engine type {C.engine_type} is not supproted.")
+    setattr(C, "engine", engine)
 
     # Init flask
     app.register_blueprint(api.auth_api, url_prefix="/auth")
