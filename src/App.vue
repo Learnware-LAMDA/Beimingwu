@@ -8,7 +8,7 @@ import AppBar from '@/components/App/AppBar.vue'
 const store = useStore()
 
 const drawerOpen = ref(false)
-const showGlobalError = ref(false)
+const showGlobalError = ref(store.getters.getShowGlobalError)
 
 const keepAliveIncludes = computed(() => {
   return Router.getRoutes().filter((route) => route.meta.keepAlive).map((route) => route.name)
