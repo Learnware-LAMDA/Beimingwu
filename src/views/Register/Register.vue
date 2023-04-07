@@ -63,7 +63,7 @@ const submit = handleSubmit(values => {
     password: values.password,
   }
 
-  fetch('/api/auth/login', {
+  fetch('/api/auth/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
