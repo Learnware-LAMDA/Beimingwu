@@ -1,8 +1,11 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
 import Router from '@/router/index.js'
 import Drawer from '@/components/App/Drawer.vue'
 import AppBar from '@/components/App/AppBar.vue'
+
+const store = useStore()
 
 const drawerOpen = ref(false)
 
@@ -26,6 +29,13 @@ const keepAliveIncludes = computed(() => {
         </transition>
       </router-view>
     </v-main>
+
+    <v-snackbar
+      v-model="store.showGlobalError"
+      :timeout="3000"
+    >
+      {{ store.globalErrorMsg }}
+    </v-snackbar>
   </v-app>
 </template>
 
