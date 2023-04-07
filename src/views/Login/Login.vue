@@ -114,9 +114,9 @@ function closeErrorAlert() {
         <v-form ref="form">
           <v-text-field v-model="email.value.value" label="E-mail"
             :error-messages="email.errorMessage.value"></v-text-field>
-          <v-text-field v-model="password.value.value" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          <v-text-field v-model="password.value.value" :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showPassword ? 'text' : 'password'" label="Password" :error-messages="password.errorMessage.value"
-            @click:append="showPassword = !showPassword"></v-text-field>
+            @click:append-inner="showPassword = !showPassword"></v-text-field>
         </v-form>
       </v-card-text>
       <v-card-actions v-if="success">

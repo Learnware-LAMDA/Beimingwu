@@ -110,12 +110,12 @@ const submit = handleSubmit(values => {
             :error-messages="userName.errorMessage.value"></v-text-field>
           <v-text-field v-model="email.value.value" label="E-mail"
             :error-messages="email.errorMessage.value"></v-text-field>
-          <v-text-field v-model="password.value.value" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          <v-text-field v-model="password.value.value" :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showPassword ? 'text' : 'password'" label="Password" :error-messages="password.errorMessage.value"
-            @click:append="showPassword = !showPassword"></v-text-field>
-          <v-text-field v-model="password2.value.value" :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append-inner="showPassword = !showPassword"></v-text-field>
+          <v-text-field v-model="password2.value.value" :append-inner-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showPassword2 ? 'text' : 'password'" label="Confirm Password"
-            :error-messages="password2.errorMessage.value" @click:append="showPassword2 = !showPassword2"></v-text-field>
+            :error-messages="password2.errorMessage.value" @click:append-inner="showPassword2 = !showPassword2"></v-text-field>
         </v-form>
       </v-card-text>
       <v-scale-transition>
