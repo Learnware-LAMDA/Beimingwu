@@ -95,6 +95,8 @@ const Router = createRouter({
 Router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiredLogin)) {
     if (store && !store.getters.getLoggedIn) {
+      store.commit('setShowGlobalError', true)
+      store.commit('setGlobalErrorMsg', 'Please login first.')
       next({
         path: '/login',
         query: { redirect: to.fullPath }

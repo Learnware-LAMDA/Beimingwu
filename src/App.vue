@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import Router from '@/router/index.js'
 import Drawer from '@/components/App/Drawer.vue'
@@ -8,10 +8,20 @@ import AppBar from '@/components/App/AppBar.vue'
 const store = useStore()
 
 const drawerOpen = ref(false)
+const showGlobalError = ref(false)
 
 const keepAliveIncludes = computed(() => {
   return Router.getRoutes().filter((route) => route.meta.keepAlive).map((route) => route.name)
 })
+
+watch(
+  () => store.getters.getShowGlobalError,
+  (val) => showGlobalError.value = val
+)
+watch(
+  () => showGlobalError.value,
+  (val) => store.commit('setShowGlobalError', val)
+)
 </script>
 
 <template>
@@ -31,8 +41,8 @@ const keepAliveIncludes = computed(() => {
     </v-main>
 
     <v-snackbar
-      v-model="store.getters.getShowGlobalError"
-      :timeout="3000"
+      v-model="showGlobalError"
+      :timeout="2000"
     >
       {{ store.getters.getGlobalErrorMsg }}
 
