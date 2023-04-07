@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import store from '@/store'
 
 const Router = createRouter({
   history: createWebHashHistory(),
@@ -88,6 +89,21 @@ const Router = createRouter({
   }],
   scrollBehavior (to, from, savedPosition) {
     return { top: 0 }
+  }
+})
+
+Router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiredLogin)) {
+    if (store && !store.getters.getLoggedIn) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
   }
 })
 
