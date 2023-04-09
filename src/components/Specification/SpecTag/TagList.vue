@@ -100,7 +100,7 @@ const items = [
   },
 ]
 const search = ref('')
-const selected = ref(props.value)
+const selected = computed(() => props.value)
 
 const allSelected = computed(() => selected.value.length === items.length)
 const categories = computed(() => {
