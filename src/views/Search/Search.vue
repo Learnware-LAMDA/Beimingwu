@@ -11,10 +11,10 @@ import LearnwareList from '@/components/Learnware/LearnwareList.vue'
 const route = useRoute()
 const router = useRouter()
 
-const search = ref(route.query.search)
-const dataType = ref(route.query.dataType)
-const taskType = ref(route.query.taskType)
-const hardwareType = ref(route.query.hardwareType)
+const search = ref(route.query.search || '')
+const dataType = ref(route.query.dataType || '')
+const taskType = ref(route.query.taskType || '')
+const hardwareType = ref(route.query.hardwareType || '')
 let _tagList
 try {
   _taglist = JSON.parse(route.query.tagList)
