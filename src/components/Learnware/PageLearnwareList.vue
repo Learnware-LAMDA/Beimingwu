@@ -24,6 +24,10 @@ const props = defineProps({
     type: Number,
     default: 10,
   },
+  pageNum: {
+    type: Number,
+    default: 10,
+  },
   cols: {
     type: Number,
     default: 2,
@@ -43,7 +47,6 @@ const props = defineProps({
 })
 
 const page = ref(1)
-const pageNum = ref(20)
 const loading = ref(false)
 
 function generateLearnwareItems() {
@@ -80,7 +83,7 @@ const greaterThanXs = computed(() => {
 })
 
 function nextPage() {
-  if (page.value < pageNum.value) {
+  if (page.value < props.pageNum) {
     page.value += 1
   }
 }
@@ -92,7 +95,7 @@ function formerPage() {
 }
 
 function jumpPage(newPage) {
-  if (newPage >= 1 && newPage <= pageNum.value) {
+  if (newPage >= 1 && newPage <= props.pageNum) {
     page.value = newPage
   }
 }

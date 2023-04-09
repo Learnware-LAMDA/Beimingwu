@@ -27,13 +27,16 @@ const tagList = ref(_tagList)
 
 const files = ref([])
 
+const pageLearnwareListRef = ref(null)
 const contentRef = ref(null)
 
 const scrollTop = ref(0)
 
-const showRecommended = computed(() => files.value.length > 0)
-const recommendedTips = ref(true)
-const unrecommendedTips = ref(true)
+const showMultiRecommended = computed(() => {
+  return files.value.length > 0 && (!pageLearnwareListRef.value || pageLearnwareListRef.value.getPage() === 1)
+})
+const multiRecommendedTips = ref(true)
+const singleRecommendedTips = ref(true)
 
 const filters = computed(() => ({
   name: search.value,
@@ -146,10 +149,10 @@ onMounted(() => {
       </div>
     </div>
     <div ref="contentRef" class="content">
-      <v-card v-if="showRecommended" flat class="m-2 mt-4 bg-transparent">
-        <v-card-title v-if="!recommendedTips">Recommended multiple learnwares</v-card-title>
-        <v-card-text v-if="recommendedTips" class="!p-2">
-          <v-alert v-model="recommendedTips" title="Recommended multiple learnwares"
+      <v-card v-if="showMultiRecommended" flat class="m-2 mt-4 bg-transparent">
+        <v-card-title v-if="!multiRecommendedTips">Recommended multiple learnwares</v-card-title>
+        <v-card-text v-if="multiRecommendedTips" class="!p-2">
+          <v-alert v-model="multiRecommendedTips" title="Recommended multiple learnwares"
             text="The learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to great effectiveness."
             closable color="success">
             <template #prepend>
@@ -160,9 +163,9 @@ onMounted(() => {
         <learnware-list :items="recommendLearnwareItems" :filters="filters" />
       </v-card>
       <v-card flat class="m-2 mt-4 bg-transparent">
-        <v-card-title v-if="showRecommended && !unrecommendedTips">Recommended single learnwares</v-card-title>
-        <v-card-text v-if="showRecommended && unrecommendedTips" class="!p-2">
-          <v-alert v-model="unrecommendedTips" title="Recommended single learnware"
+        <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">Recommended single learnwares</v-card-title>
+        <v-card-text v-if="showMultiRecommended && singleRecommendedTips" class="!p-2">
+          <v-alert v-model="singleRecommendedTips" title="Recommended single learnware"
             text="The listed learnwares are not highly recommended as they may not precisely match your task requirements in terms of statistical specifications. However, they are still available for your use."
             closable color="info">
             <template #prepend>
@@ -170,7 +173,7 @@ onMounted(() => {
             </template>
           </v-alert>
         </v-card-text>
-        <page-learnware-list :filters="filters" @page-change="pageChange" />
+        <page-learnware-list ref="pageLearnwareListRef" :filters="filters" @page-change="pageChange" />
       </v-card>
     </div>
   </div>
