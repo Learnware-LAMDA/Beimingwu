@@ -92,6 +92,10 @@ function saveQuery() {
   })
 }
 
+function pageChange() {
+  contentRef.value.scrollTop = 0
+}
+
 watch(
   () => filters.value,
   () => {
@@ -166,7 +170,7 @@ onMounted(() => {
             </template>
           </v-alert>
         </v-card-text>
-        <page-learnware-list :filters="filters" />
+        <page-learnware-list :filters="filters" @page-change="pageChange" />
       </v-card>
     </div>
   </div>

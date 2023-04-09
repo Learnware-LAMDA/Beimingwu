@@ -1,11 +1,16 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useDisplay } from 'vuetify'
 import LearnwareList from './LearnwareList.vue'
+import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 
 const display = useDisplay()
 
-const emit = defineEmits(['delete'])
+const emit = defineEmits(['delete', 'pageChange'])
+
+defineExpose({
+  getPage: () => page.value
+})
 
 const props = defineProps({
   filters: {
@@ -39,9 +44,10 @@ const props = defineProps({
 
 const page = ref(1)
 const pageNum = ref(20)
+const loading = ref(false)
 
 function generateLearnwareItems() {
-  return Array(6).fill(0).map((_, i) => {
+  return Array(props.pageSize).fill(0).map((_, i) => {
     const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
     const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
     const allHardwareType = ['CPU', 'GPU']
@@ -69,10 +75,6 @@ const realCols = computed(() => {
   }
 })
 
-function getPageNum() {
-  return pageNum.value
-}
-
 function nextPage() {
   if (page.value < pageNum.value) {
     page.value += 1
@@ -91,15 +93,36 @@ function jumpPage(newPage) {
   }
 }
 
-const items = computed(() => generateLearnwareItems())
+const items = ref(generateLearnwareItems())
 
 function deleteLearnware(id) {
   emit('delete', id)
 }
+
+function delay(ms) {
+  return new Promise((res) => {
+    setTimeout(res, ms)
+  })
+}
+
+watch(
+  [() => props.filters, () => page.value],
+  () => {
+    loading.value = true
+    emit('pageChange')
+    
+    delay(1000)
+      .then(() => {
+        items.value = generateLearnwareItems()
+        loading.value = false
+      })
+  }
+)
 </script>
 
 <template>
   <learnware-list
+    v-if="!loading"
     :items="items"
     :filters="filters"
     :cols="cols"
@@ -110,12 +133,11 @@ function deleteLearnware(id) {
     @delete="deleteLearnware"
   />
 
-  <div class="grid" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
+  <div v-else class="grid p-2 gap-3" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <v-skeleton-loader
       v-for="i in pageSize"
-      class="mx-auto"
-      elevation="12"
-      type="table-heading, list-item-two-line, image, table-tfoot"
+      class="w-1/1"
+      type="article"
     ></v-skeleton-loader>
   </div>
   
