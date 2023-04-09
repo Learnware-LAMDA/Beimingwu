@@ -13,12 +13,18 @@ defineExpose({
 })
 
 const props = defineProps({
+  items: {
+    type: Array,
+  },
   filters: {
     type: Object,
   },
   showActions: {
     type: Boolean,
     default: false,
+  },
+  page: {
+    type: Number,
   },
   pageSize: {
     type: Number,
@@ -27,6 +33,9 @@ const props = defineProps({
   pageNum: {
     type: Number,
     default: 10,
+  },
+  loading: {
+    type: Boolean,
   },
   cols: {
     type: Number,
@@ -46,29 +55,6 @@ const props = defineProps({
   }
 })
 
-const page = ref(1)
-const loading = ref(false)
-
-function generateLearnwareItems() {
-  return Array(props.pageSize).fill(0).map((_, i) => {
-    const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
-    const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
-    const allHardwareType = ['CPU', 'GPU']
-    const allTagList = ['Business', 'Financial', 'Health', 'Politics', 'Computer', 'Internet', 'Traffic', 'Nature', 'Fashion', 'Industry', 'Agriculture', 'Education']
-
-    return {
-      id: Array(32).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
-      name: `Learnware ${i + 1}`,
-      description: `This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. `,
-      dataType: allDataType[Math.floor(Math.random() * allDataType.length)],
-      taskType: allTaskType[Math.floor(Math.random() * allTaskType.length)],
-      hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
-      tagList: Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
-      matchScore: Math.floor(Math.random() * 100),
-    }
-  }).sort((a, b) => b.matchScore - a.matchScore)
-}
-
 const realCols = computed(() => {
   switch (display.name.value) {
     case 'md': if (props.md) return props.md
@@ -83,48 +69,27 @@ const greaterThanXs = computed(() => {
 })
 
 function nextPage() {
-  if (page.value < props.pageNum) {
-    page.value += 1
+  if (props.page < props.pageNum) {
+    jumpPage(props.page + 1)
   }
 }
 
 function formerPage() {
   if (page.value > 1) {
-    page.value -= 1
+    jumpPage(page.value - 1)
   }
 }
 
 function jumpPage(newPage) {
   if (newPage >= 1 && newPage <= props.pageNum) {
-    page.value = newPage
+    emit('pageChange', newPage)
   }
 }
-
-const items = ref(generateLearnwareItems())
 
 function deleteLearnware(id) {
   emit('delete', id)
 }
 
-function delay(ms) {
-  return new Promise((res) => {
-    setTimeout(res, ms)
-  })
-}
-
-watch(
-  [() => props.filters, () => page.value],
-  () => {
-    loading.value = true
-    emit('pageChange')
-    
-    delay(1000)
-      .then(() => {
-        items.value = generateLearnwareItems()
-        loading.value = false
-      })
-  }
-)
 </script>
 
 <template>
