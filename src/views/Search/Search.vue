@@ -7,6 +7,7 @@ import HardwareType from '@/components/Specification/SpecTag/HardwareType.vue'
 import FileUpload from '@/components/Specification/FileUpload.vue'
 import TagList from '@/components/Specification/SpecTag/TagList.vue'
 import LearnwareList from '@/components/Learnware/LearnwareList.vue'
+import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -27,33 +28,12 @@ const tagList = ref(_tagList)
 const files = ref([])
 
 const contentRef = ref(null)
-const learnwareItems = ref([])
 
 const scrollTop = ref(0)
 
 const showRecommended = computed(() => files.value.length > 0)
 const recommendedTips = ref(true)
 const unrecommendedTips = ref(true)
-
-function generateLearnwareItems() {
-  return Array(100).fill(0).map((_, i) => {
-    const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
-    const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
-    const allHardwareType = ['CPU', 'GPU']
-    const allTagList = ['Business', 'Financial', 'Health', 'Politics', 'Computer', 'Internet', 'Traffic', 'Nature', 'Fashion', 'Industry', 'Agriculture', 'Education']
-
-    return {
-      id: Array(32).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
-      name: `Learnware ${i + 1}`,
-      description: `This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. `,
-      dataType: allDataType[Math.floor(Math.random() * allDataType.length)],
-      taskType: allTaskType[Math.floor(Math.random() * allTaskType.length)],
-      hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
-      tagList: Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
-      matchScore: Math.floor(Math.random() * 100),
-    }
-  }).sort((a, b) => b.matchScore - a.matchScore)
-}
 
 const filters = computed(() => ({
   name: search.value,
@@ -63,27 +43,6 @@ const filters = computed(() => ({
   tagList: tagList.value,
   files: files.value
 }))
-
-const filteredLearnwareItems = computed(() => {
-  return learnwareItems.value.filter((item) => {
-    if (filters.value.name && !item.name.includes(filters.value.name)) {
-      return false
-    }
-    if (filters.value.dataType && filters.value.dataType !== item.dataType) {
-      return false
-    }
-    if (filters.value.taskType && filters.value.taskType !== item.taskType) {
-      return false
-    }
-    if (filters.value.hardwareType && filters.value.hardwareType !== item.hardwareType) {
-      return false
-    }
-    if (filters.value.tagList.length > 0 && filters.value.tagList.filter((tag) => item.tagList.includes(tag)).length === 0) {
-      return false
-    }
-    return true
-  })
-})
 
 const recommendLearnwareItems = ref(Array(4).fill(0).map((_, i) => {
   const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
@@ -150,7 +109,6 @@ onActivated(() => {
 })
 
 onMounted(() => {
-  learnwareItems.value = generateLearnwareItems()
   nextTick(() => {
     contentRef.value.addEventListener('scroll', () => {
       scrollTop.value = contentRef.value.scrollTop
@@ -195,7 +153,7 @@ onMounted(() => {
             </template>
           </v-alert>
         </v-card-text>
-        <learnware-list :items="recommendLearnwareItems" />
+        <learnware-list :items="recommendLearnwareItems" :filters="filters" />
       </v-card>
       <v-card flat class="m-2 mt-4 bg-transparent">
         <v-card-title v-if="showRecommended && !unrecommendedTips">Recommended single learnwares</v-card-title>
@@ -208,7 +166,7 @@ onMounted(() => {
             </template>
           </v-alert>
         </v-card-text>
-        <learnware-list :items="filteredLearnwareItems" :filters="filters" />
+        <page-learnware-list :filters="filters" />
       </v-card>
     </div>
   </div>
