@@ -75,8 +75,8 @@ function nextPage() {
 }
 
 function formerPage() {
-  if (page.value > 1) {
-    jumpPage(page.value - 1)
+  if (props.page > 1) {
+    jumpPage(props.value - 1)
   }
 }
 
