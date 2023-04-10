@@ -93,50 +93,52 @@ function deleteLearnware(id) {
 </script>
 
 <template>
-  <learnware-list
-    v-if="!loading"
-    :items="items"
-    :filters="filters"
-    :cols="cols"
-    :md="md"
-    :sm="sm"
-    :xs="xs"
-    :show-actions="showActions"
-    @delete="deleteLearnware"
-  />
+  <div>
+    <learnware-list
+      v-if="!loading"
+      :items="items"
+      :filters="filters"
+      :cols="cols"
+      :md="md"
+      :sm="sm"
+      :xs="xs"
+      :show-actions="showActions"
+      @delete="deleteLearnware"
+    />
 
-  <div v-else class="grid p-2 gap-3" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-    <v-skeleton-loader
-      v-for="i in pageSize"
-      class="w-1/1"
-      type="article"
-    ></v-skeleton-loader>
-  </div>
-  
-  <div v-if="showPagination" class="mt-5 flex justify-center items-center">
-    <div v-if="pageNum <= 7">
-      <v-btn icon="mdi-arrow-left" color="primary" @click="formerPage"></v-btn>
-      <v-btn v-for="i in pageNum" :key="i" class="mx-1 !px-2 !min-w-0" :color="i === page ? 'primary' : 'default'" @click="() => jumpPage(i)" flat>{{ i }}</v-btn>
-      <v-btn icon="mdi-arrow-right" color="primary" @click="nextPage"></v-btn>
+    <div v-else class="grid p-2 gap-3" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
+      <v-skeleton-loader
+        v-for="i in pageSize"
+        class="w-1/1"
+        type="article"
+      ></v-skeleton-loader>
     </div>
-    <div v-else>
-      <v-btn icon="mdi-arrow-left" color="primary" @click="formerPage"></v-btn>
-      <v-btn v-if="greaterThanXs && page > 2" class="mx-2 !px-2 !min-w-0" variant="text" @click="jumpPage(1)">1</v-btn>
-      <v-btn v-if="greaterThanXs && page === 4" class="mx-2 !px-2 !min-w-0" variant="text" @click="jumpPage(2)">2</v-btn>
-      <v-btn v-if="greaterThanXs && page > 4" class="mx-2 !px-2 !min-w-0" variant="text">...</v-btn>
-      <v-btn v-if="greaterThanXs && page > pageNum - 1" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page - 4)">{{ page - 4 }}</v-btn>
-      <v-btn v-if="greaterThanXs &&page > pageNum - 2" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page - 3)">{{ page - 3 }}</v-btn>
-      <v-btn v-if="greaterThanXs && page > pageNum - 3" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page - 2)">{{ page - 2 }}</v-btn>
-      <v-btn v-if="page > 1" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page - 1)">{{ page - 1 }}</v-btn>
-      <v-btn class="mx-2 !px-2 !min-w-0" color="primary">{{ page }}</v-btn>
-      <v-btn v-if="page < pageNum" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page + 1)">{{ page + 1 }}</v-btn>
-      <v-btn v-if="greaterThanXs && page < 4" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page + 2)">{{ page + 2 }}</v-btn>
-      <v-btn v-if="greaterThanXs && page < 3" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page + 3)">{{ page + 3 }}</v-btn>
-      <v-btn v-if="greaterThanXs && page < 2" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page + 4)">{{ page + 4 }}</v-btn>
-      <v-btn v-if="greaterThanXs && page < pageNum - 3" class="mx-2 !px-2 !min-w-0" variant="text">...</v-btn>
-      <v-btn v-if="greaterThanXs && page === pageNum - 3" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(pageNum - 1)">{{ pageNum - 1 }}</v-btn>
-      <v-btn v-if="greaterThanXs && page < pageNum - 1" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(pageNum)">{{ pageNum }}</v-btn>
-      <v-btn icon="mdi-arrow-right" color="primary" @click="nextPage"></v-btn>
+    
+    <div v-if="showPagination" class="mt-5 flex justify-center items-center">
+      <div v-if="pageNum <= 7">
+        <v-btn icon="mdi-arrow-left" color="primary" @click="formerPage"></v-btn>
+        <v-btn v-for="i in pageNum" :key="i" class="mx-1 !px-2 !min-w-0" :color="i === page ? 'primary' : 'default'" @click="() => jumpPage(i)" flat>{{ i }}</v-btn>
+        <v-btn icon="mdi-arrow-right" color="primary" @click="nextPage"></v-btn>
+      </div>
+      <div v-else>
+        <v-btn icon="mdi-arrow-left" color="primary" @click="formerPage"></v-btn>
+        <v-btn v-if="greaterThanXs && page > 2" class="mx-2 !px-2 !min-w-0" variant="text" @click="jumpPage(1)">1</v-btn>
+        <v-btn v-if="greaterThanXs && page === 4" class="mx-2 !px-2 !min-w-0" variant="text" @click="jumpPage(2)">2</v-btn>
+        <v-btn v-if="greaterThanXs && page > 4" class="mx-2 !px-2 !min-w-0" variant="text">...</v-btn>
+        <v-btn v-if="greaterThanXs && page > pageNum - 1" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page - 4)">{{ page - 4 }}</v-btn>
+        <v-btn v-if="greaterThanXs &&page > pageNum - 2" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page - 3)">{{ page - 3 }}</v-btn>
+        <v-btn v-if="greaterThanXs && page > pageNum - 3" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page - 2)">{{ page - 2 }}</v-btn>
+        <v-btn v-if="page > 1" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page - 1)">{{ page - 1 }}</v-btn>
+        <v-btn class="mx-2 !px-2 !min-w-0" color="primary">{{ page }}</v-btn>
+        <v-btn v-if="page < pageNum" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page + 1)">{{ page + 1 }}</v-btn>
+        <v-btn v-if="greaterThanXs && page < 4" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page + 2)">{{ page + 2 }}</v-btn>
+        <v-btn v-if="greaterThanXs && page < 3" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page + 3)">{{ page + 3 }}</v-btn>
+        <v-btn v-if="greaterThanXs && page < 2" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(page + 4)">{{ page + 4 }}</v-btn>
+        <v-btn v-if="greaterThanXs && page < pageNum - 3" class="mx-2 !px-2 !min-w-0" variant="text">...</v-btn>
+        <v-btn v-if="greaterThanXs && page === pageNum - 3" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(pageNum - 1)">{{ pageNum - 1 }}</v-btn>
+        <v-btn v-if="greaterThanXs && page < pageNum - 1" class="mx-2 !px-2 !min-w-0" variant="text" @click="() => jumpPage(pageNum)">{{ pageNum }}</v-btn>
+        <v-btn icon="mdi-arrow-right" color="primary" @click="nextPage"></v-btn>
+      </div>
     </div>
   </div>
 </template>
