@@ -17,8 +17,10 @@ const hardwareType = ref('')
 const tagList = ref([])
 const description = ref('')
 
+const submiting = ref(false)
+
 const steps = [
-  { 
+  {
     title: 'Type the name of your learnware',
     subtitle: 'Name',
     icon: 'mdi-rename'
@@ -56,23 +58,69 @@ function PrevStep() {
   }
 }
 
+function submit() {
+  submiting.value = true
+
+  const semanticSpec = {
+    "Data": {
+      "Values": dataType.value,
+      "Type": "Class"
+    },
+    "Task": {
+      "Values": taskType.value,
+      "Type": "Class"
+    },
+    "Device": {
+      "Values": [
+        hardwareType.value
+      ],
+      "Type": "Tag"
+    },
+    "Scenario": {
+      "Values": tagList.value,
+      "Type": "Tag"
+    },
+    "Description": {
+      "Values": description.value,
+      "Type": "Description"
+    },
+    "Name": {
+      "Values": name.value,
+      "Type": "Name"
+    }
+  }
+  const fd = new FormData()
+  fd.append('learnware_file', files.value[0])
+  fd.append('semantic_specification', JSON.stringify(semanticSpec))
+
+  fetch('/api/user/add_learnware', {
+    method: 'POST',
+    body: fd,
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      console.log(res)
+      submiting.value = false
+    })
+}
+
 onMounted(() => {
-  if(route.query.name) {
+  if (route.query.name) {
     name.value = route.query.name
   }
-  if(route.query.dataType) {
+  if (route.query.dataType) {
     dataType.value = route.query.dataType
   }
-  if(route.query.taskType) {
+  if (route.query.taskType) {
     taskType.value = route.query.taskType
   }
-  if(route.query.hardwareType) {
+  if (route.query.hardwareType) {
     hardwareType.value = route.query.hardwareType
   }
-  if(route.query.tagList) {
+  if (route.query.tagList) {
     tagList.value = JSON.parse(route.query.tagList)
   }
-  if(route.query.description) {
+  if (route.query.description) {
     description.value = route.query.description
   }
 })
@@ -81,56 +129,53 @@ onMounted(() => {
 <template>
   <v-container class="h-1/1">
     <v-card class="max-w-1000px w-1/1 m-auto">
-      <v-stepper-title
-        class="mt-2 mb-5 w-1/1"
-        :steps="steps"
-        :current-step="currentStep"
-        @active-step="activeStep"
-      />
-      
+      <v-stepper-title class="mt-2 mb-5 w-1/1" :steps="steps" :current-step="currentStep" @active-step="activeStep" />
+
       <v-divider class="border-black"></v-divider>
-      
+
       <div class="w-1/1 mx-auto p-2">
         <v-card-title class="!md:text-2xl text-1rem">
           <span>{{ steps[currentStep].title }}</span>
         </v-card-title>
-    
+
         <v-window v-model="currentStep">
           <v-window-item :value="0">
             <v-card-text>
-              <v-text-field v-model="name" label="Name" placeholder="Awesome learnware" append-inner-icon="mdi-close" @click:append-inner="name = ''"></v-text-field>
+              <v-text-field v-model="name" label="Name" placeholder="Awesome learnware" append-inner-icon="mdi-close"
+                @click:append-inner="name = ''"></v-text-field>
               <span class="text-caption text-grey-darken-1">
                 This is the name of the learnware you contribute.
               </span>
             </v-card-text>
           </v-window-item>
-    
+
           <v-window-item :value="1">
             <v-card-text class="pt-0">
-              <spec-tag v-model:data-type="dataType" v-model:task-type="taskType" v-model:hardware-type="hardwareType" v-model:tag-list="tagList" />
+              <spec-tag v-model:data-type="dataType" v-model:task-type="taskType" v-model:hardware-type="hardwareType"
+                v-model:tag-list="tagList" />
             </v-card-text>
           </v-window-item>
-    
+
           <v-window-item :value="2">
             <div class="pa-4 text-center">
-              <v-textarea v-model="description" label="Description" placeholder="This is a description of the learnware"></v-textarea>
+              <v-textarea v-model="description" label="Description"
+                placeholder="This is a description of the learnware"></v-textarea>
             </div>
           </v-window-item>
-    
+
           <v-window-item :value="3">
             <div class="p-4 m-auto">
-              <file-upload
-                v-model:files="files"
-              ></file-upload>
+              <file-upload v-model:files="files"></file-upload>
             </div>
             <v-card-text class="text-lg">
-              <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for instructions on how to create the required zip file.
+              <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for instructions
+              on how to create the required zip file.
             </v-card-text>
           </v-window-item>
         </v-window>
-    
+
         <v-divider></v-divider>
-    
+
         <v-card-actions>
           <v-btn v-if="currentStep > 0" variant="outlined" @click="PrevStep">
             Back
@@ -139,7 +184,7 @@ onMounted(() => {
           <v-btn v-if="currentStep < steps.length - 1" color="primary" variant="flat" @click="nextStep">
             Next
           </v-btn>
-          <v-btn v-else color="primary" variant="flat" @click="submit">
+          <v-btn v-else color="primary" variant="flat" @click="submit" :disabled="submiting">
             Finish
           </v-btn>
         </v-card-actions>
