@@ -63,13 +63,14 @@ def delete_user():
         return jsonify({"code": 51, "msg": "User not found."})
 
     # Check learnware
-    learnware_list = database.get_learnware_list("user_id", user_id)
-    if len(learnware_list) > 0:
+    ret, cnt = database.get_learnware_list("user_id", user_id)
+    if len(ret) > 0:
+        learnware_list = engine_helper.get_learnware_by_id([x["learnware_id"] for x in ret])
         return jsonify({
             "code": 52, 
             "msg": "Learnware list is not empty.", 
             "data": {
-                "learnware_list": [x["learnware_id"] for x in learnware_list]
+                "learnware_list": learnware_list
             }
         })
 

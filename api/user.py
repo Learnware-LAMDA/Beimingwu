@@ -18,11 +18,14 @@ user_api = Blueprint("User-API", __name__)
 
 def remove_learnware(learnware_id: str) -> bool:
     # [TODO] Require code for engine
-    ok = C.engine.delete_learnware(learnware_id)
-    if not ok:
+    try:
+        ok = C.engine.delete_learnware(learnware_id)
+        if not ok:
+            return False
+        cnt = database.remove_learnware("learnware_id", learnware_id)
+        return cnt > 0
+    except:
         return False
-    cnt = database.remove_learnware("learnware_id", learnware_id)
-    return cnt > 0
 
 
 @user_api.route("/get_profile", methods=["POST"])
@@ -77,10 +80,14 @@ def add_learnware():
     # learnware_name = request.form.get("learnware_name")
     semantic_specification = request.form.get("semantic_specification")
     if request.files is None or semantic_specification is None:
+        print("="* 50)
+        print(request.form)
+        print(request.files)
         return jsonify({"code": 21, "msg": f"Request parameters error."})
     
     learnware_file = request.files['learnware_file']
     if learnware_file.filename == '' or not learnware_file:
+        print("&"* 50)
         return jsonify({"code": 21, "msg": f"Request parameters error."})
 
     leareware_filename = f"{int(time.time())}_" + hashlib.md5(learnware_file.read()).hexdigest() + ".zip"
@@ -124,8 +131,8 @@ def delete_learnware():
     learnware_id = data["learnware_id"]
 
     # Check permission
-    learnware = database.get_learnware_list("learnware_id", learnware_id)
-    if len(learnware) == 0 or learnware[0]["user_id"] != g.user["id"]:
+    learnware_infos, cnt = database.get_learnware_list("learnware_id", learnware_id)
+    if len(learnware_infos) == 0 or learnware_infos[0]["user_id"] != g.user["id"]:
         return jsonify({"code": 51, "msg": "You do not own this learnware."})
     
     # Remove learnware

@@ -4,7 +4,7 @@ from .auth import login_required
 from config import C
 import os, json, time
 import hashlib
-from learnware import market
+from learnware import market, specification
 from .utils import dump_learnware
 engine_api = Blueprint("Engine-API", __name__)
 
@@ -24,10 +24,8 @@ def get_semantic_specification():
 @engine_api.route("/search_learnware", methods=["POST"])
 def search_learnware():
     # Load name & semantic specification
-    learnware_name = request.form.get("learnware_name")
     semantic_specification = request.form.get("semantic_specification")
-    print(learnware_name, semantic_specification)
-    if 'statistical_specification' not in request.files or learnware_name is None or semantic_specification is None:
+    if 'statistical_specification' not in request.files or semantic_specification is None:
         return jsonify({"code": 21, "msg": f"Request parameters error."})
     try:
         semantic_specification = json.loads(semantic_specification)
@@ -47,8 +45,10 @@ def search_learnware():
     statistical_file.save(statistical_path)
     statistical_specification = None
     try:
-        with open(statistical_path, "r") as f:
-            statistical_specification = json.loads(f.read())
+        # with open(statistical_path, "r") as f:
+        statistical_specification = specification.rkme.RKMEStatSpecification()
+        statistical_specification.load(statistical_path)
+            # statistical_specification = json.loads(f.read())
     except:
         return jsonify({"code": 42, "msg": f"Statistical specification error."})
     if statistical_specification is None:
@@ -58,9 +58,16 @@ def search_learnware():
     info = market.BaseUserInfo(
         id=g.user['id'],
         semantic_spec=semantic_specification,
-        stat_info=statistical_specification,
+        stat_info={"RKMEStatSpecification": statistical_specification},
     )
     matching, single_learnware_list, multi_learnware = C.engine.search_learnware(info)
+    print("="*50)
+    print(matching)
+    print("="*50)
+    print(single_learnware_list)
+    print("="*50)
+    print(multi_learnware)
+    print("="*50)
     assert len(matching) == len(single_learnware_list)
     n = len(single_learnware_list)
     
