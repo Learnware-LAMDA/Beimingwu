@@ -125,12 +125,10 @@ const selections = computed(() => {
 
 watch(
   () => selected.value,
-  () => search.value = ''
-)
-
-watch(
-  () => selections.value,
-  (newVal) => emit('update:value', newVal.map(item => item.text))
+  (newVal) => {
+    search.value = ''
+    emit('update:value', newVal.map(item => item.text))
+  }
 )
 </script>
 
