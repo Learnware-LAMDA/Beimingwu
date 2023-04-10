@@ -109,9 +109,9 @@ onDeactivated(() => {
         <div class="first-row">
           <v-card-title class="title">{{ item.name }}</v-card-title>
           <v-card-actions class="actions">
-            <v-btn icon="mdi-download" @click.stop="() => downloadLearnware(item.id)"></v-btn>
             <v-btn v-if="showActions" icon="mdi-pencil"
-              @click.stop="() => router.push({ path: '/submit', query: transformQuery(item) })"></v-btn>
+              @click.stop="() => router.push({ path: '/submit', query: transformQuery(item) })" disabled></v-btn>
+            <v-btn icon="mdi-download" @click.stop="() => downloadLearnware(item.id)"></v-btn>
             <v-btn v-if="showActions" icon="mdi-delete" @click.stop="() => confirmDelete(i)"></v-btn>
           </v-card-actions>
         </div>
@@ -132,7 +132,8 @@ onDeactivated(() => {
           <div class="description">{{ item.description }}</div>
         </v-card-text>
         <v-card-title v-if="item.matchScore" class="score">
-          Match score <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{ item.matchScore }}</span>
+          Match score <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{ item.matchScore
+          }}</span>
         </v-card-title>
       </v-card>
     </TransitionGroup>
@@ -147,7 +148,7 @@ onDeactivated(() => {
   @apply relative p-2 grid xl: grid-cols-2 lg:grid-cols-2 gap-3;
 
   .card {
-    @apply border-1 hover:(border-1 border-purple-500);
+    @apply border-1 hover: (border-1 border-purple-500);
 
     .first-row {
       @apply flex justify-between items-center;
@@ -195,7 +196,7 @@ onDeactivated(() => {
     }
   }
 
-  .score{
+  .score {
     @apply lg: '!text-1rem' '!text-0.8rem';
   }
 
@@ -212,4 +213,5 @@ onDeactivated(() => {
 .fade-enter,
 .fade-leave-to {
   @apply opacity-0;
-}</style>
+}
+</style>
