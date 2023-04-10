@@ -26,6 +26,7 @@ catch {
 const tagList = ref(_tagList)
 
 const files = ref([])
+const showUpload = ref(false)
 
 const multiRecommendedLearnwarePage = ref(1)
 const multiRecommendedLearnwarePageNum = ref(1)
@@ -164,9 +165,11 @@ onMounted(() => {
 
 <template>
   <div class="search-container">
-    <div class="flex flex-col w-1/1 md:max-w-460px">
+    <div class="flex flex-col w-1/1 md:max-w-460px bg-white">
       <div class="filter px-5">
-        <div class="my-3 text-h6">Choose semantic specification</div>
+        <div class="my-3 text-h6">
+          <v-icon class="!mt-0 mr-2" icon="mdi-tag-text" color="black" size="small" />Choose semantic specification
+        </div>
         <div>
           <div class="mt-7 mb-3 text-h6 !text-1rem">Search by name</div>
           <v-text-field v-model="search" label="Search by name" hide-details append-inner-icon="mdi-close"
@@ -177,12 +180,19 @@ onMounted(() => {
         <hardware-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="hardwareType" />
         <tag-list class="bg-transparent text-h6 !text-1rem" v-model:value="tagList" :cols="2" :md="1" :sm="1" />
       </div>
-      <div class="p-5 pt-0">
-        <div class="mt-3 mb-5 text-h6 text-sm">
-          Upload statistical specification
-        </div>
-        <file-upload v-model:files="files" />
-      </div>
+      <v-hover>
+        <template v-slot:default="{ isHovering, props }">
+          <div class="p-5 pt-0 border-t-2 border-gray-300 bg-white" v-bind="props">
+            <div class="mt-3 w-1/1 text-h6 transition-all" :class="files.length || isHovering ? ['mb-5'] : []">
+              <v-icon class="mr-2" icon="mdi-upload" color="black" size="small" />Upload statistical specification
+            </div>
+
+            <v-expand-transition>
+              <file-upload v-show="files.length || isHovering" v-model:files="files" />
+            </v-expand-transition>
+          </div>
+        </template>
+      </v-hover>
     </div>
     <div ref="contentRef" class="content">
       <v-card v-if="showMultiRecommended" flat class="m-2 mt-4 bg-transparent">
@@ -196,7 +206,9 @@ onMounted(() => {
             </template>
           </v-alert>
         </v-card-text>
-        <page-learnware-list :show-pagination="false" :items="multiRecommendedLearnwareItems" :filters="filters" @page-change="pageChange" :page="multiRecommendedLearnwarePage" :page-num="multiRecommendedLearnwarePageNum" :page-size="multiRecommendedLearnwarePageSize" :loading="loading" />
+        <page-learnware-list :show-pagination="false" :items="multiRecommendedLearnwareItems" :filters="filters"
+          @page-change="pageChange" :page="multiRecommendedLearnwarePage" :page-num="multiRecommendedLearnwarePageNum"
+          :page-size="multiRecommendedLearnwarePageSize" :loading="loading" />
       </v-card>
       <v-card flat class="m-2 mt-4 bg-transparent">
         <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">Recommended single learnwares</v-card-title>
@@ -209,7 +221,9 @@ onMounted(() => {
             </template>
           </v-alert>
         </v-card-text>
-        <page-learnware-list :items="singleRecommendedLearnwareItems" :filters="filters" @page-change="pageChange" :page="singleRecommendedLearnwarePage" :page-num="singleRecommendedLearnwarePageNum" :page-size="singleRecommendedLearnwarePageSize" :loading="loading" />
+        <page-learnware-list :items="singleRecommendedLearnwareItems" :filters="filters" @page-change="pageChange"
+          :page="singleRecommendedLearnwarePage" :page-num="singleRecommendedLearnwarePageNum"
+          :page-size="singleRecommendedLearnwarePageSize" :loading="loading" />
       </v-card>
     </div>
   </div>
@@ -235,4 +249,5 @@ onMounted(() => {
   .content {
     @apply w-1/1 overflow-y-scroll;
   }
-}</style>
+}
+</style>
