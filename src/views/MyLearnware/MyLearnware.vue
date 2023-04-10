@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, nextTick, watch, onActivated } from 'vue'
 import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue'
 
 const learnwareItems = ref([])
@@ -10,6 +10,8 @@ const pageSize = ref(10)
 const loading = ref(false)
 
 const contentRef = ref(null)
+
+const scrollTop = ref(0)
 
 function deleteLearnware(id) {
   learnwareItems.value.splice(learnwareItems.value.findIndex((item) => item.id === id), 1)
@@ -67,7 +69,17 @@ watch(
   { deep: true }
 )
 
+onActivated(() => {
+  contentRef.value.scrollTop = scrollTop.value
+})
+
 onMounted(() => {
+  nextTick(() => {
+    contentRef.value.addEventListener('scroll', () => {
+      scrollTop.value = contentRef.value.scrollTop
+    })
+  })
+
   fetchByFilterAndPage(page.value)
 })
 </script>
