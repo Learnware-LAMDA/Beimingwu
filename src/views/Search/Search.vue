@@ -1,12 +1,11 @@
 <script setup>
 import { ref, computed, watch, onMounted, nextTick, onActivated } from 'vue'
-import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import DataType from '@/components/Specification/SpecTag/DataType.vue'
 import TaskType from '@/components/Specification/SpecTag/TaskType.vue'
 import HardwareType from '@/components/Specification/SpecTag/HardwareType.vue'
 import FileUpload from '@/components/Specification/FileUpload.vue'
 import TagList from '@/components/Specification/SpecTag/TagList.vue'
-import LearnwareList from '@/components/Learnware/LearnwareList.vue'
 import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue'
 
 const route = useRoute()
@@ -26,7 +25,6 @@ catch {
 const tagList = ref(_tagList)
 
 const files = ref([])
-const showUpload = ref(false)
 
 const multiRecommendedLearnwarePage = ref(1)
 const multiRecommendedLearnwarePageNum = ref(1)
