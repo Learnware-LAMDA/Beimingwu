@@ -117,6 +117,7 @@ const categories = computed(() => {
 const selections = computed(() => {
   if (selected.value) {
     return selected.value.map((s) => {
+      console.log(selected.value)
       return items.find(item => item.text === s)
     })
   }
@@ -127,7 +128,7 @@ watch(
   () => selected.value,
   (newVal) => {
     search.value = ''
-    emit('update:value', newVal.map(item => item.text))
+    emit('update:value', newVal)
   }
 )
 </script>
