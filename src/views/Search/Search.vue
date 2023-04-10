@@ -111,7 +111,7 @@ function generateLearnwareItems(filters, num) {
       taskType: filters.taskType || allTaskType[Math.floor(Math.random() * allTaskType.length)],
       hardwareType: filters.hardwareType || allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
       tagList: filters.tagList || Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
-      matchScore: Math.floor(Math.random() * 100),
+      matchScore: files.value.length > 0 ? Math.floor(Math.random() * 100) : null,
     }
   }).sort((a, b) => b.matchScore - a.matchScore)
 }
