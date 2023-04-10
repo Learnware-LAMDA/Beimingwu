@@ -114,7 +114,7 @@ function deleteLearnware(id) {
       ></v-skeleton-loader>
     </div>
     
-    <div v-if="showPagination" class="mt-5 flex justify-center items-center">
+    <div v-if="showPagination" class="my-5 flex justify-center items-center">
       <div v-if="pageNum <= 7">
         <v-btn icon="mdi-arrow-left" color="primary" @click="formerPage"></v-btn>
         <v-btn v-for="i in pageNum" :key="i" class="mx-1 !px-2 !min-w-0" :color="i === page ? 'primary' : 'default'" @click="() => jumpPage(i)" flat>{{ i }}</v-btn>
