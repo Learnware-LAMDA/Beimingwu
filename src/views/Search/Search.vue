@@ -89,7 +89,7 @@ function saveQuery() {
 
 function pageChange(newPage) {
   singleRecommendedLearnwarePage.value = newPage
-  contentRef.value.scrollTop = 0
+  contentRef.value && (contentRef.value.scrollTop = 0)
 }
 
 function delay(ms) {
@@ -128,6 +128,12 @@ function fetchByFilterAndPage(filters, page) {
       loading.value = false
     })
 }
+
+watch(
+  () => filters.value,
+  () => singleRecommendedLearnwarePage.value = 1,
+  { deep: true }
+)
 
 watch(
   () => [filters.value, singleRecommendedLearnwarePage.value],
