@@ -137,7 +137,7 @@ watch(
       contentRef.value.scrollTop = 0
     }
 
-    // saveQuery()
+    saveQuery()
 
     fetchByFilterAndPage(newFilters, newPage)
   },
@@ -155,7 +155,7 @@ onMounted(() => {
       scrollTop.value = contentRef.value.scrollTop
     })
 
-    // loadQuery()
+    loadQuery()
 
     fetchByFilterAndPage(filters.value, singleRecommendedLearnwarePage.value)
   })
