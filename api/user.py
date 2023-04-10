@@ -80,9 +80,11 @@ def add_learnware():
         return jsonify({"code": 41, "msg": "Semantic specification error"})
     
     user_id = g.user["id"]
-    learnware_id = generate_random_str(16)
+    # learnware_id = generate_random_str(16)
     # [TODO] Add learnware
-    
+    learnware_id, ok = C.engine.add_learnware(learnware_path, semantic_specification)
+    if not ok:
+        return jsonify({"code": 42, "msg": "Engine add learnware error."})
     # Add learnware
     cnt = database.add_learnware(user_id, learnware_id)
     if cnt > 0:
