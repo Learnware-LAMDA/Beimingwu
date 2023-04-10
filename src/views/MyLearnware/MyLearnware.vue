@@ -54,7 +54,7 @@ function fetchByFilterAndPage(page) {
   }
 
   loading.value = true
-  delay(1000)
+  delay(Math.random() * 2000)
     .then(() => {
       learnwareItems.value = generateLearnwareItems(pageSize.value)
       loading.value = false
