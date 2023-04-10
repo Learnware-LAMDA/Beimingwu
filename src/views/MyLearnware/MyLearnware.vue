@@ -43,9 +43,8 @@ function generateLearnwareItems(num) {
       taskType: allTaskType[Math.floor(Math.random() * allTaskType.length)],
       hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
       tagList: Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
-      matchScore: Math.floor(Math.random() * 100),
     }
-  }).sort((a, b) => b.matchScore - a.matchScore)
+  })
 }
 
 function fetchByFilterAndPage(page) {
