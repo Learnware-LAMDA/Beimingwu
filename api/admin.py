@@ -7,6 +7,8 @@ from .utils import get_parameters
 if C.database_type == "sqlite":
     import lib.sqlite as database
 
+import lib.engine as engine_helper
+
 admin_api = Blueprint("Admin-API", __name__)
 
 
@@ -90,11 +92,12 @@ def get_learnware_list():
     # Return whole user list directly
     if data is None or "limit" not in data:
         ret, cnt = database.get_all_learnware_list(columns=["user_id", "learnware_id", "last_modify"])
+        learnware_list = engine_helper.get_learnware_by_id([x["learnware_id"] for x in ret])
         result = {
             "code": 0,
             "msg": "Get learnware list success.",
             "data": {
-                "learnware_list": ret
+                "learnware_list": learnware_list
             }
         }
         return jsonify(result)
@@ -102,11 +105,12 @@ def get_learnware_list():
     limit = data["limit"]
     page  = 0 if "page" not in data else data["page"]
     ret, cnt = database.get_all_learnware_list(columns=["user_id", "learnware_id", "last_modify"], limit=limit, page=page)
+    learnware_list = engine_helper.get_learnware_by_id([x["learnware_id"] for x in ret])
     result = {
         "code": 0,
         "msg": "Get learnware list success.",
         "data": {
-            "learnware_list": ret,
+            "learnware_list": learnware_list,
             "page": page,
             "limit": limit,
             "total_pages": (cnt + limit - 1) // limit

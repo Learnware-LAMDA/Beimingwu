@@ -9,6 +9,8 @@ from .auth import login_required
 if C.database_type == "sqlite":
     import lib.sqlite as database
 
+import lib.engine as engine_helper
+
 __all__ = ["user_api", "remove_learnware"]
 
 user_api = Blueprint("User-API", __name__)
@@ -42,17 +44,25 @@ def get_learnware_list():
     # Return learnware list directly
     if data is None or "limit" not in data:
         ret, cnt = database.get_learnware_list("user_id", g.user["id"])
-        result = {"code": 0, "msg": "Ok.", "data": {"learnware_list": ret}}
+        learnware_list = engine_helper.get_learnware_by_id([x["learnware_id"] for x in ret])
+        result = {
+                "code": 0,
+                "msg": "Ok.", 
+                "data": {
+                    "learnware_list": learnware_list
+                    }
+                }
         return jsonify(result)
     # Calculate the page limit
     limit = data["limit"]
     page  = 0 if "page" not in data else data["page"]
     ret, cnt = database.get_learnware_list("user_id", g.user["id"], limit, page)
+    learnware_list = engine_helper.get_learnware_by_id([x["learnware_id"] for x in ret])
     result = {
         "code": 0, 
         "msg": "Ok.", 
         "data": {
-            "learnware_list": ret,
+            "learnware_list": learnware_list,
             "page": page,
             "limit": limit,
             "total_pages": (cnt + limit - 1) // limit
@@ -64,9 +74,9 @@ def get_learnware_list():
 @user_api.route("/add_learnware", methods=["POST"])
 @login_required
 def add_learnware():
-    learnware_name = request.form.get("learnware_name")
+    # learnware_name = request.form.get("learnware_name")
     semantic_specification = request.form.get("semantic_specification")
-    if 'learnware_file' not in request.files or learnware_name is None or semantic_specification is None:
+    if request.files is None or semantic_specification is None:
         return jsonify({"code": 21, "msg": f"Request parameters error."})
     
     learnware_file = request.files['learnware_file']
@@ -74,6 +84,8 @@ def add_learnware():
         return jsonify({"code": 21, "msg": f"Request parameters error."})
 
     leareware_filename = f"{int(time.time())}_" + hashlib.md5(learnware_file.read()).hexdigest() + ".zip"
+    if not os.path.exists(C.upload_path):
+        os.mkdir(C.upload_path)
     learnware_path = os.path.join(C.upload_path, leareware_filename)
     learnware_file.seek(0)
     learnware_file.save(learnware_path)
