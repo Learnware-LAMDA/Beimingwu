@@ -8,10 +8,6 @@ const display = useDisplay()
 
 const emit = defineEmits(['delete', 'pageChange'])
 
-defineExpose({
-  getPage: () => page.value
-})
-
 const props = defineProps({
   items: {
     type: Array,
@@ -36,6 +32,10 @@ const props = defineProps({
   },
   loading: {
     type: Boolean,
+  },
+  showPagination: {
+    type: Boolean,
+    default: true,
   },
   cols: {
     type: Number,
@@ -113,7 +113,7 @@ function deleteLearnware(id) {
     ></v-skeleton-loader>
   </div>
   
-  <div class="mt-5 flex justify-center items-center">
+  <div v-if="showPagination" class="mt-5 flex justify-center items-center">
     <div v-if="pageNum <= 7">
       <v-btn icon="mdi-arrow-left" color="primary" @click="formerPage"></v-btn>
       <v-btn v-for="i in pageNum" :key="i" class="mx-1 !px-2 !min-w-0" :color="i === page ? 'primary' : 'default'" @click="() => jumpPage(i)" flat>{{ i }}</v-btn>
