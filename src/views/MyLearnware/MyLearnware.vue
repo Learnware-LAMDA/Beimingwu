@@ -80,6 +80,18 @@ onMounted(() => {
   })
 
   fetchByFilterAndPage(page.value)
+
+  fetch('/api/user/get_learnware_list', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      page: page.value,
+      limit: pageSize.value,
+    }),
+  })
+    .then((res) => res.json()).then(console.log)
 })
 </script>
 
