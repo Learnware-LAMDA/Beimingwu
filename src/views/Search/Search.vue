@@ -168,7 +168,7 @@ onMounted(() => {
     <div class="flex flex-col w-1/1 md:max-w-460px bg-white">
       <div class="filter px-5">
         <div class="my-3 text-h6">
-          <v-icon class="!mt-0 mr-2" icon="mdi-tag-text" color="black" size="small" />Choose semantic specification
+          <v-icon class="!mt-0 mr-3" icon="mdi-tag-text" color="black" size="small" />Choose semantic specification
         </div>
         <div>
           <div class="mt-7 mb-3 text-h6 !text-1rem">Search by name</div>
@@ -184,7 +184,7 @@ onMounted(() => {
         <template v-slot:default="{ isHovering, props }">
           <div class="p-5 pt-0 border-t-2 border-gray-300 bg-white" v-bind="props">
             <div class="mt-3 w-1/1 text-h6 transition-all" :class="files.length || isHovering ? ['mb-5'] : []">
-              <v-icon class="mr-2" icon="mdi-upload" color="black" size="small" />Upload statistical specification
+              <v-icon class="mr-3" icon="mdi-upload" color="black" size="small" />Upload statistical specification
             </div>
 
             <v-expand-transition>
