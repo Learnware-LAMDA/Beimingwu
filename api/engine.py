@@ -1,11 +1,13 @@
-from flask import Blueprint, jsonify, request
+import io
+import zipfile
+from flask import Blueprint, Response, jsonify, request
 from flask import send_from_directory, send_file, make_response, g
 from .auth import login_required
 from config import C
 import os, json, time
 import hashlib
 from learnware import market, specification
-from .utils import dump_learnware
+from .utils import dump_learnware, get_parameters
 engine_api = Blueprint("Engine-API", __name__)
 
 
@@ -79,7 +81,19 @@ def search_learnware():
 @engine_api.route("/download_learnware", methods=["GET"])
 @login_required
 def download_learnware():
-    learnware_name = "file.zip"
-    learnware_path = os.path.join(C.root_path, "files")
-    response = make_response(send_from_directory(learnware_path, learnware_name, as_attachment=True))
+    data = get_parameters(request, ["learnware_id"])
+    if data is None:
+        return jsonify({"code": 21, "msg": "Request parameters error."})
+    learnware_id = data["learnware_id"]
+    learnware_path = C.engine.get_learnware_path_by_ids(learnware_id)
+
+    if learnware_path is None:
+        return jsonify({"code": 41, "msg": "Learnware not found."})
+
+    learnware_path = os.path.join(os.path.dirname(os.path.dirname(learnware_path)))
+    learnware_path = os.path.join(learnware_path, 'zips')
+    learnware_filename = learnware_id + ".zip"
+
+    response = make_response(send_from_directory(learnware_path, learnware_filename, as_attachment=True))
+
     return response

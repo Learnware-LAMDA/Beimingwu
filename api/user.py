@@ -18,14 +18,14 @@ user_api = Blueprint("User-API", __name__)
 
 def remove_learnware(learnware_id: str) -> bool:
     # [TODO] Require code for engine
-    try:
-        ok = C.engine.delete_learnware(learnware_id)
-        if not ok:
-            return False
-        cnt = database.remove_learnware("learnware_id", learnware_id)
-        return cnt > 0
-    except:
+    # try:
+    ok = C.engine.delete_learnware(learnware_id)
+    if not ok:
         return False
+    cnt = database.remove_learnware("learnware_id", learnware_id)
+    return cnt > 0
+    # except:
+        # return False
 
 
 @user_api.route("/get_profile", methods=["POST"])
