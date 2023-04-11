@@ -13,7 +13,7 @@ const files = ref([])
 const name = ref('')
 const dataType = ref('')
 const taskType = ref('')
-const deviceType = ref('')
+const deviceType = ref([])
 const tagList = ref([])
 const description = ref('')
 
@@ -79,9 +79,7 @@ function submit() {
       "Type": "Class"
     },
     "Device": {
-      "Values": [
-        deviceType.value
-      ],
+      "Values": deviceType.value,
       "Type": "Tag"
     },
     "Scenario": {
@@ -149,7 +147,7 @@ onMounted(() => {
     taskType.value = route.query.taskType
   }
   if (route.query.deviceType) {
-    deviceType.value = route.query.deviceType
+    deviceType.value = JSON.parse(route.query.deviceType)
   }
   if (route.query.tagList) {
     tagList.value = JSON.parse(route.query.tagList)

@@ -63,6 +63,7 @@ function fetchByFilterAndPage(page) {
     contentRef.value.scrollTop = 0
   }
 
+  showError.value = false
   loading.value = true
 
   fetch('/api/user/get_learnware_list', {
@@ -92,7 +93,7 @@ function fetchByFilterAndPage(page) {
             description: item.semantic_specification.Description.Values,
             dataType: item.semantic_specification.Data.Values,
             taskType: item.semantic_specification.Task.Values,
-            deviceType: item.semantic_specification.Device.Values[0],
+            deviceType: item.semantic_specification.Device.Values,
             tagList: item.semantic_specification.Scenario.Values
           }))
           pageNum.value = res.data.total_pages

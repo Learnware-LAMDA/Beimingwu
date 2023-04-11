@@ -74,7 +74,7 @@ function transformQuery(item) {
     name: item.name,
     dataType: item.dataType,
     taskType: item.taskType,
-    deviceType: item.deviceType,
+    deviceType: JSON.stringify(item.deviceType),
     tagList: JSON.stringify(item.tagList),
     description: item.description,
   }
@@ -122,9 +122,9 @@ onDeactivated(() => {
           <div class="label"
             :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : null">{{
               item.taskType }}</div>
-          <div class="label"
-            :class="filters && filters.deviceType && filters.deviceType.includes(item.deviceType) ? 'active' : null">
-            {{ item.deviceType }}</div>
+          <div v-for="deviceType in item.deviceType" class="label"
+            :class="filters && filters.deviceType && filters.deviceType.includes(deviceType) ? 'active' : null">
+            {{ deviceType }}</div>
           <div class="tag" :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : null"
             v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
         </v-card-text>

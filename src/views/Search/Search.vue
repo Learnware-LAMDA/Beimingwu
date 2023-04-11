@@ -14,7 +14,14 @@ const router = useRouter()
 const search = ref(route.query.search || '')
 const dataType = ref(route.query.dataType || '')
 const taskType = ref(route.query.taskType || '')
-const deviceType = ref(route.query.deviceType || '')
+let _deviceType
+try {
+  _deviceType = JSON.parse(route.query.deviceType)
+}
+catch {
+  _deviceType = []
+}
+const deviceType = ref(_deviceType)
 let _tagList
 try {
   _taglist = JSON.parse(route.query.tagList)
@@ -66,7 +73,7 @@ function loadQuery() {
     taskType.value = route.query.taskType
   }
   if (route.query.deviceType) {
-    deviceType.value = route.query.deviceType
+    deviceType.value = JSON.parse(route.query.deviceType)
   }
   if (route.query.tagList) {
     tagList.value = JSON.parse(route.query.tagList)
@@ -79,7 +86,7 @@ function saveQuery() {
       search: search.value,
       dataType: dataType.value,
       taskType: taskType.value,
-      deviceType: deviceType.value,
+      deviceType: JSON.stringify(deviceType.value),
       tagList: JSON.stringify(tagList.value),
     }
   })
@@ -109,15 +116,14 @@ function generateLearnwareItems(filters, num) {
       description: `This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. `,
       dataType: filters.dataType || allDataType[Math.floor(Math.random() * allDataType.length)],
       taskType: filters.taskType || allTaskType[Math.floor(Math.random() * allTaskType.length)],
-      deviceType: filters.deviceType || allDeviceType[Math.floor(Math.random() * allDeviceType.length)],
-      tagList: filters.tagList || Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
+      deviceType: filters.deviceType.length > 0 ? filters.deviceType : Array.from(new Set(Array(Math.ceil(Math.random() * 2)).fill(0).map(() => allDeviceType[Math.floor(Math.random() * allDeviceType.length)]))),
+      tagList: filters.tagList.length > 0 ? filters.tagList : Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
       matchScore: files.value.length > 0 ? Math.floor(Math.random() * 100) : null,
     }
   }).sort((a, b) => b.matchScore - a.matchScore)
 }
 
 function fetchByFilterAndPage(filters, page) {
-  console.log('fetching ...')
   loading.value = true
   delay(1000)
     .then(() => {
