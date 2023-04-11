@@ -78,7 +78,7 @@ function fetchByFilterAndPage(page) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      page: page,
+      page: page - 1,
       limit: pageSize.value,
     }),
   })
@@ -100,7 +100,7 @@ function fetchByFilterAndPage(page) {
             dataType: item.semantic_specification.Data.Values,
             taskType: item.semantic_specification.Task.Values,
             hardwareType: item.semantic_specification.Device.Values[0],
-            Scenario: item.semantic_specification.Values
+            tagList: item.semantic_specification.Scenario.Values
           }))
           pageNum.value = res.data.total_pages
           return
