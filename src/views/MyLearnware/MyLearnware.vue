@@ -17,7 +17,42 @@ const errorMsg = ref('')
 const errorTimer = ref(null)
 
 function deleteLearnware(id) {
-  learnwareItems.value.splice(learnwareItems.value.findIndex((item) => item.id === id), 1)
+  fetch('/api/user/delete_learnware', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      learnware_id: id
+    }),
+  })
+  .then((res) => {
+      if (res.status === 200) {
+        return res
+      }
+      throw new Error('Network error')
+    })
+    .then((res) => res.json())
+    .then((res) => {
+      switch (res.code) {
+        case 0: {
+          learnwareItems.value.splice(learnwareItems.value.findIndex((item) => item.id === id), 1)
+          fetchByFilterAndPage(page.value)
+          return
+        }
+        default: {
+          throw new Error(res.msg)
+        }
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+      loading.value = false
+      showError.value = true
+      errorMsg.value = err.message
+      clearTimeout(errorTimer.value)
+      errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
+    })
 }
 
 function pageChange(newPage) {
