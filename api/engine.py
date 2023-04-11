@@ -56,18 +56,11 @@ def search_learnware():
     
     # Search Learnware
     info = market.BaseUserInfo(
-        id=g.user['id'],
+        id = None if g.user is None else str(g.user['id']),
         semantic_spec=semantic_specification,
         stat_info={"RKMEStatSpecification": statistical_specification},
     )
     matching, single_learnware_list, multi_learnware = C.engine.search_learnware(info)
-    print("="*50)
-    print(matching)
-    print("="*50)
-    print(single_learnware_list)
-    print("="*50)
-    print(multi_learnware)
-    print("="*50)
     assert len(matching) == len(single_learnware_list)
     n = len(single_learnware_list)
     
