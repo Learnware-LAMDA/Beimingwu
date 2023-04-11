@@ -151,7 +151,7 @@ onMounted(() => {
       </v-card-actions>
     </v-scroll-y-transition>
     <div class="w-1/1 max-w-900px">
-      <page-learnware-list :show-pagination="true" :items="learnwareItems" @page-change="pageChange" :page="page"
+      <page-learnware-list :show-pagination="pageNum > 1" :items="learnwareItems" @page-change="pageChange" :page="page"
         :page-num="pageNum" :page-size="pageSize" :loading="loading" @delete="(id) => deleteLearnware(id)" :cols="1"
         :show-actions="true" />
     </div>
