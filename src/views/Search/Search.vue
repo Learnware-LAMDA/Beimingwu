@@ -106,7 +106,7 @@ function delay(ms) {
 function generateLearnwareItems(filters, num) {
   return Array(num).fill(0).map((_, i) => {
     const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
-    const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
+    const allTaskType = ['Classification', 'Clustering', 'Object Detection', 'Feature Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
     const allDeviceType = ['CPU', 'GPU']
     const allTagList = ['Business', 'Financial', 'Health', 'Politics', 'Computer', 'Internet', 'Traffic', 'Nature', 'Fashion', 'Industry', 'Agriculture', 'Education']
 

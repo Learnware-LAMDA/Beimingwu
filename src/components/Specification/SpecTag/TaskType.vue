@@ -60,11 +60,11 @@ const taskTypeBtns = [
     icon: RankingBtn,
   },
   {
-    title: 'Detection',
+    title: 'Object Detection',
     icon: DetectionBtn,
   },
   {
-    title: 'Extraction',
+    title: 'Feature Extraction',
     icon: ExtractionBtn,
   },
   {
