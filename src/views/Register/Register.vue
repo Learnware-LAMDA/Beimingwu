@@ -115,7 +115,7 @@ const submit = handleSubmit(values => {
             @click:append="showPassword = !showPassword"></v-text-field>
           <v-text-field v-model="password2.value.value" :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showPassword2 ? 'text' : 'password'" label="Confirm Password"
-            :error-messages="password2.errorMessage.value" @click:append="showPassword2 = !showPassword2"></v-text-field>
+            :error-messages="password2.errorMessage.value" @click:append="showPassword2 = !showPassword2" @keyup.enter="submit"></v-text-field>
         </v-form>
       </v-card-text>
       <v-scale-transition>
