@@ -37,11 +37,11 @@ class SQLite(Database):
         "INSERT INTO user (username, nickname, email, password, role, register) VALUES ('guolz',  'GuoLZ', 'guolz@lamda.nju.edu.cn', 'Qwerty123', 1, strftime('%s'))",
         "INSERT INTO user (username, nickname, email, password, register) VALUES ('zhouz', 'ZhouZ', 'zhouz@lamda.nju.edu.cn', 'Qwerty123', strftime('%s'))",
         "INSERT INTO user (username, nickname, email, password, register) VALUES ('jinyx', 'JinYX', 'jinyx@lamda.nju.edu.cn', 'Qwerty123', strftime('%s'))",
-        "INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES (1, 'POPOQQQ', strftime('%s'))",
-        "INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES (1, 'LQYBZX', strftime('%s'))",
-        "INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES (4, 'hansbug', strftime('%s'))",
-        "INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES (4, 'starzxy', strftime('%s'))",
-        "INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES (4, 'sevenkplus', strftime('%s'))",
+        # "INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES (1, 'POPOQQQ', strftime('%s'))",
+        # "INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES (1, 'LQYBZX', strftime('%s'))",
+        # "INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES (4, 'hansbug', strftime('%s'))",
+        # "INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES (4, 'starzxy', strftime('%s'))",
+        # "INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES (4, 'sevenkplus', strftime('%s'))",
     ]
 
     def __init__(self, path: str):
