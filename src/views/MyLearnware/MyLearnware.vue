@@ -4,19 +4,21 @@ import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue'
 
 const learnwareItems = ref([])
 const page = ref(1)
-const pageNum = ref(10)
+const pageNum = ref(1)
 const pageSize = ref(10)
 
 const loading = ref(false)
 
 const contentRef = ref(null)
-
 const scrollTop = ref(0)
+
+const showError = ref(false)
+const errorMsg = ref('')
+const errorTimer = ref(null)
 
 function deleteLearnware(id) {
   learnwareItems.value.splice(learnwareItems.value.findIndex((item) => item.id === id), 1)
 }
-
 
 function pageChange(newPage) {
   page.value = newPage
@@ -28,35 +30,58 @@ function delay(ms) {
   })
 }
 
-function generateLearnwareItems(num) {
-  return Array(num).fill(0).map((_, i) => {
-    const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
-    const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
-    const allHardwareType = ['CPU', 'GPU']
-    const allTagList = ['Business', 'Financial', 'Health', 'Politics', 'Computer', 'Internet', 'Traffic', 'Nature', 'Fashion', 'Industry', 'Agriculture', 'Education']
-
-    return {
-      id: Array(32).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
-      name: `Learnware ${i + 1}`,
-      description: `This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. `,
-      dataType: allDataType[Math.floor(Math.random() * allDataType.length)],
-      taskType: allTaskType[Math.floor(Math.random() * allTaskType.length)],
-      hardwareType: allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
-      tagList: Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
-    }
-  })
-}
-
 function fetchByFilterAndPage(page) {
   if (contentRef.value) {
     contentRef.value.scrollTop = 0
   }
 
   loading.value = true
-  delay(Math.random() * 2000)
-    .then(() => {
-      learnwareItems.value = generateLearnwareItems(pageSize.value)
+
+  fetch('/api/user/get_learnware_list', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      page: page,
+      limit: pageSize.value,
+    }),
+  })
+  .then((res) => {
+      if (res.status === 200) {
+        return res
+      }
+      throw new Error('Network error')
+    })
+    .then((res) => res.json())
+    .then((res) => {
+      switch (res.code) {
+        case 0: {
+          loading.value = false
+          learnwareItems.value = res.data.learnware_list.map((item) => ({
+            id: item.learnware_id,
+            name: item.semantic_specification.Name.Values,
+            description: item.semantic_specification.Description.Values,
+            dataType: item.semantic_specification.Data.Values,
+            taskType: item.semantic_specification.Task.Values,
+            hardwareType: item.semantic_specification.Device.Values[0],
+            Scenario: item.semantic_specification.Values
+          }))
+          pageNum.value = res.data.total_pages
+          return
+        }
+        default: {
+          throw new Error(res.msg)
+        }
+      }
+    })
+    .catch((err) => {
+      console.error(err)
       loading.value = false
+      showError.value = true
+      errorMsg.value = err.message
+      clearTimeout(errorTimer.value)
+      errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
     })
 }
 
@@ -80,23 +105,16 @@ onMounted(() => {
   })
 
   fetchByFilterAndPage(page.value)
-
-  fetch('/api/user/get_learnware_list', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      page: page.value,
-      limit: pageSize.value,
-    }),
-  })
-    .then((res) => res.json()).then(console.log)
 })
 </script>
 
 <template>
   <div ref="contentRef" class="fixed flex flex-col w-1/1 overflow-y-scroll justify-start items-center">
+    <v-scroll-y-transition>
+      <v-card-actions v-if="showError">
+        <v-alert closable :text="errorMsg" type="error" @click:close="showError = false" />
+      </v-card-actions>
+    </v-scroll-y-transition>
     <div class="w-1/1 max-w-900px">
       <page-learnware-list :show-pagination="true" :items="learnwareItems" @page-change="pageChange" :page="page"
         :page-num="pageNum" :page-size="pageSize" :loading="loading" @delete="(id) => deleteLearnware(id)" :cols="1"
