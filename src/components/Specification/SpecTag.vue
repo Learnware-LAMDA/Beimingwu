@@ -2,10 +2,10 @@
 import { ref, watch } from 'vue'
 import DataType from '@/components/Specification/SpecTag/DataType.vue'
 import TaskType from '@/components/Specification/SpecTag/TaskType.vue'
-import HardwareType from '@/components/Specification/SpecTag/HardwareType.vue'
+import DeviceType from '@/components/Specification/SpecTag/DeviceType.vue'
 import TagList from '@/components/Specification/SpecTag/TagList.vue'
 
-const emit = defineEmits(['update:dataType', 'update:taskType', 'update:hardwareType', 'update:tagList'])
+const emit = defineEmits(['update:dataType', 'update:taskType', 'update:deviceType', 'update:tagList'])
 
 const props = defineProps({
   dataType: {
@@ -16,7 +16,7 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  hardwareType: {
+  deviceType: {
     type: String,
     required: true,
   },
@@ -28,7 +28,7 @@ const props = defineProps({
 
 const _dataType = ref(props.dataType)
 const _taskType = ref(props.taskType)
-const _hardwareType = ref(props.hardwareType)
+const _deviceType = ref(props.deviceType)
 const _tagList = ref(props.tagList)
 
 watch(
@@ -40,8 +40,8 @@ watch(
   (newVal) => emit('update:taskType', newVal)
 )
 watch(
-  () => _hardwareType.value,
-  (newVal) => emit('update:hardwareType', newVal)
+  () => _deviceType.value,
+  (newVal) => emit('update:deviceType', newVal)
 )
 watch(
   () => _tagList.value,
@@ -53,7 +53,7 @@ watch(
   <div class="spec-tag">
     <data-type v-model:value="_dataType"/>
     <task-type v-model:value="_taskType"/>
-    <hardware-type v-model:value="_hardwareType"/>
+    <device-type v-model:value="_deviceType"/>
     <tag-list v-model:value="_tagList" />
   </div>
 </template>

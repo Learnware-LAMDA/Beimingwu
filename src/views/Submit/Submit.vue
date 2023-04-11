@@ -13,7 +13,7 @@ const files = ref([])
 const name = ref('')
 const dataType = ref('')
 const taskType = ref('')
-const hardwareType = ref('')
+const deviceType = ref('')
 const tagList = ref([])
 const description = ref('')
 
@@ -80,7 +80,7 @@ function submit() {
     },
     "Device": {
       "Values": [
-        hardwareType.value
+        deviceType.value
       ],
       "Type": "Tag"
     },
@@ -148,8 +148,8 @@ onMounted(() => {
   if (route.query.taskType) {
     taskType.value = route.query.taskType
   }
-  if (route.query.hardwareType) {
-    hardwareType.value = route.query.hardwareType
+  if (route.query.deviceType) {
+    deviceType.value = route.query.deviceType
   }
   if (route.query.tagList) {
     tagList.value = JSON.parse(route.query.tagList)
@@ -195,7 +195,7 @@ onMounted(() => {
 
           <v-window-item :value="1">
             <v-card-text class="pt-0">
-              <spec-tag v-model:data-type="dataType" v-model:task-type="taskType" v-model:hardware-type="hardwareType"
+              <spec-tag v-model:data-type="dataType" v-model:task-type="taskType" v-model:device-type="deviceType"
                 v-model:tag-list="tagList" />
             </v-card-text>
           </v-window-item>

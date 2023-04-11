@@ -15,7 +15,7 @@ function getLearnwareDetailById(id) {
     name: 'Learnware 2023',
     dataType: 'Audio',
     taskType: 'Classification',
-    hardwareType: 'CPU',
+    deviceType: 'CPU',
     tagList: ['Nature', 'Business'],
     description: 'This is the description of Learnware 2023.'
   }
@@ -52,7 +52,7 @@ onMounted(() => {
       <v-card-text class="md:(text-xl !leading-7) text-sm">
         <div>Data type: {{ learnware.dataType }}</div>
         <div>Task type: {{ learnware.taskType }}</div>
-        <div>Hardware type: {{ learnware.hardwareType }}</div>
+        <div>Device type: {{ learnware.deviceType }}</div>
         <div>Tags: {{ learnware.tagList.join(', ') }}</div>
       </v-card-text>
 

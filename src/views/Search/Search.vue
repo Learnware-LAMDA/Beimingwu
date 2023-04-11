@@ -3,7 +3,7 @@ import { ref, computed, watch, onMounted, nextTick, onActivated } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataType from '@/components/Specification/SpecTag/DataType.vue'
 import TaskType from '@/components/Specification/SpecTag/TaskType.vue'
-import HardwareType from '@/components/Specification/SpecTag/HardwareType.vue'
+import DeviceType from '@/components/Specification/SpecTag/DeviceType.vue'
 import FileUpload from '@/components/Specification/FileUpload.vue'
 import TagList from '@/components/Specification/SpecTag/TagList.vue'
 import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue'
@@ -14,7 +14,7 @@ const router = useRouter()
 const search = ref(route.query.search || '')
 const dataType = ref(route.query.dataType || '')
 const taskType = ref(route.query.taskType || '')
-const hardwareType = ref(route.query.hardwareType || '')
+const deviceType = ref(route.query.deviceType || '')
 let _tagList
 try {
   _taglist = JSON.parse(route.query.tagList)
@@ -50,7 +50,7 @@ const filters = computed(() => ({
   name: search.value,
   dataType: dataType.value,
   taskType: taskType.value,
-  hardwareType: hardwareType.value,
+  deviceType: deviceType.value,
   tagList: tagList.value,
   files: files.value
 }))
@@ -65,8 +65,8 @@ function loadQuery() {
   if (route.query.taskType) {
     taskType.value = route.query.taskType
   }
-  if (route.query.hardwareType) {
-    hardwareType.value = route.query.hardwareType
+  if (route.query.deviceType) {
+    deviceType.value = route.query.deviceType
   }
   if (route.query.tagList) {
     tagList.value = JSON.parse(route.query.tagList)
@@ -79,7 +79,7 @@ function saveQuery() {
       search: search.value,
       dataType: dataType.value,
       taskType: taskType.value,
-      hardwareType: hardwareType.value,
+      deviceType: deviceType.value,
       tagList: JSON.stringify(tagList.value),
     }
   })
@@ -100,7 +100,7 @@ function generateLearnwareItems(filters, num) {
   return Array(num).fill(0).map((_, i) => {
     const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
     const allTaskType = ['Classification', 'Clustering', 'Detection', 'Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
-    const allHardwareType = ['CPU', 'GPU']
+    const allDeviceType = ['CPU', 'GPU']
     const allTagList = ['Business', 'Financial', 'Health', 'Politics', 'Computer', 'Internet', 'Traffic', 'Nature', 'Fashion', 'Industry', 'Agriculture', 'Education']
 
     return {
@@ -109,7 +109,7 @@ function generateLearnwareItems(filters, num) {
       description: `This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. `,
       dataType: filters.dataType || allDataType[Math.floor(Math.random() * allDataType.length)],
       taskType: filters.taskType || allTaskType[Math.floor(Math.random() * allTaskType.length)],
-      hardwareType: filters.hardwareType || allHardwareType[Math.floor(Math.random() * allHardwareType.length)],
+      deviceType: filters.deviceType || allDeviceType[Math.floor(Math.random() * allDeviceType.length)],
       tagList: filters.tagList || Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
       matchScore: files.value.length > 0 ? Math.floor(Math.random() * 100) : null,
     }
@@ -181,7 +181,7 @@ onMounted(() => {
         </div>
         <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
         <task-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="taskType" />
-        <hardware-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="hardwareType" />
+        <device-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="deviceType" />
         <tag-list class="bg-transparent text-h6 !text-1rem" v-model:value="tagList" :cols="2" :md="1" :sm="1" />
       </div>
       <v-hover>

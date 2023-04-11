@@ -1,8 +1,8 @@
 <script setup>
 import { ref, watch } from 'vue'
 import GridBtns from './GridBtns.vue'
-import CPUBtn from './HardwareType/CPUBtn.vue'
-import GPUBtn from './HardwareType/GPUBtn.vue'
+import CPUBtn from './DeviceType/CPUBtn.vue'
+import GPUBtn from './DeviceType/GPUBtn.vue'
 
 const emit = defineEmits(['update:value'])
 
@@ -49,6 +49,6 @@ const requirementTypeBtns = [
 </script>
 
 <template>
-  <grid-btns v-model:value="value" :btns="requirementTypeBtns" title="Hardware type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
+  <grid-btns v-model:value="value" :btns="requirementTypeBtns" title="Device type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
 </template>
 
