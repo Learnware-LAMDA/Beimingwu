@@ -14,9 +14,10 @@ const scrollTop = ref(0)
 
 const showError = ref(false)
 const errorMsg = ref('')
-const errorTimer = ref(null)
 
 function deleteLearnware(id) {
+  showError.value = false
+
   fetch('/api/user/delete_learnware', {
     method: 'POST',
     headers: {
@@ -50,19 +51,11 @@ function deleteLearnware(id) {
       loading.value = false
       showError.value = true
       errorMsg.value = err.message
-      clearTimeout(errorTimer.value)
-      errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
     })
 }
 
 function pageChange(newPage) {
   page.value = newPage
-}
-
-function delay(ms) {
-  return new Promise((res) => {
-    setTimeout(res, ms)
-  })
 }
 
 function fetchByFilterAndPage(page) {
@@ -115,8 +108,6 @@ function fetchByFilterAndPage(page) {
       loading.value = false
       showError.value = true
       errorMsg.value = err.message
-      clearTimeout(errorTimer.value)
-      errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
     })
 }
 
