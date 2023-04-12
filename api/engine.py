@@ -13,14 +13,17 @@ engine_api = Blueprint("Engine-API", __name__)
 
 @engine_api.route("/get_semantic_specification", methods=["GET"])
 def get_semantic_specification():
-    result = {
-        "code": 0,
-        "msg": "Ok",
-        "data": {
-            "semantic_specification": C.engine.get_semantic_spec_list()
+    try:
+        result = {
+            "code": 0,
+            "msg": "Ok",
+            "data": {
+                "semantic_specification": C.engine.get_semantic_spec_list()
+            }
         }
-    }
-    return jsonify(result)
+        return jsonify(result)
+    except:
+        return jsonify({"code": 41, "msg": "Engine get semantic specification error."})
 
 
 @engine_api.route("/search_learnware", methods=["POST"])
