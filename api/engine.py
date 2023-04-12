@@ -83,13 +83,13 @@ def download_learnware():
         return jsonify({"code": 21, "msg": "Request parameters error."})
     
     learnware_id = data["learnware_id"]
-    learnware_path = C.engine.get_learnware_path_by_ids(learnware_id)
+    learnware_zip_path = C.engine.get_learnware_path_by_ids(learnware_id)
 
-    if learnware_path is None:
+    if learnware_zip_path is None:
         return jsonify({"code": 41, "msg": "Learnware not found."})
 
-    learnware_directory = os.path.dirname(learnware_path)
-    learnware_filename = os.path.basename(learnware_path)    
-    response = make_response(send_from_directory(learnware_directory, learnware_filename, as_attachment=True))
+    zip_directory = os.path.dirname(learnware_zip_path)
+    zip_filename = os.path.basename(learnware_zip_path)    
+    response = make_response(send_from_directory(zip_directory, zip_filename, as_attachment=True))
 
     return response
