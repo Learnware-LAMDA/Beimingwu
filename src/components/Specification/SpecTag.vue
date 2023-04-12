@@ -17,7 +17,7 @@ const props = defineProps({
     required: true,
   },
   deviceType: {
-    type: String,
+    type: Array,
     required: true,
   },
   tagList: {
