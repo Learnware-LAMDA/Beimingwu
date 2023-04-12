@@ -1,12 +1,15 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import VStepperTitle from '@/components/Public/VStepperTitle.vue'
 import FileUpload from '@/components/Specification/FileUpload.vue'
 import SpecTag from '@/components/Specification/SpecTag.vue'
 
 const route = useRoute()
 const router = useRouter()
+
+const store = useStore()
 
 const currentStep = ref(0)
 const files = ref([])
@@ -120,6 +123,14 @@ function submit() {
             success.value = false
             router.go()
           }, 1000)
+          return
+        }
+        case 11: {
+          submiting.value = false
+          store.commit('setLoggedIn', false)
+          store.commit('setShowGlobalError', true)
+          store.commit('setGlobalError', 'Please login first')
+          setTimeout(() => { router.push('/login') }, 1000)
           return
         }
         default: {
