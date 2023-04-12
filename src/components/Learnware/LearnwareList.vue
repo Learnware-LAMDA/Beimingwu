@@ -110,7 +110,7 @@ onDeactivated(() => {
           <v-card-title class="title">{{ item.name }}</v-card-title>
           <v-card-actions class="actions">
             <v-btn v-if="showActions" icon="mdi-pencil"
-              @click.stop="() => router.push({ path: '/submit', query: transformQuery(item) })" disabled></v-btn>
+              @click.stop="() => router.push({ path: '/submit', query: transformQuery(item) })"></v-btn>
             <v-btn icon="mdi-download" @click.stop="() => downloadLearnware(item.id)"></v-btn>
             <v-btn v-if="showActions" icon="mdi-delete" @click.stop="() => confirmDelete(i)"></v-btn>
           </v-card-actions>
