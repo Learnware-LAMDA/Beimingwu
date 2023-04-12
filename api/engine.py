@@ -32,7 +32,7 @@ def search_learnware():
     try:
         semantic_specification = json.loads(semantic_specification)
     except:
-        return jsonify({"code": 41, "msg": "Semantic specification error"})
+        return jsonify({"code": 51, "msg": "Semantic specification error"})
     
     # Check statistical specification
     statistical_file = request.files['statistical_specification']
@@ -49,9 +49,9 @@ def search_learnware():
         statistical_specification = specification.rkme.RKMEStatSpecification()
         statistical_specification.load(statistical_path)
     except:
-        return jsonify({"code": 42, "msg": f"Statistical specification error."})
+        return jsonify({"code": 41, "msg": f"Statistical specification error."})
     if statistical_specification is None:
-        return jsonify({"code": 42, "msg": f"Statistical specification error."})
+        return jsonify({"code": 41, "msg": f"Statistical specification error."})
     
     # Search Learnware
     info = market.BaseUserInfo(
@@ -59,7 +59,10 @@ def search_learnware():
         semantic_spec=semantic_specification,
         stat_info={"RKMEStatSpecification": statistical_specification},
     )
-    matching, single_learnware_list, multi_learnware = C.engine.search_learnware(info)
+    try:
+        matching, single_learnware_list, multi_learnware = C.engine.search_learnware(info)
+    except:
+        return jsonify({"code": 42, "msg": f"Engine search learnware error."})
     assert len(matching) == len(single_learnware_list)
     n = len(single_learnware_list)
     
@@ -83,8 +86,11 @@ def download_learnware():
         return jsonify({"code": 21, "msg": "Request parameters error."})
     
     learnware_id = data["learnware_id"]
-    learnware_zip_path = C.engine.get_learnware_path_by_ids(learnware_id)
-
+    try:
+        learnware_zip_path = C.engine.get_learnware_path_by_ids(learnware_id)
+    except:
+        return jsonify({"code": 42, "msg": "Engine download learnware error."})
+    
     if learnware_zip_path is None:
         return jsonify({"code": 41, "msg": "Learnware not found."})
 
