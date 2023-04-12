@@ -20,10 +20,6 @@ const elevationClass = computed(() => {
 })
 
 const { handleSubmit, meta } = useForm({
-  initialValues: {
-    email: 'a@a.a',
-    password: 'aaaaaaaa',
-  },
   validationSchema: {
     email(value) {
       if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
