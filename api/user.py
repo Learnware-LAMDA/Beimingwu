@@ -77,17 +77,12 @@ def get_learnware_list():
 @user_api.route("/add_learnware", methods=["POST"])
 @login_required
 def add_learnware():
-    # learnware_name = request.form.get("learnware_name")
     semantic_specification = request.form.get("semantic_specification")
     if request.files is None or semantic_specification is None:
-        print("="* 50)
-        print(request.form)
-        print(request.files)
         return jsonify({"code": 21, "msg": f"Request parameters error."})
     
     learnware_file = request.files['learnware_file']
     if learnware_file.filename == '' or not learnware_file:
-        print("&"* 50)
         return jsonify({"code": 21, "msg": f"Request parameters error."})
 
     leareware_filename = f"{int(time.time())}_" + hashlib.md5(learnware_file.read()).hexdigest() + ".zip"
