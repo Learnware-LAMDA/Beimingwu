@@ -40,17 +40,14 @@ def search_learnware():
         return jsonify({"code": 21, "msg": f"Request parameters error."})
     
     # Load statistical specification
-    print(statistical_file)
     statistical_name = f"{int(time.time())}_" + hashlib.md5(statistical_file.read()).hexdigest() + ".json"
     statistical_file.seek(0)
     statistical_path = os.path.join(C.upload_path, statistical_name)
     statistical_file.save(statistical_path)
     statistical_specification = None
     try:
-        # with open(statistical_path, "r") as f:
         statistical_specification = specification.rkme.RKMEStatSpecification()
         statistical_specification.load(statistical_path)
-            # statistical_specification = json.loads(f.read())
     except:
         return jsonify({"code": 42, "msg": f"Statistical specification error."})
     if statistical_specification is None:
@@ -71,8 +68,8 @@ def search_learnware():
         "code": 0,
         "msg": "Ok",
         "data": {
-            "multi": [dump_learnware(x) for x in multi_learnware],
-            "single": [dump_learnware(single_learnware_list[i], matching[i]) for i in range(n)],
+            "learnware_list_multi": [dump_learnware(x) for x in multi_learnware],
+            "learnware_list_single": [dump_learnware(single_learnware_list[i], matching[i]) for i in range(n)],
         }
     }
     return jsonify(result)

@@ -26,7 +26,7 @@ def generate_random_str(randomlength: int) -> str:
 
 def dump_learnware(learnware: learnware.Learnware, matching: int=None):
     ret = {
-        "id": learnware.id,
+        "learnware_id": learnware.id,
         "semantic_specification": learnware.get_specification().get_semantic_spec(),
     }
     if matching is not None: ret["matching"] = matching
