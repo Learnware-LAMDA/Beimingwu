@@ -31,7 +31,8 @@ onMounted(() => {
         .catch((err) => {
             store.commit('setShowGlobalError', true)
             store.commit('setGlobalErrorMsg', err.message)
-            router.back()
+            store.commit('setLoggedIn', false)
+            router.push('/')
         })
 })
 </script>
