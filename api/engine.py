@@ -82,13 +82,12 @@ def search_learnware():
 
 
 @engine_api.route("/download_learnware", methods=["GET"])
-@login_required
 def download_learnware():
-    data = get_parameters(request, ["learnware_id"])
-    if data is None:
+    learnware_id = request.args.get("learnware_id")
+
+    if learnware_id is None:
         return jsonify({"code": 21, "msg": "Request parameters error."})
-    
-    learnware_id = data["learnware_id"]
+
     try:
         learnware_zip_path = C.engine.get_learnware_path_by_ids(learnware_id)
     except:
