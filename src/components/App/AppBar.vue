@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import lamdaLogo from '/lamda.png'
+import lamdaLogo from '/logo.svg'
 
 const emit = defineEmits(['update:drawerOpen'])
 const router = useRouter()
