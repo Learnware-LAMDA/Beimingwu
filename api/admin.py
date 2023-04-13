@@ -33,6 +33,8 @@ def get_user_list():
         return jsonify(result)
     # Calculate the page limit
     limit = data["limit"]
+    if limit == 0:
+        return jsonify({"code": 51, "msg": "Limit cannot be 0."})
     page  = 0 if "page" not in data else data["page"]
     ret, cnt = database.get_all_user_list(columns=["id", "username", "email"], limit=limit, page=page)
     result = {
@@ -104,6 +106,8 @@ def get_learnware_list():
         return jsonify(result)
     # Calculate the page limit
     limit = data["limit"]
+    if limit == 0:
+        return jsonify({"code": 51, "msg": "Limit cannot be 0."})
     page  = 0 if "page" not in data else data["page"]
     ret, cnt = database.get_all_learnware_list(columns=["user_id", "learnware_id", "last_modify"], limit=limit, page=page)
     learnware_list = engine_helper.get_learnware_by_id([x["learnware_id"] for x in ret])
