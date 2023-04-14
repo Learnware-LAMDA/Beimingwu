@@ -55,13 +55,16 @@ watch(
 
 <template>
   <div class="spec-tag">
-    <v-alert
-      v-if="errorMessages"
-      type="error"
-      class="mb-4"
-    >
-      {{ errorMessages }}
-    </v-alert>
+    <v-scroll-y-transition>
+      <v-alert
+        v-if="errorMessages"
+        type="error"
+        class="fixed mx-auto w-1/1 max-w-3/5 z-index-10"
+        style="top: var(--v-layout-top)"
+      >
+        {{ errorMessages }}
+      </v-alert>
+    </v-scroll-y-transition>
     <data-type v-model:value="_dataType"/>
     <task-type v-model:value="_taskType"/>
     <device-type v-model:value="_deviceType"/>
