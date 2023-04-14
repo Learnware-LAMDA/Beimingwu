@@ -24,6 +24,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  document.documentElement.style.setProperty('--scale', '1')
   window.removeEventListener('scroll', handleScroll)
 })
 </script>
@@ -31,7 +32,7 @@ onUnmounted(() => {
 <template>
   <div class="d-sm-block d-none">
     <div ref="scroller" class="left-0 right-0 z-index-100 overflow-hidden" :class="ratio <= 1 ? ['fixed'] : null"
-      :style="ratio > 1 ? { marginTop: `calc(50vh - var(--v-layout-top))` } : null">
+      :style="ratio > 1 ? { marginTop: `50vh` } : null">
       <div class="xl:py-30
                         lg:py-25
                         <lg:py-10
