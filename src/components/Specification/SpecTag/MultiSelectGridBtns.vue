@@ -7,7 +7,7 @@ const display = useDisplay()
 
 const props = defineProps({
   value: {
-    type: [Array, undefined],
+    type: Array,
     require: true,
   },
   btns: {
