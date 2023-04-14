@@ -7,7 +7,7 @@ const display = useDisplay()
 
 const props = defineProps({
   value: {
-    type: Array,
+    type: [Array, undefined],
     require: true,
   },
   btns: {
@@ -50,11 +50,14 @@ const realCols = computed(() => {
 })
 
 function clickBtn(btn) {
+  if (!value.value) {
+    value.value = []
+  } 
   if (value.value.includes(btn.title)) {
-    value.value.splice(value.value.indexOf(btn.title), 1)
-  } else {
-    value.value.push(btn.title)
-  }
+      value.value.splice(value.value.indexOf(btn.title), 1)
+    } else {
+      value.value.push(btn.title)
+    }
 }
 
 watch(
@@ -70,8 +73,8 @@ watch(
   <div class="grid-container">
     <div class="title text-h6 !text-1rem">{{ title }}</div>
     <div class="btn-container" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-      <icon-btn v-for="(btn, i) in btns" :icon-component="btn.icon" :title="btn.title" :active="value.includes(btn.title)"
-        :key="i" @click="() => clickBtn(btn)" />
+      <icon-btn v-for="(btn, i) in btns" :icon-component="btn.icon" :title="btn.title"
+        :active="value && value.includes(btn.title)" :key="i" @click="() => clickBtn(btn)" />
     </div>
   </div>
 </template>
