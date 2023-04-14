@@ -109,8 +109,12 @@ onDeactivated(() => {
         <div class="first-row">
           <v-card-title class="title">{{ item.name }}</v-card-title>
           <v-card-actions class="actions">
-            <v-btn v-if="showActions" icon="mdi-pencil"
-              @click.stop="() => router.push({ path: '/submit', query: transformQuery(item) })"></v-btn>
+            <v-tooltip v-model="item.showEditTips" location="top">
+              <template v-slot:activator="{ props }">
+                <v-btn v-if="showActions" icon="mdi-pencil" @click.stop="() => {}" v-bind="props"></v-btn>
+              </template>
+              <span>Not availble</span>
+            </v-tooltip>
             <v-btn icon="mdi-download" @click.stop="() => downloadLearnware(item.id)"></v-btn>
             <v-btn v-if="showActions" icon="mdi-delete" @click.stop="() => confirmDelete(i)"></v-btn>
           </v-card-actions>
@@ -132,7 +136,8 @@ onDeactivated(() => {
           <div class="description">{{ item.description }}</div>
         </v-card-text>
         <v-card-title v-if="item.matchScore" class="score">
-          Specification score <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{ item.matchScore
+          Specification score <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{
+            item.matchScore
           }}</span>
         </v-card-title>
       </v-card>
