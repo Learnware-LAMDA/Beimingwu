@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { useField, useForm } from 'vee-validate'
 import VStepperTitle from '@/components/Public/VStepperTitle.vue'
 import FileUpload from '@/components/Specification/FileUpload.vue'
 import SpecTag from '@/components/Specification/SpecTag.vue'
@@ -11,22 +12,73 @@ const router = useRouter()
 
 const store = useStore()
 
-const currentStep = ref(0)
-const files = ref([])
-const name = ref('')
-const dataType = ref('')
-const taskType = ref('')
-const deviceType = ref([])
-const tagList = ref([])
-const description = ref('')
+const { handleSubmit, meta } = useForm({
+  initialValues: {
+    name: '',
+    dataType: '',
+    taskType: '',
+    deviceType: [],
+    tagList: [],
+    description: '',
+    files: []
+  },
+  validationSchema: {
+    name(value) {
+      if (value?.length >= 5) {
+        return true
+      }
+      return 'Learnware name needs to be at least 5 characters.'
+    },
+    dataType(value) {
+      if (value?.length > 0) {
+        return true
+      }
+      return 'Data type must not be empty.'
+    },
+    taskType(value) {
+      if (value?.length > 0) {
+        return true
+      }
+      return 'Task type must not be empty.'
+    },
+    deviceType(value) {
+      if (value?.length > 0) {
+        return true
+      }
+      return 'Device type must not be empty.'
+    },
+    tagList() {
+      return true
+    },
+    description(value) {
+      if (value?.length >= 10) {
+        return true
+      }
+      return 'Description needs to be at least 10 characters.'
+    },
+    files(value) {
+      if (value?.length > 0) {
+        return true
+      }
+      return 'Please upload your model & statistical specification.'
+    }
+  }
+})
 
+const name = useField('name')
+const dataType = useField('dataType')
+const taskType = useField('taskType')
+const deviceType = useField('deviceType')
+const tagList = useField('tagList')
+const description = useField('description')
+const files = useField('files')
+
+const currentStep = ref(0)
 const submiting = ref(false)
 const success = ref(false)
 const showError = ref(false)
 const errorMsg = ref('')
 const errorTimer = ref(null)
-
-const disabled = ref(false)
 
 const steps = [
   {
@@ -51,8 +103,31 @@ const steps = [
   },
 ]
 
+const valid = computed(() => {
+  return meta.value.valid
+})
+const allowChangePage = computed(() => {
+  switch (currentStep.value) {
+    case 0: {
+      return name.meta.valid
+    }
+    case 1: {
+      return dataType.meta.valid && taskType.meta.valid && deviceType.meta.valid && tagList.meta.valid
+    }
+    case 2: {
+      return description.meta.valid
+    }
+    case 3: {
+      return files.meta.valid
+    }
+  }
+})
+
 function activeStep(index) {
-  currentStep.value = index
+  console.log(valid.value)
+  if (valid.value || index < currentStep.value || allowChangePage.value && index <= currentStep.value + 1) {
+    currentStep.value = index
+  }
 }
 
 function nextStep() {
@@ -67,39 +142,39 @@ function PrevStep() {
   }
 }
 
-function submit() {
+const submit = handleSubmit((values) => {
   submiting.value = true
   success.value = false
   showError.value = false
 
   const semanticSpec = {
     "Data": {
-      "Values": dataType.value,
+      "Values": dataType.value.value,
       "Type": "Class"
     },
     "Task": {
-      "Values": taskType.value,
+      "Values": taskType.value.value,
       "Type": "Class"
     },
     "Device": {
-      "Values": deviceType.value,
+      "Values": deviceType.value.value,
       "Type": "Tag"
     },
     "Scenario": {
-      "Values": tagList.value,
+      "Values": tagList.value.value,
       "Type": "Tag"
     },
     "Description": {
-      "Values": description.value,
+      "Values": description.value.value,
       "Type": "Description"
     },
     "Name": {
-      "Values": name.value,
+      "Values": name.value.value,
       "Type": "Name"
     }
   }
   const fd = new FormData()
-  fd.append('learnware_file', files.value[0])
+  fd.append('learnware_file', files.value.value[0])
   fd.append('semantic_specification', JSON.stringify(semanticSpec))
 
   fetch('/api/user/add_learnware', {
@@ -145,26 +220,35 @@ function submit() {
       clearTimeout(errorTimer.value)
       errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
     })
-}
+})
+
+watch(
+  () => currentStep.value,
+  (_, oldStep) => {
+    if (oldStep === 0) {
+
+    }
+  }
+)
 
 onMounted(() => {
   if (route.query.name) {
-    name.value = route.query.name
+    name.value.value = route.query.name
   }
   if (route.query.dataType) {
-    dataType.value = route.query.dataType
+    dataType.value.value = route.query.dataType
   }
   if (route.query.taskType) {
-    taskType.value = route.query.taskType
+    taskType.value.value = route.query.taskType
   }
   if (route.query.deviceType) {
-    deviceType.value = JSON.parse(route.query.deviceType)
+    deviceType.value.value = JSON.parse(route.query.deviceType)
   }
   if (route.query.tagList) {
-    tagList.value = JSON.parse(route.query.tagList)
+    tagList.value.value = JSON.parse(route.query.tagList)
   }
   if (route.query.description) {
-    description.value = route.query.description
+    description.value.value = route.query.description
   }
 })
 </script>
@@ -194,8 +278,9 @@ onMounted(() => {
         <v-window v-model="currentStep">
           <v-window-item :value="0">
             <v-card-text>
-              <v-text-field v-model="name" label="Name" placeholder="Awesome learnware" append-inner-icon="mdi-close"
-                @click:append-inner="name = ''"></v-text-field>
+              <v-text-field v-model="name.value.value" label="Name" placeholder="Awesome learnware"
+                append-inner-icon="mdi-close" @click:append-inner="name.value.value = ''"
+                :error-messages="name.errorMessage.value" counter="30"></v-text-field>
               <span class="text-caption text-grey-darken-1">
                 This is the name of the learnware you contribute.
               </span>
@@ -204,24 +289,24 @@ onMounted(() => {
 
           <v-window-item :value="1">
             <v-card-text class="pt-0">
-              <spec-tag v-model:data-type="dataType" v-model:task-type="taskType" v-model:device-type="deviceType"
-                v-model:tag-list="tagList" />
+              <spec-tag v-model:data-type="dataType.value.value" v-model:task-type="taskType.value.value" v-model:device-type="deviceType.value.value" v-model:tag-list="tagList.value.value" :error-messages="dataType.errorMessage.value || taskType.errorMessage.value || deviceType.errorMessage.value || tagList.errorMessage.value" />
             </v-card-text>
           </v-window-item>
 
           <v-window-item :value="2">
             <div class="pa-4">
-              <v-textarea v-model="description" label="Description"
-                placeholder="This is a description of the learnware"></v-textarea>
+              <v-textarea v-model="description.value.value" label="Description"
+                placeholder="This is a description of the learnware" :error-messages="description.errorMessage.value" counter="200"></v-textarea>
             </div>
           </v-window-item>
 
           <v-window-item :value="3">
             <div class="p-4 m-auto">
-              <file-upload v-model:files="files"></file-upload>
+              <file-upload v-model:files="files.value.value"></file-upload>
             </div>
             <v-card-text class="text-lg">
-              <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for instructions
+              <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for
+              instructions
               on how to create the required zip file.
             </v-card-text>
           </v-window-item>
@@ -234,10 +319,10 @@ onMounted(() => {
             Back
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn v-if="currentStep < steps.length - 1" color="primary" variant="flat" @click="nextStep">
+          <v-btn v-if="currentStep < steps.length - 1" color="primary" variant="flat" @click="nextStep" :disabled="!allowChangePage">
             Next
           </v-btn>
-          <v-btn v-else color="primary" variant="flat" @click="submit" :disabled="submiting || disabled">
+          <v-btn v-else color="primary" variant="flat" @click="submit" :disabled="submiting || !valid">
             Finish
           </v-btn>
         </v-card-actions>
