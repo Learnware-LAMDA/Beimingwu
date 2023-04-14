@@ -24,6 +24,10 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  errorMessages: {
+    type: String,
+    required: false
+  }
 })
 
 const _dataType = ref(props.dataType)
@@ -51,6 +55,13 @@ watch(
 
 <template>
   <div class="spec-tag">
+    <v-alert
+      v-if="errorMessages"
+      type="error"
+      class="mb-4"
+    >
+      {{ errorMessages }}
+    </v-alert>
     <data-type v-model:value="_dataType"/>
     <task-type v-model:value="_taskType"/>
     <device-type v-model:value="_deviceType"/>
