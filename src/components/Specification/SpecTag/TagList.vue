@@ -100,9 +100,8 @@ const items = [
   },
 ]
 const search = ref('')
-const selected = computed(() => props.value)
 
-const allSelected = computed(() => selected.value.length === items.length)
+const allSelected = computed(() => props.value && props.value.length === items.length)
 const categories = computed(() => {
   const _search = search.value.toLowerCase()
 
@@ -115,22 +114,30 @@ const categories = computed(() => {
   })
 })
 const selections = computed(() => {
-  if (selected.value) {
-    return selected.value.map((s) => {
-      console.log(selected.value)
+  if (props.value) {
+    return props.value.map((s) => {
       return items.find(item => item.text === s)
     })
   }
   return []
 })
 
-watch(
-  () => selected.value,
-  (newVal) => {
-    search.value = ''
-    emit('update:value', newVal)
+function addSelect(text) {
+  if (props.value) {
+    emit('update:value', [...props.value, text])
   }
-)
+  else {
+    emit('update:value', [text])
+  }
+}
+
+function deleteSelect(i) {
+  if (props.value) {
+    const _value = [...props.value]
+    _value.splice(i, 1)
+    emit('update:value', _value)
+  }
+}
 </script>
 
 <template>
@@ -138,7 +145,7 @@ watch(
     <div class="title text-h6 !text-1rem">Scenario</div>
     <div class="items">
       <div class="item" v-for="(selection, i) in selections" :key="selection.text">
-        <v-chip class="chip bg-orange-600 text-white" closable @click:close="selected.splice(i, 1)">
+        <v-chip class="chip bg-orange-600 text-white" closable @click:close="() => deleteSelect(i)">
           <v-icon :icon="selection.icon" start></v-icon>
 
           {{ selection.text }}
@@ -155,7 +162,7 @@ watch(
 
     <v-list class="list" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
       <template v-for="item in categories">
-        <v-list-item v-if="!selections.includes(item)" :key="item.text" @click="selected.push(item.text)" class="item">
+        <v-list-item v-if="!selections.includes(item)" :key="item.text" @click="() => addSelect(item.text)" class="item">
           <template v-slot:prepend>
             <v-icon :icon="item.icon"></v-icon>
           </template>
