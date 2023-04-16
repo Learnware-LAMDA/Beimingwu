@@ -124,7 +124,6 @@ const allowChangePage = computed(() => {
 })
 
 function activeStep(index) {
-  console.log(valid.value)
   if (valid.value || index < currentStep.value || allowChangePage.value && index <= currentStep.value + 1) {
     currentStep.value = index
   }
