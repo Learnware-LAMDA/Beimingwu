@@ -53,8 +53,8 @@ def get_all_user_list(columns, limit=None, page=None, username=None, email=None)
     if username is not None or email is not None:
         if username is None or email is None:
             like_suffix = "WHERE "
-            if username is not None: like_suffix += f"username LIKE '{%%username%%}'"
-            if email is not None: like_suffix += f"email LIKE '{%%email%%}'"
+            if username is not None: like_suffix += f"username LIKE '%{username}%'"
+            if email is not None: like_suffix += f"email LIKE '%{email}%'"
         else:
             like_suffix = f"WHERE username LIKE '{%%username%%}' AND email LIKE '{%%email%%}'"
     page_suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
