@@ -34,9 +34,7 @@ const tagList = ref(_tagList)
 
 const files = ref([])
 
-const multiRecommendedLearnwarePage = ref(1)
-const multiRecommendedLearnwarePageNum = ref(1)
-const multiRecommendedLearnwarePageSize = ref(4)
+const multiRecommendedLearnwareSize = ref(4)
 const multiRecommendedLearnwareItems = ref([])
 const multiRecommendedMatchScore = ref(null)
 const singleRecommendedLearnwarePage = ref(1)
@@ -129,8 +127,8 @@ function fetchByFilterAndPage(filters, page) {
   loading.value = true
   delay(1000)
     .then(() => {
-      multiRecommendedLearnwareItems.value = generateLearnwareItems(filters, multiRecommendedLearnwarePageSize.value),
-      multiRecommendedMatchScore.value = Math.floor(Math.random() * 10) + 90
+      multiRecommendedLearnwareItems.value = generateLearnwareItems(filters, multiRecommendedLearnwareSize.value),
+        multiRecommendedMatchScore.value = Math.floor(Math.random() * 10) + 90
       singleRecommendedLearnwareItems.value = generateLearnwareItems(filters, singleRecommendedLearnwarePageSize.value)
       loading.value = false
     })
@@ -219,10 +217,8 @@ onMounted(() => {
             </template>
           </v-alert>
         </v-card-text>
-        <multi-recommended-learnware-list :show-pagination="false" :items="multiRecommendedLearnwareItems" :matchScore="multiRecommendedMatchScore"
-          :filters="filters" @page-change="pageChange" :page="multiRecommendedLearnwarePage"
-          :page-num="multiRecommendedLearnwarePageNum" :page-size="multiRecommendedLearnwarePageSize"
-          :loading="loading" />
+        <multi-recommended-learnware-list :items="multiRecommendedLearnwareItems"
+          :matchScore="multiRecommendedMatchScore" :filters="filters" @page-change="pageChange" :loading="loading" />
       </v-card>
       <v-card flat class="m-2 mt-4 bg-transparent">
         <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">Recommended single learnwares</v-card-title>
