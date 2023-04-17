@@ -22,21 +22,36 @@ def index():
 @admin_login_required
 def get_user_list():
     data = get_parameters(request, [])
+    
+    # Get like parameters
+    username = None if data is None or "username" not in data else data["username"]
+    email    = None if data is None or "email"    not in data else data["email"]
+    
     # Return whole user list directly
     if data is None or "limit" not in data:
-        ret, cnt = database.get_all_user_list(columns=["id", "username", "email"])
+        ret, cnt = database.get_all_user_list(
+            columns=["id", "username", "email"], 
+            username=username, 
+            email=email
+        )
         result = {
             "code": 0,
             "msg": "Get user list success.",
             "data": {"user_list": ret}
         }
         return jsonify(result)
+    
     # Calculate the page limit
     limit = data["limit"]
     if limit == 0:
         return jsonify({"code": 51, "msg": "Limit cannot be 0."})
     page  = 0 if "page" not in data else data["page"]
-    ret, cnt = database.get_all_user_list(columns=["id", "username", "email"], limit=limit, page=page)
+    
+    ret, cnt = database.get_all_user_list(
+        columns=["id", "username", "email"], 
+        limit=limit, page=page, 
+        username=username, email=email
+    )
     result = {
         "code": 0,
         "msg": "Get user list success.",
@@ -48,8 +63,6 @@ def get_user_list():
         }
     }
     return jsonify(result)
-    
-
 
 @admin_api.route("/delete_user", methods=["POST"])
 @admin_login_required

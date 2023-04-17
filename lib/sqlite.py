@@ -46,11 +46,19 @@ def remove_user(by, value):
     return ret_cnt
 
 
-def get_all_user_list(columns, limit=None, page=None):
+def get_all_user_list(columns, limit=None, page=None, username=None, email=None):
     column_str = ", ".join(columns)
     _, cnt = C.database.query(f"SELECT COUNT(*) FROM user")
-    suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
-    _, ret = C.database.query(f"SELECT {column_str} FROM user {suffix}")
+    like_suffix = ""
+    if username is not None or email is not None:
+        if username is None or email is None:
+            like_suffix = "WHERE "
+            if username is not None: like_suffix += f"username LIKE '{%%username%%}'"
+            if email is not None: like_suffix += f"email LIKE '{%%email%%}'"
+        else:
+            like_suffix = f"WHERE username LIKE '{%%username%%}' AND email LIKE '{%%email%%}'"
+    page_suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
+    _, ret = C.database.query(f"SELECT {column_str} FROM user {like_suffix} {page_suffix}")
     return [dict(zip(columns, user)) for user in ret], cnt[0][0]
 
 
