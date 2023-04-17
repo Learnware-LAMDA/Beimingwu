@@ -1,6 +1,7 @@
 <script setup>
-import { computed } from 'vue';
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { useDisplay } from 'vuetify'
 
 const display = useDisplay()
@@ -24,6 +25,23 @@ const drawer = computed({
 })
 
 const router = useRouter()
+
+const store = useStore()
+
+const filteredRoutes = computed(() => {
+    return props.routes.filter(route => {
+        if (route.meta.showInNavBar) {
+            if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
+                return false
+            }
+            if (!route.meta.requiredLogin) {
+                return true
+            } else {
+                return store.getters.getLoggedIn
+            }
+        }
+    })
+})
 </script>
 
 <template>
@@ -32,7 +50,7 @@ const router = useRouter()
     <v-list>
       <h1 class="ma-4">Pages</h1>
 
-      <v-list-item v-for="(route, i) in routes" :key="i" :value="route.name" active-color="primary" variant="plain"
+      <v-list-item v-for="(route, i) in filteredRoutes" :key="i" :value="route.name" active-color="primary" variant="plain"
         @click="() => router.push(route.path)">
         <template v-slot:prepend>
           <v-icon :icon="route.meta.icon"></v-icon>
