@@ -81,7 +81,7 @@ watch(
     @apply grid gap-2;
 
     .btn {
-      @apply pr-2;
+      @apply pr-3;
     }
   }
 }
