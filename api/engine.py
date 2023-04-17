@@ -121,16 +121,28 @@ def download_learnware():
 
 @engine_api.route("/get_learnware_info", methods=["GET"])
 def get_learnware_info():
-    data = get_parameters(request, ["learnware_id"])
-    learnware_id = data["learnware_id"]
+    learnware_id = request.args.get("learnware_id")
 
     if learnware_id is None:
         return jsonify({"code": 21, "msg": "Request parameters error."})
-
+    
+    try:
+        learnware = C.engine.get_learnware_by_ids(learnware_id)
+    except:
+        return jsonify({"code": 42, "msg": "Engine find learnware error."})
+    
+    if learnware is None:
+        return jsonify({"code": 41, "msg": "Learnware not found."})
+    
     result = {
         "code": 0,
         "msg": "Ok",
-        
+        "data": {
+            "learnware_info": {
+                "learnware_id": learnware_id,
+                "semantic_specification": learnware.get_specification().get_semantic_spec(),
+            }
+        }
     }
 
     return jsonify(result)
