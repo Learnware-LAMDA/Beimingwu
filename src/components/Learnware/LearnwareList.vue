@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 import DeleteDialog from './DeleteDialog.vue'
 import { downloadLearnware } from '@/utils'
 import colors from 'vuetify/lib/util/colors'
+import oopsImg from '/oops.svg'
 
 const emit = defineEmits(['delete'])
 
@@ -111,7 +112,7 @@ onDeactivated(() => {
           <v-card-actions class="actions">
             <v-tooltip v-model="item.showEditTips" location="top">
               <template v-slot:activator="{ props }">
-                <v-btn v-if="showActions" icon="mdi-pencil" @click.stop="() => {}" v-bind="props"></v-btn>
+                <v-btn v-if="showActions" icon="mdi-pencil" @click.stop="() => { }" v-bind="props"></v-btn>
               </template>
               <span>Not availble</span>
             </v-tooltip>
@@ -143,6 +144,7 @@ onDeactivated(() => {
       </v-card>
     </TransitionGroup>
     <div flat v-if="items.length === 0" class="no-learnware">
+      <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
       Oops! There are no learnwares.
     </div>
   </div>
@@ -207,6 +209,10 @@ onDeactivated(() => {
 
   .no-learnware {
     @apply py-5 w-1/1 text-center text-2xl;
+
+    .oops-img {
+      @apply mx-auto;
+    }
   }
 }
 
