@@ -111,7 +111,7 @@ onDeactivated(() => {
 
 <template>
   <div v-if="!loading" class="m-2 p-2 border-1 rounded-lg hover:border-purple-500">
-    <div class="flex justify-between">
+    <div v-if="items.length > 0" class="flex justify-between">
       <v-card-title v-if="matchScore" class="score">
         Total specification score <span class="ml-2" :style="`color: ${getColorByScore(matchScore)}`">{{
           matchScore
