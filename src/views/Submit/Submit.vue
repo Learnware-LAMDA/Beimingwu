@@ -148,11 +148,11 @@ const submit = handleSubmit((values) => {
 
   const semanticSpec = {
     "Data": {
-      "Values": dataType.value.value,
+      "Values": [dataType.value.value],
       "Type": "Class"
     },
     "Task": {
-      "Values": taskType.value.value,
+      "Values": [taskType.value.value],
       "Type": "Class"
     },
     "Device": {

@@ -91,8 +91,8 @@ function fetchByFilterAndPage(page) {
             id: item.learnware_id,
             name: item.semantic_specification.Name.Values,
             description: item.semantic_specification.Description.Values,
-            dataType: item.semantic_specification.Data.Values,
-            taskType: item.semantic_specification.Task.Values,
+            dataType: item.semantic_specification.Data.Values[0],
+            taskType: item.semantic_specification.Task.Values[0],
             deviceType: item.semantic_specification.Device.Values,
             tagList: item.semantic_specification.Scenario.Values
           }))
