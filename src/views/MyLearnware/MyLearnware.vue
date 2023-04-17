@@ -122,6 +122,7 @@ watch(
 
 onActivated(() => {
   contentRef.value.scrollTop = scrollTop.value
+  fetchByFilterAndPage(page.value)
 })
 
 onMounted(() => {
@@ -130,8 +131,6 @@ onMounted(() => {
       scrollTop.value = contentRef.value.scrollTop
     })
   })
-
-  fetchByFilterAndPage(page.value)
 })
 </script>
 
