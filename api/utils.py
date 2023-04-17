@@ -2,7 +2,7 @@ from typing import Tuple, Any, List, Union, Dict
 import random
 from learnware import learnware
 
-__all__ = ["get_parameters", "generate_random_str"]
+__all__ = ["get_parameters", "generate_random_str", "dump_learnware"]
 
 
 def get_parameters(request, parameters: List[str]) -> bool:

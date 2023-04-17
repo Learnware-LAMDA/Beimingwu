@@ -8,7 +8,7 @@ import os, json, time
 import hashlib
 from learnware import market, specification
 import lib.engine as adv_engine
-from .utils import dump_learnware, get_parameters
+from .utils import dump_learnware, get_parameters, generate_random_str
 engine_api = Blueprint("Engine-API", __name__)
 
 
@@ -118,3 +118,22 @@ def download_learnware():
     response = make_response(send_from_directory(zip_directory, zip_filename, as_attachment=True))
 
     return response
+
+@engine_api.route("/download_multi_learnware", methods=["GET"])
+def download_multi_learnware():
+    data = get_parameters(request, ["learnware_ids"])
+    learnware_ids = data["learnware_ids"]
+    if learnware_ids is None or not isinstance(learnware_ids, list):
+        return jsonify({"code": 21, "msg": "Request parameters error."})
+    
+    learnware_paths = [ C.engine.get_learnware_path_by_ids(learnware_id) for learnware_id in learnware_ids]
+    zip_filename = f"Multi_{int(time.time())}_" + generate_random_str(16) + ".zip"
+    zip_filename = os.path.join(C.upload_path, zip_filename)
+    with zipfile.ZipFile(zip_filename, 'w') as zip_file:
+        for learnware_path in learnware_paths:
+            filename = os.path.basename(learnware_path)
+            zip_file.write(learnware_path, arcname=filename)
+
+    res = send_file(zip_filename, as_attachment=True)
+    os.remove(zip_filename)
+    return res
