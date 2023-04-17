@@ -12,7 +12,7 @@ const placeholder = ref(null)
 
 function handleScroll() {
   ratio.value = window.scrollY / window.innerHeight * 2
-  document.documentElement.style.setProperty('--scale', `${window.scrollY / window.innerHeight * 10 + 1}`)
+  document.documentElement.style.setProperty('--scale', `${window.scrollY / window.innerHeight * 3 + 1}`)
 }
 
 onMounted(() => {
