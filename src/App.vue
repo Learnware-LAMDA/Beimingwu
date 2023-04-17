@@ -52,18 +52,10 @@ onMounted(() => {
       </router-view>
     </v-main>
 
-    <v-snackbar
-      v-model="showGlobalError"
-      :timeout="2000"
-    >
+    <v-snackbar v-model="showGlobalError" :timeout="2000">
       {{ store.getters.getGlobalErrorMsg }}
-
       <template v-slot:actions>
-        <v-btn
-          color="blue"
-          variant="text"
-          @click="store.commit('setShowGlobalError', false)"
-        >
+        <v-btn color="blue" variant="text" @click="store.commit('setShowGlobalError', false)">
           Close
         </v-btn>
       </template>
