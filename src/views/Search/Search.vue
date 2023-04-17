@@ -38,7 +38,7 @@ const multiRecommendedLearnwareSize = ref(4)
 const multiRecommendedLearnwareItems = ref([])
 const multiRecommendedMatchScore = ref(null)
 const singleRecommendedLearnwarePage = ref(1)
-const singleRecommendedLearnwarePageNum = ref(10)
+const singleRecommendedLearnwarePageNum = ref(1)
 const singleRecommendedLearnwarePageSize = ref(10)
 const singleRecommendedLearnwareItems = ref([])
 const loading = ref(false)
@@ -46,6 +46,10 @@ const loading = ref(false)
 const contentRef = ref(null)
 
 const scrollTop = ref(0)
+
+const showError = ref(false)
+const errorMsg = ref('')
+const errorTimer = ref(null)
 
 const showMultiRecommended = computed(() => {
   return files.value.length > 0 && (singleRecommendedLearnwarePage.value === 1)
@@ -97,40 +101,95 @@ function pageChange(newPage) {
   contentRef.value && (contentRef.value.scrollTop = 0)
 }
 
-function delay(ms) {
-  return new Promise((res) => {
-    setTimeout(res, ms)
-  })
-}
-
-function generateLearnwareItems(filters, num) {
-  return Array(num).fill(0).map((_, i) => {
-    const allDataType = ['Audio', 'Video', 'Text', 'Image', 'Table']
-    const allTaskType = ['Classification', 'Clustering', 'Object Detection', 'Feature Extraction', 'Generation', 'Regression', 'Segmentation', 'Ranking']
-    const allDeviceType = ['CPU', 'GPU']
-    const allTagList = ['Business', 'Financial', 'Health', 'Politics', 'Computer', 'Internet', 'Traffic', 'Nature', 'Fashion', 'Industry', 'Agriculture', 'Education']
-
-    return {
-      id: Array(32).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join(''),
-      name: `Learnware ${i + 1}`,
-      description: `This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. This is the description of learnware ${i + 1}. `,
-      dataType: filters.dataType || allDataType[Math.floor(Math.random() * allDataType.length)],
-      taskType: filters.taskType || allTaskType[Math.floor(Math.random() * allTaskType.length)],
-      deviceType: filters.deviceType.length > 0 ? filters.deviceType : Array.from(new Set(Array(Math.ceil(Math.random() * 2)).fill(0).map(() => allDeviceType[Math.floor(Math.random() * allDeviceType.length)]))),
-      tagList: filters.tagList.length > 0 ? filters.tagList : Array.from(new Set(Array(Math.ceil(Math.random() * 5)).fill(0).map(() => allTagList[Math.floor(Math.random() * allTagList.length)]))),
-      matchScore: files.value.length > 0 ? Math.floor(Math.random() * 100) : null,
-    }
-  }).sort((a, b) => b.matchScore - a.matchScore)
-}
-
 function fetchByFilterAndPage(filters, page) {
+  if (contentRef.value) {
+    contentRef.value.scrollTop = 0
+  }
+
+  showError.value = false
   loading.value = true
-  delay(1000)
-    .then(() => {
-      multiRecommendedLearnwareItems.value = generateLearnwareItems(filters, multiRecommendedLearnwareSize.value),
-        multiRecommendedMatchScore.value = Math.floor(Math.random() * 10) + 90
-      singleRecommendedLearnwareItems.value = generateLearnwareItems(filters, singleRecommendedLearnwarePageSize.value)
+
+  const semanticSpec = {
+    "Name": {
+      "Values": filters.name,
+      "Type": "Name"
+    },
+    "Data": {
+      "Values": filters.dataType ? [filters.dataType] : [],
+      "Type": "Class"
+    },
+    "Task": {
+      "Values": filters.taskType ? [filters.taskType] : [],
+      "Type": "Class"
+    },
+    "Device": {
+      "Values": filters.deviceType,
+      "Type": "Tag"
+    },
+    "Scenario": {
+      "Values": filters.tagList,
+      "Type": "Tag"
+    },
+    "Description": {
+      "Values": "",
+      "Type": "Description"
+    }
+  }
+  const fd = new FormData()
+  fd.append('semantic_specification', JSON.stringify(semanticSpec))
+  fd.append('statistical_specification', files.value.length > 0 ? files.value[0] : null)
+  fd.append('limit', singleRecommendedLearnwarePageSize.value)
+  fd.append('page', singleRecommendedLearnwarePage.value - 1)
+  
+  fetch('/api/engine/search_learnware', {
+    method: 'POST',
+    body: fd,
+  })
+  .then((res) => {
+      if (res.status === 200) {
+        return res
+      }
+      throw new Error('Network error')
+    })
+    .then((res) => res.json())
+    .then((res) => {
+      switch (res.code) {
+        case 0: {
+          loading.value = false
+          multiRecommendedLearnwareItems.value = res.data.learnware_list_multi.map((item) => ({
+            id: item.learnware_id,
+            name: item.semantic_specification.Name.Values,
+            description: item.semantic_specification.Description.Values,
+            dataType: item.semantic_specification.Data.Values[0],
+            taskType: item.semantic_specification.Task.Values[0],
+            deviceType: item.semantic_specification.Device.Values,
+            tagList: item.semantic_specification.Scenario.Values
+          }))
+          singleRecommendedLearnwareItems.value = res.data.learnware_list_single.map((item) => ({
+            id: item.learnware_id,
+            name: item.semantic_specification.Name.Values,
+            description: item.semantic_specification.Description.Values,
+            dataType: item.semantic_specification.Data.Values[0],
+            taskType: item.semantic_specification.Task.Values[0],
+            deviceType: item.semantic_specification.Device.Values,
+            tagList: item.semantic_specification.Scenario.Values,
+            matchScore: item.matching * 100
+          }))
+          singleRecommendedLearnwarePageNum.value = res.data.total_pages
+          return
+        }
+        default: {
+          throw new Error(res.msg)
+        }
+      }
+    })
+    .catch((err) => {
+      console.error(err)
       loading.value = false
+      showError.value = true
+      clearTimeout(errorTimer.value)
+      setTimeout(() => showError.value = false, 2000)
+      errorMsg.value = err.message
     })
 }
 
@@ -159,6 +218,7 @@ watch(
 
 onActivated(() => {
   contentRef.value.scrollTop = scrollTop.value
+  fetchByFilterAndPage(filters.value, singleRecommendedLearnwarePage.value)
 })
 
 onMounted(() => {
@@ -168,14 +228,17 @@ onMounted(() => {
     })
 
     loadQuery()
-
-    fetchByFilterAndPage(filters.value, singleRecommendedLearnwarePage.value)
   })
 })
 </script>
 
 <template>
   <div class="search-container">
+    <v-scroll-y-transition class="fixed w-1/1 z-index-10">
+      <v-card-actions v-if="showError">
+        <v-alert class="w-1/1 max-w-3/5 mx-auto" closable :text="errorMsg" type="error" @click:close="showError = false" />
+      </v-card-actions>
+    </v-scroll-y-transition>
     <div class="flex flex-col w-1/1 md:max-w-460px bg-white">
       <div class="filter px-5">
         <div class="my-3 text-h6">
@@ -183,7 +246,7 @@ onMounted(() => {
         </div>
         <div>
           <div class="mt-7 mb-3 text-h6 !text-1rem">Search by name</div>
-          <v-text-field v-model="search" label="Search by name" hide-details append-inner-icon="mdi-close"
+          <v-text-field v-model="search" label="Learnware name" hide-details append-inner-icon="mdi-close"
             @click:append-inner="search = ''" />
         </div>
         <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
@@ -233,7 +296,7 @@ onMounted(() => {
         </v-card-text>
         <page-learnware-list :items="singleRecommendedLearnwareItems" :filters="filters" @page-change="pageChange"
           :page="singleRecommendedLearnwarePage" :page-num="singleRecommendedLearnwarePageNum"
-          :page-size="singleRecommendedLearnwarePageSize" :loading="loading" />
+          :page-size="singleRecommendedLearnwarePageSize" :loading="loading" :show-pagination="singleRecommendedLearnwarePageNum > 1" />
       </v-card>
     </div>
   </div>
