@@ -46,14 +46,13 @@ onUnmounted(() => {
                                 lg:text-2xl
                                 sm:text-lg">
           <div class="mt-6">
-            Learnware systematically reuses small models to do things that may even be beyond their original
-            purposes, <br>and enables users not need to build their machine learning models from scratch.
+            Learnware paradigm systematically reuses numerous various models to do things that may even be beyond their original purposes, <br>and enables users to easily identify and reuse helpful models, not need to build their models from scratch.
           </div>
         </div>
 
         <div class="flex justify-center mt-12">
           <v-btn class="mx-3" size="large" @click="router.push('/search')">Try it out</v-btn>
-          <v-btn class="mx-3" variant="outlined" size="large" @click="router.push('/submit')">Be a developer</v-btn>
+          <v-btn class="mx-3" variant="outlined" size="large" @click="router.push('/submit')">Be a provider</v-btn>
         </div>
       </div>
     </div>
