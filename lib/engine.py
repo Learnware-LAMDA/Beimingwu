@@ -64,3 +64,26 @@ def cached_search_learnware(semantic_str, statistical_str):
     
     # Return learnware
     return True, "", (matching, single_learnware_list, multi_learnware)
+
+
+@functools.lru_cache(maxsize=2048)
+def cached_search_learnware_by_semantic(semantic_str):
+    # Load semantic specification
+    try:
+        semantic_specification = json.loads(semantic_str)
+    except:
+        return False, jsonify({"code": 51, "msg": "Semantic specification error"}), None
+    
+    # Search Learnware
+    info = market.BaseUserInfo(
+        id = None if g.user is None else str(g.user['id']),
+        semantic_spec=semantic_specification,
+        stat_info={}, # No statistical specification
+    )
+    try:
+        matching, single_learnware_list, multi_learnware = C.engine.search_learnware(info)
+    except:
+        return False, jsonify({"code": 42, "msg": f"Engine search learnware error."}), None
+    
+    # Return learnware
+    return True, "", (matching, single_learnware_list, multi_learnware)

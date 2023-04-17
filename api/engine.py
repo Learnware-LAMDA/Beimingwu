@@ -31,21 +31,28 @@ def get_semantic_specification():
 def search_learnware():
     # Load name & semantic specification
     semantic_str = request.form.get("semantic_specification")
-    if 'statistical_specification' not in request.files or semantic_str is None:
+    if semantic_str is None:
         return jsonify({"code": 21, "msg": f"Request parameters error."})
     
     # Check statistical specification
-    statistical_file = request.files['statistical_specification']
-    if statistical_file.filename == '' or not statistical_file:
-        return jsonify({"code": 21, "msg": f"Request parameters error."})
-
-    # Load statistical specification
-    statistical_str = statistical_file.read()
+    if request.files is None:
+        statistical_str = None
+    elif 'statistical_specification' not in request.files:
+        statistical_str = None
+    else:
+        statistical_file = request.files['statistical_specification']
+        statistical_str = statistical_file.read()
     
-    # Cached search learnware
-    status, msg, ret = adv_engine.cached_search_learnware(semantic_str, statistical_str)
+    # Cached Search learnware
+    if statistical_str is None:
+        status, msg, ret = adv_engine.cached_search_learnware_by_semantic(semantic_str)
+    else:
+        status, msg, ret = adv_engine.cached_search_learnware(semantic_str, statistical_str)
     if not status: return msg
     (matching, single_learnware_list, multi_learnware) = ret
+    if matching is None and multi_learnware is None:  # result of seach learnware with no statistical specification 
+        matching = [0 for _ in single_learnware_list]
+        multi_learnware = []
     assert len(matching) == len(single_learnware_list)
     n = len(single_learnware_list)
     
