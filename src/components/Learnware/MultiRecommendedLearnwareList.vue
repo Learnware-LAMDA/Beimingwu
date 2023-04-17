@@ -2,6 +2,7 @@
 import { ref, computed, onActivated, onDeactivated } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
+import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import DeleteDialog from './DeleteDialog.vue'
 import { downloadLearnware } from '@/utils'
 import colors from 'vuetify/lib/util/colors'
@@ -43,6 +44,10 @@ const props = defineProps({
   xs: {
     type: Number,
     default: 1,
+  },
+  loading: {
+    type: Boolean,
+    default: false,
   }
 })
 
@@ -105,56 +110,65 @@ onDeactivated(() => {
 </script>
 
 <template>
-  <div class="m-2 flex justify-between">
-    <v-card-title v-if="matchScore" class="score">
-      Total specification score <span class="ml-2" :style="`color: ${getColorByScore(matchScore)}`">{{
-        matchScore
-      }}</span>
-    </v-card-title>
-    <v-btn class="p-2 text-body-2 !text-1em" @click.stop="() => downloadLearnware(item.id)">
-      <v-icon icon="mdi-download"></v-icon>
-      Download All
-    </v-btn>
-  </div>
-  <v-card flat class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null"
-    :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-    <delete-dialog ref="dialog" @confirm="(id) => deleteLearnware(id)" />
-    <TransitionGroup name="fade">
-      <v-card flat class="card" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
-        <div class="first-row">
-          <v-card-title class="title">{{ item.name }}</v-card-title>
-          <v-card-actions class="actions">
-            <v-tooltip v-model="item.showEditTips" location="top">
-              <template v-slot:activator="{ props }">
-                <v-btn v-if="showActions" icon="mdi-pencil" @click.stop="() => { }" v-bind="props"></v-btn>
-              </template>
-              <span>Not availble</span>
-            </v-tooltip>
-            <v-btn v-if="showActions" icon="mdi-delete" @click.stop="() => confirmDelete(i)"></v-btn>
-          </v-card-actions>
-        </div>
-        <v-card-text class="card-text">
-          <div class="label"
-            :class="filters && filters.dataType && filters.dataType.includes(item.dataType) ? 'active' : null">{{
-              item.dataType }}</div>
-          <div class="label"
-            :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : null">{{
-              item.taskType }}</div>
-          <div v-for="deviceType in item.deviceType" class="label"
-            :class="filters && filters.deviceType && filters.deviceType.includes(deviceType) ? 'active' : null">
-            {{ deviceType }}</div>
-          <div class="tag" :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : null"
-            v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
-        </v-card-text>
-        <v-card-text class="card-text">
-          <div class="description">{{ item.description }}</div>
-        </v-card-text>
-      </v-card>
-    </TransitionGroup>
-    <div flat v-if="items.length === 0" class="no-learnware">
-      Oops! There are no learnwares.
+  <div v-if="!loading">
+    <div class="m-2 flex justify-between">
+      <v-card-title v-if="matchScore" class="score">
+        Total specification score <span class="ml-2" :style="`color: ${getColorByScore(matchScore)}`">{{
+          matchScore
+        }}</span>
+      </v-card-title>
+      <v-btn class="p-2 text-body-2 !text-1em" @click.stop="() => downloadLearnware(item.id)">
+        <v-icon icon="mdi-download"></v-icon>
+        Download All
+      </v-btn>
     </div>
-  </v-card>
+    <v-card flat class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null"
+      :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
+      <delete-dialog ref="dialog" @confirm="(id) => deleteLearnware(id)" />
+      <TransitionGroup name="fade">
+        <v-card flat class="card" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
+          <div class="first-row">
+            <v-card-title class="title">{{ item.name }}</v-card-title>
+            <v-card-actions class="actions">
+              <v-tooltip v-model="item.showEditTips" location="top">
+                <template v-slot:activator="{ props }">
+                  <v-btn v-if="showActions" icon="mdi-pencil" @click.stop="() => { }" v-bind="props"></v-btn>
+                </template>
+                <span>Not availble</span>
+              </v-tooltip>
+              <v-btn v-if="showActions" icon="mdi-delete" @click.stop="() => confirmDelete(i)"></v-btn>
+            </v-card-actions>
+          </div>
+          <v-card-text class="card-text">
+            <div class="label"
+              :class="filters && filters.dataType && filters.dataType.includes(item.dataType) ? 'active' : null">{{
+                item.dataType }}</div>
+            <div class="label"
+              :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : null">{{
+                item.taskType }}</div>
+            <div v-for="deviceType in item.deviceType" class="label"
+              :class="filters && filters.deviceType && filters.deviceType.includes(deviceType) ? 'active' : null">
+              {{ deviceType }}</div>
+            <div class="tag" :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : null"
+              v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
+          </v-card-text>
+          <v-card-text class="card-text">
+            <div class="description">{{ item.description }}</div>
+          </v-card-text>
+        </v-card>
+      </TransitionGroup>
+      <div flat v-if="items.length === 0" class="no-learnware">
+        Oops! There are no learnwares.
+      </div>
+    </v-card>
+  </div>
+  <div v-else class="grid p-2 gap-3" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
+    <v-skeleton-loader
+      v-for="_ in 4"
+      class="w-1/1"
+      type="article"
+    ></v-skeleton-loader>
+  </div>
 </template>
 
 <style scoped lang="scss">
