@@ -7,6 +7,7 @@ from config import C
 import os, json, time
 import hashlib
 from learnware import market, specification
+import lib.engine as adv_engine
 from .utils import dump_learnware, get_parameters
 engine_api = Blueprint("Engine-API", __name__)
 
@@ -29,56 +30,64 @@ def get_semantic_specification():
 @engine_api.route("/search_learnware", methods=["POST"])
 def search_learnware():
     # Load name & semantic specification
-    semantic_specification = request.form.get("semantic_specification")
-    if 'statistical_specification' not in request.files or semantic_specification is None:
+    semantic_str = request.form.get("semantic_specification")
+    if 'statistical_specification' not in request.files or semantic_str is None:
         return jsonify({"code": 21, "msg": f"Request parameters error."})
-    try:
-        semantic_specification = json.loads(semantic_specification)
-    except:
-        return jsonify({"code": 51, "msg": "Semantic specification error"})
     
     # Check statistical specification
     statistical_file = request.files['statistical_specification']
     if statistical_file.filename == '' or not statistical_file:
         return jsonify({"code": 21, "msg": f"Request parameters error."})
-    
+
     # Load statistical specification
-    statistical_name = f"{int(time.time())}_" + hashlib.md5(statistical_file.read()).hexdigest() + ".json"
-    statistical_file.seek(0)
-    statistical_path = os.path.join(C.upload_path, statistical_name)
-    statistical_file.save(statistical_path)
-    statistical_specification = None
-    try:
-        statistical_specification = specification.rkme.RKMEStatSpecification()
-        statistical_specification.load(statistical_path)
-    except:
-        return jsonify({"code": 41, "msg": f"Statistical specification error."})
-    if statistical_specification is None:
-        return jsonify({"code": 41, "msg": f"Statistical specification error."})
+    statistical_str = statistical_file.read()
     
-    # Search Learnware
-    info = market.BaseUserInfo(
-        id = None if g.user is None else str(g.user['id']),
-        semantic_spec=semantic_specification,
-        stat_info={"RKMEStatSpecification": statistical_specification},
-    )
-    try:
-        matching, single_learnware_list, multi_learnware = C.engine.search_learnware(info)
-    except:
-        return jsonify({"code": 42, "msg": f"Engine search learnware error."})
+    # Cached search learnware
+    status, msg, ret = adv_engine.cached_search_learnware(semantic_str, statistical_str)
+    if not status: return msg
+    (matching, single_learnware_list, multi_learnware) = ret
     assert len(matching) == len(single_learnware_list)
     n = len(single_learnware_list)
     
+    # Try paging
+    limit = request.form.get("limit")
+    page  = request.form.get("page")
+    
     # Directly whole list
+    if limit is None:
+        result = {
+            "code": 0,
+            "msg": "Ok",
+            "data": {
+                "learnware_list_multi": [dump_learnware(x) for x in multi_learnware],
+                "learnware_list_single": [dump_learnware(single_learnware_list[i], matching[i]) for i in range(n)],
+            }
+        }
+        return jsonify(result)
+    
+    # Paging
+    if limit == 0:
+        return jsonify({"code": 52, "msg": "Limit cannot be 0."})
+    if page is None: page = 0
     result = {
         "code": 0,
         "msg": "Ok",
         "data": {
-            "learnware_list_multi": [dump_learnware(x) for x in multi_learnware],
-            "learnware_list_single": [dump_learnware(single_learnware_list[i], matching[i]) for i in range(n)],
+            "learnware_list_multi": []
+            "learnware_list_single": []
+            "page": page,
+            "limit": limit,
+            "total_pages": (n + limit - 1) // limit
         }
     }
+    if page == 0: 
+        result["data"]["learnware_list_multi"] = [dump_learnware(x) for x in multi_learnware]
+    result["data"]["learnware_list_single"] = [
+        dump_learnware(single_learnware_list[i], matching[i]) 
+        for i in range(page * limit, min(n, page * limit + page))
+    ]
     return jsonify(result)
+        
 
 
 @engine_api.route("/download_learnware", methods=["GET"])
