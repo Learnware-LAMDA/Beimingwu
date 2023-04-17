@@ -119,6 +119,22 @@ def download_learnware():
 
     return response
 
+@engine_api.route("/get_learnware_info", methods=["GET"])
+def get_learnware_info():
+    data = get_parameters(request, ["learnware_id"])
+    learnware_id = data["learnware_id"]
+
+    if learnware_id is None:
+        return jsonify({"code": 21, "msg": "Request parameters error."})
+
+    result = {
+        "code": 0,
+        "msg": "Ok",
+        
+    }
+
+    return jsonify(result)
+
 @engine_api.route("/download_multi_learnware", methods=["GET"])
 def download_multi_learnware():
     data = get_parameters(request, ["learnware_ids"])
