@@ -7,6 +7,7 @@ import DeviceType from '@/components/Specification/SpecTag/DeviceType.vue'
 import FileUpload from '@/components/Specification/FileUpload.vue'
 import TagList from '@/components/Specification/SpecTag/TagList.vue'
 import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue'
+import MultiRecommendedLearnwareList from '@/components/Learnware/MultiRecommendedLearnwareList.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -37,6 +38,7 @@ const multiRecommendedLearnwarePage = ref(1)
 const multiRecommendedLearnwarePageNum = ref(1)
 const multiRecommendedLearnwarePageSize = ref(4)
 const multiRecommendedLearnwareItems = ref([])
+const multiRecommendedMatchScore = ref(null)
 const singleRecommendedLearnwarePage = ref(1)
 const singleRecommendedLearnwarePageNum = ref(10)
 const singleRecommendedLearnwarePageSize = ref(10)
@@ -127,7 +129,8 @@ function fetchByFilterAndPage(filters, page) {
   loading.value = true
   delay(1000)
     .then(() => {
-      multiRecommendedLearnwareItems.value = generateLearnwareItems(filters, multiRecommendedLearnwarePageSize.value)
+      multiRecommendedLearnwareItems.value = generateLearnwareItems(filters, multiRecommendedLearnwarePageSize.value),
+      multiRecommendedMatchScore.value = Math.floor(Math.random() * 200)
       singleRecommendedLearnwareItems.value = generateLearnwareItems(filters, singleRecommendedLearnwarePageSize.value)
       loading.value = false
     })
@@ -216,9 +219,10 @@ onMounted(() => {
             </template>
           </v-alert>
         </v-card-text>
-        <page-learnware-list :show-pagination="false" :items="multiRecommendedLearnwareItems" :filters="filters"
-          @page-change="pageChange" :page="multiRecommendedLearnwarePage" :page-num="multiRecommendedLearnwarePageNum"
-          :page-size="multiRecommendedLearnwarePageSize" :loading="loading" />
+        <multi-recommended-learnware-list :show-pagination="false" :items="multiRecommendedLearnwareItems" :matchScore="multiRecommendedMatchScore"
+          :filters="filters" @page-change="pageChange" :page="multiRecommendedLearnwarePage"
+          :page-num="multiRecommendedLearnwarePageNum" :page-size="multiRecommendedLearnwarePageSize"
+          :loading="loading" />
       </v-card>
       <v-card flat class="m-2 mt-4 bg-transparent">
         <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">Recommended single learnwares</v-card-title>
