@@ -56,7 +56,7 @@ def get_all_user_list(columns, limit=None, page=None, username=None, email=None)
             if username is not None: like_suffix += f"username LIKE '%{username}%'"
             if email is not None: like_suffix += f"email LIKE '%{email}%'"
         else:
-            like_suffix = f"WHERE username LIKE '{%%username%%}' AND email LIKE '{%%email%%}'"
+            like_suffix = f"WHERE username LIKE '%{username}%' AND email LIKE '%{email}%'"
     page_suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
     _, ret = C.database.query(f"SELECT {column_str} FROM user {like_suffix} {page_suffix}")
     return [dict(zip(columns, user)) for user in ret], cnt[0][0]
