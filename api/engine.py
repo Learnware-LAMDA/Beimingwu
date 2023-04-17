@@ -142,7 +142,14 @@ def download_multi_learnware():
     if learnware_ids is None or not isinstance(learnware_ids, list):
         return jsonify({"code": 21, "msg": "Request parameters error."})
     
-    learnware_paths = [ C.engine.get_learnware_path_by_ids(learnware_id) for learnware_id in learnware_ids]
+    try:
+        learnware_paths = [ C.engine.get_learnware_path_by_ids(learnware_id) for learnware_id in learnware_ids]
+    except:
+        return jsonify({"code": 42, "msg": "Engine download learnware error."})
+    
+    if None in learnware_paths:
+        return jsonify({"code": 41, "msg": "Learnware not found."})
+    
     zip_filename = f"Multi_{int(time.time())}_" + generate_random_str(16) + ".zip"
     zip_filename = os.path.join(C.upload_path, zip_filename)
     with zipfile.ZipFile(zip_filename, 'w') as zip_file:
