@@ -110,14 +110,14 @@ onDeactivated(() => {
 </script>
 
 <template>
-  <div v-if="!loading">
-    <div class="m-2 flex justify-between">
+  <div v-if="!loading" class="m-2 p-2 border-1 rounded-lg hover:border-purple-500">
+    <div class="flex justify-between">
       <v-card-title v-if="matchScore" class="score">
         Total specification score <span class="ml-2" :style="`color: ${getColorByScore(matchScore)}`">{{
           matchScore
         }}</span>
       </v-card-title>
-      <v-btn class="p-2 text-body-2 !text-1em" @click.stop="() => downloadLearnware(item.id)">
+      <v-btn variant="flat" class="!px-4 text-body-2 !text-1em border-1" @click.stop="() => downloadLearnware(item.id)" size="x-large">
         <v-icon icon="mdi-download"></v-icon>
         Download All
       </v-btn>
