@@ -73,8 +73,8 @@ def search_learnware():
         "code": 0,
         "msg": "Ok",
         "data": {
-            "learnware_list_multi": []
-            "learnware_list_single": []
+            "learnware_list_multi": [],
+            "learnware_list_single": [],
             "page": page,
             "limit": limit,
             "total_pages": (n + limit - 1) // limit
