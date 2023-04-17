@@ -130,7 +130,7 @@ function fetchByFilterAndPage(filters, page) {
   delay(1000)
     .then(() => {
       multiRecommendedLearnwareItems.value = generateLearnwareItems(filters, multiRecommendedLearnwarePageSize.value),
-      multiRecommendedMatchScore.value = Math.floor(Math.random() * 200)
+      multiRecommendedMatchScore.value = Math.floor(Math.random() * 10) + 90
       singleRecommendedLearnwareItems.value = generateLearnwareItems(filters, singleRecommendedLearnwarePageSize.value)
       loading.value = false
     })
