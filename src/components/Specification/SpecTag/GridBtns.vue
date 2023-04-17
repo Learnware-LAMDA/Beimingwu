@@ -65,8 +65,8 @@ watch(
   <div class="grid-container">
     <div class="title text-h6 !text-1rem">{{ title }}</div>
     <div class="btn-container" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-      <icon-btn v-for="(btn, i) in btns" :icon-component="btn.icon" :title="btn.title" :active="btn.title === value"
-        :key="i" @click="() => clickBtn(btn)" />
+      <icon-btn class="btn" v-for="(btn, i) in btns" :icon-component="btn.icon" :title="btn.title"
+        :active="btn.title === value" :key="i" @click="() => clickBtn(btn)" />
     </div>
   </div>
 </template>
@@ -79,6 +79,10 @@ watch(
 
   .btn-container {
     @apply grid gap-2;
+
+    .btn {
+      @apply pr-2;
+    }
   }
 }
 </style>
