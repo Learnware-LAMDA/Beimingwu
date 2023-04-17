@@ -80,9 +80,9 @@ def get_learnware_list():
 @login_required
 def add_learnware():
     semantic_specification = request.form.get("semantic_specification")
-    if request.files is None or semantic_specification is None:
+    if request.files is None or 'learnware_file' not in request.files or semantic_specification is None:
         return jsonify({"code": 21, "msg": f"Request parameters error."})
-    
+
     learnware_file = request.files['learnware_file']
     if learnware_file.filename == '' or not learnware_file:
         return jsonify({"code": 21, "msg": f"Request parameters error."})

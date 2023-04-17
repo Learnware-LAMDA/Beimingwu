@@ -52,7 +52,11 @@ def search_learnware():
     # Try paging
     limit = request.form.get("limit")
     page  = request.form.get("page")
-    
+    try:
+        limit = int(limit)
+    except:
+        limit = None
+        
     # Directly whole list
     if limit is None:
         result = {
@@ -68,7 +72,11 @@ def search_learnware():
     # Paging
     if limit == 0:
         return jsonify({"code": 52, "msg": "Limit cannot be 0."})
-    if page is None: page = 0
+    try:
+        page = int(page)
+    except:
+        page = 0
+        
     result = {
         "code": 0,
         "msg": "Ok",
@@ -84,7 +92,7 @@ def search_learnware():
         result["data"]["learnware_list_multi"] = [dump_learnware(x) for x in multi_learnware]
     result["data"]["learnware_list_single"] = [
         dump_learnware(single_learnware_list[i], matching[i]) 
-        for i in range(page * limit, min(n, page * limit + page))
+        for i in range(page * limit, min(n, page * limit + limit))
     ]
     return jsonify(result)
         

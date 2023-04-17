@@ -1,8 +1,10 @@
 from config import C
 from learnware.learnware import Learnware
 from learnware import market, specification
+from flask import jsonify, g
 import functools
-import time
+import os, json, time
+import hashlib
 
 def get_learnware_by_id(ids):
     """ get learnware by ids
@@ -37,14 +39,17 @@ def cached_search_learnware(semantic_str, statistical_str):
     statistical_path = os.path.join(C.upload_path, statistical_name)
     statistical_specification = None
     try:
-        with open(statistical_path, "w") as stats:
+        with open(statistical_path, "wb") as stats:
             stats.write(statistical_str)
         statistical_specification = specification.rkme.RKMEStatSpecification()
         statistical_specification.load(statistical_path)
     except:
+        os.remove(statistical_path)
         return False, jsonify({"code": 41, "msg": f"Statistical specification error."}), None
     if statistical_specification is None:
+        os.remove(statistical_path)
         return False, jsonify({"code": 41, "msg": f"Statistical specification error."}), None
+    os.remove(statistical_path)
     
     # Search Learnware
     info = market.BaseUserInfo(
