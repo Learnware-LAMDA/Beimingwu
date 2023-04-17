@@ -156,8 +156,8 @@ def get_learnware_info():
 
 @engine_api.route("/download_multi_learnware", methods=["GET"])
 def download_multi_learnware():
-    data = get_parameters(request, ["learnware_ids"])
-    learnware_ids = data["learnware_ids"]
+    learnware_ids = request.args.getlist("learnware_ids")
+
     if learnware_ids is None or not isinstance(learnware_ids, list):
         return jsonify({"code": 21, "msg": "Request parameters error."})
     
