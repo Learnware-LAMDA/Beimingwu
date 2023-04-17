@@ -6,6 +6,7 @@ import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import DeleteDialog from './DeleteDialog.vue'
 import { downloadLearnware } from '@/utils'
 import colors from 'vuetify/lib/util/colors'
+import oopsImg from '/oops.svg'
 
 const emit = defineEmits(['delete'])
 
@@ -117,7 +118,8 @@ onDeactivated(() => {
           matchScore
         }}</span>
       </v-card-title>
-      <v-btn variant="flat" class="!px-4 text-body-2 !text-1em border-1" @click.stop="() => downloadLearnware(item.id)" size="x-large">
+      <v-btn variant="flat" class="!px-4 text-body-2 !text-1em border-1" @click.stop="() => downloadLearnware(item.id)"
+        size="x-large">
         <v-icon icon="mdi-download"></v-icon>
         Download All
       </v-btn>
@@ -158,16 +160,13 @@ onDeactivated(() => {
         </v-card>
       </TransitionGroup>
       <div flat v-if="items.length === 0" class="no-learnware">
+        <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
         Oops! There are no learnwares.
       </div>
     </v-card>
   </div>
   <div v-else class="grid p-2 gap-3" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-    <v-skeleton-loader
-      v-for="_ in 4"
-      class="w-1/1"
-      type="article"
-    ></v-skeleton-loader>
+    <v-skeleton-loader v-for="_ in 4" class="w-1/1" type="article"></v-skeleton-loader>
   </div>
 </template>
 
@@ -230,6 +229,10 @@ onDeactivated(() => {
 
   .no-learnware {
     @apply py-5 w-1/1 text-center text-2xl;
+
+    .oops-img {
+      @apply mx-auto;
+    }
   }
 }
 
