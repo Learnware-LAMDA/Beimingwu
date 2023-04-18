@@ -61,7 +61,10 @@ const { handleSubmit, meta } = useForm({
     },
     files(value) {
       if (value?.length > 0) {
-        return true
+        if (value[0].name.endsWith('.zip')) {
+          return true
+        }
+        return 'You must upload a zip file.'
       }
       return 'Please upload your model & statistical specification.'
     }
@@ -331,7 +334,7 @@ onMounted(() => {
 
           <v-window-item :value="3">
             <div class="p-4 m-auto">
-              <file-upload v-model:files="files.value.value"></file-upload>
+              <file-upload v-model:files="files.value.value" :error-messages="files.errorMessage.value"></file-upload>
             </div>
             <v-card-text class="text-lg <sm:text-sm">
               <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for

@@ -7,6 +7,9 @@ const props = defineProps({
   files: {
     type: Array,
     default: () => []
+  },
+  errorMessages: {
+    type: String,
   }
 })
 
@@ -42,23 +45,28 @@ watch(() => _files.value, (val) => {
 </script>
 
 <template>
-  <v-card class="bg-transparent" @dragover.prevent @dragenter.prevent="dragging = true"
-    @dragleave.prevent="dragging = false" @drop.prevent="handleDrop" @click="chooseFile" flat>
-    <v-card-text
-      class="h-40 drag rounded-lg border-gray-500 border-2 border-dashed flex flex-column justify-center items-center md:text-xl text-1.1rem"
-      :class="{ 'drag-hover': dragging }">
-      <div class="flex justify-center items-center max-w-1/1">
-        <p v-if="_files.length === 0">
-          <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>Drag your file here
-        </p>
-        <div v-else class="w-1/1 truncate">
-          <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ _files[0].name }} <span class="ml-2 text-sm">{{
-            computeFileSize(_files[0].size) }}</span>
+  <div>
+    <v-card class="bg-transparent" @dragover.prevent @dragenter.prevent="dragging = true"
+      @dragleave.prevent="dragging = false" @drop.prevent="handleDrop" @click="chooseFile" flat>
+      <v-card-text
+        class="h-40 drag rounded-lg border-gray-500 border-2 border-dashed flex flex-column justify-center items-center md:text-xl text-1.1rem"
+        :class="{ 'drag-hover': dragging }">
+        <div class="flex justify-center items-center max-w-1/1">
+          <p v-if="_files.length === 0">
+            <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>Drag your file here
+          </p>
+          <div v-else class="w-1/1 truncate">
+            <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ _files[0].name }} <span class="ml-2 text-sm">{{
+              computeFileSize(_files[0].size) }}</span>
+          </div>
+          <v-btn flat v-if="_files.length > 0" icon="mdi-close" @click.stop="() => _files = []"></v-btn>
         </div>
-        <v-btn flat v-if="_files.length > 0" icon="mdi-close" @click.stop="() => _files = []"></v-btn>
-      </div>
-    </v-card-text>
-    <v-file-input ref="fileInput" v-show="false" v-model="_files" label="select a file">
-    </v-file-input>
-  </v-card>
+      </v-card-text>
+      <v-file-input ref="fileInput" v-show="false" v-model="_files" label="select a file">
+      </v-file-input>
+    </v-card>
+    <v-scroll-y-transition>
+      <v-card-text v-if="errorMessages" class="text-error">{{ errorMessages }}</v-card-text>
+    </v-scroll-y-transition>
+  </div>
 </template>
