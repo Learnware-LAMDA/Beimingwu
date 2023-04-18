@@ -156,6 +156,10 @@ function getColorByScore(score) {
 
       .actions {
         @apply justify-end mt-1;
+        
+        * {
+          @apply <sm:mx-0;
+        }
       }
     }
 
