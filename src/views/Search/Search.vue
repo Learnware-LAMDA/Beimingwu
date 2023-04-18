@@ -101,7 +101,6 @@ function saveQuery() {
 
 function pageChange(newPage) {
   singleRecommendedLearnwarePage.value = newPage
-  contentRef.value && (contentRef.value.scrollTop = 0)
 }
 
 function fetchByFilterAndPage(filters, page) {
@@ -195,7 +194,7 @@ function fetchByFilterAndPage(filters, page) {
 watch(
   () => filters.value,
   () => {
-    saveQuery()
+    // saveQuery()
     singleRecommendedLearnwarePage.value = 1
   },
   { deep: true }
@@ -229,7 +228,7 @@ onMounted(() => {
       scrollTop.value = contentRef.value.scrollTop
     })
 
-    loadQuery()
+    // loadQuery()
   })
 })
 </script>

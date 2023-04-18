@@ -44,7 +44,6 @@ const props = defineProps({
 })
 
 const dialog = ref(null)
-const scrollY = ref(0)
 
 const realCols = computed(() => {
   switch (display.name.value) {
@@ -81,24 +80,11 @@ function transformQuery(item) {
   }
 }
 
-function saveScroll() {
-  scrollY.value = window.scrollY
-}
-
 function getColorByScore(score) {
   if (score > 80) return colors.green.base
   if (score > 50) return colors.orange.base
   return colors.red.base
 }
-
-onActivated(() => {
-  window.scrollTo(0, scrollY.value)
-  window.addEventListener('scroll', saveScroll)
-})
-
-onDeactivated(() => {
-  window.removeEventListener('scroll', saveScroll)
-})
 </script>
 
 <template>
