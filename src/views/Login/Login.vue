@@ -4,6 +4,7 @@ import { useStore } from 'vuex'
 import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import { useField, useForm } from 'vee-validate'
+import { hex_md5 } from '@/utils/encrypt'
 
 const display = useDisplay()
 
@@ -52,7 +53,7 @@ const valid = computed(() => {
 const login = handleSubmit(values => {
   const data = {
     email: values.email,
-    password: values.password,
+    password: hex_md5(values.password),
   }
 
   fetch('/api/auth/login', {

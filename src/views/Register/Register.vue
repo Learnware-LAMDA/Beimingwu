@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useField, useForm } from 'vee-validate'
 import RegSucDialog from '@/components/User/RegSucDialog.vue'
+import { hex_md5 } from '@/utils/encrypt'
 
 const display = useDisplay()
 
@@ -60,7 +61,7 @@ const submit = handleSubmit(values => {
   const data = {
     username: values.userName,
     email: values.email,
-    password: values.password,
+    password: hex_md5(values.password),
   }
 
   fetch('/api/auth/register', {
