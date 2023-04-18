@@ -45,8 +45,8 @@ const filteredRoutes = computed(() => {
             <v-app-bar-nav-icon v-if="['xs', 'sm'].includes(display.name.value)"
                 @click="() => emit('update:drawerOpen', !drawerOpen)"></v-app-bar-nav-icon>
             <v-toolbar-items class="cursor-pointer" @click="() => router.push('/')">
-                <v-img contain width="80" :src="lamdaLogo"></v-img>
-                <h1 class="ml-4 flex flex-column justify-center text-xl" v-if="!['xs', 'sm'].includes(display.name.value)">
+                <v-img contain width="50" :src="lamdaLogo"></v-img>
+                <h1 class="ml-3 flex flex-column justify-center text-xl font-weight-bold" v-if="!['xs', 'sm'].includes(display.name.value)">
                     Learnware Market
                 </h1>
             </v-toolbar-items>
