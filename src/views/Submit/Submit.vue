@@ -224,16 +224,43 @@ const submit = handleSubmit((values) => {
     })
 })
 
-watch(
-  () => currentStep.value,
-  (_, oldStep) => {
-    if (oldStep === 0) {
-
-    }
-  }
-)
-
 onMounted(() => {
+  fetch('/api/auth/get_role', {
+    method: 'POST',
+  })
+    .then((res) => {
+      if (res.status === 200) {
+        return res
+      }
+      throw new Error('Network error')
+    })
+    .then((res) => res.json())
+    .then((res) => {
+      switch (res.code) {
+        case 0: {
+          return
+        }
+        case 11: {
+          submiting.value = false
+          store.commit('setLoggedIn', false)
+          store.commit('setShowGlobalError', true)
+          store.commit('setGlobalError', 'Please login first')
+          setTimeout(() => { router.push('/login') }, 1000)
+          return
+        }
+        default: {
+          throw new Error(res.msg)
+        }
+      }
+    })
+    .catch((err) => {
+      submiting.value = false
+      showError.value = true
+      errorMsg.value = err.message
+      clearTimeout(errorTimer.value)
+      errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
+    })
+
   if (route.query.name) {
     name.value.value = route.query.name
   }
