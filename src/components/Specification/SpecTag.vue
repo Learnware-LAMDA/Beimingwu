@@ -55,15 +55,10 @@ watch(
 
 <template>
   <div class="spec-tag">
-    <v-scroll-y-transition>
-      <v-alert
-        v-if="errorMessages"
-        type="error"
-        class="fixed mx-auto w-1/1 max-w-900px z-index-10"
-        style="top: var(--v-layout-top)"
-      >
-        {{ errorMessages }}
-      </v-alert>
+    <v-scroll-y-transition class="fixed left-0 right-0 z-index-10" style="top: var(--v-layout-top)">
+      <v-card-actions v-if="errorMessages">
+        <v-alert class="w-1/1 max-w-900px mx-auto" closable :text="errorMessages" type="error" />
+      </v-card-actions>
     </v-scroll-y-transition>
     <data-type v-model:value="_dataType"/>
     <task-type v-model:value="_taskType"/>
