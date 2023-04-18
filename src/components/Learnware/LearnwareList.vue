@@ -92,7 +92,7 @@ function getColorByScore(score) {
 </script>
 
 <template>
-  <div class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null"
+  <div class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : []"
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <delete-dialog ref="dialog" @confirm="(id) => deleteLearnware(id)" />
     <TransitionGroup name="fade">
@@ -102,25 +102,25 @@ function getColorByScore(score) {
           <v-card-actions class="actions">
             <v-tooltip v-model="item.showEditTips" location="top">
               <template v-slot:activator="{ props }">
-                <v-btn v-if="showActions" icon="mdi-pencil" @click.stop="() => { }" v-bind="props" :size="greaterThanXs ? null : 'small'"></v-btn>
+                <v-btn v-if="showActions" icon="mdi-pencil" @click.stop="() => { }" v-bind="props" :size="greaterThanXs ? undefined : 'small'"></v-btn>
               </template>
               <span>Not availble</span>
             </v-tooltip>
-            <v-btn icon="mdi-download" @click.stop="() => downloadLearnware(item.id)" :size="greaterThanXs ? null : 'small'"></v-btn>
-            <v-btn v-if="showActions" icon="mdi-delete" @click.stop="() => confirmDelete(i)" :size="greaterThanXs ? null : 'small'"></v-btn>
+            <v-btn icon="mdi-download" @click.stop="() => downloadLearnware(item.id)" :size="greaterThanXs ? undefined : 'small'"></v-btn>
+            <v-btn v-if="showActions" icon="mdi-delete" @click.stop="() => confirmDelete(i)" :size="greaterThanXs ? undefined : 'small'"></v-btn>
           </v-card-actions>
         </div>
         <v-card-text class="card-text">
           <div class="label"
-            :class="filters && filters.dataType && filters.dataType.includes(item.dataType) ? 'active' : null">{{
+            :class="filters && filters.dataType && filters.dataType.includes(item.dataType) ? 'active' : undefined">{{
               item.dataType }}</div>
           <div class="label"
-            :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : null">{{
+            :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : undefined">{{
               item.taskType }}</div>
           <div v-for="deviceType in item.deviceType" class="label"
-            :class="filters && filters.deviceType && filters.deviceType.includes(deviceType) ? 'active' : null">
+            :class="filters && filters.deviceType && filters.deviceType.includes(deviceType) ? 'active' : undefined">
             {{ deviceType }}</div>
-          <div class="tag" :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : null"
+          <div class="tag" :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : undefined"
             v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
         </v-card-text>
         <v-card-text class="card-text">
