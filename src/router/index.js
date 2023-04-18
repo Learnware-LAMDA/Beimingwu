@@ -29,6 +29,7 @@ const Router = createRouter({
     meta: {
       showInNavBar: true,
       requiredLogin: true,
+      keepAlive: true,
       icon: 'mdi-transfer'
     }
   },
