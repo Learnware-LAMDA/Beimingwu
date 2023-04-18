@@ -4,7 +4,6 @@ import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import DeleteDialog from './DeleteDialog.vue'
-import { downloadLearnware } from '@/utils'
 import colors from 'vuetify/lib/util/colors'
 import oopsImg from '/oops.svg'
 
@@ -79,6 +78,11 @@ function confirmDelete(index) {
   })
 }
 
+function downloadAll() {
+  const learnwareIds = props.items.map(item => item.id)
+  window.open('/api/engine/download_multi_learnware?learnware_ids=' + JSON.stringify(learnwareIds), '_blank')
+}
+
 function transformQuery(item) {
   return {
     name: item.name,
@@ -118,7 +122,7 @@ onDeactivated(() => {
           matchScore
         }}</span>
       </v-card-title>
-      <v-btn variant="flat" class="!px-4 text-body-2 !text-1em border-1" @click.stop="() => downloadLearnware(item.id)"
+      <v-btn variant="flat" class="!px-4 text-body-2 !text-1em border-1" @click.stop="() => downloadAll()"
         size="x-large">
         <v-icon icon="mdi-download"></v-icon>
         Download All
