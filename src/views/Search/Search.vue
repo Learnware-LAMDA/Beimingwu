@@ -236,7 +236,7 @@ onMounted(() => {
   <div class="search-container">
     <v-scroll-y-transition class="fixed w-1/1 z-index-10">
       <v-card-actions v-if="showError">
-        <v-alert class="w-1/1 max-w-3/5 mx-auto" closable :text="errorMsg" type="error" @click:close="showError = false" />
+        <v-alert class="w-1/1 max-w-900px mx-auto" closable :text="errorMsg" type="error" @click:close="showError = false" />
       </v-card-actions>
     </v-scroll-y-transition>
     <div class="flex flex-col w-1/1 md:max-w-460px bg-white">

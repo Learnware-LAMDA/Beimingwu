@@ -59,7 +59,7 @@ watch(
       <v-alert
         v-if="errorMessages"
         type="error"
-        class="fixed mx-auto w-1/1 max-w-3/5 z-index-10"
+        class="fixed mx-auto w-1/1 max-w-900px z-index-10"
         style="top: var(--v-layout-top)"
       >
         {{ errorMessages }}
