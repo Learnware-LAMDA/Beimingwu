@@ -96,7 +96,7 @@ function getColorByScore(score) {
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <delete-dialog ref="dialog" @confirm="(id) => deleteLearnware(id)" />
     <TransitionGroup name="fade">
-      <v-card flat :density="greaterThanXs ? 'compact' : null" class="card" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
+      <v-card flat :density="greaterThanXs ? 'comfortable' : 'compact'"  class="card" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
         <div class="first-row">
           <v-card-title class="title">{{ item.name }}</v-card-title>
           <v-card-actions class="actions">
