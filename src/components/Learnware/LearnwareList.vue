@@ -136,7 +136,7 @@ onDeactivated(() => {
         <v-card-text class="card-text">
           <div class="description">{{ item.description }}</div>
         </v-card-text>
-        <v-card-title v-if="item.matchScore" class="score">
+        <v-card-title v-if="typeof(item.matchScore) === 'number'" class="score">
           Specification score <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{
             item.matchScore
           }}</span>

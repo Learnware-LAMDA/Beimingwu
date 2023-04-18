@@ -172,7 +172,7 @@ function fetchByFilterAndPage(filters, page) {
             taskType: item.semantic_specification.Task.Values[0],
             deviceType: item.semantic_specification.Device.Values,
             tagList: item.semantic_specification.Scenario.Values,
-            matchScore: item.matching * 100
+            matchScore: files.value.length > 0 ? Math.floor(item.matching * 100) : null
           }))
           singleRecommendedLearnwarePageNum.value = res.data.total_pages
           return
