@@ -32,11 +32,11 @@ class SQLite(Database):
     """
 
     DATASET_INIT_DATA = [
-        "INSERT INTO user (username, nickname, email, password, role, register) VALUES ('tanzh',  'TanZH', 'tanzh@lamda.nju.edu.cn', 'Qwerty123', 1, strftime('%s'))",
-        "INSERT INTO user (username, nickname, email, password, role, register) VALUES ('tanp',   'TanP',  'tanp@lamda.nju.edu.cn',  'Qwerty123', 1, strftime('%s'))",
-        "INSERT INTO user (username, nickname, email, password, role, register) VALUES ('guolz',  'GuoLZ', 'guolz@lamda.nju.edu.cn', 'Qwerty123', 1, strftime('%s'))",
-        "INSERT INTO user (username, nickname, email, password, register) VALUES ('zhouz', 'ZhouZ', 'zhouz@lamda.nju.edu.cn', 'Qwerty123', strftime('%s'))",
-        "INSERT INTO user (username, nickname, email, password, register) VALUES ('jinyx', 'JinYX', 'jinyx@lamda.nju.edu.cn', 'Qwerty123', strftime('%s'))",
+        "INSERT INTO user (username, nickname, email, password, role, register) VALUES ('tanzh',  'TanZH', 'tanzh@lamda.nju.edu.cn', '2af9b1ba42dc5eb01743e6b3759b6e4b', 1, strftime('%s'))",  # password: Qwerty123
+        "INSERT INTO user (username, nickname, email, password, role, register) VALUES ('tanp',   'TanP',  'tanp@lamda.nju.edu.cn',  '2af9b1ba42dc5eb01743e6b3759b6e4b', 1, strftime('%s'))",
+        "INSERT INTO user (username, nickname, email, password, role, register) VALUES ('guolz',  'GuoLZ', 'guolz@lamda.nju.edu.cn', '2af9b1ba42dc5eb01743e6b3759b6e4b', 1, strftime('%s'))",
+        "INSERT INTO user (username, nickname, email, password, register) VALUES ('zhouz', 'ZhouZ', 'zhouz@lamda.nju.edu.cn', '2af9b1ba42dc5eb01743e6b3759b6e4b', strftime('%s'))",
+        "INSERT INTO user (username, nickname, email, password, register) VALUES ('jinyx', 'JinYX', 'jinyx@lamda.nju.edu.cn', '2af9b1ba42dc5eb01743e6b3759b6e4b', strftime('%s'))",
         # "INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES (1, 'POPOQQQ', strftime('%s'))",
         # "INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES (1, 'LQYBZX', strftime('%s'))",
         # "INSERT INTO user_learnware_relation (user_id, learnware_id, last_modify) VALUES (4, 'hansbug', strftime('%s'))",
