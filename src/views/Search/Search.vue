@@ -253,7 +253,7 @@ onMounted(() => {
       </v-card-actions>
     </v-scroll-y-transition>
     <div class="flex flex-col w-1/1 md:max-w-460px bg-white">
-      <div class="filter px-5">
+      <div class="filter">
         <div class="my-3 text-h6">
           <v-icon class="!mt-0 mr-3" icon="mdi-tag-text" color="black" size="small" />Choose semantic specification
         </div>
@@ -282,7 +282,7 @@ onMounted(() => {
       </v-hover>
     </div>
     <div ref="contentRef" class="content">
-      <v-card v-if="showMultiRecommended" flat class="m-2 mt-4 bg-transparent">
+      <v-card v-if="showMultiRecommended" flat class="sm:m-2 mt-4 bg-transparent">
         <v-card-title v-if="!multiRecommendedTips">Recommended multiple learnwares</v-card-title>
         <v-card-text v-if="multiRecommendedTips" class="!p-2">
           <v-alert v-model="multiRecommendedTips" title="Recommended multiple learnwares"
@@ -296,7 +296,7 @@ onMounted(() => {
         <multi-recommended-learnware-list :items="multiRecommendedLearnwareItems"
           :matchScore="multiRecommendedMatchScore" :filters="filters" @page-change="pageChange" :loading="loading" />
       </v-card>
-      <v-card flat class="m-2 mt-4 bg-transparent">
+      <v-card flat class="sm:m-2 mt-4 bg-transparent">
         <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">Recommended single learnwares</v-card-title>
         <v-card-text v-if="showMultiRecommended && singleRecommendedTips" class="!p-2">
           <v-alert v-model="singleRecommendedTips" title="Recommended single learnware"
@@ -321,7 +321,7 @@ onMounted(() => {
   height: calc(100% - var(--v-layout-top));
 
   .filter {
-    @apply p-2 w-1/1 md: (h-1/1 overflow-y-scroll);
+    @apply p-2 w-1/1 md: (h-1/1 overflow-y-scroll) sm:px-5;
 
     * {
       @apply mt-2;

@@ -138,7 +138,7 @@ function getColorByScore(score) {
 
 <style scoped lang="scss">
 .learnware-list-container {
-  @apply relative p-2 grid xl: grid-cols-2 lg:grid-cols-2 gap-3;
+  @apply relative sm:p-2 p-1 grid xl: grid-cols-2 lg:grid-cols-2 gap-3;
 
   .card {
     @apply border-1 hover: (border-1 border-purple-500);
