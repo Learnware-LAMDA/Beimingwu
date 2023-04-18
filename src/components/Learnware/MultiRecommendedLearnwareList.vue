@@ -79,8 +79,8 @@ function confirmDelete(index) {
 }
 
 function downloadAll() {
-  const learnwareIds = props.items.map(item => item.id)
-  window.open('/api/engine/download_multi_learnware?learnware_ids=' + JSON.stringify(learnwareIds), '_blank')
+  const params = props.items.map(item => `learnware_ids=${item.id}`).join('&')
+  window.open('/api/engine/download_multi_learnware?' + params, '_blank')
 }
 
 function transformQuery(item) {
