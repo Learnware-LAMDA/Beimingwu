@@ -2,9 +2,28 @@ from config import C
 from learnware.learnware import Learnware
 from learnware import market, specification
 from flask import jsonify, g
+from datetime import datetime, timedelta
 import functools
 import os, json, time
 import hashlib
+
+def cache(seconds: int, maxsize: int = 128, typed: bool = False):
+    def wrapper_cache(func):
+        func = functools.lru_cache(maxsize=maxsize, typed=typed)(func)
+        func.delta = timedelta(seconds=seconds)
+        func.expiration = datetime.utcnow() + func.delta
+
+        @functools.wraps(func)
+        def wrapped_func(*args, **kwargs):
+            if datetime.utcnow() >= func.expiration:
+                func.cache_clear()
+                func.expiration = datetime.utcnow() + func.delta
+
+            return func(*args, **kwargs)
+
+        return wrapped_func
+
+    return wrapper_cache
 
 def get_learnware_by_id(ids):
     """ get learnware by ids
@@ -26,8 +45,10 @@ def get_learnware_by_id(ids):
         })
     return learneare_list 
 
-@functools.lru_cache(maxsize=2048)
+@cache(seconds=600, maxsize=1024)
 def cached_search_learnware(semantic_str, statistical_str):
+    print("Search")
+    
     # Load semantic specification
     try:
         semantic_specification = json.loads(semantic_str)
@@ -65,8 +86,7 @@ def cached_search_learnware(semantic_str, statistical_str):
     # Return learnware
     return True, "", (matching, single_learnware_list, multi_learnware)
 
-
-@functools.lru_cache(maxsize=2048)
+@cache(seconds=600, maxsize=1024)
 def cached_search_learnware_by_semantic(semantic_str):
     # Load semantic specification
     try:
