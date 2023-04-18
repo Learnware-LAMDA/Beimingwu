@@ -206,7 +206,7 @@ const submit = handleSubmit((values) => {
           submiting.value = false
           store.commit('setLoggedIn', false)
           store.commit('setShowGlobalError', true)
-          store.commit('setGlobalError', 'Please login first')
+          store.commit('setGlobalErrorMsg', 'Please login first')
           setTimeout(() => { router.push('/login') }, 1000)
           return
         }
@@ -244,7 +244,7 @@ onMounted(() => {
           submiting.value = false
           store.commit('setLoggedIn', false)
           store.commit('setShowGlobalError', true)
-          store.commit('setGlobalError', 'Please login first')
+          store.commit('setGlobalErrorMsg', 'Please login first')
           setTimeout(() => { router.push('/login') }, 1000)
           return
         }
