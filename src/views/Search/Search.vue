@@ -47,6 +47,7 @@ const singleRecommendedLearnwareItems = ref([])
 const loading = ref(false)
 
 const contentRef = ref(null)
+const anchorRef = ref(null)
 
 const scrollTop = ref(0)
 
@@ -201,6 +202,17 @@ watch(
 )
 
 watch(
+  () => singleRecommendedLearnwarePage.value,
+  () => {
+    if (anchorRef.value) {
+      if (display.name.value === 'xs') {
+        anchorRef.value.scrollIntoView()
+      }
+    }
+  }
+)
+
+watch(
   () => [filters.value, singleRecommendedLearnwarePage.value],
   (newVal) => {
     const [newFilters, newPage] = newVal
@@ -258,7 +270,7 @@ onMounted(() => {
       <v-hover>
         <template v-slot:default="{ isHovering, props }">
           <div class="p-5 pt-0 border-t-2 border-gray-300 bg-white" v-bind="props">
-            <div class="mt-3 w-1/1 text-h6 transition-all truncate" :class="display.name.value === 'xs' || files.length || isHovering ? ['mb-5'] : []">
+            <div ref="anchorRef" class="mt-3 w-1/1 text-h6 transition-all truncate" :class="display.name.value === 'xs' || files.length || isHovering ? ['mb-5'] : []">
               <v-icon class="mr-3" icon="mdi-upload" color="black" size="small" />Upload statistical specification
             </div>
 
