@@ -1,3 +1,4 @@
+import sys
 from config import C
 from flask_cors import CORS
 from flask import Flask
@@ -11,7 +12,7 @@ app.config['UPLOAD_FOLDER'] = C.upload_path
 CORS(app)
 
 
-def main():
+def main(port):
     # Init database
     database = None
     if C.database_type == "sqlite":
@@ -34,8 +35,12 @@ def main():
     app.register_blueprint(api.user_api, url_prefix="/user")
     app.register_blueprint(api.admin_api, url_prefix="/admin")
     app.register_blueprint(api.engine_api, url_prefix="/engine")
-    app.run(host="0.0.0.0", port=8088, threaded=True, debug=True)
+    app.run(host="0.0.0.0", port=port, threaded=True, debug=True)
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1:
+        port = sys.argv[1]
+    else:
+        port = 8088
+    main(port=port)
