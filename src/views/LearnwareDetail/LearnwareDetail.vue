@@ -1,10 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useDisplay } from 'vuetify'
 import { useRoute, useRouter } from 'vue-router'
 import { downloadLearnware } from '@/utils'
 
 const route = useRoute()
 const router = useRouter()
+
+const display = useDisplay()
 
 const learnware = ref(null)
 const learnwareId = ref('')
@@ -64,15 +67,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-container class="md:flex max-w-1500px">
+  <v-container class="md:flex max-w-1500px <sm:p-1">
     <v-scroll-y-transition class="fixed left-0 right-0 z-index-10" style="top: var(--v-layout-top)">
       <v-card-actions v-if="showError">
         <v-alert class="w-1/1 max-w-900px mx-auto" closable :text="errorMsg" type="error" @click:close="showError = false" />
       </v-card-actions>
     </v-scroll-y-transition>
     
-    <v-btn class="md:mx-3 <md:my-3" icon="mdi-arrow-left" @click="() => router.go(-1)" size="50" />
-    <v-card v-if="learnware" class="p-2 w-1/1">
+    <v-btn v-if="display.name.value !== 'xs'" class="md:mx-3 <md:my-3" icon="mdi-arrow-left" @click="() => router.go(-1)" size="50" />
+    <v-card v-if="learnware" class="p-2 w-1/1" :flat="display.name.value === 'xs'">
       <div class="flex justify-between">
         <v-card-title class="text-h4 !md:text-3xl !text-xl">
           {{ learnware.name }}
