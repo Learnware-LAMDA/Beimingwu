@@ -17,7 +17,6 @@ const classGreaterThanMd = ['elevation-10']
                   md:(text-4xl mb-10)
                   <md:(text-3xl mb-10)
                   text-3xl
-                  font-700
                   text-center">
       How learnware works?
     </div>

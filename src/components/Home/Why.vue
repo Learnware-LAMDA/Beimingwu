@@ -58,7 +58,6 @@ const reasons = ref([
                     md:(text-4xl my-5)
                     <md:(text-3xl my-5)
                     text-3xl
-                    font-700
                     text-center">
           Why you need learnware?
           </div>
