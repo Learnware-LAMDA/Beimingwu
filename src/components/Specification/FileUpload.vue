@@ -45,7 +45,7 @@ watch(() => _files.value, (val) => {
   <v-card class="bg-transparent" @dragover.prevent @dragenter.prevent="dragging = true"
     @dragleave.prevent="dragging = false" @drop.prevent="handleDrop" @click="chooseFile" flat>
     <v-card-text
-      class="h-40 drag rounded-lg border-gray-500 border-2 border-dashed flex flex-column justify-center items-center md:text-xl text-sm"
+      class="h-40 drag rounded-lg border-gray-500 border-2 border-dashed flex flex-column justify-center items-center md:text-xl text-1.1rem"
       :class="{ 'drag-hover': dragging }">
       <div class="flex justify-center items-center max-w-1/1">
         <p v-if="_files.length === 0">

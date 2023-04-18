@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted, nextTick, onActivated } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useDisplay } from 'vuetify'
 import DataType from '@/components/Specification/SpecTag/DataType.vue'
 import TaskType from '@/components/Specification/SpecTag/TaskType.vue'
 import DeviceType from '@/components/Specification/SpecTag/DeviceType.vue'
@@ -11,6 +12,8 @@ import MultiRecommendedLearnwareList from '@/components/Learnware/MultiRecommend
 
 const route = useRoute()
 const router = useRouter()
+
+const display = useDisplay()
 
 const search = ref(route.query.search || '')
 const dataType = ref(route.query.dataType || '')
@@ -102,10 +105,6 @@ function pageChange(newPage) {
 }
 
 function fetchByFilterAndPage(filters, page) {
-  if (contentRef.value) {
-    contentRef.value.scrollTop = 0
-  }
-
   showError.value = false
   loading.value = true
 
@@ -195,7 +194,10 @@ function fetchByFilterAndPage(filters, page) {
 
 watch(
   () => filters.value,
-  () => singleRecommendedLearnwarePage.value = 1,
+  () => {
+    saveQuery()
+    singleRecommendedLearnwarePage.value = 1
+  },
   { deep: true }
 )
 
@@ -204,13 +206,13 @@ watch(
   (newVal) => {
     const [newFilters, newPage] = newVal
 
-    if (contentRef.value) {
-      contentRef.value.scrollTop = 0
-    }
-
-    saveQuery()
-
     fetchByFilterAndPage(newFilters, newPage)
+
+    if (contentRef.value) {
+      if (display.name.value !== 'xs') {
+        contentRef.value.scrollTop = 0
+      }
+    }
   },
   { deep: true }
 )
@@ -257,12 +259,12 @@ onMounted(() => {
       <v-hover>
         <template v-slot:default="{ isHovering, props }">
           <div class="p-5 pt-0 border-t-2 border-gray-300 bg-white" v-bind="props">
-            <div class="mt-3 w-1/1 text-h6 transition-all" :class="files.length || isHovering ? ['mb-5'] : []">
+            <div class="mt-3 w-1/1 text-h6 transition-all truncate" :class="display.name.value === 'xs' || files.length || isHovering ? ['mb-5'] : []">
               <v-icon class="mr-3" icon="mdi-upload" color="black" size="small" />Upload statistical specification
             </div>
 
             <v-expand-transition>
-              <file-upload v-show="files.length || isHovering" v-model:files="files" />
+              <file-upload v-show="display.name.value === 'xs' || files.length || isHovering" v-model:files="files" />
             </v-expand-transition>
           </div>
         </template>

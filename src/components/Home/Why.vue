@@ -66,6 +66,7 @@ const reasons = ref([
       </v-row>
     <v-row>
       <v-col
+        class="<sm:p-0"
         v-for="reason in reasons"
         :key="reason.title"
         cols="12"

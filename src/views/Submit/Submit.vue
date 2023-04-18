@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
+import { useDisplay } from 'vuetify'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { useField, useForm } from 'vee-validate'
@@ -9,6 +10,8 @@ import SpecTag from '@/components/Specification/SpecTag.vue'
 
 const route = useRoute()
 const router = useRouter()
+
+const display = useDisplay()
 
 const store = useStore()
 
@@ -253,8 +256,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-container class="h-1/1">
-    <v-card class="relative max-w-1000px w-1/1 m-auto">
+  <v-container class="h-1/1 <sm:p-0">
+    <v-card class="relative max-w-1000px w-1/1 m-auto" :flat="display.name.value === 'xs'">
       <v-scroll-y-transition>
         <v-card-actions v-if="success">
           <v-alert closable text="Submit successfully" type="success" @click:close="success = false" />
@@ -269,12 +272,12 @@ onMounted(() => {
 
       <v-divider class="border-black"></v-divider>
 
-      <div class="w-1/1 mx-auto p-2">
-        <v-card-title class="!md:text-2xl text-1rem">
+      <div class="w-1/1 mx-auto px-2 pt-2 sm:pb-2">
+        <v-card-title class="!md:text-2xl text-1.2rem <sm:pb-0">
           <span>{{ steps[currentStep].title }}</span>
         </v-card-title>
 
-        <v-window v-model="currentStep">
+        <v-window v-model="currentStep" :touch="{ left: () => {}, right: () => {} }">
           <v-window-item :value="0">
             <v-card-text>
               <v-text-field v-model="name.value.value" label="Name" placeholder="Awesome learnware"
@@ -303,7 +306,7 @@ onMounted(() => {
             <div class="p-4 m-auto">
               <file-upload v-model:files="files.value.value"></file-upload>
             </div>
-            <v-card-text class="text-lg">
+            <v-card-text class="text-lg <sm:text-sm">
               <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for
               instructions
               on how to create the required zip file.

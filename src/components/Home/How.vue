@@ -11,7 +11,7 @@ const classGreaterThanMd = ['elevation-10']
 </script>
 
 <template>
-  <div class="max-w-1200px w-1/1 m-auto lg:py-20 md:py-13 sm:py-10 xs:py-10">
+  <div class="max-w-1200px w-1/1 m-auto lg:py-20 md:py-13 sm:py-10 py-10">
     <div class="xl:(text-6xl mb-16)
                   lg:(text-5xl mb-13)
                   md:(text-4xl mb-10)

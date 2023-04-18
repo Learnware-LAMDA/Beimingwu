@@ -102,7 +102,7 @@ function closeErrorAlert() {
 
 <template>
   <div class="flex flex-row justify-center items-center fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100">
-    <v-card flat class="mx-auto w-1/1 p-4" :class="elevationClass" max-width="500">
+    <v-card flat class="mx-auto w-1/1 sm:p-4 p-2" :class="elevationClass" max-width="500">
       <v-scroll-y-transition>
         <v-card-actions v-if="showError">
           <v-alert v-model="showError" closable :text="errorMsg" type="error" @click:close="() => closeErrorAlert" />

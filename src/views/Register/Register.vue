@@ -100,7 +100,7 @@ const submit = handleSubmit(values => {
   <div class="flex flex-row justify-center items-center fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100">
     <reg-suc-dialog v-if="success" />
 
-    <v-card flat class="mx-auto w-1/1 p-4" :class="elevationClass" max-width="500">
+    <v-card flat class="mx-auto w-1/1 sm:p-4 p-2" :class="elevationClass" max-width="500">
       <v-card-title>
         <h1 class="text-lg-h4 text-h5 my-2">Register</h1>
       </v-card-title>

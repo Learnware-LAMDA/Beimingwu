@@ -67,12 +67,11 @@ onUnmounted(() => {
         <h1>Small models do</h1>
         <h1 class="py-5 transform"><span class="text-1.7em">Big</span></h1>
       </big-title>
-      <div class="mx-10 white-space-pre-wrap
+      <div class="mx-9 white-space-pre-wrap
                                 lg:text-2xl
                                 sm:text-lg">
-        <div class="mt-6">
-          Learnware systematically reuses small models to do things that may even be beyond their original
-          purposes, <br>and enables users not need to build their machine learning models from scratch.
+        <div class="mt-6 text-0.9em leading-5">
+          Learnware paradigm systematically reuses numerous various models to do things that may even be beyond their original purposes, and enables users to easily identify and reuse helpful models, not need to build their models from scratch.
         </div>
       </div>
 
