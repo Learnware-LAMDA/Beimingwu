@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onActivated, onDeactivated } from 'vue'
+import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import DeleteDialog from './DeleteDialog.vue'
@@ -44,6 +44,10 @@ const props = defineProps({
 })
 
 const dialog = ref(null)
+
+const greaterThanXs = computed(() => {
+  return display.name.value !== 'xs'
+})
 
 const realCols = computed(() => {
   switch (display.name.value) {
@@ -92,18 +96,18 @@ function getColorByScore(score) {
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <delete-dialog ref="dialog" @confirm="(id) => deleteLearnware(id)" />
     <TransitionGroup name="fade">
-      <v-card flat class="card" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
+      <v-card flat :density="greaterThanXs ? 'compact' : null" class="card" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
         <div class="first-row">
           <v-card-title class="title">{{ item.name }}</v-card-title>
           <v-card-actions class="actions">
             <v-tooltip v-model="item.showEditTips" location="top">
               <template v-slot:activator="{ props }">
-                <v-btn v-if="showActions" icon="mdi-pencil" @click.stop="() => { }" v-bind="props"></v-btn>
+                <v-btn v-if="showActions" icon="mdi-pencil" @click.stop="() => { }" v-bind="props" :size="greaterThanXs ? null : 'small'"></v-btn>
               </template>
               <span>Not availble</span>
             </v-tooltip>
-            <v-btn icon="mdi-download" @click.stop="() => downloadLearnware(item.id)"></v-btn>
-            <v-btn v-if="showActions" icon="mdi-delete" @click.stop="() => confirmDelete(i)"></v-btn>
+            <v-btn icon="mdi-download" @click.stop="() => downloadLearnware(item.id)" :size="greaterThanXs ? null : 'small'"></v-btn>
+            <v-btn v-if="showActions" icon="mdi-delete" @click.stop="() => confirmDelete(i)" :size="greaterThanXs ? null : 'small'"></v-btn>
           </v-card-actions>
         </div>
         <v-card-text class="card-text">
