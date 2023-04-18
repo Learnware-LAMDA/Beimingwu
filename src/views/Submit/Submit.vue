@@ -299,7 +299,7 @@ onMounted(() => {
 
       <v-divider class="border-black"></v-divider>
 
-      <div class="w-1/1 mx-auto px-2 pt-2 sm:pb-2">
+      <div class="w-1/1 mx-auto sm:px-2 pt-2 sm:pb-2">
         <v-card-title class="!md:text-2xl text-1.2rem <sm:pb-0">
           <span>{{ steps[currentStep].title }}</span>
         </v-card-title>
