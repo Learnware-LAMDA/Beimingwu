@@ -33,7 +33,7 @@ onUnmounted(() => {
   <div class="d-sm-block d-none">
     <div ref="scroller" class="left-0 right-0 z-index-100 overflow-hidden" :class="ratio <= 1 ? ['fixed'] : null"
       :style="ratio > 1 ? { marginTop: `50vh` } : null">
-      <div class="xl:py-30
+      <div class="xl:py-35
                         lg:py-25
                         <lg:py-10
                         text-center bg-primary text-white">
