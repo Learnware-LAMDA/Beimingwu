@@ -1,4 +1,3 @@
-import sys
 from config import C
 from flask_cors import CORS
 from flask import Flask
@@ -12,7 +11,7 @@ app.config['UPLOAD_FOLDER'] = C.upload_path
 CORS(app)
 
 
-def main(port):
+def main(port=8088):
     # Init database
     database = None
     if C.database_type == "sqlite":
@@ -39,8 +38,5 @@ def main(port):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        port = sys.argv[1]
-    else:
-        port = 8088
-    main(port=port)
+    import fire
+    fire.Fire(main)
