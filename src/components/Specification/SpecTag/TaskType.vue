@@ -5,7 +5,6 @@ import ClassificationBtn from './TaskTypeBtn/ClassificationBtn.vue'
 import ClusteringBtn from './TaskTypeBtn/ClusteringBtn.vue'
 import DetectionBtn from './TaskTypeBtn/DetectionBtn.vue'
 import ExtractionBtn from './TaskTypeBtn/ExtractionBtn.vue'
-import GenerationBtn from './TaskTypeBtn/GenerationBtn.vue'
 import RegressionBtn from './TaskTypeBtn/RegressionBtn.vue'
 import SegmantationBtn from './TaskTypeBtn/SegmentationBtn.vue'
 import RankingBtn from './TaskTypeBtn/RankingBtn.vue'
@@ -66,10 +65,6 @@ const taskTypeBtns = [
   {
     title: 'Feature Extraction',
     icon: ExtractionBtn,
-  },
-  {
-    title: 'Generation',
-    icon: GenerationBtn,
   },
   {
     title: 'Segmentation',
