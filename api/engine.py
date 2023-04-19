@@ -63,15 +63,29 @@ def search_learnware():
         limit = int(limit)
     except:
         limit = None
-        
+    
+    # Process learnware list
+    mul_list, sin_list = [], []
+    for x in multi_learnware:
+        try:
+            learnware = C.engine.get_learnware_by_ids(x.id)
+            mul_list.append(dump_learnware(learnware))
+        except: pass
+    for i in range(n):
+        try:
+            learnware = C.engine.get_learnware_by_ids(single_learnware_list[i].id)
+            sin_list.append(dump_learnware(learnware, matching[i]))
+        except: pass
+    n = len(sin_list)
+    
     # Directly whole list
     if limit is None:
         result = {
             "code": 0,
             "msg": "Ok",
             "data": {
-                "learnware_list_multi": [dump_learnware(x) for x in multi_learnware],
-                "learnware_list_single": [dump_learnware(single_learnware_list[i], matching[i]) for i in range(n)],
+                "learnware_list_multi": mul_list,
+                "learnware_list_single": sin_list,
             }
         }
         return jsonify(result)
@@ -96,11 +110,8 @@ def search_learnware():
         }
     }
     if page == 0: 
-        result["data"]["learnware_list_multi"] = [dump_learnware(x) for x in multi_learnware]
-    result["data"]["learnware_list_single"] = [
-        dump_learnware(single_learnware_list[i], matching[i]) 
-        for i in range(page * limit, min(n, page * limit + limit))
-    ]
+        result["data"]["learnware_list_multi"] = mul_list
+    result["data"]["learnware_list_single"] = [ sin_list[i] for i in range(page * limit, min(n, page * limit + limit)) ]
     return jsonify(result)
         
 
