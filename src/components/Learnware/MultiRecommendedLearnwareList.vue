@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onActivated, onDeactivated } from 'vue'
+import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
