@@ -101,10 +101,10 @@ def add_learnware():
     user_id = g.user["id"]
     # learnware_id = generate_random_str(16)
     # [TODO] Add learnware
-    try:
-        learnware_id, ok = C.engine.add_learnware(learnware_path, semantic_specification)
-    except:
-        return jsonify({"code": 42, "msg": "Engine add learnware error."})
+    # try:
+    learnware_id, ok = C.engine.add_learnware(learnware_path, semantic_specification)
+    # except:
+        # return jsonify({"code": 42, "msg": "Engine add learnware error."})
     if not ok:
         return jsonify({"code": 42, "msg": "Engine add learnware error."})
     # Add learnware
