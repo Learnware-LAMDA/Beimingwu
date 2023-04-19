@@ -108,48 +108,36 @@ function fetchByFilterAndPage(filters, page) {
   showError.value = false
   loading.value = true
 
-  const semanticSpec = {
-    "Name": {
-      "Values": filters.name,
-      "Type": "Name"
-    },
-    "Data": {
-      "Values": filters.dataType ? [filters.dataType] : [],
-      "Type": "Class"
-    },
-    "Task": {
-      "Values": filters.taskType ? [filters.taskType] : [],
-      "Type": "Class"
-    },
-    "Device": {
-      "Values": filters.deviceType,
-      "Type": "Tag"
-    },
-    "Scenario": {
-      "Values": filters.tagList,
-      "Type": "Tag"
-    },
-    "Description": {
-      "Values": "",
-      "Type": "Description"
-    }
-  }
-  const fd = new FormData()
-  fd.append('semantic_specification', JSON.stringify(semanticSpec))
-  fd.append('statistical_specification', files.value.length > 0 ? files.value[0] : null)
-  fd.append('limit', singleRecommendedLearnwarePageSize.value)
-  fd.append('page', singleRecommendedLearnwarePage.value - 1)
-  
-  fetch('/api/engine/search_learnware', {
-    method: 'POST',
-    body: fd,
-  })
-  .then((res) => {
-      if (res.status === 200) {
-        return res
-      }
-      throw new Error('Network error')
+  fetch('/api/engine/get_semantic_specification')
+    .then((res) => res.json())
+    .then((res) => {
+      const semanticSpec = res.data.semantic_specification
+      semanticSpec.Name.Values = filters.name
+      semanticSpec.Data.Values = filters.dataType ? [filters.dataType] : []
+      semanticSpec.Task.Values = filters.taskType ? [filters.taskType] : []
+      semanticSpec.Device.Values = filters.deviceType
+      semanticSpec.Scenario.Values = filters.tagList
+      semanticSpec.Description.Values = ''
+
+      const fd = new FormData()
+      fd.append('semantic_specification', JSON.stringify(semanticSpec))
+      fd.append('statistical_specification', files.value.length > 0 ? files.value[0] : null)
+      fd.append('limit', singleRecommendedLearnwarePageSize.value)
+      fd.append('page', singleRecommendedLearnwarePage.value - 1)
+      return fd
     })
+    .then((fd) => {
+      return fetch('/api/engine/search_learnware', {
+        method: 'POST',
+        body: fd,
+      })
+    })
+    .then((res) => {
+        if (res.status === 200) {
+          return res
+        }
+        throw new Error('Network error')
+      })
     .then((res) => res.json())
     .then((res) => {
       switch (res.code) {

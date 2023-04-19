@@ -152,40 +152,28 @@ const submit = handleSubmit((values) => {
   success.value = false
   showError.value = false
 
-  const semanticSpec = {
-    "Data": {
-      "Values": [dataType.value.value],
-      "Type": "Class"
-    },
-    "Task": {
-      "Values": [taskType.value.value],
-      "Type": "Class"
-    },
-    "Device": {
-      "Values": deviceType.value.value,
-      "Type": "Tag"
-    },
-    "Scenario": {
-      "Values": tagList.value.value,
-      "Type": "Tag"
-    },
-    "Description": {
-      "Values": description.value.value,
-      "Type": "Description"
-    },
-    "Name": {
-      "Values": name.value.value,
-      "Type": "Name"
-    }
-  }
-  const fd = new FormData()
-  fd.append('learnware_file', files.value.value[0])
-  fd.append('semantic_specification', JSON.stringify(semanticSpec))
+  fetch('/api/engine/get_semantic_specification')
+    .then((res) => res.json())
+    .then((res) => {
+      const semanticSpec = res.data.semantic_specification
+      semanticSpec.Name.Values = values.name
+      semanticSpec.Data.Values = [values.dataType]
+      semanticSpec.Task.Values = [values.taskType]
+      semanticSpec.Device.Values = values.deviceType
+      semanticSpec.Scenario.Values = values.tagList
+      semanticSpec.Description.Values = values.description
 
-  fetch('/api/user/add_learnware', {
-    method: 'POST',
-    body: fd,
-  })
+      const fd = new FormData()
+      fd.append('learnware_file', values.files[0])
+      fd.append('semantic_specification', JSON.stringify(semanticSpec))
+      return fd
+    })
+    .then((fd) => {
+      return fetch('/api/user/add_learnware', {
+        method: 'POST',
+        body: fd,
+      })
+    })  
     .then((res) => {
       if (res.status === 200) {
         return res
