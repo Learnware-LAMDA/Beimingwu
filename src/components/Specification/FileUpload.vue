@@ -20,7 +20,6 @@ const fileInput = ref(null)
 const handleDrop = (event) => {
   dragging.value = false
   _files.value = Array.from(event.dataTransfer.files)
-  uploadFile()
 }
 
 const chooseFile = () => {
