@@ -1,7 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
+import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import JSZip from 'jszip'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import DeleteDialog from './DeleteDialog.vue'
 import colors from 'vuetify/lib/util/colors'
@@ -12,6 +14,8 @@ const emit = defineEmits(['delete'])
 const display = useDisplay()
 
 const router = useRouter()
+
+const store = useStore()
 
 const props = defineProps({
   items: {
@@ -53,6 +57,8 @@ const props = defineProps({
 
 const dialog = ref(null)
 
+const downloading = ref(false)
+
 const realCols = computed(() => {
   switch (display.name.value) {
     case 'md': if (props.md) return props.md
@@ -78,8 +84,37 @@ function confirmDelete(index) {
 }
 
 function downloadAll() {
-  const params = props.items.map(item => `learnware_ids=${item.id}`).join('&')
-  window.open('/api/engine/download_multi_learnware?' + params, '_blank')
+  downloading.value = true
+
+  const zip = new JSZip()
+  Promise.all(props.items.map((item) => {
+    return fetch(`/api/engine/download_learnware?learnware_id=${item.id}`)
+      .then((res) => {
+        if (res.status === 200) {
+          return res
+        }
+        throw new Error('Network error')
+      })
+      .then((res) => res.arrayBuffer())
+      .then(arrayBuffer => {
+        zip.file(`${item.name}.zip`, arrayBuffer)
+      })
+  }))
+    .then(() => zip.generateAsync({ type: 'blob' }))
+    .then((blob) => {
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'learnwares.zip'
+      a.click()
+      downloading.value = false
+    })
+    .catch((err) => {
+      downloading.value = false
+      console.error(err)
+      store.commit('setShowGlobalError', true)
+      store.commit('setGlobalErrorMsg', err.message)
+    })
 }
 
 function transformQuery(item) {
@@ -110,8 +145,14 @@ function getColorByScore(score) {
       </v-card-title>
       <v-btn variant="flat" class="!px-4 text-body-2 !text-1em border-1" @click.stop="() => downloadAll()"
         size="x-large">
-        <v-icon icon="mdi-download"></v-icon>
-        Download All
+        <span v-if="!downloading">
+          <v-icon icon="mdi-download"></v-icon>
+          Download All
+        </span>
+        <span v-else class="flex items-center">
+          <v-progress-circular class="mr-3" indeterminate></v-progress-circular>
+          Downloading ...
+        </span>
       </v-btn>
     </div>
     <v-card flat class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null"
