@@ -145,7 +145,7 @@ function getColorByScore(score) {
   @apply relative sm:p-2 p-1 grid xl: grid-cols-2 lg:grid-cols-2 sm:gap-3;
 
   .card {
-    @apply border-1 hover: (border-1 border-purple-500);
+    @apply sm: (border-1 hover: (border-1 border-purple-500)) <sm: (border-b-1 rounded-0px);
 
     .first-row {
       @apply flex justify-between items-center;

@@ -309,7 +309,7 @@ onMounted(() => {
   height: calc(100% - var(--v-layout-top));
 
   .filter {
-    @apply p-2 w-1/1 md: (h-1/1 overflow-y-scroll) sm:px-5 px-3;
+    @apply p-2 w-1/1 md: (h-1/1 overflow-y-scroll) sm:px-5;
 
     * {
       @apply mt-2;
