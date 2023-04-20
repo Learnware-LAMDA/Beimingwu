@@ -145,17 +145,17 @@ function getColorByScore(score) {
   @apply relative sm:p-2 p-1 grid xl: grid-cols-2 lg:grid-cols-2 sm:gap-3;
 
   .card {
-    @apply sm: (border-1 hover: (border-1 border-purple-500)) <sm: (border-b-1 rounded-0px);
+    @apply sm: (border-1 hover: (border-1 border-purple-500)) <sm: (border-b-1 rounded-0px) py-2;
 
     .first-row {
-      @apply flex justify-between items-center;
+      @apply flex justify-between items-start;
 
       .title {
         @apply xl: text-xl lg:text-lg text-1rem;
       }
 
       .actions {
-        @apply justify-end mt-1;
+        @apply justify-end -mt-1;
         
         * {
           @apply <sm:mx-0;
