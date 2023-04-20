@@ -4,6 +4,7 @@ import { useDisplay } from 'vuetify'
 import { useField, useForm } from 'vee-validate'
 import RegSucDialog from '@/components/User/RegSucDialog.vue'
 import { hex_md5 } from '@/utils/encrypt'
+import collaborationImg from '@/assets/images/collaboration.svg'
 
 const display = useDisplay()
 
@@ -90,35 +91,42 @@ const submit = handleSubmit(values => {
 </script>
 
 <template>
-  <div class="flex flex-row justify-center items-center fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100">
-    <reg-suc-dialog v-if="success" />
+  <div class="flex h-1/1 bg-gray-100">
+    <div class="d-md-block d-none w-1/1 h-1/1"
+      :style="{ background: `url(${collaborationImg})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center' }">
+    </div>
+    <div
+      class="flex flex-row justify-center items-center w-1/1 fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100">
+      <reg-suc-dialog v-if="success" />
 
-    <v-card flat class="mx-auto w-1/1 sm:p-4 p-2" max-width="500">
-      <v-card-title>
-        <h1 class="text-lg-h4 text-h5 my-2">Register</h1>
-      </v-card-title>
-      <v-card-text>
-        <v-form>
-          <v-text-field v-model="userName.value.value" label="Username" :counter="20"
-            :error-messages="userName.errorMessage.value"></v-text-field>
-          <v-text-field v-model="email.value.value" label="E-mail"
-            :error-messages="email.errorMessage.value"></v-text-field>
-          <v-text-field v-model="password.value.value" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            :type="showPassword ? 'text' : 'password'" label="Password" :error-messages="password.errorMessage.value"
-            @click:append="showPassword = !showPassword"></v-text-field>
-          <v-text-field v-model="password2.value.value" :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
-            :type="showPassword2 ? 'text' : 'password'" label="Confirm Password"
-            :error-messages="password2.errorMessage.value" @click:append="showPassword2 = !showPassword2" @keyup.enter="submit"></v-text-field>
-        </v-form>
-      </v-card-text>
-      <v-scale-transition>
-        <v-card-actions v-if="showError">
-          <v-alert v-model="showError" closable :text="errorMsg" type="error" @click:close="() => closeErrorAlert" />
+      <v-card flat class="mx-auto w-1/1 sm:p-6 p-2" max-width="500">
+        <v-card-title>
+          <h1 class="text-h5 !text-1.3em !<sm:(text-1.6em my-6) m-2 mb-5">Register</h1>
+        </v-card-title>
+        <v-card-text>
+          <v-form>
+            <v-text-field v-model="userName.value.value" label="Username" :counter="20"
+              :error-messages="userName.errorMessage.value"></v-text-field>
+            <v-text-field v-model="email.value.value" label="E-mail"
+              :error-messages="email.errorMessage.value"></v-text-field>
+            <v-text-field v-model="password.value.value" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="showPassword ? 'text' : 'password'" label="Password" :error-messages="password.errorMessage.value"
+              @click:append="showPassword = !showPassword"></v-text-field>
+            <v-text-field v-model="password2.value.value" :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="showPassword2 ? 'text' : 'password'" label="Confirm Password"
+              :error-messages="password2.errorMessage.value" @click:append="showPassword2 = !showPassword2"
+              @keyup.enter="submit"></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-scale-transition>
+          <v-card-actions v-if="showError">
+            <v-alert v-model="showError" closable :text="errorMsg" type="error" @click:close="() => closeErrorAlert" />
+          </v-card-actions>
+        </v-scale-transition>
+        <v-card-actions>
+          <v-btn block class="bg-primary py-5" color="white" @click="submit" :disabled="!valid">Register</v-btn>
         </v-card-actions>
-      </v-scale-transition>
-      <v-card-actions>
-        <v-btn block class="bg-primary py-5" color="white" @click="submit" :disabled="!valid">Register</v-btn>
-      </v-card-actions>
-    </v-card>
+      </v-card>
+    </div>
   </div>
 </template>
