@@ -6,10 +6,6 @@ const display = useDisplay()
 
 const smallerThanMd = computed(() => ['md', 'sm', 'xs'].includes(display.name.value))
 
-const cardHoverClass = computed(() => {
-
-})
-
 const iconSize = computed(() => {
   switch (display.name.value) {
     case 'xs':
