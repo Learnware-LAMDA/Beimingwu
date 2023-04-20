@@ -47,7 +47,7 @@ const props = defineProps({
   }
 
   .title {
-    @apply lg:text-1rem sm:text-sm text-xs;
+    @apply lg:text-1rem sm:text-sm text-xs '!leading-5';
   }
 }
 
