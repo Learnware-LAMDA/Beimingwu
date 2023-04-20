@@ -145,9 +145,8 @@ function deleteSelect(i) {
     <div class="title text-h6 !text-1rem">Scenario</div>
     <div class="items">
       <div class="item" v-for="(selection, i) in selections" :key="selection.text">
-        <v-chip class="chip bg-orange-600 text-white" closable @click:close="() => deleteSelect(i)">
+        <v-chip class="chip text bg-orange-600 text-white" closable @click:close="() => deleteSelect(i)">
           <v-icon :icon="selection.icon" start></v-icon>
-
           {{ selection.text }}
         </v-chip>
       </div>
@@ -162,12 +161,12 @@ function deleteSelect(i) {
 
     <v-list class="list" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
       <template v-for="item in categories">
-        <v-list-item v-if="!selections.includes(item)" :key="item.text" @click="() => addSelect(item.text)" class="item">
+        <v-list-item v-if="!selections.includes(item)" :key="item.text" @click="() => addSelect(item.text)" class="item text">
           <template v-slot:prepend>
-            <v-icon :icon="item.icon"></v-icon>
+            <v-icon class="mr-4" :icon="item.icon"></v-icon>
           </template>
 
-          <v-list-item-title v-text="item.text"></v-list-item-title>
+          <v-list-item-title class="text" v-text="item.text"></v-list-item-title>
         </v-list-item>
       </template>
     </v-list>
@@ -193,11 +192,14 @@ function deleteSelect(i) {
   }
 
   .list {
-    @apply grid gap-2 bg-transparent;
+    @apply grid sm:gap-2 gap-1 bg-transparent;
 
     .item {
       @apply bg-gray-400 text-white rounded-2em;
     }
+  }
+  .text {
+    @apply lg:text-1rem sm:text-sm text-xs;
   }
 }
 </style>

@@ -253,7 +253,7 @@ onMounted(() => {
         <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
         <task-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="taskType" />
         <device-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="deviceType" />
-        <tag-list class="bg-transparent text-h6 !text-1rem" v-model:value="tagList" :cols="2" :md="1" :sm="1" />
+        <tag-list class="bg-transparent text-h6 !text-1rem" v-model:value="tagList" :cols="2" :md="2" :sm="2" :xs="2" />
       </div>
       <v-hover>
         <template v-slot:default="{ isHovering, props }">
@@ -309,7 +309,7 @@ onMounted(() => {
   height: calc(100% - var(--v-layout-top));
 
   .filter {
-    @apply p-2 w-1/1 md: (h-1/1 overflow-y-scroll) sm:px-5;
+    @apply p-2 w-1/1 md: (h-1/1 overflow-y-scroll) sm:px-5 px-3;
 
     * {
       @apply mt-2;
