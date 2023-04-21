@@ -156,6 +156,9 @@ function fetchByFilterAndPage(filters, page) {
             deviceType: item.semantic_specification.Device.Values,
             tagList: item.semantic_specification.Scenario.Values
           }))
+          if (res.data.learnware_list_multi.length > 0) {
+            multiRecommendedMatchScore.value = Math.floor(res.data.learnware_list_multi[0].matching * 100)
+          }
           singleRecommendedLearnwareItems.value = res.data.learnware_list_single.map((item) => ({
             id: item.learnware_id,
             name: item.semantic_specification.Name.Values,
