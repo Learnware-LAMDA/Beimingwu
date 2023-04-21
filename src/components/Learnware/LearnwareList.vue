@@ -173,7 +173,7 @@ const dataTypeBtns = {
       }
 
       .actions {
-        @apply justify-end -mt-1;
+        @apply justify-end;
         
         * {
           @apply <sm:mx-0;
