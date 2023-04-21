@@ -129,8 +129,9 @@ def add_learnware():
     learnware_id, ok = C.engine.add_learnware(learnware_path, semantic_specification)
     # except:
         # return jsonify({"code": 42, "msg": "Engine add learnware error."})
-    if not ok:
-        return jsonify({"code": 42, "msg": "Engine add learnware error."})
+    if ok == C.engine.INVALID_LEARNWARE:
+        return jsonify({"code": 42, "msg": "Your learnware is invalid."})
+    
     # Add learnware
     cnt = database.add_learnware(user_id, learnware_id)
     if cnt > 0:
