@@ -1,5 +1,6 @@
 <script setup>
 import Slogan from '@/components/Home/Slogan.vue'
+import What from '@/components/Home/What.vue'
 import Why from '@/components/Home/Why.vue'
 import How from '@/components/Home/How.vue'
 import MyFooter from '@/components/Home/MyFooter.vue'
@@ -8,6 +9,7 @@ import MyFooter from '@/components/Home/MyFooter.vue'
 <template>
   <div>
     <slogan />
+    <what />
     <why />
     <how />
     <my-footer />
