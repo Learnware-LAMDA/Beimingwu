@@ -39,6 +39,30 @@ def get_profile():
     }
     return jsonify(result)
 
+@user_api.route("/change_password", methods=["POST"])
+@login_required
+def change_password():
+    data = get_parameters(request, ["old_password", "new_password"])
+    old_value = data["old_password"]
+    new_value = data["new_password"]
+    user_id   = g.user["id"]
+    user = database.get_user_info(by="id", value=user_id)
+    
+    if user is None:
+        return jsonify({"code": 51, "msg": "Account not exist."})
+    elif not user["password"] == old_value:
+        return jsonify({"code": 52, "msg": "Incorrect password."})
+    flag = database.update_user_password(pwd=new_value, by="id", value=user_id)
+    if not flag:
+        return jsonify({"code": 31, "msg": "Update error."})
+    
+    # Return profile
+    result = {
+        "code": 0,
+        "msg": "Update success"
+    }
+    return jsonify(result)
+
 
 @user_api.route("/get_learnware_list", methods=["POST"])
 @login_required

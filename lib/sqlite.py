@@ -13,6 +13,9 @@ def get_user_info(by, value):
     ret_cnt, ret = C.database.query(f"SELECT * FROM user WHERE {by} = ?", (value,))
     return dict(zip(COLUMNS_USER, ret[0])) if len(ret) > 0 else None
 
+def update_user_password(by, value, pwd):
+    ret_cnt, ret = C.database.query(f"UPDATE user SET password = ? WHERE {by} = ?", (pwd, value,))
+    return ret_cnt > 0
 
 def add_user(username, password, email, role, nickname):
     ret_cnt, _ = C.database.query(
