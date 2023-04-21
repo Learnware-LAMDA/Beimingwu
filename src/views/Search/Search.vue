@@ -240,7 +240,7 @@ onMounted(() => {
         <v-alert class="w-1/1 max-w-900px mx-auto" closable :text="errorMsg" type="error" @click:close="showError = false" />
       </v-card-actions>
     </v-scroll-y-transition>
-    <div class="flex flex-col w-1/1 md:max-w-460px bg-white">
+    <div class="flex flex-col w-1/1 md:max-w-460px sm:border-r-1">
       <div class="filter">
         <div class="my-3 text-h6">
           <v-icon class="!mt-0 mr-3" icon="mdi-tag-text" color="black" size="small" />Choose semantic specification
@@ -257,7 +257,7 @@ onMounted(() => {
       </div>
       <v-hover>
         <template v-slot:default="{ isHovering, props }">
-          <div class="p-5 pt-0 border-t-2 border-gray-300 bg-white" v-bind="props">
+          <div class="p-5 pt-0 border-t-1 border-gray-300" v-bind="props">
             <div ref="anchorRef" class="mt-3 w-1/1 text-h6 transition-all truncate" :class="display.name.value === 'xs' || files.length || isHovering ? ['mb-5'] : []">
               <v-icon class="mr-3" icon="mdi-upload" color="black" size="small" />Upload statistical specification
             </div>
