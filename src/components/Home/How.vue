@@ -1,5 +1,5 @@
 <script setup>
-import process from '/process.png'
+import process from '@/assets/images/process.svg'
 </script>
 
 <template>
@@ -16,7 +16,7 @@ import process from '/process.png'
         provides/sells services to users via identifying and reusing learnwares to help users tackle their present tasks
       </p>
     </div>
-    <v-responsive class="mt-10 sm:shadow-md" :aspect-ratio="96 / 55">
+    <v-responsive class="mt-10 sm:shadow-md border-1" :aspect-ratio="96 / 55">
       <v-img contain width="100%" :src="process" />
     </v-responsive>
   </div>
