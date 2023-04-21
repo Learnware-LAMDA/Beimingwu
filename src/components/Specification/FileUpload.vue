@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, computed } from 'vue'
 
 const emit = defineEmits(['update:files'])
 
@@ -13,7 +13,6 @@ const props = defineProps({
   }
 })
 
-const _files = ref([])
 const dragging = ref(false)
 const fileInput = ref(null)
 
@@ -38,8 +37,11 @@ const computeFileSize = (byte) => {
   return Math.round(byte / Math.pow(1000, k)) + unit[k]
 }
 
-watch(() => _files.value, (val) => {
-  emit('update:files', val)
+const _files = computed({
+  get: () => props.files,
+  set: (val) => {
+    emit('update:files', val)
+  }
 })
 </script>
 
