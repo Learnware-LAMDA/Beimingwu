@@ -8,6 +8,11 @@ import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import DeleteDialog from './DeleteDialog.vue'
 import colors from 'vuetify/lib/util/colors'
 import oopsImg from '/oops.svg'
+import AudioBtn from '@/components/Specification/SpecTag/DataTypeBtn/AudioBtn.vue'
+import VideoBtn from '@/components/Specification/SpecTag/DataTypeBtn/VideoBtn.vue'
+import TextBtn from '@/components/Specification/SpecTag/DataTypeBtn/TextBtn.vue'
+import ImageBtn from '@/components/Specification/SpecTag/DataTypeBtn/ImageBtn.vue'
+import TableBtn from '@/components/Specification/SpecTag/DataTypeBtn/TableBtn.vue'
 
 const emit = defineEmits(['delete'])
 
@@ -133,6 +138,14 @@ function getColorByScore(score) {
   if (score > 50) return colors.orange.base
   return colors.red.base
 }
+
+const dataTypeBtns = {
+  'Table': TableBtn,
+  'Image': ImageBtn,
+  'Text': TextBtn,
+  'Video': VideoBtn,
+  'Audio': AudioBtn,
+}
 </script>
 
 <template>
@@ -161,7 +174,12 @@ function getColorByScore(score) {
       <TransitionGroup name="fade">
         <v-card flat class="card" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
           <div class="first-row">
-            <v-card-title class="title">{{ item.name }}</v-card-title>
+            <v-card-title class="title">
+              <v-avatar>
+                <component class="w-4/5 opacity-70" :is="dataTypeBtns[item.dataType]" />
+              </v-avatar>
+              {{ item.name }}
+            </v-card-title>
             <v-card-actions class="actions">
               <v-tooltip v-model="item.showEditTips" location="top">
                 <template v-slot:activator="{ props }">
