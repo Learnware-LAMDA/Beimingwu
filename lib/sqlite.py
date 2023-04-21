@@ -38,6 +38,13 @@ def add_learnware(user_id, learnware_id):
     )
     return ret_cnt
 
+def get_learnware_owner(learnware_id):
+    ret_cnt, ret = C.database.query(
+        "SELECT username FROM user WHERE id IN (SELECT user_id FROM user_learnware_relation WHERE learnware_id = ?)",
+        (learnware_id, )
+    )
+    if len(ret[0]) == 0: return "Unknown"
+    return ret[0][0]
 
 def remove_learnware(by, value):
     ret_cnt, ret = C.database.query(f"DELETE FROM user_learnware_relation WHERE {by} = ?", (value,))

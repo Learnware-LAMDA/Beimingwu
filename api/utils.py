@@ -1,6 +1,9 @@
 from typing import Tuple, Any, List, Union, Dict
 import random
 from learnware import learnware
+from config import C
+if C.database_type == "sqlite":
+    import lib.sqlite as database
 
 __all__ = ["get_parameters", "generate_random_str", "dump_learnware"]
 
@@ -27,6 +30,7 @@ def generate_random_str(randomlength: int) -> str:
 def dump_learnware(learnware: learnware.Learnware, matching: int=None):
     ret = {
         "learnware_id": learnware.id,
+        "username": database.get_learnware_owner(learnware.id),
         "semantic_specification": learnware.get_specification().get_semantic_spec(),
     }
     if matching is not None: ret["matching"] = matching
