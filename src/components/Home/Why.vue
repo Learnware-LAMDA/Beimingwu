@@ -7,18 +7,8 @@ const display = useDisplay()
 const smallerThanMd = computed(() => ['md', 'sm', 'xs'].includes(display.name.value))
 
 const iconSize = computed(() => {
-  switch (display.name.value) {
-    case 'xs':
-      return 'x-large'
-    case 'sm':
-      return 'large'
-    case 'md':
-      return 'x-large'
-    case 'lg':
-      return 'xx-large'
-    case 'xl':
-      return 37
-  }
+    
+      return 80
 })
 
 const reasons = ref([
@@ -46,56 +36,40 @@ const reasons = ref([
 </script>
 
 <template>
-  <v-container class="relative max-w-1600px w-1/1 md:pt-20 sm:pt-15 xs:pt-10 pt-10">
-    <v-row>
-      <v-col>
-        <div class="xl:(text-6xl my-10)
-                    lg:(text-5xl my-7)
-                    md:(text-4xl my-5)
-                    <md:(text-3xl my-5)
-                    text-3xl
-                    text-center">
-          Why you need learnware?
-          </div>
-        </v-col>
-      </v-row>
-    <v-row>
-      <v-col
-        class="<sm:p-0"
-        v-for="reason in reasons"
-        :key="reason.title"
-        cols="12"
-        lg="3"
-        md="6"
-      >
+  <div class="mx-auto md:py-30 <md:py-20 md:px-10 max-w-1200px w-1/1">
+    <div class="<md:px-5">
+      <div class="xl:(text-5xl my-10) lg:(text-4xl my-7) md:(text-3xl my-5) <md:(text-4xl my-5)">
+        Why do you need learnware?
+      </div>
+      <p class="text-gray-500">
+        There are complaints about current machine learning techniques such as the requirement of a huge amount of training data and proficient training skills, the difficulty of continual learning, the risk of catastrophic forgetting, the leaking of data privacy/proprietary, etc.
+      </p>
+    </div>
+    <div class="mt-8 grid sm:grid-cols-2 sm:gap-5">
+      <div v-for="reason in reasons" :key="reason.title">
         <v-hover v-slot="{ isHovering, props }">
-          <v-card
-            flat
-            class="relative fill-height p-4 transition-all duration-300 ease-in-out transform"
-            :class="{ 'elevation-20': isHovering && !smallerThanMd, 'elevation-8': !isHovering && !smallerThanMd, 'bg-primary': isHovering, 'scale-105': isHovering && !smallerThanMd }"
-            v-bind="props"
-          >
-            <v-card-title
-              class="xl:text-2xl
-                    lg:text-xl
-                    md:text-xl
-                    text-lg
-                    font-300"
-            >
-              <v-icon class="mr-3" :size="iconSize">{{ reason.icon }}</v-icon>
+          <v-card flat class="relative fill-height p-4 transition-all duration-300 ease-in-out transform"
+            :class="{ 'elevation-20': isHovering && !smallerThanMd, 'bg-primary': isHovering, 'scale-105': isHovering && !smallerThanMd }"
+            v-bind="props">
+            <v-card-title class="my-2 text-center">
+              <v-icon :size="iconSize">{{ reason.icon }}</v-icon>
+            </v-card-title>
+            <v-card-title class="mb-4 xl:text-2xl
+                          lg:text-xl
+                          md:text-xl
+                          text-lg
+                          font-600 text-center">
               {{ reason.title }}
             </v-card-title>
-            <v-card-text
-              class="xl:text-md
-                     lg:text-md
-                     md:text-sm
-                     text-sm !leading-5"
-            >
+            <v-card-text class="xl:text-md
+                          lg:text-md
+                          md:text-sm
+                          text-sm !leading-5">
               {{ reason.content }}
             </v-card-text>
           </v-card>
         </v-hover>
-      </v-col>
-    </v-row>
-  </v-container>
+      </div>
+    </div>
+  </div>
 </template>
