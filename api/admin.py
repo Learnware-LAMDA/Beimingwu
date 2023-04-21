@@ -1,8 +1,9 @@
 from flask import Blueprint, g, jsonify, request
 from config import C
+import hashlib
 from .auth import admin_login_required
 from .user import remove_learnware
-from .utils import get_parameters
+from .utils import get_parameters, generate_random_str
 
 if C.database_type == "sqlite":
     import lib.sqlite as database
@@ -159,4 +160,31 @@ def delete_learnware():
             "code": 31,
             "msg": "System error.",
         }
+    return jsonify(result)
+
+@admin_api.route("/reset_password", methods=["POST"])
+@admin_login_required
+def reset_password():
+    data = get_parameters(request, ["id"])
+    if data is None: 
+        return jsonify({"code": 21, "msg": "Request parameters error."})
+    user_id = data["id"]
+    user = database.get_user_info(by="id", value=user_id)
+    password = generate_random_str(8)
+    md5 = hashlib.md5(password.encode("utf-8")).hexdigest()
+    if user is None:
+        return jsonify({"code": 51, "msg": "Account not exist."})
+    flag = database.update_user_password(pwd=md5, by="id", value=user_id)
+    if not flag:
+        return jsonify({"code": 31, "msg": "Update error."})
+    
+    # Return profile
+    result = {
+        "code": 0,
+        "msg": "Reset success",
+        "data":{
+            "password": password,
+            "md5": md5
+        }
+    }
     return jsonify(result)

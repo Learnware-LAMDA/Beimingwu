@@ -43,6 +43,8 @@ def get_profile():
 @login_required
 def change_password():
     data = get_parameters(request, ["old_password", "new_password"])
+    if data is None: 
+        return jsonify({"code": 21, "msg": "Request parameters error."})
     old_value = data["old_password"]
     new_value = data["new_password"]
     user_id   = g.user["id"]
