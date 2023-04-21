@@ -15,8 +15,9 @@ import process from '/process.png'
         learnware market accepts/buys well-performed trained models from developers, accommodates them in the market, and
         provides/sells services to users via identifying and reusing learnwares to help users tackle their present tasks
       </p>
-      <v-responsive class="mt-10 sm:shadow-md" :aspect-ratio="96 / 55">
-        <v-img contain width="100%" :src="process" />
-      </v-responsive>
+    </div>
+    <v-responsive class="mt-10 sm:shadow-md" :aspect-ratio="96 / 55">
+      <v-img contain width="100%" :src="process" />
+    </v-responsive>
   </div>
-</div></template>
+</template>
