@@ -164,7 +164,7 @@ const submit = handleSubmit((values) => {
     },
     "Library": {
       "Values": [libraryType.value.value],
-      "Type": "Tag"
+      "Type": "Class"
     },
     "Scenario": {
       "Values": tagList.value.value,
