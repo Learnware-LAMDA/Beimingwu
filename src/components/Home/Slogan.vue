@@ -7,7 +7,7 @@ const router = useRouter()
 </script>
 
 <template>
-  <div class="xl:py-30 lg:py-30 md:py-20 <md:py-10 text-center text-white" style="background: #6200EE; background: -webkit-linear-gradient(to right, #673AB7, #6200EE); background: linear-gradient(to right, #673AB7, #6200EE);">
+  <div class="xl:py-35 lg:py-30 md:py-20 <md:py-10 text-center text-white" style="background: #6200EE; background: -webkit-linear-gradient(to right, #673AB7, #6200EE); background: linear-gradient(to right, #673AB7, #6200EE);">
     <big-title>
       <h1>Small models do</h1>
       <h1 class="py-5 transform"><span class="text-1.7em">Big</span></h1>
