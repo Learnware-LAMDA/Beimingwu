@@ -45,7 +45,7 @@ const reasons = ref([
         There are complaints about current machine learning techniques such as the requirement of a huge amount of training data and proficient training skills, the difficulty of continual learning, the risk of catastrophic forgetting, the leaking of data privacy/proprietary, etc.
       </p>
     </div>
-    <div class="mt-8 grid sm:grid-cols-2 sm:gap-5">
+    <div class="mt-8 grid sm:grid-cols-2 sm:gap-5 gap-2">
       <div v-for="reason in reasons" :key="reason.title">
         <v-hover v-slot="{ isHovering, props }">
           <v-card flat class="relative fill-height p-4 transition-all duration-300 ease-in-out transform"
