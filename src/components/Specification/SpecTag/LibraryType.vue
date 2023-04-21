@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import GridBtns from './GridBtns.vue'
-import TensorflowBtn from './LibraryType/TensorflowBtn.vue'
+import TensorFlowBtn from './LibraryType/TensorFlowBtn.vue'
 import PyTorchBtn from './LibraryType/PyTorchBtn.vue'
 import ScikitLearnBtn from './LibraryType/ScikitLearnBtn.vue'
 import OthersBtn from './LibraryType/OthersBtn.vue'
@@ -45,8 +45,8 @@ const libraryTypeBtns = [
     icon: PyTorchBtn,
   },
   {
-    title: 'Tensorflow',
-    icon: TensorflowBtn,
+    title: 'TensorFlow',
+    icon: TensorFlowBtn,
   },
   {
     title: 'Scikit-learn',
