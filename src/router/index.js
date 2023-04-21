@@ -87,6 +87,18 @@ const Router = createRouter({
     },
   },
   {
+    path: '/changepassword',
+    name: 'ChangePassword',
+    component: () => import ('@/views/ChangePassword/ChangePassword.vue'),
+    meta: {
+      showInNavBar: true,
+      requiredLogin: true,
+      name: 'Change Password',
+      icon: 'mdi-account-edit',
+      class: ['py-2.5 rounded-lg']
+    }
+  },
+  {
     path: '/logout',
     name: 'Logout', 
     component: () => import ('@/views/Logout/Logout.vue'),
