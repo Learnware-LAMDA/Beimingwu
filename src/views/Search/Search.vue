@@ -56,7 +56,7 @@ const errorMsg = ref('')
 const errorTimer = ref(null)
 
 const showMultiRecommended = computed(() => {
-  return files.value.length > 0 && (singleRecommendedLearnwarePage.value === 1)
+  return multiRecommendedLearnwareItems.length > 1
 })
 const multiRecommendedTips = ref(true)
 const singleRecommendedTips = ref(true)
@@ -147,19 +147,20 @@ function fetchByFilterAndPage(filters, page) {
       switch (res.code) {
         case 0: {
           loading.value = false
-          multiRecommendedLearnwareItems.value = res.data.learnware_list_multi.map((item) => ({
-            id: item.learnware_id,
-            username: item.username,
-            name: item.semantic_specification.Name.Values,
-            description: item.semantic_specification.Description.Values,
-            dataType: item.semantic_specification.Data.Values[0],
-            taskType: item.semantic_specification.Task.Values[0],
-            deviceType: item.semantic_specification.Device.Values,
-            tagList: item.semantic_specification.Scenario.Values
-          }))
-          if (res.data.learnware_list_multi.length > 0) {
+          if (res.data.learnware_list_multi.length > 1) {
+            multiRecommendedLearnwareItems.value = res.data.learnware_list_multi.map((item) => ({
+              id: item.learnware_id,
+              username: item.username,
+              name: item.semantic_specification.Name.Values,
+              description: item.semantic_specification.Description.Values,
+              dataType: item.semantic_specification.Data.Values[0],
+              taskType: item.semantic_specification.Task.Values[0],
+              deviceType: item.semantic_specification.Device.Values,
+              tagList: item.semantic_specification.Scenario.Values
+            }))
             multiRecommendedMatchScore.value = Math.floor(res.data.learnware_list_multi[0].matching * 100)
           }
+          
           singleRecommendedLearnwareItems.value = res.data.learnware_list_single.map((item) => ({
             id: item.learnware_id,
             username: item.username,
