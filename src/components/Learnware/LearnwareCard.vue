@@ -57,7 +57,7 @@ function getColorByScore(score) {
         <v-avatar>
           <component class="w-4/5 opacity-70" :is="dataTypeBtns[item.dataType]" />
         </v-avatar>
-        {{ `${item.username}/${item.name}` }}
+        {{ `${item.username ? item.username + '/' : ''}${item.name}` }}
       </v-card-title>
     </div>
     <v-card-text class="card-text">
