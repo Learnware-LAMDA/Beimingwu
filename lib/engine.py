@@ -47,8 +47,6 @@ def get_learnware_by_id(ids):
 
 @cache(seconds=600, maxsize=1024)
 def cached_search_learnware(semantic_str, statistical_str):
-    print("Search")
-    
     # Load semantic specification
     try:
         semantic_specification = json.loads(semantic_str)
@@ -81,7 +79,6 @@ def cached_search_learnware(semantic_str, statistical_str):
     try:
         matching, single_learnware_list, multi_score, multi_learnware = C.engine.search_learnware(info)
     except Exception as err:
-        print(err)
         return False, jsonify({"code": 42, "msg": f"Engine search learnware error."}), None
     
     # Return learnware
@@ -103,9 +100,7 @@ def cached_search_learnware_by_semantic(semantic_str):
     )
     try:
         matching, single_learnware_list, multi_score, multi_learnware = C.engine.search_learnware(info)
-        print(matching, single_learnware_list, multi_score, multi_learnware)
     except Exception as err:
-        print(err)
         return False, jsonify({"code": 42, "msg": f"Engine search learnware error."}), None
     
     # Return learnware

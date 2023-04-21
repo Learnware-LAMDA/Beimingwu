@@ -71,13 +71,13 @@ def search_learnware():
             learnware = C.engine.get_learnware_by_ids(x.id)
             mul_list.append(dump_learnware(learnware, multi_score))
         except Exception as err:
-            print(err)
+            pass
     for i in range(n):
         try:
             learnware = C.engine.get_learnware_by_ids(single_learnware_list[i].id)
             sin_list.append(dump_learnware(learnware, matching[i]))
         except Exception as err:
-            print(err)
+            pass
     n = len(sin_list)
     
     # Directly whole list
