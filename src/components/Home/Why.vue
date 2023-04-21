@@ -14,13 +14,13 @@ const iconSize = computed(() => {
 const reasons = ref([
   {
     icon: 'mdi-chart-scatter-plot',
-    title: 'Lack of training data',
-    content: 'Strong machine learning models can be attained even for tasks with small data, because the models are built upon well-performed learnwares, and only a small amount of data are needed for adaptation or refinement for most cases.'
+    title: 'Lack of training data/skills',
+    content: 'Strong machine learning models can be attained even for ordinary users with little training skills, because the users can get help from well-performed learnwares rather than building a model from scratch by themselves.'
   },
   {
-    icon: 'mdi-hammer-wrench',
-    title: 'Lack of training skills',
-    content: 'Strong machine learning models can be attained even for ordinary users with little training skills, because the users can get help from well-performed learnwares rather than building a model from scratch by themselves.'
+    icon: 'mdi-all-inclusive-box',
+    title: 'Continual learning',
+    content: 'The learnware market naturally realizes continual and lifelong learning, because with the constant submissions of well-performed learnwares trained from diverse tasks, the knowledge held in the learnware market is being continually enriched.'
   },
   {
     icon: 'mdi-head-snowflake',
