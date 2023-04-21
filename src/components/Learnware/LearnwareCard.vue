@@ -35,6 +35,10 @@ const greaterThanXs = computed(() => {
   return display.name.value !== 'xs'
 })
 
+const greaterThanSm = computed(() => {
+  return display.name.value !== 'xs' && display.name.value !== 'sm'
+})
+
 const dataTypeBtns = {
   'Table': TableBtn,
   'Image': ImageBtn,
@@ -51,10 +55,10 @@ function getColorByScore(score) {
 </script>
 
 <template>
-  <v-card flat :density="greaterThanXs ? 'comfortable' : 'compact'" class="card">
+  <v-card flat :density="greaterThanXs ? 'comfortable' : 'compact'" class="card" :class="typeof (item.matchScore) === 'number' ? ['pt-2'] : ['py-2']">
     <div class="first-row">
       <v-card-title class="title">
-        <v-avatar>
+        <v-avatar :size="greaterThanSm ? 'default' : 'small'">
           <component class="w-4/5 opacity-70" :is="dataTypeBtns[item.dataType]" />
         </v-avatar>
         {{ `${item.username ? item.username + '/' : ''}${item.name}` }}
@@ -77,7 +81,7 @@ function getColorByScore(score) {
       <div class="description">{{ item.description }}</div>
     </v-card-text>
     <v-card-title class="last-row" :class="typeof (item.matchScore) === 'number' ? ['justify-between']: isAdmin ? ['justify-end'] : ['absolute', 'right-0', 'bottom-0']">
-      <div v-if="typeof (item.matchScore) === 'number'">
+      <div v-if="typeof (item.matchScore) === 'number'" class="xl: text-xl lg:text-lg text-1rem">
         Specification score <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{
           item.matchScore
         }}</span>
@@ -101,7 +105,7 @@ function getColorByScore(score) {
 
 <style scoped lang="scss">
 .card {
-  @apply sm: (border-1 hover: (border-1 border-purple-500)) <sm: (border-b-1 rounded-0px) pt-2;
+  @apply sm: (border-1 hover: (border-1 border-purple-500)) <sm: (border-b-1 rounded-0px);
 
   .first-row {
     @apply flex justify-between items-start;
