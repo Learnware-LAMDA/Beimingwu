@@ -18,14 +18,7 @@ const display = useDisplay()
 const search = ref(route.query.search || '')
 const dataType = ref(route.query.dataType || '')
 const taskType = ref(route.query.taskType || '')
-let _libraryType
-try {
-  _libraryType = JSON.parse(route.query.libraryType)
-}
-catch {
-  _libraryType = []
-}
-const libraryType = ref(_libraryType)
+const libraryType = ref(route.query.libraryType || '')
 let _tagList
 try {
   _taglist = JSON.parse(route.query.tagList)
@@ -85,7 +78,7 @@ function loadQuery() {
     taskType.value = route.query.taskType
   }
   if (route.query.libraryType) {
-    libraryType.value = JSON.parse(route.query.libraryType)
+    libraryType.value = route.query.libraryType
   }
   if (route.query.tagList) {
     tagList.value = JSON.parse(route.query.tagList)
@@ -119,7 +112,7 @@ function fetchByFilterAndPage(filters, page) {
       semanticSpec.Name.Values = filters.name
       semanticSpec.Data.Values = filters.dataType ? [filters.dataType] : []
       semanticSpec.Task.Values = filters.taskType ? [filters.taskType] : []
-      semanticSpec.Library.Values = filters.libraryType
+      semanticSpec.Library.Values = filters.libraryType ? [filters.libraryType] : []
       semanticSpec.Scenario.Values = filters.tagList
       semanticSpec.Description.Values = ''
 
@@ -155,7 +148,7 @@ function fetchByFilterAndPage(filters, page) {
               description: item.semantic_specification.Description.Values,
               dataType: item.semantic_specification.Data.Values[0],
               taskType: item.semantic_specification.Task.Values[0],
-              libraryType: item.semantic_specification.Library.Values,
+              libraryType: item.semantic_specification.Library.Values[0],
               tagList: item.semantic_specification.Scenario.Values
             }))
             multiRecommendedMatchScore.value = Math.floor(res.data.learnware_list_multi[0].matching * 100)
@@ -168,7 +161,7 @@ function fetchByFilterAndPage(filters, page) {
             description: item.semantic_specification.Description.Values,
             dataType: item.semantic_specification.Data.Values[0],
             taskType: item.semantic_specification.Task.Values[0],
-            libraryType: item.semantic_specification.Library.Values,
+            libraryType: item.semantic_specification.Library.Values[0],
             tagList: item.semantic_specification.Scenario.Values,
             matchScore: files.value.length > 0 ? Math.floor(item.matching * 100) : null
           }))

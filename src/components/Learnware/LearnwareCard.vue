@@ -75,9 +75,9 @@ function handleClickDelete(id) {
       <div class="label"
         :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : undefined">{{
           item.taskType }}</div>
-      <div v-for="libraryType in item.libraryType" class="label"
-        :class="filters && filters.libraryType && filters.libraryType.includes(libraryType) ? 'active' : undefined">
-        {{ libraryType }}</div>
+      <div class="label"
+        :class="filters && filters.libraryType && filters.libraryType.includes(item.libraryType) ? 'active' : undefined">{{
+          item.libraryType }}</div>
       <div class="tag" :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : undefined"
         v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
     </v-card-text>

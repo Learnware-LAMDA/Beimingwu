@@ -21,7 +21,7 @@ const { handleSubmit, meta } = useForm({
     name: '',
     dataType: '',
     taskType: '',
-    libraryType: [],
+    libraryType: '',
     tagList: [],
     description: '',
     files: []
@@ -163,7 +163,7 @@ const submit = handleSubmit((values) => {
       "Type": "Class"
     },
     "Library": {
-      "Values": libraryType.value.value,
+      "Values": [libraryType.value.value],
       "Type": "Tag"
     },
     "Scenario": {
@@ -275,7 +275,7 @@ onMounted(() => {
     taskType.value.value = route.query.taskType
   }
   if (route.query.libraryType) {
-    libraryType.value.value = JSON.parse(route.query.libraryType)
+    libraryType.value.value = route.query.libraryType
   }
   if (route.query.tagList) {
     tagList.value.value = JSON.parse(route.query.tagList)

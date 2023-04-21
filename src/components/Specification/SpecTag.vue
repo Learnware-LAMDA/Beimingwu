@@ -17,7 +17,7 @@ const props = defineProps({
     required: true,
   },
   libraryType: {
-    type: Array,
+    type: String,
     required: true,
   },
   tagList: {

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
-import MultiSelectGridBtns from './MultiSelectGridBtns.vue'
+import GridBtns from './GridBtns.vue'
 import TensorflowBtn from './LibraryType/TensorflowBtn.vue'
 import PyTorchBtn from './LibraryType/PyTorchBtn.vue'
 import ScikitLearnBtn from './LibraryType/ScikitLearnBtn.vue'
@@ -10,7 +10,7 @@ const emit = defineEmits(['update:value'])
 
 const props = defineProps({
   value: {
-    type: Array,
+    type: String,
     required: true,
   },
   cols: {
@@ -39,7 +39,7 @@ watch(
   { deep: true }
 )
 
-const requirementTypeBtns = [
+const libraryTypeBtns = [
   {
     title: 'PyTorch',
     icon: PyTorchBtn,
@@ -60,6 +60,6 @@ const requirementTypeBtns = [
 </script>
 
 <template>
-  <multi-select-grid-btns v-model:value="value" :btns="requirementTypeBtns" title="Library type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
+  <grid-btns v-model:value="value" :btns="libraryTypeBtns" title="Library type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
 </template>
 
