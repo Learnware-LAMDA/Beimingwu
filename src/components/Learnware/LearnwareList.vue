@@ -115,7 +115,7 @@ const dataTypeBtns = {
             <v-avatar>
               <component class="w-4/5 opacity-70" :is="dataTypeBtns[item.dataType]" />
             </v-avatar>
-            {{ item.name }}
+            {{ `${item.username}/${item.name}` }}
           </v-card-title>
           <v-card-actions class="actions">
             <v-tooltip v-model="item.showEditTips" location="top">
