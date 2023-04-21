@@ -3,10 +3,15 @@ import { ref, onMounted, nextTick, watch, onActivated } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue'
+import ConfirmDialog from '@/components/Dialogs/ConfirmDialog.vue'
 
 const store = useStore()
 
 const router = useRouter()
+
+const dialog = ref(null)
+const deleteId = ref('')
+const deleteName = ref('')
 
 const learnwareItems = ref([])
 const page = ref(1)
@@ -62,6 +67,12 @@ function deleteLearnware(id) {
 
 function pageChange(newPage) {
   page.value = newPage
+}
+
+function handleClickDelete(id) {
+  dialog.value.confirm()
+  deleteId.value = id
+  deleteName.value = learnwareItems.value.find((item) => item.id === id).name
 }
 
 function fetchByFilterAndPage(page) {
@@ -146,6 +157,14 @@ onMounted(() => {
 
 <template>
   <div ref="contentRef" class="fixed flex flex-col w-1/1 overflow-y-scroll justify-start items-center">
+    <confirm-dialog ref="dialog" @confirm="() => deleteLearnware(deleteId)">
+      <template #title>
+        Confirm to delete &nbsp; <b>{{ deleteName }}</b>?
+      </template>
+      <template #text>
+        Your learnware <b>{{ deleteName }}</b> will be deleted in the learnware market <i>permanently</i>. Do you really want to delete?
+      </template>
+    </confirm-dialog>
     <v-scroll-y-transition>
       <v-card-actions v-if="showError">
         <v-alert closable :text="errorMsg" type="error" @click:close="showError = false" />
@@ -153,8 +172,8 @@ onMounted(() => {
     </v-scroll-y-transition>
     <div class="w-1/1 max-w-900px">
       <page-learnware-list :show-pagination="pageNum > 1" :items="learnwareItems" @page-change="pageChange" :page="page"
-        :page-num="pageNum" :page-size="pageSize" :loading="loading" @delete="(id) => deleteLearnware(id)" :cols="1"
-        :show-actions="true" />
+        :page-num="pageNum" :page-size="pageSize" :loading="loading" @click:delete="(id) => handleClickDelete(id)" :cols="1"
+        :is-admin="true" />
     </div>
   </div>
 </template>

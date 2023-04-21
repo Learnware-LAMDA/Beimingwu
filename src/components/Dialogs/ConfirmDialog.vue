@@ -4,23 +4,18 @@ import { ref } from 'vue'
 const emits = defineEmits(['confirm'])
 
 const dialog = ref(false)
-const deleteName = ref('')
-const deleteId = ref('')
 
-function confirmDelete(args) {
-  const { id, name } = args
-  deleteName.value = name
-  deleteId.value = id
+function confirm(args) {
   dialog.value = true
 }
 
-function emitDelete() {
-  emits('confirm', deleteId.value)
+function emitConfirm() {
+  emits('confirm')
   dialog.value = false
 }
 
 defineExpose({
-  confirmDelete
+  confirm
 })
 </script>
 
@@ -29,13 +24,15 @@ defineExpose({
     <v-card class="dialog">
       <v-card-title class="title">
         <v-icon class="icon" icon="mdi-alert" color="red"></v-icon>
-        Confirm to delete &nbsp; <b>{{ deleteName }}</b>?
+        <slot name="title" />
       </v-card-title>
-      <v-card-text>Your learnware <b>{{ deleteName }}</b> will be deleted in the learnware market <i>permanently</i>. Do you really want to delete?</v-card-text>
+      <v-card-text>
+        <slot name="text" />
+      </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="bg-red" @click="() => emitDelete()">
-          Delete
+        <v-btn class="bg-red" @click="() => emitConfirm()">
+          Confirm
         </v-btn>
         <v-btn variant="outlined" @click="dialog = false">
           Cancel

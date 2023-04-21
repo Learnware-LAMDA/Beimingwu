@@ -27,7 +27,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['delete'])
+const emit = defineEmits(['click:delete'])
 
 const display = useDisplay()
 
@@ -51,6 +51,10 @@ function getColorByScore(score) {
   if (score > 80) return colors.green.base
   if (score > 50) return colors.orange.base
   return colors.red.base
+}
+
+function handleClickDelete(id) {
+  emit('click:delete', id)
 }
 </script>
 
@@ -96,7 +100,7 @@ function getColorByScore(score) {
         </v-tooltip>
         <v-btn flat v-if="showDownload" icon="mdi-download" @click.stop="() => downloadLearnware(item.id)"
           :size="greaterThanXs ? undefined : 'small'"></v-btn>
-        <v-btn flat v-if="isAdmin" icon="mdi-delete" @click.stop="() => emit('delete', i)"
+        <v-btn flat v-if="isAdmin" icon="mdi-delete" @click.stop="handleClickDelete(item.id)"
           :size="greaterThanXs ? undefined : 'small'"></v-btn>
       </div>
     </v-card-title>

@@ -6,7 +6,7 @@ import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 
 const display = useDisplay()
 
-const emit = defineEmits(['delete', 'pageChange'])
+const emit = defineEmits(['click:delete', 'pageChange'])
 
 const props = defineProps({
   items: {
@@ -15,7 +15,7 @@ const props = defineProps({
   filters: {
     type: Object,
   },
-  showActions: {
+  isAdmin: {
     type: Boolean,
     default: false,
   },
@@ -86,8 +86,8 @@ function jumpPage(newPage) {
   }
 }
 
-function deleteLearnware(id) {
-  emit('delete', id)
+function handleClickDelete(id) {
+  emit('click:delete', id)
 }
 
 </script>
@@ -102,8 +102,8 @@ function deleteLearnware(id) {
       :md="md"
       :sm="sm"
       :xs="xs"
-      :show-actions="showActions"
-      @delete="deleteLearnware"
+      :is-admin="isAdmin"
+      @click:delete="(id) => handleClickDelete(id)"
     />
 
     <div v-else class="grid p-2 gap-3" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">

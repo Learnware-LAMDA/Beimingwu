@@ -2,11 +2,10 @@
 import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
-import DeleteDialog from './DeleteDialog.vue'
 import LearnwareCard from './LearnwareCard.vue'
 import oopsImg from '/oops.svg'
 
-const emit = defineEmits(['delete'])
+const emit = defineEmits(['click:delete'])
 
 const display = useDisplay()
 
@@ -20,7 +19,7 @@ const props = defineProps({
   filters: {
     type: Object,
   },
-  showActions: {
+  isAdmin: {
     type: Boolean,
     default: false,
   },
@@ -42,8 +41,6 @@ const props = defineProps({
   }
 })
 
-const dialog = ref(null)
-
 const realCols = computed(() => {
   switch (display.name.value) {
     case 'md': if (props.md) return props.md
@@ -53,19 +50,12 @@ const realCols = computed(() => {
   }
 })
 
-function deleteLearnware(id) {
-  emit('delete', id)
+function handleClickDelete(id) {
+  emit('click:delete', id)
 }
 
 function showLearnwareDetail(id) {
   router.push({ path: '/learnwaredetail', query: { id } })
-}
-
-function confirmDelete(index) {
-  dialog.value.confirmDelete({
-    id: props.items[index].id,
-    name: props.items[index].name
-  })
 }
 
 function transformQuery(item) {
@@ -83,9 +73,8 @@ function transformQuery(item) {
 <template>
   <div class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : []"
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-    <delete-dialog ref="dialog" @confirm="(id) => deleteLearnware(id)" />
     <TransitionGroup name="fade">
-      <learnware-card v-for="(item, i) in items" :item="item" :filters="filters" @click="showLearnwareDetail(item.id)" @delete="() => confirmDelete(i)" :key="i" />
+      <learnware-card v-for="(item, i) in items" :item="item" :filters="filters" @click="showLearnwareDetail(item.id)" @click:delete="(id) => handleClickDelete(id)" :is-admin="isAdmin" :key="i" />
     </TransitionGroup>
     <div flat v-if="items.length === 0" class="no-learnware">
       <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
