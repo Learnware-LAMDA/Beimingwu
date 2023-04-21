@@ -1,6 +1,12 @@
 <script setup>
 import { ref, onMounted, nextTick, watch, onActivated } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue'
+
+const store = useStore()
+
+const router = useRouter()
 
 const learnwareItems = ref([])
 const page = ref(1)
@@ -98,6 +104,10 @@ function fetchByFilterAndPage(page) {
           }))
           pageNum.value = res.data.total_pages
           return
+        }
+        case 11: {
+          store.commit('setLoggedIn', false)
+          setTimeout(() => { router.push('/login') }, 1000)
         }
         default: {
           throw new Error(res.msg)
