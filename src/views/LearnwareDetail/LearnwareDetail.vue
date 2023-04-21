@@ -41,7 +41,7 @@ function getLearnwareDetailById(id) {
             description: learnwareInfo.semantic_specification.Description.Values,
             dataType: learnwareInfo.semantic_specification.Data.Values[0],
             taskType: learnwareInfo.semantic_specification.Task.Values[0],
-            deviceType: learnwareInfo.semantic_specification.Device.Values.join(', '),
+            libraryType: learnwareInfo.semantic_specification.Library.Values.join(', '),
             tagList: learnwareInfo.semantic_specification.Scenario.Values
           }
           return 
@@ -93,7 +93,7 @@ onMounted(() => {
       <v-card-text class="md:(text-xl !leading-7) text-sm">
         <div>Data type: {{ learnware.dataType }}</div>
         <div>Task type: {{ learnware.taskType }}</div>
-        <div>Device type: {{ learnware.deviceType }}</div>
+        <div>Library type: {{ learnware.libraryType }}</div>
         <div>Tags: {{ learnware.tagList.join(', ') }}</div>
       </v-card-text>
 

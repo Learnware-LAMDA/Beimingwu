@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useDisplay } from 'vuetify'
 import DataType from '@/components/Specification/SpecTag/DataType.vue'
 import TaskType from '@/components/Specification/SpecTag/TaskType.vue'
-import DeviceType from '@/components/Specification/SpecTag/DeviceType.vue'
+import LibraryType from '@/components/Specification/SpecTag/LibraryType.vue'
 import FileUpload from '@/components/Specification/FileUpload.vue'
 import TagList from '@/components/Specification/SpecTag/TagList.vue'
 import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue'
@@ -18,14 +18,14 @@ const display = useDisplay()
 const search = ref(route.query.search || '')
 const dataType = ref(route.query.dataType || '')
 const taskType = ref(route.query.taskType || '')
-let _deviceType
+let _libraryType
 try {
-  _deviceType = JSON.parse(route.query.deviceType)
+  _libraryType = JSON.parse(route.query.libraryType)
 }
 catch {
-  _deviceType = []
+  _libraryType = []
 }
-const deviceType = ref(_deviceType)
+const libraryType = ref(_libraryType)
 let _tagList
 try {
   _taglist = JSON.parse(route.query.tagList)
@@ -65,7 +65,7 @@ const filters = computed(() => ({
   name: search.value,
   dataType: dataType.value,
   taskType: taskType.value,
-  deviceType: deviceType.value,
+  libraryType: libraryType.value,
   tagList: tagList.value,
   files: files.value
 }))
@@ -84,8 +84,8 @@ function loadQuery() {
   if (route.query.taskType) {
     taskType.value = route.query.taskType
   }
-  if (route.query.deviceType) {
-    deviceType.value = JSON.parse(route.query.deviceType)
+  if (route.query.libraryType) {
+    libraryType.value = JSON.parse(route.query.libraryType)
   }
   if (route.query.tagList) {
     tagList.value = JSON.parse(route.query.tagList)
@@ -98,7 +98,7 @@ function saveQuery() {
       search: search.value,
       dataType: dataType.value,
       taskType: taskType.value,
-      deviceType: JSON.stringify(deviceType.value),
+      libraryType: JSON.stringify(libraryType.value),
       tagList: JSON.stringify(tagList.value),
     }
   })
@@ -119,7 +119,7 @@ function fetchByFilterAndPage(filters, page) {
       semanticSpec.Name.Values = filters.name
       semanticSpec.Data.Values = filters.dataType ? [filters.dataType] : []
       semanticSpec.Task.Values = filters.taskType ? [filters.taskType] : []
-      semanticSpec.Device.Values = filters.deviceType
+      semanticSpec.Library.Values = filters.libraryType
       semanticSpec.Scenario.Values = filters.tagList
       semanticSpec.Description.Values = ''
 
@@ -155,7 +155,7 @@ function fetchByFilterAndPage(filters, page) {
               description: item.semantic_specification.Description.Values,
               dataType: item.semantic_specification.Data.Values[0],
               taskType: item.semantic_specification.Task.Values[0],
-              deviceType: item.semantic_specification.Device.Values,
+              libraryType: item.semantic_specification.Library.Values,
               tagList: item.semantic_specification.Scenario.Values
             }))
             multiRecommendedMatchScore.value = Math.floor(res.data.learnware_list_multi[0].matching * 100)
@@ -168,7 +168,7 @@ function fetchByFilterAndPage(filters, page) {
             description: item.semantic_specification.Description.Values,
             dataType: item.semantic_specification.Data.Values[0],
             taskType: item.semantic_specification.Task.Values[0],
-            deviceType: item.semantic_specification.Device.Values,
+            libraryType: item.semantic_specification.Library.Values,
             tagList: item.semantic_specification.Scenario.Values,
             matchScore: files.value.length > 0 ? Math.floor(item.matching * 100) : null
           }))
@@ -262,7 +262,7 @@ onMounted(() => {
         </div>
         <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
         <task-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="taskType" />
-        <device-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="deviceType" />
+        <library-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="libraryType" />
         <tag-list class="bg-transparent text-h6 !text-1rem" v-model:value="tagList" :cols="2" :md="2" :sm="2" :xs="2" />
       </div>
       <v-hover>

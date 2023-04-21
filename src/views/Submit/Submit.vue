@@ -21,7 +21,7 @@ const { handleSubmit, meta } = useForm({
     name: '',
     dataType: '',
     taskType: '',
-    deviceType: [],
+    libraryType: [],
     tagList: [],
     description: '',
     files: []
@@ -45,11 +45,11 @@ const { handleSubmit, meta } = useForm({
       }
       return 'Task type must not be empty.'
     },
-    deviceType(value) {
+    libraryType(value) {
       if (value?.length > 0) {
         return true
       }
-      return 'Device type must not be empty.'
+      return 'Library type must not be empty.'
     },
     tagList() {
       return true
@@ -75,7 +75,7 @@ const { handleSubmit, meta } = useForm({
 const name = useField('name')
 const dataType = useField('dataType')
 const taskType = useField('taskType')
-const deviceType = useField('deviceType')
+const libraryType = useField('libraryType')
 const tagList = useField('tagList')
 const description = useField('description')
 const files = useField('files')
@@ -119,7 +119,7 @@ const allowChangePage = computed(() => {
       return name.meta.valid
     }
     case 1: {
-      return dataType.meta.valid && taskType.meta.valid && deviceType.meta.valid && tagList.meta.valid
+      return dataType.meta.valid && taskType.meta.valid && libraryType.meta.valid && tagList.meta.valid
     }
     case 2: {
       return description.meta.valid
@@ -162,8 +162,8 @@ const submit = handleSubmit((values) => {
       "Values": [taskType.value.value],
       "Type": "Class"
     },
-    "Device": {
-      "Values": deviceType.value.value,
+    "Library": {
+      "Values": libraryType.value.value,
       "Type": "Tag"
     },
     "Scenario": {
@@ -172,11 +172,11 @@ const submit = handleSubmit((values) => {
     },
     "Description": {
       "Values": description.value.value,
-      "Type": "Description"
+      "Type": "String"
     },
     "Name": {
       "Values": name.value.value,
-      "Type": "Name"
+      "Type": "String"
     }
   }
   const fd = new FormData()
@@ -274,8 +274,8 @@ onMounted(() => {
   if (route.query.taskType) {
     taskType.value.value = route.query.taskType
   }
-  if (route.query.deviceType) {
-    deviceType.value.value = JSON.parse(route.query.deviceType)
+  if (route.query.libraryType) {
+    libraryType.value.value = JSON.parse(route.query.libraryType)
   }
   if (route.query.tagList) {
     tagList.value.value = JSON.parse(route.query.tagList)
@@ -322,7 +322,7 @@ onMounted(() => {
 
           <v-window-item :value="1">
             <v-card-text class="pt-0">
-              <spec-tag v-model:data-type="dataType.value.value" v-model:task-type="taskType.value.value" v-model:device-type="deviceType.value.value" v-model:tag-list="tagList.value.value" :error-messages="dataType.errorMessage.value || taskType.errorMessage.value || deviceType.errorMessage.value || tagList.errorMessage.value" />
+              <spec-tag v-model:data-type="dataType.value.value" v-model:task-type="taskType.value.value" v-model:library-type="libraryType.value.value" v-model:tag-list="tagList.value.value" :error-messages="dataType.errorMessage.value || taskType.errorMessage.value || libraryType.errorMessage.value || tagList.errorMessage.value" />
             </v-card-text>
           </v-window-item>
 

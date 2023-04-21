@@ -1,11 +1,11 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, computed } from 'vue'
 import DataType from '@/components/Specification/SpecTag/DataType.vue'
 import TaskType from '@/components/Specification/SpecTag/TaskType.vue'
-import DeviceType from '@/components/Specification/SpecTag/DeviceType.vue'
+import LibraryType from '@/components/Specification/SpecTag/LibraryType.vue'
 import TagList from '@/components/Specification/SpecTag/TagList.vue'
 
-const emit = defineEmits(['update:dataType', 'update:taskType', 'update:deviceType', 'update:tagList'])
+const emits = defineEmits(['update:dataType', 'update:taskType', 'update:libraryType', 'update:tagList'])
 
 const props = defineProps({
   dataType: {
@@ -16,7 +16,7 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  deviceType: {
+  libraryType: {
     type: Array,
     required: true,
   },
@@ -30,27 +30,22 @@ const props = defineProps({
   }
 })
 
-const _dataType = ref(props.dataType)
-const _taskType = ref(props.taskType)
-const _deviceType = ref(props.deviceType)
-const _tagList = ref(props.tagList)
-
-watch(
-  () => _dataType.value,
-  (newVal) => emit('update:dataType', newVal)
-)
-watch(
-  () => _taskType.value,
-  (newVal) => emit('update:taskType', newVal)
-)
-watch(
-  () => _deviceType.value,
-  (newVal) => emit('update:deviceType', newVal)
-)
-watch(
-  () => _tagList.value,
-  (newVal) => emit('update:tagList', newVal)
-)
+const dataType = computed({
+  get: () => props.dataType,
+  set: (val) => emits('update:dataType', val)
+})
+const taskType = computed({
+  get: () => props.taskType,
+  set: (val) => emits('update:taskType', val)
+})
+const libraryType = computed({
+  get: () => props.libraryType,
+  set: (val) => emits('update:libraryType', val)
+})
+const tagList = computed({
+  get: () => props.tagList,
+  set: (val) => emits('update:tagList', val)
+})
 </script>
 
 <template>
@@ -60,9 +55,9 @@ watch(
         <v-alert class="w-1/1 max-w-900px mx-auto" closable :text="errorMessages" type="error" />
       </v-card-actions>
     </v-scroll-y-transition>
-    <data-type v-model:value="_dataType"/>
-    <task-type v-model:value="_taskType"/>
-    <device-type v-model:value="_deviceType"/>
-    <tag-list v-model:value="_tagList" />
+    <data-type v-model:value="dataType"/>
+    <task-type v-model:value="taskType"/>
+    <library-type v-model:value="libraryType"/>
+    <tag-list v-model:value="tagList" />
   </div>
 </template>

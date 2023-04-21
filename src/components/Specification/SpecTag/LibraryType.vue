@@ -1,8 +1,10 @@
 <script setup>
 import { ref, watch } from 'vue'
 import MultiSelectGridBtns from './MultiSelectGridBtns.vue'
-import CPUBtn from './DeviceType/CPUBtn.vue'
-import GPUBtn from './DeviceType/GPUBtn.vue'
+import TensorflowBtn from './LibraryType/TensorflowBtn.vue'
+import PyTorchBtn from './LibraryType/PyTorchBtn.vue'
+import ScikitLearnBtn from './LibraryType/ScikitLearnBtn.vue'
+import OthersBtn from './LibraryType/OthersBtn.vue'
 
 const emit = defineEmits(['update:value'])
 
@@ -39,17 +41,25 @@ watch(
 
 const requirementTypeBtns = [
   {
-    title: 'CPU',
-    icon: CPUBtn,
+    title: 'PyTorch',
+    icon: PyTorchBtn,
   },
   {
-    title: 'GPU',
-    icon: GPUBtn,
+    title: 'Tensorflow',
+    icon: TensorflowBtn,
   },
+  {
+    title: 'Scikit-learn',
+    icon: ScikitLearnBtn,
+  },
+  {
+    title: 'Others',
+    icon: OthersBtn,
+  }
 ]
 </script>
 
 <template>
-  <multi-select-grid-btns v-model:value="value" :btns="requirementTypeBtns" title="Device type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
+  <multi-select-grid-btns v-model:value="value" :btns="requirementTypeBtns" title="Library type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
 </template>
 

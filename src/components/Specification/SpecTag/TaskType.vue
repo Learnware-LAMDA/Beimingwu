@@ -8,6 +8,7 @@ import ExtractionBtn from './TaskTypeBtn/ExtractionBtn.vue'
 import RegressionBtn from './TaskTypeBtn/RegressionBtn.vue'
 import SegmantationBtn from './TaskTypeBtn/SegmentationBtn.vue'
 import RankingBtn from './TaskTypeBtn/RankingBtn.vue'
+import OthersBtn from './TaskTypeBtn/OthersBtn.vue'
 
 const emit = defineEmits(['update:value'])
 
@@ -70,6 +71,10 @@ const taskTypeBtns = [
     title: 'Segmentation',
     icon: SegmantationBtn,
   },
+  {
+    title: 'Others',
+    icon: OthersBtn,
+  }
 ]
 </script>
 

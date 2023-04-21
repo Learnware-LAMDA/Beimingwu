@@ -104,17 +104,6 @@ function downloadAll() {
     })
 }
 
-function transformQuery(item) {
-  return {
-    name: item.name,
-    dataType: item.dataType,
-    taskType: item.taskType,
-    deviceType: JSON.stringify(item.deviceType),
-    tagList: JSON.stringify(item.tagList),
-    description: item.description,
-  }
-}
-
 function getColorByScore(score) {
   if (score > 80) return colors.green.base
   if (score > 50) return colors.orange.base

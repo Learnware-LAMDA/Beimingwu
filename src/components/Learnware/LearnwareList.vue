@@ -57,17 +57,6 @@ function handleClickDelete(id) {
 function showLearnwareDetail(id) {
   router.push({ path: '/learnwaredetail', query: { id } })
 }
-
-function transformQuery(item) {
-  return {
-    name: item.name,
-    dataType: item.dataType,
-    taskType: item.taskType,
-    deviceType: JSON.stringify(item.deviceType),
-    tagList: JSON.stringify(item.tagList),
-    description: item.description,
-  }
-}
 </script>
 
 <template>
