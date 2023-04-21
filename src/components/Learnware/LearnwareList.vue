@@ -3,14 +3,8 @@ import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import DeleteDialog from './DeleteDialog.vue'
-import { downloadLearnware } from '@/utils'
-import colors from 'vuetify/lib/util/colors'
+import LearnwareCard from './LearnwareCard.vue'
 import oopsImg from '/oops.svg'
-import AudioBtn from '@/components/Specification/SpecTag/DataTypeBtn/AudioBtn.vue'
-import VideoBtn from '@/components/Specification/SpecTag/DataTypeBtn/VideoBtn.vue'
-import TextBtn from '@/components/Specification/SpecTag/DataTypeBtn/TextBtn.vue'
-import ImageBtn from '@/components/Specification/SpecTag/DataTypeBtn/ImageBtn.vue'
-import TableBtn from '@/components/Specification/SpecTag/DataTypeBtn/TableBtn.vue'
 
 const emit = defineEmits(['delete'])
 
@@ -50,10 +44,6 @@ const props = defineProps({
 
 const dialog = ref(null)
 
-const greaterThanXs = computed(() => {
-  return display.name.value !== 'xs'
-})
-
 const realCols = computed(() => {
   switch (display.name.value) {
     case 'md': if (props.md) return props.md
@@ -88,20 +78,6 @@ function transformQuery(item) {
     description: item.description,
   }
 }
-
-function getColorByScore(score) {
-  if (score > 80) return colors.green.base
-  if (score > 50) return colors.orange.base
-  return colors.red.base
-}
-
-const dataTypeBtns = {
-  'Table': TableBtn,
-  'Image': ImageBtn,
-  'Text': TextBtn,
-  'Video': VideoBtn,
-  'Audio': AudioBtn,
-}
 </script>
 
 <template>
@@ -109,47 +85,7 @@ const dataTypeBtns = {
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <delete-dialog ref="dialog" @confirm="(id) => deleteLearnware(id)" />
     <TransitionGroup name="fade">
-      <v-card flat :density="greaterThanXs ? 'comfortable' : 'compact'"  class="card" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
-        <div class="first-row">
-          <v-card-title class="title">
-            <v-avatar>
-              <component class="w-4/5 opacity-70" :is="dataTypeBtns[item.dataType]" />
-            </v-avatar>
-            {{ `${item.username}/${item.name}` }}
-          </v-card-title>
-          <v-card-actions class="actions">
-            <v-tooltip v-model="item.showEditTips" location="top">
-              <template v-slot:activator="{ props }">
-                <v-btn v-if="showActions" icon="mdi-pencil" @click.stop="() => { }" v-bind="props" :size="greaterThanXs ? undefined : 'small'"></v-btn>
-              </template>
-              <span>Not availble</span>
-            </v-tooltip>
-            <v-btn icon="mdi-download" @click.stop="() => downloadLearnware(item.id)" :size="greaterThanXs ? undefined : 'small'"></v-btn>
-            <v-btn v-if="showActions" icon="mdi-delete" @click.stop="() => confirmDelete(i)" :size="greaterThanXs ? undefined : 'small'"></v-btn>
-          </v-card-actions>
-        </div>
-        <v-card-text class="card-text">
-          <div class="label"
-            :class="filters && filters.dataType && filters.dataType.includes(item.dataType) ? 'active' : undefined">{{
-              item.dataType }}</div>
-          <div class="label"
-            :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : undefined">{{
-              item.taskType }}</div>
-          <div v-for="deviceType in item.deviceType" class="label"
-            :class="filters && filters.deviceType && filters.deviceType.includes(deviceType) ? 'active' : undefined">
-            {{ deviceType }}</div>
-          <div class="tag" :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : undefined"
-            v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
-        </v-card-text>
-        <v-card-text class="card-text">
-          <div class="description">{{ item.description }}</div>
-        </v-card-text>
-        <v-card-title v-if="typeof(item.matchScore) === 'number'" class="score">
-          Specification score <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{
-            item.matchScore
-          }}</span>
-        </v-card-title>
-      </v-card>
+      <learnware-card v-for="(item, i) in items" :item="item" :filters="filters" @click="showLearnwareDetail(item.id)" @delete="() => confirmDelete(i)" :key="i" />
     </TransitionGroup>
     <div flat v-if="items.length === 0" class="no-learnware">
       <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
@@ -161,59 +97,6 @@ const dataTypeBtns = {
 <style scoped lang="scss">
 .learnware-list-container {
   @apply relative sm:p-2 p-1 grid xl: grid-cols-2 lg:grid-cols-2 sm:gap-3;
-
-  .card {
-    @apply sm: (border-1 hover: (border-1 border-purple-500)) <sm: (border-b-1 rounded-0px) py-2;
-
-    .first-row {
-      @apply flex justify-between items-start;
-
-      .title {
-        @apply xl: text-xl lg:text-lg text-1rem;
-      }
-
-      .actions {
-        @apply justify-end;
-        
-        * {
-          @apply <sm:mx-0;
-        }
-      }
-    }
-
-    .card-text {
-      @apply flex flex-wrap items-center pt-0 pb-2 text-gray-700;
-
-      * {
-        @apply mr-2 mt-1;
-      }
-
-      .label {
-        @apply px-2 border-gray-700 bg-gray-200 text-xs text-black rounded;
-      }
-
-      .tag {
-        @apply px-2 border-gray-700 bg-gray-200 text-xs text-black rounded-1em;
-      }
-
-      .label.active {
-        @apply bg-gray-100 border-0;
-        color: rgb(var(--v-theme-primary));
-      }
-
-      .tag.active {
-        @apply bg-gray-100 text-orange-600 border-0;
-      }
-
-      .description {
-        @apply truncate;
-      }
-    }
-
-    .placeholder {
-      @apply opacity-0;
-    }
-  }
 
   .score {
     @apply lg: '!text-1rem' '!text-0.8rem';

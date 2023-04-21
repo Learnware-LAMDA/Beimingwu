@@ -5,16 +5,9 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import JSZip from 'jszip'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
-import DeleteDialog from './DeleteDialog.vue'
+import LearnwareCard from './LearnwareCard.vue'
 import colors from 'vuetify/lib/util/colors'
 import oopsImg from '/oops.svg'
-import AudioBtn from '@/components/Specification/SpecTag/DataTypeBtn/AudioBtn.vue'
-import VideoBtn from '@/components/Specification/SpecTag/DataTypeBtn/VideoBtn.vue'
-import TextBtn from '@/components/Specification/SpecTag/DataTypeBtn/TextBtn.vue'
-import ImageBtn from '@/components/Specification/SpecTag/DataTypeBtn/ImageBtn.vue'
-import TableBtn from '@/components/Specification/SpecTag/DataTypeBtn/TableBtn.vue'
-
-const emit = defineEmits(['delete'])
 
 const display = useDisplay()
 
@@ -73,19 +66,8 @@ const realCols = computed(() => {
   }
 })
 
-function deleteLearnware(id) {
-  emit('delete', id)
-}
-
 function showLearnwareDetail(id) {
   router.push({ path: '/learnwaredetail', query: { id } })
-}
-
-function confirmDelete(index) {
-  dialog.value.confirmDelete({
-    id: props.items[index].id,
-    name: props.items[index].name
-  })
 }
 
 function downloadAll() {
@@ -138,14 +120,6 @@ function getColorByScore(score) {
   if (score > 50) return colors.orange.base
   return colors.red.base
 }
-
-const dataTypeBtns = {
-  'Table': TableBtn,
-  'Image': ImageBtn,
-  'Text': TextBtn,
-  'Video': VideoBtn,
-  'Audio': AudioBtn,
-}
 </script>
 
 <template>
@@ -170,43 +144,8 @@ const dataTypeBtns = {
     </div>
     <v-card flat class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null"
       :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-      <delete-dialog ref="dialog" @confirm="(id) => deleteLearnware(id)" />
       <TransitionGroup name="fade">
-        <v-card flat class="card" v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)">
-          <div class="first-row">
-            <v-card-title class="title">
-              <v-avatar>
-                <component class="w-4/5 opacity-70" :is="dataTypeBtns[item.dataType]" />
-              </v-avatar>
-              {{ `${item.username}/${item.name}` }}
-            </v-card-title>
-            <v-card-actions class="actions">
-              <v-tooltip v-model="item.showEditTips" location="top">
-                <template v-slot:activator="{ props }">
-                  <v-btn v-if="showActions" icon="mdi-pencil" @click.stop="() => { }" v-bind="props"></v-btn>
-                </template>
-                <span>Not availble</span>
-              </v-tooltip>
-              <v-btn v-if="showActions" icon="mdi-delete" @click.stop="() => confirmDelete(i)"></v-btn>
-            </v-card-actions>
-          </div>
-          <v-card-text class="card-text">
-            <div class="label"
-              :class="filters && filters.dataType && filters.dataType.includes(item.dataType) ? 'active' : null">{{
-                item.dataType }}</div>
-            <div class="label"
-              :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : null">{{
-                item.taskType }}</div>
-            <div v-for="deviceType in item.deviceType" class="label"
-              :class="filters && filters.deviceType && filters.deviceType.includes(deviceType) ? 'active' : null">
-              {{ deviceType }}</div>
-            <div class="tag" :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : null"
-              v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
-          </v-card-text>
-          <v-card-text class="card-text">
-            <div class="description">{{ item.description }}</div>
-          </v-card-text>
-        </v-card>
+        <learnware-card v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail" :item="item" :filters="filters" />
       </TransitionGroup>
       <div flat v-if="items.length === 0" class="no-learnware">
         <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
