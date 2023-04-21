@@ -49,7 +49,7 @@ def search_learnware():
     else:
         status, msg, ret = adv_engine.cached_search_learnware(semantic_str, statistical_str)
     if not status: return msg
-    (matching, single_learnware_list, multi_learnware) = ret
+    (matching, single_learnware_list, multi_score, multi_learnware) = ret
     if matching is None and multi_learnware is None:  # result of seach learnware with no statistical specification 
         matching = [0 for _ in single_learnware_list]
         multi_learnware = []
@@ -69,13 +69,15 @@ def search_learnware():
     for x in multi_learnware:
         try:
             learnware = C.engine.get_learnware_by_ids(x.id)
-            mul_list.append(dump_learnware(learnware))
-        except: pass
+            mul_list.append(dump_learnware(learnware, multi_score))
+        except Exception as err:
+            print(err)
     for i in range(n):
         try:
             learnware = C.engine.get_learnware_by_ids(single_learnware_list[i].id)
             sin_list.append(dump_learnware(learnware, matching[i]))
-        except: pass
+        except Exception as err:
+            print(err)
     n = len(sin_list)
     
     # Directly whole list
