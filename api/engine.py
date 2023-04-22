@@ -50,12 +50,12 @@ def search_learnware():
         status, msg, ret = adv_engine.cached_search_learnware(semantic_str, statistical_str)
 
     try:
-        print('=' * 50)
+        print('=' * 60)
         if ret not in [None, False]:
             lis = ret[1]
             for x in lis:
                 print(x.get_specification().get_semantic_spec()['Name']['Values'])
-        print('=' * 50)
+        print('=' * 60)
     except Exception as err:
         print(err)
 
