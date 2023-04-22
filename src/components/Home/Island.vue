@@ -1,13 +1,13 @@
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue'
 
+let observer
 const active = ref(false)
 const reference = ref(null)
 
 onMounted(() => {
   nextTick(() => {
-    const observer = new IntersectionObserver((entries) => {
-      console.log(entries[0])
+    observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.intersectionRatio > 0.6) {
           active.value = true
@@ -23,6 +23,10 @@ onMounted(() => {
     })
     observer.observe(reference.value)
   })
+})
+
+onBeforeUnmount(() => {
+  observer.disconnect()
 })
 </script>
 
