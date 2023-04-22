@@ -48,6 +48,9 @@ def search_learnware():
         status, msg, ret = adv_engine.cached_search_learnware_by_semantic(semantic_str)
     else:
         status, msg, ret = adv_engine.cached_search_learnware(semantic_str, statistical_str)
+    print('=' * 50)
+    print(status, msg, ret)
+    print('=' * 50)
     if not status: return msg
     (matching, single_learnware_list, multi_score, multi_learnware) = ret
     if matching is None and multi_learnware is None:  # result of seach learnware with no statistical specification 
