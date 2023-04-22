@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { computed } from 'vue'
 import { useDisplay } from 'vuetify'
 
 const emit = defineEmits(['update:value'])
@@ -99,20 +99,9 @@ const items = [
     icon: 'mdi-home-city',
   },
 ]
-const search = ref('')
 
 const allSelected = computed(() => props.value && props.value.length === items.length)
-const categories = computed(() => {
-  const _search = search.value.toLowerCase()
 
-  if (!_search) return items
-
-  return items.filter(item => {
-    const text = item.text.toLowerCase()
-
-    return text.indexOf(_search) > -1
-  })
-})
 const selections = computed(() => {
   if (props.value) {
     return props.value.map((s) => {
@@ -121,6 +110,14 @@ const selections = computed(() => {
   }
   return []
 })
+
+function click(text) {
+  if (props.value && props.value.includes(text)) {
+    deleteSelect(text)
+  } else {
+    addSelect(text)
+  }
+}
 
 function addSelect(text) {
   if (props.value) {
@@ -131,11 +128,12 @@ function addSelect(text) {
   }
 }
 
-function deleteSelect(i) {
+function deleteSelect(text) {
   if (props.value) {
-    const _value = [...props.value]
-    _value.splice(i, 1)
-    emit('update:value', _value)
+    emit('update:value', props.value.filter((s) => s !== text))
+  }
+  else {
+    emit('update:value', [])
   }
 }
 </script>
@@ -143,25 +141,12 @@ function deleteSelect(i) {
 <template>
   <v-card class="tag-container" flat>
     <div class="title text-h6 !text-1rem">Scenario</div>
-    <div class="items">
-      <div class="item" v-for="(selection, i) in selections" :key="selection.text">
-        <v-chip class="chip text bg-orange-600 text-white" closable @click:close="() => deleteSelect(i)">
-          <v-icon :icon="selection.icon" start></v-icon>
-          {{ selection.text }}
-        </v-chip>
-      </div>
-    </div>
-
-    <div class="search" v-if="!allSelected" cols="12">
-      <v-text-field v-model="search" hide-details label="Search for scenario" single-line append-inner-icon="mdi-close"
-        @click:append-inner="search = ''"></v-text-field>
-    </div>
 
     <v-divider v-if="!allSelected"></v-divider>
 
     <v-list class="list" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-      <template v-for="item in categories">
-        <v-list-item v-if="!selections.includes(item)" :key="item.text" @click="() => addSelect(item.text)" class="item text">
+      <template v-for="item in items" :key="item.text">
+        <v-list-item :class="selections.includes(item) ? ['active'] : []" @click="() => click(item.text)" class="item text">
           <template v-slot:prepend>
             <v-icon class="mr-4" :icon="item.icon"></v-icon>
           </template>
@@ -179,23 +164,15 @@ function deleteSelect(i) {
     @apply mt-7 mb-3;
   }
 
-  .items {
-    @apply flex flex-wrap my-2;
-
-    .item {
-      @apply py-1 pe-0;
-
-      .chip {
-        @apply "!p-5" mr-2;
-      }
-    }
-  }
-
   .list {
     @apply grid sm:gap-2 gap-1 bg-transparent;
 
     .item {
       @apply bg-gray-400 text-white rounded-2em;
+    }
+    
+    .active {
+      @apply bg-orange-600;
     }
   }
   .text {
