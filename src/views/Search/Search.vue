@@ -258,21 +258,13 @@ onMounted(() => {
         <library-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="libraryType" />
         <tag-list class="bg-transparent text-h6 !text-1rem" v-model:value="tagList" :cols="2" :md="2" :sm="2" :xs="2" />
       </div>
-      <v-hover>
-        <template v-slot:default="{ isHovering, props }">
-          <div @dragover.prevent @drop.prevent="handleDrop" v-bind="props">
-            <div class="p-5 pt-0 border-t-1 border-gray-300">
-              <div ref="anchorRef" class="mt-3 w-1/1 text-h6 transition-all truncate" :class="display.name.value === 'xs' || files.length || isHovering ? ['mb-5'] : []">
-                <v-icon class="mr-3" icon="mdi-upload" color="black" size="small" />Upload statistical specification
-              </div>
+      <div class="p-5 pt-0 border-t-1 border-gray-300">
+        <div ref="anchorRef" class="mt-3 mb-5 w-1/1 text-h6 transition-all truncate" :class="display.name.value === 'xs' || files.length || isHovering ? ['mb-5'] : []">
+          <v-icon class="mr-3" icon="mdi-upload" color="black" size="small" />Upload statistical specification
+        </div>
 
-              <v-expand-transition>
-                <file-upload v-show="display.name.value === 'xs' || files.length || isHovering" v-model:files="files" />
-              </v-expand-transition>
-            </div>
-          </div>
-        </template>
-      </v-hover>
+        <file-upload v-model:files="files" :height="28" />
+      </div>
     </div>
     <div ref="contentRef" class="content">
       <v-card v-if="showMultiRecommended" flat class="sm:m-2 mt-4 bg-transparent">
