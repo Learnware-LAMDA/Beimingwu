@@ -59,7 +59,8 @@ function handleClickDelete(id) {
 </script>
 
 <template>
-  <v-card flat :density="greaterThanXs ? 'comfortable' : 'compact'" class="card" :class="typeof (item.matchScore) === 'number' ? ['pt-2'] : ['py-2']">
+  <v-card flat :density="greaterThanXs ? 'comfortable' : 'compact'" class="card"
+    :class="typeof (item.matchScore) === 'number' ? ['pt-2'] : ['py-2']">
     <div class="first-row">
       <v-card-title class="title">
         <v-avatar :size="greaterThanSm ? 'default' : 'small'">
@@ -70,21 +71,27 @@ function handleClickDelete(id) {
     </div>
     <v-card-text class="card-text">
       <div class="label"
-        :class="filters && filters.dataType && filters.dataType.includes(item.dataType) ? 'active' : undefined">{{
-          item.dataType }}</div>
+        :class="filters && filters.dataType && filters.dataType.includes(item.dataType) ? 'active' : undefined">
+        {{ item.dataType }}
+      </div>
       <div class="label"
-        :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : undefined">{{
-          item.taskType }}</div>
+        :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : undefined">
+        {{ item.taskType.replace('Others', 'Other Task') }}
+      </div>
       <div class="label"
-        :class="filters && filters.libraryType && filters.libraryType.includes(item.libraryType) ? 'active' : undefined">{{
-          item.libraryType }}</div>
+        :class="filters && filters.libraryType && filters.libraryType.includes(item.libraryType) ? 'active' : undefined">
+        {{ item.libraryType.replace('Others', 'Other Library') }}
+      </div>
       <div class="tag" :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : undefined"
-        v-for="(tag, i) in item.tagList" :key="i">{{ tag }}</div>
+        v-for="(tag, i) in item.tagList" :key="i">
+        {{ tag }}
+      </div>
     </v-card-text>
     <v-card-text class="card-text">
       <div class="description">{{ item.description }}</div>
     </v-card-text>
-    <v-card-title class="last-row" :class="typeof (item.matchScore) === 'number' ? ['justify-between']: isAdmin ? ['justify-end'] : ['absolute', 'right-0', 'bottom-0']">
+    <v-card-title class="last-row"
+      :class="typeof (item.matchScore) === 'number' ? ['justify-between'] : isAdmin ? ['justify-end'] : ['absolute', 'right-0', 'bottom-0']">
       <div v-if="typeof (item.matchScore) === 'number'" class="xl: text-xl lg:text-lg text-1rem">
         Specification score <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{
           item.matchScore
