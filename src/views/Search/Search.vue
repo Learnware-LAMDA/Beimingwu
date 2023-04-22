@@ -49,7 +49,7 @@ const errorMsg = ref('')
 const errorTimer = ref(null)
 
 const showMultiRecommended = computed(() => {
-  return multiRecommendedLearnwareItems.value.length > 1
+  return multiRecommendedLearnwareItems.value.length > 1 && singleRecommendedLearnwarePage.value === 1
 })
 const multiRecommendedTips = ref(true)
 const singleRecommendedTips = ref(true)
