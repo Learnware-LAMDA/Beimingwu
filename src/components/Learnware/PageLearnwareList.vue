@@ -110,7 +110,7 @@ function handleClickDelete(id) {
       <v-skeleton-loader
         v-for="i in pageSize"
         class="w-1/1"
-        type="article"
+        :type="items && items[0] && items[0].matchScore ? 'article, table-tfoot' : 'article'"
       ></v-skeleton-loader>
     </div>
     
