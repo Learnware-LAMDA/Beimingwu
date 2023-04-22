@@ -146,20 +146,19 @@ function handleClickDelete(id) {
     }
 
     .label {
-      @apply px-2 border-gray-700 bg-gray-200 text-xs text-black rounded;
+      @apply px-2 border-gray-700 bg-gray-400 text-xs text-white rounded;
     }
 
     .tag {
-      @apply px-2 border-gray-700 bg-gray-200 text-xs text-black rounded-1em;
+      @apply px-2 border-gray-700 bg-gray-400 text-xs text-white rounded-1em;
     }
 
     .label.active {
-      @apply bg-gray-100 border-0;
-      color: rgb(var(--v-theme-primary));
+      background: rgb(var(--v-theme-primary));
     }
 
     .tag.active {
-      @apply bg-gray-100 text-orange-600 border-0;
+      @apply bg-orange-600;
     }
 
     .description {
