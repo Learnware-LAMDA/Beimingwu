@@ -49,7 +49,6 @@ def search_learnware():
     else:
         status, msg, ret = adv_engine.cached_search_learnware(semantic_str, statistical_str)
     print('=' * 50)
-    print(status, msg, ret)
     if ret not in [None, False]:
         lis = ret[1]
         for x in lis:
