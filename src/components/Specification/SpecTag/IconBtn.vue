@@ -53,9 +53,5 @@ const props = defineProps({
 
 .btn.active {
   background-color: rgb(var(--v-theme-primary));
-
-  svg {
-    stroke: rgb(var(--v-theme-primary));
-  }
 }
 </style>
