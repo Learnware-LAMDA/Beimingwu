@@ -31,7 +31,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="reference" class="grid md:grid-cols-2 md:pb-30 <md:pb-20 bg-gray-100">
+  <div ref="reference" class="grid md:grid-cols-2 md:pb-30 <md:pb-20 mx-auto max-w-1200px w-1/1">
     <div class="flex flex-col justify-center <md:px-5 md:pl-10">
       <div class="xl:(text-5xl my-10) lg:(text-4xl my-7) md:(text-3xl my-5) <md:(text-4xl my-5)">
         Specification world
