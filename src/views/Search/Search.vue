@@ -140,17 +140,18 @@ function fetchByFilterAndPage(filters, page) {
       switch (res.code) {
         case 0: {
           loading.value = false
-          if (res.data.learnware_list_multi.length > 1) {
-            multiRecommendedLearnwareItems.value = res.data.learnware_list_multi.map((item) => ({
-              id: item.learnware_id,
-              username: item.username,
-              name: item.semantic_specification.Name.Values,
-              description: item.semantic_specification.Description.Values,
-              dataType: item.semantic_specification.Data.Values[0],
-              taskType: item.semantic_specification.Task.Values[0],
-              libraryType: item.semantic_specification.Library.Values[0],
-              tagList: item.semantic_specification.Scenario.Values
-            }))
+        
+          multiRecommendedLearnwareItems.value = res.data.learnware_list_multi.map((item) => ({
+            id: item.learnware_id,
+            username: item.username,
+            name: item.semantic_specification.Name.Values,
+            description: item.semantic_specification.Description.Values,
+            dataType: item.semantic_specification.Data.Values[0],
+            taskType: item.semantic_specification.Task.Values[0],
+            libraryType: item.semantic_specification.Library.Values[0],
+            tagList: item.semantic_specification.Scenario.Values
+          }))
+          if (res.data.learnware_list_multi.length > 0) {
             multiRecommendedMatchScore.value = Math.floor(res.data.learnware_list_multi[0].matching * 100)
           }
           
@@ -246,7 +247,7 @@ onMounted(() => {
     <div class="flex flex-col w-1/1 md:max-w-460px sm:border-r-1">
       <div class="filter">
         <div class="my-3 text-h6">
-          <v-icon class="!mt-0 mr-3" icon="mdi-tag-text" color="black" size="small" />Choose semantic specification
+          <v-icon class="!mt-0 mr-3" icon="mdi-tag-text" color="black" size="small" />Choose semantic requirement
         </div>
         <div>
           <div class="mt-7 mb-3 text-h6 !text-1rem">Search by name</div>
@@ -256,11 +257,11 @@ onMounted(() => {
         <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
         <task-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="taskType" />
         <library-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="libraryType" />
-        <tag-list class="bg-transparent text-h6 !text-1rem" v-model:value="tagList" :cols="2" :md="2" :sm="2" :xs="2" />
+        <tag-list class="bg-transparent !text-1rem" v-model:value="tagList" :cols="2" :md="2" :sm="2" :xs="2" />
       </div>
       <div class="p-5 pt-0 border-t-1 border-gray-300">
         <div ref="anchorRef" class="mt-3 mb-5 w-1/1 text-h6 transition-all truncate">
-          <v-icon class="mr-3" icon="mdi-upload" color="black" size="small" />Upload statistical specification
+          <v-icon class="mr-3" icon="mdi-upload" color="black" size="small" />Upload statistical requirement
         </div>
 
         <file-upload v-model:files="files" :height="28" />

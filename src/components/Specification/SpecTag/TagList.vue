@@ -139,44 +139,50 @@ function deleteSelect(text) {
 </script>
 
 <template>
-  <v-card class="tag-container" flat>
+  <div class="tag-container" flat>
     <div class="title text-h6 !text-1rem">Scenario</div>
 
     <v-divider v-if="!allSelected"></v-divider>
 
-    <v-list class="list" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
+    <div class="list" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
       <template v-for="item in items" :key="item.text">
-        <v-list-item :class="selections.includes(item) ? ['active'] : []" @click="() => click(item.text)" class="item text">
-          <template v-slot:prepend>
-            <v-icon class="mr-4" :icon="item.icon"></v-icon>
-          </template>
-
-          <v-list-item-title class="text" v-text="item.text"></v-list-item-title>
-        </v-list-item>
+        <div :class="selections.includes(item) ? ['active'] : []" @click="() => click(item.text)" class="item text">
+          <v-icon class="mr-4" :icon="item.icon"></v-icon>
+          <div class="text" v-text="item.text"></div>
+        </div>
       </template>
-    </v-list>
-  </v-card>
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .tag-container {
   .title {
-    @apply mt-7 mb-3;
+    @apply mt-7 mb-5;
   }
 
   .list {
-    @apply grid sm:gap-2 gap-1 bg-transparent;
+    @apply grid sm: gap-2 gap-1 bg-transparent;
 
     .item {
-      @apply bg-gray-400 text-white rounded-2em;
+      @apply flex items-center p-3 pl-4 bg-gray-400 text-white rounded-2em cursor-pointer;
     }
-    
+
     .active {
       @apply bg-orange-600;
     }
+
+    .v-list-item {
+      @apply '!overflow-visible';
+
+      * {
+        @apply '!overflow-visible';
+      }
+    }
   }
+
   .text {
-    @apply lg:text-1rem sm:text-sm text-xs;
+    @apply lg: text-1rem sm:text-sm text-xs;
   }
 }
 </style>
