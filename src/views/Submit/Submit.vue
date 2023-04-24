@@ -94,12 +94,12 @@ const steps = [
     icon: 'mdi-rename'
   },
   {
-    title: 'Choose the tags',
+    title: 'Choose the tags (semantic specification)',
     subtitle: 'Tag',
     icon: 'mdi-label-multiple'
   },
   {
-    title: 'Type the description',
+    title: 'Type the description (semantic specification)',
     subtitle: 'Description',
     icon: 'mdi-image-text'
   },
