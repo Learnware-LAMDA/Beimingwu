@@ -140,17 +140,18 @@ function fetchByFilterAndPage(filters, page) {
       switch (res.code) {
         case 0: {
           loading.value = false
-          if (res.data.learnware_list_multi.length > 1) {
-            multiRecommendedLearnwareItems.value = res.data.learnware_list_multi.map((item) => ({
-              id: item.learnware_id,
-              username: item.username,
-              name: item.semantic_specification.Name.Values,
-              description: item.semantic_specification.Description.Values,
-              dataType: item.semantic_specification.Data.Values[0],
-              taskType: item.semantic_specification.Task.Values[0],
-              libraryType: item.semantic_specification.Library.Values[0],
-              tagList: item.semantic_specification.Scenario.Values
-            }))
+        
+          multiRecommendedLearnwareItems.value = res.data.learnware_list_multi.map((item) => ({
+            id: item.learnware_id,
+            username: item.username,
+            name: item.semantic_specification.Name.Values,
+            description: item.semantic_specification.Description.Values,
+            dataType: item.semantic_specification.Data.Values[0],
+            taskType: item.semantic_specification.Task.Values[0],
+            libraryType: item.semantic_specification.Library.Values[0],
+            tagList: item.semantic_specification.Scenario.Values
+          }))
+          if (res.data.learnware_list_multi.length > 0) {
             multiRecommendedMatchScore.value = Math.floor(res.data.learnware_list_multi[0].matching * 100)
           }
           
