@@ -37,8 +37,7 @@ onBeforeUnmount(() => {
         Specification world
       </div>
       <p class="text-gray-500">
-        Note that once the user model on multi-modal data is submitted to the learnware market, the two specification
-        islands that correspond to video-only and text-only models, respectively, will merge.
+        Note that the specification islands, corresponding to models from different feature/label spaces, can be merged if their connections are discovered and established.
       </p>
     </div>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
