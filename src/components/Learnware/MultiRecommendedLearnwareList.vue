@@ -134,7 +134,7 @@ function getColorByScore(score) {
     <v-card flat class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null"
       :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
       <TransitionGroup name="fade">
-        <learnware-card v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail" :item="item" :filters="filters" :show-download="false" />
+        <learnware-card v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)" :item="item" :filters="filters" :show-download="false" />
       </TransitionGroup>
       <div flat v-if="items.length === 0" class="no-learnware">
         <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
