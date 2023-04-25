@@ -86,7 +86,7 @@ function fetchByFilterAndPage(filters, page) {
       fd.append('semantic_specification', JSON.stringify(semanticSpec))
       fd.append('statistical_specification', files.value.length > 0 ? files.value[0] : null)
       fd.append('limit', singleRecommendedLearnwarePageSize.value)
-      fd.append('page', singleRecommendedLearnwarePage.value - 1)
+      fd.append('page', page)
       return fd
     })
     .then((fd) => {
@@ -175,7 +175,7 @@ watch(
   (newVal) => {
     const [newFilters, newPage] = newVal
 
-    fetchByFilterAndPage(newFilters, newPage)
+    fetchByFilterAndPage(newFilters, newPage - 1)
 
     if (contentRef.value) {
       if (display.name.value !== 'xs') {
