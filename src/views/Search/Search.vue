@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watch, onMounted, nextTick, onActivated } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useDisplay } from 'vuetify'
 import DataType from '@/components/Specification/SpecTag/DataType.vue'
 import TaskType from '@/components/Specification/SpecTag/TaskType.vue'
@@ -11,7 +11,6 @@ import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue'
 import MultiRecommendedLearnwareList from '@/components/Learnware/MultiRecommendedLearnwareList.vue'
 
 const route = useRoute()
-const router = useRouter()
 
 const display = useDisplay()
 
