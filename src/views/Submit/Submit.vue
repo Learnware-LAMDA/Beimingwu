@@ -170,7 +170,7 @@ const submit = handleSubmit((values) => {
       return fd
     })
     .then((fd) => {
-      return fetch('/api/engine/search_learnware', {
+      return fetch('/api/user/add_learnware', {
         method: 'POST',
         body: fd,
       })
@@ -216,7 +216,7 @@ const submit = handleSubmit((values) => {
     })
 })
 
-onMounted(() => {
+function checkLoginStatus() {
   fetch('/api/auth/get_role', {
     method: 'POST',
   })
@@ -252,7 +252,9 @@ onMounted(() => {
       clearTimeout(errorTimer.value)
       errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
     })
+}
 
+function loadQuery() {
   if (route.query.name) {
     name.value.value = route.query.name
   }
@@ -271,6 +273,11 @@ onMounted(() => {
   if (route.query.description) {
     description.value.value = route.query.description
   }
+}
+
+onMounted(() => {
+  checkLoginStatus()
+  loadQuery()
 })
 </script>
 
@@ -351,6 +358,7 @@ onMounted(() => {
           </v-btn>
         </v-card-actions>
       </div>
-  </v-card>
-  <submiting-dialog v-if="submiting" />
-</v-container></template>
+    </v-card>
+    <submiting-dialog v-if="submiting" />
+  </v-container>
+</template>
