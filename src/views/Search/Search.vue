@@ -63,40 +63,6 @@ const filters = computed(() => ({
   files: files.value
 }))
 
-function handleDrop(event) {
-  files.value = Array.from(event.dataTransfer.files)
-}
-
-function loadQuery() {
-  if (route.query.search) {
-    search.value = route.query.search
-  }
-  if (route.query.dataType) {
-    dataType.value = route.query.dataType
-  }
-  if (route.query.taskType) {
-    taskType.value = route.query.taskType
-  }
-  if (route.query.libraryType) {
-    libraryType.value = route.query.libraryType
-  }
-  if (route.query.tagList) {
-    tagList.value = JSON.parse(route.query.tagList)
-  }
-}
-
-function saveQuery() {
-  router.replace({
-    query: {
-      search: search.value,
-      dataType: dataType.value,
-      taskType: taskType.value,
-      libraryType: JSON.stringify(libraryType.value),
-      tagList: JSON.stringify(tagList.value),
-    }
-  })
-}
-
 function pageChange(newPage) {
   singleRecommendedLearnwarePage.value = newPage
 }
