@@ -296,7 +296,7 @@ onMounted(() => {
           <span>{{ steps[currentStep].title }}</span>
         </v-card-title>
 
-        <v-window v-model="currentStep" :touch="{ left: () => {}, right: () => {} }">
+        <v-window v-model="currentStep" :touch="{ left: () => { }, right: () => { } }">
           <v-window-item :value="0">
             <v-card-text>
               <v-text-field v-model="name.value.value" label="Name" placeholder="Awesome learnware"
@@ -310,14 +310,17 @@ onMounted(() => {
 
           <v-window-item :value="1">
             <v-card-text class="pt-0">
-              <spec-tag v-model:data-type="dataType.value.value" v-model:task-type="taskType.value.value" v-model:library-type="libraryType.value.value" v-model:tag-list="tagList.value.value" :error-messages="dataType.errorMessage.value || taskType.errorMessage.value || libraryType.errorMessage.value || tagList.errorMessage.value" />
+              <spec-tag v-model:data-type="dataType.value.value" v-model:task-type="taskType.value.value"
+                v-model:library-type="libraryType.value.value" v-model:tag-list="tagList.value.value"
+                :error-messages="dataType.errorMessage.value || taskType.errorMessage.value || libraryType.errorMessage.value || tagList.errorMessage.value" />
             </v-card-text>
           </v-window-item>
 
           <v-window-item :value="2">
             <div class="pa-4">
               <v-textarea v-model="description.value.value" label="Description"
-                placeholder="This is a description of the learnware" :error-messages="description.errorMessage.value" counter="200"></v-textarea>
+                placeholder="This is a description of the learnware" :error-messages="description.errorMessage.value"
+                counter="200"></v-textarea>
             </div>
           </v-window-item>
 
@@ -326,7 +329,8 @@ onMounted(() => {
               <file-upload v-model:files="files.value.value" :error-messages="files.errorMessage.value"></file-upload>
             </div>
             <v-card-text class="text-lg <sm:text-sm">
-              <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for instructions on how to create the required zip file.
+              <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for instructions
+              on how to create the required zip file.
             </v-card-text>
           </v-window-item>
         </v-window>
@@ -338,7 +342,8 @@ onMounted(() => {
             Back
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn v-if="currentStep < steps.length - 1" color="primary" variant="flat" @click="nextStep" :disabled="!allowChangePage">
+          <v-btn v-if="currentStep < steps.length - 1" color="primary" variant="flat" @click="nextStep"
+            :disabled="!allowChangePage">
             Next
           </v-btn>
           <v-btn v-else color="primary" variant="flat" @click="submit" :disabled="submiting || !valid">
@@ -346,7 +351,6 @@ onMounted(() => {
           </v-btn>
         </v-card-actions>
       </div>
-    </v-card>
-    <submiting-dialog v-if="submiting" />
-  </v-container>
-</template>
+  </v-card>
+  <submiting-dialog v-if="submiting" />
+</v-container></template>
