@@ -188,7 +188,7 @@ watch(
 
 onActivated(() => {
   contentRef.value.scrollTop = scrollTop.value
-  fetchByFilterAndPage(filters.value, singleRecommendedLearnwarePage.value)
+  fetchByFilterAndPage(filters.value, singleRecommendedLearnwarePage.value - 1)
 })
 
 onMounted(() => {
