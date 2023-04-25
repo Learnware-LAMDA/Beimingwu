@@ -338,9 +338,7 @@ onMounted(() => {
               <file-upload v-model:files="files.value.value" :error-messages="files.errorMessage.value"></file-upload>
             </div>
             <v-card-text class="text-lg <sm:text-sm">
-              <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for
-              instructions
-              on how to create the required zip file.
+              <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for instructions on how to create the required zip file.
             </v-card-text>
           </v-window-item>
         </v-window>
@@ -364,9 +362,3 @@ onMounted(() => {
     <submiting-dialog v-if="submiting" />
   </v-container>
 </template>
-
-<style scoped>
-.drag-hover {
-  border: 2px dashed blue;
-}
-</style>
