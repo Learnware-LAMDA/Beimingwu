@@ -45,7 +45,7 @@ const filteredRoutes = computed(() => {
             <v-app-bar-nav-icon v-if="['xs', 'sm'].includes(display.name.value)"
                 @click="() => emit('update:drawerOpen', !drawerOpen)"></v-app-bar-nav-icon>
             <v-toolbar-items class="cursor-pointer" @click="() => router.push('/')">
-                <v-img contain width="150" :src="lamdaLogo"></v-img>
+                <v-img contain width="180" :src="lamdaLogo"></v-img>
             </v-toolbar-items>
             <v-spacer></v-spacer>
 
