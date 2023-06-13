@@ -1,0 +1,11 @@
+FROM continuumio/anaconda3:2022.10
+COPY ./deploy/pip.conf /etc/
+COPY . /learnware-backend/
+WORKDIR /learnware-backend
+
+RUN conda env update -n myenv -f environment.yaml
+RUN conda run --no-capture-output -n myenv python3 -m pip install -e 3rdparty/learnware/
+
+EXPOSE 8088
+
+CMD ["conda","run","--no-capture-output", "-n","myenv","python", "main.py"]
