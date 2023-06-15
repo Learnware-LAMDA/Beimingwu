@@ -22,7 +22,7 @@ function getLearnwareDetailById(id) {
   fetch('/api/engine/get_learnware_info?learnware_id=' + id, {
     method: 'GET',
   })
-  .then((res) => {
+    .then((res) => {
       if (res.status === 200) {
         return res
       }
@@ -35,7 +35,7 @@ function getLearnwareDetailById(id) {
           loading.value = false
 
           const learnwareInfo = res.data ? res.data.learnware_info : {}
-          learnware.value =  {
+          learnware.value = {
             id: learnwareInfo.learnware_id,
             name: learnwareInfo.semantic_specification.Name.Values,
             description: learnwareInfo.semantic_specification.Description.Values,
@@ -44,7 +44,7 @@ function getLearnwareDetailById(id) {
             libraryType: learnwareInfo.semantic_specification.Library.Values[0],
             tagList: learnwareInfo.semantic_specification.Scenario.Values
           }
-          return 
+          return
         }
         default: {
           throw new Error(res.msg)
@@ -70,11 +70,13 @@ onMounted(() => {
   <v-container class="md:flex max-w-1500px <sm:p-1">
     <v-scroll-y-transition class="fixed left-0 right-0 z-index-10" style="top: var(--v-layout-top)">
       <v-card-actions v-if="showError">
-        <v-alert class="w-1/1 max-w-900px mx-auto" closable :text="errorMsg" type="error" @click:close="showError = false" />
+        <v-alert class="w-1/1 max-w-900px mx-auto" closable :text="errorMsg" type="error"
+          @click:close="showError = false" />
       </v-card-actions>
     </v-scroll-y-transition>
-    
-    <v-btn v-if="display.name.value !== 'xs'" class="md:mx-3 <md:my-3" icon="mdi-arrow-left" @click="() => router.go(-1)" size="50" />
+
+    <v-btn v-if="display.name.value !== 'xs'" class="md:mx-3 <md:my-3" icon="mdi-arrow-left" @click="() => router.go(-1)"
+      size="50" />
     <v-card v-if="learnware" class="p-2 w-1/1" :flat="display.name.value === 'xs'">
       <div class="flex justify-between">
         <v-card-title class="text-h4 !md:text-3xl !text-xl">
@@ -104,5 +106,4 @@ onMounted(() => {
     <v-overlay class="flex justify-center items-center" v-model="downloading">
       <v-progress-circular size="80" width="8" indeterminate />
     </v-overlay>
-  </v-container>
-</template>
+  </v-container></template>

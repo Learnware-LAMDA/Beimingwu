@@ -22,14 +22,14 @@ const props = defineProps({
 </script>
 
 <template>
-  <v-card class="btn" :class="{ active, 'justify-center': !showTitle }" @click="$event => emit('click', $event)" flat>
+  <div class="btn" :class="{ active, 'justify-center': !showTitle }" @click="$event => emit('click', $event)" flat>
     <v-responsive class="responsive" :aspect-ratio="1 / 1">
       <component class="icon" :is="iconComponent" />
     </v-responsive>
     <div class="title">
       <span v-if="showTitle">{{ title }}</span>
     </div>
-  </v-card>
+  </div>
 </template>
 
 <style scoped lang="scss">

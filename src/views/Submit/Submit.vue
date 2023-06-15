@@ -94,12 +94,12 @@ const steps = [
     icon: 'mdi-rename'
   },
   {
-    title: 'Choose the tags',
+    title: 'Choose the tags (semantic specification)',
     subtitle: 'Tag',
     icon: 'mdi-label-multiple'
   },
   {
-    title: 'Type the description',
+    title: 'Type the description (semantic specification)',
     subtitle: 'Description',
     icon: 'mdi-image-text'
   },
@@ -153,40 +153,28 @@ const submit = handleSubmit((values) => {
   success.value = false
   showError.value = false
 
-  const semanticSpec = {
-    "Data": {
-      "Values": [dataType.value.value],
-      "Type": "Class"
-    },
-    "Task": {
-      "Values": [taskType.value.value],
-      "Type": "Class"
-    },
-    "Library": {
-      "Values": [libraryType.value.value],
-      "Type": "Class"
-    },
-    "Scenario": {
-      "Values": tagList.value.value,
-      "Type": "Tag"
-    },
-    "Description": {
-      "Values": description.value.value,
-      "Type": "String"
-    },
-    "Name": {
-      "Values": name.value.value,
-      "Type": "String"
-    }
-  }
-  const fd = new FormData()
-  fd.append('learnware_file', files.value.value[0])
-  fd.append('semantic_specification', JSON.stringify(semanticSpec))
+  fetch('/api/engine/get_semantic_specification')
+    .then((res) => res.json())
+    .then((res) => {
+      const semanticSpec = res.data.semantic_specification
+      semanticSpec.Name.Values = values.name
+      semanticSpec.Data.Values = values.dataType ? [values.dataType] : []
+      semanticSpec.Task.Values = values.taskType ? [values.taskType] : []
+      semanticSpec.Library.Values = values.libraryType ? [values.libraryType] : []
+      semanticSpec.Scenario.Values = values.tagList
+      semanticSpec.Description.Values = values.description
 
-  fetch('/api/user/add_learnware', {
-    method: 'POST',
-    body: fd,
-  })
+      const fd = new FormData()
+      fd.append('learnware_file', files.value.value[0])
+      fd.append('semantic_specification', JSON.stringify(semanticSpec))
+      return fd
+    })
+    .then((fd) => {
+      return fetch('/api/user/add_learnware', {
+        method: 'POST',
+        body: fd,
+      })
+    })
     .then((res) => {
       if (res.status === 200) {
         return res
@@ -228,7 +216,7 @@ const submit = handleSubmit((values) => {
     })
 })
 
-onMounted(() => {
+function checkLoginStatus() {
   fetch('/api/auth/get_role', {
     method: 'POST',
   })
@@ -264,7 +252,9 @@ onMounted(() => {
       clearTimeout(errorTimer.value)
       errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
     })
+}
 
+function loadQuery() {
   if (route.query.name) {
     name.value.value = route.query.name
   }
@@ -283,6 +273,11 @@ onMounted(() => {
   if (route.query.description) {
     description.value.value = route.query.description
   }
+}
+
+onMounted(() => {
+  checkLoginStatus()
+  loadQuery()
 })
 </script>
 
@@ -308,7 +303,7 @@ onMounted(() => {
           <span>{{ steps[currentStep].title }}</span>
         </v-card-title>
 
-        <v-window v-model="currentStep" :touch="{ left: () => {}, right: () => {} }">
+        <v-window v-model="currentStep" :touch="{ left: () => { }, right: () => { } }">
           <v-window-item :value="0">
             <v-card-text>
               <v-text-field v-model="name.value.value" label="Name" placeholder="Awesome learnware"
@@ -322,14 +317,17 @@ onMounted(() => {
 
           <v-window-item :value="1">
             <v-card-text class="pt-0">
-              <spec-tag v-model:data-type="dataType.value.value" v-model:task-type="taskType.value.value" v-model:library-type="libraryType.value.value" v-model:tag-list="tagList.value.value" :error-messages="dataType.errorMessage.value || taskType.errorMessage.value || libraryType.errorMessage.value || tagList.errorMessage.value" />
+              <spec-tag v-model:data-type="dataType.value.value" v-model:task-type="taskType.value.value"
+                v-model:library-type="libraryType.value.value" v-model:tag-list="tagList.value.value"
+                :error-messages="dataType.errorMessage.value || taskType.errorMessage.value || libraryType.errorMessage.value || tagList.errorMessage.value" />
             </v-card-text>
           </v-window-item>
 
           <v-window-item :value="2">
             <div class="pa-4">
               <v-textarea v-model="description.value.value" label="Description"
-                placeholder="This is a description of the learnware" :error-messages="description.errorMessage.value" counter="200"></v-textarea>
+                placeholder="This is a description of the learnware" :error-messages="description.errorMessage.value"
+                counter="200"></v-textarea>
             </div>
           </v-window-item>
 
@@ -338,8 +336,7 @@ onMounted(() => {
               <file-upload v-model:files="files.value.value" :error-messages="files.errorMessage.value"></file-upload>
             </div>
             <v-card-text class="text-lg <sm:text-sm">
-              <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for
-              instructions
+              <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for instructions
               on how to create the required zip file.
             </v-card-text>
           </v-window-item>
@@ -352,7 +349,8 @@ onMounted(() => {
             Back
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn v-if="currentStep < steps.length - 1" color="primary" variant="flat" @click="nextStep" :disabled="!allowChangePage">
+          <v-btn v-if="currentStep < steps.length - 1" color="primary" variant="flat" @click="nextStep"
+            :disabled="!allowChangePage">
             Next
           </v-btn>
           <v-btn v-else color="primary" variant="flat" @click="submit" :disabled="submiting || !valid">
@@ -364,9 +362,3 @@ onMounted(() => {
     <submiting-dialog v-if="submiting" />
   </v-container>
 </template>
-
-<style scoped>
-.drag-hover {
-  border: 2px dashed blue;
-}
-</style>

@@ -15,7 +15,7 @@ const reasons = ref([
   {
     icon: 'mdi-chart-scatter-plot',
     title: 'Lack of training data/skills',
-    content: 'Strong machine learning models can be attained even for ordinary users with little training skills, because the users can get help from well-performed learnwares rather than building a model from scratch by themselves.'
+    content: 'Strong machine learning models can be attained even for ordinary users with little training skills or small data, because the users can adapte or refine well-performed learnwares rather than building a model from scratch by themselves.'
   },
   {
     icon: 'mdi-all-inclusive-box',
