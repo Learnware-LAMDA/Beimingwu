@@ -1,108 +1,105 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { useStore } from 'vuex'
-import { useDisplay } from 'vuetify'
-import { useRouter } from 'vue-router'
-import { useField, useForm } from 'vee-validate'
-import { hex_md5 } from '@/utils/encrypt'
-import collaborationImg from '@/assets/images/collaboration.svg'
+import { ref, computed, watch } from 'vue';
+import { useStore } from 'vuex';
+import { useDisplay } from 'vuetify';
+import { useRouter } from 'vue-router';
+import { useField, useForm } from 'vee-validate';
+import { hex_md5 } from '@/utils/encrypt';
+import collaborationImg from '@/assets/images/collaboration.svg';
 
-const store = useStore()
+const store = useStore();
 
-const router = useRouter()
+const router = useRouter();
 
 const { handleSubmit, meta } = useForm({
   validationSchema: {
     oldPassword() {
-      return true
+      return true;
     },
     newPassword(value) {
-      if (value?.length >= 8) return true
+      if (value?.length >= 8) return true;
 
-      return 'New password needs to be at least 8 characters.'
+      return 'New password needs to be at least 8 characters.';
     },
     newPassword2(value) {
       if (value?.length >= 8) {
-        if (value && value === newPassword.value.value) return true
-        return 'New passwords do not match.'
+        if (value && value === newPassword.value.value) return true;
+        return 'New passwords do not match.';
       }
-      return 'New password needs to be at least 8 characters.'
+      return 'New password needs to be at least 8 characters.';
     },
   },
-})
+});
 
+const oldPassword = useField('oldPassword');
+const newPassword = useField('newPassword');
+const newPassword2 = useField('newPassword2');
 
-const oldPassword = useField('oldPassword')
-const newPassword = useField('newPassword')
-const newPassword2 = useField('newPassword2')
+const showOldPassword = ref(false);
+const showNewPassword = ref(false);
+const showNewPassword2 = ref(false);
+const showError = ref(false);
+const errorMsg = ref('');
+const success = ref(false);
 
-const showOldPassword = ref(false)
-const showNewPassword = ref(false)
-const showNewPassword2 = ref(false)
-const showError = ref(false)
-const errorMsg = ref('')
-const success = ref(false)
+const errorTimer = ref(null);
 
-const errorTimer = ref(null)
+const valid = computed(() => meta.value.valid);
 
-const valid = computed(() => {
-  return meta.value.valid
-})
-
-const change = handleSubmit(values => {
+const change = handleSubmit((values) => {
   const data = {
     old_password: hex_md5(values.oldPassword),
     new_password: hex_md5(values.newPassword),
-  }
+  };
 
   fetch('/api/user/change_password', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   })
     .then((res) => {
       if (res.status === 200) {
-        return res
+        return res;
       }
-      throw new Error('Network error')
+      throw new Error('Network error');
     })
     .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
         case 0: {
-          success.value = true
+          success.value = true;
           setTimeout(() => {
-            store.commit('setLoggedIn', false)
-            router.push('/login')
-          }, 1000)
-          return
+            store.commit('setLoggedIn', false);
+            router.push('/login');
+          }, 1000);
+          return;
         }
         case 11: {
-          success.value = false
-          store.commit('setLoggedIn', false)
-          setTimeout(() => { router.push('/login') }, 1000)
-          throw new Error('You are not logged in.')
+          success.value = false;
+          store.commit('setLoggedIn', false);
+          setTimeout(() => { router.push('/login'); }, 1000);
+          throw new Error('You are not logged in.');
         }
         default: {
-          showError.value = true
-          errorMsg.value = res.msg
-          clearTimeout(errorTimer.value)
-          errorTimer.value = setTimeout(() => showError.value = false, 3000)
+          showError.value = true;
+          errorMsg.value = res.msg;
+          clearTimeout(errorTimer.value);
+          errorTimer.value = setTimeout(() => showError.value = false, 3000);
         }
       }
     })
     .catch((err) => {
-      showError.value = true
-      errorMsg.value = err.message
-      clearTimeout(errorTimer.value)
-      errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
-    })
-})
+      showError.value = true;
+      errorMsg.value = err.message;
+      clearTimeout(errorTimer.value);
+      errorTimer.value = setTimeout(() => { showError.value = false; }, 3000);
+    });
+});
 
 function closeErrorAlert() {
-  clearTimeout(errorTimer.value)
+  clearTimeout(errorTimer.value);
 }
 </script>
 

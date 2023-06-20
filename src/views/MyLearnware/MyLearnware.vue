@@ -1,33 +1,35 @@
 <script setup>
-import { ref, onMounted, nextTick, watch, onActivated } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue'
-import ConfirmDialog from '@/components/Dialogs/ConfirmDialog.vue'
+import {
+  ref, onMounted, nextTick, watch, onActivated,
+} from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue';
+import ConfirmDialog from '@/components/Dialogs/ConfirmDialog.vue';
 
-const store = useStore()
+const store = useStore();
 
-const router = useRouter()
+const router = useRouter();
 
-const dialog = ref(null)
-const deleteId = ref('')
-const deleteName = ref('')
+const dialog = ref(null);
+const deleteId = ref('');
+const deleteName = ref('');
 
-const learnwareItems = ref([])
-const page = ref(1)
-const pageNum = ref(1)
-const pageSize = ref(10)
+const learnwareItems = ref([]);
+const page = ref(1);
+const pageNum = ref(1);
+const pageSize = ref(10);
 
-const loading = ref(false)
+const loading = ref(false);
 
-const contentRef = ref(null)
-const scrollTop = ref(0)
+const contentRef = ref(null);
+const scrollTop = ref(0);
 
-const showError = ref(false)
-const errorMsg = ref('')
+const showError = ref(false);
+const errorMsg = ref('');
 
 function deleteLearnware(id) {
-  showError.value = false
+  showError.value = false;
 
   fetch('/api/user/delete_learnware', {
     method: 'POST',
@@ -35,53 +37,53 @@ function deleteLearnware(id) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      learnware_id: id
+      learnware_id: id,
     }),
   })
-  .then((res) => {
+    .then((res) => {
       if (res.status === 200) {
-        return res
+        return res;
       }
-      throw new Error('Network error')
+      throw new Error('Network error');
     })
     .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
         case 0: {
-          learnwareItems.value.splice(learnwareItems.value.findIndex((item) => item.id === id), 1)
-          fetchByFilterAndPage(page.value)
-          return
+          learnwareItems.value.splice(learnwareItems.value.findIndex((item) => item.id === id), 1);
+          fetchByFilterAndPage(page.value);
+          return;
         }
         default: {
-          throw new Error(res.msg)
+          throw new Error(res.msg);
         }
       }
     })
     .catch((err) => {
-      console.error(err)
-      loading.value = false
-      showError.value = true
-      errorMsg.value = err.message
-    })
+      console.error(err);
+      loading.value = false;
+      showError.value = true;
+      errorMsg.value = err.message;
+    });
 }
 
 function pageChange(newPage) {
-  page.value = newPage
+  page.value = newPage;
 }
 
 function handleClickDelete(id) {
-  dialog.value.confirm()
-  deleteId.value = id
-  deleteName.value = learnwareItems.value.find((item) => item.id === id).name
+  dialog.value.confirm();
+  deleteId.value = id;
+  deleteName.value = learnwareItems.value.find((item) => item.id === id).name;
 }
 
 function fetchByFilterAndPage(page) {
   if (contentRef.value) {
-    contentRef.value.scrollTop = 0
+    contentRef.value.scrollTop = 0;
   }
 
-  showError.value = false
-  loading.value = true
+  showError.value = false;
+  loading.value = true;
 
   fetch('/api/user/get_learnware_list', {
     method: 'POST',
@@ -93,17 +95,17 @@ function fetchByFilterAndPage(page) {
       limit: pageSize.value,
     }),
   })
-  .then((res) => {
+    .then((res) => {
       if (res.status === 200) {
-        return res
+        return res;
       }
-      throw new Error('Network error')
+      throw new Error('Network error');
     })
     .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
         case 0: {
-          loading.value = false
+          loading.value = false;
           learnwareItems.value = res.data.learnware_list.map((item) => ({
             id: item.learnware_id,
             name: item.semantic_specification.Name.Values,
@@ -111,48 +113,48 @@ function fetchByFilterAndPage(page) {
             dataType: item.semantic_specification.Data.Values[0],
             taskType: item.semantic_specification.Task.Values[0],
             libraryType: item.semantic_specification.Library.Values[0],
-            tagList: item.semantic_specification.Scenario.Values
-          }))
-          pageNum.value = res.data.total_pages
-          return
+            tagList: item.semantic_specification.Scenario.Values,
+          }));
+          pageNum.value = res.data.total_pages;
+          return;
         }
         case 11: {
-          store.commit('setLoggedIn', false)
-          setTimeout(() => { router.push('/login') }, 1000)
+          store.commit('setLoggedIn', false);
+          setTimeout(() => { router.push('/login'); }, 1000);
         }
         default: {
-          throw new Error(res.msg)
+          throw new Error(res.msg);
         }
       }
     })
     .catch((err) => {
-      console.error(err)
-      loading.value = false
-      showError.value = true
-      errorMsg.value = err.message
-    })
+      console.error(err);
+      loading.value = false;
+      showError.value = true;
+      errorMsg.value = err.message;
+    });
 }
 
 watch(
   () => page.value,
   (newPage) => {
-    fetchByFilterAndPage(newPage)
+    fetchByFilterAndPage(newPage);
   },
-  { deep: true }
-)
+  { deep: true },
+);
 
 onActivated(() => {
-  contentRef.value.scrollTop = scrollTop.value
-  fetchByFilterAndPage(page.value)
-})
+  contentRef.value.scrollTop = scrollTop.value;
+  fetchByFilterAndPage(page.value);
+});
 
 onMounted(() => {
   nextTick(() => {
     contentRef.value.addEventListener('scroll', () => {
-      scrollTop.value = contentRef.value.scrollTop
-    })
-  })
-})
+      scrollTop.value = contentRef.value.scrollTop;
+    });
+  });
+});
 </script>
 
 <template>

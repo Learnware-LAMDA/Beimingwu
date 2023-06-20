@@ -1,47 +1,44 @@
 <script setup>
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-import { useDisplay } from 'vuetify'
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { useDisplay } from 'vuetify';
 
-const display = useDisplay()
+const display = useDisplay();
 
-const emit = defineEmits(['update:drawerOpen'])
+const emit = defineEmits(['update:drawerOpen']);
 
 const props = defineProps({
   drawerOpen: {
     type: Boolean,
-    required: true
+    required: true,
   },
   routes: {
     type: Array,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 const drawer = computed({
   get: () => props.drawerOpen && ['xs', 'sm'].includes(display.name.value),
-  set: (value) => emit('update:drawerOpen', value)
-})
+  set: (value) => emit('update:drawerOpen', value),
+});
 
-const router = useRouter()
+const router = useRouter();
 
-const store = useStore()
+const store = useStore();
 
-const filteredRoutes = computed(() => {
-    return props.routes.filter(route => {
-        if (route.meta.showInNavBar) {
-            if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
-                return false
-            }
-            if (!route.meta.requiredLogin) {
-                return true
-            } else {
-                return store.getters.getLoggedIn
-            }
-        }
-    })
-})
+const filteredRoutes = computed(() => props.routes.filter((route) => {
+  if (route.meta.showInNavBar) {
+    if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
+      return false;
+    }
+    if (!route.meta.requiredLogin) {
+      return true;
+    }
+    return store.getters.getLoggedIn;
+  }
+}));
 </script>
 
 <template>

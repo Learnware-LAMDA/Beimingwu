@@ -1,11 +1,11 @@
 <script setup>
-import { ref, computed } from 'vue'
-import DataType from '@/components/Specification/SpecTag/DataType.vue'
-import TaskType from '@/components/Specification/SpecTag/TaskType.vue'
-import LibraryType from '@/components/Specification/SpecTag/LibraryType.vue'
-import TagList from '@/components/Specification/SpecTag/TagList.vue'
+import { ref, computed } from 'vue';
+import DataType from '@/components/Specification/SpecTag/DataType.vue';
+import TaskType from '@/components/Specification/SpecTag/TaskType.vue';
+import LibraryType from '@/components/Specification/SpecTag/LibraryType.vue';
+import TagList from '@/components/Specification/SpecTag/TagList.vue';
 
-const emits = defineEmits(['update:dataType', 'update:taskType', 'update:libraryType', 'update:tagList'])
+const emits = defineEmits(['update:dataType', 'update:taskType', 'update:libraryType', 'update:tagList']);
 
 const props = defineProps({
   dataType: {
@@ -26,26 +26,26 @@ const props = defineProps({
   },
   errorMessages: {
     type: String,
-    required: false
-  }
-})
+    required: false,
+  },
+});
 
 const dataType = computed({
   get: () => props.dataType,
-  set: (val) => emits('update:dataType', val)
-})
+  set: (val) => emits('update:dataType', val),
+});
 const taskType = computed({
   get: () => props.taskType,
-  set: (val) => emits('update:taskType', val)
-})
+  set: (val) => emits('update:taskType', val),
+});
 const libraryType = computed({
   get: () => props.libraryType,
-  set: (val) => emits('update:libraryType', val)
-})
+  set: (val) => emits('update:libraryType', val),
+});
 const tagList = computed({
   get: () => props.tagList,
-  set: (val) => emits('update:tagList', val)
-})
+  set: (val) => emits('update:tagList', val),
+});
 </script>
 
 <template>

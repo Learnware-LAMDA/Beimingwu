@@ -1,19 +1,19 @@
 <script setup>
-import { ref, computed } from 'vue'
-import { useDisplay } from 'vuetify'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import JSZip from 'jszip'
-import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
-import LearnwareCard from './LearnwareCard.vue'
-import colors from 'vuetify/lib/util/colors'
-import oopsImg from '/oops.svg'
+import { ref, computed } from 'vue';
+import { useDisplay } from 'vuetify';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import JSZip from 'jszip';
+import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader';
+import colors from 'vuetify/lib/util/colors';
+import LearnwareCard from './LearnwareCard.vue';
+import oopsImg from '../../../../../../../../../oops.svg';
 
-const display = useDisplay()
+const display = useDisplay();
 
-const router = useRouter()
+const router = useRouter();
 
-const store = useStore()
+const store = useStore();
 
 const props = defineProps({
   items: {
@@ -50,64 +50,62 @@ const props = defineProps({
   loading: {
     type: Boolean,
     default: false,
-  }
-})
+  },
+});
 
-const dialog = ref(null)
+const dialog = ref(null);
 
-const downloading = ref(false)
+const downloading = ref(false);
 
 const realCols = computed(() => {
   switch (display.name.value) {
-    case 'md': if (props.md) return props.md
-    case 'sm': if (props.sm) return props.sm
-    case 'xs': if (props.xs) return props.xs
-    default: return props.cols
+    case 'md': if (props.md) return props.md;
+    case 'sm': if (props.sm) return props.sm;
+    case 'xs': if (props.xs) return props.xs;
+    default: return props.cols;
   }
-})
+});
 
 function showLearnwareDetail(id) {
-  router.push({ path: '/learnwaredetail', query: { id } })
+  router.push({ path: '/learnwaredetail', query: { id } });
 }
 
 function downloadAll() {
-  downloading.value = true
+  downloading.value = true;
 
-  const zip = new JSZip()
-  Promise.all(props.items.map((item) => {
-    return fetch(`/api/engine/download_learnware?learnware_id=${item.id}`)
-      .then((res) => {
-        if (res.status === 200) {
-          return res
-        }
-        throw new Error('Network error')
-      })
-      .then((res) => res.arrayBuffer())
-      .then(arrayBuffer => {
-        zip.file(`${item.name}.zip`, arrayBuffer)
-      })
-  }))
+  const zip = new JSZip();
+  Promise.all(props.items.map((item) => fetch(`/api/engine/download_learnware?learnware_id=${item.id}`)
+    .then((res) => {
+      if (res.status === 200) {
+        return res;
+      }
+      throw new Error('Network error');
+    })
+    .then((res) => res.arrayBuffer())
+    .then((arrayBuffer) => {
+      zip.file(`${item.name}.zip`, arrayBuffer);
+    })))
     .then(() => zip.generateAsync({ type: 'blob' }))
     .then((blob) => {
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'learnwares.zip'
-      a.click()
-      downloading.value = false
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'learnwares.zip';
+      a.click();
+      downloading.value = false;
     })
     .catch((err) => {
-      downloading.value = false
-      console.error(err)
-      store.commit('setShowGlobalError', true)
-      store.commit('setGlobalErrorMsg', err.message)
-    })
+      downloading.value = false;
+      console.error(err);
+      store.commit('setShowGlobalError', true);
+      store.commit('setGlobalErrorMsg', err.message);
+    });
 }
 
 function getColorByScore(score) {
-  if (score > 80) return colors.green.base
-  if (score > 50) return colors.orange.base
-  return colors.red.base
+  if (score > 80) return colors.green.base;
+  if (score > 50) return colors.orange.base;
+  return colors.red.base;
 }
 </script>
 

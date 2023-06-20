@@ -1,52 +1,52 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed } from 'vue';
 
-const emit = defineEmits(['update:files'])
+const emit = defineEmits(['update:files']);
 
 const props = defineProps({
   files: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   errorMessages: {
     type: String,
   },
-  height :{
+  height: {
     type: Number,
     default: 40,
-  }
-})
+  },
+});
 
-const dragging = ref(false)
-const fileInput = ref(null)
+const dragging = ref(false);
+const fileInput = ref(null);
 
 const handleDrop = (event) => {
-  dragging.value = false
-  _files.value = Array.from(event.dataTransfer.files)
-}
+  dragging.value = false;
+  _files.value = Array.from(event.dataTransfer.files);
+};
 
 const chooseFile = () => {
-  fileInput.value.click()
-}
+  fileInput.value.click();
+};
 
 const computeFileSize = (byte) => {
-  const unit = ['B', 'KB', 'MB', 'GB']
-  let k = 0
+  const unit = ['B', 'KB', 'MB', 'GB'];
+  let k = 0;
   while (k < 4) {
-    if (byte / Math.pow(1000, k) < 1000) {
-      break
+    if (byte / 1000 ** k < 1000) {
+      break;
     }
-    k++
+    k++;
   }
-  return Math.round(byte / Math.pow(1000, k)) + unit[k]
-}
+  return Math.round(byte / 1000 ** k) + unit[k];
+};
 
 const _files = computed({
   get: () => props.files,
   set: (val) => {
-    emit('update:files', val)
-  }
-})
+    emit('update:files', val);
+  },
+});
 </script>
 
 <template>

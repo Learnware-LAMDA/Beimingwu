@@ -1,37 +1,36 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import DataType from '@/components/Specification/SpecTag/DataType.vue'
-import TaskType from '@/components/Specification/SpecTag/TaskType.vue'
-import LibraryType from '@/components/Specification/SpecTag/LibraryType.vue'
-import FileUpload from '@/components/Specification/FileUpload.vue'
-import TagList from '@/components/Specification/SpecTag/TagList.vue'
+import { ref, computed, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import DataType from '@/components/Specification/SpecTag/DataType.vue';
+import TaskType from '@/components/Specification/SpecTag/TaskType.vue';
+import LibraryType from '@/components/Specification/SpecTag/LibraryType.vue';
+import FileUpload from '@/components/Specification/FileUpload.vue';
+import TagList from '@/components/Specification/SpecTag/TagList.vue';
 
-const emits = defineEmits(['update:value'])
+const emits = defineEmits(['update:value']);
 
 const props = defineProps({
   value: {
     type: Object,
-    default: () => ({})
-  }
-})
+    default: () => ({}),
+  },
+});
 
-const route = useRoute()
+const route = useRoute();
 
-const search = ref(route.query.search || '')
-const dataType = ref(route.query.dataType || '')
-const taskType = ref(route.query.taskType || '')
-const libraryType = ref(route.query.libraryType || '')
-let _tagList
+const search = ref(route.query.search || '');
+const dataType = ref(route.query.dataType || '');
+const taskType = ref(route.query.taskType || '');
+const libraryType = ref(route.query.libraryType || '');
+let _tagList;
 try {
-  _taglist = JSON.parse(route.query.tagList)
+  _taglist = JSON.parse(route.query.tagList);
+} catch {
+  _tagList = [];
 }
-catch {
-  _tagList = []
-}
-const tagList = ref(_tagList)
+const tagList = ref(_tagList);
 
-const files = ref([])
+const files = ref([]);
 
 const requirement = computed(() => ({
   name: search.value,
@@ -39,15 +38,15 @@ const requirement = computed(() => ({
   taskType: taskType.value,
   libraryType: libraryType.value,
   tagList: tagList.value,
-  files: files.value
-}))
+  files: files.value,
+}));
 
 watch(
   () => requirement.value,
   () => {
-    emits('update:value', requirement.value)
-  }
-)
+    emits('update:value', requirement.value);
+  },
+);
 </script>
 
 <template>

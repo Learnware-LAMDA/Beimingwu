@@ -1,10 +1,10 @@
 <script setup>
-import { ref, watch } from 'vue'
-import AudioBtn from './DataTypeBtn/AudioBtn.vue'
-import VideoBtn from './DataTypeBtn/VideoBtn.vue'
-import TextBtn from './DataTypeBtn/TextBtn.vue'
-import ImageBtn from './DataTypeBtn/ImageBtn.vue'
-import TableBtn from './DataTypeBtn/TableBtn.vue'
+import { ref, watch } from 'vue';
+import AudioBtn from './DataTypeBtn/AudioBtn.vue';
+import VideoBtn from './DataTypeBtn/VideoBtn.vue';
+import TextBtn from './DataTypeBtn/TextBtn.vue';
+import ImageBtn from './DataTypeBtn/ImageBtn.vue';
+import TableBtn from './DataTypeBtn/TableBtn.vue';
 
 const props = defineProps({
   value: {
@@ -27,9 +27,9 @@ const props = defineProps({
     type: Number,
     default: 2,
   },
-})
+});
 
-const emit = defineEmits(['update:value'])
+const emit = defineEmits(['update:value']);
 
 const dataTypeBtns = [
   {
@@ -51,17 +51,17 @@ const dataTypeBtns = [
   {
     title: 'Table',
     icon: TableBtn,
-  }
-]
+  },
+];
 
-const value = ref(props.value)
+const value = ref(props.value);
 
 watch(
   () => value.value,
   (newValue) => {
-    emit('update:value', newValue)
-  }
-)
+    emit('update:value', newValue);
+  },
+);
 </script>
 
 <template>

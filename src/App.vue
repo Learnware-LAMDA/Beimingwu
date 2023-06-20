@@ -1,39 +1,41 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
-import { useStore } from 'vuex'
-import Router from '@/router/index.js'
-import Drawer from '@/components/App/Drawer.vue'
-import AppBar from '@/components/App/AppBar.vue'
+import {
+  ref, computed, watch, onMounted,
+} from 'vue';
+import { useStore } from 'vuex';
+import Router from '@/router/index.js';
+import Drawer from '@/components/App/Drawer.vue';
+import AppBar from '@/components/App/AppBar.vue';
 
-const store = useStore()
+const store = useStore();
 
-const drawerOpen = ref(false)
-const showGlobalError = ref(store.getters.getShowGlobalError)
+const drawerOpen = ref(false);
+const showGlobalError = ref(store.getters.getShowGlobalError);
 
-const keepAliveIncludes = ref([])
-const _keepAliveIncludes = computed(() => Router.getRoutes().filter((route) => route.meta.keepAlive).map((route) => route.name))
+const keepAliveIncludes = ref([]);
+const _keepAliveIncludes = computed(() => Router.getRoutes().filter((route) => route.meta.keepAlive).map((route) => route.name));
 
 watch(
   () => store.getters.getLoggedIn,
   () => {
-    keepAliveIncludes.value = []
+    keepAliveIncludes.value = [];
     setTimeout(() => {
-      keepAliveIncludes.value = [..._keepAliveIncludes.value]
-    })
-  }
-)
+      keepAliveIncludes.value = [..._keepAliveIncludes.value];
+    });
+  },
+);
 watch(
   () => store.getters.getShowGlobalError,
-  (val) => showGlobalError.value = val
-)
+  (val) => showGlobalError.value = val,
+);
 watch(
   () => showGlobalError.value,
-  (val) => store.commit('setShowGlobalError', val)
-)
+  (val) => store.commit('setShowGlobalError', val),
+);
 
 onMounted(() => {
-  keepAliveIncludes.value = [..._keepAliveIncludes.value]
-})
+  keepAliveIncludes.value = [..._keepAliveIncludes.value];
+});
 </script>
 
 <template>

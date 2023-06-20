@@ -1,5 +1,5 @@
 <script setup>
-import process from '@/assets/images/process.svg'
+import process from '@/assets/images/process.svg';
 </script>
 
 <template>

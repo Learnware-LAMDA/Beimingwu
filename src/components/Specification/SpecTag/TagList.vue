@@ -1,10 +1,10 @@
 <script setup>
-import { computed } from 'vue'
-import { useDisplay } from 'vuetify'
+import { computed } from 'vue';
+import { useDisplay } from 'vuetify';
 
-const emit = defineEmits(['update:value'])
+const emit = defineEmits(['update:value']);
 
-const display = useDisplay()
+const display = useDisplay();
 
 const props = defineProps({
   value: {
@@ -27,19 +27,19 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
-})
+});
 
 const realCols = computed(() => {
-  let cols = props.cols
+  let { cols } = props;
   if (props.md && display.md.value) {
-    cols = props.md
+    cols = props.md;
   } else if (props.sm && display.sm.value) {
-    cols = props.sm
+    cols = props.sm;
   } else if (props.xs && display.xs.value) {
-    cols = props.xs
+    cols = props.xs;
   }
-  return cols
-})
+  return cols;
+});
 
 const items = [
   {
@@ -98,42 +98,38 @@ const items = [
     text: 'Architecture',
     icon: 'mdi-home-city',
   },
-]
+];
 
-const allSelected = computed(() => props.value && props.value.length === items.length)
+const allSelected = computed(() => props.value && props.value.length === items.length);
 
 const selections = computed(() => {
   if (props.value) {
-    return props.value.map((s) => {
-      return items.find(item => item.text === s)
-    })
+    return props.value.map((s) => items.find((item) => item.text === s));
   }
-  return []
-})
+  return [];
+});
 
 function click(text) {
   if (props.value && props.value.includes(text)) {
-    deleteSelect(text)
+    deleteSelect(text);
   } else {
-    addSelect(text)
+    addSelect(text);
   }
 }
 
 function addSelect(text) {
   if (props.value) {
-    emit('update:value', [...props.value, text])
-  }
-  else {
-    emit('update:value', [text])
+    emit('update:value', [...props.value, text]);
+  } else {
+    emit('update:value', [text]);
   }
 }
 
 function deleteSelect(text) {
   if (props.value) {
-    emit('update:value', props.value.filter((s) => s !== text))
-  }
-  else {
-    emit('update:value', [])
+    emit('update:value', props.value.filter((s) => s !== text));
+  } else {
+    emit('update:value', []);
   }
 }
 </script>

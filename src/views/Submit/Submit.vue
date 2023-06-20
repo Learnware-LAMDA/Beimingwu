@@ -1,20 +1,22 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
-import { useDisplay } from 'vuetify'
-import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-import { useField, useForm } from 'vee-validate'
-import VStepperTitle from '@/components/Public/VStepperTitle.vue'
-import FileUpload from '@/components/Specification/FileUpload.vue'
-import SpecTag from '@/components/Specification/SpecTag.vue'
-import SubmitingDialog from './SubmitingDialog.vue'
+import {
+  ref, onMounted, computed, watch,
+} from 'vue';
+import { useDisplay } from 'vuetify';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { useField, useForm } from 'vee-validate';
+import VStepperTitle from '@/components/Public/VStepperTitle.vue';
+import FileUpload from '@/components/Specification/FileUpload.vue';
+import SpecTag from '@/components/Specification/SpecTag.vue';
+import SubmitingDialog from './SubmitingDialog.vue';
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
-const display = useDisplay()
+const display = useDisplay();
 
-const store = useStore()
+const store = useStore();
 
 const { handleSubmit, meta } = useForm({
   initialValues: {
@@ -24,197 +26,193 @@ const { handleSubmit, meta } = useForm({
     libraryType: '',
     tagList: [],
     description: '',
-    files: []
+    files: [],
   },
   validationSchema: {
     name(value) {
       if (value?.length >= 5) {
-        return true
+        return true;
       }
-      return 'Learnware name needs to be at least 5 characters.'
+      return 'Learnware name needs to be at least 5 characters.';
     },
     dataType(value) {
       if (value?.length > 0) {
-        return true
+        return true;
       }
-      return 'Data type must not be empty.'
+      return 'Data type must not be empty.';
     },
     taskType(value) {
       if (value?.length > 0) {
-        return true
+        return true;
       }
-      return 'Task type must not be empty.'
+      return 'Task type must not be empty.';
     },
     libraryType(value) {
       if (value?.length > 0) {
-        return true
+        return true;
       }
-      return 'Library type must not be empty.'
+      return 'Library type must not be empty.';
     },
     tagList() {
-      return true
+      return true;
     },
     description(value) {
       if (value?.length >= 10) {
-        return true
+        return true;
       }
-      return 'Description needs to be at least 10 characters.'
+      return 'Description needs to be at least 10 characters.';
     },
     files(value) {
       if (value?.length > 0) {
         if (value[0].name.endsWith('.zip')) {
-          return true
+          return true;
         }
-        return 'You must upload a zip file.'
+        return 'You must upload a zip file.';
       }
-      return 'Please upload your model & statistical specification.'
-    }
-  }
-})
+      return 'Please upload your model & statistical specification.';
+    },
+  },
+});
 
-const name = useField('name')
-const dataType = useField('dataType')
-const taskType = useField('taskType')
-const libraryType = useField('libraryType')
-const tagList = useField('tagList')
-const description = useField('description')
-const files = useField('files')
+const name = useField('name');
+const dataType = useField('dataType');
+const taskType = useField('taskType');
+const libraryType = useField('libraryType');
+const tagList = useField('tagList');
+const description = useField('description');
+const files = useField('files');
 
-const currentStep = ref(0)
-const submiting = ref(false)
-const success = ref(false)
-const showError = ref(false)
-const errorMsg = ref('')
-const errorTimer = ref(null)
+const currentStep = ref(0);
+const submiting = ref(false);
+const success = ref(false);
+const showError = ref(false);
+const errorMsg = ref('');
+const errorTimer = ref(null);
 
 const steps = [
   {
     title: 'Type the name of your learnware',
     subtitle: 'Name',
-    icon: 'mdi-rename'
+    icon: 'mdi-rename',
   },
   {
     title: 'Choose the tags (semantic specification)',
     subtitle: 'Tag',
-    icon: 'mdi-label-multiple'
+    icon: 'mdi-label-multiple',
   },
   {
     title: 'Type the description (semantic specification)',
     subtitle: 'Description',
-    icon: 'mdi-image-text'
+    icon: 'mdi-image-text',
   },
   {
     title: 'Upload your model & statistical specification',
     subtitle: 'File',
-    icon: 'mdi-paperclip-plus'
+    icon: 'mdi-paperclip-plus',
   },
-]
+];
 
-const valid = computed(() => {
-  return meta.value.valid
-})
+const valid = computed(() => meta.value.valid);
 const allowChangePage = computed(() => {
   switch (currentStep.value) {
     case 0: {
-      return name.meta.valid
+      return name.meta.valid;
     }
     case 1: {
-      return dataType.meta.valid && taskType.meta.valid && libraryType.meta.valid && tagList.meta.valid
+      return dataType.meta.valid && taskType.meta.valid && libraryType.meta.valid && tagList.meta.valid;
     }
     case 2: {
-      return description.meta.valid
+      return description.meta.valid;
     }
     case 3: {
-      return files.meta.valid
+      return files.meta.valid;
     }
   }
-})
+});
 
 function activeStep(index) {
   if (valid.value || index < currentStep.value || allowChangePage.value && index <= currentStep.value + 1) {
-    currentStep.value = index
+    currentStep.value = index;
   }
 }
 
 function nextStep() {
   if (currentStep.value < steps.length - 1) {
-    activeStep(currentStep.value + 1)
+    activeStep(currentStep.value + 1);
   }
 }
 
 function PrevStep() {
   if (currentStep.value > 0) {
-    activeStep(currentStep.value - 1)
+    activeStep(currentStep.value - 1);
   }
 }
 
 const submit = handleSubmit((values) => {
-  submiting.value = true
-  success.value = false
-  showError.value = false
+  submiting.value = true;
+  success.value = false;
+  showError.value = false;
 
   fetch('/api/engine/get_semantic_specification')
     .then((res) => res.json())
     .then((res) => {
-      const semanticSpec = res.data.semantic_specification
-      semanticSpec.Name.Values = values.name
-      semanticSpec.Data.Values = values.dataType ? [values.dataType] : []
-      semanticSpec.Task.Values = values.taskType ? [values.taskType] : []
-      semanticSpec.Library.Values = values.libraryType ? [values.libraryType] : []
-      semanticSpec.Scenario.Values = values.tagList
-      semanticSpec.Description.Values = values.description
+      const semanticSpec = res.data.semantic_specification;
+      semanticSpec.Name.Values = values.name;
+      semanticSpec.Data.Values = values.dataType ? [values.dataType] : [];
+      semanticSpec.Task.Values = values.taskType ? [values.taskType] : [];
+      semanticSpec.Library.Values = values.libraryType ? [values.libraryType] : [];
+      semanticSpec.Scenario.Values = values.tagList;
+      semanticSpec.Description.Values = values.description;
 
-      const fd = new FormData()
-      fd.append('learnware_file', files.value.value[0])
-      fd.append('semantic_specification', JSON.stringify(semanticSpec))
-      return fd
+      const fd = new FormData();
+      fd.append('learnware_file', files.value.value[0]);
+      fd.append('semantic_specification', JSON.stringify(semanticSpec));
+      return fd;
     })
-    .then((fd) => {
-      return fetch('/api/user/add_learnware', {
-        method: 'POST',
-        body: fd,
-      })
-    })
+    .then((fd) => fetch('/api/user/add_learnware', {
+      method: 'POST',
+      body: fd,
+    }))
     .then((res) => {
       if (res.status === 200) {
-        return res
+        return res;
       }
-      throw new Error('Network error')
+      throw new Error('Network error');
     })
     .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
         case 0: {
-          submiting.value = false
-          success.value = true
+          submiting.value = false;
+          success.value = true;
 
           setTimeout(() => {
-            success.value = false
-            router.go()
-          }, 1000)
-          return
+            success.value = false;
+            router.go();
+          }, 1000);
+          return;
         }
         case 11: {
-          submiting.value = false
-          store.commit('setLoggedIn', false)
-          store.commit('setShowGlobalError', true)
-          store.commit('setGlobalErrorMsg', 'Please login first')
-          setTimeout(() => { router.push('/login') }, 1000)
-          return
+          submiting.value = false;
+          store.commit('setLoggedIn', false);
+          store.commit('setShowGlobalError', true);
+          store.commit('setGlobalErrorMsg', 'Please login first');
+          setTimeout(() => { router.push('/login'); }, 1000);
+          return;
         }
         default: {
-          throw new Error(res.msg)
+          throw new Error(res.msg);
         }
       }
     })
     .catch((err) => {
-      submiting.value = false
-      showError.value = true
-      errorMsg.value = err.message
-      clearTimeout(errorTimer.value)
-      errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
-    })
-})
+      submiting.value = false;
+      showError.value = true;
+      errorMsg.value = err.message;
+      clearTimeout(errorTimer.value);
+      errorTimer.value = setTimeout(() => { showError.value = false; }, 3000);
+    });
+});
 
 function checkLoginStatus() {
   fetch('/api/auth/get_role', {
@@ -222,63 +220,63 @@ function checkLoginStatus() {
   })
     .then((res) => {
       if (res.status === 200) {
-        return res
+        return res;
       }
-      throw new Error('Network error')
+      throw new Error('Network error');
     })
     .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
         case 0: {
-          return
+          return;
         }
         case 11: {
-          submiting.value = false
-          store.commit('setLoggedIn', false)
-          store.commit('setShowGlobalError', true)
-          store.commit('setGlobalErrorMsg', 'Please login first')
-          setTimeout(() => { router.push('/login') }, 1000)
-          return
+          submiting.value = false;
+          store.commit('setLoggedIn', false);
+          store.commit('setShowGlobalError', true);
+          store.commit('setGlobalErrorMsg', 'Please login first');
+          setTimeout(() => { router.push('/login'); }, 1000);
+          return;
         }
         default: {
-          throw new Error(res.msg)
+          throw new Error(res.msg);
         }
       }
     })
     .catch((err) => {
-      submiting.value = false
-      showError.value = true
-      errorMsg.value = err.message
-      clearTimeout(errorTimer.value)
-      errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
-    })
+      submiting.value = false;
+      showError.value = true;
+      errorMsg.value = err.message;
+      clearTimeout(errorTimer.value);
+      errorTimer.value = setTimeout(() => { showError.value = false; }, 3000);
+    });
 }
 
 function loadQuery() {
   if (route.query.name) {
-    name.value.value = route.query.name
+    name.value.value = route.query.name;
   }
   if (route.query.dataType) {
-    dataType.value.value = route.query.dataType
+    dataType.value.value = route.query.dataType;
   }
   if (route.query.taskType) {
-    taskType.value.value = route.query.taskType
+    taskType.value.value = route.query.taskType;
   }
   if (route.query.libraryType) {
-    libraryType.value.value = route.query.libraryType
+    libraryType.value.value = route.query.libraryType;
   }
   if (route.query.tagList) {
-    tagList.value.value = JSON.parse(route.query.tagList)
+    tagList.value.value = JSON.parse(route.query.tagList);
   }
   if (route.query.description) {
-    description.value.value = route.query.description
+    description.value.value = route.query.description;
   }
 }
 
 onMounted(() => {
-  checkLoginStatus()
-  loadQuery()
-})
+  checkLoginStatus();
+  loadQuery();
+});
 </script>
 
 <template>

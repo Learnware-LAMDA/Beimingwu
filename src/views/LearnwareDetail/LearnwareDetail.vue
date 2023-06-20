@@ -1,40 +1,40 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useDisplay } from 'vuetify'
-import { useRoute, useRouter } from 'vue-router'
-import { downloadLearnware } from '@/utils'
+import { ref, onMounted } from 'vue';
+import { useDisplay } from 'vuetify';
+import { useRoute, useRouter } from 'vue-router';
+import { downloadLearnware } from '@/utils';
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
-const display = useDisplay()
+const display = useDisplay();
 
-const learnware = ref(null)
-const learnwareId = ref('')
-const downloading = ref(false)
-const loading = ref(false)
+const learnware = ref(null);
+const learnwareId = ref('');
+const downloading = ref(false);
+const loading = ref(false);
 
-const showError = ref(false)
-const errorMsg = ref('')
-const errorTimer = ref(null)
+const showError = ref(false);
+const errorMsg = ref('');
+const errorTimer = ref(null);
 
 function getLearnwareDetailById(id) {
-  fetch('/api/engine/get_learnware_info?learnware_id=' + id, {
+  fetch(`/api/engine/get_learnware_info?learnware_id=${id}`, {
     method: 'GET',
   })
     .then((res) => {
       if (res.status === 200) {
-        return res
+        return res;
       }
-      throw new Error('Network error')
+      throw new Error('Network error');
     })
     .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
         case 0: {
-          loading.value = false
+          loading.value = false;
 
-          const learnwareInfo = res.data ? res.data.learnware_info : {}
+          const learnwareInfo = res.data ? res.data.learnware_info : {};
           learnware.value = {
             id: learnwareInfo.learnware_id,
             name: learnwareInfo.semantic_specification.Name.Values,
@@ -42,28 +42,28 @@ function getLearnwareDetailById(id) {
             dataType: learnwareInfo.semantic_specification.Data.Values[0],
             taskType: learnwareInfo.semantic_specification.Task.Values[0],
             libraryType: learnwareInfo.semantic_specification.Library.Values[0],
-            tagList: learnwareInfo.semantic_specification.Scenario.Values
-          }
-          return
+            tagList: learnwareInfo.semantic_specification.Scenario.Values,
+          };
+          return;
         }
         default: {
-          throw new Error(res.msg)
+          throw new Error(res.msg);
         }
       }
     })
     .catch((err) => {
-      console.error(err)
-      loading.value = false
-      showError.value = true
-      errorMsg.value = err.message
-    })
+      console.error(err);
+      loading.value = false;
+      showError.value = true;
+      errorMsg.value = err.message;
+    });
 }
 
 onMounted(() => {
-  const _id = route.query.id
-  learnwareId.value = _id
-  getLearnwareDetailById(learnwareId.value)
-})
+  const _id = route.query.id;
+  learnwareId.value = _id;
+  getLearnwareDetailById(learnwareId.value);
+});
 </script>
 
 <template>

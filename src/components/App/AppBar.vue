@@ -1,42 +1,39 @@
 <script setup>
-import { computed } from 'vue'
-import { useDisplay } from 'vuetify'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-import lamdaLogo from '/logo.svg'
+import { computed } from 'vue';
+import { useDisplay } from 'vuetify';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import lamdaLogo from '../../../../../../../../../logo.svg';
 
-const emit = defineEmits(['update:drawerOpen'])
-const router = useRouter()
+const emit = defineEmits(['update:drawerOpen']);
+const router = useRouter();
 
 const props = defineProps({
-    drawerOpen: {
-        type: Boolean,
-        required: true,
-    },
-    routes: {
-        type: Array,
-        required: true
+  drawerOpen: {
+    type: Boolean,
+    required: true,
+  },
+  routes: {
+    type: Array,
+    required: true,
+  },
+});
+
+const display = useDisplay();
+
+const store = useStore();
+
+const filteredRoutes = computed(() => props.routes.filter((route) => {
+  if (route.meta.showInNavBar) {
+    if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
+      return false;
     }
-})
-
-const display = useDisplay()
-
-const store = useStore()
-
-const filteredRoutes = computed(() => {
-    return props.routes.filter(route => {
-        if (route.meta.showInNavBar) {
-            if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
-                return false
-            }
-            if (!route.meta.requiredLogin) {
-                return true
-            } else {
-                return store.getters.getLoggedIn
-            }
-        }
-    })
-})
+    if (!route.meta.requiredLogin) {
+      return true;
+    }
+    return store.getters.getLoggedIn;
+  }
+}));
 </script>
 
 <template>

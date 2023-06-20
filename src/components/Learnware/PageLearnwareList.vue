@@ -1,12 +1,12 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { useDisplay } from 'vuetify'
-import LearnwareList from './LearnwareList.vue'
-import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
+import { ref, computed, watch } from 'vue';
+import { useDisplay } from 'vuetify';
+import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader';
+import LearnwareList from './LearnwareList.vue';
 
-const display = useDisplay()
+const display = useDisplay();
 
-const emit = defineEmits(['click:delete', 'pageChange'])
+const emit = defineEmits(['click:delete', 'pageChange']);
 
 const props = defineProps({
   items: {
@@ -52,42 +52,40 @@ const props = defineProps({
   xs: {
     type: Number,
     default: 1,
-  }
-})
+  },
+});
 
 const realCols = computed(() => {
   switch (display.name.value) {
-    case 'md': if (props.md) return props.md
-    case 'sm': if (props.sm) return props.sm
-    case 'xs': if (props.xs) return props.xs
-    default: return props.cols
+    case 'md': if (props.md) return props.md;
+    case 'sm': if (props.sm) return props.sm;
+    case 'xs': if (props.xs) return props.xs;
+    default: return props.cols;
   }
-})
+});
 
-const greaterThanXs = computed(() => {
-  return display.name.value !== 'xs'
-})
+const greaterThanXs = computed(() => display.name.value !== 'xs');
 
 function nextPage() {
   if (props.page < props.pageNum) {
-    jumpPage(props.page + 1)
+    jumpPage(props.page + 1);
   }
 }
 
 function formerPage() {
   if (props.page > 1) {
-    jumpPage(props.page - 1)
+    jumpPage(props.page - 1);
   }
 }
 
 function jumpPage(newPage) {
   if (newPage >= 1 && newPage <= props.pageNum) {
-    emit('pageChange', newPage)
+    emit('pageChange', newPage);
   }
 }
 
 function handleClickDelete(id) {
-  emit('click:delete', id)
+  emit('click:delete', id);
 }
 
 </script>
@@ -113,7 +111,7 @@ function handleClickDelete(id) {
         :type="items && items[0] && items[0].matchScore ? 'article, table-tfoot' : 'article'"
       ></v-skeleton-loader>
     </div>
-    
+
     <div v-if="showPagination" class="my-5 flex justify-center items-center">
       <div v-if="pageNum <= 7">
         <v-btn icon="mdi-arrow-left" color="primary" @click="formerPage"></v-btn>

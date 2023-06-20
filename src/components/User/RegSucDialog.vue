@@ -1,19 +1,19 @@
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close']);
 
-const router = useRouter()
+const router = useRouter();
 
-const start = ref(false)
-const dialog = ref(true)
+const start = ref(false);
+const dialog = ref(true);
 
 onMounted(() => {
   nextTick(() => {
-    start.value = true
-  })
-})
+    start.value = true;
+  });
+});
 </script>
 
 <template>

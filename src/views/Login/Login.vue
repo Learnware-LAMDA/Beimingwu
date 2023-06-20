@@ -1,96 +1,93 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { useStore } from 'vuex'
-import { useDisplay } from 'vuetify'
-import { useRouter } from 'vue-router'
-import { useField, useForm } from 'vee-validate'
-import { hex_md5 } from '@/utils/encrypt'
-import collaborationImg from '@/assets/images/collaboration.svg'
+import { ref, computed, watch } from 'vue';
+import { useStore } from 'vuex';
+import { useDisplay } from 'vuetify';
+import { useRouter } from 'vue-router';
+import { useField, useForm } from 'vee-validate';
+import { hex_md5 } from '@/utils/encrypt';
+import collaborationImg from '@/assets/images/collaboration.svg';
 
-const display = useDisplay()
+const display = useDisplay();
 
-const store = useStore()
+const store = useStore();
 
-const router = useRouter()
+const router = useRouter();
 
 const { handleSubmit, meta } = useForm({
   validationSchema: {
     email(value) {
-      if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
+      if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
 
-      return 'Must be a valid e-mail.'
+      return 'Must be a valid e-mail.';
     },
     password(value) {
-      if (value?.length >= 8) return true
+      if (value?.length >= 8) return true;
 
-      return 'Password needs to be at least 8 characters.'
+      return 'Password needs to be at least 8 characters.';
     },
   },
-})
+});
 
+const email = useField('email');
+const password = useField('password');
 
-const email = useField('email')
-const password = useField('password')
+const showPassword = ref(false);
+const showError = ref(false);
+const errorMsg = ref('');
+const success = ref(false);
 
-const showPassword = ref(false)
-const showError = ref(false)
-const errorMsg = ref('')
-const success = ref(false)
+const errorTimer = ref(null);
 
-const errorTimer = ref(null)
+const valid = computed(() => meta.value.valid);
 
-const valid = computed(() => {
-  return meta.value.valid
-})
-
-const login = handleSubmit(values => {
+const login = handleSubmit((values) => {
   const data = {
     email: values.email,
     password: hex_md5(values.password),
-  }
+  };
 
   fetch('/api/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   })
     .then((res) => {
       if (res.status === 200) {
-        return res
+        return res;
       }
-      throw new Error('Network error')
+      throw new Error('Network error');
     })
     .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
         case 0: {
-          success.value = true
+          success.value = true;
           setTimeout(() => {
-            store.commit('setLoggedIn', true)
-            router.push('/')
-          }, 1000)
-          return
+            store.commit('setLoggedIn', true);
+            router.push('/');
+          }, 1000);
+          return;
         }
         default: {
-          showError.value = true
-          errorMsg.value = res.msg
-          clearTimeout(errorTimer.value)
-          errorTimer.value = setTimeout(() => showError.value = false, 3000)
+          showError.value = true;
+          errorMsg.value = res.msg;
+          clearTimeout(errorTimer.value);
+          errorTimer.value = setTimeout(() => showError.value = false, 3000);
         }
       }
     })
     .catch((err) => {
-      showError.value = true
-      errorMsg.value = err.message
-      clearTimeout(errorTimer.value)
-      errorTimer.value = setTimeout(() => { showError.value = false }, 3000)
-    })
-})
+      showError.value = true;
+      errorMsg.value = err.message;
+      clearTimeout(errorTimer.value);
+      errorTimer.value = setTimeout(() => { showError.value = false; }, 3000);
+    });
+});
 
 function closeErrorAlert() {
-  clearTimeout(errorTimer.value)
+  clearTimeout(errorTimer.value);
 }
 </script>
 

@@ -1,9 +1,9 @@
 <script setup>
-import BigTitle from '@/components/Public/BigTitle.vue'
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import BigTitle from '@/components/Public/BigTitle.vue';
 
-const router = useRouter()
+const router = useRouter();
 </script>
 
 <template>

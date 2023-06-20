@@ -1,15 +1,15 @@
 <script setup>
-import { ref, computed } from 'vue'
-import { useDisplay } from 'vuetify'
-import { useRouter } from 'vue-router'
-import LearnwareCard from './LearnwareCard.vue'
-import oopsImg from '/oops.svg'
+import { ref, computed } from 'vue';
+import { useDisplay } from 'vuetify';
+import { useRouter } from 'vue-router';
+import LearnwareCard from './LearnwareCard.vue';
+import oopsImg from '../../../../../../../../../oops.svg';
 
-const emit = defineEmits(['click:delete'])
+const emit = defineEmits(['click:delete']);
 
-const display = useDisplay()
+const display = useDisplay();
 
-const router = useRouter()
+const router = useRouter();
 
 const props = defineProps({
   items: {
@@ -38,24 +38,24 @@ const props = defineProps({
   xs: {
     type: Number,
     default: 1,
-  }
-})
+  },
+});
 
 const realCols = computed(() => {
   switch (display.name.value) {
-    case 'md': if (props.md) return props.md
-    case 'sm': if (props.sm) return props.sm
-    case 'xs': if (props.xs) return props.xs
-    default: return props.cols
+    case 'md': if (props.md) return props.md;
+    case 'sm': if (props.sm) return props.sm;
+    case 'xs': if (props.xs) return props.xs;
+    default: return props.cols;
   }
-})
+});
 
 function handleClickDelete(id) {
-  emit('click:delete', id)
+  emit('click:delete', id);
 }
 
 function showLearnwareDetail(id) {
-  router.push({ path: '/learnwaredetail', query: { id } })
+  router.push({ path: '/learnwaredetail', query: { id } });
 }
 </script>
 

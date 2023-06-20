@@ -2,14 +2,14 @@ const auth = {
   loggedIn: false,
   mutations: {
     setLoggedIn(state, loggedIn) {
-      state.loggedIn = loggedIn
+      state.loggedIn = loggedIn;
     },
   },
   getters: {
     getLoggedIn(state) {
-      return state.loggedIn
+      return state.loggedIn;
     },
-  }
-}
+  },
+};
 
-export default auth
+export default auth;

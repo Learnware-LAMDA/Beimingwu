@@ -1,13 +1,13 @@
 <script setup>
-import { computed } from 'vue'
-import { useDisplay } from 'vuetify'
-import AudioBtn from '@/components/Specification/SpecTag/DataTypeBtn/AudioBtn.vue'
-import VideoBtn from '@/components/Specification/SpecTag/DataTypeBtn/VideoBtn.vue'
-import TextBtn from '@/components/Specification/SpecTag/DataTypeBtn/TextBtn.vue'
-import ImageBtn from '@/components/Specification/SpecTag/DataTypeBtn/ImageBtn.vue'
-import TableBtn from '@/components/Specification/SpecTag/DataTypeBtn/TableBtn.vue'
-import { downloadLearnware } from '@/utils'
-import colors from 'vuetify/lib/util/colors'
+import { computed } from 'vue';
+import { useDisplay } from 'vuetify';
+import colors from 'vuetify/lib/util/colors';
+import AudioBtn from '@/components/Specification/SpecTag/DataTypeBtn/AudioBtn.vue';
+import VideoBtn from '@/components/Specification/SpecTag/DataTypeBtn/VideoBtn.vue';
+import TextBtn from '@/components/Specification/SpecTag/DataTypeBtn/TextBtn.vue';
+import ImageBtn from '@/components/Specification/SpecTag/DataTypeBtn/ImageBtn.vue';
+import TableBtn from '@/components/Specification/SpecTag/DataTypeBtn/TableBtn.vue';
+import { downloadLearnware } from '@/utils';
 
 const props = defineProps({
   item: {
@@ -19,42 +19,38 @@ const props = defineProps({
   },
   showDownload: {
     type: Boolean,
-    default: true
+    default: true,
   },
   isAdmin: {
     type: Boolean,
     default: false,
-  }
-})
+  },
+});
 
-const emit = defineEmits(['click:delete'])
+const emit = defineEmits(['click:delete']);
 
-const display = useDisplay()
+const display = useDisplay();
 
-const greaterThanXs = computed(() => {
-  return display.name.value !== 'xs'
-})
+const greaterThanXs = computed(() => display.name.value !== 'xs');
 
-const greaterThanSm = computed(() => {
-  return display.name.value !== 'xs' && display.name.value !== 'sm'
-})
+const greaterThanSm = computed(() => display.name.value !== 'xs' && display.name.value !== 'sm');
 
 const dataTypeBtns = {
-  'Table': TableBtn,
-  'Image': ImageBtn,
-  'Text': TextBtn,
-  'Video': VideoBtn,
-  'Audio': AudioBtn,
-}
+  Table: TableBtn,
+  Image: ImageBtn,
+  Text: TextBtn,
+  Video: VideoBtn,
+  Audio: AudioBtn,
+};
 
 function getColorByScore(score) {
-  if (score > 80) return colors.green.base
-  if (score > 50) return colors.orange.base
-  return colors.red.base
+  if (score > 80) return colors.green.base;
+  if (score > 50) return colors.orange.base;
+  return colors.red.base;
 }
 
 function handleClickDelete(id) {
-  emit('click:delete', id)
+  emit('click:delete', id);
 }
 </script>
 

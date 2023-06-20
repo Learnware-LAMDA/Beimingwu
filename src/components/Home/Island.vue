@@ -1,33 +1,35 @@
 <script setup>
-import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue'
+import {
+  ref, onMounted, nextTick, onBeforeUnmount,
+} from 'vue';
 
-let observer
-const active = ref(false)
-const reference = ref(null)
+let observer;
+const active = ref(false);
+const reference = ref(null);
 
 onMounted(() => {
   nextTick(() => {
     observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.intersectionRatio > 0.6) {
-          active.value = true
+          active.value = true;
         }
         if (entry.intersectionRatio < 0.1) {
-          active.value = false
+          active.value = false;
         }
-      })
+      });
     }, {
       root: null,
       rootMargin: '0px',
-      threshold: [0.1, 0.6]
-    })
-    observer.observe(reference.value)
-  })
-})
+      threshold: [0.1, 0.6],
+    });
+    observer.observe(reference.value);
+  });
+});
 
 onBeforeUnmount(() => {
-  observer.disconnect()
-})
+  observer.disconnect();
+});
 </script>
 
 <template>

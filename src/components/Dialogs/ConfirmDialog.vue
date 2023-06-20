@@ -1,22 +1,22 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const emits = defineEmits(['confirm'])
+const emits = defineEmits(['confirm']);
 
-const dialog = ref(false)
+const dialog = ref(false);
 
 function confirm(args) {
-  dialog.value = true
+  dialog.value = true;
 }
 
 function emitConfirm() {
-  emits('confirm')
-  dialog.value = false
+  emits('confirm');
+  dialog.value = false;
 }
 
 defineExpose({
-  confirm
-})
+  confirm,
+});
 </script>
 
 <template>

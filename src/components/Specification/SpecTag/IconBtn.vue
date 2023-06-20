@@ -1,5 +1,5 @@
 <script setup>
-const emit = defineEmits(['click'])
+const emit = defineEmits(['click']);
 
 const props = defineProps({
   iconComponent: {
@@ -17,8 +17,8 @@ const props = defineProps({
   active: {
     type: Boolean,
     require: true,
-  }
-})
+  },
+});
 </script>
 
 <template>

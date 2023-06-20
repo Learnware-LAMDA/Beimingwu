@@ -4,9 +4,9 @@ import { useDisplay } from 'vuetify';
 
 const display = useDisplay();
 
-const greaterThanMd = computed(() => ['lg', 'xl'].includes(display.name.value))
+const greaterThanMd = computed(() => ['lg', 'xl'].includes(display.name.value));
 
-const emit = defineEmits('active-step')
+const emit = defineEmits('active-step');
 
 const props = defineProps({
   currentStep: {
@@ -20,25 +20,23 @@ const props = defineProps({
         icon: 'mdi-mail',
         name: 'first',
         title: 'Sample title 1',
-        subtitle: 'Subtitle sample'
+        subtitle: 'Subtitle sample',
       },
       {
         icon: 'mdi-alert',
         name: 'second',
         title: 'Sample title 2',
-        subtitle: 'Subtitle sample'
-      }
-    ]
+        subtitle: 'Subtitle sample',
+      },
+    ],
   },
-})
+});
 
-const isStepActive = (index) => {
-  return props.currentStep === index
-}
+const isStepActive = (index) => props.currentStep === index;
 
 const activeStep = (index) => {
-  emit('active-step', index)
-}
+  emit('active-step', index);
+};
 </script>
 
 <template>

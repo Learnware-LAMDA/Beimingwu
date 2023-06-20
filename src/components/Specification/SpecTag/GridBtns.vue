@@ -1,9 +1,9 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { useDisplay } from 'vuetify'
-import IconBtn from './IconBtn.vue'
+import { ref, computed, watch } from 'vue';
+import { useDisplay } from 'vuetify';
+import IconBtn from './IconBtn.vue';
 
-const display = useDisplay()
+const display = useDisplay();
 
 const props = defineProps({
   value: {
@@ -30,35 +30,35 @@ const props = defineProps({
   },
   xs: {
     type: Number,
-  }
-})
+  },
+});
 
-const emit = defineEmits(['update:value'])
+const emit = defineEmits(['update:value']);
 
-const value = ref(props.value)
+const value = ref(props.value);
 
 const realCols = computed(() => {
-  let cols = props.cols
+  let { cols } = props;
   if (props.md && display.md.value) {
-    cols = props.md
+    cols = props.md;
   } else if (props.sm && display.sm.value) {
-    cols = props.sm
+    cols = props.sm;
   } else if (props.xs && display.xs.value) {
-    cols = props.xs
+    cols = props.xs;
   }
-  return cols
-})
+  return cols;
+});
 
 function clickBtn(btn) {
-  value.value = (btn.title === value.value) ? '' : btn.title
+  value.value = (btn.title === value.value) ? '' : btn.title;
 }
 
 watch(
   () => value.value,
   (newValue) => {
-    emit('update:value', newValue)
-  }
-)
+    emit('update:value', newValue);
+  },
+);
 </script>
 
 <template>

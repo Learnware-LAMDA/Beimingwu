@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const dialog = ref(true)
+const dialog = ref(true);
 </script>
 
 <template>
