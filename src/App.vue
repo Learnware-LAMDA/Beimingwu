@@ -1,48 +1,46 @@
 <script setup>
-import {
-  ref, computed, watch, onMounted,
-} from 'vue';
-import { useStore } from 'vuex';
-import Router from '@/router/index.js';
-import Drawer from '@/components/App/Drawer.vue';
-import AppBar from '@/components/App/AppBar.vue';
+import { ref, watch } from "vue";
+import { useStore } from "vuex";
+import Router from "./router";
+import NavDrawer from "./components/App/NavDrawer.vue";
+import AppBar from "./components/App/AppBar.vue";
 
 const store = useStore();
 
 const drawerOpen = ref(false);
 const showGlobalError = ref(store.getters.getShowGlobalError);
 
-const keepAliveIncludes = ref([]);
-const _keepAliveIncludes = computed(() => Router.getRoutes().filter((route) => route.meta.keepAlive).map((route) => route.name));
+const initKeepAliveIncludes = Router.getRoutes()
+  .filter((route) => route.meta.keepAlive)
+  .map((route) => route.name);
+const keepAliveIncludes = ref([...initKeepAliveIncludes]);
 
 watch(
   () => store.getters.getLoggedIn,
   () => {
     keepAliveIncludes.value = [];
     setTimeout(() => {
-      keepAliveIncludes.value = [..._keepAliveIncludes.value];
+      keepAliveIncludes.value = [...initKeepAliveIncludes];
     });
   },
 );
 watch(
   () => store.getters.getShowGlobalError,
-  (val) => showGlobalError.value = val,
+  (val) => {
+    showGlobalError.value = val;
+  },
 );
 watch(
   () => showGlobalError.value,
-  (val) => store.commit('setShowGlobalError', val),
+  (val) => store.commit("setShowGlobalError", val),
 );
-
-onMounted(() => {
-  keepAliveIncludes.value = [..._keepAliveIncludes.value];
-});
 </script>
 
 <template>
   <v-app>
     <app-bar v-model:drawerOpen="drawerOpen" :routes="Router.getRoutes()"></app-bar>
 
-    <drawer v-model:drawerOpen="drawerOpen" :routes="Router.getRoutes()"></drawer>
+    <nav-drawer v-model:drawerOpen="drawerOpen" :routes="Router.getRoutes()"></nav-drawer>
 
     <v-main class="bg-gray-100 bg-opacity-50">
       <router-view v-slot="{ Component }">
@@ -56,7 +54,7 @@ onMounted(() => {
 
     <v-snackbar v-model="showGlobalError" :timeout="2000">
       {{ store.getters.getGlobalErrorMsg }}
-      <template v-slot:actions>
+      <template #actions>
         <v-btn color="blue" variant="text" @click="store.commit('setShowGlobalError', false)">
           Close
         </v-btn>

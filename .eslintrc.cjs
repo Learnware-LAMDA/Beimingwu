@@ -4,18 +4,18 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    'plugin:vue/vue3-essential',
-    'airbnb-base',
+    "plugin:vue/vue3-essential",
+    "plugin:vue/vue3-recommended",
+    "eslint:recommended",
+    "@vue/eslint-config-prettier",
   ],
-  overrides: [
-  ],
+  overrides: [],
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
+    ecmaVersion: "latest",
+    sourceType: "module",
   },
-  plugins: [
-    'vue',
-  ],
+  plugins: ["vue"],
   rules: {
+    "vue/multi-word-component-names": "off",
   },
 };

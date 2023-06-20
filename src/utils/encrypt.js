@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /*
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
  * Digest Algorithm, as defined in RFC 1321.
@@ -11,30 +12,42 @@
  * the server-side, but the defaults work in most cases.
  */
 const hexcase = 0; /* hex output format. 0 - lowercase; 1 - uppercase        */
-const b64pad = ''; /* base-64 pad character. "=" for strict RFC compliance   */
+const b64pad = ""; /* base-64 pad character. "=" for strict RFC compliance   */
 const chrsz = 8; /* bits per input character. 8 - ASCII; 16 - Unicode      */
 /*
  * These are the functions you'll usually want to call
  * They take string arguments and return either hex or base-64 encoded strings
  */
-function hex_md5(s) { return binl2hex(core_md5(str2binl(s), s.length * chrsz)); }
-function b64_md5(s) { return binl2b64(core_md5(str2binl(s), s.length * chrsz)); }
-function str_md5(s) { return binl2str(core_md5(str2binl(s), s.length * chrsz)); }
-function hex_hmac_md5(key, data) { return binl2hex(core_hmac_md5(key, data)); }
-function b64_hmac_md5(key, data) { return binl2b64(core_hmac_md5(key, data)); }
-function str_hmac_md5(key, data) { return binl2str(core_hmac_md5(key, data)); }
+function hex_md5(s) {
+  return binl2hex(core_md5(str2binl(s), s.length * chrsz));
+}
+function b64_md5(s) {
+  return binl2b64(core_md5(str2binl(s), s.length * chrsz));
+}
+function str_md5(s) {
+  return binl2str(core_md5(str2binl(s), s.length * chrsz));
+}
+function hex_hmac_md5(key, data) {
+  return binl2hex(core_hmac_md5(key, data));
+}
+function b64_hmac_md5(key, data) {
+  return binl2b64(core_hmac_md5(key, data));
+}
+function str_hmac_md5(key, data) {
+  return binl2str(core_hmac_md5(key, data));
+}
 /*
  * Perform a simple self-test to see if the VM is working
  */
 function md5_vm_test() {
-  return hex_md5('abc') == '900150983cd24fb0d6963f7d28e17f72';
+  return hex_md5("abc") == "900150983cd24fb0d6963f7d28e17f72";
 }
 /*
  * Calculate the MD5 of an array of little-endian words, and a bit length
  */
 function core_md5(x, len) {
   /* append padding */
-  x[len >> 5] |= 0x80 << ((len) % 32);
+  x[len >> 5] |= 0x80 << len % 32;
   x[(((len + 64) >>> 9) << 4) + 14] = len;
   let a = 1732584193;
   let b = -271733879;
@@ -123,16 +136,16 @@ function md5_cmn(q, a, b, x, s, t) {
   return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s), b);
 }
 function md5_ff(a, b, c, d, x, s, t) {
-  return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
+  return md5_cmn((b & c) | (~b & d), a, b, x, s, t);
 }
 function md5_gg(a, b, c, d, x, s, t) {
-  return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
+  return md5_cmn((b & d) | (c & ~d), a, b, x, s, t);
 }
 function md5_hh(a, b, c, d, x, s, t) {
   return md5_cmn(b ^ c ^ d, a, b, x, s, t);
 }
 function md5_ii(a, b, c, d, x, s, t) {
-  return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
+  return md5_cmn(c ^ (b | ~d), a, b, x, s, t);
 }
 /*
  * Calculate the HMAC-MD5, of a key and some data
@@ -140,11 +153,11 @@ function md5_ii(a, b, c, d, x, s, t) {
 function core_hmac_md5(key, data) {
   let bkey = str2binl(key);
   if (bkey.length > 16) bkey = core_md5(bkey, key.length * chrsz);
-  const ipad = Array(16); const
-    opad = Array(16);
+  const ipad = Array(16);
+  const opad = Array(16);
   for (let i = 0; i < 16; i++) {
     ipad[i] = bkey[i] ^ 0x36363636;
-    opad[i] = bkey[i] ^ 0x5C5C5C5C;
+    opad[i] = bkey[i] ^ 0x5c5c5c5c;
   }
   const hash = core_md5(ipad.concat(str2binl(data)), 512 + data.length * chrsz);
   return core_md5(opad.concat(hash), 512 + 128);
@@ -154,9 +167,9 @@ function core_hmac_md5(key, data) {
  * to work around bugs in some JS interpreters.
  */
 function safe_add(x, y) {
-  const lsw = (x & 0xFFFF) + (y & 0xFFFF);
+  const lsw = (x & 0xffff) + (y & 0xffff);
   const msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-  return (msw << 16) | (lsw & 0xFFFF);
+  return (msw << 16) | (lsw & 0xffff);
 }
 /*
  * Bitwise rotate a 32-bit number to the left.
@@ -171,27 +184,30 @@ function bit_rol(num, cnt) {
 function str2binl(str) {
   const bin = Array();
   const mask = (1 << chrsz) - 1;
-  for (let i = 0; i < str.length * chrsz; i += chrsz) bin[i >> 5] |= (str.charCodeAt(i / chrsz) & mask) << (i % 32);
+  for (let i = 0; i < str.length * chrsz; i += chrsz)
+    bin[i >> 5] |= (str.charCodeAt(i / chrsz) & mask) << i % 32;
   return bin;
 }
 /*
  * Convert an array of little-endian words to a string
  */
 function binl2str(bin) {
-  let str = '';
+  let str = "";
   const mask = (1 << chrsz) - 1;
-  for (let i = 0; i < bin.length * 32; i += chrsz) str += String.fromCharCode((bin[i >> 5] >>> (i % 32)) & mask);
+  for (let i = 0; i < bin.length * 32; i += chrsz)
+    str += String.fromCharCode((bin[i >> 5] >>> i % 32) & mask);
   return str;
 }
 /*
  * Convert an array of little-endian words to a hex string.
  */
 function binl2hex(binarray) {
-  const hex_tab = hexcase ? '0123456789ABCDEF' : '0123456789abcdef';
-  let str = '';
+  const hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
+  let str = "";
   for (let i = 0; i < binarray.length * 4; i++) {
-    str += hex_tab.charAt((binarray[i >> 2] >> ((i % 4) * 8 + 4)) & 0xF)
-           + hex_tab.charAt((binarray[i >> 2] >> ((i % 4) * 8)) & 0xF);
+    str +=
+      hex_tab.charAt((binarray[i >> 2] >> ((i % 4) * 8 + 4)) & 0xf) +
+      hex_tab.charAt((binarray[i >> 2] >> ((i % 4) * 8)) & 0xf);
   }
   return str;
 }
@@ -199,15 +215,16 @@ function binl2hex(binarray) {
  * Convert an array of little-endian words to a base-64 string
  */
 function binl2b64(binarray) {
-  const tab = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-  let str = '';
+  const tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  let str = "";
   for (let i = 0; i < binarray.length * 4; i += 3) {
-    const triplet = (((binarray[i >> 2] >> 8 * (i % 4)) & 0xFF) << 16)
-                | (((binarray[i + 1 >> 2] >> 8 * ((i + 1) % 4)) & 0xFF) << 8)
-                | ((binarray[i + 2 >> 2] >> 8 * ((i + 2) % 4)) & 0xFF);
+    const triplet =
+      (((binarray[i >> 2] >> (8 * (i % 4))) & 0xff) << 16) |
+      (((binarray[(i + 1) >> 2] >> (8 * ((i + 1) % 4))) & 0xff) << 8) |
+      ((binarray[(i + 2) >> 2] >> (8 * ((i + 2) % 4))) & 0xff);
     for (let j = 0; j < 4; j++) {
       if (i * 8 + j * 6 > binarray.length * 32) str += b64pad;
-      else str += tab.charAt((triplet >> 6 * (3 - j)) & 0x3F);
+      else str += tab.charAt((triplet >> (6 * (3 - j))) & 0x3f);
     }
   }
   return str;

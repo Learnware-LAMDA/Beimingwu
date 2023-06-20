@@ -1,13 +1,13 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { useDisplay } from 'vuetify';
-import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
-import JSZip from 'jszip';
-import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader';
-import colors from 'vuetify/lib/util/colors';
-import LearnwareCard from './LearnwareCard.vue';
-import oopsImg from '../../../../../../../../../oops.svg';
+import { ref, computed } from "vue";
+import { useDisplay } from "vuetify";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import JSZip from "jszip";
+import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
+import colors from "vuetify/lib/util/colors";
+import LearnwareCard from "./LearnwareCard.vue";
+import oopsImg from "/oops.svg";
 
 const display = useDisplay();
 
@@ -26,6 +26,7 @@ const props = defineProps({
   },
   filters: {
     type: Object,
+    default: () => ({}),
   },
   showActions: {
     type: Boolean,
@@ -53,52 +54,47 @@ const props = defineProps({
   },
 });
 
-const dialog = ref(null);
-
 const downloading = ref(false);
 
-const realCols = computed(() => {
-  switch (display.name.value) {
-    case 'md': if (props.md) return props.md;
-    case 'sm': if (props.sm) return props.sm;
-    case 'xs': if (props.xs) return props.xs;
-    default: return props.cols;
-  }
-});
+const realCols = computed(() => props[display.name.value] || props.cols);
 
 function showLearnwareDetail(id) {
-  router.push({ path: '/learnwaredetail', query: { id } });
+  router.push({ path: "/learnwaredetail", query: { id } });
 }
 
 function downloadAll() {
   downloading.value = true;
 
   const zip = new JSZip();
-  Promise.all(props.items.map((item) => fetch(`/api/engine/download_learnware?learnware_id=${item.id}`)
-    .then((res) => {
-      if (res.status === 200) {
-        return res;
-      }
-      throw new Error('Network error');
-    })
-    .then((res) => res.arrayBuffer())
-    .then((arrayBuffer) => {
-      zip.file(`${item.name}.zip`, arrayBuffer);
-    })))
-    .then(() => zip.generateAsync({ type: 'blob' }))
+  Promise.all(
+    props.items.map((item) =>
+      fetch(`/api/engine/download_learnware?learnware_id=${item.id}`)
+        .then((res) => {
+          if (res.status === 200) {
+            return res;
+          }
+          throw new Error("Network error");
+        })
+        .then((res) => res.arrayBuffer())
+        .then((arrayBuffer) => {
+          zip.file(`${item.name}.zip`, arrayBuffer);
+        }),
+    ),
+  )
+    .then(() => zip.generateAsync({ type: "blob" }))
     .then((blob) => {
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
-      a.download = 'learnwares.zip';
+      a.download = "learnwares.zip";
       a.click();
       downloading.value = false;
     })
     .catch((err) => {
       downloading.value = false;
       console.error(err);
-      store.commit('setShowGlobalError', true);
-      store.commit('setGlobalErrorMsg', err.message);
+      store.commit("setShowGlobalError", true);
+      store.commit("setGlobalErrorMsg", err.message);
     });
 }
 
@@ -110,14 +106,21 @@ function getColorByScore(score) {
 </script>
 
 <template>
-  <div v-if="!loading" class="m-2 p-2 rounded-lg hover:border-purple-500" :class="items.length > 0 ? ['border-1'] : []">
+  <div
+    v-if="!loading"
+    class="m-2 p-2 rounded-lg hover:border-purple-500"
+    :class="items.length > 0 ? ['border-1'] : []"
+  >
     <div v-if="items.length > 0" class="flex justify-between">
       <v-card-title v-if="matchScore" class="score">
-        Total specification score <span class="ml-2" :style="`color: ${getColorByScore(matchScore)}`">{{
-          matchScore
-        }}</span>
+        Total specification score
+        <span class="ml-2" :style="`color: ${getColorByScore(matchScore)}`">{{ matchScore }}</span>
       </v-card-title>
-      <v-btn variant="flat" class="!px-4 text-body-2 !text-1em border-1" @click.stop="() => downloadAll()"
+      <v-btn
+        variant="flat"
+        class="!px-4 text-body-2 !text-1em border-1"
+        @click.stop="() => downloadAll()"
+      >
         size="x-large">
         <span v-if="!downloading">
           <v-icon icon="mdi-download"></v-icon>
@@ -129,19 +132,39 @@ function getColorByScore(score) {
         </span>
       </v-btn>
     </div>
-    <v-card flat class="learnware-list-container" :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null"
-      :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
+    <v-card
+      flat
+      class="learnware-list-container"
+      :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null"
+      :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
+    >
       <TransitionGroup name="fade">
-        <learnware-card v-for="(item, i) in items" :key="i" @click="() => showLearnwareDetail(item.id)" :item="item" :filters="filters" :show-download="false" />
+        <learnware-card
+          v-for="(item, i) in items"
+          :key="i"
+          :item="item"
+          :filters="filters"
+          :show-download="false"
+          @click="() => showLearnwareDetail(item.id)"
+        />
       </TransitionGroup>
-      <div flat v-if="items.length === 0" class="no-learnware">
+      <div v-if="items.length === 0" flat class="no-learnware">
         <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
         Oops! There are no learnwares.
       </div>
     </v-card>
   </div>
-  <div v-else class="grid p-2 gap-3" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-    <v-skeleton-loader v-for="_ in 4" class="w-1/1" type="article"></v-skeleton-loader>
+  <div
+    v-else
+    class="grid p-2 gap-3"
+    :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
+  >
+    <v-skeleton-loader
+      v-for="(item, index) in 4"
+      :key="index"
+      class="w-1/1"
+      type="article"
+    ></v-skeleton-loader>
   </div>
 </template>
 

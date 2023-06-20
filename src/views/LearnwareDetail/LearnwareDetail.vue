@@ -1,8 +1,8 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useDisplay } from 'vuetify';
-import { useRoute, useRouter } from 'vue-router';
-import { downloadLearnware } from '@/utils';
+import { ref, onMounted } from "vue";
+import { useDisplay } from "vuetify";
+import { useRoute, useRouter } from "vue-router";
+import { downloadLearnware } from "../../utils";
 
 const route = useRoute();
 const router = useRouter();
@@ -10,23 +10,22 @@ const router = useRouter();
 const display = useDisplay();
 
 const learnware = ref(null);
-const learnwareId = ref('');
+const learnwareId = ref("");
 const downloading = ref(false);
 const loading = ref(false);
 
 const showError = ref(false);
-const errorMsg = ref('');
-const errorTimer = ref(null);
+const errorMsg = ref("");
 
 function getLearnwareDetailById(id) {
   fetch(`/api/engine/get_learnware_info?learnware_id=${id}`, {
-    method: 'GET',
+    method: "GET",
   })
     .then((res) => {
       if (res.status === 200) {
         return res;
       }
-      throw new Error('Network error');
+      throw new Error("Network error");
     })
     .then((res) => res.json())
     .then((res) => {
@@ -70,13 +69,23 @@ onMounted(() => {
   <v-container class="md:flex max-w-1500px <sm:p-1">
     <v-scroll-y-transition class="fixed left-0 right-0 z-index-10" style="top: var(--v-layout-top)">
       <v-card-actions v-if="showError">
-        <v-alert class="w-1/1 max-w-900px mx-auto" closable :text="errorMsg" type="error"
-          @click:close="showError = false" />
+        <v-alert
+          class="w-1/1 max-w-900px mx-auto"
+          closable
+          :text="errorMsg"
+          type="error"
+          @click:close="showError = false"
+        />
       </v-card-actions>
     </v-scroll-y-transition>
 
-    <v-btn v-if="display.name.value !== 'xs'" class="md:mx-3 <md:my-3" icon="mdi-arrow-left" @click="() => router.go(-1)"
-      size="50" />
+    <v-btn
+      v-if="display.name.value !== 'xs'"
+      class="md:mx-3 <md:my-3"
+      icon="mdi-arrow-left"
+      size="50"
+      @click="() => router.go(-1)"
+    />
     <v-card v-if="learnware" class="p-2 w-1/1" :flat="display.name.value === 'xs'">
       <div class="flex justify-between">
         <v-card-title class="text-h4 !md:text-3xl !text-xl">
@@ -96,14 +105,15 @@ onMounted(() => {
         <div>Data type: {{ learnware.dataType }}</div>
         <div>Task type: {{ learnware.taskType }}</div>
         <div>Library type: {{ learnware.libraryType }}</div>
-        <div>Tags: {{ learnware.tagList.join(', ') }}</div>
+        <div>Tags: {{ learnware.tagList.join(", ") }}</div>
       </v-card-text>
 
       <v-card-text class="md:(text-xl !leading-7) text-sm">
         Description: {{ learnware.description }}
       </v-card-text>
     </v-card>
-    <v-overlay class="flex justify-center items-center" v-model="downloading">
+    <v-overlay v-model="downloading" class="flex justify-center items-center">
       <v-progress-circular size="80" width="8" indeterminate />
     </v-overlay>
-  </v-container></template>
+  </v-container>
+</template>

@@ -1,14 +1,10 @@
 <script setup>
-const emit = defineEmits(['click']);
+const emit = defineEmits(["click"]);
 
-const props = defineProps({
-  iconComponent: {
-    type: Object,
-    require: true,
-  },
+defineProps({
   title: {
     type: String,
-    default: 'Button',
+    default: "Button",
   },
   showTitle: {
     type: Boolean,
@@ -22,9 +18,14 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="btn" :class="{ active, 'justify-center': !showTitle }" @click="$event => emit('click', $event)" flat>
+  <div
+    class="btn"
+    :class="{ active, 'justify-center': !showTitle }"
+    flat
+    @click="($event) => emit('click', $event)"
+  >
     <v-responsive class="responsive" :aspect-ratio="1 / 1">
-      <component class="icon" :is="iconComponent" />
+      <slot />
     </v-responsive>
     <div class="title">
       <span v-if="showTitle">{{ title }}</span>

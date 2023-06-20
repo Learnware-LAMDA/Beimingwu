@@ -1,7 +1,7 @@
 const error = {
   state: {
     showGlobalError: false,
-    globalErrorMsg: '',
+    globalErrorMsg: "",
   },
   getters: {
     getShowGlobalError(state) {

@@ -1,19 +1,17 @@
 <script setup>
-import {
-  ref, onMounted, nextTick, watch, onActivated,
-} from 'vue';
-import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
-import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue';
-import ConfirmDialog from '@/components/Dialogs/ConfirmDialog.vue';
+import { ref, onMounted, nextTick, watch, onActivated } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import PageLearnwareList from "../../components/Learnware/PageLearnwareList.vue";
+import ConfirmDialog from "../../components/Dialogs/ConfirmDialog.vue";
 
 const store = useStore();
 
 const router = useRouter();
 
 const dialog = ref(null);
-const deleteId = ref('');
-const deleteName = ref('');
+const deleteId = ref("");
+const deleteName = ref("");
 
 const learnwareItems = ref([]);
 const page = ref(1);
@@ -26,15 +24,15 @@ const contentRef = ref(null);
 const scrollTop = ref(0);
 
 const showError = ref(false);
-const errorMsg = ref('');
+const errorMsg = ref("");
 
 function deleteLearnware(id) {
   showError.value = false;
 
-  fetch('/api/user/delete_learnware', {
-    method: 'POST',
+  fetch("/api/user/delete_learnware", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       learnware_id: id,
@@ -44,13 +42,16 @@ function deleteLearnware(id) {
       if (res.status === 200) {
         return res;
       }
-      throw new Error('Network error');
+      throw new Error("Network error");
     })
     .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
         case 0: {
-          learnwareItems.value.splice(learnwareItems.value.findIndex((item) => item.id === id), 1);
+          learnwareItems.value.splice(
+            learnwareItems.value.findIndex((item) => item.id === id),
+            1,
+          );
           fetchByFilterAndPage(page.value);
           return;
         }
@@ -85,10 +86,10 @@ function fetchByFilterAndPage(page) {
   showError.value = false;
   loading.value = true;
 
-  fetch('/api/user/get_learnware_list', {
-    method: 'POST',
+  fetch("/api/user/get_learnware_list", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       page: page - 1,
@@ -99,7 +100,7 @@ function fetchByFilterAndPage(page) {
       if (res.status === 200) {
         return res;
       }
-      throw new Error('Network error');
+      throw new Error("Network error");
     })
     .then((res) => res.json())
     .then((res) => {
@@ -119,8 +120,11 @@ function fetchByFilterAndPage(page) {
           return;
         }
         case 11: {
-          store.commit('setLoggedIn', false);
-          setTimeout(() => { router.push('/login'); }, 1000);
+          store.commit("setLoggedIn", false);
+          setTimeout(() => {
+            router.push("/login");
+          }, 1000);
+          break;
         }
         default: {
           throw new Error(res.msg);
@@ -150,7 +154,7 @@ onActivated(() => {
 
 onMounted(() => {
   nextTick(() => {
-    contentRef.value.addEventListener('scroll', () => {
+    contentRef.value.addEventListener("scroll", () => {
       scrollTop.value = contentRef.value.scrollTop;
     });
   });
@@ -158,13 +162,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="contentRef" class="fixed flex flex-col w-1/1 overflow-y-scroll justify-start items-center">
+  <div
+    ref="contentRef"
+    class="fixed flex flex-col w-1/1 overflow-y-scroll justify-start items-center"
+  >
     <confirm-dialog ref="dialog" @confirm="() => deleteLearnware(deleteId)">
       <template #title>
-        Confirm to delete &nbsp; <b>{{ deleteName }}</b>?
+        Confirm to delete &nbsp; <b>{{ deleteName }}</b
+        >?
       </template>
       <template #text>
-        Your learnware <b>{{ deleteName }}</b> will be deleted in the learnware market <i>permanently</i>. Do you really want to delete?
+        Your learnware <b>{{ deleteName }}</b> will be deleted in the learnware market
+        <i>permanently</i>. Do you really want to delete?
       </template>
     </confirm-dialog>
     <v-scroll-y-transition>
@@ -173,9 +182,18 @@ onMounted(() => {
       </v-card-actions>
     </v-scroll-y-transition>
     <div class="w-1/1 max-w-900px">
-      <page-learnware-list :show-pagination="pageNum > 1" :items="learnwareItems" @page-change="pageChange" :page="page"
-        :page-num="pageNum" :page-size="pageSize" :loading="loading" @click:delete="(id) => handleClickDelete(id)" :cols="1"
-        :is-admin="true" />
+      <page-learnware-list
+        :show-pagination="pageNum > 1"
+        :items="learnwareItems"
+        :page="page"
+        :page-num="pageNum"
+        :page-size="pageSize"
+        :loading="loading"
+        :cols="1"
+        :is-admin="true"
+        @page-change="pageChange"
+        @click:delete="(id) => handleClickDelete(id)"
+      />
     </div>
   </div>
 </template>

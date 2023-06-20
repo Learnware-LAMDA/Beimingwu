@@ -1,5 +1,5 @@
 <script setup>
-import analogyImg from '@/assets/images/analogy.png';
+import analogyImg from "../../assets/images/analogy.png";
 </script>
 
 <template>
@@ -9,7 +9,10 @@ import analogyImg from '@/assets/images/analogy.png';
         What is learnware?
       </div>
       <p class="text-gray-500">
-        A learnware is a well-performed trained machine learning model with a specification which enables it to be adequately identified to reuse according to the requirement of future users who know nothing about the learnware in advance.
+        <!-- eslint-disable-next-line max-len -->
+        A learnware is a well-performed trained machine learning model with a specification which
+        enables it to be adequately identified to reuse according to the requirement of future users
+        who know nothing about the learnware in advance.
       </p>
     </div>
 

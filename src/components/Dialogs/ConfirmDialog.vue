@@ -1,16 +1,16 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 
-const emits = defineEmits(['confirm']);
+const emits = defineEmits(["confirm"]);
 
 const dialog = ref(false);
 
-function confirm(args) {
+function confirm() {
   dialog.value = true;
 }
 
 function emitConfirm() {
-  emits('confirm');
+  emits("confirm");
   dialog.value = false;
 }
 
@@ -31,12 +31,8 @@ defineExpose({
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="bg-red" @click="() => emitConfirm()">
-          Confirm
-        </v-btn>
-        <v-btn variant="outlined" @click="dialog = false">
-          Cancel
-        </v-btn>
+        <v-btn class="bg-red" @click="() => emitConfirm()"> Confirm </v-btn>
+        <v-btn variant="outlined" @click="dialog = false"> Cancel </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

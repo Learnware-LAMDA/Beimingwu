@@ -1,7 +1,7 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
-import { useDisplay } from 'vuetify';
-import IconBtn from './IconBtn.vue';
+import { ref, computed, watch } from "vue";
+import { useDisplay } from "vuetify";
+import IconBtn from "./IconBtn.vue";
 
 const display = useDisplay();
 
@@ -9,14 +9,16 @@ const props = defineProps({
   value: {
     type: String,
     require: true,
+    default: "",
   },
   btns: {
     type: Array,
     require: true,
+    default: () => [],
   },
   title: {
     type: String,
-    default: 'title',
+    default: "title",
   },
   cols: {
     type: Number,
@@ -24,16 +26,19 @@ const props = defineProps({
   },
   md: {
     type: Number,
+    default: 4,
   },
   sm: {
     type: Number,
+    default: 4,
   },
   xs: {
     type: Number,
+    default: 2,
   },
 });
 
-const emit = defineEmits(['update:value']);
+const emit = defineEmits(["update:value"]);
 
 const value = ref(props.value);
 
@@ -50,13 +55,13 @@ const realCols = computed(() => {
 });
 
 function clickBtn(btn) {
-  value.value = (btn.title === value.value) ? '' : btn.title;
+  value.value = btn.title === value.value ? "" : btn.title;
 }
 
 watch(
   () => value.value,
   (newValue) => {
-    emit('update:value', newValue);
+    emit("update:value", newValue);
   },
 );
 </script>
@@ -64,9 +69,20 @@ watch(
 <template>
   <div class="grid-container">
     <div class="title text-h6 !text-1rem">{{ title }}</div>
-    <div class="btn-container" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-      <icon-btn class="btn" v-for="(btn, i) in btns" :icon-component="btn.icon" :title="btn.title"
-        :active="btn.title === value" :key="i" @click="() => clickBtn(btn)" />
+    <div
+      class="btn-container"
+      :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
+    >
+      <icon-btn
+        v-for="(btn, i) in btns"
+        :key="i"
+        class="btn"
+        :title="btn.title"
+        :active="btn.title === value"
+        @click="() => clickBtn(btn)"
+      >
+        <component :is="btn.icon" class="icon" />
+      </icon-btn>
     </div>
   </div>
 </template>
@@ -82,6 +98,11 @@ watch(
 
     .btn {
       @apply pr-3;
+
+      .icon {
+        @apply w-1/1 h-1/1;
+        fill: rgb(var(--v-theme-on-primary));
+      }
     }
   }
 }

@@ -1,47 +1,44 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { useDisplay } from 'vuetify';
-import { useField, useForm } from 'vee-validate';
-import RegSucDialog from '@/components/User/RegSucDialog.vue';
-import { hex_md5 } from '@/utils/encrypt';
-import collaborationImg from '@/assets/images/collaboration.svg';
-
-const display = useDisplay();
+import { ref, computed } from "vue";
+import { useField, useForm } from "vee-validate";
+import RegSucDialog from "../../components/User/RegSucDialog.vue";
+import { hex_md5 } from "../../utils/encrypt";
+import collaborationImg from "../../assets/images/collaboration.svg";
 
 const { handleSubmit, meta } = useForm({
   validationSchema: {
     userName(value) {
       if (value?.length >= 2) return true;
 
-      return 'Username needs to be at least 2 characters.';
+      return "Username needs to be at least 2 characters.";
     },
     email(value) {
       if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
 
-      return 'Must be a valid e-mail.';
+      return "Must be a valid e-mail.";
     },
     password(value) {
       if (value?.length >= 8) return true;
 
-      return 'Password needs to be at least 8 characters.';
+      return "Password needs to be at least 8 characters.";
     },
     password2(value) {
       if (value && value === password.value.value) return true;
-      if (!value) return 'Password cannot be empty.';
-      return 'Password does not match.';
+      if (!value) return "Password cannot be empty.";
+      return "Password does not match.";
     },
   },
 });
 
-const userName = useField('userName');
-const email = useField('email');
-const password = useField('password');
-const password2 = useField('password2');
+const userName = useField("userName");
+const email = useField("email");
+const password = useField("password");
+const password2 = useField("password2");
 
 const showPassword = ref(false);
 const showPassword2 = ref(false);
 const showError = ref(false);
-const errorMsg = ref('');
+const errorMsg = ref("");
 const success = ref(false);
 
 const errorTimer = ref(null);
@@ -55,10 +52,10 @@ const submit = handleSubmit((values) => {
     password: hex_md5(values.password),
   };
 
-  fetch('/api/auth/register', {
-    method: 'POST',
+  fetch("/api/auth/register", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
   })
@@ -66,35 +63,47 @@ const submit = handleSubmit((values) => {
       if (res.status === 200) {
         return res;
       }
-      throw new Error('Network error');
+      throw new Error("Network error");
     })
     .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
-        case 0: return success.value = true;
+        case 0:
+          return (success.value = true);
         case 21: {
-          throw new Error('System error');
+          throw new Error("System error");
         }
-        case 51: return userName.setErrors(res.msg);
-        case 52: return email.setErrors(res.msg);
+        case 51:
+          return userName.setErrors(res.msg);
+        case 52:
+          return email.setErrors(res.msg);
       }
     })
     .catch((err) => {
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
-      errorTimer.value = setTimeout(() => { showError.value = false; }, 3000);
+      errorTimer.value = setTimeout(() => {
+        showError.value = false;
+      }, 3000);
     });
 });
 </script>
 
 <template>
   <div class="flex h-1/1 bg-gray-100">
-    <div class="d-md-block d-none w-1/1 h-1/1"
-      :style="{ background: `url(${collaborationImg})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center' }">
-    </div>
     <div
-      class="flex flex-row justify-center items-center w-1/1 fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100">
+      class="d-md-block d-none w-1/1 h-1/1"
+      :style="{
+        background: `url(${collaborationImg})`,
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center center',
+      }"
+    ></div>
+    <div
+      class="flex flex-row justify-center items-center w-1/1 fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100"
+    >
       <reg-suc-dialog v-if="success" />
 
       <v-card flat class="mx-auto w-1/1 sm:p-6 p-2" max-width="500">
@@ -103,26 +112,51 @@ const submit = handleSubmit((values) => {
         </v-card-title>
         <v-card-text>
           <v-form>
-            <v-text-field v-model="userName.value.value" label="Username" :counter="20"
-              :error-messages="userName.errorMessage.value"></v-text-field>
-            <v-text-field v-model="email.value.value" label="E-mail"
-              :error-messages="email.errorMessage.value"></v-text-field>
-            <v-text-field v-model="password.value.value" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPassword ? 'text' : 'password'" label="Password" :error-messages="password.errorMessage.value"
-              @click:append="showPassword = !showPassword"></v-text-field>
-            <v-text-field v-model="password2.value.value" :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPassword2 ? 'text' : 'password'" label="Confirm Password"
-              :error-messages="password2.errorMessage.value" @click:append="showPassword2 = !showPassword2"
-              @keyup.enter="submit"></v-text-field>
+            <v-text-field
+              v-model="userName.value.value"
+              label="Username"
+              :counter="20"
+              :error-messages="userName.errorMessage.value"
+            ></v-text-field>
+            <v-text-field
+              v-model="email.value.value"
+              label="E-mail"
+              :error-messages="email.errorMessage.value"
+            ></v-text-field>
+            <v-text-field
+              v-model="password.value.value"
+              :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="showPassword ? 'text' : 'password'"
+              label="Password"
+              :error-messages="password.errorMessage.value"
+              @click:append="showPassword = !showPassword"
+            ></v-text-field>
+            <v-text-field
+              v-model="password2.value.value"
+              :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="showPassword2 ? 'text' : 'password'"
+              label="Confirm Password"
+              :error-messages="password2.errorMessage.value"
+              @click:append="showPassword2 = !showPassword2"
+              @keyup.enter="submit"
+            ></v-text-field>
           </v-form>
         </v-card-text>
         <v-scale-transition>
           <v-card-actions v-if="showError">
-            <v-alert v-model="showError" closable :text="errorMsg" type="error" @click:close="() => closeErrorAlert" />
+            <v-alert
+              v-model="showError"
+              closable
+              :text="errorMsg"
+              type="error"
+              @click:close="() => closeErrorAlert"
+            />
           </v-card-actions>
         </v-scale-transition>
         <v-card-actions>
-          <v-btn block class="bg-primary py-5" color="white" @click="submit" :disabled="!valid">Register</v-btn>
+          <v-btn block class="bg-primary py-5" color="white" :disabled="!valid" @click="submit"
+            >Register</v-btn
+          >
         </v-card-actions>
       </v-card>
     </div>

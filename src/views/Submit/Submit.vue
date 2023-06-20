@@ -1,15 +1,13 @@
 <script setup>
-import {
-  ref, onMounted, computed, watch,
-} from 'vue';
-import { useDisplay } from 'vuetify';
-import { useRoute, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
-import { useField, useForm } from 'vee-validate';
-import VStepperTitle from '@/components/Public/VStepperTitle.vue';
-import FileUpload from '@/components/Specification/FileUpload.vue';
-import SpecTag from '@/components/Specification/SpecTag.vue';
-import SubmitingDialog from './SubmitingDialog.vue';
+import { ref, onMounted, computed } from "vue";
+import { useDisplay } from "vuetify";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
+import { useField, useForm } from "vee-validate";
+import VStepperTitle from "../../components/Public/VStepperTitle.vue";
+import FileUpload from "../../components/Specification/FileUpload.vue";
+import SpecTag from "../../components/Specification/SpecTag.vue";
+import SubmitingDialog from "./SubmitingDialog.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -20,12 +18,12 @@ const store = useStore();
 
 const { handleSubmit, meta } = useForm({
   initialValues: {
-    name: '',
-    dataType: '',
-    taskType: '',
-    libraryType: '',
+    name: "",
+    dataType: "",
+    taskType: "",
+    libraryType: "",
     tagList: [],
-    description: '',
+    description: "",
     files: [],
   },
   validationSchema: {
@@ -33,25 +31,25 @@ const { handleSubmit, meta } = useForm({
       if (value?.length >= 5) {
         return true;
       }
-      return 'Learnware name needs to be at least 5 characters.';
+      return "Learnware name needs to be at least 5 characters.";
     },
     dataType(value) {
       if (value?.length > 0) {
         return true;
       }
-      return 'Data type must not be empty.';
+      return "Data type must not be empty.";
     },
     taskType(value) {
       if (value?.length > 0) {
         return true;
       }
-      return 'Task type must not be empty.';
+      return "Task type must not be empty.";
     },
     libraryType(value) {
       if (value?.length > 0) {
         return true;
       }
-      return 'Library type must not be empty.';
+      return "Library type must not be empty.";
     },
     tagList() {
       return true;
@@ -60,55 +58,55 @@ const { handleSubmit, meta } = useForm({
       if (value?.length >= 10) {
         return true;
       }
-      return 'Description needs to be at least 10 characters.';
+      return "Description needs to be at least 10 characters.";
     },
     files(value) {
       if (value?.length > 0) {
-        if (value[0].name.endsWith('.zip')) {
+        if (value[0].name.endsWith(".zip")) {
           return true;
         }
-        return 'You must upload a zip file.';
+        return "You must upload a zip file.";
       }
-      return 'Please upload your model & statistical specification.';
+      return "Please upload your model & statistical specification.";
     },
   },
 });
 
-const name = useField('name');
-const dataType = useField('dataType');
-const taskType = useField('taskType');
-const libraryType = useField('libraryType');
-const tagList = useField('tagList');
-const description = useField('description');
-const files = useField('files');
+const name = useField("name");
+const dataType = useField("dataType");
+const taskType = useField("taskType");
+const libraryType = useField("libraryType");
+const tagList = useField("tagList");
+const description = useField("description");
+const files = useField("files");
 
 const currentStep = ref(0);
 const submiting = ref(false);
 const success = ref(false);
 const showError = ref(false);
-const errorMsg = ref('');
+const errorMsg = ref("");
 const errorTimer = ref(null);
 
 const steps = [
   {
-    title: 'Type the name of your learnware',
-    subtitle: 'Name',
-    icon: 'mdi-rename',
+    title: "Type the name of your learnware",
+    subtitle: "Name",
+    icon: "mdi-rename",
   },
   {
-    title: 'Choose the tags (semantic specification)',
-    subtitle: 'Tag',
-    icon: 'mdi-label-multiple',
+    title: "Choose the tags (semantic specification)",
+    subtitle: "Tag",
+    icon: "mdi-label-multiple",
   },
   {
-    title: 'Type the description (semantic specification)',
-    subtitle: 'Description',
-    icon: 'mdi-image-text',
+    title: "Type the description (semantic specification)",
+    subtitle: "Description",
+    icon: "mdi-image-text",
   },
   {
-    title: 'Upload your model & statistical specification',
-    subtitle: 'File',
-    icon: 'mdi-paperclip-plus',
+    title: "Upload your model & statistical specification",
+    subtitle: "File",
+    icon: "mdi-paperclip-plus",
   },
 ];
 
@@ -119,7 +117,9 @@ const allowChangePage = computed(() => {
       return name.meta.valid;
     }
     case 1: {
-      return dataType.meta.valid && taskType.meta.valid && libraryType.meta.valid && tagList.meta.valid;
+      return (
+        dataType.meta.valid && taskType.meta.valid && libraryType.meta.valid && tagList.meta.valid
+      );
     }
     case 2: {
       return description.meta.valid;
@@ -127,11 +127,18 @@ const allowChangePage = computed(() => {
     case 3: {
       return files.meta.valid;
     }
+    default: {
+      return false;
+    }
   }
 });
 
 function activeStep(index) {
-  if (valid.value || index < currentStep.value || allowChangePage.value && index <= currentStep.value + 1) {
+  if (
+    valid.value ||
+    index < currentStep.value ||
+    (allowChangePage.value && index <= currentStep.value + 1)
+  ) {
     currentStep.value = index;
   }
 }
@@ -153,7 +160,7 @@ const submit = handleSubmit((values) => {
   success.value = false;
   showError.value = false;
 
-  fetch('/api/engine/get_semantic_specification')
+  fetch("/api/engine/get_semantic_specification")
     .then((res) => res.json())
     .then((res) => {
       const semanticSpec = res.data.semantic_specification;
@@ -165,19 +172,21 @@ const submit = handleSubmit((values) => {
       semanticSpec.Description.Values = values.description;
 
       const fd = new FormData();
-      fd.append('learnware_file', files.value.value[0]);
-      fd.append('semantic_specification', JSON.stringify(semanticSpec));
+      fd.append("learnware_file", files.value.value[0]);
+      fd.append("semantic_specification", JSON.stringify(semanticSpec));
       return fd;
     })
-    .then((fd) => fetch('/api/user/add_learnware', {
-      method: 'POST',
-      body: fd,
-    }))
+    .then((fd) =>
+      fetch("/api/user/add_learnware", {
+        method: "POST",
+        body: fd,
+      }),
+    )
     .then((res) => {
       if (res.status === 200) {
         return res;
       }
-      throw new Error('Network error');
+      throw new Error("Network error");
     })
     .then((res) => res.json())
     .then((res) => {
@@ -194,10 +203,12 @@ const submit = handleSubmit((values) => {
         }
         case 11: {
           submiting.value = false;
-          store.commit('setLoggedIn', false);
-          store.commit('setShowGlobalError', true);
-          store.commit('setGlobalErrorMsg', 'Please login first');
-          setTimeout(() => { router.push('/login'); }, 1000);
+          store.commit("setLoggedIn", false);
+          store.commit("setShowGlobalError", true);
+          store.commit("setGlobalErrorMsg", "Please login first");
+          setTimeout(() => {
+            router.push("/login");
+          }, 1000);
           return;
         }
         default: {
@@ -210,19 +221,21 @@ const submit = handleSubmit((values) => {
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
-      errorTimer.value = setTimeout(() => { showError.value = false; }, 3000);
+      errorTimer.value = setTimeout(() => {
+        showError.value = false;
+      }, 3000);
     });
 });
 
 function checkLoginStatus() {
-  fetch('/api/auth/get_role', {
-    method: 'POST',
+  fetch("/api/auth/get_role", {
+    method: "POST",
   })
     .then((res) => {
       if (res.status === 200) {
         return res;
       }
-      throw new Error('Network error');
+      throw new Error("Network error");
     })
     .then((res) => res.json())
     .then((res) => {
@@ -232,10 +245,12 @@ function checkLoginStatus() {
         }
         case 11: {
           submiting.value = false;
-          store.commit('setLoggedIn', false);
-          store.commit('setShowGlobalError', true);
-          store.commit('setGlobalErrorMsg', 'Please login first');
-          setTimeout(() => { router.push('/login'); }, 1000);
+          store.commit("setLoggedIn", false);
+          store.commit("setShowGlobalError", true);
+          store.commit("setGlobalErrorMsg", "Please login first");
+          setTimeout(() => {
+            router.push("/login");
+          }, 1000);
           return;
         }
         default: {
@@ -248,7 +263,9 @@ function checkLoginStatus() {
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
-      errorTimer.value = setTimeout(() => { showError.value = false; }, 3000);
+      errorTimer.value = setTimeout(() => {
+        showError.value = false;
+      }, 3000);
     });
 }
 
@@ -284,7 +301,12 @@ onMounted(() => {
     <v-card class="relative max-w-1000px w-1/1 m-auto" :flat="display.name.value === 'xs'">
       <v-scroll-y-transition>
         <v-card-actions v-if="success">
-          <v-alert closable text="Submit successfully" type="success" @click:close="success = false" />
+          <v-alert
+            closable
+            text="Submit successfully"
+            type="success"
+            @click:close="success = false"
+          />
         </v-card-actions>
       </v-scroll-y-transition>
       <v-scroll-y-transition>
@@ -292,7 +314,12 @@ onMounted(() => {
           <v-alert closable :text="errorMsg" type="error" @click:close="showError = false" />
         </v-card-actions>
       </v-scroll-y-transition>
-      <v-stepper-title class="mt-2 mb-5 w-1/1" :steps="steps" :current-step="currentStep" @active-step="activeStep" />
+      <v-stepper-title
+        class="mt-2 mb-5 w-1/1"
+        :steps="steps"
+        :current-step="currentStep"
+        @active-step="activeStep"
+      />
 
       <v-divider class="border-black"></v-divider>
 
@@ -301,12 +328,18 @@ onMounted(() => {
           <span>{{ steps[currentStep].title }}</span>
         </v-card-title>
 
-        <v-window v-model="currentStep" :touch="{ left: () => { }, right: () => { } }">
+        <v-window v-model="currentStep" :touch="{ left: () => {}, right: () => {} }">
           <v-window-item :value="0">
             <v-card-text>
-              <v-text-field v-model="name.value.value" label="Name" placeholder="Awesome learnware"
-                append-inner-icon="mdi-close" @click:append-inner="name.value.value = ''"
-                :error-messages="name.errorMessage.value" counter="30"></v-text-field>
+              <v-text-field
+                v-model="name.value.value"
+                label="Name"
+                placeholder="Awesome learnware"
+                append-inner-icon="mdi-close"
+                :error-messages="name.errorMessage.value"
+                counter="30"
+                @click:append-inner="name.value.value = ''"
+              ></v-text-field>
               <span class="text-caption text-grey-darken-1">
                 This is the name of the learnware you contribute.
               </span>
@@ -315,27 +348,45 @@ onMounted(() => {
 
           <v-window-item :value="1">
             <v-card-text class="pt-0">
-              <spec-tag v-model:data-type="dataType.value.value" v-model:task-type="taskType.value.value"
-                v-model:library-type="libraryType.value.value" v-model:tag-list="tagList.value.value"
-                :error-messages="dataType.errorMessage.value || taskType.errorMessage.value || libraryType.errorMessage.value || tagList.errorMessage.value" />
+              <spec-tag
+                v-model:data-type="dataType.value.value"
+                v-model:task-type="taskType.value.value"
+                v-model:library-type="libraryType.value.value"
+                v-model:tag-list="tagList.value.value"
+                :error-messages="
+                  dataType.errorMessage.value ||
+                  taskType.errorMessage.value ||
+                  libraryType.errorMessage.value ||
+                  tagList.errorMessage.value
+                "
+              />
             </v-card-text>
           </v-window-item>
 
           <v-window-item :value="2">
             <div class="pa-4">
-              <v-textarea v-model="description.value.value" label="Description"
-                placeholder="This is a description of the learnware" :error-messages="description.errorMessage.value"
-                counter="200"></v-textarea>
+              <v-textarea
+                v-model="description.value.value"
+                label="Description"
+                placeholder="This is a description of the learnware"
+                :error-messages="description.errorMessage.value"
+                counter="200"
+              ></v-textarea>
             </div>
           </v-window-item>
 
           <v-window-item :value="3">
             <div class="p-4 m-auto">
-              <file-upload v-model:files="files.value.value" :error-messages="files.errorMessage.value"></file-upload>
+              <file-upload
+                v-model:files="files.value.value"
+                :error-messages="files.errorMessage.value"
+              ></file-upload>
             </div>
             <v-card-text class="text-lg <sm:text-sm">
-              <span class="cursor-pointer" @click="router.push('/instruction')"><u>Click here</u></span> for instructions
-              on how to create the required zip file.
+              <span class="cursor-pointer" @click="router.push('/instruction')"
+                ><u>Click here</u></span
+              >
+              for instructions on how to create the required zip file.
             </v-card-text>
           </v-window-item>
         </v-window>
@@ -343,15 +394,24 @@ onMounted(() => {
         <v-divider></v-divider>
 
         <v-card-actions>
-          <v-btn v-if="currentStep > 0" variant="outlined" @click="PrevStep">
-            Back
-          </v-btn>
+          <v-btn v-if="currentStep > 0" variant="outlined" @click="PrevStep"> Back </v-btn>
           <v-spacer></v-spacer>
-          <v-btn v-if="currentStep < steps.length - 1" color="primary" variant="flat" @click="nextStep"
-            :disabled="!allowChangePage">
+          <v-btn
+            v-if="currentStep < steps.length - 1"
+            color="primary"
+            variant="flat"
+            :disabled="!allowChangePage"
+            @click="nextStep"
+          >
             Next
           </v-btn>
-          <v-btn v-else color="primary" variant="flat" @click="submit" :disabled="submiting || !valid">
+          <v-btn
+            v-else
+            color="primary"
+            variant="flat"
+            :disabled="submiting || !valid"
+            @click="submit"
+          >
             Finish
           </v-btn>
         </v-card-actions>

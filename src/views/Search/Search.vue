@@ -1,19 +1,17 @@
 <script setup>
-import {
-  ref, computed, watch, onMounted, nextTick, onActivated,
-} from 'vue';
-import { useDisplay } from 'vuetify';
-import UserRequirement from '@/components/Search/UserRequirement.vue';
-import PageLearnwareList from '@/components/Learnware/PageLearnwareList.vue';
-import MultiRecommendedLearnwareList from '@/components/Learnware/MultiRecommendedLearnwareList.vue';
+import { ref, computed, watch, onMounted, nextTick, onActivated } from "vue";
+import { useDisplay } from "vuetify";
+import UserRequirement from "../../components/Search/UserRequirement.vue";
+import PageLearnwareList from "../../components/Learnware/PageLearnwareList.vue";
+import MultiRecommendedLearnwareList from "../../components/Learnware/MultiRecommendedLearnwareList.vue";
 
 const display = useDisplay();
 
 const filters = ref({
-  name: '',
-  dataType: '',
-  taskType: '',
-  libraryType: '',
+  name: "",
+  dataType: "",
+  taskType: "",
+  libraryType: "",
   tagList: [],
   files: [],
 });
@@ -32,10 +30,13 @@ const anchorRef = ref(null);
 const scrollTop = ref(0);
 
 const showError = ref(false);
-const errorMsg = ref('');
+const errorMsg = ref("");
 const errorTimer = ref(null);
 
-const showMultiRecommended = computed(() => multiRecommendedLearnwareItems.value.length > 1 && singleRecommendedLearnwarePage.value === 1);
+const showMultiRecommended = computed(
+  () =>
+    multiRecommendedLearnwareItems.value.length > 1 && singleRecommendedLearnwarePage.value === 1,
+);
 const multiRecommendedTips = ref(true);
 const singleRecommendedTips = ref(true);
 
@@ -47,33 +48,35 @@ function fetchByFilterAndPage(filters, page) {
   showError.value = false;
   loading.value = true;
 
-  fetch('/api/engine/get_semantic_specification')
+  fetch("/api/engine/get_semantic_specification")
     .then((res) => res.json())
     .then((res) => {
       const semanticSpec = res.data.semantic_specification;
-      semanticSpec.Name.Values = filters.name ? filters.name : '';
+      semanticSpec.Name.Values = filters.name ? filters.name : "";
       semanticSpec.Data.Values = filters.dataType ? [filters.dataType] : [];
       semanticSpec.Task.Values = filters.taskType ? [filters.taskType] : [];
       semanticSpec.Library.Values = filters.libraryType ? [filters.libraryType] : [];
       semanticSpec.Scenario.Values = filters.tagList ? filters.tagList : [];
-      semanticSpec.Description.Values = '';
+      semanticSpec.Description.Values = "";
 
       const fd = new FormData();
-      fd.append('semantic_specification', JSON.stringify(semanticSpec));
-      fd.append('statistical_specification', filters.files?.length > 0 ? filters.files[0] : null);
-      fd.append('limit', singleRecommendedLearnwarePageSize.value);
-      fd.append('page', page);
+      fd.append("semantic_specification", JSON.stringify(semanticSpec));
+      fd.append("statistical_specification", filters.files?.length > 0 ? filters.files[0] : null);
+      fd.append("limit", singleRecommendedLearnwarePageSize.value);
+      fd.append("page", page);
       return fd;
     })
-    .then((fd) => fetch('/api/engine/search_learnware', {
-      method: 'POST',
-      body: fd,
-    }))
+    .then((fd) =>
+      fetch("/api/engine/search_learnware", {
+        method: "POST",
+        body: fd,
+      }),
+    )
     .then((res) => {
       if (res.status === 200) {
         return res;
       }
-      throw new Error('Network error');
+      throw new Error("Network error");
     })
     .then((res) => res.json())
     .then((res) => {
@@ -92,7 +95,9 @@ function fetchByFilterAndPage(filters, page) {
             tagList: item.semantic_specification.Scenario.Values,
           }));
           if (res.data.learnware_list_multi.length > 0) {
-            multiRecommendedMatchScore.value = Math.floor(res.data.learnware_list_multi[0].matching * 100);
+            multiRecommendedMatchScore.value = Math.floor(
+              res.data.learnware_list_multi[0].matching * 100,
+            );
           }
 
           singleRecommendedLearnwareItems.value = res.data.learnware_list_single.map((item) => ({
@@ -119,7 +124,7 @@ function fetchByFilterAndPage(filters, page) {
       loading.value = false;
       showError.value = true;
       clearTimeout(errorTimer.value);
-      setTimeout(() => showError.value = false, 2000);
+      setTimeout(() => (showError.value = false), 2000);
       errorMsg.value = err.message;
     });
 }
@@ -136,7 +141,7 @@ watch(
   () => singleRecommendedLearnwarePage.value,
   () => {
     if (anchorRef.value) {
-      if (display.name.value === 'xs') {
+      if (display.name.value === "xs") {
         anchorRef.value.scrollIntoView();
       }
     }
@@ -151,7 +156,7 @@ watch(
     fetchByFilterAndPage(newFilters, newPage - 1);
 
     if (contentRef.value) {
-      if (display.name.value !== 'xs') {
+      if (display.name.value !== "xs") {
         contentRef.value.scrollTop = 0;
       }
     }
@@ -166,7 +171,7 @@ onActivated(() => {
 
 onMounted(() => {
   nextTick(() => {
-    contentRef.value.addEventListener('scroll', () => {
+    contentRef.value.addEventListener("scroll", () => {
       scrollTop.value = contentRef.value.scrollTop;
     });
   });
@@ -177,7 +182,13 @@ onMounted(() => {
   <div class="search-container">
     <v-scroll-y-transition class="fixed w-1/1 z-index-10">
       <v-card-actions v-if="showError">
-        <v-alert class="w-1/1 max-w-900px mx-auto" closable :text="errorMsg" type="error" @click:close="showError = false" />
+        <v-alert
+          class="w-1/1 max-w-900px mx-auto"
+          closable
+          :text="errorMsg"
+          type="error"
+          @click:close="showError = false"
+        />
       </v-card-actions>
     </v-scroll-y-transition>
 
@@ -187,31 +198,53 @@ onMounted(() => {
       <v-card v-if="showMultiRecommended" flat class="sm:m-2 mt-4 bg-transparent">
         <v-card-title v-if="!multiRecommendedTips">Recommended multiple learnwares</v-card-title>
         <v-card-text v-if="multiRecommendedTips" class="!p-2">
-          <v-alert v-model="multiRecommendedTips" title="Recommended multiple learnwares"
+          <v-alert
+            v-model="multiRecommendedTips"
+            title="Recommended multiple learnwares"
             text="The learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to great effectiveness."
-            closable color="success">
+            closable
+            color="success"
+          >
             <template #prepend>
               <v-icon icon="mdi-hexagon-multiple" size="x-large"></v-icon>
             </template>
           </v-alert>
         </v-card-text>
-        <multi-recommended-learnware-list :items="multiRecommendedLearnwareItems"
-          :matchScore="multiRecommendedMatchScore" :filters="filters" @page-change="pageChange" :loading="loading" />
+        <multi-recommended-learnware-list
+          :items="multiRecommendedLearnwareItems"
+          :match-score="multiRecommendedMatchScore"
+          :filters="filters"
+          :loading="loading"
+          @page-change="pageChange"
+        />
       </v-card>
       <v-card flat class="sm:m-2 mt-4 bg-transparent">
-        <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">Recommended single learnwares</v-card-title>
+        <v-card-title v-if="showMultiRecommended && !singleRecommendedTips"
+          >Recommended single learnwares</v-card-title
+        >
         <v-card-text v-if="showMultiRecommended && singleRecommendedTips" class="!p-2">
-          <v-alert v-model="singleRecommendedTips" title="Recommended single learnware"
+          <v-alert
+            v-model="singleRecommendedTips"
+            title="Recommended single learnware"
             text="The listed learnwares are not highly recommended as they may not precisely match your task requirements in terms of statistical specifications. However, they are still available for your use."
-            closable color="info">
+            closable
+            color="info"
+          >
             <template #prepend>
               <v-icon icon="mdi-hexagon" size="x-large"></v-icon>
             </template>
           </v-alert>
         </v-card-text>
-        <page-learnware-list :items="singleRecommendedLearnwareItems" :filters="filters" @page-change="pageChange"
-          :page="singleRecommendedLearnwarePage" :page-num="singleRecommendedLearnwarePageNum"
-          :page-size="singleRecommendedLearnwarePageSize" :loading="loading" :show-pagination="singleRecommendedLearnwarePageNum > 1" />
+        <page-learnware-list
+          :items="singleRecommendedLearnwareItems"
+          :filters="filters"
+          :page="singleRecommendedLearnwarePage"
+          :page-num="singleRecommendedLearnwarePageNum"
+          :page-size="singleRecommendedLearnwarePageSize"
+          :loading="loading"
+          :show-pagination="singleRecommendedLearnwarePageNum > 1"
+          @page-change="pageChange"
+        />
       </v-card>
     </div>
   </div>
