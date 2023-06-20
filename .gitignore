@@ -7,6 +7,7 @@ __pycache__/
 *.ipynb
 .ipynb_checkpoints
 files/*
+.history/
 !files/.gitkeep
 learnware
 learnware_pool/
