@@ -1,5 +1,5 @@
 <script setup>
-import analogyImg from "../../assets/images/analogy.png";
+import analogyImg from "../../assets/images/home/analogy.png";
 </script>
 
 <template>

@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import learnwareLogo from "/logo.svg";
+import learnwareLogo from "/logo.svg?url";
 
 const emit = defineEmits(["update:drawerOpen"]);
 const router = useRouter();

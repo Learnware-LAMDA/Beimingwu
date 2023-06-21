@@ -4,7 +4,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useField, useForm } from "vee-validate";
 import { hex_md5 } from "../../utils/encrypt";
-import collaborationImg from "../../assets/images/collaboration.svg";
+import collaborationImg from "../../assets/images/public/collaboration.svg?url";
 
 const store = useStore();
 

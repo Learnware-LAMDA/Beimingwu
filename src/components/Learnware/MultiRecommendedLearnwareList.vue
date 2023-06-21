@@ -7,7 +7,7 @@ import JSZip from "jszip";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import colors from "vuetify/lib/util/colors";
 import LearnwareCard from "./LearnwareCard.vue";
-import oopsImg from "../../assets/images/oops.svg";
+import oopsImg from "../../assets/images/public/oops.svg?url";
 
 const display = useDisplay();
 

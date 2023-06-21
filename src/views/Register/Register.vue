@@ -3,7 +3,7 @@ import { ref, computed } from "vue";
 import { useField, useForm } from "vee-validate";
 import RegSucDialog from "../../components/User/RegSucDialog.vue";
 import { hex_md5 } from "../../utils/encrypt";
-import collaborationImg from "../../assets/images/collaboration.svg";
+import collaborationImg from "../../assets/images/public/collaboration.svg?url";
 
 const { handleSubmit, meta } = useForm({
   validationSchema: {
