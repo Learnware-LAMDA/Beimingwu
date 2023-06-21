@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import LearnwareCard from "./LearnwareCard.vue";
-import oopsImg from "/oops.svg";
+import oopsImg from "../../assets/images/oops.svg";
 
 const emit = defineEmits(["click:delete"]);
 
