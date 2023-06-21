@@ -1,14 +1,14 @@
 <script setup>
 import { ref, watch } from "vue";
 import GridBtns from "./GridBtns.vue";
-import ClassificationBtn from "./TaskTypeBtn/ClassificationBtn.vue";
-import ClusteringBtn from "./TaskTypeBtn/ClusteringBtn.vue";
-import DetectionBtn from "./TaskTypeBtn/DetectionBtn.vue";
-import ExtractionBtn from "./TaskTypeBtn/ExtractionBtn.vue";
-import RegressionBtn from "./TaskTypeBtn/RegressionBtn.vue";
-import SegmantationBtn from "./TaskTypeBtn/SegmentationBtn.vue";
-import RankingBtn from "./TaskTypeBtn/RankingBtn.vue";
-import OthersBtn from "./TaskTypeBtn/OthersBtn.vue";
+import ClassificationBtn from "../../../assets/images/specification/taskType/classification.svg?component";
+import ClusteringBtn from "../../../assets/images/specification/taskType/clustering.svg?component";
+import DetectionBtn from "../../../assets/images/specification/taskType/detection.svg?component";
+import ExtractionBtn from "../../../assets/images/specification/taskType/extraction.svg?component";
+import RegressionBtn from "../../../assets/images/specification/taskType/regression.svg?component";
+import SegmantationBtn from "../../../assets/images/specification/taskType/segmantation.svg?component";
+import RankingBtn from "../../../assets/images/specification/taskType/ranking.svg?component";
+import OthersBtn from "../../../assets/images/specification/taskType/others.svg?component";
 
 const emit = defineEmits(["update:value"]);
 

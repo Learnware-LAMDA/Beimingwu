@@ -2,11 +2,11 @@
 import { ref, computed } from "vue";
 import { useDisplay } from "vuetify";
 import colors from "vuetify/lib/util/colors";
-import AudioBtn from "../Specification/SpecTag/DataTypeBtn/AudioBtn.vue";
-import VideoBtn from "../Specification/SpecTag/DataTypeBtn/VideoBtn.vue";
-import TextBtn from "../Specification/SpecTag/DataTypeBtn/TextBtn.vue";
-import ImageBtn from "../Specification/SpecTag/DataTypeBtn/ImageBtn.vue";
-import TableBtn from "../Specification/SpecTag/DataTypeBtn/TableBtn.vue";
+import AudioBtn from "../../assets/images/specification/dataType/audio.svg?component";
+import VideoBtn from "../../assets/images/specification/dataType/video.svg?component";
+import TextBtn from "../../assets/images/specification/dataType/text.svg?component";
+import ImageBtn from "../../assets/images/specification/dataType/image.svg?component";
+import TableBtn from "../../assets/images/specification/dataType/table.svg?component";
 import { downloadLearnware } from "../../utils";
 
 const props = defineProps({

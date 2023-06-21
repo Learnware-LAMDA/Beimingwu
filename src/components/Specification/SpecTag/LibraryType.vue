@@ -1,10 +1,10 @@
 <script setup>
 import { ref, watch } from "vue";
 import GridBtns from "./GridBtns.vue";
-import TensorFlowBtn from "./LibraryType/TensorFlowBtn.vue";
-import PyTorchBtn from "./LibraryType/PyTorchBtn.vue";
-import ScikitLearnBtn from "./LibraryType/ScikitLearnBtn.vue";
-import OthersBtn from "./LibraryType/OthersBtn.vue";
+import TensorFlowBtn from "../../../assets/images/specification/libraryType/tensorflow.svg?component";
+import PyTorchBtn from "../../../assets/images/specification/libraryType/pytorch.svg?component";
+import ScikitLearnBtn from "../../../assets/images/specification/libraryType/scikit-learn.svg?component";
+import OthersBtn from "../../../assets/images/specification/libraryType/others.svg?component";
 
 const emit = defineEmits(["update:value"]);
 
