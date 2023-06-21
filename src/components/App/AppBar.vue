@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import lamdaLogo from "/logo.svg";
+import learnwareLogo from "/logo.svg";
 
 const emit = defineEmits(["update:drawerOpen"]);
 const router = useRouter();
@@ -47,7 +47,7 @@ const filteredRoutes = computed(() =>
         @click="() => emit('update:drawerOpen', !drawerOpen)"
       ></v-app-bar-nav-icon>
       <v-toolbar-items class="cursor-pointer" @click="() => router.push('/')">
-        <v-img contain width="180" :src="lamdaLogo"></v-img>
+        <v-img contain width="180" :src="learnwareLogo"></v-img>
       </v-toolbar-items>
       <v-spacer></v-spacer>
 
