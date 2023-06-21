@@ -31,8 +31,6 @@ function getLearnwareDetailById(id) {
     .then((res) => {
       switch (res.code) {
         case 0: {
-          loading.value = false;
-
           const learnwareInfo = res.data ? res.data.learnware_info : {};
           learnware.value = {
             id: learnwareInfo.learnware_id,
@@ -51,10 +49,12 @@ function getLearnwareDetailById(id) {
       }
     })
     .catch((err) => {
-      console.error(err);
       loading.value = false;
       showError.value = true;
       errorMsg.value = err.message;
+    })
+    .finally(() => {
+      loading.value = false;
     });
 }
 

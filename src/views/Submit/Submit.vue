@@ -192,7 +192,6 @@ const submit = handleSubmit((values) => {
     .then((res) => {
       switch (res.code) {
         case 0: {
-          submiting.value = false;
           success.value = true;
 
           setTimeout(() => {
@@ -202,7 +201,6 @@ const submit = handleSubmit((values) => {
           return;
         }
         case 11: {
-          submiting.value = false;
           store.commit("setLoggedIn", false);
           store.commit("setShowGlobalError", true);
           store.commit("setGlobalErrorMsg", "Please login first");
@@ -217,13 +215,15 @@ const submit = handleSubmit((values) => {
       }
     })
     .catch((err) => {
-      submiting.value = false;
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
       errorTimer.value = setTimeout(() => {
         showError.value = false;
       }, 3000);
+    })
+    .finally(() => {
+      submiting.value = false;
     });
 });
 

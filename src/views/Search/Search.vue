@@ -82,8 +82,6 @@ function fetchByFilterAndPage(filters, page) {
     .then((res) => {
       switch (res.code) {
         case 0: {
-          loading.value = false;
-
           multiRecommendedLearnwareItems.value = res.data.learnware_list_multi.map((item) => ({
             id: item.learnware_id,
             username: item.username,
@@ -121,11 +119,13 @@ function fetchByFilterAndPage(filters, page) {
     })
     .catch((err) => {
       console.error(err);
-      loading.value = false;
       showError.value = true;
       clearTimeout(errorTimer.value);
       setTimeout(() => (showError.value = false), 2000);
       errorMsg.value = err.message;
+    })
+    .finally(() => {
+      loading.value = false;
     });
 }
 

@@ -24,13 +24,11 @@ onMounted(() => {
       }
       throw new Error("Logout failed");
     })
-    .then(() => {
-      store.commit("setLoggedIn", false);
-      router.push("/");
-    })
     .catch((err) => {
       store.commit("setShowGlobalError", true);
       store.commit("setGlobalErrorMsg", err.message);
+    })
+    .finally(() => {
       store.commit("setLoggedIn", false);
       router.push("/");
     });

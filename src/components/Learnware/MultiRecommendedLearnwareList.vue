@@ -88,13 +88,14 @@ function downloadAll() {
       a.href = url;
       a.download = "learnwares.zip";
       a.click();
-      downloading.value = false;
     })
     .catch((err) => {
-      downloading.value = false;
       console.error(err);
       store.commit("setShowGlobalError", true);
       store.commit("setGlobalErrorMsg", err.message);
+    })
+    .finally(() => {
+      downloading.value = false;
     });
 }
 
