@@ -4,12 +4,12 @@ import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useField, useForm } from "vee-validate";
-import { getRole } from "../../request/auth";
-import { addLearnware } from "../../request/user";
-import VStepperTitle from "../../components/Public/VStepperTitle.vue";
-import FileUpload from "../../components/Specification/FileUpload.vue";
-import SpecTag from "../../components/Specification/SpecTag.vue";
-import SubmitingDialog from "./SubmitingDialog.vue";
+import { getRole } from "../request/auth";
+import { addLearnware } from "../request/user";
+import VStepperTitle from "../components/Public/VStepperTitle.vue";
+import FileUpload from "../components/Specification/FileUpload.vue";
+import SpecTag from "../components/Specification/SpecTag.vue";
+import SubmitingDialog from "../components/Dialogs/SubmitingDialog.vue";
 
 const route = useRoute();
 const router = useRouter();

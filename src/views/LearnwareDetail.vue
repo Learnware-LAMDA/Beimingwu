@@ -2,8 +2,8 @@
 import { ref, onMounted } from "vue";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
-import { getLearnwareDetailById } from "../../request/engine";
-import { downloadLearnwareSync } from "../../utils";
+import { getLearnwareDetailById } from "../request/engine";
+import { downloadLearnwareSync } from "../utils";
 
 const route = useRoute();
 const router = useRouter();

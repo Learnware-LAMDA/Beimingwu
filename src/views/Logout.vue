@@ -2,7 +2,7 @@
 import { onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { logout } from "../../request/auth";
+import { logout } from "../request/auth";
 
 const store = useStore();
 

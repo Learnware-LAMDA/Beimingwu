@@ -1,10 +1,10 @@
 <script setup>
 import { ref, computed, watch, onMounted, nextTick, onActivated } from "vue";
 import { useDisplay } from "vuetify";
-import { searchLearnware } from "../../request/engine";
-import UserRequirement from "../../components/Search/UserRequirement.vue";
-import PageLearnwareList from "../../components/Learnware/PageLearnwareList.vue";
-import MultiRecommendedLearnwareList from "../../components/Learnware/MultiRecommendedLearnwareList.vue";
+import { searchLearnware } from "../request/engine";
+import UserRequirement from "../components/Search/UserRequirement.vue";
+import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
+import MultiRecommendedLearnwareList from "../components/Learnware/MultiRecommendedLearnwareList.vue";
 
 const display = useDisplay();
 

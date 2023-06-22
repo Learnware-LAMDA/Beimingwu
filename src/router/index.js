@@ -7,7 +7,7 @@ const Router = createRouter({
     {
       path: "/",
       name: "Home",
-      component: () => import("../views/Home/Home.vue"),
+      component: () => import("../views/Home.vue"),
       meta: {
         showInNavBar: true,
         icon: "mdi-home",
@@ -16,7 +16,7 @@ const Router = createRouter({
     {
       path: "/search",
       name: "Search",
-      component: () => import("../views/Search/Search.vue"),
+      component: () => import("../views/Search.vue"),
       meta: {
         showInNavBar: true,
         keepAlive: true,
@@ -26,7 +26,7 @@ const Router = createRouter({
     {
       path: "/submit",
       name: "Submit",
-      component: () => import("../views/Submit/Submit.vue"),
+      component: () => import("../views/Submit.vue"),
       meta: {
         showInNavBar: true,
         requiredLogin: true,
@@ -37,7 +37,7 @@ const Router = createRouter({
     {
       path: "/instruction",
       name: "Instruction",
-      component: () => import("../views/Instruction/Instruction.vue"),
+      component: () => import("../views/Instruction.vue"),
       meta: {
         showInNavBar: false,
         requiredLogin: false,
@@ -47,7 +47,7 @@ const Router = createRouter({
     {
       path: "/mylearnware",
       name: "MyLearnware",
-      component: () => import("../views/MyLearnware/MyLearnware.vue"),
+      component: () => import("../views/MyLearnware.vue"),
       meta: {
         name: "My Learnware",
         showInNavBar: true,
@@ -59,7 +59,7 @@ const Router = createRouter({
     {
       path: "/learnwaredetail",
       name: "LearnwareDetail",
-      component: () => import("../views/LearnwareDetail/LearnwareDetail.vue"),
+      component: () => import("../views/LearnwareDetail.vue"),
       meta: {
         showInNavBar: false,
         icon: "mdi-bullseye-arrow",
@@ -68,7 +68,7 @@ const Router = createRouter({
     {
       path: "/login",
       name: "Login",
-      component: () => import("../views/Login/Login.vue"),
+      component: () => import("../views/Login.vue"),
       meta: {
         showInNavBar: true,
         hideWhenLoggedIn: true,
@@ -78,7 +78,7 @@ const Router = createRouter({
     {
       path: "/register",
       name: "Register",
-      component: () => import("../views/Register/Register.vue"),
+      component: () => import("../views/Register.vue"),
       meta: {
         showInNavBar: true,
         hideWhenLoggedIn: true,
@@ -90,7 +90,7 @@ const Router = createRouter({
     {
       path: "/changepassword",
       name: "ChangePassword",
-      component: () => import("../views/ChangePassword/ChangePassword.vue"),
+      component: () => import("../views/ChangePassword.vue"),
       meta: {
         showInNavBar: true,
         requiredLogin: true,
@@ -100,9 +100,19 @@ const Router = createRouter({
       },
     },
     {
+      path: "/docs",
+      name: "Docs",
+      component: () => import("../views/Docs.vue"),
+      meta: {
+        showInNavBar: true,
+        name: "Docs",
+        icon: "mdi-book-open-page-variant",
+      },
+    },
+    {
       path: "/logout",
       name: "Logout",
-      component: () => import("../views/Logout/Logout.vue"),
+      component: () => import("../views/Logout.vue"),
       meta: {
         showInNavBar: true,
         requiredLogin: true,

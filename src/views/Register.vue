@@ -1,10 +1,10 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useField, useForm } from "vee-validate";
-import RegSucDialog from "../../components/User/RegSucDialog.vue";
-import { register } from "../../request/auth";
-import { hex_md5 } from "../../utils";
-import collaborationImg from "../../assets/images/public/collaboration.svg?url";
+import RegSucDialog from "../components/User/RegSucDialog.vue";
+import { register } from "../request/auth";
+import { hex_md5 } from "../utils";
+import collaborationImg from "../assets/images/public/collaboration.svg?url";
 
 const { handleSubmit, meta } = useForm({
   validationSchema: {

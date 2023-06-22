@@ -3,9 +3,9 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useField, useForm } from "vee-validate";
-import { changePassword } from "../../request/user";
-import { hex_md5 } from "../../utils";
-import collaborationImg from "../../assets/images/public/collaboration.svg?url";
+import { changePassword } from "../request/user";
+import { hex_md5 } from "../utils";
+import collaborationImg from "../assets/images/public/collaboration.svg?url";
 
 const store = useStore();
 

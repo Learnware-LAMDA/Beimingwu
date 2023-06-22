@@ -2,9 +2,9 @@
 import { ref, onMounted, nextTick, watch, onActivated } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { deleteLearnware, getLearnwareList } from "../../request/user";
-import PageLearnwareList from "../../components/Learnware/PageLearnwareList.vue";
-import ConfirmDialog from "../../components/Dialogs/ConfirmDialog.vue";
+import { deleteLearnware, getLearnwareList } from "../request/user";
+import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
+import ConfirmDialog from "../components/Dialogs/ConfirmDialog.vue";
 
 const store = useStore();
 
