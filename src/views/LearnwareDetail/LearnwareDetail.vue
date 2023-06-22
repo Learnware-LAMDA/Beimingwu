@@ -2,7 +2,8 @@
 import { ref, onMounted } from "vue";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
-import { downloadLearnware } from "../../utils";
+import { getLearnwareDetailById } from "../../request/engine";
+import { downloadLearnwareSync } from "../../utils";
 
 const route = useRoute();
 const router = useRouter();
@@ -17,17 +18,8 @@ const loading = ref(false);
 const showError = ref(false);
 const errorMsg = ref("");
 
-function getLearnwareDetailById(id) {
-  fetch(`/api/engine/get_learnware_info?learnware_id=${id}`, {
-    method: "GET",
-  })
-    .then((res) => {
-      if (res.status === 200) {
-        return res;
-      }
-      throw new Error("Network error");
-    })
-    .then((res) => res.json())
+function getLearnwareDetail(id) {
+  getLearnwareDetailById({ id })
     .then((res) => {
       switch (res.code) {
         case 0: {
@@ -61,7 +53,7 @@ function getLearnwareDetailById(id) {
 onMounted(() => {
   const _id = route.query.id;
   learnwareId.value = _id;
-  getLearnwareDetailById(learnwareId.value);
+  getLearnwareDetail(learnwareId.value);
 });
 </script>
 
@@ -93,7 +85,7 @@ onMounted(() => {
         </v-card-title>
 
         <v-card-actions>
-          <v-btn icon="mdi-download" @click="() => downloadLearnware(learnware.id)" />
+          <v-btn icon="mdi-download" @click="() => downloadLearnwareSync(learnware.id)" />
         </v-card-actions>
       </div>
 

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted, nextTick, onActivated } from "vue";
 import { useDisplay } from "vuetify";
+import { searchLearnware } from "../../request/engine";
 import UserRequirement from "../../components/Search/UserRequirement.vue";
 import PageLearnwareList from "../../components/Learnware/PageLearnwareList.vue";
 import MultiRecommendedLearnwareList from "../../components/Learnware/MultiRecommendedLearnwareList.vue";
@@ -48,37 +49,16 @@ function fetchByFilterAndPage(filters, page) {
   showError.value = false;
   loading.value = true;
 
-  fetch("/api/engine/get_semantic_specification")
-    .then((res) => res.json())
-    .then((res) => {
-      const semanticSpec = res.data.semantic_specification;
-      semanticSpec.Name.Values = filters.name ? filters.name : "";
-      semanticSpec.Data.Values = filters.dataType ? [filters.dataType] : [];
-      semanticSpec.Task.Values = filters.taskType ? [filters.taskType] : [];
-      semanticSpec.Library.Values = filters.libraryType ? [filters.libraryType] : [];
-      semanticSpec.Scenario.Values = filters.tagList ? filters.tagList : [];
-      semanticSpec.Description.Values = "";
-
-      const fd = new FormData();
-      fd.append("semantic_specification", JSON.stringify(semanticSpec));
-      fd.append("statistical_specification", filters.files?.length > 0 ? filters.files[0] : null);
-      fd.append("limit", singleRecommendedLearnwarePageSize.value);
-      fd.append("page", page);
-      return fd;
-    })
-    .then((fd) =>
-      fetch("/api/engine/search_learnware", {
-        method: "POST",
-        body: fd,
-      }),
-    )
-    .then((res) => {
-      if (res.status === 200) {
-        return res;
-      }
-      throw new Error("Network error");
-    })
-    .then((res) => res.json())
+  searchLearnware({
+    name: filters.name,
+    dataType: filters.dataType,
+    taskType: filters.taskType,
+    libraryType: filters.libraryType,
+    tagList: filters.tagList,
+    files: filters.files,
+    page,
+    limit: singleRecommendedLearnwarePageSize.value,
+  })
     .then((res) => {
       switch (res.code) {
         case 0: {

@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { downloadLearnware } from "../../request/engine";
 import JSZip from "jszip";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import colors from "vuetify/lib/util/colors";
@@ -68,13 +69,7 @@ function downloadAll() {
   const zip = new JSZip();
   Promise.all(
     props.items.map((item) =>
-      fetch(`/api/engine/download_learnware?learnware_id=${item.id}`)
-        .then((res) => {
-          if (res.status === 200) {
-            return res;
-          }
-          throw new Error("Network error");
-        })
+      downloadLearnware({ id: item.id })
         .then((res) => res.arrayBuffer())
         .then((arrayBuffer) => {
           zip.file(`${item.name}.zip`, arrayBuffer);

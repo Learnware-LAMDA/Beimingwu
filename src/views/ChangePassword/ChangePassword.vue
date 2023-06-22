@@ -3,7 +3,8 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useField, useForm } from "vee-validate";
-import { hex_md5 } from "../../utils/encrypt";
+import { changePassword } from "../../request/user";
+import { hex_md5 } from "../../utils";
 import collaborationImg from "../../assets/images/public/collaboration.svg?url";
 
 const store = useStore();
@@ -46,25 +47,10 @@ const errorTimer = ref(null);
 const valid = computed(() => meta.value.valid);
 
 const change = handleSubmit((values) => {
-  const data = {
-    old_password: hex_md5(values.oldPassword),
-    new_password: hex_md5(values.newPassword),
-  };
-
-  fetch("/api/user/change_password", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+  changePassword({
+    oldPasswordMd5: hex_md5(values.oldPassword),
+    newPasswordMd5: hex_md5(values.newPassword),
   })
-    .then((res) => {
-      if (res.status === 200) {
-        return res;
-      }
-      throw new Error("Network error");
-    })
-    .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
         case 0: {
@@ -172,9 +158,9 @@ function closeErrorAlert() {
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn block class="bg-primary py-5" color="white" :disabled="!valid" @click="change"
-            >Change</v-btn
-          >
+          <v-btn block class="bg-primary py-5" color="white" :disabled="!valid" @click="change">
+            Change
+          </v-btn>
         </v-card-actions>
       </v-card>
     </div>

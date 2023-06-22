@@ -3,7 +3,8 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useField, useForm } from "vee-validate";
-import { hex_md5 } from "../../utils/encrypt";
+import { login } from "../../request/auth";
+import { hex_md5 } from "../../utils";
 import collaborationImg from "../../assets/images/public/collaboration.svg?url";
 
 const store = useStore();
@@ -37,26 +38,11 @@ const errorTimer = ref(null);
 
 const valid = computed(() => meta.value.valid);
 
-const login = handleSubmit((values) => {
-  const data = {
+const submit = handleSubmit((values) => {
+  login({
     email: values.email,
-    password: hex_md5(values.password),
-  };
-
-  fetch("/api/auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+    passwordMd5: hex_md5(values.password),
   })
-    .then((res) => {
-      if (res.status === 200) {
-        return res;
-      }
-      throw new Error("Network error");
-    })
-    .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
         case 0: {
@@ -138,12 +124,12 @@ function closeErrorAlert() {
               label="Password"
               :error-messages="password.errorMessage.value"
               @click:append="showPassword = !showPassword"
-              @keyup.enter="login"
+              @keyup.enter="submit"
             ></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn block class="bg-primary py-5" color="white" :disabled="!valid" @click="login"
+          <v-btn block class="bg-primary py-5" color="white" :disabled="!valid" @click="submit"
             >Login</v-btn
           >
         </v-card-actions>

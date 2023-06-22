@@ -2,7 +2,8 @@
 import { ref, computed } from "vue";
 import { useField, useForm } from "vee-validate";
 import RegSucDialog from "../../components/User/RegSucDialog.vue";
-import { hex_md5 } from "../../utils/encrypt";
+import { register } from "../../request/auth";
+import { hex_md5 } from "../../utils";
 import collaborationImg from "../../assets/images/public/collaboration.svg?url";
 
 const { handleSubmit, meta } = useForm({
@@ -46,26 +47,11 @@ const errorTimer = ref(null);
 const valid = computed(() => meta.value.valid);
 
 const submit = handleSubmit((values) => {
-  const data = {
+  register({
     username: values.userName,
     email: values.email,
-    password: hex_md5(values.password),
-  };
-
-  fetch("/api/auth/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+    passwordMd5: hex_md5(values.password),
   })
-    .then((res) => {
-      if (res.status === 200) {
-        return res;
-      }
-      throw new Error("Network error");
-    })
-    .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
         case 0:

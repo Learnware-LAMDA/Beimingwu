@@ -7,7 +7,7 @@ import VideoBtn from "../../assets/images/specification/dataType/video.svg?compo
 import TextBtn from "../../assets/images/specification/dataType/text.svg?component";
 import ImageBtn from "../../assets/images/specification/dataType/image.svg?component";
 import TableBtn from "../../assets/images/specification/dataType/table.svg?component";
-import { downloadLearnware } from "../../utils";
+import { downloadLearnwareSync } from "../../utils";
 
 const props = defineProps({
   item: {
@@ -150,7 +150,7 @@ function handleClickDelete(id) {
           flat
           icon="mdi-download"
           :size="greaterThanXs ? undefined : 'small'"
-          @click.stop="() => downloadLearnware(item.id)"
+          @click.stop="() => downloadLearnwareSync(item.id)"
         ></v-btn>
         <v-btn
           v-if="isAdmin"

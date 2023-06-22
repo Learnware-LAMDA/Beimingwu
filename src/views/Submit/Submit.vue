@@ -4,6 +4,8 @@ import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useField, useForm } from "vee-validate";
+import { getRole } from "../../request/auth";
+import { addLearnware } from "../../request/user";
 import VStepperTitle from "../../components/Public/VStepperTitle.vue";
 import FileUpload from "../../components/Specification/FileUpload.vue";
 import SpecTag from "../../components/Specification/SpecTag.vue";
@@ -160,36 +162,19 @@ const submit = handleSubmit((values) => {
   success.value = false;
   showError.value = false;
 
-  fetch("/api/engine/get_semantic_specification")
-    .then((res) => res.json())
+  addLearnware({
+    name: values.name,
+    dataType: values.dataType,
+    taskType: values.taskType,
+    libraryType: values.libraryType,
+    tagList: values.tagList,
+    description: values.description,
+    files: values.files,
+  })
     .then((res) => {
-      const semanticSpec = res.data.semantic_specification;
-      semanticSpec.Name.Values = values.name;
-      semanticSpec.Data.Values = values.dataType ? [values.dataType] : [];
-      semanticSpec.Task.Values = values.taskType ? [values.taskType] : [];
-      semanticSpec.Library.Values = values.libraryType ? [values.libraryType] : [];
-      semanticSpec.Scenario.Values = values.tagList;
-      semanticSpec.Description.Values = values.description;
-
-      const fd = new FormData();
-      fd.append("learnware_file", files.value.value[0]);
-      fd.append("semantic_specification", JSON.stringify(semanticSpec));
-      return fd;
-    })
-    .then((fd) =>
-      fetch("/api/user/add_learnware", {
-        method: "POST",
-        body: fd,
-      }),
-    )
-    .then((res) => {
-      if (res.status === 200) {
-        return res;
-      }
-      throw new Error("Network error");
-    })
-    .then((res) => res.json())
-    .then((res) => {
+      console.log(res.code);
+      console.log(typeof res.code);
+      console.log(res.code === 0);
       switch (res.code) {
         case 0: {
           success.value = true;
@@ -215,6 +200,7 @@ const submit = handleSubmit((values) => {
       }
     })
     .catch((err) => {
+      console.log(err);
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
@@ -228,16 +214,7 @@ const submit = handleSubmit((values) => {
 });
 
 function checkLoginStatus() {
-  fetch("/api/auth/get_role", {
-    method: "POST",
-  })
-    .then((res) => {
-      if (res.status === 200) {
-        return res;
-      }
-      throw new Error("Network error");
-    })
-    .then((res) => res.json())
+  getRole()
     .then((res) => {
       switch (res.code) {
         case 0: {

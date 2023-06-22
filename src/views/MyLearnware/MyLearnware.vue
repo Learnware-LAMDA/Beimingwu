@@ -2,6 +2,7 @@
 import { ref, onMounted, nextTick, watch, onActivated } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { deleteLearnware, getLearnwareList } from "../../request/user";
 import PageLearnwareList from "../../components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "../../components/Dialogs/ConfirmDialog.vue";
 
@@ -26,30 +27,15 @@ const scrollTop = ref(0);
 const showError = ref(false);
 const errorMsg = ref("");
 
-function deleteLearnware(id) {
+function handleConfirm() {
   showError.value = false;
 
-  fetch("/api/user/delete_learnware", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      learnware_id: id,
-    }),
-  })
-    .then((res) => {
-      if (res.status === 200) {
-        return res;
-      }
-      throw new Error("Network error");
-    })
-    .then((res) => res.json())
+  deleteLearnware({ id: deleteId.value })
     .then((res) => {
       switch (res.code) {
         case 0: {
           learnwareItems.value.splice(
-            learnwareItems.value.findIndex((item) => item.id === id),
+            learnwareItems.value.findIndex((item) => item.id === deleteId.value),
             1,
           );
           fetchByFilterAndPage(page.value);
@@ -86,23 +72,10 @@ function fetchByFilterAndPage(page) {
   showError.value = false;
   loading.value = true;
 
-  fetch("/api/user/get_learnware_list", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      page: page - 1,
-      limit: pageSize.value,
-    }),
+  getLearnwareList({
+    page: page - 1,
+    limit: pageSize.value,
   })
-    .then((res) => {
-      if (res.status === 200) {
-        return res;
-      }
-      throw new Error("Network error");
-    })
-    .then((res) => res.json())
     .then((res) => {
       switch (res.code) {
         case 0: {
@@ -166,7 +139,7 @@ onMounted(() => {
     ref="contentRef"
     class="fixed flex flex-col w-1/1 overflow-y-scroll justify-start items-center"
   >
-    <confirm-dialog ref="dialog" @confirm="() => deleteLearnware(deleteId)">
+    <confirm-dialog ref="dialog" @confirm="handleConfirm">
       <template #title>
         Confirm to delete &nbsp; <b>{{ deleteName }}</b
         >?
