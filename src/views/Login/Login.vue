@@ -112,7 +112,7 @@ function closeErrorAlert() {
               closable
               :text="errorMsg"
               type="error"
-              @click:close="() => closeErrorAlert"
+              @click:close="closeErrorAlert"
             />
           </v-card-actions>
         </v-scroll-y-transition>
