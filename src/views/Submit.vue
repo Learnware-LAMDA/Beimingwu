@@ -247,24 +247,12 @@ function checkLoginStatus() {
 }
 
 function loadQuery() {
-  if (route.query.name) {
-    name.value.value = route.query.name;
-  }
-  if (route.query.dataType) {
-    dataType.value.value = route.query.dataType;
-  }
-  if (route.query.taskType) {
-    taskType.value.value = route.query.taskType;
-  }
-  if (route.query.libraryType) {
-    libraryType.value.value = route.query.libraryType;
-  }
-  if (route.query.tagList) {
-    tagList.value.value = JSON.parse(route.query.tagList);
-  }
-  if (route.query.description) {
-    description.value.value = route.query.description;
-  }
+  !!route.query.name && (name.value.value = route.query.name);
+  !!route.query.dataType && (dataType.value.value = route.query.dataType);
+  !!route.query.taskType && (taskType.value.value = route.query.taskType);
+  !!route.query.libraryType && (libraryType.value.value = route.query.libraryType);
+  !!route.query.tagList && (tagList.value.value = JSON.parse(route.query.tagList));
+  !!route.query.description && (description.value.value = route.query.description);
 }
 
 onMounted(() => {
