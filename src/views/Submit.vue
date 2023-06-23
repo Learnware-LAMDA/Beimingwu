@@ -221,7 +221,6 @@ function checkLoginStatus() {
           return;
         }
         case 11: {
-          submiting.value = false;
           store.commit("setLoggedIn", false);
           store.commit("setShowGlobalError", true);
           store.commit("setGlobalErrorMsg", "Please login first");
@@ -236,13 +235,15 @@ function checkLoginStatus() {
       }
     })
     .catch((err) => {
-      submiting.value = false;
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
       errorTimer.value = setTimeout(() => {
         showError.value = false;
       }, 3000);
+    })
+    .finally(() => {
+      submiting.value = false;
     });
 }
 
