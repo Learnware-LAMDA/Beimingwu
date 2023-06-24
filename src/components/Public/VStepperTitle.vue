@@ -1,12 +1,12 @@
 <script setup>
-import { computed } from 'vue';
-import { useDisplay } from 'vuetify';
+import { computed } from "vue";
+import { useDisplay } from "vuetify";
 
 const display = useDisplay();
 
-const greaterThanMd = computed(() => ['lg', 'xl'].includes(display.name.value))
+const greaterThanMd = computed(() => ["lg", "xl"].includes(display.name.value));
 
-const emit = defineEmits('active-step')
+const emit = defineEmits("active-step");
 
 const props = defineProps({
   currentStep: {
@@ -17,38 +17,42 @@ const props = defineProps({
     type: Array,
     default: () => [
       {
-        icon: 'mdi-mail',
-        name: 'first',
-        title: 'Sample title 1',
-        subtitle: 'Subtitle sample'
+        icon: "mdi-mail",
+        name: "first",
+        title: "Sample title 1",
+        subtitle: "Subtitle sample",
       },
       {
-        icon: 'mdi-alert',
-        name: 'second',
-        title: 'Sample title 2',
-        subtitle: 'Subtitle sample'
-      }
-    ]
+        icon: "mdi-alert",
+        name: "second",
+        title: "Sample title 2",
+        subtitle: "Subtitle sample",
+      },
+    ],
   },
-})
+});
 
-const isStepActive = (index) => {
-  return props.currentStep === index
-}
+const isStepActive = (index) => props.currentStep === index;
 
 const activeStep = (index) => {
-  emit('active-step', index)
-}
+  emit("active-step", index);
+};
 </script>
 
 <template>
   <div class="w-1/1 mx-auto p-2">
     <div class="stepper-box">
       <div class="steps-wrapper">
-        <div v-for="(step, index) in steps" class="step" @click="() => activeStep(index)" :key="index">
+        <div
+          v-for="(step, index) in steps"
+          :key="index"
+          class="step"
+          @click="() => activeStep(index)"
+        >
           <div class="icon">
             <div class="circle" :class="isStepActive(index) ? 'bg-primary' : 'bg-gray-300'">
-              <v-icon :icon="step.icon" color="white" :size="greaterThanMd ? '1.5rem' : '1rem'"></v-icon>
+              <v-icon :icon="step.icon" color="white" :size="greaterThanMd ? '1.5rem' : '1rem'">
+              </v-icon>
               <div class="divider-line"></div>
             </div>
           </div>

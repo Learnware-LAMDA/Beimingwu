@@ -1,13 +1,13 @@
 <script setup>
-import { ref, watch } from 'vue'
-import GridBtns from './GridBtns.vue'
-import AudioBtn from './DataTypeBtn/AudioBtn.vue'
-import VideoBtn from './DataTypeBtn/VideoBtn.vue'
-import TextBtn from './DataTypeBtn/TextBtn.vue'
-import ImageBtn from './DataTypeBtn/ImageBtn.vue'
-import TableBtn from './DataTypeBtn/TableBtn.vue'
+import { ref, watch } from "vue";
+import GridBtns from "./GridBtns.vue";
+import AudioBtn from "../../../assets/images/specification/dataType/audio.svg?component";
+import VideoBtn from "../../../assets/images/specification/dataType/video.svg?component";
+import TextBtn from "../../../assets/images/specification/dataType/text.svg?component";
+import ImageBtn from "../../../assets/images/specification/dataType/image.svg?component";
+import TableBtn from "../../../assets/images/specification/dataType/table.svg?component";
 
-const emit = defineEmits(['update:value'])
+const emit = defineEmits(["update:value"]);
 
 const props = defineProps({
   value: {
@@ -30,40 +30,47 @@ const props = defineProps({
     type: Number,
     default: 2,
   },
-})
+});
 
-const value = ref(props.value)
+const value = ref(props.value);
 
 watch(
   () => value.value,
-  (newVal) => emit('update:value', newVal)
-)
+  (newVal) => emit("update:value", newVal),
+);
 
 const dataTypeBtns = [
   {
-    title: 'Table',
+    title: "Table",
     icon: TableBtn,
   },
   {
-    title: 'Image',
+    title: "Image",
     icon: ImageBtn,
   },
   {
-    title: 'Text',
+    title: "Text",
     icon: TextBtn,
   },
   {
-    title: 'Video',
+    title: "Video",
     icon: VideoBtn,
   },
   {
-    title: 'Audio',
+    title: "Audio",
     icon: AudioBtn,
   },
-]
+];
 </script>
 
 <template>
-  <grid-btns v-model:value="value" :btns="dataTypeBtns" title="Data type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
+  <grid-btns
+    v-model:value="value"
+    :btns="dataTypeBtns"
+    title="Data type"
+    :cols="cols"
+    :md="md"
+    :sm="sm"
+    :xs="xs"
+  />
 </template>
-

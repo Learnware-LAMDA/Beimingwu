@@ -1,1 +1,2 @@
-export { downloadLearnware } from './download.js'
+export { downloadLearnwareSync } from "./download.js";
+export { hex_md5 } from "./encrypt.js";

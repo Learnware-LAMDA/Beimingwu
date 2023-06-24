@@ -1,6 +1,6 @@
-function downloadLearnware(id) {
-  const url = `/api/engine/download_learnware?learnware_id=${id}`
-  window.open(url)
+function downloadLearnwareSync(id) {
+  const url = `/api/engine/download_learnware?learnware_id=${id}`;
+  window.open(url);
 }
 
-export { downloadLearnware }
+export { downloadLearnwareSync };

@@ -1,10 +1,10 @@
 <script setup>
-import { computed } from 'vue'
-import { useDisplay } from 'vuetify'
+import { computed } from "vue";
+import { useDisplay } from "vuetify";
 
-const emit = defineEmits(['update:value'])
+const emit = defineEmits(["update:value"]);
 
-const display = useDisplay()
+const display = useDisplay();
 
 const props = defineProps({
   value: {
@@ -27,113 +27,112 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
-})
+});
 
 const realCols = computed(() => {
-  let cols = props.cols
+  let { cols } = props;
   if (props.md && display.md.value) {
-    cols = props.md
+    cols = props.md;
   } else if (props.sm && display.sm.value) {
-    cols = props.sm
+    cols = props.sm;
   } else if (props.xs && display.xs.value) {
-    cols = props.xs
+    cols = props.xs;
   }
-  return cols
-})
+  return cols;
+});
 
 const items = [
   {
-    text: 'Business',
-    icon: 'mdi-briefcase',
+    text: "Business",
+    icon: "mdi-briefcase",
   },
   {
-    text: 'Financial',
-    icon: 'mdi-currency-usd',
+    text: "Financial",
+    icon: "mdi-currency-usd",
   },
   {
-    text: 'Health',
-    icon: 'mdi-heart',
+    text: "Health",
+    icon: "mdi-heart",
   },
   {
-    text: 'Politics',
-    icon: 'mdi-account-group',
+    text: "Politics",
+    icon: "mdi-account-group",
   },
   {
-    text: 'Computer',
-    icon: 'mdi-desktop-classic',
+    text: "Computer",
+    icon: "mdi-desktop-classic",
   },
   {
-    text: 'Internet',
-    icon: 'mdi-earth',
+    text: "Internet",
+    icon: "mdi-earth",
   },
   {
-    text: 'Traffic',
-    icon: 'mdi-car',
+    text: "Traffic",
+    icon: "mdi-car",
   },
   {
-    text: 'Nature',
-    icon: 'mdi-tree',
+    text: "Nature",
+    icon: "mdi-tree",
   },
   {
-    text: 'Fashion',
-    icon: 'mdi-tshirt-crew',
+    text: "Fashion",
+    icon: "mdi-tshirt-crew",
   },
   {
-    text: 'Industry',
-    icon: 'mdi-factory',
+    text: "Industry",
+    icon: "mdi-factory",
   },
   {
-    text: 'Agriculture',
-    icon: 'mdi-tractor',
+    text: "Agriculture",
+    icon: "mdi-tractor",
   },
   {
-    text: 'Education',
-    icon: 'mdi-school',
+    text: "Education",
+    icon: "mdi-school",
   },
   {
-    text: 'Entertainment',
-    icon: 'mdi-movie',
+    text: "Entertainment",
+    icon: "mdi-movie",
   },
   {
-    text: 'Architecture',
-    icon: 'mdi-home-city',
+    text: "Architecture",
+    icon: "mdi-home-city",
   },
-]
+];
 
-const allSelected = computed(() => props.value && props.value.length === items.length)
+const allSelected = computed(() => props.value && props.value.length === items.length);
 
 const selections = computed(() => {
   if (props.value) {
-    return props.value.map((s) => {
-      return items.find(item => item.text === s)
-    })
+    return props.value.map((s) => items.find((item) => item.text === s));
   }
-  return []
-})
+  return [];
+});
 
 function click(text) {
   if (props.value && props.value.includes(text)) {
-    deleteSelect(text)
+    deleteSelect(text);
   } else {
-    addSelect(text)
+    addSelect(text);
   }
 }
 
 function addSelect(text) {
   if (props.value) {
-    emit('update:value', [...props.value, text])
-  }
-  else {
-    emit('update:value', [text])
+    emit("update:value", [...props.value, text]);
+  } else {
+    emit("update:value", [text]);
   }
 }
 
 function deleteSelect(text) {
   if (props.value) {
-    emit('update:value', props.value.filter((s) => s !== text))
-  }
-  else {
-    emit('update:value', [])
+    emit(
+      "update:value",
+      props.value.filter((s) => s !== text),
+    );
+  } else {
+    emit("update:value", []);
   }
 }
 </script>
@@ -146,7 +145,11 @@ function deleteSelect(text) {
 
     <div class="list" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
       <template v-for="item in items" :key="item.text">
-        <div :class="selections.includes(item) ? ['active'] : []" @click="() => click(item.text)" class="item text">
+        <div
+          :class="selections.includes(item) ? ['active'] : []"
+          class="item text"
+          @click="() => click(item.text)"
+        >
           <v-icon class="mr-4" :icon="item.icon"></v-icon>
           <div class="text" v-text="item.text"></div>
         </div>

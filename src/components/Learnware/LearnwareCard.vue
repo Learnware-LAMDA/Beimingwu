@@ -1,13 +1,13 @@
 <script setup>
-import { computed } from 'vue'
-import { useDisplay } from 'vuetify'
-import AudioBtn from '@/components/Specification/SpecTag/DataTypeBtn/AudioBtn.vue'
-import VideoBtn from '@/components/Specification/SpecTag/DataTypeBtn/VideoBtn.vue'
-import TextBtn from '@/components/Specification/SpecTag/DataTypeBtn/TextBtn.vue'
-import ImageBtn from '@/components/Specification/SpecTag/DataTypeBtn/ImageBtn.vue'
-import TableBtn from '@/components/Specification/SpecTag/DataTypeBtn/TableBtn.vue'
-import { downloadLearnware } from '@/utils'
-import colors from 'vuetify/lib/util/colors'
+import { ref, computed } from "vue";
+import { useDisplay } from "vuetify";
+import colors from "vuetify/lib/util/colors";
+import AudioBtn from "../../assets/images/specification/dataType/audio.svg?component";
+import VideoBtn from "../../assets/images/specification/dataType/video.svg?component";
+import TextBtn from "../../assets/images/specification/dataType/text.svg?component";
+import ImageBtn from "../../assets/images/specification/dataType/image.svg?component";
+import TableBtn from "../../assets/images/specification/dataType/table.svg?component";
+import { downloadLearnwareSync } from "../../utils";
 
 const props = defineProps({
   item: {
@@ -16,99 +16,149 @@ const props = defineProps({
   },
   filters: {
     type: Object,
+    default: () => ({}),
   },
   showDownload: {
     type: Boolean,
-    default: true
+    default: true,
   },
   isAdmin: {
     type: Boolean,
     default: false,
-  }
-})
+  },
+});
 
-const emit = defineEmits(['click:delete'])
+const emit = defineEmits(["click:delete"]);
 
-const display = useDisplay()
+const display = useDisplay();
 
-const greaterThanXs = computed(() => {
-  return display.name.value !== 'xs'
-})
+const greaterThanXs = computed(() => display.name.value !== "xs");
 
-const greaterThanSm = computed(() => {
-  return display.name.value !== 'xs' && display.name.value !== 'sm'
-})
+const greaterThanSm = computed(() => display.name.value !== "xs" && display.name.value !== "sm");
+
+const showEditTips = ref(props.item.showEditTips);
 
 const dataTypeBtns = {
-  'Table': TableBtn,
-  'Image': ImageBtn,
-  'Text': TextBtn,
-  'Video': VideoBtn,
-  'Audio': AudioBtn,
-}
+  Table: TableBtn,
+  Image: ImageBtn,
+  Text: TextBtn,
+  Video: VideoBtn,
+  Audio: AudioBtn,
+};
 
 function getColorByScore(score) {
-  if (score > 80) return colors.green.base
-  if (score > 50) return colors.orange.base
-  return colors.red.base
+  if (score > 80) return colors.green.base;
+  if (score > 50) return colors.orange.base;
+  return colors.red.base;
 }
 
 function handleClickDelete(id) {
-  emit('click:delete', id)
+  emit("click:delete", id);
 }
 </script>
 
 <template>
-  <v-card flat :density="greaterThanXs ? 'comfortable' : 'compact'" class="card"
-    :class="typeof (item.matchScore) === 'number' ? ['pt-2'] : ['py-2']">
+  <v-card
+    flat
+    :density="greaterThanXs ? 'comfortable' : 'compact'"
+    class="card"
+    :class="typeof item.matchScore === 'number' ? ['pt-2'] : ['py-2']"
+  >
     <div class="first-row">
       <v-card-title class="title">
         <v-avatar :size="greaterThanSm ? 'default' : 'small'">
-          <component class="w-4/5 opacity-70" :is="dataTypeBtns[item.dataType]" />
+          <component :is="dataTypeBtns[item.dataType]" class="w-4/5 opacity-70" />
         </v-avatar>
-        {{ `${item.username ? item.username + '/' : ''}${item.name}` }}
+        {{ `${item.username ? item.username + "/" : ""}${item.name}` }}
       </v-card-title>
     </div>
     <v-card-text class="card-text">
-      <div class="label"
-        :class="filters && filters.dataType && filters.dataType.includes(item.dataType) ? 'active' : undefined">
+      <div
+        class="label"
+        :class="
+          filters && filters.dataType && filters.dataType.includes(item.dataType)
+            ? 'active'
+            : undefined
+        "
+      >
         {{ item.dataType }}
       </div>
-      <div class="label"
-        :class="filters && filters.taskType && filters.taskType.includes(item.taskType) ? 'active' : undefined">
-        {{ item.taskType.replace('Others', 'Other Task') }}
+      <div
+        class="label"
+        :class="
+          filters && filters.taskType && filters.taskType.includes(item.taskType)
+            ? 'active'
+            : undefined
+        "
+      >
+        {{ item.taskType.replace("Others", "Other Task") }}
       </div>
-      <div class="label"
-        :class="filters && filters.libraryType && filters.libraryType.includes(item.libraryType) ? 'active' : undefined">
-        {{ item.libraryType.replace('Others', 'Other Library') }}
+      <div
+        class="label"
+        :class="
+          filters && filters.libraryType && filters.libraryType.includes(item.libraryType)
+            ? 'active'
+            : undefined
+        "
+      >
+        {{ item.libraryType.replace("Others", "Other Library") }}
       </div>
-      <div class="tag" :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : undefined"
-        v-for="(tag, i) in item.tagList" :key="i">
+      <div
+        v-for="(tag, i) in item.tagList"
+        :key="i"
+        class="tag"
+        :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : undefined"
+      >
         {{ tag }}
       </div>
     </v-card-text>
     <v-card-text class="card-text">
       <div class="description">{{ item.description }}</div>
     </v-card-text>
-    <v-card-title class="last-row"
-      :class="typeof (item.matchScore) === 'number' ? ['justify-between'] : isAdmin ? ['justify-end'] : ['absolute', 'right-0', 'bottom-0']">
-      <div v-if="typeof (item.matchScore) === 'number'" class="xl: text-xl lg:text-lg text-1rem">
-        Specification score <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{
+    <v-card-title
+      class="last-row"
+      :class="
+        typeof item.matchScore === 'number'
+          ? ['justify-between']
+          : isAdmin
+          ? ['justify-end']
+          : ['absolute', 'right-0', 'bottom-0']
+      "
+    >
+      <div v-if="typeof item.matchScore === 'number'" class="xl: text-xl lg:text-lg text-1rem">
+        Specification score
+        <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{
           item.matchScore
         }}</span>
       </div>
       <div class="actions">
-        <v-tooltip v-model="item.showEditTips" location="top">
-          <template v-slot:activator="{ props }">
-            <v-btn flat v-if="isAdmin" icon="mdi-pencil" @click.stop="() => { }" v-bind="props"
-              :size="greaterThanXs ? undefined : 'small'"></v-btn>
+        <v-tooltip v-model="showEditTips" location="top">
+          <template #activator="{ toolTipProps }">
+            <v-btn
+              v-if="isAdmin"
+              flat
+              icon="mdi-pencil"
+              v-bind="toolTipProps"
+              :size="greaterThanXs ? undefined : 'small'"
+              @click.stop="() => {}"
+            ></v-btn>
           </template>
           <span>Not availble</span>
         </v-tooltip>
-        <v-btn flat v-if="showDownload" icon="mdi-download" @click.stop="() => downloadLearnware(item.id)"
-          :size="greaterThanXs ? undefined : 'small'"></v-btn>
-        <v-btn flat v-if="isAdmin" icon="mdi-delete" @click.stop="handleClickDelete(item.id)"
-          :size="greaterThanXs ? undefined : 'small'"></v-btn>
+        <v-btn
+          v-if="showDownload"
+          flat
+          icon="mdi-download"
+          :size="greaterThanXs ? undefined : 'small'"
+          @click.stop="() => downloadLearnwareSync(item.id)"
+        ></v-btn>
+        <v-btn
+          v-if="isAdmin"
+          flat
+          icon="mdi-delete"
+          :size="greaterThanXs ? undefined : 'small'"
+          @click.stop="handleClickDelete(item.id)"
+        ></v-btn>
       </div>
     </v-card-title>
   </v-card>

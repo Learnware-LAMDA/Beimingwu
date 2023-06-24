@@ -1,16 +1,16 @@
 <script setup>
-import { ref, watch } from 'vue'
-import GridBtns from './GridBtns.vue'
-import ClassificationBtn from './TaskTypeBtn/ClassificationBtn.vue'
-import ClusteringBtn from './TaskTypeBtn/ClusteringBtn.vue'
-import DetectionBtn from './TaskTypeBtn/DetectionBtn.vue'
-import ExtractionBtn from './TaskTypeBtn/ExtractionBtn.vue'
-import RegressionBtn from './TaskTypeBtn/RegressionBtn.vue'
-import SegmantationBtn from './TaskTypeBtn/SegmentationBtn.vue'
-import RankingBtn from './TaskTypeBtn/RankingBtn.vue'
-import OthersBtn from './TaskTypeBtn/OthersBtn.vue'
+import { ref, watch } from "vue";
+import GridBtns from "./GridBtns.vue";
+import ClassificationBtn from "../../../assets/images/specification/taskType/classification.svg?component";
+import ClusteringBtn from "../../../assets/images/specification/taskType/clustering.svg?component";
+import DetectionBtn from "../../../assets/images/specification/taskType/detection.svg?component";
+import ExtractionBtn from "../../../assets/images/specification/taskType/extraction.svg?component";
+import RegressionBtn from "../../../assets/images/specification/taskType/regression.svg?component";
+import SegmantationBtn from "../../../assets/images/specification/taskType/segmantation.svg?component";
+import RankingBtn from "../../../assets/images/specification/taskType/ranking.svg?component";
+import OthersBtn from "../../../assets/images/specification/taskType/others.svg?component";
 
-const emit = defineEmits(['update:value'])
+const emit = defineEmits(["update:value"]);
 
 const props = defineProps({
   value: {
@@ -33,52 +33,59 @@ const props = defineProps({
     type: Number,
     default: 2,
   },
-})
+});
 
-const value = ref(props.value)
+const value = ref(props.value);
 
 watch(
   () => value.value,
-  (newVal) => emit('update:value', newVal)
-)
+  (newVal) => emit("update:value", newVal),
+);
 
 const taskTypeBtns = [
   {
-    title: 'Classification',
+    title: "Classification",
     icon: ClassificationBtn,
   },
   {
-    title: 'Regression',
+    title: "Regression",
     icon: RegressionBtn,
   },
   {
-    title: 'Clustering',
+    title: "Clustering",
     icon: ClusteringBtn,
   },
   {
-    title: 'Ranking',
+    title: "Ranking",
     icon: RankingBtn,
   },
   {
-    title: 'Object Detection',
+    title: "Object Detection",
     icon: DetectionBtn,
   },
   {
-    title: 'Feature Extraction',
+    title: "Feature Extraction",
     icon: ExtractionBtn,
   },
   {
-    title: 'Segmentation',
+    title: "Segmentation",
     icon: SegmantationBtn,
   },
   {
-    title: 'Others',
+    title: "Others",
     icon: OthersBtn,
-  }
-]
+  },
+];
 </script>
 
 <template>
-  <grid-btns v-model:value="value" :btns="taskTypeBtns" title="Task type" :cols="cols" :md="md" :sm="sm" :xs="xs" />
+  <grid-btns
+    v-model:value="value"
+    :btns="taskTypeBtns"
+    title="Task type"
+    :cols="cols"
+    :md="md"
+    :sm="sm"
+    :xs="xs"
+  />
 </template>
-

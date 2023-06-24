@@ -1,24 +1,24 @@
 const error = {
   state: {
     showGlobalError: false,
-    globalErrorMsg: '',
+    globalErrorMsg: "",
   },
   getters: {
     getShowGlobalError(state) {
-      return state.showGlobalError
+      return state.showGlobalError;
     },
     getGlobalErrorMsg(state) {
-      return state.globalErrorMsg
-    }
+      return state.globalErrorMsg;
+    },
   },
   mutations: {
     setShowGlobalError(state, value) {
-      state.showGlobalError = value
+      state.showGlobalError = value;
     },
     setGlobalErrorMsg(state, value) {
-      state.globalErrorMsg = value
-    }
-  }
-}
+      state.globalErrorMsg = value;
+    },
+  },
+};
 
-export default error
+export default error;
