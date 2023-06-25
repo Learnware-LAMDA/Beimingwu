@@ -3,6 +3,19 @@ kind: Namespace
 metadata:
   name: learnware
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: learnware
+  name: learnware-storage
+spec:
+  storageClassName: rook-cephfs
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 16Gi
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -26,6 +39,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{PORT}}
+        volumeMounts:
+        - name: learnware-storage
+          mountPath: /root/.learnware
+  volumes:
+  - name: learnware-storage
+    persistentVolumeClaim:
+      claimName: learnware-storage
 ---
 apiVersion: v1
 kind: Service

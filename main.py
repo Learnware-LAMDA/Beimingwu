@@ -1,40 +1,53 @@
-from config import C
 from flask_cors import CORS
 from flask import Flask
-from database import SQLite
-import api
+from database import SQLAlchemy
+import restful
+import restful.auth
+import restful.user
+import restful.engine
+import restful.admin
 from learnware import market
+import context
+from context import config as C
+import flask_restful
+import flask_bcrypt
+import flask_jwt_extended
+
 
 app = Flask(__name__)
 app.secret_key = "my_secret_key"
+app.config['JWT_SECRET_KEY'] = app.secret_key
+
 app.config['UPLOAD_FOLDER'] = C.upload_path
 CORS(app)
 
 
-def main(port=8088):
+def main():
     # Init database
-    database = None
-    if C.database_type == "sqlite":
-        database = SQLite(path=C.sqlite_path)
-    if database is None:
-        raise ValueError(f"Database type {C.database_type} is not supproted.")
-    setattr(C, "database", database)
-    setattr(C, "stats", 0)
+    admin_password = flask_bcrypt.generate_password_hash('admin').decode("utf-8")
+
+    context.init_database(admin_password)
+    context.stats = 0
 
     # Init engine
     engine = None
-    if C.engine_type == "easymarket":
+    if C.engine['type']== "easymarket":
         engine = market.EasyMarket()
     if engine is None:
         raise ValueError(f"Learnware engine type {C.engine_type} is not supproted.")
-    setattr(C, "engine", engine)
+    
+    context.engine = engine
+
+    bcrypt = flask_bcrypt.Bcrypt(app)
+    jwt = flask_jwt_extended.JWTManager(app)
 
     # Init flask
-    app.register_blueprint(api.auth_api, url_prefix="/auth")
-    app.register_blueprint(api.user_api, url_prefix="/user")
-    app.register_blueprint(api.admin_api, url_prefix="/admin")
-    app.register_blueprint(api.engine_api, url_prefix="/engine")
-    app.run(host="0.0.0.0", port=port, threaded=True, debug=True)
+    app.register_blueprint(restful.auth.auth_blueprint, url_prefix='/auth')
+    app.register_blueprint(restful.user.user_blueprint, url_prefix='/user')
+    app.register_blueprint(restful.engine.engine_blueprint, url_prefix='/engine')
+    app.register_blueprint(restful.admin.admin_blueprint, url_prefix='/admin')
+    
+    app.run(host=C.listen_address, port=C.listen_port, threaded=True, debug=True, use_reloader=False)
 
 
 if __name__ == "__main__":
