@@ -5,13 +5,13 @@ function downloadLearnware({ id }) {
 }
 
 function getLearnwareDetailById({ id }) {
-  return checkedFetch(`/api/engine/get_learnware_info?learnware_id=${id}`).then((res) =>
+  return checkedFetch(`/api/engine/learnware_info?learnware_id=${id}`).then((res) =>
     res.json(),
   );
 }
 
 function getSemanticSpecification() {
-  return checkedFetch("/api/engine/get_semantic_specification").then((res) => res.json());
+  return checkedFetch("/api/engine/semantic_specification").then((res) => res.json());
 }
 
 function searchLearnware({ name, dataType, taskType, libraryType, tagList, files, page, limit }) {
@@ -22,7 +22,7 @@ function searchLearnware({ name, dataType, taskType, libraryType, tagList, files
       semanticSpec.Data.Values = (dataType && [dataType]) || [];
       semanticSpec.Task.Values = (taskType && [taskType]) || [];
       semanticSpec.Library.Values = (libraryType && [libraryType]) || [];
-      semanticSpec.Scenario.Values = (tagList && tagList.map((tag) => tag.id)) || [];
+      semanticSpec.Scenario.Values = (tagList && tagList.map((tag) => tag)) || [];
       semanticSpec.Description.Values = "";
 
       const fd = new FormData();

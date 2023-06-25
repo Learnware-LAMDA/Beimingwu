@@ -12,6 +12,7 @@ onMounted(() => {
   logout()
     .then((res) => {
       if (res.code === 0) {
+        localStorage.removeItem("token");
         return res;
       }
       throw new Error("Logout failed");

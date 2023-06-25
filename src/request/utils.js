@@ -6,6 +6,21 @@ function checkStatus(res) {
 }
 
 function checkedFetch(url, options) {
+  // get token from local storage and set in header
+  const token = localStorage.getItem("token");
+
+  if (options === undefined) {
+    options = {};
+  }
+
+  if (token !== null) {
+    // check header exist
+    if (!('headers' in options)) {
+      options.headers = {};
+    }
+    options.headers["Authorization"] = `Bearer ${token}`;
+  }
+
   return fetch(url, options).then(checkStatus);
 }
 

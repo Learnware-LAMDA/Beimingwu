@@ -51,6 +51,9 @@ const submit = handleSubmit((values) => {
             store.commit("setLoggedIn", true);
             router.push("/");
           }, 1000);
+
+          localStorage.setItem("token", res.data.token);
+          
           return;
         }
         default: {
