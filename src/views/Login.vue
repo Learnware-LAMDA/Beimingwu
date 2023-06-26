@@ -53,7 +53,7 @@ const submit = handleSubmit((values) => {
           }, 1000);
 
           localStorage.setItem("token", res.data.token);
-          
+
           return;
         }
         default: {

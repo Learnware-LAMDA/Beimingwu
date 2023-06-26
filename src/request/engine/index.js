@@ -1,17 +1,17 @@
 import { checkedFetch } from "../utils";
 
+const BASE_URL = "./api/engine";
+
 function downloadLearnware({ id }) {
-  return checkedFetch(`/api/engine/download_learnware?learnware_id=${id}`);
+  return checkedFetch(`${BASE_URL}/download_learnware?learnware_id=${id}`);
 }
 
 function getLearnwareDetailById({ id }) {
-  return checkedFetch(`/api/engine/learnware_info?learnware_id=${id}`).then((res) =>
-    res.json(),
-  );
+  return checkedFetch(`${BASE_URL}/learnware_info?learnware_id=${id}`).then((res) => res.json());
 }
 
 function getSemanticSpecification() {
-  return checkedFetch("/api/engine/semantic_specification").then((res) => res.json());
+  return checkedFetch(`${BASE_URL}/semantic_specification`).then((res) => res.json());
 }
 
 function searchLearnware({ name, dataType, taskType, libraryType, tagList, files, page, limit }) {
@@ -33,7 +33,7 @@ function searchLearnware({ name, dataType, taskType, libraryType, tagList, files
       return fd;
     })
     .then((fd) =>
-      checkedFetch("/api/engine/search_learnware", {
+      checkedFetch(`${BASE_URL}/search_learnware`, {
         method: "POST",
         body: fd,
       }),

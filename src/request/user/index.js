@@ -1,8 +1,10 @@
 import { checkedFetch } from "../utils";
 import { getSemanticSpecification } from "../engine";
 
+const BASE_URL = "./api/user";
+
 function changePassword({ oldPasswordMd5, newPasswordMd5 }) {
-  return checkedFetch("/api/user/change_password", {
+  return checkedFetch(`${BASE_URL}/change_password`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -15,7 +17,7 @@ function changePassword({ oldPasswordMd5, newPasswordMd5 }) {
 }
 
 function deleteLearnware({ id }) {
-  return checkedFetch("/api/user/delete_learnware", {
+  return checkedFetch(`${BASE_URL}/delete_learnware`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,7 +29,7 @@ function deleteLearnware({ id }) {
 }
 
 function getLearnwareList({ page, limit }) {
-  return checkedFetch("/api/user/list_learnware", {
+  return checkedFetch(`${BASE_URL}/list_learnware`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -56,7 +58,7 @@ function addLearnware({ name, dataType, taskType, libraryType, tagList, descript
       return fd;
     })
     .then((fd) =>
-      checkedFetch("/api/user/add_learnware", {
+      checkedFetch(`${BASE_URL}/add_learnware`, {
         method: "POST",
         body: fd,
       }),

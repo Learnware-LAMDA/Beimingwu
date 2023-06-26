@@ -15,7 +15,7 @@ function checkedFetch(url, options) {
 
   if (token !== null) {
     // check header exist
-    if (!('headers' in options)) {
+    if (!("headers" in options)) {
       options.headers = {};
     }
     options.headers["Authorization"] = `Bearer ${token}`;
