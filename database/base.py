@@ -10,5 +10,5 @@ class Database:
     ):
         raise NotImplementedError("'install' Method NOT Implemented.")
 
-    def query(self, sql, params):
+    def execute(self, sql, params=None):
         raise NotImplementedError("'query' Method NOT Implemented.")

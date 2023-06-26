@@ -1,11 +1,21 @@
 import os
 import copy
+import json
 
 
 class Config:
-    def __init__(self, default_conf):
+    def __init__(self, default_conf=None):
+        if default_conf is None:
+            default_conf = _DEFAULT_CONFIG
+            pass
+
         self.__dict__["_default_config"] = copy.deepcopy(default_conf)  # avoiding conflictions with __getattr__
         self.reset()
+
+        if os.path.exists("config.json"):
+            with open("config.json", "r") as f:
+                self.__dict__["_config"].update(json.load(f))
+            pass
 
     def __getitem__(self, key):
         return self.__dict__["_config"][key]
@@ -58,14 +68,23 @@ _DEFAULT_CONFIG = {
     "root_path": ROOT_DIRPATH,
     "upload_path": UPLOAD_PATH,
     "remove_upload_file": False,
+    
     # Database config
-    "database_type": "sqlite",
-    "sqlite_path": SQLITE_PATH,
+    "database": {
+        "type": "sqlalchemy",
+        "url": "sqlite:///./files/learnware_backend.db",
+    },
+
     # Engine config
-    "engine_type": "easymarket",
-    "engine_market_path": MARKET_PATH,
-    "engine_property_path": PROPERTY_PATH,
-    "engine_load_mode": "database",
+    "engine": {
+        "type": "easymarket",
+        "market_path": MARKET_PATH,
+        "property_path": PROPERTY_PATH,
+        "load_mode": "database"
+    },
+
+    "listen_port": 8088,
+    "listen_address": "0.0.0.0"
 }
 
 C = Config(_DEFAULT_CONFIG)
