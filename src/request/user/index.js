@@ -27,7 +27,7 @@ function deleteLearnware({ id }) {
 }
 
 function getLearnwareList({ page, limit }) {
-  return checkedFetch("/api/user/get_learnware_list", {
+  return checkedFetch("/api/user/list_learnware", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
