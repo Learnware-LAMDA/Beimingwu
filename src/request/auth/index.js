@@ -1,7 +1,9 @@
 import { checkedFetch } from "../utils";
 
+const BASE_URL = "./api/auth";
+
 function login({ email, passwordMd5 }) {
-  return checkedFetch("/api/auth/login", {
+  return checkedFetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -14,13 +16,13 @@ function login({ email, passwordMd5 }) {
 }
 
 function logout() {
-  return checkedFetch("/api/auth/logout", {
+  return checkedFetch(`${BASE_URL}/logout`, {
     method: "POST",
   }).then((res) => res.json());
 }
 
 function register({ username, email, passwordMd5 }) {
-  return checkedFetch("/api/auth/register", {
+  return checkedFetch(`${BASE_URL}/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -34,7 +36,7 @@ function register({ username, email, passwordMd5 }) {
 }
 
 function getRole() {
-  return checkedFetch("/api/auth/get_role", {
+  return checkedFetch(`${BASE_URL}/get_role`, {
     method: "POST",
   }).then((res) => res.json());
 }
