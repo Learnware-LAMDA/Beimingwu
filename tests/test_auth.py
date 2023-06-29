@@ -67,7 +67,8 @@ class TestAuth(unittest.TestCase):
             'auth/logout',
             {}, return_response=True)
         
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['code'], 11)
         pass
 
 if __name__ == '__main__':
