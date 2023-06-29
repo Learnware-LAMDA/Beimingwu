@@ -7,8 +7,10 @@ from .utils import *
 import lib.database_operations as database
 
 import lib.engine as engine_helper
+from database.base import LearnwareVerifyStatus
 import context
 from context import config as C
+from . import auth
 import flask_jwt_extended
 import flask_restful
 import flask_bcrypt
@@ -16,7 +18,6 @@ import flask_bcrypt
 
 user_blueprint = Blueprint("User-API", __name__)
 api = flask_restful.Api(user_blueprint)
-
 
 
 class ProfileApi(flask_restful.Resource):
@@ -79,7 +80,7 @@ class ListLearnwareApi(flask_restful.Resource):
         page = body["page"]
 
         user_id = flask_jwt_extended.get_jwt_identity()
-        ret, cnt = database.get_learnware_list("user_id", user_id, limit=limit, page=page)
+        ret, cnt = database.get_learnware_list("user_id", user_id, limit=limit, page=page, is_verified=True)
         learnware_list = engine_helper.get_learnware_by_id([x["learnware_id"] for x in ret])
         result = {
             "code": 0,
@@ -93,6 +94,47 @@ class ListLearnwareApi(flask_restful.Resource):
         }
         return result, 200
     pass
+
+
+class ListLearnwareUnverifiedApi(flask_restful.Resource):
+    @flask_jwt_extended.jwt_required()
+    def post(self):
+        body = request.get_json()
+        keys = ["limit", "page"]
+        if any([k not in body for k in keys]):
+            return {"code": 21, "msg": "Request parameters error."}, 200
+        
+        limit = body["limit"]
+        page = body["page"]
+
+        user_id = flask_jwt_extended.get_jwt_identity()
+        ret, cnt = database.get_learnware_list("user_id", user_id, limit=limit, page=page, is_verified=False)
+
+        # read semantic specification
+        learnware_list = []
+        for row in ret:
+            learnware_id = row["learnware_id"]
+            learnware_info = dict()
+            semantic_spec_path = context.get_learnware_verify_file_path(learnware_id)[:-4] + ".json"
+            with open(semantic_spec_path, "r") as f:
+                learnware_info["semantic_specification"] = json.load(f)
+                pass
+            learnware_info["learnware_id"] = learnware_id
+            learnware_list.append(learnware_info)
+            pass
+        
+
+        result = {
+            "code": 0,
+            "msg": "Ok.",
+            "data": {
+                "learnware_list": learnware_list,
+                "page": page,
+                "limit": limit,
+                "total_pages": (cnt + limit - 1) // limit
+            }
+        }
+        return result, 200        
 
 
 class AddLearnwareApi(flask_restful.Resource):
@@ -110,21 +152,23 @@ class AddLearnwareApi(flask_restful.Resource):
         if learnware_file is None or learnware_file.filename == "":
             return {"code": 21, "msg": "Request parameters error."}, 200
         
-        leareware_filename = f"{int(time.time())}_" + hashlib.md5(learnware_file.read()).hexdigest() + ".zip"
+        learnware_id = database.get_next_learnware_id()
+
         if not os.path.exists(C.upload_path):
             os.mkdir(C.upload_path)
-        learnware_path = os.path.join(C.upload_path, leareware_filename)
+
+        learnware_path = context.get_learnware_verify_file_path(learnware_id)
+        learnware_semantic_spec_path = learnware_path[:-4] + ".json"
+
         learnware_file.seek(0)
         learnware_file.save(learnware_path)
 
+        with open(learnware_semantic_spec_path, "w") as f:
+            json.dump(semantic_specification, f)
+            pass
+
         user_id = flask_jwt_extended.get_jwt_identity()
 
-        learnware_id, retcd = context.engine.add_learnware(learnware_path, semantic_specification)
-        # except:
-            # return jsonify({"code": 42, "msg": "Engine add learnware error."})
-        if retcd == context.engine.INVALID_LEARNWARE:
-            return {"code": 42, "msg": "Your learnware is invalid."}, 200
-        
         # Add learnware
         cnt = database.add_learnware(user_id, learnware_id)
         if cnt > 0:
@@ -135,8 +179,29 @@ class AddLearnwareApi(flask_restful.Resource):
                 "msg": "System error.",
             }
         
-        if C.remove_upload_file: os.remove(learnware_path)
         return result, 200
+    pass
+
+
+class AddLearnwareVerifiedApi(flask_restful.Resource):
+    # todo: this api should be protected
+    def post(self):
+        body = request.get_json()
+
+        learnware_id = body["learnware_id"]
+        learnware_file = context.get_learnware_verify_file_path(learnware_id)
+        learnware_semantic_spec_path = learnware_file[:-4] + ".json"
+
+        with open(learnware_semantic_spec_path, "r") as f:
+            semantic_specification = json.load(f)
+            pass
+        
+        context.engine.add_learnware(learnware_file, semantic_specification, learnware_id=learnware_id)
+
+        os.remove(learnware_file)
+        os.remove(learnware_semantic_spec_path)
+
+        return {"code": 0, "msg": "success"}, 200
     pass
 
 
@@ -151,6 +216,7 @@ class DeleteLearnwareApi(flask_restful.Resource):
         
         learnware_id = body["learnware_id"]
         user_id = flask_jwt_extended.get_jwt_identity()
+
         # Check permission
         learnware_infos, cnt = database.get_learnware_list("learnware_id", learnware_id)
         if len(learnware_infos) == 0:
@@ -159,12 +225,20 @@ class DeleteLearnwareApi(flask_restful.Resource):
         if learnware_infos[0]["user_id"] != user_id:
             return {"code": 41, "msg": "You do not own this learnware."}, 200
         
-        # Remove learnware
-        # [TODO] Require code for engine
-        # try:
-        ret = context.engine.delete_learnware(learnware_id)
-        if not ret:
-            return {"code": 42, "msg": "Engine delete learnware error."}, 200
+        learnware_info = learnware_infos[0]
+
+        if learnware_info['verify_status'] == LearnwareVerifyStatus.SUCCESS.value:
+            ret = context.engine.delete_learnware(learnware_id)
+            if not ret:
+                return {"code": 42, "msg": "Engine delete learnware error."}, 200
+            pass
+        else:
+            # Delete learnware file
+            learnware_path = context.get_learnware_verify_file_path(learnware_id)
+            learnware_sematic_spec_path = learnware_path[:-4] + ".json"
+            os.remove(learnware_path)
+            os.remove(learnware_sematic_spec_path)
+            pass
         
         cnt = database.remove_learnware("learnware_id", learnware_id)
 
@@ -176,6 +250,8 @@ class DeleteLearnwareApi(flask_restful.Resource):
 api.add_resource(ProfileApi, "/profile")
 api.add_resource(ChangePasswordApi, "/change_password")
 api.add_resource(ListLearnwareApi, "/list_learnware")
+api.add_resource(ListLearnwareUnverifiedApi, "/list_learnware_unverified")
 api.add_resource(AddLearnwareApi, "/add_learnware")
+api.add_resource(AddLearnwareVerifiedApi, "/add_learnware_verified")
 api.add_resource(DeleteLearnwareApi, "/delete_learnware")
 

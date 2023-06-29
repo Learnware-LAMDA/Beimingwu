@@ -1,6 +1,8 @@
 from typing import Tuple
 from datetime import datetime
 import context
+import database.base
+from database.base import LearnwareVerifyStatus
 
 
 def check_user_exist(by, value, conn=None):
@@ -65,13 +67,27 @@ def register_user(username, password, email) -> Tuple[int, str]:
     pass
 
 
-def get_learnware_list(by, value, limit=None, page=None):
-    cnt = context.database.execute(f"SELECT COUNT(*) FROM tb_user_learnware_relation WHERE {by} = :{by}", {by: value})
+def get_learnware_list(by, value, limit=None, page=None, is_verified=None):
+
+    sql = f"FROM tb_user_learnware_relation WHERE {by} = :{by}"
+    if is_verified is None:
+        pass
+    elif is_verified:
+        sql += " AND verify_status = :verify_status "
+    else:
+        sql += " AND verify_status <> :verify_status "
+        pass
+
+    cnt = context.database.execute(
+        "SELECT COUNT(1) " + sql, 
+        {by: value, "verify_status": LearnwareVerifyStatus.SUCCESS.value})
 
     suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
+    
     rows = context.database.execute(
-        f"SELECT * FROM tb_user_learnware_relation WHERE {by} = :{by} {suffix}",
-        {by: value})
+        "SELECT * " + sql + suffix,
+        {by: value, "verify_status": LearnwareVerifyStatus.SUCCESS.value})
+    
     return [r._mapping for r in rows], cnt[0][0]
 
 
@@ -128,6 +144,68 @@ def get_all_learnware_list(columns, limit=None, page=None):
     suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
     ret = context.database.execute(f"SELECT {column_str} FROM tb_user_learnware_relation {suffix}")
     return [dict(zip(columns, user)) for user in ret], cnt[0][0]
+
+
+def get_next_learnware_id():
+    result = context.database.execute("UPDATE tb_global_counter set value = value + 1 WHERE name = 'learnware_id' RETURNING value")
+    print(result)
+    value = result[0][0]
+
+    return f'{value:08d}'
+
+
+def check_learnware_exist(learnware_id: str):
+    result = context.database.execute(
+        "SELECT COUNT(1) FROM tb_user_learnware_relation WHERE learnware_id = :learnware_id",
+        {"learnware_id": learnware_id}
+    )
+
+    return result[0][0] > 0
+
+
+def get_unverified_learnware():
+    result = context.database.execute(
+        "SELECT learnware_id FROM tb_user_learnware_relation WHERE verify_status = :status",
+        {"status": LearnwareVerifyStatus.WAITING.value})
+    
+    return [r[0] for r in result]
+
+
+def update_learnware_verify_status(learnware_id, status: LearnwareVerifyStatus):
+    context.database.execute(
+        "UPDATE tb_user_learnware_relation SET verify_status = :status WHERE learnware_id = :learnware_id",
+        {"status": status.value, "learnware_id": learnware_id}
+    )
+    pass
+
+
+def update_learnware_verify_result(learnware_id, status: LearnwareVerifyStatus, verify_log: str):
+    if len(verify_log) > 30000:
+        verify_log = verify_log[-30000:]
+        pass
+    
+    context.database.execute(
+        "UPDATE tb_user_learnware_relation SET verify_status = :status, verify_log = :verify_log WHERE learnware_id = :learnware_id",
+        {"status": status.value, "learnware_id": learnware_id, "verify_log": verify_log}
+    )
+
+
+def reset_learnware_verify_status():
+    context.database.execute(
+        "UPDATE tb_user_learnware_relation SET verify_status = :waiting WHERE verify_status = :processing",
+        {"processing": LearnwareVerifyStatus.PROCESSING.value, "waiting": LearnwareVerifyStatus.WAITING.value}
+    )
+
+
+def get_learnware_verify_status(learnware_id):
+    result = context.database.execute(
+        "SELECT verify_status FROM tb_user_learnware_relation WHERE learnware_id = :learnware_id",
+        {"learnware_id": learnware_id}
+    )
+    if len(result) == 0:
+        raise RuntimeError(f"learnware_id {learnware_id} not found")
+    
+    return result[0][0]
 
 
 def begin():

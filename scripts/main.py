@@ -32,6 +32,8 @@ def on_unauthorized(error_message: str) -> requests.Response:
 
 
 def main():
+    context.init_backend()
+    
     # Init database
     admin_password = flask_bcrypt.generate_password_hash('admin').decode("utf-8")
 
@@ -39,13 +41,7 @@ def main():
     context.stats = 0
 
     # Init engine
-    engine = None
-    if C.engine['type']== "easymarket":
-        engine = market.EasyMarket()
-    if engine is None:
-        raise ValueError(f"Learnware engine type {C.engine_type} is not supproted.")
-    
-    context.engine = engine
+    context.init_engine()
 
     # Init flask
     app.register_blueprint(restful.auth.auth_blueprint, url_prefix='/auth')
@@ -59,5 +55,4 @@ def main():
 
 
 if __name__ == "__main__":
-    import fire
-    fire.Fire(main)
+    main()

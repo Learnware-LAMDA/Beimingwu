@@ -1,19 +1,21 @@
-from config import C
-from .base import Database
+from .base import Database, LearnwareVerifyStatus
 import os
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, text
-from sqlalchemy import Column, Integer, Text, DateTime, PrimaryKeyConstraint, UniqueConstraint
+from sqlalchemy import (
+    Column, Integer, Text, DateTime, String,
+    PrimaryKeyConstraint, UniqueConstraint)
+
 from datetime import datetime
+
 
 __all__ = ["SQLAlchemy"]
 
-
 DeclarativeBase = declarative_base()
+
 
 class User(DeclarativeBase):
     __tablename__ = 'tb_user'
-    
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(Text, nullable=False)
@@ -30,15 +32,29 @@ class User(DeclarativeBase):
         {})
     pass
 
+
 class UserLearnwareRelation(DeclarativeBase):
     __tablename__ = 'tb_user_learnware_relation'
 
     user_id = Column(Integer, nullable=False)
     learnware_id = Column(Text, nullable=False)
     last_modify = Column(DateTime, nullable=False)
+    verify_status = Column(String(10), nullable=False, server_default=text(LearnwareVerifyStatus.WAITING.value), index=True)
+    verify_log = Column(Text, nullable=True)
 
     __table_args__ = (PrimaryKeyConstraint(user_id, learnware_id), {})
     pass
+
+
+class GlobalCounter(DeclarativeBase):
+    __tablename__ = 'tb_global_counter'
+
+    name = Column(Text, nullable=False)
+    value = Column(Integer, nullable=False)
+
+    __table_args__ = (PrimaryKeyConstraint(name), {})
+    pass
+
 
 class DatabaseHelper(object):
     def database_exists(self):
@@ -111,7 +127,8 @@ class SqliteHelper(DatabaseHelper):
 class SQLAlchemy(Database):
 
     DATASET_INIT_DATA = [
-        "INSERT INTO tb_user (username, nickname, email, password, role, register) VALUES ('admin',  'adminitrator', 'admin@localhost', :admin_password, 1, :now)"
+        "INSERT INTO tb_user (username, nickname, email, password, role, register) VALUES ('admin',  'adminitrator', 'admin@localhost', :admin_password, 1, :now)",
+        "INSERT INTO tb_global_counter (name, value) VALUES ('learnware_id', 0)"
     ]
 
     def __init__(self, config, admin_password):
@@ -129,6 +146,9 @@ class SQLAlchemy(Database):
             pass
 
         if not helper.database_exists(self.url):
+            if admin_password is None:
+                raise RuntimeError("admin password is required for creating database")
+            
             helper.create_database(self.url)
             self.engine = create_engine(self.url, future=True)
 

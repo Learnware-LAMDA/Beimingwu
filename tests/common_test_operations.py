@@ -88,12 +88,12 @@ def test_learnware_semantic_specification():
     return semantic_specification
 
 
-def add_test_learnware(email, password):
+def add_test_learnware(email, password, learnware_filename='test_learnware.zip') -> str:
     headers = login(email, password)
     semantic_specification = test_learnware_semantic_specification()
 
     learnware_file = open(
-        os.path.join('tests', 'data', 'test_learnware.zip'),'rb')
+        os.path.join('tests', 'data', learnware_filename),'rb')
     files = {'learnware_file': learnware_file}
 
     # print(semantic_specification)
@@ -113,3 +113,16 @@ def add_test_learnware(email, password):
     print(f'added learnware: {learnware_id}')
 
     return learnware_id
+
+
+def delete_learnware(learnware_id, headers):
+    result = url_request(
+        'user/delete_learnware',
+        {'learnware_id': learnware_id},
+        headers=headers
+    )
+
+    if result['code'] != 0:
+        raise Exception('delete learnware failed: ' + json.dumps(result))
+    
+    pass

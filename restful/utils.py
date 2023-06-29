@@ -1,7 +1,6 @@
 from typing import Tuple, Any, List, Union, Dict
 import random
 from learnware import learnware
-from config import C
 import lib.database_operations as dbops
 
 __all__ = ["get_parameters", "generate_random_str", "dump_learnware"]
