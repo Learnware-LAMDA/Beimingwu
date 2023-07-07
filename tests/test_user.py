@@ -103,7 +103,7 @@ class TestUser(unittest.TestCase):
             os.path.exists(context.get_learnware_verify_file_path(learnware_id)))   
 
         result = testops.url_request(
-            'user/list_learnware_unverified',
+            'user/list_learnware',
             {'page': 0, 'limit': 10},
             headers=headers
         )
@@ -185,6 +185,25 @@ class TestUser(unittest.TestCase):
 
 
         self.assertEqual(result['code'], 0)
+        pass
+
+    def test_verify_log(self):
+
+        learnware_id = testops.add_test_learnware(TestUser.email, TestUser.password)
+        dbops.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.SUCCESS, 'test result')
+        headers = testops.login(TestUser.email, TestUser.password)
+
+        result = testops.url_request(
+            'user/verify_log?learnware_id={}'.format(learnware_id),
+            {},
+            headers=headers,
+            method='get',
+            return_response=True
+        )
+
+        result = result.json()['data']
+
+        self.assertEqual(result, 'test result')
         pass
 
 

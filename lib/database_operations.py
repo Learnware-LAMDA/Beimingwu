@@ -91,6 +91,44 @@ def get_learnware_list(by, value, limit=None, page=None, is_verified=None):
     return [r._mapping for r in rows], cnt[0][0]
 
 
+def get_learnware_list_by_user_id(user_id, limit, page):
+    cnt = context.database.execute(
+        "SELECT COUNT(1) FROM tb_user_learnware_relation WHERE user_id = :user_id",
+        {"user_id": user_id}
+    )[0][0]
+
+    rows = context.database.execute(
+        "SELECT learnware_id, verify_status FROM tb_user_learnware_relation WHERE user_id = :user_id LIMIT :limit OFFSET :offset",
+        {"user_id": user_id, "limit": limit, "offset": limit * page})
+    
+
+    return [r._mapping for r in rows], cnt
+
+
+def get_verify_log(user_id, learnware_id):
+    rows = context.database.execute(
+        "SELECT verify_log FROM tb_user_learnware_relation WHERE user_id = :user_id AND learnware_id = :learnware_id",
+        {"user_id": user_id, "learnware_id": learnware_id}
+    )
+    
+    if len(rows) == 0:
+        return None
+    
+    return rows[0][0]
+
+
+def get_learnware_by_learnware_id(learnware_id):
+    rows = context.database.execute(
+        "SELECT learnware_id, verify_status FROM tb_user_learnware_relation WHERE learnware_id = :learnware_id",
+        {"learnware_id": learnware_id}
+    )
+    
+    if len(rows) == 0:
+        return None
+    
+    learnware_info = {k:v for k, v in rows[0]._mapping.items()}
+    return learnware_info
+
 def add_learnware(user_id, learnware_id):
     context.database.execute(
         'INSERT INTO tb_user_learnware_relation (user_id, learnware_id, last_modify) VALUES(:user_id, :learnware_id, :last_modify)',

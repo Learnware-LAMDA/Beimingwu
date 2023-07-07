@@ -14,6 +14,7 @@ from . import auth
 import flask_jwt_extended
 import flask_restful
 import flask_bcrypt
+import lib.data_utils as data_utils
 
 
 user_blueprint = Blueprint("User-API", __name__)
@@ -80,8 +81,20 @@ class ListLearnwareApi(flask_restful.Resource):
         page = body["page"]
 
         user_id = flask_jwt_extended.get_jwt_identity()
-        ret, cnt = database.get_learnware_list("user_id", user_id, limit=limit, page=page, is_verified=True)
-        learnware_list = engine_helper.get_learnware_by_id([x["learnware_id"] for x in ret])
+        # ret, cnt = database.get_learnware_list("user_id", user_id, limit=limit, page=page, is_verified=True)
+        rows, cnt = database.get_learnware_list_by_user_id(user_id, limit=limit, page=page)
+
+        learnware_list = []
+        for row in rows:
+            learnware_info = dict()
+            learnware_info["learnware_id"] = row["learnware_id"]
+            learnware_info["verify_status"] = row["verify_status"]
+
+            learnware_info["semantic_specification"] = data_utils.get_learnware_semantic_specification(
+                learnware_info)
+
+            learnware_list.append(learnware_info)
+            
         result = {
             "code": 0,
             "msg": "Ok.",
@@ -247,6 +260,18 @@ class DeleteLearnwareApi(flask_restful.Resource):
     pass
 
 
+class VerifyLog(flask_restful.Resource):
+    @flask_jwt_extended.jwt_required()
+    def get(self):
+        user_id = flask_jwt_extended.get_jwt_identity()
+        learnware_id = request.args.get("learnware_id")
+
+        result = database.get_verify_log(user_id, learnware_id)
+
+        return {"code": 0, "data": result}, 200
+    pass
+
+
 api.add_resource(ProfileApi, "/profile")
 api.add_resource(ChangePasswordApi, "/change_password")
 api.add_resource(ListLearnwareApi, "/list_learnware")
@@ -254,4 +279,5 @@ api.add_resource(ListLearnwareUnverifiedApi, "/list_learnware_unverified")
 api.add_resource(AddLearnwareApi, "/add_learnware")
 api.add_resource(AddLearnwareVerifiedApi, "/add_learnware_verified")
 api.add_resource(DeleteLearnwareApi, "/delete_learnware")
+api.add_resource(VerifyLog, "/verify_log")
 

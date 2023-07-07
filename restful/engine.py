@@ -5,13 +5,15 @@ from flask import send_from_directory, send_file, make_response, g
 import context
 from context import config as C
 import os, json, time
-import hashlib
-from learnware import market, specification
 import lib.engine as adv_engine
 from .utils import dump_learnware, get_parameters, generate_random_str
 import flask_jwt_extended
 import flask_restful
 import traceback
+import lib.database_operations as dbops
+from database.base import LearnwareVerifyStatus
+import lib.data_utils as data_utils
+
 
 
 engine_blueprint = Blueprint("Engine-API", __name__)
@@ -182,22 +184,23 @@ class LearnwareInfo(flask_restful.Resource):
         if learnware_id is None:
             return {"code": 21, "msg": "Request parameters error."}, 200
         
-        try:
-            learnware = context.engine.get_learnware_by_ids(learnware_id)
-        except:
-            return {"code": 42, "msg": "Engine find learnware error."}, 200
+        learnware_info = dbops.get_learnware_by_learnware_id(learnware_id)
         
-        if learnware is None:
+
+        if learnware_info is None:
             return {"code": 41, "msg": "Learnware not found."}, 200
+        
+        try:
+            learnware_info["semantic_specification"] = data_utils.get_learnware_semantic_specification(learnware_info)
+        except Exception as e:
+            traceback.print_exc()
+            return {"code": 42, "msg": "Engine find learnware error."}, 200
         
         result = {
             "code": 0,
             "msg": "Ok",
             "data": {
-                "learnware_info": {
-                    "learnware_id": learnware_id,
-                    "semantic_specification": learnware.get_specification().get_semantic_spec(),
-                }
+                "learnware_info": learnware_info
             }
         }
 
