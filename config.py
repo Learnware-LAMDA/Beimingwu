@@ -58,10 +58,11 @@ class Config:
 
 
 ROOT_DIRPATH = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "upload")
-SQLITE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "database.db")
-MARKET_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "learnware")
-PROPERTY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "files", "property.json")
+DATA_PATH = os.path.join(os.path.dirname(ROOT_DIRPATH), 'backend_data')
+UPLOAD_PATH = os.path.join(DATA_PATH, "upload")
+SQLITE_PATH = os.path.join(DATA_PATH, "database.db")
+MARKET_PATH = os.path.join(DATA_PATH, "learnware")
+PROPERTY_PATH = os.path.join(DATA_PATH, "property.json")
 
 _DEFAULT_CONFIG = {
     # Global config
@@ -72,19 +73,22 @@ _DEFAULT_CONFIG = {
     # Database config
     "database": {
         "type": "sqlalchemy",
-        "url": "sqlite:///./files/learnware_backend.db",
+        "url": f"sqlite:///{SQLITE_PATH}",
     },
 
     # Engine config
     "engine": {
-        "type": "easymarket",
+        "type": "backend_market",
         "market_path": MARKET_PATH,
         "property_path": PROPERTY_PATH,
         "load_mode": "database"
     },
 
+    # server config
     "listen_port": 8088,
-    "listen_address": "0.0.0.0"
-}
+    "listen_address": "0.0.0.0",
 
-C = Config(_DEFAULT_CONFIG)
+    # verify config
+    "verify_timeout": 60 * 30,
+    "backend_host": "127.0.0.1"
+}

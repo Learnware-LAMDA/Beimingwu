@@ -1,4 +1,12 @@
-__all__ = ["Database"]
+import enum
+
+
+class LearnwareVerifyStatus(enum.Enum):
+    SUCCESS = "SUCCESS"
+    FAIL = "FAIL"
+    WAITING = "WAITING"
+    PROCESSING = "PROCESSING"
+    pass
 
 
 class Database:

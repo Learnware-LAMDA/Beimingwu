@@ -1,6 +1,5 @@
 import functools
 from flask import Blueprint, g, jsonify, request, session
-from config import C
 from .utils import *
 import lib.database_operations as database
 import flask_bcrypt

@@ -1,13 +1,14 @@
 
 import unittest
-import main
+from scripts import main
 import multiprocessing
-from config import C
 import context
 import requests
 import os
 import shutil
 from tests import common_test_operations as testops
+import lib.database_operations as dbops
+from database.base import LearnwareVerifyStatus
 import time
 import json
 
@@ -18,7 +19,7 @@ class TestUser(unittest.TestCase):
         unittest.TestCase.setUpClass()
         TestUser.server_process = multiprocessing.Process(target=main.main)
         TestUser.server_process.start()
-        testops.wait_port_open(C.listen_port, 10)
+        testops.wait_port_open(context.config.listen_port, 10)
         context.init_database()
         testops.clear_db()
         TestUser.username = 'test'
@@ -98,6 +99,28 @@ class TestUser(unittest.TestCase):
         self.assertEqual(result['code'], 0)
         learnware_id = result['data']['learnware_id']
 
+        self.assertTrue(
+            os.path.exists(context.get_learnware_verify_file_path(learnware_id)))   
+
+        result = testops.url_request(
+            'user/list_learnware_unverified',
+            {'page': 0, 'limit': 10},
+            headers=headers
+        )
+
+        self.assertEqual(result['code'], 0)
+        self.assertEqual(result['data']['total_pages'], 1)
+        self.assertEqual(result['data']['learnware_list'][0]['learnware_id'], learnware_id)
+
+        dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.SUCCESS)
+
+        result = testops.url_request(
+            'user/add_learnware_verified',
+            {'learnware_id': learnware_id},
+            headers=headers)
+        
+        self.assertEqual(result['code'], 0)
+
         result = testops.url_request(
             'user/list_learnware',
             {'page': 0, 'limit': 10},
@@ -108,6 +131,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(result['data']['total_pages'], 1)
         self.assertEqual(result['data']['learnware_list'][0]['learnware_id'], learnware_id)
 
+
         result = testops.url_request(
             'user/delete_learnware',
             {'learnware_id': learnware_id},
@@ -117,14 +141,50 @@ class TestUser(unittest.TestCase):
         self.assertEqual(result['code'], 0)
 
         result = testops.url_request(
-            'user/list_learnware',
+            'user/list_learnware_unverified',
             {'page': 0, 'limit': 10},
             headers=headers
         )
 
         self.assertEqual(result['code'], 0)
-        self.assertEqual(len(result['data']['learnware_list']), 0)        
+        self.assertEqual(len(result['data']['learnware_list']), 0)
 
+        self.assertTrue(
+            not os.path.exists(context.get_learnware_verify_file_path(learnware_id)))    
+
+        pass
+
+    def test_add_learnware(self):
+        headers = testops.login(TestUser.email, TestUser.password)
+        semantic_specification = testops.test_learnware_semantic_specification()
+
+        learnware_file = open(
+            os.path.join('tests', 'data', 'test_learnware.zip'),'rb')
+        files = {'learnware_file': learnware_file}
+
+        # print(semantic_specification)
+        result = testops.url_request(
+            'user/add_learnware',
+            {'semantic_specification': json.dumps(semantic_specification)},
+            files=files,
+            headers=headers
+        )
+
+        learnware_file.close()
+        self.assertEqual(result['code'], 0)
+        learnware_id = result['data']['learnware_id']
+        learnware_info, _ = dbops.get_learnware_list(by='learnware_id', value=learnware_id)
+        learnware_info = learnware_info[0]
+        self.assertEqual(learnware_info['verify_status'], 'WAITING')
+
+        result = testops.url_request(
+            'user/delete_learnware',
+            {'learnware_id': learnware_id},
+            headers=headers
+        )        
+
+
+        self.assertEqual(result['code'], 0)
         pass
 
 
