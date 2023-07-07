@@ -4,6 +4,7 @@ import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { getLearnwareDetailById } from "../request/engine";
 import { downloadLearnwareSync } from "../utils";
+import { verifyLog } from "../request/user";
 
 const route = useRoute();
 const router = useRouter();
@@ -26,6 +27,7 @@ function getLearnwareDetail(id) {
           const learnwareInfo = res.data ? res.data.learnware_info : {};
           learnware.value = {
             id: learnwareInfo.learnware_id,
+            verifyStatus: learnwareInfo.verify_status,
             name: learnwareInfo.semantic_specification.Name.Values,
             description: learnwareInfo.semantic_specification.Description.Values,
             dataType: learnwareInfo.semantic_specification.Data.Values[0],
@@ -55,6 +57,16 @@ onMounted(() => {
   learnwareId.value = _id;
   getLearnwareDetail(learnwareId.value);
 });
+
+function onLearnwareVerifyLog(learnware_id) {
+  verifyLog({ learnware_id }).then((res) => {
+    var blob = new Blob([res.data], { type: "text/plain" });
+    //var blob = res.blob();
+    // blob.type = "text/plain";
+    var _url = window.URL.createObjectURL(blob);
+    window.open(_url, "_blank").focus(); // window.open + focus
+  });
+}
 </script>
 
 <template>
@@ -98,6 +110,12 @@ onMounted(() => {
         <div>Task type: {{ learnware.taskType }}</div>
         <div>Library type: {{ learnware.libraryType }}</div>
         <div>Tags: {{ learnware.tagList.join(", ") }}</div>
+        <div>
+          Verify status: {{ learnware.verifyStatus }},
+          <button class="text-blue-500 underline" @click="onLearnwareVerifyLog(learnware.id)">
+            Logs
+          </button>
+        </div>
       </v-card-text>
 
       <v-card-text class="md:(text-xl !leading-7) text-sm">

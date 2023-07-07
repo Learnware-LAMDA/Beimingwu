@@ -72,6 +72,11 @@ function handleClickDelete(id) {
         {{ `${item.username ? item.username + "/" : ""}${item.name}` }}
       </v-card-title>
     </div>
+    <v-card-subtitle>
+      <div style="color: red">
+        {{ item.verifyStatus != undefined && item.verifyStatus != "SUCCESS" ? "Unverified" : "" }}
+      </div>
+    </v-card-subtitle>
     <v-card-text class="card-text">
       <div
         class="label"
