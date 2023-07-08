@@ -1,9 +1,9 @@
 
 import unittest
-import main
+from scripts import main
 import multiprocessing
-from config import C
 import context
+from context import config as C
 import requests
 import os
 import shutil

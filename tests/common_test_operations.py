@@ -6,6 +6,7 @@ import requests
 from context import config as C
 import json
 import os
+from database.base import LearnwareVerifyStatus
 
 
 def clear_db():
@@ -109,6 +110,16 @@ def add_test_learnware(email, password, learnware_filename='test_learnware.zip')
         raise Exception('add learnware failed: ' + json.dumps(result))
     
     learnware_id = result['data']['learnware_id']
+
+    dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.SUCCESS)
+
+    result = url_request(
+        'user/add_learnware_verified',
+        {'learnware_id': learnware_id},
+        headers=headers)
+    
+    if result['code'] != 0:
+        raise Exception('add learnware verified failed: ' + json.dumps(result))
 
     print(f'added learnware: {learnware_id}')
 
