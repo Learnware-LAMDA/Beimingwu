@@ -66,4 +66,13 @@ function addLearnware({ name, dataType, taskType, libraryType, tagList, descript
     .then((res) => res.json());
 }
 
-export { changePassword, deleteLearnware, getLearnwareList, addLearnware };
+function verifyLog({ learnware_id }) {
+  return checkedFetch(`${BASE_URL}/verify_log?learnware_id=${learnware_id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
+}
+
+export { changePassword, deleteLearnware, getLearnwareList, addLearnware, verifyLog };
