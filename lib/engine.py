@@ -111,3 +111,54 @@ def search_learnware_by_semantic(semantic_str, user_id):
     
     # Return learnware
     return True, "", (matching, single_learnware_list, multi_score, multi_learnware)
+
+
+def parse_semantic_specification(semantic_str):
+    try:
+        semantic_specification = json.loads(semantic_str)
+    except:
+        return None, "Semantic specification error"
+    
+    data_type_values = semantic_specification['Data']['Values']
+    if len(data_type_values) != 1:
+        return None, "data type values is not 1"
+    
+    data_type = data_type_values[0]
+
+    if data_type == 'Table':
+        data_input = semantic_specification['Input']
+        try:
+            data_input = json.loads(data_input)
+        except:
+            return None, "data type description is not a json"
+        
+        dimension = data_input.get('Dimension')
+        if dimension is None:
+            return None, "data type description has no dimension"
+        
+        semantic_specification['Input'] = data_input
+        pass
+    else:
+        # should we check other data type?
+        pass
+    
+    task_type_values = semantic_specification['Task']['Values']
+    if len(task_type_values) != 1:
+        return None, "task type values is not 1"
+    
+    task_type = task_type_values[0]
+    if task_type in ('Classification', 'Regression', 'Feature Extraction'):
+        task_output = semantic_specification['Output']
+        try:
+            task_output = json.loads(task_output)
+        except:
+            return None, "task type description is not a json"
+        
+        dimension = task_output.get('Dimension')
+        if dimension is None:
+            return None, "task type description has no dimension"
+        
+        semantic_specification['Output'] = task_output
+        pass
+
+    return semantic_specification, "",
