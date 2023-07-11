@@ -41,7 +41,17 @@ function getLearnwareList({ page, limit }) {
   }).then((res) => res.json());
 }
 
-function addLearnware({ name, dataType, taskType, libraryType, tagList, description, files }) {
+function addLearnware({
+  name,
+  dataType,
+  taskType,
+  libraryType,
+  tagList,
+  dataTypeDescription,
+  taskTypeDescription,
+  description,
+  files,
+}) {
   return getSemanticSpecification()
     .then((res) => {
       const semanticSpec = res.data.semantic_specification;
@@ -51,6 +61,8 @@ function addLearnware({ name, dataType, taskType, libraryType, tagList, descript
       semanticSpec.Library.Values = (libraryType && [libraryType]) || [];
       semanticSpec.Scenario.Values = tagList;
       semanticSpec.Description.Values = description;
+      semanticSpec.Input = dataTypeDescription;
+      semanticSpec.Output = taskTypeDescription;
 
       const fd = new FormData();
       fd.append("learnware_file", files[0]);
