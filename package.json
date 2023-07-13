@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "js-yaml": "^4.1.0",
     "jszip": "^3.10.1",
     "vee-validate": "^4.8.4",
     "vue": "^3.2.47",

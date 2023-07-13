@@ -6,6 +6,7 @@ import { useStore } from "vuex";
 import { useField, useForm } from "vee-validate";
 import { getRole } from "../request/auth";
 import { addLearnware } from "../request/user";
+import { promiseReadFile, verifyLearnware } from "../utils";
 import VStepperTitle from "../components/Public/VStepperTitle.vue";
 import FileUpload from "../components/Specification/FileUpload.vue";
 import SpecTag from "../components/Specification/SpecTag.vue";
@@ -63,13 +64,13 @@ const { handleSubmit, meta } = useForm({
       return "Description needs to be at least 10 characters.";
     },
     files(value) {
-      if (value?.length > 0) {
-        if (value[0].name.endsWith(".zip")) {
-          return true;
-        }
+      if (!value.length || value.length === 0) {
+        return "Please upload your model & statistical specification.";
+      }
+      if (!value[0].name.endsWith(".zip")) {
         return "You must upload a zip file.";
       }
-      return "Please upload your model & statistical specification.";
+      return promiseReadFile(value[0]).then(verifyLearnware);
     },
   },
 });
