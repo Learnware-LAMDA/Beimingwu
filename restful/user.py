@@ -153,13 +153,12 @@ class ListLearnwareUnverifiedApi(flask_restful.Resource):
 class AddLearnwareApi(flask_restful.Resource):
     @flask_jwt_extended.jwt_required()
     def post(self):
-        semantic_specification = request.form.get("semantic_specification")
+        semantic_specification_str = request.form.get("semantic_specification")
 
-        # print(semantic_specification)
-        try:
-            semantic_specification = json.loads(semantic_specification)
-        except Exception as e:
-            return {"code": 41, "msg": "Semantic specification error"}, 200
+        print(semantic_specification_str)
+        semantic_specification, err_msg = engine_helper.parse_semantic_specification(semantic_specification_str)
+        if semantic_specification is None:
+            return {"code": 41, "msg": err_msg}, 200
         
         learnware_file = request.files.get("learnware_file")
         if learnware_file is None or learnware_file.filename == "":
