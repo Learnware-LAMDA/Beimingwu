@@ -26,6 +26,8 @@ const { handleSubmit, meta } = useForm({
     taskType: "",
     libraryType: "",
     tagList: [],
+    dataTypeDescription: "",
+    taskTypeDescription: "",
     description: "",
     files: [],
   },
@@ -57,6 +59,17 @@ const { handleSubmit, meta } = useForm({
     tagList() {
       return true;
     },
+    dataTypeDescription() {
+      // try {
+      //   JSON.parse(value);
+      // } catch (err) {
+      //   return "Data type description must be a valid JSON string.";
+      // }
+      return true;
+    },
+    taskTypeDescription() {
+      return true;
+    },
     description(value) {
       if (value?.length >= 10) {
         return true;
@@ -80,6 +93,8 @@ const dataType = useField("dataType");
 const taskType = useField("taskType");
 const libraryType = useField("libraryType");
 const tagList = useField("tagList");
+const dataTypeDescription = useField("dataTypeDescription");
+const taskTypeDescription = useField("taskTypeDescription");
 const description = useField("description");
 const files = useField("files");
 
@@ -169,6 +184,8 @@ const submit = handleSubmit((values) => {
     taskType: values.taskType,
     libraryType: values.libraryType,
     tagList: values.tagList,
+    dataTypeDescription: values.dataTypeDescription,
+    taskTypeDescription: values.taskTypeDescription,
     description: values.description,
     files: values.files,
   })
@@ -254,6 +271,10 @@ function loadQuery() {
   !!route.query.taskType && (taskType.value.value = route.query.taskType);
   !!route.query.libraryType && (libraryType.value.value = route.query.libraryType);
   !!route.query.tagList && (tagList.value.value = JSON.parse(route.query.tagList));
+  !!route.query.dataTypeDescription &&
+    (dataTypeDescription.value.value = route.query.dataTypeDescription);
+  !!route.query.taskTypeDescription &&
+    (taskTypeDescription.value.value = route.query.taskTypeDescription);
   !!route.query.description && (description.value.value = route.query.description);
 }
 
@@ -320,6 +341,8 @@ onMounted(() => {
                 v-model:task-type="taskType.value.value"
                 v-model:library-type="libraryType.value.value"
                 v-model:tag-list="tagList.value.value"
+                v-model:data-type-description="dataTypeDescription.value.value"
+                v-model:task-type-description="taskTypeDescription.value.value"
                 :error-messages="
                   dataType.errorMessage.value ||
                   taskType.errorMessage.value ||
