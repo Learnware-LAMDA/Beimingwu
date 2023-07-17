@@ -373,8 +373,11 @@ onMounted(() => {
               ></file-upload>
             </div>
             <v-card-text class="text-lg <sm:text-sm">
-              <span class="cursor-pointer" @click="router.push('/instruction')"
-                ><u>Click here</u></span
+              <a
+                class="underline"
+                href="http://36.111.128.21:30006/workflow/submit.html"
+                target="_blank"
+                >Click here</a
               >
               for instructions on how to create the required zip file.
             </v-card-text>

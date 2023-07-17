@@ -35,16 +35,6 @@ const Router = createRouter({
       },
     },
     {
-      path: "/instruction",
-      name: "Instruction",
-      component: () => import("../views/Instruction.vue"),
-      meta: {
-        showInNavBar: false,
-        requiredLogin: false,
-        icon: "mdi-help",
-      },
-    },
-    {
       path: "/mylearnware",
       name: "MyLearnware",
       component: () => import("../views/MyLearnware.vue"),
