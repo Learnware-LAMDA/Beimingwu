@@ -76,7 +76,7 @@ watch(
 <template>
   <v-container class="max-h-[600px] overflow-y-scroll">
     <v-row class="mt-3">
-      <v-alert type="info" closable>
+      <v-alert type="info" color="primary" closable>
         Fill in the description for each {{ name }}
         <span class="d-none sm-inline">on the left</span> or paste a JSON object
         <span class="d-none sm-inline">on the right</span>. Clarifying the description for each
