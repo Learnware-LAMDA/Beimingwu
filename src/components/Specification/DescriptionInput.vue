@@ -102,7 +102,7 @@ watch(
           v-model="descriptionString"
           auto-grow
           class="flex flex-col"
-          label="Table Description"
+          :label="`${name.slice(0, 1).toUpperCase()}${name.slice(1)} Description`"
           :error-messages="errorMessages"
         />
       </v-col>
