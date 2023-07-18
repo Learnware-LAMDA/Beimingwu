@@ -74,7 +74,7 @@ watch(
 </script>
 
 <template>
-  <v-container>
+  <v-container class="max-h-[600px] overflow-y-scroll">
     <v-row>
       <v-col cols="12" md="6">
         <v-text-field
