@@ -86,30 +86,20 @@ watch(
     </v-row>
     <v-row>
       <v-col cols="12" md="6">
-        <v-hover v-for="(_, idx) in descriptionArray" :key="idx">
-          <template #default="{ isHovering, props: hoverProps }">
-            <div v-bind="hoverProps">
-              <v-text-field
-                v-model="descriptionArray[idx]"
-                :label="`Description: ${name} ${idx}`"
-                class="mt-1"
-                hide-details
-                :prepend-icon="isHovering ? 'mdi-plus' : ''"
-                :append-icon="isHovering ? 'mdi-delete' : ''"
-                :append-inner-icon="isHovering ? 'mdi-close' : ''"
-                @click:prepend="() => descriptionArray.splice(idx, 0, null)"
-                @click:append="
-                  () => (descriptionArray = descriptionArray.filter((_, i) => i !== idx))
-                "
-                @click:append-inner="
-                  () => (descriptionArray = descriptionArray.map((_, i) => (i === idx ? null : _)))
-                "
-              />
-            </div>
-          </template>
-        </v-hover>
+        <v-text-field
+          v-for="(_, idx) in descriptionArray"
+          :key="idx"
+          v-model="descriptionArray[idx]"
+          :label="`Description: ${name} ${idx}`"
+          class="mb-1"
+          hide-details
+          prepend-icon="mdi-plus"
+          append-icon="mdi-delete"
+          @click:prepend="() => descriptionArray.splice(idx, 0, null)"
+          @click:append="() => (descriptionArray = descriptionArray.filter((_, i) => i !== idx))"
+        />
         <v-btn block flat class="mt-1" @click="descriptionArray = [...descriptionArray, null]">
-          <v-icon>mdi-plus</v-icon>
+          <v-icon size="large" color="#555">mdi-plus</v-icon>
         </v-btn>
       </v-col>
       <v-col cols="12" md="6">
