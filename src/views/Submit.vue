@@ -26,8 +26,23 @@ const { handleSubmit, meta } = useForm({
     taskType: "",
     libraryType: "",
     tagList: [],
-    dataTypeDescription: "",
-    taskTypeDescription: "",
+    dataTypeDescription: JSON.stringify({
+      Dimension: 7,
+      Description: {
+        0: "gender",
+        1: "age",
+        2: "f2",
+        5: "f5",
+      },
+    }),
+    taskTypeDescription: JSON.stringify({
+      Dimension: 3,
+      Description: {
+        0: "the probability of being a cat",
+        1: "the probability of being a dog",
+        2: "the probability of being a bird",
+      },
+    }),
     description: "",
     files: [],
   },
