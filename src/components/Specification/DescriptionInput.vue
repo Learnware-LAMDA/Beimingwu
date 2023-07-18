@@ -78,10 +78,10 @@ watch(
     <v-row class="mt-3">
       <v-alert type="info" color="primary" closable>
         Fill in the description for each {{ name }}
-        <span class="d-none sm-inline">on the left</span> or paste a JSON object
-        <span class="d-none sm-inline">on the right</span>. Clarifying the description for each
-        {{ name }} will help your learnware to be available for tasks with hetergenous
-        {{ name }} space.
+        <span class="d-none d-sm-inline">on the left</span>
+        or paste a JSON object<span class="d-none d-sm-inline"> on the right</span>. Clarifying the
+        description for each {{ name }} will help your learnware to be available for tasks with
+        hetergenous {{ name }} space.
       </v-alert>
     </v-row>
     <v-row>
