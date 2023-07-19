@@ -9,7 +9,7 @@ import lib.database_operations as database
 
 import lib.engine as engine_helper
 import flask_jwt_extended
-import flask_restful
+import flask_restx as flask_restful
 import flask_bcrypt
 
 

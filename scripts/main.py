@@ -9,7 +9,6 @@ import restful.admin
 from learnware import market
 import context
 from context import config as C
-import flask_restful
 import flask_bcrypt
 import flask_jwt_extended
 import requests

@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 from cvxopt import solvers, matrix
 from typing import Tuple, Any, List, Union, Dict
+import werkzeug.datastructures
 
 from learnware.market.base import BaseMarket, BaseUserInfo
 from learnware.market import EasyMarket
@@ -195,3 +196,23 @@ class BackendMarket(EasyMarket):
         self.learnware_folder_list[id] = target_folder_dir
         self.count += 1
         return id, EasyMarket.USABLE_LEARWARE
+    
+    def update_learnware(
+            self, id: str, semantic_specification: dict, 
+            learnware_file: werkzeug.datastructures.FileStorage = None):
+        self.dbops.update_learnware_semantic_specification(id, semantic_specification)
+
+        if learnware_file is not None:
+            zip_path = self.learnware_zip_list[id]
+            folder_path = self.learnware_folder_list[id]
+
+            learnware_file.save(zip_path)
+            with zipfile.ZipFile(zip_path, "r") as z_file:
+                z_file.extractall(folder_path)
+                pass
+            self.learnware_list[id] = get_learnware_from_dirpath(
+                id=id, semantic_spec=semantic_specification, learnware_dirpath=folder_path
+            )
+        else:
+            self.learnware_list[id].get_specification().upload_semantic_spec(semantic_specification)
+        pass

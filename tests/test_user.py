@@ -74,14 +74,7 @@ class TestUser(unittest.TestCase):
 
     def test_list_learnware(self):
         headers = testops.login(TestUser.email, TestUser.password)
-        semantic_specification = dict()
-
-        semantic_specification["Data"] = {"Type": "Class", "Values": ["Table"]}
-        semantic_specification["Task"] = {"Type": "Class", "Values": ["Classification"]}
-        semantic_specification["Library"] = {"Type": "Class", "Values": ["Scikit-learn"]}
-        semantic_specification["Scenario"] = {"Type": "Tag", "Values": ["Business"]}
-        semantic_specification["Name"] = {"Type": "String", "Values": ["Test Classification"]}
-        semantic_specification["Description"] = {"Type": "String", "Values": ["just a test"]}
+        semantic_specification = testops.test_learnware_semantic_specification()
 
         learnware_file = open(
             os.path.join('tests', 'data', 'test_learnware.zip'),'rb')
@@ -183,6 +176,198 @@ class TestUser(unittest.TestCase):
             headers=headers
         )        
 
+
+        self.assertEqual(result['code'], 0)
+        pass
+
+
+    def test_update_unverified_learnware(self):
+        headers = testops.login(TestUser.email, TestUser.password)
+        semantic_specification = testops.test_learnware_semantic_specification()
+
+        learnware_file = open(
+            os.path.join('tests', 'data', 'test_learnware.zip'),'rb')
+        files = {'learnware_file': learnware_file}
+
+        # print(semantic_specification)
+        result = testops.url_request(
+            'user/add_learnware',
+            {'semantic_specification': json.dumps(semantic_specification)},
+            files=files,
+            headers=headers
+        )
+
+        learnware_file.close()
+        self.assertEqual(result['code'], 0)
+        learnware_id = result['data']['learnware_id']
+
+        result = testops.url_request(
+            'user/list_learnware',
+            {'page': 0, 'limit': 10},
+            headers=headers
+        )
+
+        self.assertEqual(result['code'], 0)
+        learnware_info = result['data']['learnware_list'][0]
+        print(learnware_info.keys())
+        self.assertEqual(learnware_info['semantic_specification']['Name']['Values'], 'Test Classification')
+
+        semantic_specification['Name']['Values'] = 'Test Classification 2'
+        result = testops.url_request(
+            'user/update_learnware',
+            data = {'learnware_id': learnware_id, 'semantic_specification': json.dumps(semantic_specification)},
+            headers=headers
+        )
+
+        self.assertEqual(result['code'], 0)
+
+        result = testops.url_request(
+            'user/list_learnware',
+            {'page': 0, 'limit': 10},
+            headers=headers
+        )
+
+        self.assertEqual(result['code'], 0)
+        learnware_info = result['data']['learnware_list'][0]
+        self.assertEqual(learnware_info['semantic_specification']['Name']['Values'], 'Test Classification 2')
+
+        result = testops.url_request(
+            'user/delete_learnware',
+            {'learnware_id': learnware_id},
+            headers=headers
+        )        
+
+        self.assertEqual(result['code'], 0)
+        pass
+
+    def test_update_verified_learnware(self):
+        headers = testops.login(TestUser.email, TestUser.password)
+        semantic_specification = testops.test_learnware_semantic_specification()
+
+        learnware_file = open(
+            os.path.join('tests', 'data', 'test_learnware.zip'),'rb')
+        files = {'learnware_file': learnware_file}
+
+        # print(semantic_specification)
+        result = testops.url_request(
+            'user/add_learnware',
+            {'semantic_specification': json.dumps(semantic_specification)},
+            files=files,
+            headers=headers
+        )
+
+        learnware_file.close()
+        self.assertEqual(result['code'], 0)
+        learnware_id = result['data']['learnware_id']
+
+        dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.SUCCESS)
+        result = testops.url_request(
+            'user/add_learnware_verified',
+            {'learnware_id': learnware_id},
+            headers=headers)
+        self.assertEqual(result['code'], 0)
+
+        result = testops.url_request(
+            'user/list_learnware',
+            {'page': 0, 'limit': 10},
+            headers=headers
+        )
+
+        self.assertEqual(result['code'], 0)
+        learnware_info = result['data']['learnware_list'][0]
+        self.assertEqual(learnware_info['semantic_specification']['Name']['Values'], 'Test Classification')
+
+        semantic_specification['Name']['Values'] = 'Test Classification 2'
+        result = testops.url_request(
+            'user/update_learnware',
+            data = {'learnware_id': learnware_id, 'semantic_specification': json.dumps(semantic_specification)},
+            headers=headers
+        )
+
+        self.assertEqual(result['code'], 0)
+        result = testops.url_request(
+            'user/list_learnware',
+            {'page': 0, 'limit': 10},
+            headers=headers
+        )
+
+        self.assertEqual(result['code'], 0)
+        learnware_info = result['data']['learnware_list'][0]
+        self.assertEqual(learnware_info['semantic_specification']['Name']['Values'], 'Test Classification 2')
+
+        result = testops.url_request(
+            'user/delete_learnware',
+            {'learnware_id': learnware_id},
+            headers=headers
+        )        
+
+        self.assertEqual(result['code'], 0)
+        pass
+
+    def test_update_verified_learnware_and_file(self):
+        headers = testops.login(TestUser.email, TestUser.password)
+        semantic_specification = testops.test_learnware_semantic_specification()
+
+        learnware_file = open(
+            os.path.join('tests', 'data', 'test_learnware.zip'),'rb')
+        files = {'learnware_file': learnware_file}
+
+        # print(semantic_specification)
+        result = testops.url_request(
+            'user/add_learnware',
+            {'semantic_specification': json.dumps(semantic_specification)},
+            files=files,
+            headers=headers
+        )
+
+        learnware_file.close()
+        self.assertEqual(result['code'], 0)
+        learnware_id = result['data']['learnware_id']
+
+        dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.SUCCESS)
+        result = testops.url_request(
+            'user/add_learnware_verified',
+            {'learnware_id': learnware_id},
+            headers=headers)
+        self.assertEqual(result['code'], 0)
+
+        response = testops.url_request(
+            'engine/download_learnware',
+            {'learnware_id': learnware_id},
+            headers=headers,
+            method='get',
+            return_response=True
+        )
+        
+        self.assertEqual(len(response.content), os.path.getsize(os.path.join('tests', 'data', 'test_learnware.zip')))
+
+        learnware_file = open(
+            os.path.join('tests', 'data', 'test_learnware2.zip'),'rb')
+        files = {'learnware_file': learnware_file}
+
+        result = testops.url_request(
+            'user/update_learnware',
+            data = {'learnware_id': learnware_id, 'semantic_specification': json.dumps(semantic_specification)},
+            files = files,
+            headers=headers
+        )
+        learnware_file.close()
+        
+        response = testops.url_request(
+            'engine/download_learnware',
+            {'learnware_id': learnware_id},
+            headers=headers,
+            method='get',
+            return_response=True
+        )
+        
+        self.assertEqual(len(response.content), os.path.getsize(os.path.join('tests', 'data', 'test_learnware2.zip')))    
+
+        result = testops.url_request(
+            'user/delete_learnware',
+            {'learnware_id': learnware_id},
+            headers=headers
+        )        
 
         self.assertEqual(result['code'], 0)
         pass

@@ -4,7 +4,7 @@ from .utils import *
 import lib.database_operations as database
 import flask_bcrypt
 import flask_jwt_extended
-import flask_restful
+import flask_restx as flask_restful
 import datetime
 
 
