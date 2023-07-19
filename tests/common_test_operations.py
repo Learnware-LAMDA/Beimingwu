@@ -44,16 +44,21 @@ def wait_port_open(port, timeout):
     pass
 
 
-def url_request(url_path: str, parameters: dict, headers=None, return_response=False, files=None, method='post'):
+def url_request(
+        url_path: str, parameters: dict=None, headers=None, return_response=False, files=None, data=None, 
+        method='post'):
     url = f'http://127.0.0.1:{C.listen_port}/{url_path}'
     
     if method == 'get':
         response = requests.get(url, params=parameters, headers=headers)
     else:
-        if files is None:
+        if files is None and data is None:
             response = requests.post(url, json=parameters, headers=headers)
-        else:
+        elif data is None:
             response = requests.post(url, data=parameters, files=files, headers=headers)
+            pass
+        else:
+            response = requests.post(url, data=data, files=files, headers=headers)
             pass
     
     if return_response:
@@ -79,8 +84,8 @@ def login(email, password):
 def test_learnware_semantic_specification():
     semantic_specification = dict()
 
-    semantic_specification["Data"] = {"Type": "Class", "Values": ["Table"]}
-    semantic_specification["Task"] = {"Type": "Class", "Values": ["Classification"]}
+    semantic_specification["Data"] = {"Type": "Class", "Values": ["Image"]}
+    semantic_specification["Task"] = {"Type": "Class", "Values": ["Detection"]}
     semantic_specification["Library"] = {"Type": "Class", "Values": ["Scikit-learn"]}
     semantic_specification["Scenario"] = {"Type": "Tag", "Values": ["Business"]}
     semantic_specification["Name"] = {"Type": "String", "Values": "Test Classification"}

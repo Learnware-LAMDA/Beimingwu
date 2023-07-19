@@ -1,7 +1,0 @@
-
-{
-    "database": {
-        "type": "sqlalchemy",
-        "url": "postgresql+psycopg2://learnware:69DRINrryTKX2nZrzuIw6EKvPiJwHNxB1ORKh8LnIx4nobokNBPgw6x6TSxWuqf2@postgres-learnware.default/learnware_backend"
-    }
-}

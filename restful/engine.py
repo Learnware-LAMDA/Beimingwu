@@ -8,10 +8,9 @@ import os, json, time
 import lib.engine as adv_engine
 from .utils import dump_learnware, get_parameters, generate_random_str
 import flask_jwt_extended
-import flask_restful
+import flask_restx as flask_restful
 import traceback
 import lib.database_operations as dbops
-from database.base import LearnwareVerifyStatus
 import lib.data_utils as data_utils
 
 

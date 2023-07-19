@@ -1,4 +1,5 @@
 from flask import Blueprint, g, jsonify, request, session
+import werkzeug.datastructures
 import json
 import os, time
 import hashlib
@@ -12,12 +13,12 @@ import context
 from context import config as C
 from . import auth
 import flask_jwt_extended
-import flask_restful
+import flask_restx as flask_restful
 import flask_bcrypt
 import lib.data_utils as data_utils
 
 
-user_blueprint = Blueprint("User-API", __name__)
+user_blueprint = Blueprint("api", __name__)
 api = flask_restful.Api(user_blueprint)
 
 
@@ -92,6 +93,7 @@ class ListLearnwareApi(flask_restful.Resource):
 
             learnware_info["semantic_specification"] = data_utils.get_learnware_semantic_specification(
                 learnware_info)
+            print(f'learnware_id: {learnware_info["learnware_id"]}, semantic_specification: {learnware_info["semantic_specification"]}')
 
             learnware_list.append(learnware_info)
             
@@ -175,6 +177,8 @@ class AddLearnwareApi(flask_restful.Resource):
         learnware_file.seek(0)
         learnware_file.save(learnware_path)
 
+        # check learnware file
+        
         with open(learnware_semantic_spec_path, "w") as f:
             json.dump(semantic_specification, f)
             pass
@@ -194,6 +198,51 @@ class AddLearnwareApi(flask_restful.Resource):
         return result, 200
     pass
 
+
+parser_update_learnware = flask_restful.reqparse.RequestParser()
+parser_update_learnware.add_argument("learnware_id", type=str, required=True, location="form")
+parser_update_learnware.add_argument("semantic_specification", type=str, required=True, location="form")
+parser_update_learnware.add_argument("learnware_file", type=werkzeug.datastructures.FileStorage, location="files")
+class UpdateLearnwareApi(flask_restful.Resource):
+    @api.expect(parser_update_learnware)
+    @flask_jwt_extended.jwt_required()
+    def post(self):
+        semantic_specification_str = request.form.get("semantic_specification")
+        learnware_id = request.form.get("learnware_id")
+
+        print(semantic_specification_str)
+        semantic_specification, err_msg = engine_helper.parse_semantic_specification(semantic_specification_str)
+        if semantic_specification is None:
+            return {"code": 41, "msg": err_msg}, 200
+        
+        learnware_file = None
+        if request.files is not None:
+            learnware_file = request.files.get("learnware_file")
+            pass
+
+        verify_status = database.get_learnware_verify_status(learnware_id)
+
+        if verify_status == LearnwareVerifyStatus.SUCCESS.value:
+            # this learnware is verified
+            print(f'update verified learnware: {learnware_id}')
+            context.engine.update_learnware(learnware_id, semantic_specification, learnware_file)
+            pass
+        else:
+            # this learnware is not verified
+            learnware_path = context.get_learnware_verify_file_path(learnware_id)
+            learnware_semantic_spec_path = learnware_path[:-4] + ".json"
+
+            with open(learnware_semantic_spec_path, "w") as f:
+                json.dump(semantic_specification, f)
+                pass
+            if learnware_file is not None:
+                learnware_file.seek(0)
+                learnware_file.save(learnware_path)
+                pass
+            pass
+        
+        return {"code": 0, "msg": "success"}, 200
+        
 
 class AddLearnwareVerifiedApi(flask_restful.Resource):
     # todo: this api should be protected
@@ -229,6 +278,8 @@ class DeleteLearnwareApi(flask_restful.Resource):
         learnware_id = body["learnware_id"]
         user_id = flask_jwt_extended.get_jwt_identity()
 
+        print(f'delete learnware: {learnware_id}')
+
         # Check permission
         learnware_infos, cnt = database.get_learnware_list("learnware_id", learnware_id)
         if len(learnware_infos) == 0:
@@ -259,6 +310,7 @@ class DeleteLearnwareApi(flask_restful.Resource):
     pass
 
 
+@api.doc(params={'learnware_id': 'learnware id'})
 class VerifyLog(flask_restful.Resource):
     @flask_jwt_extended.jwt_required()
     def get(self):
@@ -276,6 +328,7 @@ api.add_resource(ChangePasswordApi, "/change_password")
 api.add_resource(ListLearnwareApi, "/list_learnware")
 api.add_resource(ListLearnwareUnverifiedApi, "/list_learnware_unverified")
 api.add_resource(AddLearnwareApi, "/add_learnware")
+api.add_resource(UpdateLearnwareApi, "/update_learnware")
 api.add_resource(AddLearnwareVerifiedApi, "/add_learnware_verified")
 api.add_resource(DeleteLearnwareApi, "/delete_learnware")
 api.add_resource(VerifyLog, "/verify_log")
