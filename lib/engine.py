@@ -1,7 +1,6 @@
 import context
 from context import config as C
 
-from learnware.learnware import Learnware
 from learnware import market, specification
 from flask import jsonify, g
 from datetime import datetime, timedelta
@@ -9,6 +8,11 @@ import functools
 import os, json, time
 import hashlib
 import traceback
+import tempfile
+import zipfile
+import learnware.config
+import yaml
+from learnware.learnware.utils import get_stat_spec_from_config
 
 
 def cache(seconds: int, maxsize: int = 128, typed: bool = False):
@@ -162,3 +166,44 @@ def parse_semantic_specification(semantic_str):
         pass
 
     return semantic_specification, "",
+
+
+def check_learnware_file(learnware_file):
+    # Check file extension
+    suffix = os.path.splitext(learnware_file)[1]
+
+    if suffix != ".zip":
+        return False, "learnware file is not a zip file"
+    
+    temp_dir = tempfile.TemporaryDirectory(prefix="learnware_check_file_")
+
+    try:
+        yaml_file = learnware.config.C.learnware_folder_config["yaml_file"]
+
+        with zipfile.ZipFile(learnware_file, "r") as z_file:
+            z_file.extract(yaml_file, temp_dir.name)
+
+            with open(os.path.join(temp_dir.name, yaml_file), "r") as fin:
+                learnware_config = yaml.safe_load(fin)
+                pass
+
+            stat_specs = learnware_config.get("stat_specifications")
+
+            if stat_specs is None:
+                return False, f"no stat_specifications in {yaml_file}"
+
+            for stat_spec in stat_specs:
+                member = stat_spec["file_name"]
+                z_file.extract(member, temp_dir.name)
+                stat_spec["file_name"] = os.path.join(temp_dir.name, stat_spec["file_name"])
+                get_stat_spec_from_config(stat_spec)
+                pass
+            pass
+        pass
+    except Exception as err:
+        return False, f"extract statistical specification error: {err}"
+    finally:
+        temp_dir.cleanup()
+
+    
+    return True, ""

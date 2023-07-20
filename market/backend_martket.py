@@ -9,13 +9,10 @@ from cvxopt import solvers, matrix
 from typing import Tuple, Any, List, Union, Dict
 import werkzeug.datastructures
 
-from learnware.market.base import BaseMarket, BaseUserInfo
 from learnware.market import EasyMarket
 
 from learnware.learnware import Learnware, get_learnware_from_dirpath
-from learnware.specification import RKMEStatSpecification, Specification
 from learnware.logger import get_module_logger
-from learnware.config import C as conf
 import traceback
 
 

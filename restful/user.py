@@ -177,6 +177,11 @@ class AddLearnwareApi(flask_restful.Resource):
         learnware_file.seek(0)
         learnware_file.save(learnware_path)
 
+        check_result, msg = engine_helper.check_learnware_file(learnware_path)
+
+        if not check_result:
+            return {"code": 51, "msg": msg}, 200
+
         # check learnware file
         
         with open(learnware_semantic_spec_path, "w") as f:

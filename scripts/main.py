@@ -17,8 +17,9 @@ import requests
 app = Flask(__name__)
 app.secret_key = "my_secret_key"
 app.config['JWT_SECRET_KEY'] = app.secret_key
-
 app.config['UPLOAD_FOLDER'] = C.upload_path
+app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024
+
 CORS(app)
 bcrypt = flask_bcrypt.Bcrypt(app)
 jwt = flask_jwt_extended.JWTManager(app)
@@ -41,6 +42,9 @@ def main():
 
     # Init engine
     context.init_engine()
+
+    # Init logger
+    context.init_logger()
 
     # Init flask
     app.register_blueprint(restful.auth.auth_blueprint, url_prefix='/auth')

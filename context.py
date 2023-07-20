@@ -7,6 +7,7 @@ import os
 
 from learnware.market import EasyMarket
 from market.backend_martket import BackendMarket
+import logging
 
 
 database : Database = None
@@ -14,6 +15,9 @@ engine = None
 stats = 0
 
 config = Config()
+
+logger = logging.getLogger('learnware-backend')
+
 
 def init_database(admin_password: str = None):
     global config, database
@@ -42,6 +46,24 @@ def init_backend():
     global config
 
     os.makedirs(config.upload_path, exist_ok=True)
+    pass
+
+
+def init_logger():
+    global config, logger
+
+    if len(logger.handlers) > 0:
+        pass
+    else:
+        handler = logging.StreamHandler()
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        pass
+    
+    logger.setLevel(logging.DEBUG)
+
     pass
 
 
