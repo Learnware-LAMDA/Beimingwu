@@ -99,6 +99,7 @@ def main(num_worker):
     while True:
         learnware_ids = dbops.get_unverified_learnware()
         for learnware_id in learnware_ids:
+            dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.QUEUE)
             waiting_queue.put(learnware_id)
             pass
 

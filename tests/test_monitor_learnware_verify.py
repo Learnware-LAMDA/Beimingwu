@@ -47,7 +47,7 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
 
     def test_add_valid_learnware(self):
         headers = testops.login(TestMonitorLearnwareVerify.email, TestMonitorLearnwareVerify.password)
-        learnware_id = testops.add_test_learnware(
+        learnware_id = testops.add_test_learnware_unverified(
             TestMonitorLearnwareVerify.email, TestMonitorLearnwareVerify.password)
 
         for i in range(10):
@@ -86,7 +86,7 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
 
     def test_add_invalid_learnware(self):
         headers = testops.login(TestMonitorLearnwareVerify.email, TestMonitorLearnwareVerify.password)
-        learnware_id = testops.add_test_learnware(
+        learnware_id = testops.add_test_learnware_unverified(
             TestMonitorLearnwareVerify.email, TestMonitorLearnwareVerify.password,
             learnware_filename='test_learnware_invalid.zip')
 
@@ -112,19 +112,20 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
         self.assertTrue(
             os.path.exists(context.get_learnware_verify_file_path(learnware_id)))
         result = testops.url_request(
-            'user/list_learnware',
+            'user/list_learnware_unverified',
             {'page': 0, 'limit': 10},
             headers=headers
         )
 
         self.assertEqual(result['code'], 0)
-        self.assertEqual(result['data']['total_pages'], 0)
-        self.assertEqual(len(result['data']['learnware_list']), 0)
+        self.assertEqual(result['data']['total_pages'], 1)
+        self.assertEqual(len(result['data']['learnware_list']), 1)
+        testops.delete_learnware(learnware_id, headers)
         pass
 
     def test_add_conda_learnware(self):
         headers = testops.login(TestMonitorLearnwareVerify.email, TestMonitorLearnwareVerify.password)
-        learnware_id = testops.add_test_learnware(
+        learnware_id = testops.add_test_learnware_unverified(
             TestMonitorLearnwareVerify.email, TestMonitorLearnwareVerify.password,
             learnware_filename='test_learnware_conda.zip')
 

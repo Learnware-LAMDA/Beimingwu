@@ -131,6 +131,31 @@ def add_test_learnware(email, password, learnware_filename='test_learnware.zip')
     return learnware_id
 
 
+def add_test_learnware_unverified(email, password, learnware_filename='test_learnware.zip') -> str:
+    headers = login(email, password)
+    semantic_specification = test_learnware_semantic_specification()
+
+    learnware_file = open(
+        os.path.join('tests', 'data', learnware_filename),'rb')
+    files = {'learnware_file': learnware_file}
+
+    # print(semantic_specification)
+    result = url_request(
+        'user/add_learnware',
+        {'semantic_specification': json.dumps(semantic_specification)},
+        files=files,
+        headers=headers
+    )
+
+    learnware_file.close()
+    if result['code'] != 0:
+        raise Exception('add learnware failed: ' + json.dumps(result))
+    
+    learnware_id = result['data']['learnware_id']
+
+    return learnware_id    
+
+
 def delete_learnware(learnware_id, headers):
     result = url_request(
         'user/delete_learnware',

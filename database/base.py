@@ -6,6 +6,7 @@ class LearnwareVerifyStatus(enum.Enum):
     FAIL = "FAIL"
     WAITING = "WAITING"
     PROCESSING = "PROCESSING"
+    QUEUE = "QUEUE"
     pass
 
 

@@ -230,8 +230,12 @@ def update_learnware_verify_result(learnware_id, status: LearnwareVerifyStatus, 
 
 def reset_learnware_verify_status():
     context.database.execute(
-        "UPDATE tb_user_learnware_relation SET verify_status = :waiting WHERE verify_status = :processing",
-        {"processing": LearnwareVerifyStatus.PROCESSING.value, "waiting": LearnwareVerifyStatus.WAITING.value}
+        "UPDATE tb_user_learnware_relation SET verify_status = :waiting WHERE verify_status = :processing OR verify_status = :waiting_queue",
+        {
+            "processing": LearnwareVerifyStatus.PROCESSING.value, 
+            "waiting": LearnwareVerifyStatus.WAITING.value, 
+            "waiting_queue": LearnwareVerifyStatus.QUEUE.value
+        }
     )
 
 
