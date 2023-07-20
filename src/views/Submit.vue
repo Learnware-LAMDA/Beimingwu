@@ -98,7 +98,7 @@ const { handleSubmit, meta } = useForm({
       if (!value[0].name.endsWith(".zip")) {
         return "You must upload a zip file.";
       }
-      if (!value[0].size <= 1024 * 1024 * 1024) {
+      if (value[0].size > 1024 * 1024 * 1024) {
         return "File size must be less than 1GB.";
       }
       return promiseReadFile(value[0]).then(verifyLearnware);
