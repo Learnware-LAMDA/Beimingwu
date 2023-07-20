@@ -391,6 +391,26 @@ class TestUser(unittest.TestCase):
         self.assertEqual(result, 'test result')
         pass
 
+    def test_add_learnware_no_stat_file(self):
+        headers = testops.login(TestUser.email, TestUser.password)
+        semantic_specification = testops.test_learnware_semantic_specification()
+
+        learnware_file = open(
+            os.path.join('tests', 'data', 'test_learnware_no_stat.zip'),'rb')
+        files = {'learnware_file': learnware_file}
+
+        # print(semantic_specification)
+        result = testops.url_request(
+            'user/add_learnware',
+            {'semantic_specification': json.dumps(semantic_specification)},
+            files=files,
+            headers=headers
+        )
+
+        learnware_file.close()
+        self.assertEqual(result['code'], 51)
+
+        pass
 
 if __name__ == '__main__':
     unittest.main()
