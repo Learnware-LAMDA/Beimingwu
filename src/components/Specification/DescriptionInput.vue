@@ -82,44 +82,49 @@ watch(
       description for each {{ name }} will help your learnware to be available for tasks with
       hetergenous {{ name }} space.
     </v-alert>
-    <v-container class="mt-3 max-h-[600px] overflow-y-scroll">
+    <v-container class="mt-3">
       <v-row>
-        <v-col cols="12" md="6">
-          <v-hover v-for="(_, idx) in descriptionArray" :key="idx">
-            <template #default="{ isHovering, props: hoverProps }">
-              <div v-bind="hoverProps">
-                <v-text-field
-                  v-model="descriptionArray[idx]"
-                  :label="`Description: ${name} ${idx}`"
-                  class="mb-1"
-                  hide-details
-                >
-                  <template v-if="isHovering" #append-inner>
-                    <v-icon
-                      class="mr-1"
-                      icon="mdi-plus"
-                      @click="() => descriptionArray.splice(idx, 0, null)"
-                    />
-                    <v-icon
-                      icon="mdi-delete"
-                      @click="
-                        () => (descriptionArray = descriptionArray.filter((_, i) => i !== idx))
-                      "
-                    />
-                  </template>
-                </v-text-field>
-              </div>
+        <v-col cols="12" md="6" class="flex flex-col max-h-[600px]">
+          <v-virtual-scroll :items="descriptionArray">
+            <template #default="{ index: idx }">
+              <v-hover>
+                <template #default="{ isHovering, props: hoverProps }">
+                  <div v-bind="hoverProps">
+                    <v-text-field
+                      v-model="descriptionArray[idx]"
+                      :label="`Description: ${name} ${idx}`"
+                      class="mb-1"
+                      hide-details
+                    >
+                      <template v-if="isHovering" #append-inner>
+                        <v-icon
+                          class="mr-1"
+                          icon="mdi-plus"
+                          @click="() => descriptionArray.splice(idx, 0, null)"
+                        />
+                        <v-icon
+                          icon="mdi-delete"
+                          @click="
+                            () => (descriptionArray = descriptionArray.filter((_, i) => i !== idx))
+                          "
+                        />
+                      </template>
+                    </v-text-field>
+                  </div>
+                </template>
+              </v-hover>
             </template>
-          </v-hover>
-          <v-btn block flat class="mt-1" @click="descriptionArray = [...descriptionArray, null]">
-            <v-icon size="large" color="#555">mdi-plus</v-icon>
-          </v-btn>
+          </v-virtual-scroll>
+          <div>
+            <v-btn block flat class="mt-1" @click="descriptionArray = [...descriptionArray, null]">
+              <v-icon size="large" color="#555">mdi-plus</v-icon>
+            </v-btn>
+          </div>
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="6" class="max-h-[600px] overflow-y-scroll">
           <v-textarea
             v-model="descriptionString"
             auto-grow
-            class="flex flex-col"
             :label="`${name.slice(0, 1).toUpperCase()}${name.slice(1)} Description`"
             :error-messages="errorMessages"
           />
