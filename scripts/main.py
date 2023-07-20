@@ -43,6 +43,9 @@ def main():
     # Init engine
     context.init_engine()
 
+    # Init logger
+    context.init_logger()
+
     # Init flask
     app.register_blueprint(restful.auth.auth_blueprint, url_prefix='/auth')
     app.register_blueprint(restful.user.user_blueprint, url_prefix='/user')

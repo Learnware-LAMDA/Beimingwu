@@ -15,6 +15,7 @@ def worker_process_func(q: queue.Queue):
 
     while True:
         learnware_id = q.get()
+        context.logger.info(f"Start to verify learnware: {learnware_id}")
         
         dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.PROCESSING)
         learnware_filename = context.get_learnware_verify_file_path(learnware_id)
@@ -28,6 +29,7 @@ def worker_process_func(q: queue.Queue):
 
         # the learnware my be deleted
         if not dbops.check_learnware_exist(learnware_id=learnware_id):
+            context.logger.info(f'learnware is deleted, no need to process: {learnware_id}')
             continue
         
         verify_sucess = True
@@ -71,13 +73,15 @@ def worker_process_func(q: queue.Queue):
         else:
             dbops.update_learnware_verify_result(learnware_id, verify_status, command_output)
             pass
+
+        context.logger.info(f"Finish to verify learnware: {learnware_id}")
         pass
     pass
 
 
 def main(num_worker):
     context.init_database()
-    context.init_engine()
+    context.init_logger()
 
     dbops.reset_learnware_verify_status()
 
