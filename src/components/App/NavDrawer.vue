@@ -53,7 +53,7 @@ const filteredRoutes = computed(() =>
         v-for="(route, i) in filteredRoutes"
         :key="i"
         :value="route.name"
-        active-color="primary"
+        color="primary"
         variant="plain"
         @click="() => router.push(route.path)"
       >
