@@ -23,7 +23,7 @@ const fileInput = ref(null);
 
 const handleDrop = (event) => {
   dragging.value = false;
-  _files.value = Array.from(event.dataTransfer.files);
+  files.value = Array.from(event.dataTransfer.files);
 };
 
 const chooseFile = () => {
@@ -42,7 +42,7 @@ const computeFileSize = (byte) => {
   return Math.round(byte / 1000 ** k) + unit[k];
 };
 
-const _files = computed({
+const files = computed({
   get: () => props.files,
   set: (val) => {
     emit("update:files", val);
@@ -67,22 +67,22 @@ const _files = computed({
         :style="{ height: Number(height) / 4 + 'rem' }"
       >
         <div class="flex justify-center items-center max-w-1/1">
-          <p v-if="_files.length === 0">
+          <p v-if="files.length === 0">
             <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>Drag your file here
           </p>
           <div v-else class="w-1/1 truncate">
-            <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ _files[0].name }}
-            <span class="ml-2 text-sm">{{ computeFileSize(_files[0].size) }}</span>
+            <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ files[0].name }}
+            <span class="ml-2 text-sm">{{ computeFileSize(files[0].size) }}</span>
           </div>
           <v-btn
-            v-if="_files.length > 0"
+            v-if="files.length > 0"
             flat
             icon="mdi-close"
-            @click.stop="() => (_files = [])"
+            @click.stop="() => (files = [])"
           ></v-btn>
         </div>
       </v-card-text>
-      <v-file-input v-show="false" ref="fileInput" v-model="_files" label="select a file">
+      <v-file-input v-show="false" ref="fileInput" v-model="files" label="select a file">
       </v-file-input>
     </v-card>
     <v-scroll-y-transition>
