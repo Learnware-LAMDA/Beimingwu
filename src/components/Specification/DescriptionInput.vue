@@ -111,12 +111,7 @@ watch(
               </div>
             </template>
           </v-hover>
-          <v-btn
-            block
-            flat
-            class="mt-1 sm:(me-13)"
-            @click="descriptionArray = [...descriptionArray, null]"
-          >
+          <v-btn block flat class="mt-1" @click="descriptionArray = [...descriptionArray, null]">
             <v-icon size="large" color="#555">mdi-plus</v-icon>
           </v-btn>
         </v-col>
