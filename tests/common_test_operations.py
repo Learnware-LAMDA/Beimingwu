@@ -94,9 +94,24 @@ def test_learnware_semantic_specification():
     return semantic_specification
 
 
+def test_learnware_semantic_specification_ex():
+    semantic_specification = dict()
+
+    semantic_specification["Input"] = {}
+    semantic_specification["Output"] = {}
+    semantic_specification["Data"] = {"Type": "Class", "Values": ["Image"]}
+    semantic_specification["Task"] = {"Type": "Class", "Values": ["Detection"]}
+    semantic_specification["Library"] = {"Type": "Class", "Values": ["Scikit-learn"]}
+    semantic_specification["Scenario"] = {"Type": "Tag", "Values": ["Business"]}
+    semantic_specification["Name"] = {"Type": "String", "Values": "Test Classification"}
+    semantic_specification["Description"] = {"Type": "String", "Values": "just a test"}
+
+    return semantic_specification
+
+
 def add_test_learnware(email, password, learnware_filename='test_learnware.zip') -> str:
     headers = login(email, password)
-    semantic_specification = test_learnware_semantic_specification()
+    semantic_specification = test_learnware_semantic_specification_ex()
 
     learnware_file = open(
         os.path.join('tests', 'data', learnware_filename),'rb')
