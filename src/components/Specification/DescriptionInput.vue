@@ -64,6 +64,15 @@ watch(
         return debouncedSetErrorMessages("key 'Description' not found");
       if (!json.Description)
         return debouncedSetErrorMessages("key 'Description' should not be empty");
+      if (
+        Object.keys(json.Description)
+          .map(Number)
+          .reduce((a, b) => Math.max(a, b)) >= Number(json.Dimension)
+      ) {
+        return debouncedSetErrorMessages(
+          "key 'Description' should not have index greater than 'Dimension'",
+        );
+      }
       descriptionJSON.value = json;
       debouncedSetErrorMessages("");
     } catch (e) {
