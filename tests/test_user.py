@@ -174,8 +174,7 @@ class TestUser(unittest.TestCase):
             'user/delete_learnware',
             {'learnware_id': learnware_id},
             headers=headers
-        )        
-
+        )
 
         self.assertEqual(result['code'], 0)
         pass
@@ -242,30 +241,8 @@ class TestUser(unittest.TestCase):
 
     def test_update_verified_learnware(self):
         headers = testops.login(TestUser.email, TestUser.password)
-        semantic_specification = testops.test_learnware_semantic_specification()
 
-        learnware_file = open(
-            os.path.join('tests', 'data', 'test_learnware.zip'),'rb')
-        files = {'learnware_file': learnware_file}
-
-        # print(semantic_specification)
-        result = testops.url_request(
-            'user/add_learnware',
-            {'semantic_specification': json.dumps(semantic_specification)},
-            files=files,
-            headers=headers
-        )
-
-        learnware_file.close()
-        self.assertEqual(result['code'], 0)
-        learnware_id = result['data']['learnware_id']
-
-        dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.SUCCESS)
-        result = testops.url_request(
-            'user/add_learnware_verified',
-            {'learnware_id': learnware_id},
-            headers=headers)
-        self.assertEqual(result['code'], 0)
+        learnware_id = testops.add_test_learnware(TestUser.email, TestUser.password)
 
         result = testops.url_request(
             'user/list_learnware',
@@ -276,6 +253,8 @@ class TestUser(unittest.TestCase):
         self.assertEqual(result['code'], 0)
         learnware_info = result['data']['learnware_list'][0]
         self.assertEqual(learnware_info['semantic_specification']['Name']['Values'], 'Test Classification')
+
+        semantic_specification = learnware_info['semantic_specification']
 
         semantic_specification['Name']['Values'] = 'Test Classification 2'
         result = testops.url_request(
@@ -294,6 +273,10 @@ class TestUser(unittest.TestCase):
         self.assertEqual(result['code'], 0)
         learnware_info = result['data']['learnware_list'][0]
         self.assertEqual(learnware_info['semantic_specification']['Name']['Values'], 'Test Classification 2')
+        self.assertEqual(learnware_info['verify_status'], 'WAITING')
+        self.assertTrue(
+            os.path.exists(context.get_learnware_verify_file_path(learnware_id))
+        )
 
         result = testops.url_request(
             'user/delete_learnware',
