@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, computed, onActivated, onMounted } from "vue";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -298,6 +298,7 @@ function checkIsEditMode() {
             if (!res.data.learnware_info.semantic_specification) {
               throw new Error("Learnware semantic specification not found");
             }
+            currentStep.value = 0;
             const semanticSpec = res.data.learnware_info.semantic_specification;
             name.value.value = semanticSpec.Name.Values;
             description.value.value = semanticSpec.Description.Values;
@@ -343,7 +344,13 @@ function checkIsEditMode() {
 }
 
 onMounted(() => {
+  store.commit("setIsEditing", !!route.query.edit);
+});
+
+onActivated(() => {
   checkLoginStatus().then(checkIsEditMode);
+  console.log(`hello from submit page: ${!!route.query.edit}`);
+  store.commit("setIsEditing", !!route.query.edit);
 });
 </script>
 

@@ -25,6 +25,20 @@ watch(
   },
 );
 watch(
+  () => store.getters.getIsEditing,
+  (editing) => {
+    console.log("editing", editing);
+    if (editing) {
+      keepAliveIncludes.value = [...keepAliveIncludes.value.filter((route) => route !== "Submit")];
+    } else {
+      keepAliveIncludes.value = [
+        ...keepAliveIncludes.value.filter((route) => route !== "Submit"),
+        "Submit",
+      ];
+    }
+  },
+);
+watch(
   () => store.getters.getShowGlobalError,
   (val) => {
     showGlobalError.value = val;
