@@ -349,7 +349,6 @@ onMounted(() => {
 
 onActivated(() => {
   checkLoginStatus().then(checkIsEditMode);
-  console.log(`hello from submit page: ${!!route.query.edit}`);
   store.commit("setIsEditing", !!route.query.edit);
 });
 </script>
