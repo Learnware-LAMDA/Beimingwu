@@ -51,7 +51,7 @@ watch(
 
 <template>
   <v-app>
-    <app-bar v-model:drawerOpen="drawerOpen" :routes="Router.getRoutes()"></app-bar>
+    <app-bar v-model:drawerOpen="drawerOpen" :routes="Router.options.routes"></app-bar>
 
     <nav-drawer v-model:drawerOpen="drawerOpen" :routes="Router.getRoutes()"></nav-drawer>
 
