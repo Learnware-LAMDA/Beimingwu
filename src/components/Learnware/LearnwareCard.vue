@@ -28,7 +28,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["click:delete"]);
+const emit = defineEmits(["click:edit", "click:delete"]);
 
 const display = useDisplay();
 
@@ -50,6 +50,10 @@ function getColorByScore(score) {
   if (score > 80) return colors.green.base;
   if (score > 50) return colors.orange.base;
   return colors.red.base;
+}
+
+function handleClickEdit(id) {
+  emit("click:edit", id);
 }
 
 function handleClickDelete(id) {
@@ -145,7 +149,7 @@ function handleClickDelete(id) {
               icon="mdi-pencil"
               v-bind="toolTipProps"
               :size="greaterThanXs ? undefined : 'small'"
-              @click.stop="() => {}"
+              @click.stop="() => handleClickEdit(item.id)"
             ></v-btn>
           </template>
           <span>Not availble</span>

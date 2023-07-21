@@ -6,7 +6,7 @@ import LearnwareList from "./LearnwareList.vue";
 
 const display = useDisplay();
 
-const emit = defineEmits(["click:delete", "pageChange"]);
+const emit = defineEmits(["click:edit", "click:delete", "pageChange"]);
 
 const props = defineProps({
   items: {
@@ -80,6 +80,10 @@ function formerPage() {
   }
 }
 
+function handleClickEdit(id) {
+  emit("click:edit", id);
+}
+
 function handleClickDelete(id) {
   emit("click:delete", id);
 }
@@ -96,6 +100,7 @@ function handleClickDelete(id) {
       :sm="sm"
       :xs="xs"
       :is-admin="isAdmin"
+      @click:edit="(id) => handleClickEdit(id)"
       @click:delete="(id) => handleClickDelete(id)"
     />
 
