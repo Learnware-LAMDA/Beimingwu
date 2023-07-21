@@ -62,6 +62,7 @@ def create_env(learnware_path, result_file_path):
         if os.path.exists(f"{extract_path}/requirements.txt"):
             print(f'Creating conda env from requirements.txt')
             system(f"conda create -n {conda_env} --clone base")
+            system(f"conda run -n {conda_env} python3 -m pip install --force-reinstall werkzeug")
             system(f"conda run -n {conda_env} python3 -m pip install -r {extract_path}/requirements.txt")
             pass
         elif os.path.exists(f"{extract_path}/environment.yaml"):
