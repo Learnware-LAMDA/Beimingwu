@@ -27,7 +27,6 @@ watch(
 watch(
   () => store.getters.getIsEditing,
   (editing) => {
-    console.log("editing", editing);
     if (editing) {
       keepAliveIncludes.value = [...keepAliveIncludes.value.filter((route) => route !== "Submit")];
     } else {
