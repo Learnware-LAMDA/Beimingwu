@@ -343,14 +343,14 @@ function checkIsEditMode() {
   }
 }
 
-onMounted(() => {
+function init() {
   store.commit("setIsEditing", !!route.query.edit);
-});
-
-onActivated(() => {
   checkLoginStatus().then(checkIsEditMode);
-  store.commit("setIsEditing", !!route.query.edit);
-});
+}
+
+onMounted(init);
+
+onActivated(init);
 </script>
 
 <template>
