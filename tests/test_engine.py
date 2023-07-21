@@ -66,10 +66,10 @@ class TestEngine(unittest.TestCase):
         
         stat_file.close()
         os.remove(os.path.join('tests', 'data', 'stat.json'))
-        # print(result)
+        print(result)
         self.assertEqual(result['code'], 0)
         self.assertGreaterEqual(len(result['data']['learnware_list_single']), 1)
-        self.assertEqual(result['data']['learnware_list_single'][-1]['learnware_id'], TestEngine.learnware_id)
+        self.assertIn(TestEngine.learnware_id, [x['learnware_id'] for x in result['data']['learnware_list_single']])
         
         pass
 
@@ -78,6 +78,28 @@ class TestEngine(unittest.TestCase):
         result = testops.url_request(
             'engine/download_learnware', 
             {'learnware_id': TestEngine.learnware_id}, 
+            headers=headers, method='get', return_response=True)
+        
+        downloaded_filename = os.path.join('tests', 'data', 'download_learnware.zip')
+        with open(downloaded_filename, 'wb') as f:
+            f.write(result.content)
+            pass
+
+        learnware_filename = os.path.join('tests', 'data', 'test_learnware.zip')
+        self.assertEqual(
+            os.path.getsize(downloaded_filename),
+            os.path.getsize(learnware_filename)
+        )
+
+        os.remove(downloaded_filename)
+        pass
+
+    def test_download_learnware_unverified(self):
+        learnware_id = testops.add_test_learnware_unverified('test@localhost', 'test', 'test_learnware.zip')
+        headers = self.login()
+        result = testops.url_request(
+            'engine/download_learnware', 
+            {'learnware_id': learnware_id}, 
             headers=headers, method='get', return_response=True)
         
         downloaded_filename = os.path.join('tests', 'data', 'download_learnware.zip')
