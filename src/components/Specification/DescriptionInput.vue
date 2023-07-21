@@ -130,13 +130,15 @@ watch(
             </v-btn>
           </div>
         </v-col>
-        <v-col cols="12" md="6" class="max-h-[600px] overflow-y-scroll">
-          <v-textarea
-            v-model="descriptionString"
-            auto-grow
-            :label="`${name.slice(0, 1).toUpperCase()}${name.slice(1)} Description`"
-            :error-messages="errorMessages"
-          />
+        <v-col cols="12" md="6" class="max-h-[600px]">
+          <div class="h-full overflow-y-scroll">
+            <v-textarea
+              v-model="descriptionString"
+              auto-grow
+              :label="`${name.slice(0, 1).toUpperCase()}${name.slice(1)} Description`"
+              :error-messages="errorMessages"
+            />
+          </div>
         </v-col>
       </v-row>
     </v-container>
