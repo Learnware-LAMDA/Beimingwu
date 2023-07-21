@@ -163,6 +163,86 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
         testops.delete_learnware(learnware_id, headers)
 
         pass
+
+    
+    def add_test_learnware(self, headers, input_dim, output_dim):
+        semantic_specification = testops.test_learnware_semantic_specification_table()
+        semantic_specification['Input']['Dimension'] = input_dim
+        semantic_specification['Output']['Dimension'] = output_dim
+
+        learnware_file = open(
+            os.path.join('tests', 'data', 'test_learnware.zip'),'rb')
+        files = {'learnware_file': learnware_file}
+
+        # print(semantic_specification)
+        semantic_specification['Input'] = json.dumps(semantic_specification['Input'])
+        semantic_specification['Output'] = json.dumps(semantic_specification['Output'])
+
+        result = testops.url_request(
+            'user/add_learnware',
+            {'semantic_specification': json.dumps(semantic_specification)},
+            files=files,
+            headers=headers
+        )
+
+        learnware_file.close()
+        
+        return result
+
+    def wait_verify_end(self, learnware_id):
+        for i in range(10):
+            status = dbops.get_learnware_verify_status(learnware_id)
+
+            if status == LearnwareVerifyStatus.PROCESSING.value:
+                break
+
+            time.sleep(1)
+            pass
+        
+        self.assertEqual(status, LearnwareVerifyStatus.PROCESSING.value)
+
+        for i in range(30 * 60):
+            status = dbops.get_learnware_verify_status(learnware_id)
+            if status != LearnwareVerifyStatus.PROCESSING.value:
+                break
+            time.sleep(1)
+            pass
+
+        return status
+
+    def test_add_table_learnware(self):
+        headers = testops.login(TestMonitorLearnwareVerify.email, TestMonitorLearnwareVerify.password)
+        result = self.add_test_learnware(
+            headers, input_dim=64, output_dim=10)
+
+        self.assertEqual(result['code'], 0)
+        learnware_id = result['data']['learnware_id']
+
+        status = self.wait_verify_end(learnware_id)
+        self.assertEqual(status, LearnwareVerifyStatus.SUCCESS.value)
+        self.assertFalse(
+            os.path.exists(context.get_learnware_verify_file_path(learnware_id)))
+        result = testops.url_request(
+            'user/list_learnware',
+            {'page': 0, 'limit': 10},
+            headers=headers
+        )
+
+        self.assertEqual(result['code'], 0)
+        self.assertEqual(result['data']['total_pages'], 1)
+        self.assertEqual(result['data']['learnware_list'][-1]['learnware_id'], learnware_id)
+
+        testops.delete_learnware(learnware_id, headers)        
+        pass
+
+    def test_add_table_learnware_fail(self):
+        headers = testops.login(TestMonitorLearnwareVerify.email, TestMonitorLearnwareVerify.password)
+
+        result = self.add_test_learnware(
+            headers, input_dim=63, output_dim=10)
+    
+        self.assertEqual(result['code'], 51)
+        pass
     
 
 if __name__ == '__main__':

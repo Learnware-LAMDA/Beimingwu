@@ -134,21 +134,22 @@ def parse_semantic_specification(semantic_str):
         try:
             data_input = json.loads(data_input)
         except:
-            return None, "data type description is not a json"
+            return None, "Input is not a json"
         
         dimension = data_input.get('Dimension')
         if dimension is None:
-            return None, "data type description has no dimension"
+            return None, "Input has no dimension"
         
         semantic_specification['Input'] = data_input
         pass
     else:
         # should we check other data type?
+        semantic_specification['Input'] = {}
         pass
     
     task_type_values = semantic_specification['Task']['Values']
     if len(task_type_values) != 1:
-        return None, "task type values is not 1"
+        return None, "Output is not 1"
     
     task_type = task_type_values[0]
     if task_type in ('Classification', 'Regression', 'Feature Extraction'):
@@ -156,19 +157,23 @@ def parse_semantic_specification(semantic_str):
         try:
             task_output = json.loads(task_output)
         except:
-            return None, "task type description is not a json"
+            return None, "Output is not a json"
         
         dimension = task_output.get('Dimension')
         if dimension is None:
-            return None, "task type description has no dimension"
+            return None, "Output has no dimension"
         
         semantic_specification['Output'] = task_output
+        pass
+    else:
+        # should we check other task type?
+        semantic_specification['Output'] = {}
         pass
 
     return semantic_specification, "",
 
 
-def check_learnware_file(learnware_file):
+def check_learnware_file(semantic_specification, learnware_file):
     # Check file extension
     suffix = os.path.splitext(learnware_file)[1]
 
@@ -196,7 +201,16 @@ def check_learnware_file(learnware_file):
                 member = stat_spec["file_name"]
                 z_file.extract(member, temp_dir.name)
                 stat_spec["file_name"] = os.path.join(temp_dir.name, stat_spec["file_name"])
-                get_stat_spec_from_config(stat_spec)
+                stat_spec_name, stat_spec_obj = get_stat_spec_from_config(stat_spec)
+
+                if stat_spec_name == 'RKMEStatSpecification':
+                    if semantic_specification['Data']['Values'][0] == 'Table':
+                        dim_table = semantic_specification['Input']['Dimension']
+                        dim_rkme = stat_spec_obj.get_z().shape[1]
+                        if dim_table != dim_rkme:
+                            return False, f"dimension of table is {dim_table}, dimension of rkme is {dim_rkme}"
+                        pass
+                    pass
                 pass
             pass
         pass
