@@ -1,11 +1,12 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, computed, onActivated, onMounted } from "vue";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useField, useForm } from "vee-validate";
 import { getRole } from "../request/auth";
 import { addLearnware } from "../request/user";
+import { getLearnwareDetailById } from "../request/engine";
 import { promiseReadFile, verifyLearnware } from "../utils";
 import VStepperTitle from "../components/Public/VStepperTitle.vue";
 import FileUpload from "../components/Specification/FileUpload.vue";
@@ -92,6 +93,9 @@ const { handleSubmit, meta } = useForm({
       return "Description needs to be at least 10 characters.";
     },
     files(value) {
+      if (route.query.edit && value[0]?.name === "Your old learnware") {
+        return true;
+      }
       if (!value.length || value.length === 0) {
         return "Please upload your model & statistical specification.";
       }
@@ -197,6 +201,7 @@ const submit = handleSubmit((values) => {
   showError.value = false;
 
   addLearnware({
+    edit: route.query.edit,
     name: values.name,
     dataType: values.dataType,
     taskType: values.taskType,
@@ -206,18 +211,16 @@ const submit = handleSubmit((values) => {
     taskTypeDescription: values.taskTypeDescription,
     description: values.description,
     files: values.files,
+    learnwareId: route.query.id,
   })
     .then((res) => {
-      console.log(res.code);
-      console.log(typeof res.code);
-      console.log(res.code === 0);
       switch (res.code) {
         case 0: {
           success.value = true;
 
           setTimeout(() => {
             success.value = false;
-            router.go();
+            router.push("/submit");
           }, 1000);
           return;
         }
@@ -250,7 +253,7 @@ const submit = handleSubmit((values) => {
 });
 
 function checkLoginStatus() {
-  getRole()
+  return getRole()
     .then((res) => {
       switch (res.code) {
         case 0: {
@@ -283,23 +286,71 @@ function checkLoginStatus() {
     });
 }
 
-function loadQuery() {
-  !!route.query.name && (name.value.value = route.query.name);
-  !!route.query.dataType && (dataType.value.value = route.query.dataType);
-  !!route.query.taskType && (taskType.value.value = route.query.taskType);
-  !!route.query.libraryType && (libraryType.value.value = route.query.libraryType);
-  !!route.query.tagList && (tagList.value.value = JSON.parse(route.query.tagList));
-  !!route.query.dataTypeDescription &&
-    (dataTypeDescription.value.value = route.query.dataTypeDescription);
-  !!route.query.taskTypeDescription &&
-    (taskTypeDescription.value.value = route.query.taskTypeDescription);
-  !!route.query.description && (description.value.value = route.query.description);
+function checkIsEditMode() {
+  if (!!route.query.edit && !!route.query.id) {
+    return getLearnwareDetailById({ id: route.query.id })
+      .then((res) => {
+        switch (res.code) {
+          case 0: {
+            if (!res.data || !res.data.learnware_info) {
+              throw new Error("Learnware not found");
+            }
+            if (!res.data.learnware_info.semantic_specification) {
+              throw new Error("Learnware semantic specification not found");
+            }
+            currentStep.value = 0;
+            const semanticSpec = res.data.learnware_info.semantic_specification;
+            name.value.value = semanticSpec.Name.Values;
+            description.value.value = semanticSpec.Description.Values;
+            dataType.value.value = semanticSpec.Data.Values[0];
+            taskType.value.value = semanticSpec.Task.Values[0];
+            libraryType.value.value = semanticSpec.Library.Values[0];
+            tagList.value.value = semanticSpec.Scenario.Values;
+            if (semanticSpec.Input) {
+              dataTypeDescription.value.value = JSON.stringify(semanticSpec.Input);
+            } else {
+              dataTypeDescription.value.value = JSON.stringify({
+                Dimension: 2,
+                Description: {
+                  0: "You have not provided a description of the input data",
+                  1: "Please read the tips and provide a description of the input data",
+                },
+              });
+            }
+            if (semanticSpec.Output) {
+              taskTypeDescription.value.value = JSON.stringify(semanticSpec.Output);
+            } else {
+              taskTypeDescription.value.value = JSON.stringify({
+                Dimension: 2,
+                Description: {
+                  0: "You have not provided a description of the output data",
+                  1: "Please read the tips and provide a description of the output data",
+                },
+              });
+            }
+            files.value.value = [new File([], "Your old learnware")];
+            return;
+          }
+          default: {
+            throw new Error(res.msg);
+          }
+        }
+      })
+      .catch((err) => {
+        showError.value = true;
+        errorMsg.value = err.message;
+      });
+  }
 }
 
-onMounted(() => {
-  checkLoginStatus();
-  loadQuery();
-});
+function init() {
+  store.commit("setIsEditing", !!route.query.edit);
+  checkLoginStatus().then(checkIsEditMode);
+}
+
+onMounted(init);
+
+onActivated(init);
 </script>
 
 <template>

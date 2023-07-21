@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 import LearnwareCard from "./LearnwareCard.vue";
 import oopsImg from "../../assets/images/public/oops.svg?url";
 
-const emit = defineEmits(["click:delete"]);
+const emit = defineEmits(["click:edit", "click:delete"]);
 
 const display = useDisplay();
 
@@ -44,6 +44,10 @@ const props = defineProps({
 
 const realCols = computed(() => props[display.name.value] || props.cols);
 
+function handleClickEdit(id) {
+  emit("click:edit", id);
+}
+
 function handleClickDelete(id) {
   emit("click:delete", id);
 }
@@ -66,6 +70,7 @@ function showLearnwareDetail(id) {
           :filters="filters"
           :is-admin="isAdmin"
           @click="showLearnwareDetail(item.id)"
+          @click:edit="(id) => handleClickEdit(id)"
           @click:delete="(id) => handleClickDelete(id)"
         />
       </template>

@@ -118,6 +118,9 @@ const Router = createRouter({
 });
 
 Router.beforeEach((to, from, next) => {
+  if (from.name === to.name) {
+    return next(false);
+  }
   if (to.matched.some((record) => record.meta.requiredLogin)) {
     if (store && !store.getters.getLoggedIn) {
       store.commit("setShowGlobalError", true);

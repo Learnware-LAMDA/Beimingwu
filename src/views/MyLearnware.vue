@@ -58,6 +58,16 @@ function pageChange(newPage) {
   page.value = newPage;
 }
 
+function handleClickEdit(id) {
+  router.push({
+    path: "/submit",
+    query: {
+      edit: true,
+      id,
+    },
+  });
+}
+
 function handleClickDelete(id) {
   dialog.value.confirm();
   deleteId.value = id;
@@ -166,6 +176,7 @@ onMounted(() => {
         :cols="1"
         :is-admin="true"
         @page-change="pageChange"
+        @click:edit="(id) => handleClickEdit(id)"
         @click:delete="(id) => handleClickDelete(id)"
       />
     </div>
