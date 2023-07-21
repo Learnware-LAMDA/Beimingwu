@@ -42,6 +42,7 @@ function getLearnwareList({ page, limit }) {
 }
 
 function addLearnware({
+  edit = false,
   name,
   dataType,
   taskType,
@@ -51,6 +52,7 @@ function addLearnware({
   taskTypeDescription,
   description,
   files,
+  learnwareId,
 }) {
   return getSemanticSpecification()
     .then((res) => {
@@ -65,15 +67,21 @@ function addLearnware({
       semanticSpec.Output = taskTypeDescription;
 
       const fd = new FormData();
-      fd.append("learnware_file", files[0]);
+      fd.append("learnware_file", files[0].name === "Your old learnware" ? null : files[0]);
       fd.append("semantic_specification", JSON.stringify(semanticSpec));
+      edit && learnwareId && fd.append("learnware_id", learnwareId);
       return fd;
     })
     .then((fd) =>
-      checkedFetch(`${BASE_URL}/add_learnware`, {
-        method: "POST",
-        body: fd,
-      }),
+      edit
+        ? checkedFetch(`${BASE_URL}/update_learnware`, {
+            method: "POST",
+            body: fd,
+          })
+        : checkedFetch(`${BASE_URL}/add_learnware`, {
+            method: "POST",
+            body: fd,
+          }),
     )
     .then((res) => res.json());
 }
