@@ -1,8 +1,8 @@
 from flask import Blueprint, g, jsonify, request, session
 import werkzeug.datastructures
 import json
-import os, time
-import hashlib
+import os
+import shutil
 from .utils import *
 
 import lib.database_operations as database
@@ -225,25 +225,33 @@ class UpdateLearnwareApi(flask_restful.Resource):
             learnware_file = request.files.get("learnware_file")
             pass
 
+        learnware_path = context.get_learnware_verify_file_path(learnware_id)
+        learnware_semantic_spec_path = learnware_path[:-4] + ".json"
+        with open(learnware_semantic_spec_path, "w") as f:
+            json.dump(semantic_specification, f)
+            pass
+        if learnware_file is not None:
+            learnware_file.seek(0)
+            learnware_file.save(learnware_path)
+            pass
+
         verify_status = database.get_learnware_verify_status(learnware_id)
 
-        if verify_status == LearnwareVerifyStatus.SUCCESS.value:
+        if verify_status == LearnwareVerifyStatus.PROCESSING.value:
+            return {"code": 51, "msg": "Learnware is verifying."}, 200
+        
+        elif verify_status == LearnwareVerifyStatus.SUCCESS.value:
             # this learnware is verified
             print(f'update verified learnware: {learnware_id}')
-            context.engine.update_learnware(learnware_id, semantic_specification, learnware_file)
+
+            if learnware_file is None:
+                learnware_path_origin = context.engine.get_learnware_path_by_ids(learnware_id)
+                shutil.copyfile(learnware_path_origin, learnware_path)
+                pass
+            context.engine.delete_learnware(learnware_id)
+            database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
             pass
         else:
-            # this learnware is not verified
-            learnware_path = context.get_learnware_verify_file_path(learnware_id)
-            learnware_semantic_spec_path = learnware_path[:-4] + ".json"
-
-            with open(learnware_semantic_spec_path, "w") as f:
-                json.dump(semantic_specification, f)
-                pass
-            if learnware_file is not None:
-                learnware_file.seek(0)
-                learnware_file.save(learnware_path)
-                pass
             pass
         
         return {"code": 0, "msg": "success"}, 200
