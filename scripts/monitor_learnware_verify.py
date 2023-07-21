@@ -19,11 +19,16 @@ def worker_process_func(q: queue.Queue):
         
         dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.PROCESSING)
         learnware_filename = context.get_learnware_verify_file_path(learnware_id)
+        semantic_spec_filename = learnware_filename[:-4] + ".json"
 
         process_result_filename = learnware_filename + ".result"
         
         verify_script = os.path.join('scripts', 'verify_learnware.py')
-        verify_command = f"python3 {verify_script} --learnware-path {learnware_filename} --result-file-path {process_result_filename} --create-env"
+        verify_command = (
+            f"python3 {verify_script} --learnware-path {learnware_filename}"
+            f" --semantic-path {semantic_spec_filename}"
+            f" --result-file-path {process_result_filename} --create-env")
+        
         try:
             command_output = command_executor.execute_shell(verify_command, timeout=context.config.verify_timeout)
         except Exception as e:

@@ -25,8 +25,12 @@ def system(command: str):
     return retcd
 
 
-def main(learnware_path, result_file_path):
-    learnware_obj = learnware.learnware.get_learnware_from_dirpath('test_id', dict(), learnware_path)
+def main(learnware_path, semantic_path, result_file_path):
+    with open(semantic_path, 'r') as f:
+        semantic_specification = json.load(f)
+        pass
+
+    learnware_obj = learnware.learnware.get_learnware_from_dirpath('test_id', semantic_specification, learnware_path)
 
     check_result = BackendMarket.check_learnware(learnware_obj)
     if check_result == BackendMarket.USABLE_LEARWARE:
@@ -44,7 +48,7 @@ def main(learnware_path, result_file_path):
         pass
 
 
-def create_env(learnware_path, result_file_path):
+def create_env(learnware_path, semantic_path, result_file_path):
     run_id = shortuuid.uuid()
     conda_env = f"learnware_{run_id}"
     extract_path = tempfile.TemporaryDirectory(prefix="learnware_").name
@@ -77,7 +81,9 @@ def create_env(learnware_path, result_file_path):
             raise Exception("No environment.yml or requirements.txt found in learnware")
         
         system(
-            f"conda run -n {conda_env} --no-capture-output python3 {__file__} --learnware-path {extract_path} --result-file-path {result_file_path}")
+            (f"conda run -n {conda_env} --no-capture-output python3 {__file__} --learnware-path {extract_path}"
+             f" --semantic-path {semantic_path} --result-file-path {result_file_path}")
+        )
         
     finally:
         system(f"conda env remove -n {conda_env}")
@@ -90,18 +96,20 @@ def create_env(learnware_path, result_file_path):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--learnware-path', type=str, required=True)
+    parser.add_argument('--semantic-path', type=str, required=True)
     parser.add_argument('--result-file-path', type=str, required=True)
     parser.add_argument('--create-env', action='store_true')
 
     args = parser.parse_args()
 
     learnware_path = args.learnware_path
+    semantic_path = args.semantic_path
     result_file_path = args.result_file_path
     is_create_env = args.create_env
 
     if is_create_env:
-        create_env(learnware_path, result_file_path)
+        create_env(learnware_path, semantic_path, result_file_path)
         pass
     else:
-        main(learnware_path, result_file_path)
+        main(learnware_path, semantic_path, result_file_path)
     pass

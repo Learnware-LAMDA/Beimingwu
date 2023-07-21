@@ -108,6 +108,31 @@ def test_learnware_semantic_specification_ex():
 
     return semantic_specification
 
+def test_learnware_semantic_specification_table():
+    semantic_specification = dict()
+
+    semantic_specification["Input"] = {
+        "Dimension": "64",
+        "Description": {
+            "0": "f0",
+            "1": "f1"
+        }
+    }
+    semantic_specification["Output"] = {
+        "Dimension": "10",
+        "Description": {
+            "0": "c0"
+        }
+    }
+    semantic_specification["Data"] = {"Type": "Class", "Values": ["Table"]}
+    semantic_specification["Task"] = {"Type": "Class", "Values": ["Classification"]}
+    semantic_specification["Library"] = {"Type": "Class", "Values": ["Scikit-learn"]}
+    semantic_specification["Scenario"] = {"Type": "Tag", "Values": ["Business"]}
+    semantic_specification["Name"] = {"Type": "String", "Values": "Test Classification"}
+    semantic_specification["Description"] = {"Type": "String", "Values": "just a test"}    
+    
+    return semantic_specification
+
 
 def add_test_learnware(email, password, learnware_filename='test_learnware.zip') -> str:
     headers = login(email, password)
@@ -168,7 +193,7 @@ def add_test_learnware_unverified(email, password, learnware_filename='test_lear
     
     learnware_id = result['data']['learnware_id']
 
-    return learnware_id    
+    return learnware_id
 
 
 def delete_learnware(learnware_id, headers):

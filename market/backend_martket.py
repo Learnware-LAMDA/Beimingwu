@@ -59,6 +59,9 @@ class BackendMarket(EasyMarket):
             - The NOPREDICTION_LEARNWARE denotes the learnware pass the check but cannot make prediction due to some env dependency
             - The NOPREDICTION_LEARNWARE denotes the leanrware pass the check and can make prediction
         """
+
+        semantic_spec = learnware.get_specification().get_semantic_spec()
+
         try:
             # check model instantiation
             learnware.instantiate_model()
@@ -72,8 +75,21 @@ class BackendMarket(EasyMarket):
             learnware_model = learnware.get_model()
 
             # check input shape
-            inputs = np.random.randn(10, *learnware_model.input_shape)
+            if semantic_spec['Data']['Values'][0] == 'Table':
+                input_shape = (semantic_spec['Input']['Dimension'], )
+                pass
+            else:
+                input_shape = learnware_model.input_shape
+                pass
+
+            inputs = np.random.randn(10, *input_shape)
             outputs = learnware.predict(inputs)
+
+            if semantic_spec['Task']['Values'][0] in ('Classification', 'Regression', 'Feature Extraction'):
+                output_dim = semantic_spec['Output']['Dimension']
+                if outputs[0].shape[0] != output_dim:
+                    logger.warning(f"The learnware [{learnware.id}] input and output dimention is error")
+                    return cls.NONUSABLE_LEARNWARE
 
             # check output type
             if isinstance(outputs, torch.Tensor):
