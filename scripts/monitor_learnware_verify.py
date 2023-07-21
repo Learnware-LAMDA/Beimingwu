@@ -24,8 +24,12 @@ def worker_process_func(q: queue.Queue):
         
         verify_script = os.path.join('scripts', 'verify_learnware.py')
         verify_command = f"python3 {verify_script} --learnware-path {learnware_filename} --result-file-path {process_result_filename} --create-env"
-
-        command_output = command_executor.execute_shell(verify_command, timeout=context.config.verify_timeout)
+        try:
+            command_output = command_executor.execute_shell(verify_command, timeout=context.config.verify_timeout)
+        except Exception as e:
+            context.logger.exception(e)
+            command_output = str(e)
+            pass
 
         # the learnware my be deleted
         if not dbops.check_learnware_exist(learnware_id=learnware_id):
