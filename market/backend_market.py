@@ -85,12 +85,6 @@ class BackendMarket(EasyMarket):
             inputs = np.random.randn(10, *input_shape)
             outputs = learnware.predict(inputs)
 
-            if semantic_spec['Task']['Values'][0] in ('Classification', 'Regression', 'Feature Extraction'):
-                output_dim = semantic_spec['Output']['Dimension']
-                if outputs[0].shape[0] != output_dim:
-                    logger.warning(f"The learnware [{learnware.id}] input and output dimention is error")
-                    return cls.NONUSABLE_LEARNWARE
-
             # check output type
             if isinstance(outputs, torch.Tensor):
                 outputs = outputs.detach().cpu().numpy()
@@ -99,11 +93,23 @@ class BackendMarket(EasyMarket):
                 return cls.NONUSABLE_LEARNWARE
 
             # check output shape
+            if outputs.ndim == 1:
+                outputs = outputs.reshape(-1, 1)
+                pass
+            
+            if semantic_spec['Task']['Values'][0] in ('Classification', 'Regression', 'Feature Extraction'):
+                output_dim = semantic_spec['Output']['Dimension']
+                if outputs[0].shape[0] != output_dim:
+                    logger.warning(f"The learnware [{learnware.id}] input and output dimention is error")
+                    return cls.NONUSABLE_LEARNWARE
+                pass
+
             if outputs.shape[1:] != learnware_model.output_shape:
                 logger.warning(f"The learnware [{learnware.id}] input and output dimention is error")
                 return cls.NONUSABLE_LEARNWARE
 
         except Exception as e:
+            logger.exception
             logger.warning(f"The learnware [{learnware.id}] prediction is not avaliable! Due to {repr(e)}")
             return cls.NONUSABLE_LEARNWARE
 
