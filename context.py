@@ -6,7 +6,7 @@ from database import Database, SQLAlchemy
 import os
 
 from learnware.market import EasyMarket
-from market.backend_martket import BackendMarket
+from market.backend_market import BackendMarket
 import logging
 
 
