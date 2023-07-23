@@ -83,9 +83,10 @@ def get_learnware_list(by, value, limit=None, page=None, is_verified=None):
         {by: value, "verify_status": LearnwareVerifyStatus.SUCCESS.value})
 
     suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
-    
+
+    order = " ORDER BY learnware_id DESC "    
     rows = context.database.execute(
-        "SELECT * " + sql + suffix,
+        "SELECT * " + sql + order + suffix,
         {by: value, "verify_status": LearnwareVerifyStatus.SUCCESS.value})
     
     return [r._mapping for r in rows], cnt[0][0]
@@ -98,7 +99,8 @@ def get_learnware_list_by_user_id(user_id, limit, page):
     )[0][0]
 
     rows = context.database.execute(
-        "SELECT learnware_id, verify_status FROM tb_user_learnware_relation WHERE user_id = :user_id LIMIT :limit OFFSET :offset",
+        ("SELECT learnware_id, verify_status FROM tb_user_learnware_relation WHERE user_id = :user_id "
+        "ORDER BY learnware_id DESC LIMIT :limit OFFSET :offset"),
         {"user_id": user_id, "limit": limit, "offset": limit * page})
     
 
