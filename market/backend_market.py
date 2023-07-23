@@ -103,10 +103,10 @@ class BackendMarket(EasyMarket):
                     logger.warning(f"The learnware [{learnware.id}] input and output dimention is error")
                     return cls.NONUSABLE_LEARNWARE
                 pass
-
-            if outputs.shape[1:] != learnware_model.output_shape:
-                logger.warning(f"The learnware [{learnware.id}] input and output dimention is error")
-                return cls.NONUSABLE_LEARNWARE
+            else:
+                if outputs.shape[1:] != learnware_model.output_shape:
+                    logger.warning(f"The learnware [{learnware.id}] input and output dimention is error")
+                    return cls.NONUSABLE_LEARNWARE
 
         except Exception as e:
             logger.exception

@@ -220,6 +220,11 @@ class UpdateLearnwareApi(flask_restful.Resource):
         if semantic_specification is None:
             return {"code": 41, "msg": err_msg}, 200
         
+        verify_status = database.get_learnware_verify_status(learnware_id)
+
+        if verify_status == LearnwareVerifyStatus.PROCESSING.value:
+            return {"code": 51, "msg": "Learnware is verifying."}, 200
+        
         learnware_file = None
         if request.files is not None:
             learnware_file = request.files.get("learnware_file")
@@ -234,13 +239,8 @@ class UpdateLearnwareApi(flask_restful.Resource):
             learnware_file.seek(0)
             learnware_file.save(learnware_path)
             pass
-
-        verify_status = database.get_learnware_verify_status(learnware_id)
-
-        if verify_status == LearnwareVerifyStatus.PROCESSING.value:
-            return {"code": 51, "msg": "Learnware is verifying."}, 200
         
-        elif verify_status == LearnwareVerifyStatus.SUCCESS.value:
+        if verify_status == LearnwareVerifyStatus.SUCCESS.value:
             # this learnware is verified
             print(f'update verified learnware: {learnware_id}')
 
