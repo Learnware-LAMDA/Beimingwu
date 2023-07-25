@@ -131,10 +131,15 @@ def parse_semantic_specification(semantic_str):
 
     if data_type == 'Table':
         data_input = semantic_specification['Input']
-        try:
-            data_input = json.loads(data_input)
-        except:
-            return None, "Input is not a json"
+        if isinstance(data_input, str):
+            try:
+                data_input = json.loads(data_input)
+            except:
+                return None, "Input section of semantic is not a json"
+        elif isinstance(data_input, dict):
+            pass
+        else:
+            return None, "Input section of semantic is not a json or dict"
         
         dimension = data_input.get('Dimension')
         if dimension is None:
@@ -154,10 +159,15 @@ def parse_semantic_specification(semantic_str):
     task_type = task_type_values[0]
     if task_type in ('Classification', 'Regression', 'Feature Extraction'):
         task_output = semantic_specification['Output']
-        try:
-            task_output = json.loads(task_output)
-        except:
-            return None, "Output is not a json"
+        if isinstance(task_output, str):
+            try:
+                task_output = json.loads(task_output)
+            except:
+                return None, "Output section of semantic is not a json"
+        elif isinstance(task_output, dict):
+            pass
+        else:
+            return None, "Output section of semantic is not a json or dict"
         
         dimension = task_output.get('Dimension')
         if dimension is None:
@@ -205,7 +215,7 @@ def check_learnware_file(semantic_specification, learnware_file):
 
                 if stat_spec_name == 'RKMEStatSpecification':
                     if semantic_specification['Data']['Values'][0] == 'Table':
-                        dim_table = semantic_specification['Input']['Dimension']
+                        dim_table = int(semantic_specification['Input']['Dimension'])
                         dim_rkme = stat_spec_obj.get_z().shape[1]
                         if dim_table != dim_rkme:
                             return False, f"dimension of table is {dim_table}, dimension of rkme is {dim_rkme}"

@@ -11,6 +11,7 @@ from tests import common_test_operations as testops
 import time
 import json
 import zipfile
+import tempfile
 
 
 class TestEngine(unittest.TestCase):
@@ -53,19 +54,21 @@ class TestEngine(unittest.TestCase):
 
         test_learnware_path = os.path.join('tests', 'data', 'test_learnware.zip')
 
-        with zipfile.ZipFile(test_learnware_path, 'r') as zip_ref:
-            zip_ref.extract('stat.json', os.path.join('tests','data'))
+        with tempfile.TemporaryDirectory() as tempdir:
+            with zipfile.ZipFile(test_learnware_path, 'r') as zip_ref:
+                zip_ref.extract('stat.json', tempdir)
+                pass
+        
+            stat_file = open(os.path.join(tempdir, 'stat.json'), 'rb')
+            result = testops.url_request(
+                'engine/search_learnware', 
+                {'semantic_specification': json.dumps(sematic_specification)}, 
+                files={'statistical_specification': stat_file},
+                headers=headers)
+        
+            stat_file.close()
             pass
-        
-        stat_file = open(os.path.join('tests', 'data', 'stat.json'), 'rb')
-        result = testops.url_request(
-            'engine/search_learnware', 
-            {'semantic_specification': json.dumps(sematic_specification)}, 
-            files={'statistical_specification': stat_file},
-            headers=headers)
-        
-        stat_file.close()
-        os.remove(os.path.join('tests', 'data', 'stat.json'))
+
         print(result)
         self.assertEqual(result['code'], 0)
         self.assertGreaterEqual(len(result['data']['learnware_list_single']), 1)
