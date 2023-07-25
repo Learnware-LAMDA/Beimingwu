@@ -8,6 +8,7 @@ import os
 import zipfile
 import tempfile
 from market.backend_market import BackendMarket
+from lib import package_utils
 
 
 
@@ -67,11 +68,20 @@ def create_env(learnware_path, semantic_path, result_file_path):
             print(f'Creating conda env from requirements.txt')
             system(f"conda create -n {conda_env} --clone base")
             system(f"conda run -n {conda_env} python3 -m pip install --force-reinstall werkzeug")
-            system(f"conda run -n {conda_env} python3 -m pip install -r {extract_path}/requirements.txt")
+
+            with tempfile.NamedTemporaryFile(prefix='verify_pip_', suffix='.txt') as ftemp:
+                package_utils.filter_nonexist_pip_packages_file(f"{extract_path}/requirements.txt", ftemp.name)
+                system(f"conda run -n {conda_env} python3 -m pip install -r {ftemp.name}")
+                pass
             pass
+
         elif os.path.exists(f"{extract_path}/environment.yaml"):
             print(f"Creating conda env {conda_env} from {extract_path}/environment.yaml")
-            system(f"conda env update --name {conda_env} --file {extract_path}/environment.yaml")
+            with tempfile.NamedTemporaryFile(prefix='verify_conda_', suffix='.yaml') as ftemp:
+                package_utils.filter_nonexist_conda_packages_file(f"{extract_path}/environment.yaml", ftemp.name)
+                system(f"conda env update --name {conda_env} --file {ftemp.name}")
+                pass
+
             system(f"conda run -n {conda_env} --no-capture-output python3 -m pip install --upgrade pip")
             print(f"Installing learnware package from {learnware_package_dir}")
             system(f'conda run -n {conda_env} --no-capture-output python3 -m pip install {learnware_package_dir}/')

@@ -249,11 +249,17 @@ class UpdateLearnwareApi(flask_restful.Resource):
                 shutil.copyfile(learnware_path_origin, learnware_path)
                 pass
             context.engine.delete_learnware(learnware_id)
+            database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
+            pass
+        elif verify_status == LearnwareVerifyStatus.FAILED.value:
+            # this learnware is failed
+            print(f'update failed learnware: {learnware_id}')
+            database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
             pass
         else:
             pass
         
-        database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
+        
         return {"code": 0, "msg": "success"}, 200
         
 

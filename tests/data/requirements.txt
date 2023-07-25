@@ -1,0 +1,5 @@
+scikit-learn
+numpy
+scipy
+joblib==1.3.0
+pywin32
