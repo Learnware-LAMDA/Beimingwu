@@ -98,7 +98,7 @@ class BackendMarket(EasyMarket):
                 pass
             
             if semantic_spec['Task']['Values'][0] in ('Classification', 'Regression', 'Feature Extraction'):
-                output_dim = semantic_spec['Output']['Dimension']
+                output_dim = int(semantic_spec['Output']['Dimension'])
                 if outputs[0].shape[0] != output_dim:
                     logger.warning(f"The learnware [{learnware.id}] input and output dimention is error")
                     return cls.NONUSABLE_LEARNWARE

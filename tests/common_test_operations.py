@@ -40,7 +40,7 @@ def wait_port_open(port, timeout):
     if timeout <= 0:
         raise TimeoutError()
     
-    time.sleep(1)
+    time.sleep(2)
     pass
 
 
@@ -112,14 +112,14 @@ def test_learnware_semantic_specification_table():
     semantic_specification = dict()
 
     semantic_specification["Input"] = {
-        "Dimension": "64",
+        "Dimension": 64,
         "Description": {
             "0": "f0",
             "1": "f1"
         }
     }
     semantic_specification["Output"] = {
-        "Dimension": "10",
+        "Dimension": 10,
         "Description": {
             "0": "c0"
         }
@@ -132,6 +132,20 @@ def test_learnware_semantic_specification_table():
     semantic_specification["Description"] = {"Type": "String", "Values": "just a test"}    
     
     return semantic_specification
+
+
+def add_learnware_to_engine(learnware_id, headers):
+
+    dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.SUCCESS)
+
+    result = url_request(
+        'user/add_learnware_verified',
+        {'learnware_id': learnware_id},
+        headers=headers)
+    
+    if result['code'] != 0:
+        raise Exception('add learnware verified failed: ' + json.dumps(result))
+    pass
 
 
 def add_test_learnware(email, password, learnware_filename='test_learnware.zip') -> str:
@@ -156,15 +170,7 @@ def add_test_learnware(email, password, learnware_filename='test_learnware.zip')
     
     learnware_id = result['data']['learnware_id']
 
-    dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.SUCCESS)
-
-    result = url_request(
-        'user/add_learnware_verified',
-        {'learnware_id': learnware_id},
-        headers=headers)
-    
-    if result['code'] != 0:
-        raise Exception('add learnware verified failed: ' + json.dumps(result))
+    add_learnware_to_engine(learnware_id, headers)
 
     print(f'added learnware: {learnware_id}')
 

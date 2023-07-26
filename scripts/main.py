@@ -6,6 +6,7 @@ import restful.auth
 import restful.user
 import restful.engine
 import restful.admin
+import restful.storage
 from learnware import market
 import context
 from context import config as C
@@ -51,6 +52,7 @@ def main():
     app.register_blueprint(restful.user.user_blueprint, url_prefix='/user')
     app.register_blueprint(restful.engine.engine_blueprint, url_prefix='/engine')
     app.register_blueprint(restful.admin.admin_blueprint, url_prefix='/admin')
+    app.register_blueprint(restful.storage.storage_blueprint, url_prefix='/storage')
     
     app.run(host=C.listen_address, port=C.listen_port, threaded=True, debug=True, use_reloader=False)
 

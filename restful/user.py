@@ -18,7 +18,7 @@ import flask_bcrypt
 import lib.data_utils as data_utils
 
 
-user_blueprint = Blueprint("api", __name__)
+user_blueprint = Blueprint("USER-API", __name__)
 api = flask_restful.Api(user_blueprint)
 
 
@@ -251,7 +251,7 @@ class UpdateLearnwareApi(flask_restful.Resource):
             context.engine.delete_learnware(learnware_id)
             database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
             pass
-        elif verify_status == LearnwareVerifyStatus.FAILED.value:
+        elif verify_status == LearnwareVerifyStatus.FAIL.value:
             # this learnware is failed
             print(f'update failed learnware: {learnware_id}')
             database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
