@@ -11,6 +11,7 @@ import lib.database_operations as dbops
 from database.base import LearnwareVerifyStatus
 import time
 import json
+import datetime
 
 
 class TestUser(unittest.TestCase):
@@ -170,13 +171,7 @@ class TestUser(unittest.TestCase):
         learnware_info = learnware_info[0]
         self.assertEqual(learnware_info['verify_status'], 'WAITING')
 
-        result = testops.url_request(
-            'user/delete_learnware',
-            {'learnware_id': learnware_id},
-            headers=headers
-        )
-
-        self.assertEqual(result['code'], 0)
+        testops.delete_learnware(learnware_id, headers)
         pass
 
 
@@ -212,6 +207,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(learnware_info['semantic_specification']['Name']['Values'], 'Test Classification')
 
         semantic_specification['Name']['Values'] = 'Test Classification 2'
+        dbops.update_learnware_timestamp(learnware_id, timestamp=(datetime.datetime.now()-datetime.timedelta(days=1)))
         result = testops.url_request(
             'user/update_learnware',
             data = {'learnware_id': learnware_id, 'semantic_specification': json.dumps(semantic_specification)},
@@ -229,14 +225,13 @@ class TestUser(unittest.TestCase):
         self.assertEqual(result['code'], 0)
         learnware_info = result['data']['learnware_list'][0]
         self.assertEqual(learnware_info['semantic_specification']['Name']['Values'], 'Test Classification 2')
+        print('---------------' + learnware_info['last_modify'])
+        last_modify = datetime.datetime.strptime(learnware_info['last_modify'], '%Y-%m-%d %H:%M:%S.%f %Z')
+        self.assertTrue(
+            (datetime.datetime.now() - last_modify).total_seconds() < 10
+        )
 
-        result = testops.url_request(
-            'user/delete_learnware',
-            {'learnware_id': learnware_id},
-            headers=headers
-        )        
-
-        self.assertEqual(result['code'], 0)
+        testops.delete_learnware(learnware_id, headers)
         pass
 
     def test_update_verified_learnware(self):
@@ -278,13 +273,7 @@ class TestUser(unittest.TestCase):
             os.path.exists(context.get_learnware_verify_file_path(learnware_id))
         )
 
-        result = testops.url_request(
-            'user/delete_learnware',
-            {'learnware_id': learnware_id},
-            headers=headers
-        )        
-
-        self.assertEqual(result['code'], 0)
+        testops.delete_learnware(learnware_id, headers)
         pass
 
     def test_update_verified_learnware_and_file(self):
@@ -346,13 +335,7 @@ class TestUser(unittest.TestCase):
         
         self.assertEqual(len(response.content), os.path.getsize(os.path.join('tests', 'data', 'test_learnware2.zip')))    
 
-        result = testops.url_request(
-            'user/delete_learnware',
-            {'learnware_id': learnware_id},
-            headers=headers
-        )        
-
-        self.assertEqual(result['code'], 0)
+        testops.delete_learnware(learnware_id, headers)
         pass
 
     def test_verify_log(self):
@@ -372,6 +355,7 @@ class TestUser(unittest.TestCase):
         result = result.json()['data']
 
         self.assertEqual(result, 'test result')
+        testops.delete_learnware(learnware_id, headers)
         pass
 
     def test_add_learnware_no_stat_file(self):
