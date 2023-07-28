@@ -8,6 +8,9 @@ import TextBtn from "../../assets/images/specification/dataType/text.svg?compone
 import ImageBtn from "../../assets/images/specification/dataType/image.svg?component";
 import TableBtn from "../../assets/images/specification/dataType/table.svg?component";
 import { downloadLearnwareSync } from "../../utils";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 const props = defineProps({
   item: {
@@ -170,6 +173,11 @@ function handleClickDelete(id) {
         ></v-btn>
       </div>
     </v-card-title>
+    <v-card-text>
+      <div style="color: gray; font-size: xx-small">
+        Updated {{ dayjs(item.lastModify).fromNow() }}
+      </div>
+    </v-card-text>
   </v-card>
 </template>
 

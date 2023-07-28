@@ -65,6 +65,7 @@ function fetchByFilterAndPage(filters, page) {
           multiRecommendedLearnwareItems.value = res.data.learnware_list_multi.map((item) => ({
             id: item.learnware_id,
             username: item.username,
+            lastModify: item.last_modify,
             name: item.semantic_specification.Name.Values,
             description: item.semantic_specification.Description.Values,
             dataType: item.semantic_specification.Data.Values[0],
@@ -81,6 +82,7 @@ function fetchByFilterAndPage(filters, page) {
           singleRecommendedLearnwareItems.value = res.data.learnware_list_single.map((item) => ({
             id: item.learnware_id,
             username: item.username,
+            lastModify: item.last_modify,
             name: item.semantic_specification.Name.Values,
             description: item.semantic_specification.Description.Values,
             dataType: item.semantic_specification.Data.Values[0],

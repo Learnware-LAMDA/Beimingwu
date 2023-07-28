@@ -93,6 +93,7 @@ function fetchByFilterAndPage(page) {
           learnwareItems.value = res.data.learnware_list.map((item) => ({
             id: item.learnware_id,
             verifyStatus: item.verify_status,
+            lastModify: item.last_modify,
             name: item.semantic_specification.Name.Values,
             description: item.semantic_specification.Description.Values,
             dataType: item.semantic_specification.Data.Values[0],
