@@ -149,7 +149,7 @@ def get_verify_log(user_id, learnware_id):
 
 def get_learnware_by_learnware_id(learnware_id):
     rows = context.database.execute(
-        "SELECT learnware_id, verify_status FROM tb_user_learnware_relation WHERE learnware_id = :learnware_id",
+        "SELECT learnware_id, last_modify, verify_status FROM tb_user_learnware_relation WHERE learnware_id = :learnware_id",
         {"learnware_id": learnware_id}
     )
     
@@ -157,6 +157,8 @@ def get_learnware_by_learnware_id(learnware_id):
         return None
     
     learnware_info = {k:v for k, v in rows[0]._mapping.items()}
+    learnware_info["last_modify"] = convert_datetime(learnware_info["last_modify"]).strftime("%Y-%m-%d %H:%M:%S.%f %Z")
+    
     return learnware_info
 
 def add_learnware(user_id, learnware_id):
