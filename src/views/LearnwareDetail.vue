@@ -5,6 +5,7 @@ import { useRoute, useRouter } from "vue-router";
 import { getLearnwareDetailById } from "../request/engine";
 import { downloadLearnwareSync } from "../utils";
 import { verifyLog } from "../request/user";
+import dayjs from "dayjs";
 
 const route = useRoute();
 const router = useRouter();
@@ -28,6 +29,7 @@ function getLearnwareDetail(id) {
           learnware.value = {
             id: learnwareInfo.learnware_id,
             verifyStatus: learnwareInfo.verify_status,
+            lastModify: learnwareInfo.last_modify,
             name: learnwareInfo.semantic_specification.Name.Values,
             description: learnwareInfo.semantic_specification.Description.Values,
             dataType: learnwareInfo.semantic_specification.Data.Values[0],
@@ -116,6 +118,7 @@ function onLearnwareVerifyLog(learnware_id) {
             Logs
           </button>
         </div>
+        <div>Last modify: {{ dayjs(learnware.lastModify).format("YYYY-MM-DD HH:mm:ss") }}</div>
       </v-card-text>
 
       <v-card-text class="md:(text-xl !leading-7) text-sm">
