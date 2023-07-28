@@ -30,6 +30,8 @@ class TestEngine(unittest.TestCase):
 
     def tearDownClass() -> None:
         unittest.TestCase.tearDownClass()
+        headers = testops.login('test@localhost', 'test')
+        testops.delete_learnware(TestEngine.learnware_id, headers)
         TestEngine.server_process.kill()
         pass
 
@@ -71,8 +73,10 @@ class TestEngine(unittest.TestCase):
 
         print(result)
         self.assertEqual(result['code'], 0)
+        print(list(result['data']['learnware_list_single'][0].keys()))
         self.assertGreaterEqual(len(result['data']['learnware_list_single']), 1)
         self.assertIn(TestEngine.learnware_id, [x['learnware_id'] for x in result['data']['learnware_list_single']])
+        self.assertGreater(result['data']['learnware_list_single'][0]['last_modify'], '2020-01-01 00:00:00')
         
         pass
 

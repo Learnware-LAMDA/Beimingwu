@@ -5,6 +5,21 @@ import database.base
 from database.base import LearnwareVerifyStatus
 
 
+def convert_datetime(v) -> datetime:
+    if isinstance(v, datetime):
+        pass
+    elif isinstance(v, str):
+        v = datetime.strptime(v, "%Y-%m-%d %H:%M:%S.%f")
+        pass
+    else:
+        raise Exception("Unknown datetime format.")
+    
+    local_tz = datetime.now().astimezone().tzinfo
+    v = v.replace(tzinfo=local_tz)
+    
+    return v
+    
+
 def check_user_exist(by, value, conn=None):
     rows = context.database.execute(f"SELECT {by} FROM tb_user WHERE {by} = :{by}", {by: value}, conn=conn)
 
@@ -99,12 +114,25 @@ def get_learnware_list_by_user_id(user_id, limit, page):
     )[0][0]
 
     rows = context.database.execute(
-        ("SELECT learnware_id, verify_status FROM tb_user_learnware_relation WHERE user_id = :user_id "
+        ("SELECT learnware_id, last_modify, verify_status FROM tb_user_learnware_relation WHERE user_id = :user_id "
         "ORDER BY learnware_id DESC LIMIT :limit OFFSET :offset"),
         {"user_id": user_id, "limit": limit, "offset": limit * page})
     
+    rows_ = []
+    for row in rows:
+        row_ = dict()
+        for k, v in row._mapping.items():
+            if k == "last_modify":
+                row_[k] = convert_datetime(v)
+                pass
+            else:
+                row_[k] = v
+                pass
+            pass
+        rows_.append(row_)
+        pass
 
-    return [r._mapping for r in rows], cnt
+    return rows_, cnt
 
 
 def get_verify_log(user_id, learnware_id):
@@ -209,6 +237,25 @@ def get_unverified_learnware():
         {"status": LearnwareVerifyStatus.WAITING.value})
     
     return [r[0] for r in result]
+
+
+def update_learnware_timestamp(learnware_id, timestamp: datetime = datetime.now()):
+    context.database.execute(
+        "UPDATE tb_user_learnware_relation SET last_modify = :now WHERE learnware_id = :learnware_id",
+        {"now": timestamp, "learnware_id": learnware_id}
+    )
+    pass
+
+
+def get_learnware_timestamp(learnware_id):
+    result = context.database.execute(
+        "SELECT last_modify FROM tb_user_learnware_relation WHERE learnware_id = :learnware_id",
+        {"learnware_id": learnware_id}
+    )
+    if len(result) == 0:
+        return None
+    
+    return convert_datetime(result[0][0])
 
 
 def update_learnware_verify_status(learnware_id, status: LearnwareVerifyStatus):

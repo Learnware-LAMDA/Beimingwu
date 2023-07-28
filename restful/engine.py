@@ -99,16 +99,20 @@ class SearchLearnware(flask_restful.Resource):
         mul_list, sin_list = [], []
         for x in multi_learnware:
             try:
-                learnware = context.engine.get_learnware_by_ids(x.id)
-                mul_list.append(dump_learnware(learnware, multi_score))
+                learnware_id = x.id
+                learnware = context.engine.get_learnware_by_ids(learnware_id)
+                last_modify = dbops.get_learnware_timestamp(learnware_id).strftime("%Y-%m-%d %H:%M:%S.%f %Z")
+                mul_list.append(dump_learnware(learnware, multi_score, last_modify))
             except Exception as err:
                 print(err)
                 traceback.print_exc()
                 pass
         for i in range(n):
             try:
-                learnware = context.engine.get_learnware_by_ids(single_learnware_list[i].id)
-                sin_list.append(dump_learnware(learnware, matching[i]))
+                learnware_id = single_learnware_list[i].id
+                learnware = context.engine.get_learnware_by_ids(learnware_id)
+                last_modify = dbops.get_learnware_timestamp(learnware_id).strftime("%Y-%m-%d %H:%M:%S.%f %Z")
+                sin_list.append(dump_learnware(learnware, matching[i], last_modify))
             except Exception as err:
                 print(err)
                 traceback.print_exc()
@@ -148,6 +152,8 @@ class SearchLearnware(flask_restful.Resource):
         }
         if page == 0: 
             result["data"]["learnware_list_multi"] = mul_list
+            pass
+        
         result["data"]["learnware_list_single"] = [ sin_list[i] for i in range(page * limit, min(n, page * limit + limit)) ]
 
         return result, 200

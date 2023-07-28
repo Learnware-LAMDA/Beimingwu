@@ -25,11 +25,17 @@ def generate_random_str(randomlength: int) -> str:
         random_str += base_str[random.randint(0, length)]
     return random_str
 
-def dump_learnware(learnware: learnware.Learnware, matching: int=None):
+def dump_learnware(learnware: learnware.Learnware, matching: int=None, last_modify: str=None):
     ret = {
         "learnware_id": learnware.id,
         "username": dbops.get_learnware_owner(learnware.id),
         "semantic_specification": learnware.get_specification().get_semantic_spec(),
     }
-    if matching is not None: ret["matching"] = matching
+
+    if last_modify is not None: 
+        ret["last_modify"] = last_modify
+        pass
+    if matching is not None: 
+        ret["matching"] = matching
+        pass
     return ret

@@ -89,6 +89,7 @@ class ListLearnwareApi(flask_restful.Resource):
         for row in rows:
             learnware_info = dict()
             learnware_info["learnware_id"] = row["learnware_id"]
+            learnware_info["last_modify"] = row["last_modify"].strftime("%Y-%m-%d %H:%M:%S.%f %Z")
             learnware_info["verify_status"] = row["verify_status"]
 
             learnware_info["semantic_specification"] = data_utils.get_learnware_semantic_specification(
@@ -240,6 +241,8 @@ class UpdateLearnwareApi(flask_restful.Resource):
             learnware_file.save(learnware_path)
             pass
         
+        database.update_learnware_timestamp(learnware_id)
+
         if verify_status == LearnwareVerifyStatus.SUCCESS.value:
             # this learnware is verified
             print(f'update verified learnware: {learnware_id}')
