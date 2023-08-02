@@ -31,6 +31,8 @@ function getLearnwareDetail(id) {
             verifyStatus: learnwareInfo.verify_status,
             lastModify: learnwareInfo.last_modify,
             name: learnwareInfo.semantic_specification.Name.Values,
+            input: learnwareInfo.semantic_specification.Input,
+            output: learnwareInfo.semantic_specification.Output,
             description: learnwareInfo.semantic_specification.Description.Values,
             dataType: learnwareInfo.semantic_specification.Data.Values[0],
             taskType: learnwareInfo.semantic_specification.Task.Values[0],
@@ -109,7 +111,15 @@ function onLearnwareVerifyLog(learnware_id) {
 
       <v-card-text class="md:(text-xl !leading-7) text-sm">
         <div>Data type: {{ learnware.dataType }}</div>
+        <div>
+          Input:
+          <pre>{{ JSON.stringify(learnware.input, null, 2) }}</pre>
+        </div>
         <div>Task type: {{ learnware.taskType }}</div>
+        <div>
+          Output:
+          <pre>{{ JSON.stringify(learnware.output, null, 2) }}</pre>
+        </div>
         <div>Library type: {{ learnware.libraryType }}</div>
         <div>Tags: {{ learnware.tagList.join(", ") }}</div>
         <div>
