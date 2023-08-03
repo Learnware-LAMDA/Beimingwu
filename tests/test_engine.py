@@ -137,6 +137,10 @@ class TestEngine(unittest.TestCase):
             result['data']['learnware_info']['semantic_specification']['Name'],
             testops.test_learnware_semantic_specification()['Name']
         )
+        self.assertGreater(
+            result['data']['learnware_info']['last_modify'],
+            '2020-01-01 00:00:00'
+        )
         pass
 
 

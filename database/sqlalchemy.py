@@ -56,6 +56,16 @@ class GlobalCounter(DeclarativeBase):
     pass
 
 
+class UserToken(DeclarativeBase):
+    __tablename__ = 'tb_user_token'
+
+    user_id = Column(Integer, nullable=False, index=True)
+    token = Column(Text, nullable=False)
+
+    __table_args__ = (PrimaryKeyConstraint(user_id, token), {})
+    pass
+
+
 class DatabaseHelper(object):
     def database_exists(self):
         raise NotImplementedError()

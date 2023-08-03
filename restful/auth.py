@@ -91,6 +91,34 @@ class LogoutApi(flask_restful.Resource):
         return result
 
 
+login_by_token_parser = flask_restful.reqparse.RequestParser()
+login_by_token_parser.add_argument("token", type=str, required=True, location="json")
+login_by_token_parser.add_argument("email", type=str, required=True, location="json")
+@api.route("/login_by_token")
+class LoginByTokenApi(flask_restful.Resource):
+    @api.expect(login_by_token_parser)
+    def post(self):
+        body = request.get_json()
+
+        token = body["token"]
+        email = body["email"]
+
+        user = database.get_user_info(by="email", value=email)
+        user_id = user["id"]
+
+        tokens = database.get_user_tokens(user_id=user_id)
+
+        if token not in tokens:
+            return {"code": 53, "msg": "Invalid token."}, 200
+        
+        access_token = flask_jwt_extended.create_access_token(
+            identity=user_id, expires_delta=datetime.timedelta(days=1))
+        
+        result = {"code": 0, "msg": "Login success.", "data": {"token": access_token}}
+
+        return result, 200
+
+
 class GetRoleApi(flask_restful.Resource):
     @flask_jwt_extended.jwt_required()
     def post(self):
