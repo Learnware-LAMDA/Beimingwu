@@ -12,6 +12,7 @@ from database.base import LearnwareVerifyStatus
 def clear_db():
     context.database.execute("DELETE FROM tb_user WHERE username != 'admin'")
     context.database.execute("DELETE FROM tb_user_learnware_relation")
+    context.database.execute("DELETE FROM tb_user_token")
     pass
 
 

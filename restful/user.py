@@ -16,6 +16,7 @@ import flask_jwt_extended
 import flask_restx as flask_restful
 import flask_bcrypt
 import lib.data_utils as data_utils
+import uuid
 
 
 user_blueprint = Blueprint("USER-API", __name__)
@@ -342,6 +343,54 @@ class VerifyLog(flask_restful.Resource):
         result = database.get_verify_log(user_id, learnware_id)
 
         return {"code": 0, "data": result}, 200
+    pass
+
+
+@api.route("/create_token")
+class CreateToken(flask_restful.Resource):
+    @flask_jwt_extended.jwt_required()
+    def post(self):
+        user_id = flask_jwt_extended.get_jwt_identity()
+        token = uuid.uuid4().hex
+
+        database.create_user_token(user_id, token)
+
+        return {"code": 0, "data": {"token": token}}, 200
+    pass
+
+
+@api.route("/list_token")
+class ListToken(flask_restful.Resource):
+    @flask_jwt_extended.jwt_required()
+    def post(self):
+        user_id = flask_jwt_extended.get_jwt_identity()
+
+        result = database.get_user_tokens(user_id)
+
+        result = {
+            "token_list": result
+        }
+
+        return {"code": 0, "data": result}, 200
+    pass
+
+
+delete_token_parser = flask_restful.reqparse.RequestParser()
+delete_token_parser.add_argument("token", type=str, required=True, help="token", location="json")
+@api.route("/delete_token")
+class DeleteToken(flask_restful.Resource):
+    @api.expect(delete_token_parser)
+    @flask_jwt_extended.jwt_required()
+    def post(self):
+        user_id = flask_jwt_extended.get_jwt_identity()
+        token = request.get_json().get("token")
+
+        if token is None:
+            return {"code": 21, "msg": "Request parameters error."}, 200
+
+        database.delete_user_token(user_id, token)
+
+        return {"code": 0, "msg": "success"}, 200
     pass
 
 

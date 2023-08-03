@@ -301,5 +301,36 @@ def get_learnware_verify_status(learnware_id):
     return result[0][0]
 
 
+def create_user_token(user_id, token):
+    context.database.execute(
+        "INSERT INTO tb_user_token (user_id, token) VALUES (:user_id, :token)",
+        {"user_id": user_id, "token": token}
+    )
+    pass
+
+
+def get_user_tokens(user_id) -> list[str]:
+    result = context.database.execute(
+        "SELECT token FROM tb_user_token WHERE user_id = :user_id",
+        {"user_id": user_id}
+    )
+    if len(result) == 0:
+        return []
+    
+    tokens = []
+    for row in result:
+        tokens.append(row[0])
+        pass
+    return tokens
+
+
+def delete_user_token(user_id, token):
+    context.database.execute(
+        "DELETE FROM tb_user_token WHERE user_id = :user_id AND token = :token",
+        {"user_id": user_id, "token": token}
+    )
+    pass
+
+
 def begin():
     return context.database.begin()

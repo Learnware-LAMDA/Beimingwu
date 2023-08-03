@@ -1,9 +1,9 @@
 
 import unittest
-import main
+from scripts import main
 import multiprocessing
-from config import C
 import context
+from context import config as C
 import requests
 import os
 import shutil
@@ -25,7 +25,7 @@ class TestAuth(unittest.TestCase):
         unittest.TestCase.tearDownClass()
         TestAuth.server_process.kill()
 
-    def test_login(self):
+    def test_01_login(self):
         # first we need register a user
         result = testops.url_request(
             'auth/register', 
@@ -59,6 +59,37 @@ class TestAuth(unittest.TestCase):
         self.assertEqual(result['code'], 0)
 
         # logout
+
+        pass
+
+    def test_02_login_by_token(self):
+
+        result = testops.url_request(
+            'auth/login',
+            {'email': 'test@localhost', 'password': 'test'})
+        
+
+        token = result['data']['token']
+        headers = {'Authorization': f'Bearer {token}'}
+
+        result = testops.url_request(
+            'user/create_token',
+            {},
+            headers=headers)
+        
+        token = result['data']['token']
+
+        testops.url_request(
+            'auth/logout',
+            {},
+            headers=headers)
+        
+        result = testops.url_request(
+            'auth/login_by_token',
+            {'email': 'test@localhost', 'token': token})
+        
+        self.assertEqual(result['code'], 0)
+        self.assertIsNotNone(result['data']['token'])
 
         pass
 

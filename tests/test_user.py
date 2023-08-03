@@ -379,6 +379,44 @@ class TestUser(unittest.TestCase):
 
         pass
 
+    def test_create_token(self):
+        headers = testops.login(TestUser.email, TestUser.password)
+
+        result = testops.url_request(
+            'user/create_token',
+            {},
+            headers=headers)
+        
+        self.assertEqual(result['code'], 0)
+
+        token = result['data']['token']
+
+        result = testops.url_request(
+            'user/list_token',
+            {},
+            headers=headers)
+        
+        self.assertEqual(result['code'], 0)
+        self.assertIn(token, result['data']['token_list'])
+
+        result = testops.url_request(
+            'user/delete_token',
+            {'token': token},
+            headers=headers)
+        
+        self.assertEqual(result['code'], 0)
+
+        result = testops.url_request(
+            'user/list_token',
+            {},
+            headers=headers)
+        
+        print(result)
+        self.assertEqual(result['code'], 0)
+        self.assertEqual(len(result['data']['token_list']), 0)
+        pass
+
+
 if __name__ == '__main__':
     unittest.main()
 
