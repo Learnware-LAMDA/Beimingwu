@@ -99,6 +99,18 @@ const Router = createRouter({
           },
         },
         {
+          path: "/clienttoken",
+          name: "ClientToken",
+          component: () => import("../views/ClientToken.vue"),
+          meta: {
+            showInNavBar: true,
+            requiredLogin: true,
+            name: "Client Token",
+            icon: "mdi-key",
+            keepAlive: true,
+          },
+        },
+        {
           path: "/logout",
           name: "Logout",
           component: () => import("../views/Logout.vue"),
