@@ -95,4 +95,43 @@ function verifyLog({ learnware_id }) {
   }).then((res) => res.json());
 }
 
-export { changePassword, deleteLearnware, getLearnwareList, addLearnware, verifyLog };
+function createToken() {
+  return checkedFetch(`${BASE_URL}/create_token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
+}
+
+function listToken() {
+  return checkedFetch(`${BASE_URL}/list_token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
+}
+
+function deleteToken({ token }) {
+  return checkedFetch(`${BASE_URL}/delete_token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  }).then((res) => res.json());
+}
+
+export {
+  changePassword,
+  deleteLearnware,
+  getLearnwareList,
+  addLearnware,
+  verifyLog,
+  createToken,
+  listToken,
+  deleteToken,
+};
