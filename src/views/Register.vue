@@ -14,7 +14,7 @@ const { handleSubmit, meta } = useForm({
       return "Username needs to be at least 2 characters.";
     },
     email(value) {
-      if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
+      if (/^[a-z.-_]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
 
       return "Must be a valid e-mail.";
     },
