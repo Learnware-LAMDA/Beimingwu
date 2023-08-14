@@ -185,7 +185,13 @@ class ResetPassword(flask_restful.Resource):
         if user is None:
             return {"code": 51, "msg": "Account not exist."}, 200
         
-        password_hash = flask_bcrypt.generate_password_hash(md5).decode("utf-8")
+        if user["email"] == "admin@localhost":
+            # admin is no hash
+            password_hash = flask_bcrypt.generate_password_hash(password).decode("utf-8")
+            pass
+        else:
+            password_hash = flask_bcrypt.generate_password_hash(md5).decode("utf-8")
+            pass
         
         flag = database.update_user_password(pwd=password_hash, by="id", value=user_id)
         if not flag:
