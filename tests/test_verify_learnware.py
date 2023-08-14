@@ -18,7 +18,7 @@ class TestVerifyLearnware(unittest.TestCase):
         path_learnware = os.path.join('tests', 'data', 'test_learnware_pip.zip')
         path_result = os.path.join('tests', 'data', 'test_result.txt')
 
-        script = os.path.join('exec', 'verify_learnware.py')
+        script = os.path.join('scripts', 'verify_learnware.py')
         os.system('python3 {2} --learnware-path {0} --result-file-path {1} --create-env'.format(
             path_learnware, path_result, script))
 
@@ -29,7 +29,7 @@ class TestVerifyLearnware(unittest.TestCase):
         path_learnware = os.path.join('tests', 'data', 'test_learnware_invalid.zip')
         path_result = os.path.join('tests', 'data', 'test_result.txt')
 
-        script = os.path.join('exec', 'verify_learnware.py')
+        script = os.path.join('scripts', 'verify_learnware.py')
         os.system('python3 {2} --learnware-path {0} --result-file-path {1} --create-env'.format(
             path_learnware, path_result, script))
 

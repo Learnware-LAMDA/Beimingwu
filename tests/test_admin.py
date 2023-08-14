@@ -1,8 +1,8 @@
 
 import unittest
-import main
+from scripts import main
 import multiprocessing
-from config import C
+from context import config as C
 import context
 import requests
 import os
@@ -74,6 +74,41 @@ class TestAdmin(unittest.TestCase):
         
         TestAdmin.learnware_id = testops.add_test_learnware('test@localhost', 'test')
 
+        pass
+
+    def test_reset_password(self):
+        headers = testops.login('admin@localhost', 'admin')
+        result = testops.url_request(
+            'admin/reset_password',
+            {'id': TestAdmin.user_id},
+            headers=headers)
+
+        self.assertEqual(result['code'], 0)
+
+        password = result['data']['password']
+        md5 = result['data']['md5']
+
+        result = testops.url_request(
+            'auth/login',
+            {'email': 'test@localhost', 'password': md5}
+        )
+
+        self.assertEqual(result['code'], 0)
+
+        result = testops.url_request(
+            'admin/reset_password',
+            {'id': 1},
+            headers=headers)
+        
+        self.assertEqual(result['code'], 0)
+
+        password = result['data']['password']
+        result = testops.url_request(
+            'auth/login',
+            {'email': 'admin@localhost', 'password': password}
+        )
+
+        self.assertEqual(result['code'], 0)
         pass
 
 

@@ -233,5 +233,5 @@ class BackendMarket(EasyMarket):
                 id=id, semantic_spec=semantic_specification, learnware_dirpath=folder_path
             )
         else:
-            self.learnware_list[id].get_specification().upload_semantic_spec(semantic_specification)
+            self.learnware_list[id].get_specification().update_semantic_spec(semantic_specification)
         pass

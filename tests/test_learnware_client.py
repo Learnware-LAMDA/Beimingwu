@@ -29,6 +29,15 @@ class TestLearnwareClient(unittest.TestCase):
         testops.url_request(
             'auth/register', 
             {'username': 'test', 'password': 'test', "email": "test@localhost"})
+        
+        headers = testops.login('test@localhost', 'test')
+        result = testops.url_request(
+            'user/create_token',
+            {},
+            headers=headers,
+        )
+        self.token = result['data']['token']
+
         self.backend_host = 'http://localhost:{}'.format(context.config.listen_port)
 
         pass
@@ -42,7 +51,7 @@ class TestLearnwareClient(unittest.TestCase):
     def test_upload_learnware(self):
         client = LearnwareClient(self.backend_host)
 
-        client.login('test@localhost', 'test', hash_password=False)
+        client.login('test@localhost', self.token)
         learnware_id = client.upload_learnware(
             testops.test_learnware_semantic_specification_table(),
             os.path.join('tests', 'data', 'test_learnware.zip'))
@@ -66,7 +75,7 @@ class TestLearnwareClient(unittest.TestCase):
 
     def test_search_learnware(self):
         client = LearnwareClient(self.backend_host)
-        client.login('test@localhost', 'test', hash_password=False)
+        client.login('test@localhost', self.token)
         learnware_id = client.upload_learnware(
             testops.test_learnware_semantic_specification_table(),
             os.path.join('tests', 'data', 'test_learnware.zip'))
@@ -74,11 +83,11 @@ class TestLearnwareClient(unittest.TestCase):
         testops.add_learnware_to_engine(learnware_id, client.headers)
 
         specification = Specification()
-        specification.upload_semantic_spec(testops.test_learnware_semantic_specification_table())
+        specification.update_semantic_spec(testops.test_learnware_semantic_specification_table())
         stat_spec = RKMEStatSpecification()
         stat_spec.load(os.path.join('tests', 'data', 'stat.json'))
 
-        specification.update_stat_spec(test_spec=stat_spec)
+        specification.update_stat_spec(stat_spec)
         learnware_list = client.search_learnware(specification)
 
         self.assertEqual(len(learnware_list), 1)
@@ -88,7 +97,7 @@ class TestLearnwareClient(unittest.TestCase):
 
     def test_search_learnware_no_stat(self):
         client = LearnwareClient(self.backend_host)
-        client.login('test@localhost', 'test', hash_password=False)
+        client.login('test@localhost', self.token)
         learnware_id = client.upload_learnware(
             testops.test_learnware_semantic_specification_table(),
             os.path.join('tests', 'data', 'test_learnware.zip'))
@@ -96,7 +105,7 @@ class TestLearnwareClient(unittest.TestCase):
         testops.add_learnware_to_engine(learnware_id, client.headers)
 
         specification = Specification()
-        specification.upload_semantic_spec(testops.test_learnware_semantic_specification_table())
+        specification.update_semantic_spec(testops.test_learnware_semantic_specification_table())
         learnware_list = client.search_learnware(specification)
 
         self.assertEqual(len(learnware_list), 1)
