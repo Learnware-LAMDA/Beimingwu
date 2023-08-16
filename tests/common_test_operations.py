@@ -7,6 +7,7 @@ from context import config as C
 import json
 import os
 from database.base import LearnwareVerifyStatus
+import shutil
 
 
 def clear_db():
@@ -136,8 +137,14 @@ def test_learnware_semantic_specification_table():
 
 
 def add_learnware_to_engine(learnware_id, headers):
-
+    print(f'add_learnware_to_engine: {learnware_id}')
     dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.SUCCESS)
+    learnware_file = context.get_learnware_verify_file_path(learnware_id)
+    print(learnware_file)
+    shutil.copyfile(
+        learnware_file,
+        learnware_file[:-4] + '_processed.zip'
+    )
 
     result = url_request(
         'user/add_learnware_verified',
@@ -213,4 +220,21 @@ def delete_learnware(learnware_id, headers):
     if result['code'] != 0:
         raise Exception('delete learnware failed: ' + json.dumps(result))
     
+    pass
+
+def download_learnware(learnware_id, headers, download_file):
+    result = url_request(
+        'engine/download_learnware',
+        {'learnware_id': learnware_id},
+        headers=headers,
+        return_response=True,
+        method='get'
+    )
+
+    if result.status_code != 200:
+        raise Exception('download learnware failed: ' + json.dumps(result))
+    
+    with open(download_file, 'wb') as f:
+        f.write(result.content)
+        pass
     pass

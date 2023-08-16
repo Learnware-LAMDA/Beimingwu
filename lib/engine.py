@@ -13,6 +13,7 @@ import zipfile
 import learnware.config
 import yaml
 from learnware.learnware.utils import get_stat_spec_from_config
+from learnware.config import C as learnware_config
 
 
 def cache(seconds: int, maxsize: int = 128, typed: bool = False):

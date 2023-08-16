@@ -52,18 +52,14 @@ def main(learnware_path, semantic_path, result_file_path):
 def create_env(learnware_path, semantic_path, result_file_path):
     run_id = shortuuid.uuid()
     conda_env = f"learnware_{run_id}"
-    extract_path = tempfile.TemporaryDirectory(prefix="learnware_").name
+    # extract_path = tempfile.TemporaryDirectory(prefix="learnware_").name
+    extract_path = learnware_path
 
     if not os.path.exists(extract_path):
         os.makedirs(extract_path, exist_ok=True)
         pass
 
     try:
-        print(f"Extracting learnware to {extract_path}")
-        with zipfile.ZipFile(learnware_path, "r") as zip_ref:
-            zip_ref.extractall(extract_path)
-            pass
-
         if os.path.exists(f"{extract_path}/requirements.txt"):
             print(f'Creating conda env from requirements.txt')
             system(f"conda create -n {conda_env} --clone base")
@@ -97,7 +93,6 @@ def create_env(learnware_path, semantic_path, result_file_path):
         
     finally:
         system(f"conda env remove -n {conda_env}")
-        system('rm -rf ' + extract_path)
         print('finished cleanning up')
         pass
     pass

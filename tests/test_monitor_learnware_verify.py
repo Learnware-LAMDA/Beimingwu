@@ -12,6 +12,9 @@ import lib.database_operations as dbops
 from database.base import LearnwareVerifyStatus
 import time
 import json
+import tempfile
+import zipfile
+import yaml
 
 
 class TestMonitorLearnwareVerify(unittest.TestCase):
@@ -50,23 +53,7 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
         learnware_id = testops.add_test_learnware_unverified(
             TestMonitorLearnwareVerify.email, TestMonitorLearnwareVerify.password)
 
-        for i in range(10):
-            status = dbops.get_learnware_verify_status(learnware_id)
-
-            if status == LearnwareVerifyStatus.PROCESSING.value:
-                break
-
-            time.sleep(1)
-            pass
-        
-        self.assertEqual(status, LearnwareVerifyStatus.PROCESSING.value)
-
-        for i in range(30 * 60):
-            status = dbops.get_learnware_verify_status(learnware_id)
-            if status != LearnwareVerifyStatus.PROCESSING.value:
-                break
-            time.sleep(1)
-            pass
+        status = self.wait_verify_end(learnware_id)
 
         self.assertEqual(status, LearnwareVerifyStatus.SUCCESS.value)
         self.assertFalse(
@@ -81,6 +68,22 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
         self.assertEqual(result['code'], 0)
         self.assertEqual(result['data']['total_pages'], 1)
         self.assertEqual(result['data']['learnware_list'][0]['learnware_id'], learnware_id)
+        
+        with tempfile.NamedTemporaryFile() as f:
+            testops.download_learnware(learnware_id, headers, f.name)
+            with zipfile.ZipFile(f.name, 'r') as zip_ref:
+                f = zip_ref.open('learnware.yaml', 'r')
+                learnware_info = yaml.safe_load(f)
+                f.close()
+
+                self.assertEqual(learnware_info['id'], learnware_id)
+                
+                fsmantic = zip_ref.open(learnware_info['semantic_specification']['file_name'])
+                json.load(fsmantic)
+                fsmantic.close()
+                pass
+            pass
+
         testops.delete_learnware(learnware_id, headers)
         pass
 
@@ -90,23 +93,7 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
             TestMonitorLearnwareVerify.email, TestMonitorLearnwareVerify.password,
             learnware_filename='test_learnware_invalid.zip')
 
-        for i in range(10):
-            status = dbops.get_learnware_verify_status(learnware_id)
-
-            if status == LearnwareVerifyStatus.PROCESSING.value:
-                break
-
-            time.sleep(1)
-            pass
-        
-        self.assertEqual(status, LearnwareVerifyStatus.PROCESSING.value)
-
-        for i in range(30 * 60):
-            status = dbops.get_learnware_verify_status(learnware_id)
-            if status != LearnwareVerifyStatus.PROCESSING.value:
-                break
-            time.sleep(1)
-            pass
+        status = self.wait_verify_end(learnware_id)
 
         self.assertEqual(status, LearnwareVerifyStatus.FAIL.value)
         self.assertTrue(
@@ -129,23 +116,7 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
             TestMonitorLearnwareVerify.email, TestMonitorLearnwareVerify.password,
             learnware_filename='test_learnware_conda.zip')
 
-        for i in range(10):
-            status = dbops.get_learnware_verify_status(learnware_id)
-
-            if status == LearnwareVerifyStatus.PROCESSING.value:
-                break
-
-            time.sleep(1)
-            pass
-        
-        self.assertEqual(status, LearnwareVerifyStatus.PROCESSING.value)
-
-        for i in range(30 * 60):
-            status = dbops.get_learnware_verify_status(learnware_id)
-            if status != LearnwareVerifyStatus.PROCESSING.value:
-                break
-            time.sleep(1)
-            pass
+        status = self.wait_verify_end(learnware_id)
 
         self.assertEqual(status, LearnwareVerifyStatus.SUCCESS.value)
         self.assertFalse(
