@@ -17,6 +17,7 @@ import flask_restx as flask_restful
 import flask_bcrypt
 import lib.data_utils as data_utils
 import uuid
+from . import common_functions
 
 
 user_blueprint = Blueprint("USER-API", __name__)
@@ -174,35 +175,14 @@ class AddLearnwareApi(flask_restful.Resource):
             os.mkdir(C.upload_path)
 
         learnware_path = context.get_learnware_verify_file_path(learnware_id)
-        learnware_semantic_spec_path = learnware_path[:-4] + ".json"
 
         learnware_file.seek(0)
         learnware_file.save(learnware_path)
 
-        # check learnware file
-        check_result, msg = engine_helper.check_learnware_file(
-            semantic_specification, learnware_path)
-
-        if not check_result:
-            return {"code": 51, "msg": msg}, 200
+        result, retcd = common_functions.add_learnware(
+            learnware_path, semantic_specification, learnware_id)
         
-        with open(learnware_semantic_spec_path, "w") as f:
-            json.dump(semantic_specification, f)
-            pass
-
-        user_id = flask_jwt_extended.get_jwt_identity()
-
-        # Add learnware
-        cnt = database.add_learnware(user_id, learnware_id)
-        if cnt > 0:
-            result = {"code": 0, "msg": f"Add success.", "data": {"learnware_id": learnware_id}}
-        else:
-            result = {
-                "code": 31,
-                "msg": "System error.",
-            }
-        
-        return result, 200
+        return result, retcd
     pass
 
 
@@ -274,16 +254,14 @@ class AddLearnwareVerifiedApi(flask_restful.Resource):
 
         learnware_id = body["learnware_id"]
         learnware_file = context.get_learnware_verify_file_path(learnware_id)
+        learnware_file_processed = learnware_file[:-4] + "_processed.zip"
         learnware_semantic_spec_path = learnware_file[:-4] + ".json"
 
         with open(learnware_semantic_spec_path, "r") as f:
             semantic_specification = json.load(f)
             pass
         
-        context.engine.add_learnware(learnware_file, semantic_specification, learnware_id=learnware_id)
-
-        os.remove(learnware_file)
-        os.remove(learnware_semantic_spec_path)
+        context.engine.add_learnware(learnware_file_processed, semantic_specification, learnware_id=learnware_id)
 
         return {"code": 0, "msg": "success"}, 200
     pass
@@ -393,6 +371,58 @@ class DeleteToken(flask_restful.Resource):
         return {"code": 0, "msg": "success"}, 200
     pass
 
+
+parser_chunked_upload = flask_restful.reqparse.RequestParser()
+parser_chunked_upload.add_argument("chunk_begin", type=int, required=True, location="form")
+parser_chunked_upload.add_argument("file_hash", type=str, required=True, location="form")
+parser_chunked_upload.add_argument("chunk_file", type=werkzeug.datastructures.FileStorage, location="files")
+@api.route("/chunked_upload")
+class ChunkedUpload(flask_restful.Resource):
+    @flask_jwt_extended.jwt_required()
+    @api.expect(parser_chunked_upload)
+    def post(self):
+        file = flask_restful.request.files["chunk_file"]
+        file_hash = flask_restful.request.form["file_hash"]
+        chunk_begin = int(flask_restful.request.form["chunk_begin"])
+        file_path = os.path.join(context.config.upload_path, file_hash)
+        
+        os.makedirs(context.config.upload_path, exist_ok=True)
+
+        with open(file_path, "ab+") as fout:
+            fout.seek(chunk_begin)
+            fout.write(file.stream.read())
+            pass
+
+        return {"code": 0, "msg": "success"}, 200
+
+
+parser_add_learnware_uploaded = flask_restful.reqparse.RequestParser()
+parser_add_learnware_uploaded.add_argument("file_hash", type=str, location="json")
+parser_add_learnware_uploaded.add_argument("semantic_specifiction", type=str, location="json")
+@api.route("/add_learnware_uploaded")
+class AddLearnwareUploaded(flask_restful.Resource):
+    @flask_jwt_extended.jwt_required()
+    @api.expect(parser_add_learnware_uploaded)
+    def post(self):
+        body = request.get_json()
+        semantic_specification_str = body.get("semantic_specification")
+
+        semantic_specification, err_msg = engine_helper.parse_semantic_specification(
+            semantic_specification_str)
+        if semantic_specification is None:
+            return {"code": 41, "msg": err_msg}, 200
+        
+        learnware_id = database.get_next_learnware_id()
+        src_file_path = os.path.join(context.config.upload_path, body["file_hash"])
+        dst_file_path = context.get_learnware_verify_file_path(learnware_id)
+
+        os.rename(src_file_path, dst_file_path)
+        learnware_path = dst_file_path
+        
+        result, retcd = common_functions.add_learnware(
+            learnware_path, semantic_specification, learnware_id)
+        
+        return result, retcd
 
 api.add_resource(ProfileApi, "/profile")
 api.add_resource(ChangePasswordApi, "/change_password")

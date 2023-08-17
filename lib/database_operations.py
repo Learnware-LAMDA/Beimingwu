@@ -255,7 +255,7 @@ def get_learnware_timestamp(learnware_id):
         {"learnware_id": learnware_id}
     )
     if len(result) == 0:
-        return None
+        return datetime.strptime("2021-01-01", "%Y-%m-%d")
     
     return convert_datetime(result[0][0])
 

@@ -106,14 +106,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(result['data']['total_pages'], 1)
         self.assertEqual(result['data']['learnware_list'][0]['learnware_id'], learnware_id)
 
-        dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.SUCCESS)
-
-        result = testops.url_request(
-            'user/add_learnware_verified',
-            {'learnware_id': learnware_id},
-            headers=headers)
-        
-        self.assertEqual(result['code'], 0)
+        testops.add_learnware_to_engine(learnware_id, headers)
 
         result = testops.url_request(
             'user/list_learnware',
@@ -141,10 +134,7 @@ class TestUser(unittest.TestCase):
         )
 
         self.assertEqual(result['code'], 0)
-        self.assertEqual(len(result['data']['learnware_list']), 0)
-
-        self.assertTrue(
-            not os.path.exists(context.get_learnware_verify_file_path(learnware_id)))    
+        self.assertEqual(len(result['data']['learnware_list']), 0)  
 
         pass
 
@@ -296,12 +286,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(result['code'], 0)
         learnware_id = result['data']['learnware_id']
 
-        dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.SUCCESS)
-        result = testops.url_request(
-            'user/add_learnware_verified',
-            {'learnware_id': learnware_id},
-            headers=headers)
-        self.assertEqual(result['code'], 0)
+        testops.add_learnware_to_engine(learnware_id, headers)
 
         response = testops.url_request(
             'engine/download_learnware',
