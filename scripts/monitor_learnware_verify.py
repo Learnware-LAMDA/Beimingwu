@@ -80,6 +80,11 @@ def worker_process_func(q: queue.Queue):
         learnware_id = q.get()
         context.logger.info(f"Start to verify learnware: {learnware_id}")
         
+        if not dbops.check_learnware_exist(learnware_id=learnware_id):
+            context.logger.info(f'learnware is deleted, no need to process: {learnware_id}')
+            continue
+            pass
+
         dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.PROCESSING)
         learnware_filename = context.get_learnware_verify_file_path(learnware_id)
         semantic_spec_filename = learnware_filename[:-4] + ".json"
