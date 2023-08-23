@@ -242,6 +242,8 @@ def get_unverified_learnware():
 
 
 def update_learnware_timestamp(learnware_id, timestamp: datetime = datetime.now()):
+    context.logger.info(f'update learnware timestamp: {learnware_id}, {timestamp}')
+    
     context.database.execute(
         "UPDATE tb_user_learnware_relation SET last_modify = :now WHERE learnware_id = :learnware_id",
         {"now": timestamp, "learnware_id": learnware_id}

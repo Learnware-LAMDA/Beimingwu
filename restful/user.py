@@ -381,9 +381,9 @@ class ChunkedUpload(flask_restful.Resource):
     @flask_jwt_extended.jwt_required()
     @api.expect(parser_chunked_upload)
     def post(self):
-        file = flask_restful.request.files["chunk_file"]
-        file_hash = flask_restful.request.form["file_hash"]
-        chunk_begin = int(flask_restful.request.form["chunk_begin"])
+        file = request.files["chunk_file"]
+        file_hash = request.form["file_hash"]
+        chunk_begin = int(request.form["chunk_begin"])
         file_path = os.path.join(context.config.upload_path, file_hash)
         
         os.makedirs(context.config.upload_path, exist_ok=True)
