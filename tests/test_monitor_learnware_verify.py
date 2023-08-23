@@ -136,13 +136,13 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
         pass
 
     
-    def add_test_learnware(self, headers, input_dim, output_dim):
+    def add_test_learnware(self, headers, input_dim, output_dim, filename='test_learnware.zip'):
         semantic_specification = testops.test_learnware_semantic_specification_table()
         semantic_specification['Input']['Dimension'] = input_dim
         semantic_specification['Output']['Dimension'] = output_dim
 
         learnware_file = open(
-            os.path.join('tests', 'data', 'test_learnware.zip'),'rb')
+            os.path.join('tests', 'data', filename),'rb')
         files = {'learnware_file': learnware_file}
 
         # print(semantic_specification)
@@ -213,6 +213,32 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
             headers, input_dim=63, output_dim=10)
     
         self.assertEqual(result['code'], 51)
+        pass
+
+
+    def test_add_folder_learnware(self):
+        headers = testops.login(TestMonitorLearnwareVerify.email, TestMonitorLearnwareVerify.password)
+        result = self.add_test_learnware(
+            headers, input_dim=64, output_dim=10, filename='test_learnware_folder.zip')
+
+        self.assertEqual(result['code'], 0)
+        learnware_id = result['data']['learnware_id']
+
+        status = self.wait_verify_end(learnware_id)
+        self.assertEqual(status, LearnwareVerifyStatus.SUCCESS.value)
+        self.assertFalse(
+            os.path.exists(context.get_learnware_verify_file_path(learnware_id)))
+        result = testops.url_request(
+            'user/list_learnware',
+            {'page': 0, 'limit': 10},
+            headers=headers
+        )
+
+        self.assertEqual(result['code'], 0)
+        self.assertEqual(result['data']['total_pages'], 1)
+        self.assertEqual(result['data']['learnware_list'][-1]['learnware_id'], learnware_id)
+
+        testops.delete_learnware(learnware_id, headers)        
         pass
     
 

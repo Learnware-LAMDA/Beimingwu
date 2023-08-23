@@ -164,6 +164,31 @@ class TestUser(unittest.TestCase):
         testops.delete_learnware(learnware_id, headers)
         pass
 
+    def test_add_folder_learnware(self):
+        headers = testops.login(TestUser.email, TestUser.password)
+        semantic_specification = testops.test_learnware_semantic_specification()
+
+        learnware_file = open(
+            os.path.join('tests', 'data', 'test_learnware_folder.zip'),'rb')
+        files = {'learnware_file': learnware_file}
+
+        # print(semantic_specification)
+        result = testops.url_request(
+            'user/add_learnware',
+            {'semantic_specification': json.dumps(semantic_specification)},
+            files=files,
+            headers=headers
+        )
+
+        learnware_file.close()
+        self.assertEqual(result['code'], 0)
+        learnware_id = result['data']['learnware_id']
+        learnware_info, _ = dbops.get_learnware_list(by='learnware_id', value=learnware_id)
+        learnware_info = learnware_info[0]
+        self.assertEqual(learnware_info['verify_status'], 'WAITING')
+
+        testops.delete_learnware(learnware_id, headers)
+        pass
 
     def test_update_unverified_learnware(self):
         headers = testops.login(TestUser.email, TestUser.password)
