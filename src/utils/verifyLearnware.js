@@ -1,19 +1,38 @@
 import JSZip from "jszip";
 import yaml from "js-yaml";
 
+function getTopFolder(zip) {
+  // return top folder when there is only one top folder
+  // return '' else
+  const topFolders = Object.keys(zip.files).filter((key) => {
+    return key.indexOf("/") === key.length - 1;
+  });
+  const topFiles = Object.keys(zip.files).filter((key) => {
+    return key.indexOf("/") === -1;
+  });
+  if (topFiles.length > 0) {
+    return "";
+  }
+  if (topFolders.length !== 1) {
+    return "";
+  }
+  return topFolders[0];
+}
+
 function verifyLearnware(file) {
   return JSZip.loadAsync(file).then((zip) => {
-    if (!zip.files["__init__.py"]) {
+    const topFolder = getTopFolder(zip);
+    if (!zip.files[topFolder + "__init__.py"]) {
       return "No __init__.py file found";
     }
-    if (!zip.files["learnware.yaml"]) {
+    if (!zip.files[topFolder + "learnware.yaml"]) {
       return "No learnware.yaml file found";
     }
-    if (!zip.files["environment.yaml"] && !zip.files["requirements.txt"]) {
+    if (!zip.files[topFolder + "environment.yaml"] && !zip.files[topFolder + "requirements.txt"]) {
       return "No environment.yaml or requirements.txt file found";
     }
     return zip
-      .file("learnware.yaml")
+      .file(topFolder + "learnware.yaml")
       .async("string")
       .then((yamlString) => {
         const learnware = yaml.load(yamlString);
@@ -51,11 +70,11 @@ function verifyLearnware(file) {
                 spec,
               )}].file_name' not found in learnware.yaml`;
             }
-            if (!zip.files[spec.file_name]) {
+            if (!zip.files[topFolder + spec.file_name]) {
               return `File '${spec.file_name}' not found in zip file`;
             }
             return zip
-              .file(spec.file_name)
+              .file(topFolder + spec.file_name)
               .async("string")
               .then(JSON.parse)
               .then((RKME) => {
