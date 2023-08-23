@@ -14,6 +14,7 @@ import learnware.config
 import yaml
 from learnware.learnware.utils import get_stat_spec_from_config
 from learnware.config import C as learnware_config
+from . import common_utils
 
 
 def cache(seconds: int, maxsize: int = 128, typed: bool = False):
@@ -197,6 +198,9 @@ def check_learnware_file(semantic_specification, learnware_file):
         yaml_file = learnware.config.C.learnware_folder_config["yaml_file"]
 
         with zipfile.ZipFile(learnware_file, "r") as z_file:
+            top_folder = common_utils.get_top_folder_in_zip(z_file)
+
+            yaml_file = top_folder + yaml_file
             z_file.extract(yaml_file, temp_dir.name)
 
             with open(os.path.join(temp_dir.name, yaml_file), "r") as fin:
@@ -210,8 +214,9 @@ def check_learnware_file(semantic_specification, learnware_file):
 
             for stat_spec in stat_specs:
                 member = stat_spec["file_name"]
+                member = top_folder + member
                 z_file.extract(member, temp_dir.name)
-                stat_spec["file_name"] = os.path.join(temp_dir.name, stat_spec["file_name"])
+                stat_spec["file_name"] = os.path.join(temp_dir.name, member)
                 stat_spec_name, stat_spec_obj = get_stat_spec_from_config(stat_spec)
 
                 if stat_spec_name == 'RKMEStatSpecification':

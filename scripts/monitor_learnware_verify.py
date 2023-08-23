@@ -1,6 +1,7 @@
 import time
 import context
 import lib.database_operations as dbops
+import lib.common_utils as common_utils
 import queue
 import multiprocessing.dummy as mp
 import argparse
@@ -99,9 +100,11 @@ def worker_process_func(q: queue.Queue):
 
             context.logger.info(f"Extracting learnware to {extract_path}")
             with zipfile.ZipFile(learnware_filename, "r") as zip_ref:
+                top_folder = common_utils.get_top_folder_in_zip(zip_ref)
                 zip_ref.extractall(extract_path)
                 pass
             
+            extract_path = os.path.join(extract_path, top_folder)
             update_learnware_yaml_file(extract_path, learnware_id, semantic_spec_filename)
             
             verify_success, command_output = verify_learnware_by_script(
