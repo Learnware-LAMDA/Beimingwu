@@ -4,6 +4,7 @@ from context import config as C
 import hashlib
 from .auth import admin_login_required
 from .utils import get_parameters, generate_random_str
+from database import LearnwareVerifyStatus
 
 import lib.database_operations as database
 
@@ -209,10 +210,36 @@ class ResetPassword(flask_restful.Resource):
         return result, 200
 
 
+class Summary(flask_restful.Resource):
+    @admin_login_required
+    def post(self):
+        count_user = database.get_user_count()
+        count_verified_learnware = database.get_learnware_count_verified()
+        count_unverified_learnware = database.get_learnware_count_unverified()
+        count_download = database.get_download_count()
+
+        count_detail = engine_helper.get_learnware_count_detail()
+
+        result = {
+            "code": 0,
+            "msg": "Get summary success.",
+            "data": {
+                "count_user": count_user,
+                "count_verified_learnware": count_verified_learnware,
+                "count_unverified_learnware": count_unverified_learnware,
+                "count_download": count_download,
+                "count_detail": count_detail
+            }
+        }
+
+        return result, 200
+    pass
+
 api.add_resource(ListUser, "/list_user")
 api.add_resource(DeleteUser, "/delete_user")
 api.add_resource(ListLearnware, "/list_learnware")
 api.add_resource(DeleteLearnware, "/delete_learnware")
 api.add_resource(ResetPassword, "/reset_password")
+api.add_resource(Summary, "/summary")
 
 

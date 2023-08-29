@@ -245,7 +245,7 @@ def update_learnware_timestamp(learnware_id, timestamp: datetime = None):
     if timestamp is None:
         timestamp = datetime.now()
         pass
-    
+
     context.logger.info(f'update learnware timestamp: {learnware_id}, {timestamp}')
     
     context.database.execute(
@@ -342,6 +342,38 @@ def add_log(name, info):
         "INSERT INTO tb_log (create_time, name, info) VALUES (:create_time, :name, :info)",
         {"create_time": datetime.now(), "name": name, "info": info}
     )
+    pass
+
+def get_user_count():
+    result = context.database.execute(
+        "SELECT COUNT(1) FROM tb_user"
+    )
+    return result[0][0]
+
+
+def get_learnware_count_verified():
+    result = context.database.execute(
+        "SELECT COUNT(1) FROM tb_user_learnware_relation WHERE verify_status = :verify_status",
+        {"verify_status": LearnwareVerifyStatus.SUCCESS.value}
+    )
+    return result[0][0]
+    pass
+
+
+def get_learnware_count_unverified():
+    result = context.database.execute(
+        "SELECT COUNT(1) FROM tb_user_learnware_relation WHERE verify_status <> :verify_status",
+        {"verify_status": LearnwareVerifyStatus.SUCCESS.value}
+    )
+    return result[0][0]
+    pass
+
+
+def get_download_count():
+    result = context.database.execute(
+        "SELECT COUNT(1) FROM tb_log WHERE name = 'download_learnware'"
+    )
+    return result[0][0]
     pass
 
 

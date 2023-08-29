@@ -1,2 +1,2 @@
-from .base import Database
+from .base import Database, LearnwareVerifyStatus
 from .sqlalchemy import SQLAlchemy
