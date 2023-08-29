@@ -82,6 +82,35 @@ def register_user(username, password, email) -> Tuple[int, str]:
     pass
 
 
+def get_all_learnware_list(columns, limit=None, page=None, is_verified=None):
+    column_str = ", ".join(columns)
+
+    if is_verified is None:
+        where = ""
+    elif is_verified:
+        where = "WHERE verify_status = :verify_status "
+    else:
+        where = "WHERE verify_status <> :verify_status "
+        pass
+
+    count = context.database.execute(
+        f"SELECT COUNT(1) FROM tb_user_learnware_relation {where}",
+        {"verify_status": LearnwareVerifyStatus.SUCCESS.value})
+    
+    suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
+    ret = context.database.execute(
+        f"SELECT {column_str} FROM tb_user_learnware_relation {where} {suffix}",
+        {"verify_status": LearnwareVerifyStatus.SUCCESS.value})
+    
+    results = []
+    for row in ret:
+        r = dict(zip(columns, row))
+        r["last_modify"] = convert_datetime(r["last_modify"])
+        results.append(r)
+        pass
+
+    return results, count[0][0]
+
 def get_learnware_list(by, value, limit=None, page=None, is_verified=None):
 
     sql = f"FROM tb_user_learnware_relation WHERE {by} = :{by}"
@@ -206,14 +235,6 @@ def get_all_user_list(columns, limit=None, page=None, username=None, email=None)
     page_suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
     rows = context.database.execute(f"SELECT {column_str} FROM tb_user {like_suffix} {page_suffix}")
     return [dict(zip(columns, user)) for user in rows], cnt[0][0]
-
-
-def get_all_learnware_list(columns, limit=None, page=None):
-    column_str = ", ".join(columns)
-    cnt = context.database.execute(f"SELECT COUNT(*) FROM tb_user_learnware_relation")
-    suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
-    ret = context.database.execute(f"SELECT {column_str} FROM tb_user_learnware_relation {suffix}")
-    return [dict(zip(columns, user)) for user in ret], cnt[0][0]
 
 
 def get_next_learnware_id():

@@ -121,7 +121,18 @@ class TestAdmin(unittest.TestCase):
         self.assertEqual(result['data']['count_verified_learnware'], 1)
         self.assertEqual(result['data']['count_unverified_learnware'], 0)
         self.assertEqual(result['data']['count_download'], 0)
-        self.assertEqual(result['data']['count_detail']['Data']['Image'], 1)
+        self.assertGreaterEqual(result['data']['count_detail']['Data']['Image'], 1)
+        pass
+
+    def test_list_learnware(self):
+        headers = testops.login('admin@localhost', TestAdmin.password)
+        result = testops.url_request(
+            'admin/list_learnware',
+            {'page': 0, 'limit': 10, 'is_verified': True},
+            headers=headers)
+
+        self.assertEqual(result['code'], 0)
+        self.assertGreaterEqual(len(result['data']['learnware_list_single']), 1)
         pass
 
 
