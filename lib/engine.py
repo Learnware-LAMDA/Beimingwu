@@ -4,6 +4,7 @@ from context import config as C
 from learnware import market, specification
 from flask import jsonify, g
 from datetime import datetime, timedelta
+from collections import defaultdict
 import functools
 import os, json, time
 import hashlib
@@ -237,3 +238,23 @@ def check_learnware_file(semantic_specification, learnware_file):
 
     
     return True, ""
+
+
+def get_learnware_count_detail():
+    count_detail = dict()
+    count_detail['Data'] = defaultdict(int)
+    count_detail['Task'] = defaultdict(int)
+    count_detail['Library'] = defaultdict(int)
+    count_detail['Scenario'] = defaultdict(int)
+
+    for learnware_obj in context.engine.get_all_learnware():
+        semantic_spec = learnware_obj.get_specification().get_semantic_spec()
+        for key, value in count_detail.items():
+            for v in semantic_spec[key]['Values']:
+                value[v] += 1
+                pass
+            pass
+        pass
+
+    return count_detail
+    pass

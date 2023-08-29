@@ -163,3 +163,6 @@ class BackendMarket(EasyMarket):
         else:
             self.learnware_list[id].get_specification().update_semantic_spec(semantic_specification)
         pass
+
+    def get_all_learnware(self, ) -> List[Learnware]:
+        return self.learnware_list.values()

@@ -4,13 +4,9 @@ from scripts import main
 import multiprocessing
 from context import config as C
 import context
-import requests
-import os
-import shutil
 from tests import common_test_operations as testops
-import time
-import json
-import zipfile
+import lib.database_operations as dbops
+import flask_bcrypt
 
 
 class TestAdmin(unittest.TestCase):
@@ -26,6 +22,7 @@ class TestAdmin(unittest.TestCase):
             'auth/register', 
             {'username': 'test', 'password': 'test', "email": "test@localhost"})['data']['user_id']
         TestAdmin.learnware_id = testops.add_test_learnware('test@localhost', 'test')
+        TestAdmin.password = 'admin'
 
     def tearDownClass() -> None:
         unittest.TestCase.tearDownClass()
@@ -34,7 +31,7 @@ class TestAdmin(unittest.TestCase):
 
     
     def test_list_user(self, ):
-        headers = testops.login('admin@localhost', 'admin')
+        headers = testops.login('admin@localhost', TestAdmin.password)
         result = testops.url_request(
             'admin/list_user', 
             {'page': 0, 'limit': 10}, headers=headers)
@@ -46,7 +43,7 @@ class TestAdmin(unittest.TestCase):
 
     
     def test_delete_user(self, ):
-        headers = testops.login('admin@localhost', 'admin')
+        headers = testops.login('admin@localhost', TestAdmin.password)
         result = testops.url_request(
             'admin/delete_learnware',
             {'learnware_id': TestAdmin.learnware_id},
@@ -77,7 +74,7 @@ class TestAdmin(unittest.TestCase):
         pass
 
     def test_reset_password(self):
-        headers = testops.login('admin@localhost', 'admin')
+        headers = testops.login('admin@localhost', TestAdmin.password)
         result = testops.url_request(
             'admin/reset_password',
             {'id': TestAdmin.user_id},
@@ -109,6 +106,22 @@ class TestAdmin(unittest.TestCase):
         )
 
         self.assertEqual(result['code'], 0)
+        
+        dbops.update_user_password('email', 'admin@localhost', flask_bcrypt.generate_password_hash('admin').decode("utf-8"))
+        pass
+
+    def test_summary(self):
+        headers = testops.login('admin@localhost', TestAdmin.password)
+        result = testops.url_request(
+            'admin/summary',
+            headers=headers)
+
+        self.assertEqual(result['code'], 0)
+        self.assertEqual(result['data']['count_user'], 2)
+        self.assertEqual(result['data']['count_verified_learnware'], 1)
+        self.assertEqual(result['data']['count_unverified_learnware'], 0)
+        self.assertEqual(result['data']['count_download'], 0)
+        self.assertEqual(result['data']['count_detail']['Data']['Image'], 1)
         pass
 
 
