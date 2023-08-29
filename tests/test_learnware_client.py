@@ -5,7 +5,7 @@ import os
 import sys
 import time
 import json
-from learnware.client import LearnwareClient
+from learnware.client import LearnwareClient, SemanticSpecificationKey
 from learnware.specification import Specification, RKMEStatSpecification
 
 import tests.common_test_operations as testops
@@ -15,6 +15,7 @@ import context
 from scripts import main
 import tempfile
 import hashlib
+import numpy as np
 
 
 class TestLearnwareClient(unittest.TestCase):
@@ -112,6 +113,43 @@ class TestLearnwareClient(unittest.TestCase):
         client.delete_learnware(learnware_id)
         pass
 
+    def test_list_semantic_specification_values(self):
+        client = LearnwareClient(self.backend_host)
+        client.login('test@localhost', self.token)
+
+        data_type_values = client.list_semantic_specification_values(
+            SemanticSpecificationKey.DATA_TYPE)
+        
+        self.assertIn('Table', data_type_values)
+        pass
+
+    def test_load_learnware(self):
+        client = LearnwareClient(self.backend_host)
+        client.login('test@localhost', self.token)
+        learnware_id = client.upload_learnware(
+            testops.test_learnware_semantic_specification_table(),
+            os.path.join('tests', 'data', 'test_learnware.zip'))
+
+        testops.add_learnware_to_engine(learnware_id, client.headers)
+
+        client.download_learnware(learnware_id, f'{learnware_id}.zip')
+        client.install_environment(f'{learnware_id}.zip')
+        learnware = client.load_learnware(f'{learnware_id}.zip')
+        os.remove(f'{learnware_id}.zip')
+
+        learnware_model = learnware.get_model()
+        input_shape = learnware_model.input_shape
+        inputs = np.random.randn(10, *input_shape)
+        outputs = learnware.predict(inputs)
+
+        client.delete_learnware(learnware_id)
+        pass        
+        
+    def test_default_host(self):
+        client = LearnwareClient()
+        client.login('xiaochuan.zou@polixir.ai', 'ef705c6fb64c411183efcbede7494016')
+        self.assertEqual(len(client.search_learnware(Specification())), 10)
+        pass
 
 if __name__ == '__main__':
     unittest.main()
