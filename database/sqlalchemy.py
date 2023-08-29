@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, text
 from sqlalchemy import (
     Column, Integer, Text, DateTime, String,
-    PrimaryKeyConstraint, UniqueConstraint)
+    PrimaryKeyConstraint, UniqueConstraint, Index)
 
 from datetime import datetime
 
@@ -63,6 +63,20 @@ class UserToken(DeclarativeBase):
     token = Column(Text, nullable=False)
 
     __table_args__ = (PrimaryKeyConstraint(user_id, token), {})
+    pass
+
+
+class Log(DeclarativeBase):
+    __tablename__ = 'tb_log'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    create_time = Column(DateTime, nullable=False)
+    name = Column(String(255), nullable=False)
+    info = Column(Text, nullable=True)
+
+    __table_args__ = (
+        Index("idx_name_create_time", name, create_time), {}
+    )
     pass
 
 

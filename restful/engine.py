@@ -185,6 +185,12 @@ class DownloadLearnware(flask_restful.Resource):
         zip_filename = os.path.basename(learnware_zip_path)    
         response = make_response(send_from_directory(zip_directory, zip_filename, as_attachment=True))
 
+        dbops.add_log(
+            name="download_learnware",
+            info=json.dumps({
+                "learnware_id": learnware_id,
+            })
+        )
         return response   
 
 

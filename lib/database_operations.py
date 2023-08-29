@@ -241,7 +241,11 @@ def get_unverified_learnware():
     return [r[0] for r in result]
 
 
-def update_learnware_timestamp(learnware_id, timestamp: datetime = datetime.now()):
+def update_learnware_timestamp(learnware_id, timestamp: datetime = None):
+    if timestamp is None:
+        timestamp = datetime.now()
+        pass
+    
     context.logger.info(f'update learnware timestamp: {learnware_id}, {timestamp}')
     
     context.database.execute(
@@ -330,6 +334,13 @@ def delete_user_token(user_id, token):
     context.database.execute(
         "DELETE FROM tb_user_token WHERE user_id = :user_id AND token = :token",
         {"user_id": user_id, "token": token}
+    )
+    pass
+
+def add_log(name, info):
+    context.database.execute(
+        "INSERT INTO tb_log (create_time, name, info) VALUES (:create_time, :name, :info)",
+        {"create_time": datetime.now(), "name": name, "info": info}
     )
     pass
 
