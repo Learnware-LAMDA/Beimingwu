@@ -9,6 +9,7 @@ from database import LearnwareVerifyStatus
 import lib.database_operations as database
 
 import lib.engine as engine_helper
+import lib.data_utils as data_utils
 import flask_jwt_extended
 import flask_restx as flask_restful
 import flask_bcrypt
@@ -110,39 +111,43 @@ class DeleteUser(flask_restful.Resource):
 class ListLearnware(flask_restful.Resource):
     @admin_login_required
     def post(self):
-        data = get_parameters(request, [])
-        # Return whole user list directly
-        if data is None or "limit" not in data:
-            ret, cnt = database.get_all_learnware_list(columns=["user_id", "learnware_id", "last_modify"])
-            learnware_list = engine_helper.get_learnware_by_id([x["learnware_id"] for x in ret])
-            result = {
-                "code": 0,
-                "msg": "Get learnware list success.",
-                "data": {
-                    "learnware_list": learnware_list
-                }
-            }
-            return result, 200
-        # Calculate the page limit
-        limit = data["limit"]
-        if limit == 0:
-            return {"code": 51, "msg": "Limit cannot be 0."}, 200
-        
-        page  = 0 if "page" not in data else data["page"]
-        ret, cnt = database.get_all_learnware_list(columns=["user_id", "learnware_id", "last_modify"], limit=limit, page=page)
-        learnware_list = engine_helper.get_learnware_by_id([x["learnware_id"] for x in ret])
+        data = request.get_json()
+        is_verified = data.get("is_verified", True)
+        limit = data.get("limit", 10)
+        page = data.get("page", 0)
+
+        rows, cnt = database.get_all_learnware_list(
+            columns=["user_id", "learnware_id", "last_modify", "verify_status"],
+            limit=limit, page=page, is_verified=is_verified
+        )
+
+        datas = []
+        for row in rows:
+            username = database.get_user_info(by="id", value=row["user_id"])["username"]
+            semantic_spec = data_utils.get_learnware_semantic_specification(
+                row
+            )
+            data = dict()
+            data["semantic_specification"] = semantic_spec
+            data["username"] = username
+            data["learnware_id"] = row["learnware_id"]
+            data["last_modify"] = row["last_modify"].strftime("%Y-%m-%d %H:%M:%S.%f %Z")
+            datas.append(data)
+            pass
+
         result = {
             "code": 0,
-            "msg": "Get learnware list success.",
+            "msg": "Ok",
             "data": {
-                "learnware_list": learnware_list,
-                "page": page,
-                "limit": limit,
-                "total_pages": (cnt + limit - 1) // limit
-            }
+                "learnware_list_single": datas,
+            },
+            "page": page,
+            "limit": limit,
+            "total_pages": (cnt + limit - 1) // limit
+
         }
         return result, 200
-    pass
+        pass
 
 
 class DeleteLearnware(flask_restful.Resource):
