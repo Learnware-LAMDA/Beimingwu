@@ -45,7 +45,7 @@ class SearchLearnware(flask_restful.Resource):
         semantic_str = request.form.get("semantic_specification")
         if semantic_str is None:
             return {"code": 21, "msg": f"Request parameters error."}, 200
-        print(f'search learnware, semantic_str: {semantic_str}')
+        context.logger.info(f'search learnware, semantic_str: {semantic_str}')
         
         # Check statistical specification
         if request.files is None:

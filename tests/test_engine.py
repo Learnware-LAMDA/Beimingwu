@@ -77,7 +77,30 @@ class TestEngine(unittest.TestCase):
         self.assertGreaterEqual(len(result['data']['learnware_list_single']), 1)
         self.assertIn(TestEngine.learnware_id, [x['learnware_id'] for x in result['data']['learnware_list_single']])
         self.assertGreater(result['data']['learnware_list_single'][0]['last_modify'], '2020-01-01 00:00:00')
+        pass
+
+    def test_search_learnware_use_name(self):
+        headers = self.login()
+        sematic_specification = testops.test_learnware_semantic_specification()
+
+        sematic_specification["Name"]["Values"] = "Test"
+        result = testops.url_request(
+            'engine/search_learnware', 
+            data = {'semantic_specification': json.dumps(sematic_specification)}, 
+            headers=headers)
         
+        self.assertEqual(result['code'], 0)
+        self.assertGreaterEqual(len(result['data']['learnware_list_single']), 1)
+        self.assertIn(TestEngine.learnware_id, [x['learnware_id'] for x in result['data']['learnware_list_single']])
+        self.assertGreater(result['data']['learnware_list_single'][0]['last_modify'], '2020-01-01 00:00:00')
+
+        sematic_specification["Name"]["Values"] = "Testx"
+        result = testops.url_request(
+            'engine/search_learnware',
+            data = {'semantic_specification': json.dumps(sematic_specification)},
+            headers=headers)
+        self.assertEqual(result['code'], 0)
+        self.assertEqual(len(result['data']['learnware_list_single']), 0)
         pass
 
     def test_download_learnware(self):
