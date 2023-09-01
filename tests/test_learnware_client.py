@@ -143,7 +143,12 @@ class TestLearnwareClient(unittest.TestCase):
         outputs = learnware.predict(inputs)
 
         client.delete_learnware(learnware_id)
-        pass        
+        pass
+
+    def test_test_learnware(self):
+        client = LearnwareClient(self.backend_host)
+        client.test_learnware(os.path.join('tests', 'data', 'test_learnware_multi_import.zip'))
+        pass
         
     def test_default_host(self):
         client = LearnwareClient()
