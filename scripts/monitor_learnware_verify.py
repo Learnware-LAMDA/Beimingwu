@@ -124,6 +124,8 @@ def worker_process_func(q: queue.Queue):
             with zipfile.ZipFile(learnware_processed_filename, 'w') as zip_ref:
                 for root, dirs, files in os.walk(extract_path):
                     for file in files:
+                        if file.endswith('.pyc'):
+                            continue
                         zip_ref.write(os.path.join(root, file), arcname=file)
                         pass
                     pass
