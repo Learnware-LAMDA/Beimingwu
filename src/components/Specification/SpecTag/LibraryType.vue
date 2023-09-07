@@ -5,6 +5,9 @@ import TensorFlowBtn from "../../../assets/images/specification/libraryType/tens
 import PyTorchBtn from "../../../assets/images/specification/libraryType/pytorch.svg?component";
 import ScikitLearnBtn from "../../../assets/images/specification/libraryType/scikit-learn.svg?component";
 import OthersBtn from "../../../assets/images/specification/libraryType/others.svg?component";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const emit = defineEmits(["update:value"]);
 
@@ -41,20 +44,24 @@ watch(
 
 const libraryTypeBtns = [
   {
-    title: "PyTorch",
+    title: t("Submit.Tag.LibraryType.Type.PyTorch"),
     icon: PyTorchBtn,
+    value: "PyTorch",
   },
   {
-    title: "TensorFlow",
+    title: t("Submit.Tag.LibraryType.Type.TensorFlow"),
     icon: TensorFlowBtn,
+    value: "TensorFlow",
   },
   {
-    title: "Scikit-learn",
+    title: t("Submit.Tag.LibraryType.Type.Scikit-learn"),
     icon: ScikitLearnBtn,
+    value: "Scikit-learn",
   },
   {
-    title: "Others",
+    title: t("Submit.Tag.LibraryType.Type.Others"),
     icon: OthersBtn,
+    value: "Others",
   },
 ];
 </script>
@@ -63,7 +70,7 @@ const libraryTypeBtns = [
   <grid-btns
     v-model:value="value"
     :btns="libraryTypeBtns"
-    title="Library type"
+    :title="t('Submit.Tag.LibraryType.LibraryType')"
     :cols="cols"
     :md="md"
     :sm="sm"

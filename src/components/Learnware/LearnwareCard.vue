@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useDisplay } from "vuetify";
+import { useI18n } from "vue-i18n";
 import colors from "vuetify/lib/util/colors";
 import AudioBtn from "../../assets/images/specification/dataType/audio.svg?component";
 import VideoBtn from "../../assets/images/specification/dataType/video.svg?component";
@@ -11,6 +12,8 @@ import { downloadLearnwareSync } from "../../utils";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
+
+const { t } = useI18n();
 
 const props = defineProps({
   item: {
@@ -93,7 +96,7 @@ function handleClickDelete(id) {
             : undefined
         "
       >
-        {{ item.dataType }}
+        {{ t(`Submit.Tag.DataType.Type.${item.dataType}`) }}
       </div>
       <div
         class="label"
@@ -103,7 +106,7 @@ function handleClickDelete(id) {
             : undefined
         "
       >
-        {{ item.taskType.replace("Others", "Other Task") }}
+        {{ t(`Submit.Tag.TaskType.Type.${item.taskType.replace("Others", "OtherTask")}`) }}
       </div>
       <div
         class="label"
@@ -113,7 +116,7 @@ function handleClickDelete(id) {
             : undefined
         "
       >
-        {{ item.libraryType.replace("Others", "Other Library") }}
+        {{ t(`Submit.Tag.LibraryType.Type.${item.libraryType.replace("Others", "OtherLibrary")}`) }}
       </div>
       <div
         v-for="(tag, i) in item.tagList"
@@ -121,7 +124,7 @@ function handleClickDelete(id) {
         class="tag"
         :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : undefined"
       >
-        {{ tag }}
+        {{ t(`Submit.Tag.Scenario.Type.${tag}`) }}
       </div>
     </v-card-text>
     <v-card-text class="card-text">

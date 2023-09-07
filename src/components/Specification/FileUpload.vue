@@ -1,5 +1,8 @@
 <script setup>
 import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const emit = defineEmits(["update:files"]);
 
@@ -68,7 +71,8 @@ const files = computed({
       >
         <div class="flex justify-center items-center max-w-1/1">
           <p v-if="files.length === 0">
-            <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>Drag your file here
+            <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>
+            {{ t("Submit.File.DragFileHere") }}
           </p>
           <div v-else class="w-1/1 truncate">
             <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ files[0].name }}

@@ -1,11 +1,14 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 import DataTypeBtns from "../Specification/SpecTag/DataType.vue";
 import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
 import FileUpload from "../Specification/FileUpload.vue";
 import TagListBtns from "../Specification/SpecTag/TagList.vue";
+
+const { t } = useI18n();
 
 const emits = defineEmits(["update:value"]);
 
@@ -54,14 +57,16 @@ watch(
     <div class="filter">
       <div class="my-3 text-h6">
         <v-icon class="!mt-0 mr-3" icon="mdi-tag-text" color="black" size="small"></v-icon>
-        Choose semantic requirement
+        {{ t("Search.ChooseSemanticRequirement") }}
       </div>
 
       <div>
-        <div class="mt-7 mb-3 text-h6 !text-1rem">Search by name</div>
+        <div class="mt-7 mb-3 text-h6 !text-1rem">
+          {{ t("Search.SearchByName") }}
+        </div>
         <v-text-field
           v-model="search"
-          label="Learnware name"
+          :label="t('Search.LearnwareName')"
           hide-details
           append-inner-icon="mdi-close"
           @click:append-inner="search = ''"
@@ -90,7 +95,7 @@ watch(
     <div class="p-5 pt-0 border-t-1 border-gray-300">
       <div ref="anchorRef" class="mt-3 mb-5 w-1/1 text-h6 transition-all truncate">
         <v-icon class="mr-3" icon="mdi-upload" color="black" size="small"></v-icon>
-        Upload statistical requirement
+        {{ t("Search.UploadStatisticalRequirement") }}
       </div>
 
       <file-upload v-model:files="files" :height="28"></file-upload>

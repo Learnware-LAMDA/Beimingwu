@@ -4,6 +4,7 @@ import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useField, useForm } from "vee-validate";
+import { useI18n } from "vue-i18n";
 import { getRole } from "../request/auth";
 import { addLearnware } from "../request/user";
 import { getLearnwareDetailById } from "../request/engine";
@@ -19,6 +20,8 @@ const router = useRouter();
 const display = useDisplay();
 
 const store = useStore();
+
+const { t } = useI18n();
 
 const { handleSubmit, meta } = useForm({
   initialValues: {
@@ -52,25 +55,25 @@ const { handleSubmit, meta } = useForm({
       if (value?.length >= 5) {
         return true;
       }
-      return "Learnware name needs to be at least 5 characters.";
+      return t("Submit.Name.Error.AtLeast5Chars");
     },
     dataType(value) {
       if (value?.length > 0) {
         return true;
       }
-      return "Data type must not be empty.";
+      return t("Submit.Tag.DataType.Error.NotEmpty");
     },
     taskType(value) {
       if (value?.length > 0) {
         return true;
       }
-      return "Task type must not be empty.";
+      return t("Submit.Tag.TaskType.Error.NotEmpty");
     },
     libraryType(value) {
       if (value?.length > 0) {
         return true;
       }
-      return "Library type must not be empty.";
+      return t("Submit.Tag.LibraryType.Error.NotEmpty");
     },
     tagList() {
       return true;
@@ -90,7 +93,7 @@ const { handleSubmit, meta } = useForm({
       if (value?.length >= 10) {
         return true;
       }
-      return "Description needs to be at least 10 characters.";
+      return t("Submit.Description.Error.AtLeast10Chars");
     },
     files(value) {
       if (route.query.edit && value[0]?.name === "Your old learnware") {
@@ -127,28 +130,28 @@ const showError = ref(false);
 const errorMsg = ref("");
 const errorTimer = ref(null);
 
-const steps = [
+const steps = computed(() => [
   {
-    title: "Type the name of your learnware",
-    subtitle: "Name",
+    title: t("Submit.Name.Title"),
+    subtitle: t("Submit.Name.Name"),
     icon: "mdi-rename",
   },
   {
-    title: "Choose the tags (semantic specification)",
-    subtitle: "Tag",
+    title: t("Submit.Tag.Title"),
+    subtitle: t("Submit.Tag.Tag"),
     icon: "mdi-label-multiple",
   },
   {
-    title: "Type the description (semantic specification)",
-    subtitle: "Description",
+    title: t("Submit.Description.Title"),
+    subtitle: t("Submit.Description.Description"),
     icon: "mdi-image-text",
   },
   {
-    title: "Upload your model & statistical specification",
-    subtitle: "File",
+    title: t("Submit.File.Title"),
+    subtitle: t("Submit.File.File"),
     icon: "mdi-paperclip-plus",
   },
-];
+]);
 
 const valid = computed(() => meta.value.valid);
 const allowChangePage = computed(() => {
@@ -184,7 +187,7 @@ function activeStep(index) {
 }
 
 function nextStep() {
-  if (currentStep.value < steps.length - 1) {
+  if (currentStep.value < steps.value.length - 1) {
     activeStep(currentStep.value + 1);
   }
 }
@@ -360,7 +363,7 @@ onActivated(init);
         <v-card-actions v-if="success">
           <v-alert
             closable
-            text="Submit successfully"
+            :text="t('Submit.Success')"
             type="success"
             @click:close="success = false"
           />
@@ -373,6 +376,7 @@ onActivated(init);
       </v-scroll-y-transition>
       <v-stepper-title
         class="mt-2 mb-5 w-1/1"
+        :step-title="t('Submit.Step')"
         :steps="steps"
         :current-step="currentStep"
         @active-step="activeStep"
@@ -390,15 +394,15 @@ onActivated(init);
             <v-card-text>
               <v-text-field
                 v-model="name.value.value"
-                label="Name"
-                placeholder="Awesome learnware"
+                :label="t('Submit.Name.Name')"
+                :placeholder="t('Submit.Name.Placeholder')"
                 append-inner-icon="mdi-close"
                 :error-messages="name.errorMessage.value"
                 counter="30"
                 @click:append-inner="name.value.value = ''"
               ></v-text-field>
               <span class="text-caption text-grey-darken-1">
-                This is the name of the learnware you contribute.
+                {{ t("Submit.Name.Description") }}
               </span>
             </v-card-text>
           </v-window-item>
@@ -426,8 +430,8 @@ onActivated(init);
             <div class="pa-4">
               <v-textarea
                 v-model="description.value.value"
-                label="Description"
-                placeholder="This is a description of the learnware"
+                :label="t('Submit.Description.Description')"
+                :placeholder="t('Submit.Description.Placeholder')"
                 :error-messages="description.errorMessage.value"
                 counter="200"
               ></v-textarea>
@@ -446,9 +450,10 @@ onActivated(init);
                 class="underline"
                 href="http://36.111.128.21:30006/workflow/submit.html"
                 target="_blank"
-                >Click here</a
               >
-              for instructions on how to create the required zip file.
+                {{ t("Submit.File.ClickHere") }}
+              </a>
+              {{ t("Submit.File.ForInstructionsOnHowToCreateTheRequiredZipFile") }}
             </v-card-text>
           </v-window-item>
         </v-window>
@@ -456,7 +461,9 @@ onActivated(init);
         <v-divider></v-divider>
 
         <v-card-actions>
-          <v-btn v-if="currentStep > 0" variant="outlined" @click="PrevStep"> Back </v-btn>
+          <v-btn v-if="currentStep > 0" variant="outlined" @click="PrevStep">
+            {{ t("Submit.Navigation.PreviousStep") }}
+          </v-btn>
           <v-spacer></v-spacer>
           <v-btn
             v-if="currentStep < steps.length - 1"
@@ -465,7 +472,7 @@ onActivated(init);
             :disabled="!allowChangePage"
             @click="nextStep"
           >
-            Next
+            {{ t("Submit.Navigation.NextStep") }}
           </v-btn>
           <v-btn
             v-else
@@ -474,7 +481,7 @@ onActivated(init);
             :disabled="submiting || !valid"
             @click="submit"
           >
-            Finish
+            {{ t("Submit.Navigation.Finish") }}
           </v-btn>
         </v-card-actions>
       </div>

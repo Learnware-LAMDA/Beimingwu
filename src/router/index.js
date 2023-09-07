@@ -125,6 +125,36 @@ const Router = createRouter({
       ],
     },
     {
+      path: "/language",
+      name: "Language",
+      meta: {
+        showInNavBar: true,
+        icon: "mdi-earth",
+      },
+      children: [
+        {
+          path: "/language/zh",
+          name: "Chinese",
+          component: () => import("../views/ChangeLanguage.vue"),
+          meta: {
+            showInNavBar: true,
+            icon: "🇨🇳",
+            variant: "outlined",
+          },
+        },
+        {
+          path: "/language/en",
+          name: "English",
+          component: () => import("../views/ChangeLanguage.vue"),
+          meta: {
+            showInNavBar: true,
+            icon: "🇺🇸",
+            variant: "outlined",
+          },
+        },
+      ],
+    },
+    {
       path: "/learnwaredetail",
       name: "LearnwareDetail",
       component: () => import("../views/LearnwareDetail.vue"),

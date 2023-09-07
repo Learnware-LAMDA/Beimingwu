@@ -13,6 +13,10 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  stepTitle: {
+    type: String,
+    default: "Step",
+  },
   steps: {
     type: Array,
     default: () => [
@@ -57,7 +61,7 @@ const activeStep = (index) => {
             </div>
           </div>
           <div class="step-title">
-            <h4 class="md:text-lg text-sm">{{ `Step ${index + 1}` }}</h4>
+            <h4 class="md:text-lg text-sm">{{ `${stepTitle} ${index + 1}` }}</h4>
             <h5 class="md:texg-sm text-xs">{{ step.subtitle }}</h5>
           </div>
         </div>
