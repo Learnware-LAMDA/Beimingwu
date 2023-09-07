@@ -37,7 +37,7 @@ function getLearnwareDetail(id) {
             dataType: learnwareInfo.semantic_specification.Data.Values[0],
             taskType: learnwareInfo.semantic_specification.Task.Values[0],
             libraryType: learnwareInfo.semantic_specification.Library.Values[0],
-            tagList: learnwareInfo.semantic_specification.Scenario.Type.Values,
+            tagList: learnwareInfo.semantic_specification.Scenario.Values,
           };
           return;
         }
