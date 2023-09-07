@@ -1,10 +1,12 @@
 <script setup>
 import { computed } from "vue";
-import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useDisplay } from "vuetify";
+import { useI18n } from "vue-i18n";
 
 const display = useDisplay();
+
+const { t } = useI18n();
 
 const emit = defineEmits(["update:drawerOpen"]);
 
@@ -24,12 +26,10 @@ const drawer = computed({
   set: (value) => emit("update:drawerOpen", value),
 });
 
-const router = useRouter();
-
 const store = useStore();
 
-const filteredRoutes = computed(() =>
-  props.routes.filter((route) => {
+const filteredRoutes = computed(() => {
+  function filter(route) {
     if (route.meta.showInNavBar) {
       if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
         return false;
@@ -37,11 +37,25 @@ const filteredRoutes = computed(() =>
       if (!route.meta.requiredLogin) {
         return true;
       }
-      return store.getters.getLoggedIn;
+      if (store.getters.getLoggedIn) {
+        return true;
+      }
     }
-    return false;
-  }),
-);
+  }
+
+  const routes = [];
+  props.routes.forEach((route) => {
+    if (route.children) {
+      route.children.forEach((child) => {
+        child.parent = route;
+        filter(child) && routes.push(child);
+      });
+    } else {
+      filter(route) && routes.push(route);
+    }
+  });
+  return routes;
+});
 </script>
 
 <template>
@@ -55,12 +69,21 @@ const filteredRoutes = computed(() =>
         :value="route.name"
         color="primary"
         variant="plain"
-        @click="() => router.push(route.path)"
+        :to="route.path"
+        @click="drawer = false"
       >
         <template #prepend>
-          <v-icon :icon="route.meta.icon"></v-icon>
+          <v-icon
+            v-if="route.meta.icon && route.meta.icon.startsWith('mdi-')"
+            :icon="route.meta.icon"
+          />
+          <span v-if="route.meta.icon && !route.meta.icon.startsWith('mdi-')" class="v-icon">
+            {{ route.meta.icon }}
+          </span>
         </template>
-        <v-list-item-title>{{ route.name }}</v-list-item-title>
+        <v-list-item-title>
+          {{ t(`Page.${route.parent ? route.parent.name + "." : ""}${route.name}`) }}
+        </v-list-item-title>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>

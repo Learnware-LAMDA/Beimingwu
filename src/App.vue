@@ -53,7 +53,7 @@ watch(
   <v-app>
     <app-bar v-model:drawerOpen="drawerOpen" :routes="Router.options.routes"></app-bar>
 
-    <nav-drawer v-model:drawerOpen="drawerOpen" :routes="Router.getRoutes()"></nav-drawer>
+    <nav-drawer v-model:drawerOpen="drawerOpen" :routes="Router.options.routes"></nav-drawer>
 
     <v-main class="bg-gray-100 bg-opacity-50">
       <router-view v-slot="{ Component }">
