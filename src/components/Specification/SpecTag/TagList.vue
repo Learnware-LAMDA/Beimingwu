@@ -44,7 +44,7 @@ const realCols = computed(() => {
   return cols;
 });
 
-const items = [
+const items = computed(() => [
   {
     text: t("Submit.Tag.Scenario.Type.Business"),
     icon: "mdi-briefcase",
@@ -115,13 +115,13 @@ const items = [
     icon: "mdi-home-city",
     value: "Architecture",
   },
-];
+]);
 
-const allSelected = computed(() => props.value && props.value.length === items.length);
+const allSelected = computed(() => props.value && props.value.length === items.value.length);
 
 const selections = computed(() => {
   if (props.value) {
-    return props.value.map((s) => items.find((item) => item.value === s));
+    return props.value.map((s) => items.value.find((item) => item.value === s));
   }
   return [];
 });

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import GridBtns from "./GridBtns.vue";
 import ClassificationBtn from "../../../assets/images/specification/taskType/classification.svg?component";
 import ClusteringBtn from "../../../assets/images/specification/taskType/clustering.svg?component";
@@ -45,7 +45,7 @@ watch(
   (newVal) => emit("update:value", newVal),
 );
 
-const taskTypeBtns = [
+const taskTypeBtns = computed(() => [
   {
     title: t("Submit.Tag.TaskType.Type.Classification"),
     icon: ClassificationBtn,
@@ -86,7 +86,7 @@ const taskTypeBtns = [
     icon: OthersBtn,
     value: "Others",
   },
-];
+]);
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import GridBtns from "./GridBtns.vue";
 import TensorFlowBtn from "../../../assets/images/specification/libraryType/tensorflow.svg?component";
 import PyTorchBtn from "../../../assets/images/specification/libraryType/pytorch.svg?component";
@@ -42,7 +42,7 @@ watch(
   { deep: true },
 );
 
-const libraryTypeBtns = [
+const libraryTypeBtns = computed(() => [
   {
     title: t("Submit.Tag.LibraryType.Type.PyTorch"),
     icon: PyTorchBtn,
@@ -63,7 +63,7 @@ const libraryTypeBtns = [
     icon: OthersBtn,
     value: "Others",
   },
-];
+]);
 </script>
 
 <template>
