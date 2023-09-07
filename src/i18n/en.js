@@ -218,4 +218,7 @@ export default {
     LearnwareName: "Learnware Name",
     UploadStatisticalRequirement: "Upload statistical requirement",
   },
+  Learnware: {
+    OopsThereNoLearnware: "Oops! There is no learnware.",
+  },
 };

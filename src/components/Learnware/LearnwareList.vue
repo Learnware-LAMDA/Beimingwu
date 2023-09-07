@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import LearnwareCard from "./LearnwareCard.vue";
 import oopsImg from "../../assets/images/public/oops.svg?url";
 
@@ -10,6 +11,8 @@ const emit = defineEmits(["click:edit", "click:delete"]);
 const display = useDisplay();
 
 const router = useRouter();
+
+const { t } = useI18n();
 
 const props = defineProps({
   items: {
@@ -77,7 +80,7 @@ function showLearnwareDetail(id) {
     </TransitionGroup>
     <div v-if="items.length === 0" flat class="no-learnware">
       <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
-      Oops! There are no learnwares.
+      {{ t("Learnware.OopsThereNoLearnware") }}
     </div>
   </div>
 </template>

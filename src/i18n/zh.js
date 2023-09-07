@@ -217,4 +217,7 @@ export default {
     LearnwareName: "学件名称",
     UploadStatisticalRequirement: "上传统计需求",
   },
+  Learnware: {
+    OopsThereNoLearnware: "哦豁，这里没有学件。",
+  },
 };
