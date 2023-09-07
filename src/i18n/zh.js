@@ -137,6 +137,13 @@ export default {
           Audio: "音频",
           Video: "视频",
         },
+        DescriptionInput: {
+          Name: "特征",
+          FeatureTips:
+            "在左侧为每个特征填写描述，或在右侧粘贴JSON对象。澄清每个特征的描述将有助于您的学件适用于具有异构特征空间的任务。",
+          FeatureTipsSmall:
+            "为每个特征填写描述或粘贴JSON对象。澄清每个特征的描述将有助于您的学件适用于具有异构特征空间的任务。",
+        },
       },
       TaskType: {
         TaskType: "任务类型",
@@ -153,6 +160,14 @@ export default {
           Segmentation: "分割",
           Others: "其他",
           OtherTask: "其他任务",
+        },
+        DescriptionInput: {
+          Name: "输出",
+          Description: "描述",
+          FeatureTips:
+            "在左侧为每个输出维度填写描述，或在右侧粘贴JSON对象。澄清每个特征的描述将有助于您的学件适用于具有异构输出空间的任务。",
+          FeatureTipsSmall:
+            "为每个输出维度填写描述或粘贴JSON对象。澄清每个特征的描述将有助于您的学件适用于具有异构输出空间的任务。",
         },
       },
       LibraryType: {
@@ -219,5 +234,8 @@ export default {
   },
   Learnware: {
     OopsThereNoLearnware: "哦豁，这里没有学件。",
+  },
+  Public: {
+    Description: "描述",
   },
 };

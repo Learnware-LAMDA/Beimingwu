@@ -137,6 +137,14 @@ export default {
           Audio: "Audio",
           Video: "Video",
         },
+        DescriptionInput: {
+          Name: "Feature",
+          Description: "Description",
+          FeatureTips:
+            "Fill in the description for each feature on the left or paste a JSON object on the right. Clarifying the description for each feature will help your learnware to be available for tasks with hetergenous feature space.",
+          FeatureTipsSmall:
+            "Fill in the description for each feature or paste a JSON object. Clarifying the description for each feature will help your learnware to be available for tasks with hetergenous feature space.",
+        },
       },
       TaskType: {
         TaskType: "Task Type",
@@ -153,6 +161,14 @@ export default {
           Segmentation: "Segmentation",
           Others: "Others",
           OtherTask: "Other Task",
+        },
+        DescriptionInput: {
+          Label: "Label",
+          Description: "Description",
+          LabelTips:
+            "Fill in the description for each label on the left or paste a JSON object on the right. Clarifying the description for each label will help your learnware to be available for tasks with hetergenous label space.",
+          LabelTipsSmall:
+            "Fill in the description for each label or paste a JSON object. Clarifying the description for each label will help your learnware to be available for tasks with hetergenous label space.",
         },
       },
       LibraryType: {
@@ -220,5 +236,8 @@ export default {
   },
   Learnware: {
     OopsThereNoLearnware: "Oops! There is no learnware.",
+  },
+  Public: {
+    Description: "Description",
   },
 };
