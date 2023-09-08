@@ -92,7 +92,7 @@ watch(
       ></tag-list-btns>
     </div>
 
-    <div class="p-5 pt-0 border-t-1 border-gray-300">
+    <div class="pa-4 pt-0 border-t-1 border-gray-300">
       <div ref="anchorRef" class="mt-3 mb-5 w-1/1 text-h6 transition-all truncate">
         <v-icon class="mr-3" icon="mdi-upload" color="black" size="small"></v-icon>
         {{ t("Search.UploadStatisticalRequirement") }}

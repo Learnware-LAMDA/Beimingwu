@@ -1,11 +1,8 @@
 <script setup>
-import { ref, computed, watch, onMounted, nextTick, onActivated } from "vue";
+import { ref, watch, onMounted, nextTick, onActivated } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { fetchex } from "@/utils";
-import DataType from "@main/components/Specification/SpecTag/DataType.vue";
-import TaskType from "@main/components/Specification/SpecTag/TaskType.vue";
-import LibraryType from "@main/components/Specification/SpecTag/LibraryType.vue";
-import TagList from "@main/components/Specification/SpecTag/TagList.vue";
+import UserRequirement from "@main/src/components/Search/UserRequirement.vue";
 import PageLearnwareList from "@main/components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
 
@@ -16,17 +13,14 @@ const dialog = ref(null);
 const deleteId = ref("");
 const deleteName = ref("");
 
-const search = ref(route.query.search || "");
-const dataType = ref(route.query.dataType || "");
-const taskType = ref(route.query.taskType || "");
-const libraryType = ref(route.query.libraryType || "");
-let _tagList;
-try {
-  _taglist = JSON.parse(route.query.tagList);
-} catch {
-  _tagList = [];
-}
-const tagList = ref(_tagList);
+const filters = ref({
+  name: "",
+  dataType: "",
+  taskType: "",
+  libraryType: "",
+  tagList: [],
+  files: [],
+});
 
 const page = ref(1);
 const pageSize = ref(10);
@@ -94,44 +88,6 @@ function deleteLearnware(id) {
       clearTimeout(errorTimer.value);
       setTimeout(() => (showError.value = false), 2000);
     });
-}
-
-const filters = computed(() => ({
-  name: search.value,
-  dataType: dataType.value,
-  taskType: taskType.value,
-  libraryType: libraryType.value,
-  tagList: tagList.value,
-}));
-
-function loadQuery() {
-  if (route.query.search) {
-    search.value = route.query.search;
-  }
-  if (route.query.dataType) {
-    dataType.value = route.query.dataType;
-  }
-  if (route.query.taskType) {
-    taskType.value = route.query.taskType;
-  }
-  if (route.query.libraryType) {
-    libraryType.value = route.query.libraryType;
-  }
-  if (route.query.tagList) {
-    tagList.value = JSON.parse(route.query.tagList);
-  }
-}
-
-function saveQuery() {
-  router.replace({
-    query: {
-      search: search.value,
-      dataType: dataType.value,
-      taskType: taskType.value,
-      libraryType: libraryType.value,
-      tagList: JSON.stringify(tagList.value),
-    },
-  });
 }
 
 function pageChange(newPage) {
@@ -240,6 +196,14 @@ function handleClickDelete(id) {
 }
 
 watch(
+  () => filters.value,
+  () => {
+    page.value = 1;
+  },
+  { deep: true },
+);
+
+watch(
   () => isVerify.value,
   () => {
     page.value = 1;
@@ -267,8 +231,6 @@ watch(
   (newVal) => {
     const [newFilters, newPage] = newVal;
 
-    saveQuery();
-
     fetchByFilterAndPage(newFilters, newPage);
   },
   { deep: true }
@@ -285,48 +247,14 @@ onMounted(() => {
     contentRef.value.addEventListener("scroll", () => {
       scrollTop.value = contentRef.value.scrollTop;
     });
-
-    loadQuery();
   });
 });
 </script>
 
 <template>
   <div class="search-container">
-    <div class="filter">
-      <v-switch
-        v-model="isVerify"
-        color="orange"
-        :label="`${isVerify ? 'verified' : 'unverified'}`"
-      />
-      <div class="my-3 text-h6">Choose semantic specification</div>
-      <div>
-        <div class="mt-7 mb-3 text-h6 !text-1rem">Search by name</div>
-        <v-text-field
-          v-model="search"
-          label="Type the words"
-          hide-details=""
-          append-inner-icon="mdi-close"
-          @click:append-inner="search = ''"
-        />
-      </div>
-      <data-type :cols="3" :md="2" :sm="2" :xs="2" v-model:value="dataType" />
-      <task-type :cols="2" :md="2" :sm="2" :xs="2" v-model:value="taskType" />
-      <library-type
-        :cols="2"
-        :md="2"
-        :sm="2"
-        :xs="2"
-        v-model:value="libraryType"
-      />
-      <tag-list
-        class="bg-transparent !text-1rem"
-        v-model:value="tagList"
-        :cols="2"
-        :md="1"
-        :sm="1"
-      />
-    </div>
+    <user-requirement class="max-w-[450px]" v-model:value="filters" />
+
     <div ref="contentRef" class="content">
       <v-scroll-y-transition class="fixed left-0 right-0 z-index-10">
         <v-card-actions v-if="showError">
