@@ -19,6 +19,9 @@ export default {
       English: "English",
     },
     LearnwareDetail: "学件详情",
+    Summary: "概览",
+    Learnwares: "所有学件",
+    Users: "所有用户",
   },
   Home: {
     Cover: {

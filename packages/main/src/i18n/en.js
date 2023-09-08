@@ -19,6 +19,9 @@ export default {
       English: "English",
     },
     LearnwareDetail: "Learnware Detail",
+    Summary: "Summary",
+    Learnwares: "All Learnwares",
+    Users: "All Users",
   },
   Home: {
     Cover: {

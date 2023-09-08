@@ -73,7 +73,7 @@ const filteredRoutes = computed(() =>
           <v-menu v-if="route.children" open-on-hover>
             <template #activator="{ props: menuProps }">
               <v-btn
-                class="mr-2 !h-1/1 text-body-2 rounded"
+                class="mr-2 h-100 text-body-2 rounded"
                 :variant="route.meta.variant"
                 :class="route.meta.class"
                 v-bind="menuProps"
@@ -104,7 +104,7 @@ const filteredRoutes = computed(() =>
           </v-menu>
           <v-btn
             v-else
-            class="mr-2 !h-1/1 text-body-2 rounded"
+            class="mr-2 h-100 text-body-2 rounded"
             :variant="route.meta.variant"
             :class="route.meta.class"
           >
