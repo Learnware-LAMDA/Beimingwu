@@ -79,7 +79,7 @@ const filteredRoutes = computed(() =>
                 v-bind="menuProps"
               >
                 <v-icon class="mr-1" :icon="route.meta.icon"></v-icon>
-                {{ route.meta.name || route.name }}
+                {{ route.meta.title }}
                 <v-icon>mdi-chevron-down</v-icon>
               </v-btn>
             </template>
@@ -90,8 +90,15 @@ const filteredRoutes = computed(() =>
                 class="text-body-2 font-weight-bold"
                 :to="child.path"
               >
-                <v-icon class="mr-1" :icon="child.meta.icon"></v-icon>
-                {{ child.meta.name || child.name }}
+                <v-icon
+                  v-if="child.meta.icon && child.meta.icon.startsWith('mdi-')"
+                  class="mr-1"
+                  :icon="child.meta.icon"
+                ></v-icon>
+                <span v-if="child.meta.icon && !child.meta.icon.startsWith('mdi-')">{{
+                  child.meta.icon
+                }}</span>
+                {{ child.meta.title }}
               </v-list-item>
             </v-list>
           </v-menu>
@@ -102,7 +109,7 @@ const filteredRoutes = computed(() =>
             :class="route.meta.class"
           >
             <v-icon class="mr-1" :icon="route.meta.icon"></v-icon>
-            {{ route.meta.name || route.name }}
+            {{ route.meta.title }}
           </v-btn>
         </router-link>
       </v-toolbar-items>

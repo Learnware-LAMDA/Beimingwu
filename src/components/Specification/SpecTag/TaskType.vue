@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import GridBtns from "./GridBtns.vue";
 import ClassificationBtn from "../../../assets/images/specification/taskType/classification.svg?component";
 import ClusteringBtn from "../../../assets/images/specification/taskType/clustering.svg?component";
@@ -9,6 +9,9 @@ import RegressionBtn from "../../../assets/images/specification/taskType/regress
 import SegmantationBtn from "../../../assets/images/specification/taskType/segmantation.svg?component";
 import RankingBtn from "../../../assets/images/specification/taskType/ranking.svg?component";
 import OthersBtn from "../../../assets/images/specification/taskType/others.svg?component";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const emit = defineEmits(["update:value"]);
 
@@ -42,47 +45,55 @@ watch(
   (newVal) => emit("update:value", newVal),
 );
 
-const taskTypeBtns = [
+const taskTypeBtns = computed(() => [
   {
-    title: "Classification",
+    title: t("Submit.Tag.TaskType.Type.Classification"),
     icon: ClassificationBtn,
+    value: "Classification",
   },
   {
-    title: "Regression",
+    title: t("Submit.Tag.TaskType.Type.Regression"),
     icon: RegressionBtn,
+    value: "Regression",
   },
   {
-    title: "Clustering",
+    title: t("Submit.Tag.TaskType.Type.Clustering"),
     icon: ClusteringBtn,
+    value: "Clustering",
   },
   {
-    title: "Ranking",
+    title: t("Submit.Tag.TaskType.Type.Ranking"),
     icon: RankingBtn,
+    value: "Ranking",
   },
   {
-    title: "Object Detection",
+    title: t("Submit.Tag.TaskType.Type.ObjectDetection"),
     icon: DetectionBtn,
+    value: "Object Detection",
   },
   {
-    title: "Feature Extraction",
+    title: t("Submit.Tag.TaskType.Type.FeatureExtraction"),
     icon: ExtractionBtn,
+    value: "Feature Extraction",
   },
   {
-    title: "Segmentation",
+    title: t("Submit.Tag.TaskType.Type.Segmentation"),
     icon: SegmantationBtn,
+    value: "Segmentation",
   },
   {
-    title: "Others",
+    title: t("Submit.Tag.TaskType.Type.Others"),
     icon: OthersBtn,
+    value: "Others",
   },
-];
+]);
 </script>
 
 <template>
   <grid-btns
     v-model:value="value"
     :btns="taskTypeBtns"
-    title="Task type"
+    :title="t('Submit.Tag.TaskType.TaskType')"
     :cols="cols"
     :md="md"
     :sm="sm"

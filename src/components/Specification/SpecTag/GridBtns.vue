@@ -55,7 +55,7 @@ const realCols = computed(() => {
 });
 
 function clickBtn(btn) {
-  value.value = btn.title === value.value ? "" : btn.title;
+  value.value = btn.value === value.value ? "" : btn.value;
 }
 
 watch(
@@ -78,7 +78,7 @@ watch(
         :key="i"
         class="btn"
         :title="btn.title"
-        :active="btn.title === value"
+        :active="btn.value === value"
         @click="() => clickBtn(btn)"
       >
         <component :is="btn.icon" class="icon" />

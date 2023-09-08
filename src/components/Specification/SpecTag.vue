@@ -1,10 +1,13 @@
 <script setup>
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import DataTypeBtns from "../Specification/SpecTag/DataType.vue";
 import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
 import TagListBtns from "../Specification/SpecTag/TagList.vue";
 import DescriptionInput from "./DescriptionInput.vue";
+
+const { t } = useI18n();
 
 const emits = defineEmits([
   "update:dataType",
@@ -98,7 +101,18 @@ const taskTypeDescription = computed({
       </v-card-actions>
     </v-scroll-y-transition>
     <data-type-btns v-model:value="dataType" />
-    <description-input v-if="dataType === 'Table'" v-model:value="dataTypeDescription" />
+    <description-input
+      v-if="dataType === 'Table'"
+      v-model:value="dataTypeDescription"
+      :name="t('Submit.Tag.DataType.DescriptionInput.Name')"
+    >
+      <template #msg>
+        {{ t("Submit.Tag.DataType.DescriptionInput.FeatureTips") }}
+      </template>
+      <template #msg-small>
+        {{ t("Submit.Tag.DataType.DescriptionInput.FeatureTipsSmall") }}
+      </template>
+    </description-input>
     <task-type-btns v-model:value="taskType" />
     <description-input
       v-if="
@@ -107,8 +121,15 @@ const taskTypeDescription = computed({
         taskType === 'Feature Extraction'
       "
       v-model:value="taskTypeDescription"
-      name="output"
-    />
+      :name="t('Submit.Tag.TaskType.DescriptionInput.Name')"
+    >
+      <template #msg>
+        {{ t("Submit.Tag.TaskType.DescriptionInput.FeatureTips") }}
+      </template>
+      <template #msg-small>
+        {{ t("Submit.Tag.TaskType.DescriptionInput.FeatureTipsSmall") }}
+      </template>
+    </description-input>
     <library-type-btns v-model:value="libraryType" />
     <tag-list-btns v-model:value="tagList" />
   </div>

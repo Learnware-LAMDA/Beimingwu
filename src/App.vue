@@ -1,11 +1,14 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
+import { useI18n } from "vue-i18n";
 import Router from "./router";
 import NavDrawer from "./components/App/NavDrawer.vue";
 import AppBar from "./components/App/AppBar.vue";
 
 const store = useStore();
+
+const { t } = useI18n();
 
 const drawerOpen = ref(false);
 const showGlobalError = ref(store.getters.getShowGlobalError);
@@ -14,6 +17,30 @@ const initKeepAliveIncludes = Router.getRoutes()
   .filter((route) => route.meta.keepAlive)
   .map((route) => route.name);
 const keepAliveIncludes = ref([...initKeepAliveIncludes]);
+
+const routes = computed(() =>
+  Router.options.routes.map((route) => {
+    if (route.children) {
+      route.children.forEach((child) => {
+        child.meta = {
+          ...child.meta,
+          title: t(`Page.${route.name}.${child.name}`),
+        };
+        route.meta = {
+          ...route.meta,
+          title: t(`Page.${route.name}.${route.name}`),
+        };
+      });
+    } else {
+      route.meta = {
+        ...route.meta,
+        title: t(`Page.${route.name}`),
+      };
+    }
+    return route;
+  }),
+);
+console.log(routes.value);
 
 watch(
   () => store.getters.getLoggedIn,
@@ -51,9 +78,9 @@ watch(
 
 <template>
   <v-app>
-    <app-bar v-model:drawerOpen="drawerOpen" :routes="Router.options.routes"></app-bar>
+    <app-bar v-model:drawerOpen="drawerOpen" :routes="routes"></app-bar>
 
-    <nav-drawer v-model:drawerOpen="drawerOpen" :routes="Router.getRoutes()"></nav-drawer>
+    <nav-drawer v-model:drawerOpen="drawerOpen" :routes="routes"></nav-drawer>
 
     <v-main class="bg-gray-100 bg-opacity-50">
       <router-view v-slot="{ Component }">

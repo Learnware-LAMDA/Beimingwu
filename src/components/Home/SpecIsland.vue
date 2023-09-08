@@ -1,5 +1,8 @@
 <script setup>
 import { ref, onMounted, nextTick, onBeforeUnmount } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 let observer;
 const active = ref(false);
@@ -37,12 +40,10 @@ onBeforeUnmount(() => {
   <div ref="reference" class="grid md:grid-cols-2 md:pb-30 <md:pb-20 mx-auto max-w-1200px w-1/1">
     <div class="flex flex-col justify-center <md:px-5 md:pl-10">
       <div class="xl:(text-5xl my-10) lg:(text-4xl my-7) md:(text-3xl my-5) <md:(text-4xl my-5)">
-        Specification world
+        {{ t("Home.SpecificationWorld.Title") }}
       </div>
       <p class="text-gray-500">
-        <!-- eslint-disable-next-line max-len -->
-        Note that the specification islands, corresponding to models from different feature/label
-        spaces, can be merged if their connections are discovered and established.
+        {{ t("Home.SpecificationWorld.Description") }}
       </p>
     </div>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">

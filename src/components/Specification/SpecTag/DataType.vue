@@ -1,11 +1,14 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import GridBtns from "./GridBtns.vue";
 import AudioBtn from "../../../assets/images/specification/dataType/audio.svg?component";
 import VideoBtn from "../../../assets/images/specification/dataType/video.svg?component";
 import TextBtn from "../../../assets/images/specification/dataType/text.svg?component";
 import ImageBtn from "../../../assets/images/specification/dataType/image.svg?component";
 import TableBtn from "../../../assets/images/specification/dataType/table.svg?component";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const emit = defineEmits(["update:value"]);
 
@@ -39,35 +42,40 @@ watch(
   (newVal) => emit("update:value", newVal),
 );
 
-const dataTypeBtns = [
+const dataTypeBtns = computed(() => [
   {
-    title: "Table",
+    title: t("Submit.Tag.DataType.Type.Table"),
     icon: TableBtn,
+    value: "Table",
   },
   {
-    title: "Image",
+    title: t("Submit.Tag.DataType.Type.Image"),
     icon: ImageBtn,
+    value: "Image",
   },
   {
-    title: "Text",
+    title: t("Submit.Tag.DataType.Type.Text"),
     icon: TextBtn,
+    value: "Text",
   },
   {
-    title: "Video",
+    title: t("Submit.Tag.DataType.Type.Video"),
     icon: VideoBtn,
+    value: "Video",
   },
   {
-    title: "Audio",
+    title: t("Submit.Tag.DataType.Type.Audio"),
     icon: AudioBtn,
+    value: "Audio",
   },
-];
+]);
 </script>
 
 <template>
   <grid-btns
     v-model:value="value"
     :btns="dataTypeBtns"
-    title="Data type"
+    :title="t('Submit.Tag.DataType.DataType')"
     :cols="cols"
     :md="md"
     :sm="sm"

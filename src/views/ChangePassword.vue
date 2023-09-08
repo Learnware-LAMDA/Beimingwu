@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useField, useForm } from "vee-validate";
+import { useI18n } from "vue-i18n";
 import { changePassword } from "../request/user";
 import { hex_md5 } from "../utils";
 import collaborationImg from "../assets/images/public/collaboration.svg?url";
@@ -10,6 +11,8 @@ import collaborationImg from "../assets/images/public/collaboration.svg?url";
 const store = useStore();
 
 const router = useRouter();
+
+const { t } = useI18n();
 
 const { handleSubmit, meta } = useForm({
   validationSchema: {
@@ -19,14 +22,14 @@ const { handleSubmit, meta } = useForm({
     newPassword(value) {
       if (value?.length >= 8) return true;
 
-      return "New password needs to be at least 8 characters.";
+      return t("ChangePassword.Error.NewPasswordAtLeast8Chars");
     },
     newPassword2(value) {
       if (value?.length >= 8) {
         if (value && value === newPassword.value.value) return true;
-        return "New passwords do not match.";
+        return t("ChangePassword.Error.NewPasswordNotMatch");
       }
-      return "New password needs to be at least 8 characters.";
+      return t("ChangePassword.Error.NewPasswordAtLeast8Chars");
     },
   },
 });
@@ -120,11 +123,13 @@ function closeErrorAlert() {
         </v-scroll-y-transition>
         <v-scroll-y-transition>
           <v-card-actions v-if="success">
-            <v-alert closable text="Change successfully" type="success" />
+            <v-alert closable :text="t('ChangePassword.Success')" type="success" />
           </v-card-actions>
         </v-scroll-y-transition>
         <v-card-title>
-          <h1 class="text-h5 !text-1.3em !<sm:(text-1.6em my-6) m-2">Change password</h1>
+          <h1 class="text-h5 !text-1.3em !<sm:(text-1.6em my-6) m-2">
+            {{ t("ChangePassword.ChangePassword") }}
+          </h1>
         </v-card-title>
         <v-card-text>
           <v-form ref="form">
@@ -132,7 +137,7 @@ function closeErrorAlert() {
               v-model="oldPassword.value.value"
               :append-icon="showOldPassword ? 'mdi-eye' : 'mdi-eye-off'"
               :type="showOldPassword ? 'text' : 'password'"
-              label="Old password"
+              :label="t('ChangePassword.OldPassword')"
               :error-messages="oldPassword.errorMessage.value"
               @click:append="showOldPassword = !showOldPassword"
             >
@@ -141,7 +146,7 @@ function closeErrorAlert() {
               v-model="newPassword.value.value"
               :append-icon="showNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
               :type="showNewPassword ? 'text' : 'password'"
-              label="New password"
+              :label="t('ChangePassword.NewPassword')"
               :error-messages="newPassword.errorMessage.value"
               @click:append="showNewPassword = !showNewPassword"
             >
@@ -150,7 +155,7 @@ function closeErrorAlert() {
               v-model="newPassword2.value.value"
               :append-icon="showNewPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
               :type="showNewPassword2 ? 'text' : 'password'"
-              label="Confirm password"
+              :label="t('ChangePassword.ConfirmNewPassword')"
               :error-messages="newPassword2.errorMessage.value"
               @click:append="showNewPassword2 = !showNewPassword2"
             >
@@ -159,7 +164,7 @@ function closeErrorAlert() {
         </v-card-text>
         <v-card-actions>
           <v-btn block class="bg-primary py-5" color="white" :disabled="!valid" @click="change">
-            Change
+            {{ t("ChangePassword.Change") }}
           </v-btn>
         </v-card-actions>
       </v-card>

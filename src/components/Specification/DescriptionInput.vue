@@ -1,6 +1,12 @@
 <script setup>
 import { ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { useDisplay } from "vuetify";
 import { debounce } from "../../utils";
+
+const { t, locale } = useI18n();
+
+const display = useDisplay();
 
 const emits = defineEmits(["update:value"]);
 
@@ -85,11 +91,8 @@ watch(
 <template>
   <div class="mt-3">
     <v-alert type="info" color="primary" closable>
-      Fill in the description for each {{ name }}
-      <span class="d-none d-sm-inline">on the left</span>
-      or paste a JSON object<span class="d-none d-sm-inline"> on the right</span>. Clarifying the
-      description for each {{ name }} will help your learnware to be available for tasks with
-      hetergenous {{ name }} space.
+      <slot v-if="['sm', 'xs'].includes(display.name.value)" name="msg-small" />
+      <slot v-else name="msg" />
     </v-alert>
     <v-container class="mt-3">
       <v-row>
@@ -101,7 +104,7 @@ watch(
                   <div v-bind="hoverProps">
                     <v-text-field
                       v-model="descriptionArray[idx]"
-                      :label="`Description: ${name} ${idx}`"
+                      :label="`${t('Public.Description')}: ${name} ${idx}`"
                       class="mb-1"
                       hide-details
                     >
@@ -135,7 +138,7 @@ watch(
             <v-textarea
               v-model="descriptionString"
               auto-grow
-              :label="`${name.slice(0, 1).toUpperCase()}${name.slice(1)} Description`"
+              :label="`${name}${locale != 'zh' ? ' ' : ''}${t('Public.Description')}`"
               :error-messages="errorMessages"
             />
           </div>

@@ -1,9 +1,29 @@
 <script setup>
-const links = [
-  { icon: "mdi-information", name: "About", path: "https://www.lamda.nju.edu.cn" },
-  { icon: "mdi-github", name: "GitHub", path: "https://github.com/lamda-nju" },
-  { icon: "mdi-email", name: "Contact Us", path: "mailto:bm-support@lamda.nju.edu.cn" },
-];
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+
+const links = computed(() => [
+  {
+    icon: "mdi-information",
+    name: t("Home.Footer.About"),
+    path: "https://www.lamda.nju.edu.cn",
+    tooltips: "",
+  },
+  {
+    icon: "mdi-github",
+    name: t("Home.Footer.Github"),
+    path: "https://github.com/lamda-nju",
+    tooltips: "",
+  },
+  {
+    icon: "mdi-email",
+    name: t("Home.Footer.ContactUs"),
+    path: "mailto:bm-support@lamda.nju.edu.cn",
+    tooltips: t("Home.Footer.RightClickToCopy"),
+  },
+]);
 </script>
 
 <template>
@@ -20,10 +40,13 @@ const links = [
       >
         <v-icon class="mr-1">{{ link.icon }}</v-icon>
         {{ link.name }}
-        <v-tooltip activator="parent" location="top"> Right click to copy</v-tooltip>
+        <v-tooltip v-if="link.tooltips" activator="parent" location="top">
+          {{ link.tooltips }}
+        </v-tooltip>
       </v-btn>
       <v-col class="text-center mt-4" cols="12">
-        &copy; {{ new Date().getFullYear() }} <strong>LAMDA</strong>. All rights reserved.
+        &copy; {{ new Date().getFullYear() }} <strong>LAMDA</strong>
+        {{ t("Home.Footer.AllRightsReserved") }}
       </v-col>
     </v-row>
   </v-footer>

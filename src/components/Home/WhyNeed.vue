@@ -1,37 +1,36 @@
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useDisplay } from "vuetify";
+import { useI18n } from "vue-i18n";
 
 const display = useDisplay();
+
+const { t } = useI18n();
 
 const smallerThanMd = computed(() => ["md", "sm", "xs"].includes(display.name.value));
 
 const iconSize = computed(() => 80);
 
-const reasons = ref([
+const reasons = computed(() => [
   {
     icon: "mdi-chart-scatter-plot",
-    title: "Lack of training data/skills",
-    content:
-      "Strong machine learning models can be attained even for ordinary users with little training skills or small data, because the users can adapte or refine well-performed learnwares rather than building a model from scratch by themselves.",
+    title: t("Home.Why.LackOfTrainingDataSkills"),
+    description: t("Home.Why.LackOfTrainingDataSkillsDescription"),
   },
   {
     icon: "mdi-all-inclusive-box",
-    title: "Continual learning",
-    content:
-      "The learnware market naturally realizes continual and lifelong learning, because with the constant submissions of well-performed learnwares trained from diverse tasks, the knowledge held in the learnware market is being continually enriched.",
+    title: t("Home.Why.ContinualLearning"),
+    description: t("Home.Why.ContinualLearningDescription"),
   },
   {
     icon: "mdi-head-snowflake",
-    title: "Catastrophic forgetting",
-    content:
-      "A learnware will always be accommodated in the learnware market once it is accepted, unless every aspect of its function can be replaced by other learnwares. Thus, the old knowledge in the learnware market is always held. Nothing to be forgotten.",
+    title: t("Home.Why.CatastrophicForgetting"),
+    description: t("Home.Why.CatastrophicForgettingDescription"),
   },
   {
     icon: "mdi-eye-lock",
-    title: "Data privacy/proprietary",
-    content:
-      "The developers only submit their models without sharing their own data, and thus, the data privacy/proprietary can be well preserved. Although one could not deny the possibility of reverse engineering the models, the risk would be too small compared with many other privacy-preserving solutions.",
+    title: t("Home.Why.DataPrivacyProprietary"),
+    description: t("Home.Why.DataPrivacyProprietaryDescription"),
   },
 ]);
 </script>
@@ -40,13 +39,10 @@ const reasons = ref([
   <div class="mx-auto md:pb-30 <md:pb-20 md:px-10 max-w-1200px w-1/1">
     <div class="<md:px-5">
       <div class="xl:(text-5xl my-10) lg:(text-4xl my-7) md:(text-3xl my-5) <md:(text-4xl my-5)">
-        Why do you need learnware?
+        {{ t("Home.Why.Title") }}
       </div>
       <p class="text-gray-500">
-        <!-- eslint-disable-next-line max-len -->
-        There are complaints about current machine learning techniques such as the requirement of a
-        huge amount of training data and proficient training skills, the difficulty of continual
-        learning, the risk of catastrophic forgetting, the leaking of data privacy/proprietary, etc.
+        {{ t("Home.Why.Description") }}
       </p>
     </div>
     <div class="mt-8 grid sm:grid-cols-2 sm:gap-5 gap-2">
@@ -71,7 +67,7 @@ const reasons = ref([
               {{ reason.title }}
             </v-card-title>
             <v-card-text class="xl:text-md lg:text-md md:text-sm text-sm !leading-5">
-              {{ reason.content }}
+              {{ reason.description }}
             </v-card-text>
           </v-card>
         </v-hover>
