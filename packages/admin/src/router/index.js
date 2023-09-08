@@ -7,7 +7,7 @@ const Router = createRouter({
     {
       path: "/",
       name: "Home",
-      component: () => import("@/views/Home/Home.vue"),
+      component: () => import("@/views/Home.vue"),
       meta: {
         showInNavBar: true,
         icon: "mdi-home",
@@ -16,7 +16,7 @@ const Router = createRouter({
     {
       path: "/summary",
       name: "Summary",
-      component: () => import("@/views/Summary/Summary.vue"),
+      component: () => import("@/views/Summary.vue"),
       meta: {
         showInNavBar: true,
         requiredLogin: true,
@@ -27,7 +27,7 @@ const Router = createRouter({
     {
       path: "/alllearnware",
       name: "Learnwares",
-      component: () => import("@/views/Learnwares/Learnwares.vue"),
+      component: () => import("@/views/Learnwares.vue"),
       meta: {
         showInNavBar: true,
         requiredLogin: true,
@@ -49,7 +49,7 @@ const Router = createRouter({
     {
       path: "/alluser",
       name: "Users",
-      component: () => import("@/views/Users/Users.vue"),
+      component: () => import("@/views/Users.vue"),
       meta: {
         showInNavBar: true,
         requiredLogin: true,
@@ -77,7 +77,7 @@ const Router = createRouter({
         {
           path: "/login",
           name: "Login",
-          component: () => import("@/views/Login/Login.vue"),
+          component: () => import("@/views/Login.vue"),
           meta: {
             showInNavBar: true,
             hideWhenLoggedIn: true,
