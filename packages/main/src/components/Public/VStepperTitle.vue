@@ -54,7 +54,7 @@ const activeStep = (index) => {
           @click="() => activeStep(index)"
         >
           <div class="icon">
-            <div class="circle" :class="isStepActive(index) ? 'bg-primary' : 'bg-gray-300'">
+            <div class="circle" :class="isStepActive(index) ? 'bg-primary' : 'bg-grey-lighten-1'">
               <v-icon :icon="step.icon" color="white" :size="greaterThanMd ? '1.5rem' : '1rem'">
               </v-icon>
               <div class="divider-line"></div>

@@ -238,6 +238,10 @@ export default {
     LearnwareName: "Learnware Name",
     UploadStatisticalRequirement: "Upload statistical requirement",
   },
+  AllLearnware: {
+    ShowVerified: "Show verified learnwares",
+    ShowUnverified: "Show unverified learnwares",
+  },
   Learnware: {
     OopsThereNoLearnware: "Oops! There is no learnware.",
   },

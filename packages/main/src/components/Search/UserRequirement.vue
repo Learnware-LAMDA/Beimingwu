@@ -55,6 +55,7 @@ watch(
 <template>
   <div class="flex flex-col w-1/1 md:max-w-460px sm:border-r-1">
     <div class="filter">
+      <slot name="prepend" />
       <div class="my-3 text-h6">
         <v-icon class="!mt-0 mr-3" icon="mdi-tag-text" color="black" size="small"></v-icon>
         {{ t("Search.ChooseSemanticRequirement") }}
@@ -90,6 +91,7 @@ watch(
         :xs="2"
         class="bg-transparent !text-1rem"
       ></tag-list-btns>
+      <slot name="append" />
     </div>
 
     <div class="pa-4 pt-0 border-t-1 border-gray-300">

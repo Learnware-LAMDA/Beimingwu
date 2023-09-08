@@ -236,6 +236,10 @@ export default {
     LearnwareName: "学件名称",
     UploadStatisticalRequirement: "上传统计需求",
   },
+  AllLearnware: {
+    ShowVerified: "显示已验证学件",
+    ShowUnverified: "显示未验证学件",
+  },
   Learnware: {
     OopsThereNoLearnware: "哦豁，这里没有学件。",
   },

@@ -1,13 +1,16 @@
 <script setup>
 import { ref, watch, onMounted, nextTick, onActivated } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { fetchex } from "@/utils";
-import UserRequirement from "@main/src/components/Search/UserRequirement.vue";
+import UserRequirement from "@main/components/Search/UserRequirement.vue";
 import PageLearnwareList from "@main/components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
 
 const route = useRoute();
 const router = useRouter();
+
+const { t } = useI18n();
 
 const dialog = ref(null);
 const deleteId = ref("");
@@ -189,6 +192,16 @@ function fetchByFilterAndPage(filters, page) {
     });
 }
 
+function handleClickEdit(id) {
+  router.push({
+    path: "/submit",
+    query: {
+      edit: true,
+      id,
+    },
+  });
+}
+
 function handleClickDelete(id) {
   dialog.value.confirm();
   deleteId.value = id;
@@ -253,7 +266,18 @@ onMounted(() => {
 
 <template>
   <div class="search-container">
-    <user-requirement class="max-w-[450px]" v-model:value="filters" />
+    <user-requirement class="max-w-[450px]" v-model:value="filters">
+      <template #prepend>
+        <v-btn
+          block
+          class="mr-2"
+          :color="isVerify ? 'primary' : 'error'"
+          @click="() => (isVerify = !isVerify)"
+        >
+          {{ isVerify ? t("AllLearnware.ShowVerified") : t("AllLearnware.ShowUnverified") }}
+        </v-btn>
+      </template>
+    </user-requirement>
 
     <div ref="contentRef" class="content">
       <v-scroll-y-transition class="fixed left-0 right-0 z-index-10">
@@ -287,6 +311,7 @@ onMounted(() => {
         :loading="loading"
         :is-admin="true"
         :show-pagination="pageNum > 1"
+        @click:edit="(id) => handleClickEdit(id)"
         @click:delete="(id) => handleClickDelete(id)"
       />
     </div>
