@@ -398,5 +398,27 @@ def get_download_count():
     pass
 
 
+def check_user_admin(user_id):
+    result = context.database.execute(
+        "SELECT role FROM tb_user WHERE id = :user_id",
+        {"user_id": user_id}
+    )
+
+    if len(result) == 0:
+        return False
+    
+    return result[0][0] == 1
+
+
+def get_user_id_by_learnware(learnware_id):
+    result = context.database.execute(
+        "SELECT user_id FROM tb_user_learnware_relation WHERE learnware_id = :learnware_id",
+        {"learnware_id": learnware_id}
+    )
+    if len(result) == 0:
+        return None
+    
+    return result[0][0]
+
 def begin():
     return context.database.begin()
