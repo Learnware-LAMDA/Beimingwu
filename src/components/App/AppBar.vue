@@ -3,12 +3,10 @@ import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { useI18n } from "vue-i18n";
 import learnwareLogo from "/logo.svg?url";
 
 const emit = defineEmits(["update:drawerOpen"]);
 const router = useRouter();
-const { t } = useI18n();
 
 const props = defineProps({
   drawerOpen: {
@@ -81,7 +79,7 @@ const filteredRoutes = computed(() =>
                 v-bind="menuProps"
               >
                 <v-icon class="mr-1" :icon="route.meta.icon"></v-icon>
-                {{ t(`Page.${route.name}.${route.name}`) }}
+                {{ route.meta.title }}
                 <v-icon>mdi-chevron-down</v-icon>
               </v-btn>
             </template>
@@ -100,7 +98,7 @@ const filteredRoutes = computed(() =>
                 <span v-if="child.meta.icon && !child.meta.icon.startsWith('mdi-')">{{
                   child.meta.icon
                 }}</span>
-                {{ t(`Page.${route.name}.${child.name}`) }}
+                {{ child.meta.title }}
               </v-list-item>
             </v-list>
           </v-menu>
@@ -111,7 +109,7 @@ const filteredRoutes = computed(() =>
             :class="route.meta.class"
           >
             <v-icon class="mr-1" :icon="route.meta.icon"></v-icon>
-            {{ t(`Page.${route.name}`) }}
+            {{ route.meta.title }}
           </v-btn>
         </router-link>
       </v-toolbar-items>

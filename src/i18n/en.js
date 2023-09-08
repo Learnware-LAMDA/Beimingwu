@@ -18,6 +18,7 @@ export default {
       Chinese: "中文",
       English: "English",
     },
+    LearnwareDetail: "Learnware Detail",
   },
   Home: {
     Cover: {

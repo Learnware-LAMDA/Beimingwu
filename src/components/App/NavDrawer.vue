@@ -2,11 +2,8 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { useDisplay } from "vuetify";
-import { useI18n } from "vue-i18n";
 
 const display = useDisplay();
-
-const { t } = useI18n();
 
 const emit = defineEmits(["update:drawerOpen"]);
 
@@ -82,7 +79,7 @@ const filteredRoutes = computed(() => {
           </span>
         </template>
         <v-list-item-title>
-          {{ t(`Page.${route.parent ? route.parent.name + "." : ""}${route.name}`) }}
+          {{ route.meta.title }}
         </v-list-item-title>
       </v-list-item>
     </v-list>
