@@ -76,7 +76,7 @@ function handleClickDelete(id) {
   >
     <div class="first-row">
       <v-card-title class="title">
-        <v-avatar :size="greaterThanSm ? 'default' : 'small'">
+        <v-avatar :size="greaterThanSm ? 'default' : 'small'" rounded="0">
           <component :is="dataTypeBtns[item.dataType]" class="w-4/5 opacity-70" />
         </v-avatar>
         {{ `${item.username ? item.username + "/" : ""}${item.name}` }}
