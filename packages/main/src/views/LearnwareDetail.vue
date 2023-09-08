@@ -109,7 +109,7 @@ function onLearnwareVerifyLog(learnware_id) {
         {{ learnware.id }}
       </v-card-subtitle>
 
-      <v-card-text class="md:(text-xl !leading-7) text-sm">
+      <v-card-text>
         <div>Data type: {{ learnware.dataType }}</div>
         <div>
           Input:
