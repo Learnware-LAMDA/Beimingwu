@@ -234,11 +234,10 @@ def get_all_user_list(columns, limit=None, page=None, username=None, email=None)
             tb_user
         LEFT JOIN
             tb_user_learnware_relation ON tb_user.id = tb_user_learnware_relation.user_id
-        GROUP BY
-            {column_str}
     """
-
+    
     like_suffix = ""
+    group_suffix = f"GROUP BY {column_str}"
     if username is not None or email is not None:
         if username is None or email is None:
             like_suffix = "WHERE "
@@ -247,7 +246,7 @@ def get_all_user_list(columns, limit=None, page=None, username=None, email=None)
         else:
             like_suffix = f"WHERE username LIKE '%{username}%' AND email LIKE '%{email}%'"
     page_suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
-    rows = context.database.execute(f"{query} {like_suffix} {page_suffix}", {"verify_status": LearnwareVerifyStatus.SUCCESS.value})
+    rows = context.database.execute(f"{query} {like_suffix} {group_suffix} {page_suffix}", {"verify_status": LearnwareVerifyStatus.SUCCESS.value})
     results = [dict(zip(columns + ["verified_learnware_count", "unverified_learnware_count"], user)) for user in rows]
     
     return results, cnt[0][0]
