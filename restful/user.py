@@ -279,6 +279,10 @@ class DeleteLearnwareApi(flask_restful.Resource):
         learnware_id = body["learnware_id"]
         user_id = flask_jwt_extended.get_jwt_identity()
 
+        if database.check_user_admin(user_id):
+            user_id = database.get_user_id_by_learnware(learnware_id)
+            pass
+
         print(f'delete learnware: {learnware_id}')
 
         # Check permission
@@ -317,6 +321,11 @@ class VerifyLog(flask_restful.Resource):
     def get(self):
         user_id = flask_jwt_extended.get_jwt_identity()
         learnware_id = request.args.get("learnware_id")
+
+        # check if user is admin
+        if database.check_user_admin(user_id):
+            user_id = database.get_user_id_by_learnware(learnware_id)
+            pass
 
         result = database.get_verify_log(user_id, learnware_id)
 

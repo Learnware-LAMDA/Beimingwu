@@ -368,6 +368,25 @@ class TestUser(unittest.TestCase):
         testops.delete_learnware(learnware_id, headers)
         pass
 
+    def test_verify_log_by_admin(self):
+        learnware_id = testops.add_test_learnware(TestUser.email, TestUser.password)
+        dbops.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.SUCCESS, 'test result')
+        headers = testops.login('admin@localhost', 'admin')
+
+        result = testops.url_request(
+            'user/verify_log?learnware_id={}'.format(learnware_id),
+            {},
+            headers=headers,
+            method='get',
+            return_response=True
+        )
+
+        result = result.json()['data']
+
+        self.assertEqual(result, 'test result')
+        testops.delete_learnware(learnware_id, headers)
+        pass
+
     def test_add_learnware_no_stat_file(self):
         headers = testops.login(TestUser.email, TestUser.password)
         semantic_specification = testops.test_learnware_semantic_specification()
