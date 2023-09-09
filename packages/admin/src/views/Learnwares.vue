@@ -251,7 +251,6 @@ watch(
 
 onActivated(() => {
   contentRef.value.scrollTop = scrollTop.value;
-  isVerify.value = route.query.is_verify !== "false";
   fetchByFilterAndPage(filters.value, page.value);
 });
 
