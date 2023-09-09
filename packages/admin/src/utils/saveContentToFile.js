@@ -1,5 +1,5 @@
 export default function saveContentToFile(content, fileName) {
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const blob = new Blob([content], { type: 'text/csv;charset=utf-8' });
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement('a');
   document.body.appendChild(link);

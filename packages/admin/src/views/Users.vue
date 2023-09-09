@@ -234,7 +234,7 @@ async function handleClickExport() {
         }, 3000)
       })
   }
-  const csvContent = table.map((e) => e.join(',')).join('\n')
+  const csvContent = "\ufeff" + table.map((e) => e.join(',')).join('\n')
   saveContentToFile(csvContent, 'user_list.csv')
 }
 
