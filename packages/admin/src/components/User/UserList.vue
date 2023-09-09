@@ -53,10 +53,12 @@ function handleClickDelete(id) {
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
     <TransitionGroup name="fade">
       <div flat class="item" v-if="items && items.length > 0">
-        <div class="first-row">
-          <div class="user-email">
+        <div class="row">
+          <div class="columns">
             <div class="title">Username</div>
             <div class="title">Email</div>
+            <div class="title">Verified</div>
+            <div class="title">Unverified</div>
           </div>
           <v-card-actions class="actions opacity-0">
             <v-btn icon="mdi-reset" disabled></v-btn>
@@ -65,10 +67,12 @@ function handleClickDelete(id) {
         </div>
       </div>
       <div class="item" v-for="(item, i) in items" :key="i">
-        <div class="first-row">
-          <div class="user-email">
+        <div class="row">
+          <div class="columns">
             <div class="title"><span class="small-title">Username: </span>{{ item.username }}</div>
             <div class="title"><span class="small-title">Email: </span>{{ item.email }}</div>
+            <div class="title"><span class="small-title">Verified: </span>{{ item.verified_learnware_count }}</div>
+            <div class="title"><span class="small-title">Unverified: </span>{{ item.unverified_learnware_count }}</div>
           </div>
           <v-card-actions class="actions">
             <v-btn icon="mdi-lock-reset" @click.stop="() => handleClickReset(item.id)"></v-btn>
@@ -91,7 +95,7 @@ function handleClickDelete(id) {
   .item:nth-child(1) {
     @apply border-t-1 sm: visible <sm:hidden;
 
-    .user-email {
+    .columns {
       @apply font-weight-bold;
     }
   }
@@ -101,13 +105,13 @@ function handleClickDelete(id) {
   }
 
   .item {
-    @apply px-3 border-1 border-t-0;
+    @apply px-3 <sm:py-3 border-1 border-t-0;
 
-    .first-row {
+    .row {
       @apply flex items-center;
 
-      .user-email {
-        @apply grid sm: grid-cols-2 w-1/1;
+      .columns {
+        @apply grid sm: "grid-cols-[3fr,3fr,1fr,1fr]" w-1/1;
 
         .title {
           @apply xl: text-1rem lg:text-lg text-xs;
