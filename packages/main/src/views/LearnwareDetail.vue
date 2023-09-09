@@ -95,15 +95,13 @@ function onLearnwareVerifyLog(learnware_id) {
       @click="() => router.go(-1)"
     />
     <v-card v-if="learnware" class="p-2 w-1/1" :flat="display.name.value === 'xs'">
-      <div class="flex justify-between">
-        <v-card-title class="text-h4 !md:text-3xl !text-xl">
-          {{ learnware.name }}
-        </v-card-title>
+      <v-card-title class="text-h4 !md:text-3xl !text-xl">
+        {{ learnware.name }}
+      </v-card-title>
 
-        <v-card-actions>
-          <v-btn icon="mdi-download" @click="() => downloadLearnwareSync(learnware.id)" />
-        </v-card-actions>
-      </div>
+      <v-card-actions class="download-button">
+        <v-btn icon="mdi-download" @click="() => downloadLearnwareSync(learnware.id)" />
+      </v-card-actions>
 
       <v-card-subtitle>
         {{ learnware.id }}
@@ -113,12 +111,12 @@ function onLearnwareVerifyLog(learnware_id) {
         <div>Data type: {{ learnware.dataType }}</div>
         <div>
           Input:
-          <pre>{{ JSON.stringify(learnware.input, null, 2) }}</pre>
+          <pre class="overflow-x-scroll">{{ JSON.stringify(learnware.input, null, 2) }}</pre>
         </div>
         <div>Task type: {{ learnware.taskType }}</div>
         <div>
           Output:
-          <pre>{{ JSON.stringify(learnware.output, null, 2) }}</pre>
+          <pre class="overflow-x-scroll">{{ JSON.stringify(learnware.output, null, 2) }}</pre>
         </div>
         <div>Library type: {{ learnware.libraryType }}</div>
         <div>Tags: {{ learnware.tagList.join(", ") }}</div>
@@ -140,3 +138,9 @@ function onLearnwareVerifyLog(learnware_id) {
     </v-overlay>
   </v-container>
 </template>
+
+<style scoped lang="scss">
+.download-button {
+  @apply absolute right-2 top-2;
+}
+</style>
