@@ -5,12 +5,12 @@ const dialog = ref(true);
 </script>
 
 <template>
-  <v-dialog v-model="dialog" persistent class="max-w-600px w-1/1">
+  <v-dialog v-model="dialog" persistent class="dialog">
     <v-card class="p-2">
-      <v-card-title class="my-4 text-center">
+      <v-card-title class="main">
         <svg
           id="L1"
-          class="m-auto w-1/3"
+          class="svg"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -117,3 +117,15 @@ const dialog = ref(true);
     </v-card>
   </v-dialog>
 </template>
+
+<style scoped lang="scss">
+.dialog {
+  @apply max-w-600px w-1/1;
+  .main {
+    @apply my-4 text-center;
+    .svg {
+      @apply m-auto w-1/3;
+    }
+  }
+}
+</style>
