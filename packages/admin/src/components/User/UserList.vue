@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useDisplay } from 'vuetify'
-import oopsImg from '/oops.svg'
+import oopsImg from '/oops.svg?url'
 
 const emits = defineEmits(['click:reset', 'click:delete'])
 
