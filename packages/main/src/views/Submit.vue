@@ -129,6 +129,7 @@ const success = ref(false);
 const showError = ref(false);
 const errorMsg = ref("");
 const errorTimer = ref(null);
+const uploadProgress = ref(0);
 
 const steps = computed(() => [
   {
@@ -198,10 +199,15 @@ function PrevStep() {
   }
 }
 
+function onProgress(progress) {
+  uploadProgress.value = progress * 100;
+}
+
 const submit = handleSubmit((values) => {
   submiting.value = true;
   success.value = false;
   showError.value = false;
+  uploadProgress.value = 0;
 
   addLearnware({
     edit: route.query.edit,
@@ -215,6 +221,7 @@ const submit = handleSubmit((values) => {
     description: values.description,
     files: values.files,
     learnwareId: route.query.id,
+    onProgress,
   })
     .then((res) => {
       switch (res.code) {
@@ -486,6 +493,10 @@ onActivated(init);
         </v-card-actions>
       </div>
     </v-card>
-    <submiting-dialog v-if="submiting" />
+    <submiting-dialog v-if="submiting" :progress="uploadProgress">
+      <template #title>
+        <span>{{ t("Submit.Submiting") }}</span>
+      </template>
+    </submiting-dialog>
   </v-container>
 </template>
