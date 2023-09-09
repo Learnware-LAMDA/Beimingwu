@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useDisplay } from 'vuetify'
 import oopsImg from '/oops.svg'
 
-const emits = defineEmits(['click:reset', 'click:delete'])
+const emits = defineEmits(['click:reset', 'click:delete', 'click:export'])
 
 const display = useDisplay()
 
@@ -46,6 +46,10 @@ function handleClickReset(id) {
 function handleClickDelete(id) {
   emits('click:delete', id)
 }
+
+function handleClickExport() {
+  emits('click:export')
+}
 </script>
 
 <template>
@@ -60,9 +64,9 @@ function handleClickDelete(id) {
             <div class="title">Verified</div>
             <div class="title">Unverified</div>
           </div>
-          <v-card-actions class="actions opacity-0">
-            <v-btn icon="mdi-reset" disabled></v-btn>
-            <v-btn icon="mdi-delete" disabled></v-btn>
+          <v-card-actions class="actions">
+            <v-btn class="opacity-0" icon="mdi-lock-reset" disabled=""></v-btn>
+            <v-btn @click="handleClickExport" icon="mdi-file-export"></v-btn>
           </v-card-actions>
         </div>
       </div>
