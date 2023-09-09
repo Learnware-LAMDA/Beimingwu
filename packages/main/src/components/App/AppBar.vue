@@ -53,15 +53,15 @@ const filteredRoutes = computed(() =>
 
 <template>
   <v-app-bar app flat class="bg-white border-b-1">
-    <template #prepend>
+    <div class="prepend">
       <v-app-bar-nav-icon
         v-if="['xs', 'sm'].includes(display.name.value)"
         @click="() => emit('update:drawerOpen', !drawerOpen)"
       ></v-app-bar-nav-icon>
-      <v-appbar-title class="cursor-pointer" @click="() => router.push('/')">
-        <v-img contain width="180" :src="learnwareLogo"></v-img>
+      <v-appbar-title class="logo" @click="() => router.push('/')">
+        <img class="logo-img" :src="learnwareLogo" />
       </v-appbar-title>
-    </template>
+    </div>
 
     <template #append>
       <v-toolbar-items v-if="!['xs', 'sm'].includes(display.name.value)" class="my-3">
@@ -116,3 +116,15 @@ const filteredRoutes = computed(() =>
     </template>
   </v-app-bar>
 </template>
+
+<style scoped lang="scss">
+.prepend {
+  @apply flex items-center h-full p-4;
+  .logo {
+    @apply cursor-pointer h-full;
+    .logo-img {
+      @apply h-full;
+    }
+  }
+}
+</style>
