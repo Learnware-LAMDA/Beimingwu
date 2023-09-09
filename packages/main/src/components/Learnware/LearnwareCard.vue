@@ -132,13 +132,7 @@ function handleClickDelete(id) {
     </v-card-text>
     <v-card-title
       class="last-row"
-      :class="
-        typeof item.matchScore === 'number'
-          ? ['justify-between']
-          : isAdmin
-          ? ['justify-end']
-          : ['absolute', 'right-0', 'bottom-0']
-      "
+      :class="{ 'justify-between': typeof item.matchScore === 'number' }"
     >
       <div v-if="typeof item.matchScore === 'number'" class="xl: text-xl lg:text-lg text-1rem">
         Specification score
@@ -197,7 +191,7 @@ function handleClickDelete(id) {
   }
 
   .last-row {
-    @apply flex items-center;
+    @apply flex items-center absolute right-0 bottom-0;
 
     .actions {
       @apply flex flex-row justify-end;
