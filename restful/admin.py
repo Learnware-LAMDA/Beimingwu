@@ -112,13 +112,14 @@ class ListLearnware(flask_restful.Resource):
     @admin_login_required
     def post(self):
         data = request.get_json()
-        is_verified = data.get("is_verified", True)
         limit = data.get("limit", 10)
         page = data.get("page", 0)
+        is_verified = data.get("is_verified", None)
+        user_id = data.get("user_id", None)
 
         rows, cnt = database.get_all_learnware_list(
             columns=["user_id", "learnware_id", "last_modify", "verify_status"],
-            limit=limit, page=page, is_verified=is_verified
+            limit=limit, page=page, is_verified=is_verified, user_id=user_id
         )
 
         datas = []
@@ -128,10 +129,11 @@ class ListLearnware(flask_restful.Resource):
                 row
             )
             data = dict()
-            data["semantic_specification"] = semantic_spec
             data["username"] = username
+            data["semantic_specification"] = semantic_spec            
             data["learnware_id"] = row["learnware_id"]
             data["last_modify"] = row["last_modify"].strftime("%Y-%m-%d %H:%M:%S.%f %Z")
+            data["verify_status"] = row["verify_status"]
             datas.append(data)
             pass
 

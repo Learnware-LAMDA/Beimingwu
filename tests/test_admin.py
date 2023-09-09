@@ -128,7 +128,23 @@ class TestAdmin(unittest.TestCase):
         headers = testops.login('admin@localhost', TestAdmin.password)
         result = testops.url_request(
             'admin/list_learnware',
+            {'page': 0, 'limit': 10},
+            headers=headers)
+
+        self.assertEqual(result['code'], 0)
+        self.assertGreaterEqual(len(result['data']['learnware_list_single']), 1)
+        
+        result = testops.url_request(
+            'admin/list_learnware',
             {'page': 0, 'limit': 10, 'is_verified': True},
+            headers=headers)
+
+        self.assertEqual(result['code'], 0)
+        self.assertGreaterEqual(len(result['data']['learnware_list_single']), 1)
+        
+        result = testops.url_request(
+            'admin/list_learnware',
+            {'page': 0, 'limit': 10, 'is_verified': True, 'user_id': TestAdmin.user_id},
             headers=headers)
 
         self.assertEqual(result['code'], 0)

@@ -82,7 +82,7 @@ def register_user(username, password, email) -> Tuple[int, str]:
     pass
 
 
-def get_all_learnware_list(columns, limit=None, page=None, is_verified=None):
+def get_all_learnware_list(columns, limit=None, page=None, is_verified=None, user_id=None):
     column_str = ", ".join(columns)
 
     if is_verified is None:
@@ -91,16 +91,21 @@ def get_all_learnware_list(columns, limit=None, page=None, is_verified=None):
         where = "WHERE verify_status = :verify_status "
     else:
         where = "WHERE verify_status <> :verify_status "
-        pass
+
+    if user_id is not None:
+        if is_verified is None:
+            where = "WHERE user_id = :user_id"
+        else:
+            where += "AND user_id = :user_id"
 
     count = context.database.execute(
         f"SELECT COUNT(1) FROM tb_user_learnware_relation {where}",
-        {"verify_status": LearnwareVerifyStatus.SUCCESS.value})
+        {"verify_status": LearnwareVerifyStatus.SUCCESS.value, "user_id": user_id})
     
     suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
     ret = context.database.execute(
         f"SELECT {column_str} FROM tb_user_learnware_relation {where} {suffix}",
-        {"verify_status": LearnwareVerifyStatus.SUCCESS.value})
+        {"verify_status": LearnwareVerifyStatus.SUCCESS.value, "user_id": user_id})
     
     results = []
     for row in ret:
