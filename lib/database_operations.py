@@ -103,9 +103,29 @@ def get_all_learnware_list(columns, limit=None, page=None, is_verified=None, use
         {"verify_status": LearnwareVerifyStatus.SUCCESS.value, "user_id": user_id})
     
     suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
-    ret = context.database.execute(
-        f"SELECT {column_str} FROM tb_user_learnware_relation {where} {suffix}",
-        {"verify_status": LearnwareVerifyStatus.SUCCESS.value, "user_id": user_id})
+    query = f"""
+        SELECT {column_str}
+        FROM tb_user_learnware_relation
+        {where}
+        ORDER BY 
+            CASE 
+                WHEN verify_status = :verify_FAIL THEN 0
+                WHEN verify_status = :verify_WAITING THEN 1
+                WHEN verify_status = :verify_PROCESSING THEN 2
+                WHEN verify_status = :verify_QUEUE THEN 3
+                ELSE 4
+            END, 
+            learnware_id DESC
+        {suffix}
+    """
+    ret = context.database.execute(query, {
+        "user_id": user_id,
+        "verify_FAIL": LearnwareVerifyStatus.FAIL.value,
+        "verify_WAITING": LearnwareVerifyStatus.WAITING.value,
+        "verify_PROCESSING": LearnwareVerifyStatus.PROCESSING.value,
+        "verify_QUEUE": LearnwareVerifyStatus.QUEUE.value,
+        "verify_status": LearnwareVerifyStatus.SUCCESS.value
+    })
     
     results = []
     for row in ret:
@@ -147,10 +167,29 @@ def get_learnware_list_by_user_id(user_id, limit, page):
         {"user_id": user_id}
     )[0][0]
 
-    rows = context.database.execute(
-        ("SELECT learnware_id, last_modify, verify_status FROM tb_user_learnware_relation WHERE user_id = :user_id "
-        "ORDER BY learnware_id DESC LIMIT :limit OFFSET :offset"),
-        {"user_id": user_id, "limit": limit, "offset": limit * page})
+    query = """
+        SELECT learnware_id, last_modify, verify_status
+        FROM tb_user_learnware_relation
+        WHERE user_id = :user_id
+        ORDER BY 
+            CASE 
+                WHEN verify_status = :verify_FAIL THEN 0
+                WHEN verify_status = :verify_WAITING THEN 1
+                WHEN verify_status = :verify_PROCESSING THEN 2
+                WHEN verify_status = :verify_QUEUE THEN 3
+                ELSE 4
+            END, 
+            learnware_id DESC
+        LIMIT :limit
+        OFFSET :offset
+    """
+    rows = context.database.execute(query, {
+        "user_id": user_id, "limit": limit, "offset": limit * page,
+        "verify_FAIL": LearnwareVerifyStatus.FAIL.value,
+        "verify_WAITING": LearnwareVerifyStatus.WAITING.value,
+        "verify_PROCESSING": LearnwareVerifyStatus.PROCESSING.value,
+        "verify_QUEUE": LearnwareVerifyStatus.QUEUE.value,
+    })
     
     rows_ = []
     for row in rows:
