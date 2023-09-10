@@ -67,6 +67,18 @@ const Router = createRouter({
       },
     },
     {
+      path: "/userlearnware",
+      name: "UserLearnware",
+      component: () => import("@main/views/MyLearnware.vue"),
+      meta: {
+        name: "My Learnware",
+        showInNavBar: false,
+        requiredLogin: true,
+        keepAlive: true,
+        icon: "mdi-file-eye",
+      },
+    },
+    {
       path: "/user",
       name: "User",
       meta: {
