@@ -6,7 +6,7 @@ import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 
 const display = useDisplay()
 
-const emits = defineEmits(['click:reset', 'click:delete', 'pageChange'])
+const emits = defineEmits(['click:reset', 'click:delete', 'click:export', 'pageChange'])
 
 const props = defineProps({
   items: {
@@ -86,6 +86,10 @@ function handleClickReset(id) {
 function handleClickDelete(id) { 
   emits('click:delete', id)
 }
+
+function handleClickExport(id) { 
+  emits('click:export', id)
+}
 </script>
 
 <template>
@@ -99,6 +103,7 @@ function handleClickDelete(id) {
       :xs="xs"
       @click:delete="handleClickDelete"
       @click:reset="handleClickReset"
+      @click:export="handleClickExport"
     />
 
     <div v-else class="grid p-2 gap-3" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">

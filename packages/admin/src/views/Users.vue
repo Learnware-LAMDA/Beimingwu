@@ -2,7 +2,7 @@
 import { ref, computed, onActivated, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { fetchex } from '@/utils'
+import { fetchex, saveContentToFile } from '@/utils'
 import SuccessDialog from '@/components/Dialogs/SuccessDialog.vue'
 import ConfirmDialog from '@/components/Dialogs/ConfirmDialog.vue'
 import PageUserList from '@/components/User/PageUserList.vue'
@@ -180,6 +180,64 @@ function handleClickDelete(id) {
   deleteName.value = userItems.value.find((item) => item.id === id).username
 }
 
+async function handleClickExport() {
+  const table = [['Username', 'Email', 'Verified', 'Unverified']]
+  for (let _page = 1; _page <= pageNum.value; _page++) {
+    await fetchex('/api/admin/list_user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: filters.value.userName,
+        email: filters.value.email,
+        limit: pageSize.value,
+        page: _page - 1,
+      }),
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          return res
+        }
+        throw new Error('Network error')
+      })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.code === 0) {
+          if (res.data && res.data.user_list) {
+            return res
+          }
+        }
+        if (res.code === 11 || res.code === 12) {
+          store.commit('setLoggedIn', false)
+          router.go()
+        }
+        throw new Error(res.msg)
+      })
+      .then((res) => {
+        for (const user of res.data.user_list) {
+          table.push([
+            user.username,
+            user.email,
+            user.verified_learnware_count,
+            user.unverified_learnware_count,
+          ])
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+        showError.value = true
+        errorMsg.value = err.message
+        clearTimeout(errorTimer.value)
+        errorTimer.value = setTimeout(() => {
+          showError.value = false
+        }, 3000)
+      })
+  }
+  const csvContent = "\ufeff" + table.map((e) => e.join(',')).join('\n')
+  saveContentToFile(csvContent, 'user_list.csv')
+}
+
 watch(
   () => filters.value,
   () => page.value = 1,
@@ -211,7 +269,7 @@ onActivated(() => {
         Password of user <b>{{ resetName }}</b> will be reset <i>permanently</i>. Do you really want to reset?
       </template>
     </confirm-dialog>
-    
+
     <success-dialog ref="newPasswordDialog" @close="() => {}">
       <template #title>
         Password of &nbsp; <b>{{ resetName }}</b> &nbsp; has been reset.
@@ -251,7 +309,21 @@ onActivated(() => {
         </v-card-title>
       </div>
     </v-card>
-    <page-user-list class="users" :items="userItems" :cols="1" :show-actions="true" @click:delete="(id) => handleClickDelete(id)" @click:reset="(id) => handleClickReset(id)" @page-change="pageChange" :page="page" :pageSize="pageSize" :pageNum="pageNum" :loading="loading" :show-pagination="pageNum > 1" />
+    <page-user-list
+      class="users"
+      :items="userItems"
+      :cols="1"
+      :show-actions="true"
+      @click:delete="(id) => handleClickDelete(id)"
+      @click:reset="(id) => handleClickReset(id)"
+      @click:export="handleClickExport"
+      @page-change="pageChange"
+      :page="page"
+      :pageSize="pageSize"
+      :pageNum="pageNum"
+      :loading="loading"
+      :show-pagination="pageNum > 1"
+    />
   </div>
 </template>
 
