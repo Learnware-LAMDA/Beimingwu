@@ -33,4 +33,40 @@ function checkedFetch(url, options) {
   return fetch(url, options).then(checkStatus);
 }
 
-export { checkStatus, checkedFetch };
+function useProgressedFetch(onProgress) {
+  const progressedFetch = (url, options) => {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open(options.method || "get", url);
+      for (const k in options.headers || {}) {
+        xhr.setRequestHeader(k, options.headers[k]);
+      }
+      xhr.setRequestHeader("Authorization", `Bearer ${localStorage.getItem("token")}`);
+      xhr.onload = (e) => {
+        resolve(e.target);
+      };
+      xhr.onerror = reject;
+      if (xhr.upload) {
+        xhr.upload.addEventListener(
+          "progress",
+          (e) => {
+            if (e.lengthComputable) {
+              onProgress(e.loaded / e.total);
+            }
+          },
+          false,
+        );
+      }
+      xhr.send(options.body);
+    })
+      .then(checkStatus)
+      .then((res) => ({
+        json() {
+          return JSON.parse(res.responseText);
+        },
+      }));
+  };
+  return { progressedFetch };
+}
+
+export { checkStatus, checkedFetch, useProgressedFetch };

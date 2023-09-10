@@ -229,6 +229,7 @@ export default {
       PreviousStep: "Previous Step",
       Finish: "Finish",
     },
+    Submiting: "Submiting, please wait...",
     Success: "Submit successfully",
   },
   Search: {

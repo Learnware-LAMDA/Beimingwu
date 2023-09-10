@@ -1,4 +1,4 @@
-import { checkedFetch } from "../utils";
+import { checkedFetch, useProgressedFetch } from "../utils";
 import { getSemanticSpecification } from "../engine";
 
 const BASE_URL = "./api/user";
@@ -53,7 +53,10 @@ function addLearnware({
   description,
   files,
   learnwareId,
+  onProgress,
 }) {
+  const { progressedFetch } = useProgressedFetch(onProgress);
+
   return getSemanticSpecification()
     .then((res) => {
       const semanticSpec = res.data.semantic_specification;
@@ -74,11 +77,11 @@ function addLearnware({
     })
     .then((fd) =>
       edit
-        ? checkedFetch(`${BASE_URL}/update_learnware`, {
+        ? progressedFetch(`${BASE_URL}/update_learnware`, {
             method: "POST",
             body: fd,
           })
-        : checkedFetch(`${BASE_URL}/add_learnware`, {
+        : progressedFetch(`${BASE_URL}/add_learnware`, {
             method: "POST",
             body: fd,
           }),

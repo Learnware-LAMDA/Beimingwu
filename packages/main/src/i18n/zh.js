@@ -227,6 +227,7 @@ export default {
       PreviousStep: "上一步",
       Finish: "完成",
     },
+    Submiting: "正在上传，请等待...",
     Success: "提交成功",
   },
   Search: {
