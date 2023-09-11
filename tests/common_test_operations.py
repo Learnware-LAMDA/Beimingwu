@@ -14,6 +14,7 @@ def clear_db():
     context.database.execute("DELETE FROM tb_user WHERE username != 'admin'")
     context.database.execute("DELETE FROM tb_user_learnware_relation")
     context.database.execute("DELETE FROM tb_user_token")
+    context.database.execute("DELETE FROM tb_log")
     pass
 
 
@@ -62,7 +63,7 @@ def url_request(
         else:
             response = requests.post(url, data=data, files=files, headers=headers)
             pass
-    
+
     if return_response:
         return response
     else:

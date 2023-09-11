@@ -29,7 +29,7 @@ class TestLearnwareClient(unittest.TestCase):
         testops.clear_db()
         testops.url_request(
             'auth/register', 
-            {'username': 'test', 'password': 'test', "email": "test@localhost"})
+            {'username': 'test', 'password': 'test', "email": "test@localhost", "confirm_email": False})
         
         headers = testops.login('test@localhost', 'test')
         result = testops.url_request(

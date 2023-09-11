@@ -20,7 +20,7 @@ class TestAdmin(unittest.TestCase):
         testops.clear_db()
         TestAdmin.user_id = testops.url_request(
             'auth/register', 
-            {'username': 'test', 'password': 'test', "email": "test@localhost"})['data']['user_id']
+            {'username': 'test', 'password': 'test', "email": "test@localhost", "confirm_email": False})['data']['user_id']
         TestAdmin.learnware_id = testops.add_test_learnware('test@localhost', 'test')
         TestAdmin.password = 'admin'
 
@@ -67,7 +67,7 @@ class TestAdmin(unittest.TestCase):
 
         testops.url_request(
             'auth/register', 
-            {'username': 'test', 'password': 'test', "email": "test@localhost"})
+            {'username': 'test', 'password': 'test', "email": "test@localhost", "confirm_email": False})
         
         TestAdmin.learnware_id = testops.add_test_learnware('test@localhost', 'test')
 

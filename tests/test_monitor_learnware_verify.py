@@ -39,7 +39,8 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
             'auth/register', 
             {'username': TestMonitorLearnwareVerify.username, 
              'password': TestMonitorLearnwareVerify.password, 
-             "email": TestMonitorLearnwareVerify.email})
+             "email": TestMonitorLearnwareVerify.email,
+             "confirm_email": False})
 
 
     def tearDownClass() -> None:
