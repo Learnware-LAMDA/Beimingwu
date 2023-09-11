@@ -90,5 +90,17 @@ _DEFAULT_CONFIG = {
 
     # verify config
     "verify_timeout": 60 * 30,
-    "backend_host": "127.0.0.1"
+    "backend_host": "127.0.0.1",
+
+    # app config
+    "app_secret_key": "my_secret_key",
+    "email": {
+        "smtp_server": "smtp.exmail.qq.com",
+        "smtp_port": 465,
+        "smtp_ssl": True,
+        "smtp_username": "bm-support@lamda.nju.edu.cn",
+        "smtp_password": "Learnware2023!",
+        "sender_email": "bm-support@lamda.nju.edu.cn",
+        "verification_url": "http://www.lamda.nju.edu.cn/learnware/#verify_email"
+    }
 }

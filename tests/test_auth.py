@@ -9,6 +9,7 @@ import os
 import shutil
 from tests import common_test_operations as testops
 import time
+import restful.utils as utils
 
 
 class TestAuth(unittest.TestCase):
@@ -29,7 +30,7 @@ class TestAuth(unittest.TestCase):
         # first we need register a user
         result = testops.url_request(
             'auth/register', 
-            {'username': 'test', 'password': 'test', "email": "test@localhost"})
+            {'username': 'test', 'password': 'test', "email": "test@localhost", "confirm_email": False})
 
         self.assertEqual(result['code'], 0)
 
@@ -66,7 +67,7 @@ class TestAuth(unittest.TestCase):
 
         result = testops.url_request(
             'auth/login',
-            {'email': 'test@localhost', 'password': 'test'})
+            {'email': 'test@localhost', 'password': 'test', 'confirm_email': False})
         
 
         token = result['data']['token']
@@ -100,6 +101,39 @@ class TestAuth(unittest.TestCase):
         
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['code'], 11)
+        pass
+
+    def test_register_by_email(self):
+        result = testops.url_request(
+            'auth/register', 
+            {'username': 'test2', 'password': 'test', "email": "xiaochuan.zou@polixir.ai"})
+
+        self.assertEqual(result['code'], 0)
+
+        # then we need login
+        result = testops.url_request(
+            'auth/login',
+            {'email': 'xiaochuan.zou@polixir.ai', 'password': 'test'})
+        
+        self.assertEqual(result['code'], 54)
+
+        verify_code = utils.generate_email_verification_code(
+            'xiaochuan.zou@polixir.ai', secret_key=context.config["app_secret_key"])
+        url = f'auth/email_confirm?code={verify_code}'
+
+        result = testops.url_request(
+            url,
+            {},)
+        
+        self.assertEqual(result['code'], 0)
+        result = testops.url_request(
+            'auth/login',
+            {'email': 'xiaochuan.zou@polixir.ai', 'password': 'test'})
+        
+        self.assertEqual(result['code'], 0)
+
+        self.assertGreater(len(result['data']['token']), 0)
+
         pass
 
 if __name__ == '__main__':

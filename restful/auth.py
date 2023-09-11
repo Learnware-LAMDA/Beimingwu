@@ -1,11 +1,12 @@
 import functools
 from flask import Blueprint, g, jsonify, request, session
-from .utils import *
+from . import utils
 import lib.database_operations as database
 import flask_bcrypt
 import flask_jwt_extended
 import flask_restx as flask_restful
 import datetime
+import context
 
 
 auth_blueprint = Blueprint("Auth-API", __name__)
@@ -38,14 +39,42 @@ class RegisterApi(flask_restful.Resource):
         username = body["username"]
         password = body["password"]
         email = body["email"]
+        confirm_email = body.get("confirm_email", True)
 
         password_hash = flask_bcrypt.generate_password_hash(password).decode("utf-8")
 
         code, msg, user_id = database.register_user(username=username, password=password_hash, email=email)
 
-        result = {"code": code, "msg": msg, "data": {"user_id": user_id} }
+        if code != 0 and code != 53:
+            return {"code": code, "msg": msg}, 200
+
+        if confirm_email:
+            # generate email verification code
+            verification_code = utils.generate_email_verification_code(email, secret_key=context.config["app_secret_key"])
+            # send email
+            utils.send_verification_email(
+                email, verification_code, email_config=context.config["email"])
+        else:
+            database.update_email_confirm_time(email=email)
+            pass
+
+        result = {"code": code, "msg": "success", "data": {"user_id": user_id} }
 
         return result, 200
+
+
+class EmailConfirmApi(flask_restful.Resource):
+    def post(self):
+        email = request.args.get("code")
+        email = utils.decode_email_verification_code(email, secret_key=context.config["app_secret_key"])
+
+        if email is None:
+            return {"code": 55, "msg": "Invalid verification code."}, 200
+        
+        database.update_email_confirm_time(email=email)
+
+        return {"code": 0, "msg": "Email confirm success."}, 200
+        pass
 
 
 class LoginApi(flask_restful.Resource):
@@ -68,7 +97,10 @@ class LoginApi(flask_restful.Resource):
             result["code"] = 51
             result["msg"] = "Account not exist."
             pass
-
+        elif user["email_confirm_time"] is None:
+            result["code"] = 54
+            result["msg"] = "Email not verified."
+            pass
         elif not flask_bcrypt.check_password_hash(user["password"], password):
             result["code"] = 52
             result["msg"] = "Incorrect password."
@@ -130,6 +162,7 @@ class GetRoleApi(flask_restful.Resource):
 
 
 api.add_resource(RegisterApi, "/register")
+api.add_resource(EmailConfirmApi, "/email_confirm")
 api.add_resource(LoginApi, "/login")
 api.add_resource(LogoutApi, "/logout")
 api.add_resource(GetRoleApi, "/get_role")

@@ -28,7 +28,7 @@ class TestUser(unittest.TestCase):
         TestUser.password = 'test'
         testops.url_request(
             'auth/register', 
-            {'username': TestUser.username, 'password': TestUser.password, "email": TestUser.email})
+            {'username': TestUser.username, 'password': TestUser.password, "email": TestUser.email, "confirm_email": False})
 
 
     def tearDownClass() -> None:

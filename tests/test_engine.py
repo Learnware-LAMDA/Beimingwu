@@ -25,7 +25,7 @@ class TestEngine(unittest.TestCase):
         testops.clear_db()
         testops.url_request(
             'auth/register', 
-            {'username': 'test', 'password': 'test', "email": "test@localhost"})
+            {'username': 'test', 'password': 'test', "email": "test@localhost", "confirm_email": False})
         TestEngine.learnware_id = testops.add_test_learnware('test@localhost', 'test')
 
     def tearDownClass() -> None:

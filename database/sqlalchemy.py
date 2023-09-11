@@ -25,6 +25,7 @@ class User(DeclarativeBase):
     nickname = Column(Text, nullable=False)
     register = Column(DateTime, nullable=False)
     last_login = Column(DateTime, nullable=True)
+    email_confirm_time = Column(DateTime, nullable=True)
 
     __table_args__ = (
         UniqueConstraint(username), 
@@ -151,7 +152,7 @@ class SqliteHelper(DatabaseHelper):
 class SQLAlchemy(Database):
 
     DATASET_INIT_DATA = [
-        "INSERT INTO tb_user (username, nickname, email, password, role, register) VALUES ('admin',  'adminitrator', 'admin@localhost', :admin_password, 1, :now)",
+        "INSERT INTO tb_user (username, nickname, email, password, role, register, email_confirm_time) VALUES ('admin',  'adminitrator', 'admin@localhost', :admin_password, 1, :now, :now)",
         "INSERT INTO tb_global_counter (name, value) VALUES ('learnware_id', 0)"
     ]
 

@@ -65,20 +65,48 @@ def register_user(username, password, email) -> Tuple[int, str]:
     '''
     
     with begin() as conn:
-        if check_user_exist(by="username", value=username, conn=conn):
-            return 51, "Username already exist.", -1
+        user_info= get_user_info(by="email", value=email)
 
-        # Check uniqueness of email
-        if check_user_exist(by="email", value=email, conn=conn):
-            return 52, "Email already exist.", -1
+        if user_info is None:
+            # email not exist
 
-        user_id = add_user(username, password, email, 0, username, conn=conn)
-        if user_id is None:
-            return 31, "System error.", -1
+            # Check uniqueness of username
+            if check_user_exist(by="username", value=username, conn=conn):
+                return 51, "Username already exist.", -1
+
+            user_id = add_user(username, password, email, 0, username, conn=conn)
+
+            if user_id is None:
+                return 31, "System error.", -1
+                pass
+            conn.commit()
+
+            return 0, 'success', user_id
             pass
-        
-        conn.commit()
-        return 0, 'success', user_id
+        else:
+            # email exist
+
+            # Check uniqueness of email
+            if user_info['email_confirm_time'] is not None:
+                return 52, "Email already exist.", -1
+            else:
+                # email not verified
+                return 53, "Email not verified.", -1
+            pass
+        pass
+    pass
+
+
+def update_email_confirm_time(email, dtime=None):
+    if dtime is None:
+        dtime = datetime.now()
+        pass
+
+    context.database.execute(
+        "UPDATE tb_user SET email_confirm_time = :dtime WHERE email = :email",
+        {"dtime": dtime, "email": email}
+    )
+
     pass
 
 

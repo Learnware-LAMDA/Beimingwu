@@ -15,7 +15,7 @@ import requests
 
 
 app = Flask(__name__)
-app.secret_key = "my_secret_key"
+app.secret_key = C.app_secret_key
 app.config['JWT_SECRET_KEY'] = app.secret_key
 app.config['UPLOAD_FOLDER'] = C.upload_path
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024
