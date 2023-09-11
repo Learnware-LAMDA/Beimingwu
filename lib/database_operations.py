@@ -82,7 +82,7 @@ def register_user(username, password, email) -> Tuple[int, str]:
     pass
 
 
-def get_all_learnware_list(columns, limit=None, page=None, is_verified=None):
+def get_all_learnware_list(columns, limit=None, page=None, is_verified=None, user_id=None):
     column_str = ", ".join(columns)
 
     if is_verified is None:
@@ -91,16 +91,41 @@ def get_all_learnware_list(columns, limit=None, page=None, is_verified=None):
         where = "WHERE verify_status = :verify_status "
     else:
         where = "WHERE verify_status <> :verify_status "
-        pass
+
+    if user_id is not None:
+        if is_verified is None:
+            where = "WHERE user_id = :user_id"
+        else:
+            where += "AND user_id = :user_id"
 
     count = context.database.execute(
         f"SELECT COUNT(1) FROM tb_user_learnware_relation {where}",
-        {"verify_status": LearnwareVerifyStatus.SUCCESS.value})
+        {"verify_status": LearnwareVerifyStatus.SUCCESS.value, "user_id": user_id})
     
     suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
-    ret = context.database.execute(
-        f"SELECT {column_str} FROM tb_user_learnware_relation {where} {suffix}",
-        {"verify_status": LearnwareVerifyStatus.SUCCESS.value})
+    query = f"""
+        SELECT {column_str}
+        FROM tb_user_learnware_relation
+        {where}
+        ORDER BY 
+            CASE 
+                WHEN verify_status = :verify_FAIL THEN 0
+                WHEN verify_status = :verify_WAITING THEN 1
+                WHEN verify_status = :verify_PROCESSING THEN 2
+                WHEN verify_status = :verify_QUEUE THEN 3
+                ELSE 4
+            END, 
+            learnware_id DESC
+        {suffix}
+    """
+    ret = context.database.execute(query, {
+        "user_id": user_id,
+        "verify_FAIL": LearnwareVerifyStatus.FAIL.value,
+        "verify_WAITING": LearnwareVerifyStatus.WAITING.value,
+        "verify_PROCESSING": LearnwareVerifyStatus.PROCESSING.value,
+        "verify_QUEUE": LearnwareVerifyStatus.QUEUE.value,
+        "verify_status": LearnwareVerifyStatus.SUCCESS.value
+    })
     
     results = []
     for row in ret:
@@ -142,10 +167,29 @@ def get_learnware_list_by_user_id(user_id, limit, page):
         {"user_id": user_id}
     )[0][0]
 
-    rows = context.database.execute(
-        ("SELECT learnware_id, last_modify, verify_status FROM tb_user_learnware_relation WHERE user_id = :user_id "
-        "ORDER BY learnware_id DESC LIMIT :limit OFFSET :offset"),
-        {"user_id": user_id, "limit": limit, "offset": limit * page})
+    query = """
+        SELECT learnware_id, last_modify, verify_status
+        FROM tb_user_learnware_relation
+        WHERE user_id = :user_id
+        ORDER BY 
+            CASE 
+                WHEN verify_status = :verify_FAIL THEN 0
+                WHEN verify_status = :verify_WAITING THEN 1
+                WHEN verify_status = :verify_PROCESSING THEN 2
+                WHEN verify_status = :verify_QUEUE THEN 3
+                ELSE 4
+            END, 
+            learnware_id DESC
+        LIMIT :limit
+        OFFSET :offset
+    """
+    rows = context.database.execute(query, {
+        "user_id": user_id, "limit": limit, "offset": limit * page,
+        "verify_FAIL": LearnwareVerifyStatus.FAIL.value,
+        "verify_WAITING": LearnwareVerifyStatus.WAITING.value,
+        "verify_PROCESSING": LearnwareVerifyStatus.PROCESSING.value,
+        "verify_QUEUE": LearnwareVerifyStatus.QUEUE.value,
+    })
     
     rows_ = []
     for row in rows:
@@ -224,7 +268,20 @@ def remove_user(by, value):
 def get_all_user_list(columns, limit=None, page=None, username=None, email=None):
     column_str = ", ".join(columns)
     cnt = context.database.execute(f"SELECT COUNT(*) FROM tb_user")
+
+    query = f"""
+        SELECT
+            {column_str},
+            COUNT(CASE WHEN tb_user_learnware_relation.verify_status = :verify_status THEN 1 END) AS verified_learnware_count,
+            COUNT(CASE WHEN tb_user_learnware_relation.verify_status <> :verify_status THEN 1 END) AS unverified_learnware_count
+        FROM
+            tb_user
+        LEFT JOIN
+            tb_user_learnware_relation ON tb_user.id = tb_user_learnware_relation.user_id
+    """
+    
     like_suffix = ""
+    group_suffix = f"GROUP BY {column_str}"
     if username is not None or email is not None:
         if username is None or email is None:
             like_suffix = "WHERE "
@@ -233,8 +290,10 @@ def get_all_user_list(columns, limit=None, page=None, username=None, email=None)
         else:
             like_suffix = f"WHERE username LIKE '%{username}%' AND email LIKE '%{email}%'"
     page_suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
-    rows = context.database.execute(f"SELECT {column_str} FROM tb_user {like_suffix} {page_suffix}")
-    return [dict(zip(columns, user)) for user in rows], cnt[0][0]
+    rows = context.database.execute(f"{query} {like_suffix} {group_suffix} {page_suffix}", {"verify_status": LearnwareVerifyStatus.SUCCESS.value})
+    results = [dict(zip(columns + ["verified_learnware_count", "unverified_learnware_count"], user)) for user in rows]
+    
+    return results, cnt[0][0]
 
 
 def get_next_learnware_id():
