@@ -152,6 +152,18 @@ class TestAdmin(unittest.TestCase):
         pass
 
 
+    def test_delete_learnware(self):
+        learnware_id = testops.add_test_learnware_unverified('test@localhost', 'test')
+        
+        headers = testops.login('admin@localhost', TestAdmin.password)
+        result = testops.url_request(
+            'admin/delete_learnware',
+            {'learnware_id': learnware_id},
+            headers=headers)
+        
+        self.assertEqual(result['code'], 0)
+        pass
+
 if __name__ == '__main__':
     unittest.main()
 

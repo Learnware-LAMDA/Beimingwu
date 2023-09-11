@@ -283,35 +283,7 @@ class DeleteLearnwareApi(flask_restful.Resource):
             user_id = database.get_user_id_by_learnware(learnware_id)
             pass
 
-        print(f'delete learnware: {learnware_id}')
-
-        # Check permission
-        learnware_infos, cnt = database.get_learnware_list("learnware_id", learnware_id)
-        if len(learnware_infos) == 0:
-            return {"code": 51, "msg": "Learnware not exist."}, 200
-        
-        if learnware_infos[0]["user_id"] != user_id:
-            return {"code": 41, "msg": "You do not own this learnware."}, 200
-        
-        learnware_info = learnware_infos[0]
-
-        if learnware_info['verify_status'] == LearnwareVerifyStatus.SUCCESS.value:
-            ret = context.engine.delete_learnware(learnware_id)
-            if not ret:
-                return {"code": 42, "msg": "Engine delete learnware error."}, 200
-            pass
-        else:
-            # Delete learnware file
-            learnware_path = context.get_learnware_verify_file_path(learnware_id)
-            learnware_sematic_spec_path = learnware_path[:-4] + ".json"
-            os.remove(learnware_path)
-            os.remove(learnware_sematic_spec_path)
-            pass
-        
-        cnt = database.remove_learnware("learnware_id", learnware_id)
-
-        result = {"code": 0, "msg": "Delete success."}
-        return result, 200
+        return common_functions.delete_learnware(user_id, learnware_id)
     pass
 
 
