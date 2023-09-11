@@ -163,6 +163,15 @@ const Router = createRouter({
         icon: "mdi-bullseye-arrow",
       },
     },
+    {
+      path: "/verify_email",
+      name: "VerifyEmail",
+      component: () => import("../views/VerifyEmail.vue"),
+      meta: {
+        showInNavBar: false,
+        icon: "mdi-email-check-outline",
+      },
+    },
   ],
   scrollBehavior() {
     return { top: 0 };
