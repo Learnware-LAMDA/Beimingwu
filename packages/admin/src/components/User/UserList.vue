@@ -73,7 +73,13 @@ function handleClickExport() {
       <div class="item" v-for="(item, i) in items" :key="i">
         <div class="row">
           <div class="columns">
-            <div class="title"><span class="small-title">Username: </span>{{ item.username }}</div>
+            <div class="title"><span class="small-title">Username: </span>
+              <span class="link">
+                <router-link :to="{ name: 'UserLearnware', query: { user_id: item.id } }">
+                  {{ item.username }}
+                </router-link>
+              </span>
+            </div>
             <div class="title"><span class="small-title">Email: </span>{{ item.email }}</div>
             <div class="title"><span class="small-title">Verified: </span>{{ item.verified_learnware_count }}</div>
             <div class="title"><span class="small-title">Unverified: </span>{{ item.unverified_learnware_count }}</div>
@@ -118,8 +124,10 @@ function handleClickExport() {
         @apply grid sm: "grid-cols-[3fr,3fr,1fr,1fr]" w-1/1;
 
         .title {
-          @apply xl: text-1rem lg:text-lg text-xs;
-
+          @apply xl: text-1rem lg:text-lg text-xs sm: (flex flex-col items-start justify-center);
+          .link {
+            @apply underline;
+          }
           .small-title {
             @apply sm: hidden font-weight-bold;
           }

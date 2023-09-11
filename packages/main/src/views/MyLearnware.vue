@@ -1,13 +1,15 @@
 <script setup>
 import { ref, onMounted, nextTick, watch, onActivated } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { deleteLearnware, getLearnwareList } from "../request/user";
+import { listLearnware } from "../request/admin";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "../components/Dialogs/ConfirmDialog.vue";
 
 const store = useStore();
 
+const route = useRoute();
 const router = useRouter();
 
 const dialog = ref(null);
@@ -82,26 +84,42 @@ function fetchByFilterAndPage(page) {
   showError.value = false;
   loading.value = true;
 
-  getLearnwareList({
-    page: page - 1,
-    limit: pageSize.value,
-  })
+  let getLearnwareListAPI, getLearnwareListParams;
+  if (route.query.user_id) {
+    getLearnwareListAPI = listLearnware;
+    getLearnwareListParams = {
+      page: page - 1,
+      limit: pageSize.value,
+      userId: route.query.user_id,
+    };
+  } else {
+    getLearnwareListAPI = getLearnwareList;
+    getLearnwareListParams = {
+      page: page - 1,
+      limit: pageSize.value,
+    };
+  }
+
+  getLearnwareListAPI(getLearnwareListParams)
     .then((res) => {
       switch (res.code) {
         case 0: {
           loading.value = false;
-          learnwareItems.value = res.data.learnware_list.map((item) => ({
-            id: item.learnware_id,
-            verifyStatus: item.verify_status,
-            lastModify: item.last_modify,
-            name: item.semantic_specification.Name.Values,
-            description: item.semantic_specification.Description.Values,
-            dataType: item.semantic_specification.Data.Values[0],
-            taskType: item.semantic_specification.Task.Values[0],
-            libraryType: item.semantic_specification.Library.Values[0],
-            tagList: item.semantic_specification.Scenario.Values,
-          }));
-          pageNum.value = res.data.total_pages;
+          learnwareItems.value = (res.data.learnware_list || res.data.learnware_list_single).map(
+            (item) => ({
+              id: item.learnware_id,
+              verifyStatus: item.verify_status,
+              lastModify: item.last_modify,
+              name: item.semantic_specification.Name.Values,
+              description: item.semantic_specification.Description.Values,
+              dataType: item.semantic_specification.Data.Values[0],
+              taskType: item.semantic_specification.Task.Values[0],
+              libraryType: item.semantic_specification.Library.Values[0],
+              tagList: item.semantic_specification.Scenario.Values,
+            }),
+          );
+          pageNum.value = res.data.total_pages || res.total_pages;
+          console.log(pageNum.value);
           return;
         }
         case 11: {
@@ -142,15 +160,13 @@ onMounted(() => {
     contentRef.value.addEventListener("scroll", () => {
       scrollTop.value = contentRef.value.scrollTop;
     });
+    fetchByFilterAndPage(page.value);
   });
 });
 </script>
 
 <template>
-  <div
-    ref="contentRef"
-    class="fixed flex flex-col w-1/1 overflow-y-scroll justify-start items-center"
-  >
+  <div ref="contentRef" class="fixed learnware-container">
     <confirm-dialog ref="dialog" @confirm="handleConfirm">
       <template #title>
         Confirm to delete &nbsp; <b>{{ deleteName }}</b
@@ -185,6 +201,9 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
+.learnware-container {
+  @apply flex flex-col w-1/1 overflow-y-scroll justify-start items-center;
+}
 .fixed {
   height: calc(100% - var(--v-layout-top));
 }
