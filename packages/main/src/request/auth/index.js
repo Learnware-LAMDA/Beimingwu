@@ -41,4 +41,10 @@ function getRole() {
   }).then((res) => res.json());
 }
 
-export { login, logout, register, getRole };
+function verifyEmail(params) {
+  return checkedFetch(`${BASE_URL}/email_confirm?` + params, {
+    method: "POST",
+  }).then((res) => res.json());
+}
+
+export { login, logout, register, getRole, verifyEmail };
