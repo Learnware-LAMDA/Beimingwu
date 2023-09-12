@@ -2,9 +2,10 @@ from flask import Blueprint, request
 import context
 from context import config as C
 import hashlib
+import os
 from .auth import admin_login_required
 from .utils import get_parameters, generate_random_str
-from database import LearnwareVerifyStatus
+from . import common_functions
 
 import lib.database_operations as database
 
@@ -155,27 +156,18 @@ class ListLearnware(flask_restful.Resource):
 class DeleteLearnware(flask_restful.Resource):
     @admin_login_required
     def post(self):
-        # Check & get parameters
-        data = request.get_json()
-        if data is None or "learnware_id" not in data:
-            return {"code": 21, "msg": "Request parameters error."}, 200
-        learnware_id = data["learnware_id"]
-
-        # Check permission
-        learnware = database.get_learnware_list("learnware_id", learnware_id)
-        if len(learnware) == 0:
-            return {"code": 51, "msg": "Learnware not found."}, 200
-
-        # Remove learnware
-        ret = context.engine.delete_learnware(learnware_id)
-        if not ret:
-            return {"code": 42, "msg": "Engine delete learnware error."}, 200
+        body = request.get_json()
+        learnware_id= body.get("learnware_id")
         
-        database.remove_learnware("learnware_id", learnware_id)
+        if learnware_id is None:
+            return {"code": 21, "msg": "Request parameters error."}, 200
+        
+        learnware_id = body["learnware_id"]
+        user_id = database.get_user_id_by_learnware(learnware_id)
 
-        result = {"code": 0, "msg": "Delete success."}
+        print(f'delete learnware: {learnware_id}')
 
-        return result, 200      
+        return common_functions.delete_learnware(user_id, learnware_id)
         pass
 
 
