@@ -5,6 +5,7 @@ import lib.database_operations as dbops
 import itsdangerous
 import smtplib
 import ssl
+import multiprocessing as mp
 
 
 __all__ = ["get_parameters", "generate_random_str", "dump_learnware"]
@@ -62,6 +63,13 @@ def decode_email_verification_code(code: str, secret_key) -> Union[str, None]:
         return None
     pass
 
+def send_verification_email_worker(sender_email, password, receiver_email, message, smtp_server, port):
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, message)
+        pass
+    pass
 
 def send_verification_email(email: str, verification_code: str, email_config: dict) -> bool:
 
@@ -83,10 +91,9 @@ Subject: Please activate your account\r\n\
         Cheers!
 """
 
-    context = ssl.create_default_context()
-
-    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-        server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, message)
-        pass
-    pass
+    thread = mp.Process(
+        target=send_verification_email_worker,
+        args=(sender_email, password, receiver_email, message, smtp_server, port)
+    )
+    thread.start()
+    return thread
