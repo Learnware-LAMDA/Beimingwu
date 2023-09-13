@@ -71,7 +71,14 @@ class EmailConfirmApi(flask_restful.Resource):
         if email is None:
             return {"code": 55, "msg": "Invalid verification code."}, 200
         
-        database.update_email_confirm_time(email=email)
+        user_info = database.get_user_info(by="email", value=email)
+
+        if user_info is None:
+            return {"code": 51, "msg": "Your email not exist. Please re-register"}, 200
+        
+        if user_info["email_confirm_time"] is None:
+            database.update_email_confirm_time(email=email)
+            pass
 
         return {"code": 0, "msg": "Email confirm success."}, 200
         pass

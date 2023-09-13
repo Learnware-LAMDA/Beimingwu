@@ -101,6 +101,6 @@ _DEFAULT_CONFIG = {
         "smtp_username": "bm-support@lamda.nju.edu.cn",
         "smtp_password": "Learnware2023!",
         "sender_email": "bm-support@lamda.nju.edu.cn",
-        "verification_url": "http://www.lamda.nju.edu.cn/learnware/#verify_email"
+        "verification_url": "https://www.lamda.nju.edu.cn/learnware/#verify_email"
     }
 }

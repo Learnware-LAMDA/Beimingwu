@@ -110,6 +110,8 @@ class TestAuth(unittest.TestCase):
 
         self.assertEqual(result['code'], 0)
 
+        time.sleep(5)
+
         # then we need login
         result = testops.url_request(
             'auth/login',
