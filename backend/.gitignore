@@ -1,0 +1,14 @@
+__pycache__/
+*.npy
+*.npz
+*.pyc
+*.pyd
+*.so
+*.ipynb
+.ipynb_checkpoints
+files/*
+.history/
+!files/.gitkeep
+learnware
+learnware_pool/
+**/.DS_Store
