@@ -1,6 +1,6 @@
-'''context.py: All globals should be defined here.
+"""context.py: All globals should be defined here.
 
-'''
+"""
 from config import Config
 from database import Database, SQLAlchemy
 import os
@@ -10,22 +10,22 @@ from market.backend_market import BackendMarket
 import logging
 
 
-database : Database = None
+database: Database = None
 engine = None
 stats = 0
 
 config = Config()
 
-logger = logging.getLogger('learnware-backend')
+logger = logging.getLogger("learnware-backend")
 
 
 def init_database(admin_password: str = None):
     global config, database
 
-    if config.database['type'] == "sqlalchemy":
+    if config.database["type"] == "sqlalchemy":
         database = SQLAlchemy(config=config.database, admin_password=admin_password)
         pass
-    
+
     if database is None:
         raise ValueError(f"Database type {config.database['type']} is not supproted.")
     pass
@@ -33,9 +33,9 @@ def init_database(admin_password: str = None):
 
 def init_engine():
     global config, engine
-    if config.engine['type']== "easymarket":
+    if config.engine["type"] == "easymarket":
         engine = EasyMarket()
-    elif config.engine['type'] == "backend_market":
+    elif config.engine["type"] == "backend_market":
         engine = BackendMarket()
     else:
         raise ValueError(f"Learnware engine type {config.engine_type} is not supproted.")
@@ -56,12 +56,11 @@ def init_logger():
         pass
     else:
         handler = logging.StreamHandler()
-        formatter = logging.Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         handler.setFormatter(formatter)
         logger.addHandler(handler)
         pass
-    
+
     logger.setLevel(logging.DEBUG)
 
     pass

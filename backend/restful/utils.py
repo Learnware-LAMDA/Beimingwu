@@ -31,17 +31,17 @@ def generate_random_str(randomlength: int) -> str:
     return random_str
 
 
-def dump_learnware(learnware: learnware.Learnware, matching: int=None, last_modify: str=None):
+def dump_learnware(learnware: learnware.Learnware, matching: int = None, last_modify: str = None):
     ret = {
         "learnware_id": learnware.id,
         "username": dbops.get_learnware_owner(learnware.id),
         "semantic_specification": learnware.get_specification().get_semantic_spec(),
     }
 
-    if last_modify is not None: 
+    if last_modify is not None:
         ret["last_modify"] = last_modify
         pass
-    if matching is not None: 
+    if matching is not None:
         ret["matching"] = matching
         pass
     return ret
@@ -54,14 +54,15 @@ def generate_email_verification_code(email: str, secret_key) -> str:
 
 def decode_email_verification_code(code: str, secret_key) -> Union[str, None]:
     serializer = itsdangerous.URLSafeTimedSerializer(secret_key=secret_key)
-    
+
     try:
-        return serializer.loads(code, max_age=3600*24)
+        return serializer.loads(code, max_age=3600 * 24)
     except itsdangerous.SignatureExpired:
         return None
     except itsdangerous.BadSignature:
         return None
     pass
+
 
 def send_verification_email_worker(sender_email, password, receiver_email, message, smtp_server, port):
     context = ssl.create_default_context()
@@ -71,14 +72,15 @@ def send_verification_email_worker(sender_email, password, receiver_email, messa
         pass
     pass
 
+
 def send_verification_email(email: str, verification_code: str, email_config: dict) -> bool:
 
-    port = email_config['smtp_port']
-    smtp_server = email_config['smtp_server']
-    sender_email = email_config['sender_email']
+    port = email_config["smtp_port"]
+    smtp_server = email_config["smtp_server"]
+    sender_email = email_config["sender_email"]
     receiver_email = email
-    password = email_config['smtp_password']
-    confirm_url = email_config['verification_url'] + "?code=" + verification_code
+    password = email_config["smtp_password"]
+    confirm_url = email_config["verification_url"] + "?code=" + verification_code
 
     message = f"""\
 From: {sender_email}\r\n\
@@ -92,8 +94,7 @@ Subject: Please activate your account\r\n\
 """
 
     thread = mp.Process(
-        target=send_verification_email_worker,
-        args=(sender_email, password, receiver_email, message, smtp_server, port)
+        target=send_verification_email_worker, args=(sender_email, password, receiver_email, message, smtp_server, port)
     )
     thread.start()
     return thread
