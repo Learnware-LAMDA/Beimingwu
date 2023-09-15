@@ -1,18 +1,5 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
-
 # Editor directories and files
+__pycache__/
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -23,3 +10,30 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.so
+files/*
+.history/
+!files/.gitkeep
+
+# Backend
+*.npy
+*.npz
+*.pyc
+*.pyd
+*.ipynb
+.ipynb_checkpoints
+learnware
+learnware_pool/
+
+# Frontend
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+node_modules
+dist
+dist-ssr
+*.local
