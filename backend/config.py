@@ -58,7 +58,7 @@ class Config:
 
 
 ROOT_DIRPATH = os.path.dirname(os.path.abspath(__file__))
-DATA_PATH = os.path.join(os.path.dirname(ROOT_DIRPATH), 'backend_data')
+DATA_PATH = os.path.join(os.path.dirname(ROOT_DIRPATH), "backend_data")
 UPLOAD_PATH = os.path.join(DATA_PATH, "upload")
 SQLITE_PATH = os.path.join(DATA_PATH, "database.db")
 MARKET_PATH = os.path.join(DATA_PATH, "learnware")
@@ -69,29 +69,24 @@ _DEFAULT_CONFIG = {
     "root_path": ROOT_DIRPATH,
     "upload_path": UPLOAD_PATH,
     "remove_upload_file": False,
-    
     # Database config
     "database": {
         "type": "sqlalchemy",
         "url": f"sqlite:///{SQLITE_PATH}",
     },
-
     # Engine config
     "engine": {
         "type": "backend_market",
         "market_path": MARKET_PATH,
         "property_path": PROPERTY_PATH,
-        "load_mode": "database"
+        "load_mode": "database",
     },
-
     # server config
     "listen_port": 8088,
     "listen_address": "0.0.0.0",
-
     # verify config
     "verify_timeout": 60 * 30,
     "backend_host": "127.0.0.1",
-
     # app config
     "app_secret_key": "my_secret_key",
     "email": {
@@ -101,6 +96,6 @@ _DEFAULT_CONFIG = {
         "smtp_username": "bm-support@lamda.nju.edu.cn",
         "smtp_password": "Learnware2023!",
         "sender_email": "bm-support@lamda.nju.edu.cn",
-        "verification_url": "https://www.lamda.nju.edu.cn/learnware/#verify_email"
-    }
+        "verification_url": "https://www.lamda.nju.edu.cn/learnware/#verify_email",
+    },
 }

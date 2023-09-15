@@ -29,13 +29,13 @@ def admin_login_required(view):
 
 class RegisterApi(flask_restful.Resource):
     def post(self):
-        print('register api called')
+        print("register api called")
 
         body = request.get_json()
         keys = ["username", "password", "email"]
         if any([k not in body for k in keys]):
             return {"code": 21, "msg": "Request parameters error."}, 200
-        
+
         username = body["username"]
         password = body["password"]
         email = body["email"]
@@ -50,15 +50,16 @@ class RegisterApi(flask_restful.Resource):
 
         if confirm_email:
             # generate email verification code
-            verification_code = utils.generate_email_verification_code(email, secret_key=context.config["app_secret_key"])
+            verification_code = utils.generate_email_verification_code(
+                email, secret_key=context.config["app_secret_key"]
+            )
             # send email
-            utils.send_verification_email(
-                email, verification_code, email_config=context.config["email"])
+            utils.send_verification_email(email, verification_code, email_config=context.config["email"])
         else:
             database.update_email_confirm_time(email=email)
             pass
 
-        result = {"code": code, "msg": "success", "data": {"user_id": user_id} }
+        result = {"code": code, "msg": "success", "data": {"user_id": user_id}}
 
         return result, 200
 
@@ -70,12 +71,12 @@ class EmailConfirmApi(flask_restful.Resource):
 
         if email is None:
             return {"code": 55, "msg": "Invalid verification code."}, 200
-        
+
         user_info = database.get_user_info(by="email", value=email)
 
         if user_info is None:
             return {"code": 51, "msg": "Your email not exist. Please re-register"}, 200
-        
+
         if user_info["email_confirm_time"] is None:
             database.update_email_confirm_time(email=email)
             pass
@@ -91,7 +92,7 @@ class LoginApi(flask_restful.Resource):
 
         if any([k not in body for k in keys]):
             return {"code": 21, "msg": "Request parameters error."}, 200
-        
+
         email = body["email"]
         password = body["password"]
 
@@ -113,12 +114,13 @@ class LoginApi(flask_restful.Resource):
             result["msg"] = "Incorrect password."
         else:
             access_token = flask_jwt_extended.create_access_token(
-                identity=user["id"], expires_delta=datetime.timedelta(days=1))
-            
-            result['data'] = {'token': access_token}
+                identity=user["id"], expires_delta=datetime.timedelta(days=1)
+            )
+
+            result["data"] = {"token": access_token}
             pass
 
-        return result, 200     
+        return result, 200
 
 
 class LogoutApi(flask_restful.Resource):
@@ -133,6 +135,8 @@ class LogoutApi(flask_restful.Resource):
 login_by_token_parser = flask_restful.reqparse.RequestParser()
 login_by_token_parser.add_argument("token", type=str, required=True, location="json")
 login_by_token_parser.add_argument("email", type=str, required=True, location="json")
+
+
 @api.route("/login_by_token")
 class LoginByTokenApi(flask_restful.Resource):
     @api.expect(login_by_token_parser)
@@ -149,10 +153,11 @@ class LoginByTokenApi(flask_restful.Resource):
 
         if token not in tokens:
             return {"code": 53, "msg": "Invalid token."}, 200
-        
+
         access_token = flask_jwt_extended.create_access_token(
-            identity=user_id, expires_delta=datetime.timedelta(days=1))
-        
+            identity=user_id, expires_delta=datetime.timedelta(days=1)
+        )
+
         result = {"code": 0, "msg": "Login success.", "data": {"token": access_token}}
 
         return result, 200
@@ -165,6 +170,7 @@ class GetRoleApi(flask_restful.Resource):
         user = database.get_user_info(by="id", value=user_id)
         result = {"code": 0, "msg": "Get role success.", "data": {"role": user["role"]}}
         return result, 200
+
     pass
 
 

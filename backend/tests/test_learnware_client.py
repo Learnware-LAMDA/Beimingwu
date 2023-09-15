@@ -19,7 +19,6 @@ import numpy as np
 
 
 class TestLearnwareClient(unittest.TestCase):
-
     def setUp(self) -> None:
         super().setUp()
         self.server_process = multiprocessing.Process(target=main.main)
@@ -28,35 +27,34 @@ class TestLearnwareClient(unittest.TestCase):
         context.init_database()
         testops.clear_db()
         testops.url_request(
-            'auth/register', 
-            {'username': 'test', 'password': 'test', "email": "test@localhost", "confirm_email": False})
-        
-        headers = testops.login('test@localhost', 'test')
+            "auth/register", {"username": "test", "password": "test", "email": "test@localhost", "confirm_email": False}
+        )
+
+        headers = testops.login("test@localhost", "test")
         result = testops.url_request(
-            'user/create_token',
+            "user/create_token",
             {},
             headers=headers,
         )
-        self.token = result['data']['token']
+        self.token = result["data"]["token"]
 
-        self.backend_host = 'http://localhost:{}'.format(context.config.listen_port)
+        self.backend_host = "http://localhost:{}".format(context.config.listen_port)
 
         pass
-    
+
     def tearDown(self) -> None:
         super().tearDown()
         self.server_process.kill()
         pass
 
-
     def test_upload_learnware(self):
         client = LearnwareClient(self.backend_host)
 
-        client.login('test@localhost', self.token)
+        client.login("test@localhost", self.token)
         learnware_id = client.upload_learnware(
-            testops.test_learnware_semantic_specification_table(),
-            os.path.join('tests', 'data', 'test_learnware.zip'))
-        
+            testops.test_learnware_semantic_specification_table(), os.path.join("tests", "data", "test_learnware.zip")
+        )
+
         learnware_list = client.list_learnware()
         print(learnware_list)
 
@@ -64,10 +62,8 @@ class TestLearnwareClient(unittest.TestCase):
         with tempfile.NamedTemporaryFile(prefix="test_download_learnware_", suffix=".zip") as ftemp:
             client.download_learnware(learnware_id, ftemp.name)
             self.assertTrue(os.path.exists(ftemp.name))
-            with open(ftemp.name, 'rb') as fin, open(os.path.join('tests', 'data', 'test_learnware.zip'), 'rb') as fref:
-                self.assertEqual(
-                    hashlib.md5(fin.read()).hexdigest(), 
-                    hashlib.md5(fref.read()).hexdigest())
+            with open(ftemp.name, "rb") as fin, open(os.path.join("tests", "data", "test_learnware.zip"), "rb") as fref:
+                self.assertEqual(hashlib.md5(fin.read()).hexdigest(), hashlib.md5(fref.read()).hexdigest())
                 pass
             pass
 
@@ -76,32 +72,32 @@ class TestLearnwareClient(unittest.TestCase):
 
     def test_search_learnware(self):
         client = LearnwareClient(self.backend_host)
-        client.login('test@localhost', self.token)
+        client.login("test@localhost", self.token)
         learnware_id = client.upload_learnware(
-            testops.test_learnware_semantic_specification_table(),
-            os.path.join('tests', 'data', 'test_learnware.zip'))
+            testops.test_learnware_semantic_specification_table(), os.path.join("tests", "data", "test_learnware.zip")
+        )
 
         testops.add_learnware_to_engine(learnware_id, client.headers)
 
         specification = Specification()
         specification.update_semantic_spec(testops.test_learnware_semantic_specification_table())
         stat_spec = RKMEStatSpecification()
-        stat_spec.load(os.path.join('tests', 'data', 'stat.json'))
+        stat_spec.load(os.path.join("tests", "data", "stat.json"))
 
         specification.update_stat_spec(stat_spec)
         learnware_list = client.search_learnware(specification)
 
         self.assertEqual(len(learnware_list), 1)
-        self.assertEqual(learnware_list[0]['matching'], 1)
+        self.assertEqual(learnware_list[0]["matching"], 1)
         client.delete_learnware(learnware_id)
         pass
 
     def test_search_learnware_no_stat(self):
         client = LearnwareClient(self.backend_host)
-        client.login('test@localhost', self.token)
+        client.login("test@localhost", self.token)
         learnware_id = client.upload_learnware(
-            testops.test_learnware_semantic_specification_table(),
-            os.path.join('tests', 'data', 'test_learnware.zip'))
+            testops.test_learnware_semantic_specification_table(), os.path.join("tests", "data", "test_learnware.zip")
+        )
 
         testops.add_learnware_to_engine(learnware_id, client.headers)
 
@@ -115,27 +111,26 @@ class TestLearnwareClient(unittest.TestCase):
 
     def test_list_semantic_specification_values(self):
         client = LearnwareClient(self.backend_host)
-        client.login('test@localhost', self.token)
+        client.login("test@localhost", self.token)
 
-        data_type_values = client.list_semantic_specification_values(
-            SemanticSpecificationKey.DATA_TYPE)
-        
-        self.assertIn('Table', data_type_values)
+        data_type_values = client.list_semantic_specification_values(SemanticSpecificationKey.DATA_TYPE)
+
+        self.assertIn("Table", data_type_values)
         pass
 
     def test_load_learnware(self):
         client = LearnwareClient(self.backend_host)
-        client.login('test@localhost', self.token)
+        client.login("test@localhost", self.token)
         learnware_id = client.upload_learnware(
-            testops.test_learnware_semantic_specification_table(),
-            os.path.join('tests', 'data', 'test_learnware.zip'))
+            testops.test_learnware_semantic_specification_table(), os.path.join("tests", "data", "test_learnware.zip")
+        )
 
         testops.add_learnware_to_engine(learnware_id, client.headers)
 
-        client.download_learnware(learnware_id, f'{learnware_id}.zip')
-        client.install_environment(f'{learnware_id}.zip')
-        learnware = client.load_learnware(f'{learnware_id}.zip')
-        os.remove(f'{learnware_id}.zip')
+        client.download_learnware(learnware_id, f"{learnware_id}.zip")
+        client.install_environment(f"{learnware_id}.zip")
+        learnware = client.load_learnware(f"{learnware_id}.zip")
+        os.remove(f"{learnware_id}.zip")
 
         learnware_model = learnware.get_model()
         input_shape = learnware_model.input_shape
@@ -147,14 +142,15 @@ class TestLearnwareClient(unittest.TestCase):
 
     def test_test_learnware(self):
         client = LearnwareClient(self.backend_host)
-        client.test_learnware(os.path.join('tests', 'data', 'test_learnware_multi_import.zip'))
+        client.test_learnware(os.path.join("tests", "data", "test_learnware_multi_import.zip"))
         pass
-        
+
     def test_default_host(self):
         client = LearnwareClient()
-        client.login('xiaochuan.zou@polixir.ai', 'ef705c6fb64c411183efcbede7494016')
+        client.login("xiaochuan.zou@polixir.ai", "ef705c6fb64c411183efcbede7494016")
         self.assertEqual(len(client.search_learnware(Specification())), 10)
         pass
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

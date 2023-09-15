@@ -20,8 +20,7 @@ logger = get_module_logger("market", "INFO")
 
 
 class BackendMarket(EasyMarket):
-    """Backend Market is deadicated to the backend service
-    """
+    """Backend Market is deadicated to the backend service"""
 
     INVALID_LEARNWARE = -1
     NONUSABLE_LEARNWARE = 0
@@ -143,10 +142,10 @@ class BackendMarket(EasyMarket):
         self.learnware_folder_list[id] = target_folder_dir
         self.count += 1
         return id, EasyMarket.USABLE_LEARWARE
-    
+
     def update_learnware(
-            self, id: str, semantic_specification: dict, 
-            learnware_file: werkzeug.datastructures.FileStorage = None):
+        self, id: str, semantic_specification: dict, learnware_file: werkzeug.datastructures.FileStorage = None
+    ):
         self.dbops.update_learnware_semantic_specification(id, semantic_specification)
 
         if learnware_file is not None:
@@ -164,5 +163,7 @@ class BackendMarket(EasyMarket):
             self.learnware_list[id].get_specification().update_semantic_spec(semantic_specification)
         pass
 
-    def get_all_learnware(self, ) -> List[Learnware]:
+    def get_all_learnware(
+        self,
+    ) -> List[Learnware]:
         return self.learnware_list.values()

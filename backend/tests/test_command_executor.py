@@ -6,10 +6,10 @@ import time
 
 
 class TestCommandExecutor(unittest.TestCase):
-
-    def setUp(self,) -> None:
+    def setUp(
+        self,
+    ) -> None:
         super().setUp()
-
 
     def tearDown(self) -> None:
         super().tearDown()
@@ -18,7 +18,7 @@ class TestCommandExecutor(unittest.TestCase):
     def test_execute_shell(self):
         command = 'echo "hello world"'
         output = command_executor.execute_shell(command)
-        self.assertEqual(output, 'hello world\n')
+        self.assertEqual(output, "hello world\n")
         pass
 
     def test_execute_shell_timeout(self):
@@ -31,12 +31,11 @@ class TestCommandExecutor(unittest.TestCase):
         pass
 
     def test_execute_shell_fail(self):
-        command = 'ls /dafasdfadsfas'
+        command = "ls /dafasdfadsfas"
         output = command_executor.execute_shell(command)
         print(output)
         pass
-    
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
-
