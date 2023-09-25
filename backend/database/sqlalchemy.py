@@ -91,7 +91,7 @@ class PostgresHelper(DatabaseHelper):
         dbname_start = url.rfind("/")
         dbname = url[dbname_start + 1 :]
 
-        url_no_dbname = url[:dbname_start]
+        url_no_dbname = url[:dbname_start] + "/postgres"
 
         engine = create_engine(url_no_dbname)
 
