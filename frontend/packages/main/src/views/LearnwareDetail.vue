@@ -223,11 +223,10 @@ function onLearnwareVerifyLog(learnware_id) {
           <b> {{ t("LearnwareDetail.LastModified") }}: </b>
           {{ dayjs(learnware.lastModify).format("YYYY-MM-DD HH:mm:ss") }}
         </div>
-      </v-card-text>
-
-      <v-card-text class="md:(text-xl !leading-7) text-sm">
-        <b>{{ t("Submit.Description.Description") }}:</b>
-        {{ learnware.description }}
+        <div>
+          <b>{{ t("Submit.Description.Description") }}:</b>
+          {{ learnware.description }}
+        </div>
       </v-card-text>
     </v-card>
     <v-overlay v-model="downloading" class="flex justify-center items-center">
