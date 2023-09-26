@@ -166,7 +166,7 @@ export default {
           Others: "Others",
           OtherTask: "Other Task",
         },
-        DescriptionInput: {
+        DescriptionOutput: {
           Label: "Label",
           Description: "Description",
           LabelTips:
@@ -248,5 +248,14 @@ export default {
   },
   Public: {
     Description: "Description",
+  },
+  LearnwareDetail: {
+    VerifyStatus: {
+      VerifyStatus: "Verify Status",
+      SUCCESS: "SUCCESS",
+      Unverified: "UNVERIFIED",
+    },
+    Logs: "Logs",
+    LastModified: "Last Modified",
   },
 };
