@@ -90,12 +90,14 @@ _DEFAULT_CONFIG = {
     # app config
     "app_secret_key": "my_secret_key",
     "email": {
-        "smtp_server": "smtp.exmail.qq.com",
+        "smtp_server": "",
         "smtp_port": 465,
         "smtp_ssl": True,
-        "smtp_username": "bm-support@lamda.nju.edu.cn",
-        "smtp_password": "Learnware2023!",
-        "sender_email": "bm-support@lamda.nju.edu.cn",
-        "verification_url": "https://www.lamda.nju.edu.cn/learnware/#verify_email",
+        "smtp_username": "",
+        "smtp_password": "",
+        "sender_email": "",
+        "verification_url": "",
+        "proxy_host": "",
+        "proxy_port": 0,
     },
 }
