@@ -47,4 +47,16 @@ function verifyEmail(params) {
   }).then((res) => res.json());
 }
 
-export { login, logout, register, getRole, verifyEmail };
+function resendEmail(email) {
+  return checkedFetch(`${BASE_URL}/resend_email_confirm`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+    }),
+  }).then((res) => res.json());  
+}
+
+export { login, logout, register, getRole, verifyEmail, resendEmail };

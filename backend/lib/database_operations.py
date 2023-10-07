@@ -90,7 +90,7 @@ def register_user(username, password, email) -> Tuple[int, str]:
                 return 52, "Email already exist.", -1
             else:
                 # email not verified
-                return 53, "Email not verified.", -1
+                return 53, "Email not verified.", user_info["id"]
             pass
         pass
     pass
