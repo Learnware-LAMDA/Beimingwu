@@ -1,17 +1,39 @@
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
+import { resendEmail } from "../../request/auth";
 
 const router = useRouter();
 
 const start = ref(false);
 const dialog = ref(true);
+const email = ref(props.email.value)
+
+const props = defineProps({
+  email: {
+    type: String,
+    required: true,
+  },
+});
 
 onMounted(() => {
   nextTick(() => {
     start.value = true;
   });
 });
+
+function onResend() {
+  resendEmail(email.value)
+    .then((res) => {
+      if (res.code === 0) {
+        dialog.value = false;
+        router.push("/login");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 </script>
 
 <template>
@@ -37,7 +59,7 @@ onMounted(() => {
         ></path>
       </svg>
 
-      <h2 class="text-h5 mt-6 mb-8">You registered successfully</h2>
+      <h2 class="text-h5 mt-6 mb-8">We have sent an email with a confirmation link to your email address. Please follow the link in the email. </h2>
 
       <div class="text-end">
         <v-btn
@@ -45,9 +67,9 @@ onMounted(() => {
           color="primary"
           rounded
           variant="flat"
-          @click="router.push('/login')"
+          @click="onResend()"
         >
-          Login now
+          Resend Email
         </v-btn>
         <v-btn
           class="text-none"
