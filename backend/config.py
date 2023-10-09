@@ -86,6 +86,7 @@ _DEFAULT_CONFIG = {
     "listen_address": "0.0.0.0",
     # verify config
     "verify_timeout": 60 * 30,
+    "verify_proxy": "",
     "backend_host": "127.0.0.1",
     # app config
     "app_secret_key": "my_secret_key",

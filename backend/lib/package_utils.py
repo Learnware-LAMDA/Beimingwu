@@ -68,6 +68,9 @@ def filter_nonexist_pip_packages(packages: list) -> Tuple[List[str], List[str]]:
     exist_packages = []
     nonexist_packages = []
     for package in packages:
+        if package is None:
+            continue
+        
         try:
             # os.system("python3 -m pip index versions {0}".format(package))
             print("check package existence: {0}".format(package))
