@@ -50,14 +50,11 @@ class RegisterApi(flask_restful.Resource):
 
         if confirm_email:
             # generate email verification code
-            if code == 0:
-                # otherwise we don't need to send email
-                verification_code = utils.generate_email_verification_code(
-                    email, secret_key=context.config["app_secret_key"]
-                )
-                # send email
-                utils.send_verification_email(email, verification_code, email_config=context.config["email"])
-                pass
+            verification_code = utils.generate_email_verification_code(
+                email, secret_key=context.config["app_secret_key"]
+            )
+            # send email
+            utils.send_verification_email(email, verification_code, email_config=context.config["email"])
             pass
         else:
             database.update_email_confirm_time(email=email)
