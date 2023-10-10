@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^7.2.96",
+    "@types/node": "^20.8.4",
     "@vitejs/plugin-vue": "^4.1.0",
     "@vue/eslint-config-prettier": "^7.1.0",
     "eslint": "^8.43.0",
@@ -29,6 +30,7 @@
     "eslint-plugin-vue": "^9.15.0",
     "prettier": "^2.8.8",
     "sass": "^1.60.0",
+    "typescript": "^5.2.2",
     "vite": "^4.2.0",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-windicss": "^1.8.10",
