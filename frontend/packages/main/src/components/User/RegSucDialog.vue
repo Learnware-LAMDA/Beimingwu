@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { resendEmail } from "../../request/auth";
@@ -7,7 +7,7 @@ const router = useRouter();
 
 const start = ref(false);
 const dialog = ref(true);
-const email = ref(props.email.value)
+const email = ref(props.email.value);
 
 const props = defineProps({
   email: {
@@ -22,8 +22,8 @@ onMounted(() => {
   });
 });
 
-function onResend() {
-  resendEmail(email.value)
+function onResend(): Promise<void> {
+  return resendEmail(email.value)
     .then((res) => {
       if (res.code === 0) {
         dialog.value = false;
@@ -59,16 +59,13 @@ function onResend() {
         ></path>
       </svg>
 
-      <h2 class="text-h5 mt-6 mb-8">We have sent an email with a confirmation link to your email address. Please follow the link in the email. </h2>
+      <h2 class="text-h5 mt-6 mb-8">
+        We have sent an email with a confirmation link to your email address. Please follow the link
+        in the email.
+      </h2>
 
       <div class="text-end">
-        <v-btn
-          class="text-none mr-3"
-          color="primary"
-          rounded
-          variant="flat"
-          @click="onResend()"
-        >
+        <v-btn class="text-none mr-3" color="primary" rounded variant="flat" @click="onResend()">
           Resend Email
         </v-btn>
         <v-btn
@@ -77,7 +74,7 @@ function onResend() {
           rounded
           variant="outlined"
           width="90"
-          @click="router.go()"
+          @click="router.go(0)"
         >
           Close
         </v-btn>

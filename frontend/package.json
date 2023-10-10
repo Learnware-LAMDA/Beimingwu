@@ -3,17 +3,45 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
-    "dev:main": "npm run dev --workspace=main",
-    "build:main": "npm run build --workspace=main",
-    "lint:main": "npm run lint --workspace=main",
-    "lint-fix:main": "npm run lint-fix --workspace=main",
-    "dev:admin": "npm run dev --workspace=admin",
-    "build:admin": "npm run build --workspace=admin",
-    "lint:admin": "npm run lint --workspace=admin",
-    "lint-fix:admin": "npm run lint-fix --workspace=admin"
+    "dev:main": "pnpm --filter main run dev",
+    "build:main": "pnpm --filter main run build",
+    "dev:admin": "pnpm --filter admin run dev",
+    "build:admin": "pnpm --filter admin run build",
+    "lint": "eslint . --ext .js,.vue,.ts",
+    "lint:fix": "eslint --fix . --ext .js,.vue,.ts",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "dayjs": "^1.10.7",
+    "js-yaml": "^4.1.0",
+    "jszip": "^3.10.1",
+    "vee-validate": "^4.8.4",
+    "vue": "^3.2.47",
+    "vue-i18n": "^9.2.2",
+    "vue-router": "^4.1.6",
+    "vuetify": "^3.1.13",
+    "vuex": "^4.1.0",
+    "vuex-persist": "^3.1.3"
+  },
+  "devDependencies": {
+    "@mdi/font": "^7.2.96",
+    "@types/js-yaml": "^4.0.6",
+    "@types/node": "^20.8.4",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "@vitejs/plugin-vue": "^4.1.0",
+    "@vue/eslint-config-prettier": "^7.1.0",
+    "eslint": "^8.43.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-vue": "^9.15.0",
+    "prettier": "^2.8.8",
+    "sass": "^1.60.0",
+    "typescript": "^5.2.2",
+    "vite": "^4.2.0",
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-windicss": "^1.8.10",
+    "vite-svg-loader": "^4.0.0",
+    "windicss": "^3.5.6"
   }
 }

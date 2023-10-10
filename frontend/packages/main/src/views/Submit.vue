@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onActivated, onMounted } from "vue";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
@@ -51,25 +51,25 @@ const { handleSubmit, meta } = useForm({
     files: [],
   },
   validationSchema: {
-    name(value) {
+    name(value: string) {
       if (value?.length >= 5) {
         return true;
       }
       return t("Submit.Name.Error.AtLeast5Chars");
     },
-    dataType(value) {
+    dataType(value: string) {
       if (value?.length > 0) {
         return true;
       }
       return t("Submit.Tag.DataType.Error.NotEmpty");
     },
-    taskType(value) {
+    taskType(value: string) {
       if (value?.length > 0) {
         return true;
       }
       return t("Submit.Tag.TaskType.Error.NotEmpty");
     },
-    libraryType(value) {
+    libraryType(value: string) {
       if (value?.length > 0) {
         return true;
       }
@@ -89,13 +89,13 @@ const { handleSubmit, meta } = useForm({
     taskTypeDescription() {
       return true;
     },
-    description(value) {
+    description(value: string) {
       if (value?.length >= 10) {
         return true;
       }
       return t("Submit.Description.Error.AtLeast10Chars");
     },
-    files(value) {
+    files(value: File[]) {
       if (route.query.edit && value[0]?.name === "Your old learnware") {
         return true;
       }
@@ -114,21 +114,21 @@ const { handleSubmit, meta } = useForm({
 });
 
 const name = useField("name");
-const dataType = useField("dataType");
-const taskType = useField("taskType");
-const libraryType = useField("libraryType");
-const tagList = useField("tagList");
-const dataTypeDescription = useField("dataTypeDescription");
-const taskTypeDescription = useField("taskTypeDescription");
-const description = useField("description");
-const files = useField("files");
+const dataType = useField<string>("dataType");
+const taskType = useField<string>("taskType");
+const libraryType = useField<string>("libraryType");
+const tagList = useField<string[]>("tagList");
+const dataTypeDescription = useField<string>("dataTypeDescription");
+const taskTypeDescription = useField<string>("taskTypeDescription");
+const description = useField<string>("description");
+const files = useField<File[]>("files");
 
 const currentStep = ref(0);
 const submiting = ref(false);
 const success = ref(false);
 const showError = ref(false);
 const errorMsg = ref("");
-const errorTimer = ref(null);
+const errorTimer = ref<number>();
 const uploadProgress = ref(0);
 
 const steps = computed(() => [
@@ -177,7 +177,7 @@ const allowChangePage = computed(() => {
   }
 });
 
-function activeStep(index) {
+function activeStep(index: number): void {
   if (
     valid.value ||
     index < currentStep.value ||
@@ -187,19 +187,19 @@ function activeStep(index) {
   }
 }
 
-function nextStep() {
+function nextStep(): void {
   if (currentStep.value < steps.value.length - 1) {
     activeStep(currentStep.value + 1);
   }
 }
 
-function PrevStep() {
+function PrevStep(): void {
   if (currentStep.value > 0) {
     activeStep(currentStep.value - 1);
   }
 }
 
-function onProgress(progress) {
+function onProgress(progress: number): void {
   uploadProgress.value = progress * 100;
 }
 
@@ -210,7 +210,7 @@ const submit = handleSubmit((values) => {
   uploadProgress.value = 0;
 
   addLearnware({
-    edit: route.query.edit,
+    edit: Boolean(route.query.edit),
     name: values.name,
     dataType: values.dataType,
     taskType: values.taskType,
@@ -253,16 +253,18 @@ const submit = handleSubmit((values) => {
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
-      errorTimer.value = setTimeout(() => {
-        showError.value = false;
-      }, 3000);
+      errorTimer.value = Number(
+        setTimeout(() => {
+          showError.value = false;
+        }, 3000),
+      );
     })
     .finally(() => {
       submiting.value = false;
     });
 });
 
-function checkLoginStatus() {
+function checkLoginStatus(): Promise<void> {
   return getRole()
     .then((res) => {
       switch (res.code) {
@@ -287,16 +289,18 @@ function checkLoginStatus() {
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
-      errorTimer.value = setTimeout(() => {
-        showError.value = false;
-      }, 3000);
+      errorTimer.value = Number(
+        setTimeout(() => {
+          showError.value = false;
+        }, 3000),
+      );
     })
     .finally(() => {
       submiting.value = false;
     });
 }
 
-function checkIsEditMode() {
+function checkIsEditMode(): undefined | Promise<void> {
   if (!!route.query.edit && !!route.query.id) {
     return getLearnwareDetailById({ id: route.query.id })
       .then((res) => {
@@ -353,7 +357,7 @@ function checkIsEditMode() {
   }
 }
 
-function init() {
+function init(): void {
   store.commit("setIsEditing", !!route.query.edit);
   checkLoginStatus().then(checkIsEditMode);
 }

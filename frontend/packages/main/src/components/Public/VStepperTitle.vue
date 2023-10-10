@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 
@@ -36,9 +36,9 @@ const props = defineProps({
   },
 });
 
-const isStepActive = (index) => props.currentStep === index;
+const isStepActive = (index): void => props.currentStep === index;
 
-const activeStep = (index) => {
+const activeStep = (index): void => {
   emit("active-step", index);
 };
 </script>

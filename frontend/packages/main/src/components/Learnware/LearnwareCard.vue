@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
@@ -52,17 +52,17 @@ const dataTypeBtns = {
   Audio: AudioBtn,
 };
 
-function getColorByScore(score) {
+function getColorByScore(score): string {
   if (score > 80) return colors.green.base;
   if (score > 50) return colors.orange.base;
   return colors.red.base;
 }
 
-function handleClickEdit(id) {
+function handleClickEdit(id): void {
   emit("click:edit", id);
 }
 
-function handleClickDelete(id) {
+function handleClickDelete(id): void {
   emit("click:delete", id);
 }
 </script>

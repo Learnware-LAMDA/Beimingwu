@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { useDisplay } from "vuetify";
@@ -25,8 +25,22 @@ const drawer = computed({
 
 const store = useStore();
 
+interface Route {
+  name: string;
+  path: string;
+  meta: {
+    showInNavBar: boolean;
+    hideWhenLoggedIn: boolean;
+    requiredLogin: boolean;
+    icon: string;
+    title: string;
+  };
+  children?: Route[];
+  parent?: Route;
+}
+
 const filteredRoutes = computed(() => {
-  function filter(route) {
+  function filter(route: Route): boolean {
     if (route.meta.showInNavBar) {
       if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
         return false;
@@ -40,7 +54,7 @@ const filteredRoutes = computed(() => {
     }
   }
 
-  const routes = [];
+  const routes: Route[] = [];
   props.routes.forEach((route) => {
     if (route.children) {
       route.children.forEach((child) => {

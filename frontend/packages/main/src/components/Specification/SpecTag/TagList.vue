@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
@@ -126,7 +126,7 @@ const selections = computed(() => {
   return [];
 });
 
-function click(value) {
+function click(value): void {
   if (props.value && props.value.includes(value)) {
     deleteSelect(value);
   } else {
@@ -134,7 +134,7 @@ function click(value) {
   }
 }
 
-function addSelect(value) {
+function addSelect(value): void {
   if (props.value) {
     emit("update:value", [...props.value, value]);
   } else {
@@ -142,7 +142,7 @@ function addSelect(value) {
   }
 }
 
-function deleteSelect(value) {
+function deleteSelect(value): void {
   if (props.value) {
     emit(
       "update:value",

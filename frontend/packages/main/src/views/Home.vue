@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import HomeSlogan from "../components/Home/HomeSlogan.vue";
 import WhatIs from "../components/Home/WhatIs.vue";
 import WhyNeed from "../components/Home/WhyNeed.vue";

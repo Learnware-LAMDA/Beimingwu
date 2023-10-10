@@ -1,22 +1,30 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watch, onMounted, nextTick, onActivated } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { fetchex } from "@/utils";
+import { fetchex } from "../utils/fetchex";
 import UserRequirement from "@main/components/Search/UserRequirement.vue";
 import PageLearnwareList from "@main/components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
 
-const route = useRoute();
+export interface Filters {
+  name: string;
+  dataType: string;
+  taskType: string;
+  libraryType: string;
+  tagList: never[];
+  files: never[];
+}
+
 const router = useRouter();
 
 const { t } = useI18n();
 
-const dialog = ref(null);
+const dialog = ref<InstanceType<typeof ConfirmDialog>>();
 const deleteId = ref("");
 const deleteName = ref("");
 
-const filters = ref({
+const filters = ref<Filters>({
   name: "",
   dataType: "",
   taskType: "",
@@ -28,22 +36,34 @@ const filters = ref({
 const page = ref(1);
 const pageSize = ref(10);
 const pageNum = ref(1);
-const learnwareItems = ref([]);
+const learnwareItems = ref<
+  {
+    id: string;
+    username: string;
+    lastModify: string;
+    name: string;
+    description: string;
+    dataType: string;
+    taskType: string;
+    libraryType: string;
+    tagList: string[];
+  }[]
+>([]);
 const isVerify = ref(true);
 
 const loading = ref(false);
 
-const contentRef = ref(null);
+const contentRef = ref<HTMLElement | null>(null);
 
 const scrollTop = ref(0);
 
 const success = ref(false);
 const showError = ref(false);
 const errorMsg = ref("");
-const successTimer = ref(null);
-const errorTimer = ref(null);
+const successTimer = ref<string | number | undefined>();
+const errorTimer = ref<string | number | undefined>();
 
-function deleteLearnware(id) {
+function deleteLearnware(id: string): void {
   showError.value = false;
 
   fetchex("/api/admin/delete_learnware", {
@@ -56,7 +76,7 @@ function deleteLearnware(id) {
     }),
   })
     .then((res) => {
-      if (res.status === 200) {
+      if (res && res.status === 200) {
         return res;
       }
       throw new Error("Network error");
@@ -67,7 +87,7 @@ function deleteLearnware(id) {
         case 0: {
           learnwareItems.value.splice(
             learnwareItems.value.findIndex((item) => item.id === id),
-            1
+            1,
           );
           if (learnwareItems.value.length === 0 && page.value > 1) {
             page.value--;
@@ -93,12 +113,17 @@ function deleteLearnware(id) {
     });
 }
 
-function pageChange(newPage) {
+function pageChange(newPage: number): void {
   page.value = newPage;
   contentRef.value && (contentRef.value.scrollTop = 0);
 }
 
-function fetchLearnware(isVerify, page, limit, fd) {
+function fetchLearnware(
+  isVerify: boolean,
+  page: number,
+  limit: number,
+  fd: FormData,
+): Promise<Response | undefined> {
   if (isVerify) {
     return fetchex("/api/engine/search_learnware", {
       method: "POST",
@@ -119,7 +144,17 @@ function fetchLearnware(isVerify, page, limit, fd) {
   }
 }
 
-function fetchByFilterAndPage(filters, page) {
+function fetchByFilterAndPage(
+  filters: {
+    name: string;
+    dataType: string;
+    taskType: string;
+    libraryType: string;
+    tagList: never[];
+    files: never[];
+  },
+  page: number,
+): void {
   if (contentRef.value) {
     contentRef.value.scrollTop = 0;
   }
@@ -128,29 +163,32 @@ function fetchByFilterAndPage(filters, page) {
   loading.value = true;
 
   fetchex("/api/engine/semantic_specification")
-    .then((res) => res.json())
+    .then((res) => {
+      if (res) {
+        return res.json();
+      }
+      throw new Error("Network error");
+    })
     .then((res) => {
       const semanticSpec = res.data.semantic_specification;
       semanticSpec.Name.Values = filters.name;
       semanticSpec.Data.Values = filters.dataType ? [filters.dataType] : [];
       semanticSpec.Task.Values = filters.taskType ? [filters.taskType] : [];
-      semanticSpec.Library.Values = filters.libraryType
-        ? [filters.libraryType]
-        : [];
+      semanticSpec.Library.Values = filters.libraryType ? [filters.libraryType] : [];
       semanticSpec.Scenario.Values = filters.tagList;
       semanticSpec.Description.Values = "";
 
       const fd = new FormData();
       fd.append("semantic_specification", JSON.stringify(semanticSpec));
-      fd.append("statistical_specification", null);
-      fd.append("limit", pageSize.value);
-      fd.append("page", page - 1);
+      fd.append("statistical_specification", "");
+      fd.append("limit", String(pageSize.value));
+      fd.append("page", String(page - 1));
       return fd;
     })
     .then((fd) => {
       return fetchLearnware(isVerify.value, page, pageSize.value, fd)
         .then((res) => {
-          if (res.status === 200) {
+          if (res && res.status === 200) {
             return res;
           }
           throw new Error("Network error");
@@ -161,7 +199,19 @@ function fetchByFilterAndPage(filters, page) {
             case 0: {
               loading.value = false;
               learnwareItems.value = res.data.learnware_list_single.map(
-                (item) => ({
+                (item: {
+                  learnware_id: string;
+                  username: string;
+                  last_modify: string;
+                  semantic_specification: {
+                    Name: { Values: string };
+                    Description: { Values: string };
+                    Data: { Values: string[] };
+                    Task: { Values: string[] };
+                    Library: { Values: string[] };
+                    Scenario: { Values: string[] };
+                  };
+                }) => ({
                   id: item.learnware_id,
                   username: item.username,
                   lastModify: item.last_modify,
@@ -171,7 +221,7 @@ function fetchByFilterAndPage(filters, page) {
                   taskType: item.semantic_specification.Task.Values[0],
                   libraryType: item.semantic_specification.Library.Values[0],
                   tagList: item.semantic_specification.Scenario.Values,
-                })
+                }),
               );
               pageNum.value = res.data.total_pages;
               return;
@@ -192,20 +242,20 @@ function fetchByFilterAndPage(filters, page) {
     });
 }
 
-function handleClickEdit(id) {
+function handleClickEdit(id: string): void {
   router.push({
     path: "/submit",
     query: {
-      edit: true,
+      edit: "true",
       id,
     },
   });
 }
 
-function handleClickDelete(id) {
+function handleClickDelete(id: string): void {
   dialog.value.confirm();
   deleteId.value = id;
-  deleteName.value = learnwareItems.value.find((item) => item.id === id).name;
+  deleteName.value = (learnwareItems.value.find((item) => item.id === id) as { name: string }).name;
 }
 
 watch(
@@ -221,13 +271,13 @@ watch(
   () => {
     page.value = 1;
     fetchByFilterAndPage(filters.value, page.value);
-  }
-)
+  },
+);
 
 watch(
   () => filters.value,
   () => (page.value = 1),
-  { deep: true }
+  { deep: true },
 );
 
 watch(
@@ -236,36 +286,40 @@ watch(
     if (contentRef.value) {
       contentRef.value.scrollIntoView();
     }
-  }
+  },
 );
 
 watch(
   () => [filters.value, page.value],
   (newVal) => {
-    const [newFilters, newPage] = newVal;
+    const [newFilters, newPage] = newVal as [Filters, number];
 
     fetchByFilterAndPage(newFilters, newPage);
   },
-  { deep: true }
+  { deep: true },
 );
 
 onActivated(() => {
-  contentRef.value.scrollTop = scrollTop.value;
+  if (contentRef.value) {
+    contentRef.value.scrollTop = scrollTop.value;
+  }
   fetchByFilterAndPage(filters.value, page.value);
 });
 
 onMounted(() => {
   nextTick(() => {
-    contentRef.value.addEventListener("scroll", () => {
-      scrollTop.value = contentRef.value.scrollTop;
-    });
+    if (contentRef.value) {
+      contentRef.value.addEventListener("scroll", () => {
+        if (contentRef.value) scrollTop.value = contentRef.value.scrollTop;
+      });
+    }
   });
 });
 </script>
 
 <template>
   <div class="search-container">
-    <user-requirement class="max-w-[450px]" v-model:value="filters">
+    <user-requirement v-model:value="filters" class="max-w-[450px]">
       <template #prepend>
         <v-btn
           block
@@ -292,24 +346,19 @@ onMounted(() => {
       </v-scroll-y-transition>
       <v-scroll-y-transition class="fixed z-index-1000 left-2/10 right-2/10">
         <v-card-actions v-if="success">
-          <v-alert
-            closable
-            text="Delete success"
-            type="success"
-            @click:close="success = false"
-          />
+          <v-alert closable text="Delete success" type="success" @click:close="success = false" />
         </v-card-actions>
       </v-scroll-y-transition>
       <page-learnware-list
         :items="learnwareItems"
         :filters="filters"
-        @page-change="pageChange"
         :page="page"
         :page-num="pageNum"
         :page-size="pageSize"
         :loading="loading"
         :is-admin="true"
         :show-pagination="pageNum > 1"
+        @page-change="pageChange"
         @click:edit="(id) => handleClickEdit(id)"
         @click:delete="(id) => handleClickDelete(id)"
       />
@@ -321,8 +370,8 @@ onMounted(() => {
         >?
       </template>
       <template #text>
-        The learnware <b>{{ deleteName }}</b> will be deleted in the learnware
-        market <i>permanently</i>. Do you really want to delete?
+        The learnware <b>{{ deleteName }}</b> will be deleted in the learnware market
+        <i>permanently</i>. Do you really want to delete?
       </template>
     </confirm-dialog>
   </div>

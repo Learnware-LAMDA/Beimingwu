@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, onMounted, nextTick, onActivated } from "vue";
 import { useDisplay } from "vuetify";
 import { searchLearnware } from "../request/engine";
@@ -6,9 +6,18 @@ import UserRequirement from "../components/Search/UserRequirement.vue";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import MultiRecommendedLearnwareList from "../components/Learnware/MultiRecommendedLearnwareList.vue";
 
+interface Filter {
+  name: string;
+  dataType: string;
+  taskType: string;
+  libraryType: string;
+  tagList: string[];
+  files: string[];
+}
+
 const display = useDisplay();
 
-const filters = ref({
+const filters = ref<Filter>({
   name: "",
   dataType: "",
   taskType: "",
@@ -18,7 +27,7 @@ const filters = ref({
 });
 
 const multiRecommendedLearnwareItems = ref([]);
-const multiRecommendedMatchScore = ref(null);
+const multiRecommendedMatchScore = ref<number>(0);
 const singleRecommendedLearnwarePage = ref(1);
 const singleRecommendedLearnwarePageNum = ref(1);
 const singleRecommendedLearnwarePageSize = ref(10);
@@ -26,13 +35,13 @@ const singleRecommendedLearnwareItems = ref([]);
 const loading = ref(false);
 
 const contentRef = ref(null);
-const anchorRef = ref(null);
+const anchorRef = ref<HTMLDivElement | null>(null);
 
 const scrollTop = ref(0);
 
 const showError = ref(false);
 const errorMsg = ref("");
-const errorTimer = ref(null);
+const errorTimer = ref();
 
 const showMultiRecommended = computed(
   () =>
@@ -41,11 +50,11 @@ const showMultiRecommended = computed(
 const multiRecommendedTips = ref(true);
 const singleRecommendedTips = ref(true);
 
-function pageChange(newPage) {
+function pageChange(newPage: number): void {
   singleRecommendedLearnwarePage.value = newPage;
 }
 
-function fetchByFilterAndPage(filters, page) {
+function fetchByFilterAndPage(filters: Filter, page: number): void {
   showError.value = false;
   loading.value = true;
 

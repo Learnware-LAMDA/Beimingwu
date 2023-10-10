@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
@@ -47,15 +47,15 @@ const props = defineProps({
 
 const realCols = computed(() => props[display.name.value] || props.cols);
 
-function handleClickEdit(id) {
+function handleClickEdit(id: string): void {
   emit("click:edit", id);
 }
 
-function handleClickDelete(id) {
+function handleClickDelete(id: string): void {
   emit("click:delete", id);
 }
 
-function showLearnwareDetail(id) {
+function showLearnwareDetail(id: string): void {
   router.push({ path: "/learnwaredetail", query: { id } });
 }
 </script>
