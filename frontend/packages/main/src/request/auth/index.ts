@@ -2,7 +2,7 @@ import { checkedFetch } from "../utils";
 
 const BASE_URL = "./api/auth";
 
-function login({ email, passwordMd5 }): Promise<Response> {
+function login({ email, passwordMd5 }: { email: string; passwordMd5: string }): Promise<Response> {
   return checkedFetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: {
@@ -21,7 +21,15 @@ function logout(): Promise<Response> {
   }).then((res) => res.json());
 }
 
-function register({ username, email, passwordMd5 }): Promise<Response> {
+function register({
+  username,
+  email,
+  passwordMd5,
+}: {
+  username: string;
+  email: string;
+  passwordMd5: string;
+}): Promise<Response> {
   return checkedFetch(`${BASE_URL}/register`, {
     method: "POST",
     headers: {
@@ -41,13 +49,13 @@ function getRole(): Promise<Response> {
   }).then((res) => res.json());
 }
 
-function verifyEmail(params): Promise<Response> {
+function verifyEmail(params: string): Promise<Response> {
   return checkedFetch(`${BASE_URL}/email_confirm?` + params, {
     method: "POST",
   }).then((res) => res.json());
 }
 
-function resendEmail(email): Promise<Response> {
+function resendEmail(email: string): Promise<Response> {
   return checkedFetch(`${BASE_URL}/resend_email_confirm`, {
     method: "POST",
     headers: {

@@ -9,10 +9,5 @@
     "lint": "eslint --config .eslintrc.cjs --ext .js,.vue --ignore-path .gitignore .",
     "lint-fix": "eslint --config .eslintrc.cjs --fix --ext .js,.vue --ignore-path .gitignore .",
     "preview": "vite preview"
-  },
-  "dependencies": {
-    "dayjs": "^1.10.7",
-    "js-yaml": "^4.1.0",
-    "jszip": "^3.10.1"
   }
 }

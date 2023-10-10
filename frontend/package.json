@@ -13,6 +13,9 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "dayjs": "^1.10.7",
+    "js-yaml": "^4.1.0",
+    "jszip": "^3.10.1",
     "vee-validate": "^4.8.4",
     "vue": "^3.2.47",
     "vue-i18n": "^9.2.2",
@@ -23,6 +26,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^7.2.96",
+    "@types/js-yaml": "^4.0.6",
     "@types/node": "^20.8.4",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",

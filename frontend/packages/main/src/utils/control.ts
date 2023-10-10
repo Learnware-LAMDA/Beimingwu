@@ -1,21 +1,25 @@
-function debounce(fn, delay): (...args: unknown[]) => void {
-  let timer = null;
+function debounce(fn: (...args: unknown[]) => void, delay: number): (...args: unknown[]) => void {
+  let timer: number | null = null;
   return function (...args: unknown[]) {
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      fn(...args)
-    }, delay);
+    if (timer) clearTimeout(timer);
+    timer = Number(
+      setTimeout(function () {
+        fn(...args);
+      }, delay),
+    );
   };
 }
 
-function throttle(fn, delay): (...args: unknown[]) => void {
-  let timer = null;
+function throttle(fn: (...args: unknown[]) => void, delay: number): (...args: unknown[]) => void {
+  let timer: number | null = null;
   return function (...args: unknown[]) {
     if (!timer) {
-      timer = setTimeout(function () {
-        fn(...args);
-        timer = null;
-      }, delay);
+      timer = Number(
+        setTimeout(function () {
+          fn(...args);
+          timer = null;
+        }, delay),
+      );
     }
   };
 }

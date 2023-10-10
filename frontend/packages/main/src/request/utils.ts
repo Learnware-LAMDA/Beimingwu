@@ -1,7 +1,7 @@
 import Store from "../store";
 import Router from "../router";
 
-function checkStatus(res): Response {
+function checkStatus(res: Response): Response {
   if (res.status === 200) {
     return res;
   }
@@ -14,7 +14,7 @@ function checkStatus(res): Response {
   throw new Error(`Network error: ${res.status}${res.statusText ? ` - ${res.statusText}` : ""}`);
 }
 
-function checkedFetch(url, options: RequestInit = {}): Promise<Response> {
+function checkedFetch(url: string, options: RequestInit = {}): Promise<Response> {
   // get token from local storage and set in header
   const token = localStorage.getItem("token");
 
@@ -23,29 +23,31 @@ function checkedFetch(url, options: RequestInit = {}): Promise<Response> {
   }
 
   if (token !== null) {
-    // check header exist
-    if (!("headers" in options)) {
-      options.headers = {};
-    }
-    options.headers["Authorization"] = `Bearer ${token}`;
+    options.headers = new Headers(options.headers || {});
+    options.headers.set("Authorization", `Bearer ${token}`);
   }
 
   return fetch(url, options).then(checkStatus);
 }
 
-function useProgressedFetch(onProgress): {
-  progressedFetch: (url: string, options: RequestInit) => Promise<Response>;
+interface Fetch {
+  (url: string, options?: RequestInit): Promise<Response>;
+}
+
+function useProgressedFetch(onProgress: (progress: number) => void): {
+  progressedFetch: Fetch
 } {
-  const progressedFetch = (url, options): Promise<Response> => {
-    return new Promise((resolve, reject) => {
+  const progressedFetch = (url: string, options: RequestInit = {}): Promise<Response> => {
+    return new Promise<Response>((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open(options.method || "get", url);
       for (const k in options.headers || {}) {
-        xhr.setRequestHeader(k, options.headers[k]);
+        xhr.setRequestHeader(k, (options.headers as Headers).get(k) as string);
       }
       xhr.setRequestHeader("Authorization", `Bearer ${localStorage.getItem("token")}`);
       xhr.onload = (e): void => {
-        resolve(e.target);
+        const target = e.target as XMLHttpRequest;
+        resolve(new Response(target.response, { status: target.status }));
       };
       xhr.onerror = reject;
       if (xhr.upload) {
@@ -59,14 +61,8 @@ function useProgressedFetch(onProgress): {
           false,
         );
       }
-      xhr.send(options.body);
-    })
-      .then(checkStatus)
-      .then((res) => ({
-        json(): Promise<JSON> {
-          return res.text().then((text) => JSON.parse(text));
-        },
-      }));
+      xhr.send(options.body as XMLHttpRequestBodyInit);
+    }).then(checkStatus);
   };
   return { progressedFetch };
 }

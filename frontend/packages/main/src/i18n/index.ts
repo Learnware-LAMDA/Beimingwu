@@ -7,7 +7,7 @@ const messages = {
   zh,
 };
 const language =
-  JSON.parse(localStorage.getItem("vuex"))?.i18n?.locale ||
+  JSON.parse(localStorage.getItem("vuex") || "{}")?.i18n?.locale ||
   (navigator.language || "en").toLocaleLowerCase();
 const i18n = createI18n({
   legacy: false,

@@ -4,10 +4,8 @@ import store from "@main/store";
 async function fetchex(url: string, options: RequestInit = {}): Promise<Response | undefined> {
   const token = localStorage.getItem("token");
   if (token !== null) {
-    if (!options.headers) {
-      options.headers = new Headers();
-    }
-    (options.headers as Headers).append("Authorization", `Bearer ${token}`);
+    options.headers = new Headers(options.headers || {});
+    options.headers.set("Authorization", `Bearer ${token}`);
   }
   return fetch(url, options).then((response) => {
     if (response.status === 200) {
