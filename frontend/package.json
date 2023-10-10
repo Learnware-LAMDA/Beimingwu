@@ -3,17 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
-    "dev:main": "npm run dev --workspace=main",
-    "build:main": "npm run build --workspace=main",
-    "lint:main": "npm run lint --workspace=main",
-    "lint-fix:main": "npm run lint-fix --workspace=main",
-    "dev:admin": "npm run dev --workspace=admin",
-    "build:admin": "npm run build --workspace=admin",
-    "lint:admin": "npm run lint --workspace=admin",
-    "lint-fix:admin": "npm run lint-fix --workspace=admin"
+    "dev:main": "pnpm --filter main run dev",
+    "build:main": "pnpm --filter main run build",
+    "dev:admin": "pnpm --filter admin run dev",
+    "build:admin": "pnpm --filter admin run build",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   }
 }
