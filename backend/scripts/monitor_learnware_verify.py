@@ -75,7 +75,10 @@ def update_learnware_yaml_file(learnware_path, learnware_id, semantic_spec_filen
     pass
 
 
-def worker_process_func(q: queue.Queue):
+def worker_process_func(q: queue.Queue, env: dict):
+    if env is not None:
+        os.environ.update(env)
+        pass
 
     while True:
         learnware_id = q.get()
@@ -135,7 +138,15 @@ def worker_process_func(q: queue.Queue):
 
         if verify_status == LearnwareVerifyStatus.SUCCESS:
             try:
+                # internal service should not use proxy
+                os.environ.pop("http_proxy", "")
+                original_proxy = os.environ.pop("https_proxy", "")
                 restful_wrapper.add_learnware_verified(learnware_id)
+
+                # restore proxy
+                os.environ["http_proxy"] = original_proxy
+                os.environ["https_proxy"] = original_proxy
+
             except Exception as e:
                 verify_status = LearnwareVerifyStatus.FAIL
                 command_output += "\n\n" + str(e)
@@ -158,6 +169,12 @@ def worker_process_func(q: queue.Queue):
 def main(num_worker):
     context.init_database()
     context.init_logger()
+    if len(context.config["verify_proxy"]) > 0:
+        context.logger.info('set proxy: ' + context.config["verify_proxy"])
+        proxy_url = context.config["verify_proxy"]
+        os.environ["http_proxy"] = proxy_url
+        os.environ["https_proxy"] = proxy_url
+        pass
 
     dbops.reset_learnware_verify_status()
 
@@ -165,7 +182,7 @@ def main(num_worker):
 
     workers = []
     for i in range(num_worker):
-        worker = mp.Process(target=worker_process_func, args=(waiting_queue,))
+        worker = mp.Process(target=worker_process_func, args=(waiting_queue, os.environ.copy()))
         worker.start()
 
         workers.append(worker)
