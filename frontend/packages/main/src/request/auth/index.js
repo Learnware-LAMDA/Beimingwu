@@ -56,7 +56,7 @@ function resendEmail(email) {
     body: JSON.stringify({
       email,
     }),
-  }).then((res) => res.json());  
+  }).then((res) => res.json());
 }
 
 export { login, logout, register, getRole, verifyEmail, resendEmail };

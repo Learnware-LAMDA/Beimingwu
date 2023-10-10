@@ -1,18 +1,18 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import WindiCSS from 'vite-plugin-windicss'
-import svgLoader from 'vite-svg-loader'
-import path from 'path'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import WindiCSS from "vite-plugin-windicss";
+import svgLoader from "vite-svg-loader";
+import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), WindiCSS(), svgLoader()],
-  base: './',
+  base: "./",
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@admin': path.resolve(__dirname, '../admin/src'),
-      '@main': path.resolve(__dirname, '../main/src'),
+      "@": path.resolve(__dirname, "./src"),
+      "@admin": path.resolve(__dirname, "../admin/src"),
+      "@main": path.resolve(__dirname, "../main/src"),
     },
   },
   server: {
@@ -25,4 +25,4 @@ export default defineConfig({
       },
     },
   },
-})
+});

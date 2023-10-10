@@ -36,8 +36,8 @@ const Router = createRouter({
       },
     },
     {
-      path: '/submit',
-      name: 'Submit',
+      path: "/submit",
+      name: "Submit",
       component: () => import("@main/views/Submit.vue"),
       meta: {
         showInNavBar: false,
