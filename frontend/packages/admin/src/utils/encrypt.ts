@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /*
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
  * Digest Algorithm, as defined in RFC 1321.
@@ -7,11 +8,11 @@
  * See http://pajhome.org.uk/crypt/md5 for more info.
  */
 /*
- * Configurable variables. You may need to tweak these to be compatible with
+ * Configurable letiables. You may need to tweak these to be compatible with
  * the server-side, but the defaults work in most cases.
  */
-var hexcase = 0; /* hex output format. 0 - lowercase; 1 - uppercase        */
-var chrsz = 8; /* bits per input character. 8 - ASCII; 16 - Unicode      */
+const hexcase = 0; /* hex output format. 0 - lowercase; 1 - uppercase        */
+const chrsz = 8; /* bits per input character. 8 - ASCII; 16 - Unicode      */
 /*
  * These are the functions you'll usually want to call
  * They take string arguments and return either hex or base-64 encoded strings
@@ -26,15 +27,15 @@ function core_md5(x, len) {
   /* append padding */
   x[len >> 5] |= 0x80 << len % 32;
   x[(((len + 64) >>> 9) << 4) + 14] = len;
-  var a = 1732584193;
-  var b = -271733879;
-  var c = -1732584194;
-  var d = 271733878;
-  for (var i = 0; i < x.length; i += 16) {
-    var olda = a;
-    var oldb = b;
-    var oldc = c;
-    var oldd = d;
+  let a = 1732584193;
+  let b = -271733879;
+  let c = -1732584194;
+  let d = 271733878;
+  for (let i = 0; i < x.length; i += 16) {
+    const olda = a;
+    const oldb = b;
+    const oldc = c;
+    const oldd = d;
     a = md5_ff(a, b, c, d, x[i + 0], 7, -680876936);
     d = md5_ff(d, a, b, c, x[i + 1], 12, -389564586);
     c = md5_ff(c, d, a, b, x[i + 2], 17, 606105819);
@@ -104,7 +105,7 @@ function core_md5(x, len) {
     c = safe_add(c, oldc);
     d = safe_add(d, oldd);
   }
-  return Array(a, b, c, d);
+  return [a, b, c, d];
 }
 /*
  * These functions implement the four basic operations the algorithm uses.
@@ -129,8 +130,8 @@ function md5_ii(a, b, c, d, x, s, t) {
  * to work around bugs in some JS interpreters.
  */
 function safe_add(x, y) {
-  var lsw = (x & 0xffff) + (y & 0xffff);
-  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+  const lsw = (x & 0xffff) + (y & 0xffff);
+  const msw = (x >> 16) + (y >> 16) + (lsw >> 16);
   return (msw << 16) | (lsw & 0xffff);
 }
 /*
@@ -144,9 +145,9 @@ function bit_rol(num, cnt) {
  * If chrsz is ASCII, characters >255 have their hi-byte silently ignored.
  */
 function str2binl(str) {
-  var bin = Array();
-  var mask = (1 << chrsz) - 1;
-  for (var i = 0; i < str.length * chrsz; i += chrsz)
+  const bin = [];
+  const mask = (1 << chrsz) - 1;
+  for (let i = 0; i < str.length * chrsz; i += chrsz)
     bin[i >> 5] |= (str.charCodeAt(i / chrsz) & mask) << i % 32;
   return bin;
 }
@@ -154,9 +155,9 @@ function str2binl(str) {
  * Convert an array of little-endian words to a hex string.
  */
 function binl2hex(binarray) {
-  var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
-  var str = "";
-  for (var i = 0; i < binarray.length * 4; i++) {
+  const hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
+  let str = "";
+  for (let i = 0; i < binarray.length * 4; i++) {
     str +=
       hex_tab.charAt((binarray[i >> 2] >> ((i % 4) * 8 + 4)) & 0xf) +
       hex_tab.charAt((binarray[i >> 2] >> ((i % 4) * 8)) & 0xf);

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 
@@ -55,7 +55,7 @@ onMounted(() => {
           rounded
           variant="outlined"
           width="90"
-          @click="router.go()"
+          @click="router.go(0)"
         >
           Close
         </v-btn>

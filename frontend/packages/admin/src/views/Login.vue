@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useField, useForm } from "vee-validate";
-import { fetchex } from "@/utils";
+import { fetchex } from "../utils"
 import collaborationImg from "@/assets/images/collaboration.svg?url";
 
 const store = useStore();
@@ -31,7 +31,7 @@ const showError = ref(false);
 const errorMsg = ref("");
 const success = ref(false);
 
-const errorTimer = ref(null);
+const errorTimer = ref<number>();
 
 const valid = computed(() => {
   return meta.value.valid;
@@ -54,7 +54,7 @@ const login = handleSubmit((values) => {
     body: JSON.stringify(data),
   })
     .then((res) => {
-      if (res.status === 200) {
+      if (res && res.status === 200) {
         return res;
       }
       throw new Error("Network error");
@@ -77,7 +77,7 @@ const login = handleSubmit((values) => {
       }),
     )
     .then((res) => {
-      if (res.status === 200) {
+      if (res && res.status === 200) {
         return res;
       }
       throw new Error("Network error");
@@ -109,13 +109,13 @@ const login = handleSubmit((values) => {
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
-      errorTimer.value = setTimeout(() => {
+      errorTimer.value = Number(setTimeout(() => {
         showError.value = false;
-      }, 3000);
+      }, 3000));
     });
 });
 
-function closeErrorAlert() {
+function closeErrorAlert(): void {
   showError.value = false;
   clearTimeout(errorTimer.value);
 }

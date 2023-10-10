@@ -7,7 +7,4 @@ import * as directives from "vuetify/directives";
 export default createVuetify({
   components,
   directives,
-  icons: {
-    iconfont: "mdi", // default - only for display purposes
-  },
 });

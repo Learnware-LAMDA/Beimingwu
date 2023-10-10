@@ -2,19 +2,28 @@ import { checkedFetch } from "../utils";
 
 const BASE_URL = "./api/engine";
 
-function downloadLearnware({ id }) {
+function downloadLearnware({ id }): Promise<Response> {
   return checkedFetch(`${BASE_URL}/download_learnware?learnware_id=${id}`);
 }
 
-function getLearnwareDetailById({ id }) {
+function getLearnwareDetailById({ id }): Promise<Response> {
   return checkedFetch(`${BASE_URL}/learnware_info?learnware_id=${id}`).then((res) => res.json());
 }
 
-function getSemanticSpecification() {
+function getSemanticSpecification(): Promise<Response> {
   return checkedFetch(`${BASE_URL}/semantic_specification`).then((res) => res.json());
 }
 
-function searchLearnware({ name, dataType, taskType, libraryType, tagList, files, page, limit }) {
+function searchLearnware({
+  name,
+  dataType,
+  taskType,
+  libraryType,
+  tagList,
+  files,
+  page,
+  limit,
+}): Promise<Response> {
   return getSemanticSpecification()
     .then((res) => {
       const semanticSpec = res.data.semantic_specification;

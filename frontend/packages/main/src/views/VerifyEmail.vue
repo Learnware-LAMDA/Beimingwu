@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 import { verifyEmail } from "../request/auth";
@@ -10,7 +10,7 @@ const icon = ref("");
 const color = ref("");
 
 onMounted(() => {
-  const urlParams = new URLSearchParams(route.query);
+  const urlParams = new URLSearchParams(String(route.query));
   verifyEmail(urlParams)
     .then((res) => {
       switch (res.code) {

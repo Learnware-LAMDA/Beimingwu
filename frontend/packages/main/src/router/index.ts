@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import store from "../store";
+import { Component } from "vue";
 
 const Router = createRouter({
   history: createWebHashHistory(),
@@ -7,7 +8,7 @@ const Router = createRouter({
     {
       path: "/",
       name: "Home",
-      component: () => import("../views/Home.vue"),
+      component: (): Promise<Component> => import("../views/Home.vue"),
       meta: {
         showInNavBar: true,
         icon: "mdi-home",
@@ -16,7 +17,7 @@ const Router = createRouter({
     {
       path: "/search",
       name: "Search",
-      component: () => import("../views/Search.vue"),
+      component: (): Promise<Component> => import("../views/Search.vue"),
       meta: {
         showInNavBar: true,
         keepAlive: true,
@@ -26,7 +27,7 @@ const Router = createRouter({
     {
       path: "/submit",
       name: "Submit",
-      component: () => import("../views/Submit.vue"),
+      component: (): Promise<Component> => import("../views/Submit.vue"),
       meta: {
         showInNavBar: true,
         requiredLogin: true,
@@ -37,7 +38,7 @@ const Router = createRouter({
     {
       path: "/docs",
       name: "Docs",
-      component: () => import("../views/Docs.vue"),
+      component: (): Promise<Component> => import("../views/Docs.vue"),
       meta: {
         showInNavBar: true,
         name: "Docs",
@@ -55,7 +56,7 @@ const Router = createRouter({
         {
           path: "/login",
           name: "Login",
-          component: () => import("../views/Login.vue"),
+          component: (): Promise<Component> => import("../views/Login.vue"),
           meta: {
             showInNavBar: true,
             hideWhenLoggedIn: true,
@@ -65,7 +66,7 @@ const Router = createRouter({
         {
           path: "/register",
           name: "Register",
-          component: () => import("../views/Register.vue"),
+          component: (): Promise<Component> => import("../views/Register.vue"),
           meta: {
             showInNavBar: true,
             hideWhenLoggedIn: true,
@@ -77,7 +78,7 @@ const Router = createRouter({
         {
           path: "/changepassword",
           name: "ChangePassword",
-          component: () => import("../views/ChangePassword.vue"),
+          component: (): Promise<Component> => import("../views/ChangePassword.vue"),
           meta: {
             showInNavBar: true,
             requiredLogin: true,
@@ -89,7 +90,7 @@ const Router = createRouter({
         {
           path: "/mylearnware",
           name: "MyLearnware",
-          component: () => import("../views/MyLearnware.vue"),
+          component: (): Promise<Component> => import("../views/MyLearnware.vue"),
           meta: {
             name: "My Learnware",
             showInNavBar: true,
@@ -101,7 +102,7 @@ const Router = createRouter({
         {
           path: "/clienttoken",
           name: "ClientToken",
-          component: () => import("../views/ClientToken.vue"),
+          component: (): Promise<Component> => import("../views/ClientToken.vue"),
           meta: {
             showInNavBar: true,
             requiredLogin: true,
@@ -113,7 +114,7 @@ const Router = createRouter({
         {
           path: "/logout",
           name: "Logout",
-          component: () => import("../views/Logout.vue"),
+          component: (): Promise<Component> => import("../views/Logout.vue"),
           meta: {
             showInNavBar: true,
             requiredLogin: true,
@@ -135,7 +136,7 @@ const Router = createRouter({
         {
           path: "/language/zh",
           name: "Chinese",
-          component: () => import("../views/ChangeLanguage.vue"),
+          component: (): Promise<Component> => import("../views/ChangeLanguage.vue"),
           meta: {
             showInNavBar: true,
             icon: "🇨🇳",
@@ -145,7 +146,7 @@ const Router = createRouter({
         {
           path: "/language/en",
           name: "English",
-          component: () => import("../views/ChangeLanguage.vue"),
+          component: (): Promise<Component> => import("../views/ChangeLanguage.vue"),
           meta: {
             showInNavBar: true,
             icon: "🇺🇸",
@@ -157,7 +158,7 @@ const Router = createRouter({
     {
       path: "/learnwaredetail",
       name: "LearnwareDetail",
-      component: () => import("../views/LearnwareDetail.vue"),
+      component: (): Promise<Component> => import("../views/LearnwareDetail.vue"),
       meta: {
         showInNavBar: false,
         icon: "mdi-bullseye-arrow",
@@ -166,7 +167,7 @@ const Router = createRouter({
     {
       path: "/verify_email",
       name: "VerifyEmail",
-      component: () => import("../views/VerifyEmail.vue"),
+      component: (): Promise<Component> => import("../views/VerifyEmail.vue"),
       meta: {
         showInNavBar: false,
         icon: "mdi-email-check-outline",

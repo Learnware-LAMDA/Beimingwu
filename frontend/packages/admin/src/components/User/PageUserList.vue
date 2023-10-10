@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import UserList from "./UserList.vue";
@@ -50,39 +50,50 @@ const props = defineProps({
   },
 });
 
-const realCols = computed(() => props[display.name.value] || props.cols);
+const realCols = computed(() => {
+  if (display.name.value === "xs") {
+    return props.xs;
+  }
+  if (display.name.value === "sm") {
+    return props.sm;
+  }
+  if (display.name.value === "md") {
+    return props.md;
+  }
+  return props.cols;
+});
 
 const greaterThanXs = computed(() => {
   return display.name.value !== "xs";
 });
 
-function nextPage() {
+function nextPage(): void {
   if (props.page < props.pageNum) {
     jumpPage(props.page + 1);
   }
 }
 
-function formerPage() {
+function formerPage(): void {
   if (props.page > 1) {
     jumpPage(props.page - 1);
   }
 }
 
-function jumpPage(newPage) {
+function jumpPage(newPage: number): void {
   if (newPage >= 1 && newPage <= props.pageNum) {
     emits("pageChange", newPage);
   }
 }
 
-function handleClickReset(id) {
+function handleClickReset(id: string): void {
   emits("click:reset", id);
 }
 
-function handleClickDelete(id) {
+function handleClickDelete(id: string): void {
   emits("click:delete", id);
 }
 
-function handleClickExport(id) {
+function handleClickExport(id: string): void {
   emits("click:export", id);
 }
 </script>

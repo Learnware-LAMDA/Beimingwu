@@ -1,21 +1,26 @@
+interface ErrorState {
+  showGlobalError: boolean;
+  globalErrorMsg: string;
+}
+
 const error = {
   state: {
     showGlobalError: false,
     globalErrorMsg: "",
   },
   getters: {
-    getShowGlobalError(state) {
+    getShowGlobalError(state: ErrorState): boolean {
       return state.showGlobalError;
     },
-    getGlobalErrorMsg(state) {
+    getGlobalErrorMsg(state: ErrorState): string {
       return state.globalErrorMsg;
     },
   },
   mutations: {
-    setShowGlobalError(state, value) {
+    setShowGlobalError(state: ErrorState, value: boolean): void {
       state.showGlobalError = value;
     },
-    setGlobalErrorMsg(state, value) {
+    setGlobalErrorMsg(state: ErrorState, value: string): void {
       state.globalErrorMsg = value;
     },
   },

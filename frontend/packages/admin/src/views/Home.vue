@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import Slogan from "@/components/Home/Slogan.vue";
 </script>
 

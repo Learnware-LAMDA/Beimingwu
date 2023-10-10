@@ -1,15 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 
 const emits = defineEmits(["confirm"]);
 
 const dialog = ref(false);
 
-function confirm() {
+function confirm(): void {
   dialog.value = true;
 }
 
-function emitConfirm() {
+function emitConfirm(): void {
   emits("confirm");
   dialog.value = false;
 }

@@ -1,7 +1,7 @@
 import Store from "../store";
 import Router from "../router";
 
-function checkStatus(res) {
+function checkStatus(res): Response {
   if (res.status === 200) {
     return res;
   }
@@ -14,7 +14,7 @@ function checkStatus(res) {
   throw new Error(`Network error: ${res.status}${res.statusText ? ` - ${res.statusText}` : ""}`);
 }
 
-function checkedFetch(url, options) {
+function checkedFetch(url, options: RequestInit = {}): Promise<Response> {
   // get token from local storage and set in header
   const token = localStorage.getItem("token");
 
@@ -33,8 +33,10 @@ function checkedFetch(url, options) {
   return fetch(url, options).then(checkStatus);
 }
 
-function useProgressedFetch(onProgress) {
-  const progressedFetch = (url, options) => {
+function useProgressedFetch(onProgress): {
+  progressedFetch: (url: string, options: RequestInit) => Promise<Response>;
+} {
+  const progressedFetch = (url, options): Promise<Response> => {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open(options.method || "get", url);
@@ -42,7 +44,7 @@ function useProgressedFetch(onProgress) {
         xhr.setRequestHeader(k, options.headers[k]);
       }
       xhr.setRequestHeader("Authorization", `Bearer ${localStorage.getItem("token")}`);
-      xhr.onload = (e) => {
+      xhr.onload = (e): void => {
         resolve(e.target);
       };
       xhr.onerror = reject;
@@ -61,8 +63,8 @@ function useProgressedFetch(onProgress) {
     })
       .then(checkStatus)
       .then((res) => ({
-        json() {
-          return JSON.parse(res.responseText);
+        json(): Promise<JSON> {
+          return res.text().then((text) => JSON.parse(text));
         },
       }));
   };

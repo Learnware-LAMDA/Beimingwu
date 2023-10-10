@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useStore } from "vuex";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
@@ -8,7 +8,7 @@ const router = useRouter();
 
 const store = useStore();
 
-const animateClass = ref([]);
+const animateClass = ref<string[]>([]);
 
 onMounted(() => {
   animateClass.value = ["animate__animated", "animate__tada"];

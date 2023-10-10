@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
@@ -24,17 +24,17 @@ const routes = computed(() =>
       route.children.forEach((child) => {
         child.meta = {
           ...child.meta,
-          title: t(`Page.${route.name}.${child.name}`),
+          title: t(`Page.${String(route.name)}.${String(child.name)}`),
         };
         route.meta = {
           ...route.meta,
-          title: t(`Page.${route.name}.${route.name}`),
+          title: t(`Page.${String(route.name)}.${String(route.name)}`),
         };
       });
     } else {
       route.meta = {
         ...route.meta,
-        title: t(`Page.${route.name}`),
+        title: t(`Page.${String(route.name)}`),
       };
     }
     return route;

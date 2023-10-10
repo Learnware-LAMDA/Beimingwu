@@ -1,11 +1,11 @@
-function promiseReadFile(file) {
+function promiseReadFile(file): Promise<ArrayBuffer> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsArrayBuffer(file);
-    reader.onload = (event) => {
+    reader.onload = (event): void => {
       resolve(event.target.result);
     };
-    reader.onerror = (event) => {
+    reader.onerror = (event): void => {
       reject(event);
     };
   });

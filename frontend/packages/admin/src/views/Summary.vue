@@ -1,8 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onActivated } from "vue";
 import { Pie } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { fetchex } from "@/utils";
+import { fetchex } from "../utils";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -19,12 +19,18 @@ const options = ref({
 
 const showError = ref(false);
 const errorMsg = ref("");
-const errorTimer = ref(null);
+const errorTimer = ref<number>();
 
-function fetchSummary() {
+function fetchSummary(): void {
   countDetail.value = {};
 
   fetchex("/api/admin/summary", { method: "POST" })
+    .then((res) => {
+      if (res && res.status === 200) {
+        return res;
+      }
+      throw new Error("Network error");
+    })
     .then((res) => res.json())
     .then((res) => {
       if (res.code !== 0) {
@@ -47,7 +53,17 @@ function fetchSummary() {
     });
 }
 
-function getPieData(counts, key) {
+function getPieData(
+  counts,
+  key,
+): {
+  labels: string[];
+  datasets: {
+    label: string;
+    backgroundColor: string[];
+    data: number[];
+  }[];
+} {
   return {
     labels: Object.keys(counts),
     datasets: [

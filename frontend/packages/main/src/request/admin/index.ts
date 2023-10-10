@@ -2,7 +2,7 @@ import { checkedFetch } from "../utils";
 
 const BASE_URL = "./api/admin";
 
-function listLearnware({ userId, page, limit }) {
+function listLearnware({ userId, page, limit }): Promise<Response> {
   return checkedFetch(`${BASE_URL}/list_learnware`, {
     method: "POST",
     headers: {

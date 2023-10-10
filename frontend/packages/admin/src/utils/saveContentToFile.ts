@@ -1,4 +1,4 @@
-export default function saveContentToFile(content, fileName) {
+export default function saveContentToFile(content: BlobPart, fileName: string): void {
   const blob = new Blob([content], { type: "text/csv;charset=utf-8" });
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement("a");

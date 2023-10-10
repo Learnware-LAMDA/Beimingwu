@@ -3,7 +3,7 @@ import { getSemanticSpecification } from "../engine";
 
 const BASE_URL = "./api/user";
 
-function changePassword({ oldPasswordMd5, newPasswordMd5 }) {
+function changePassword({ oldPasswordMd5, newPasswordMd5 }): Promise<Response> {
   return checkedFetch(`${BASE_URL}/change_password`, {
     method: "POST",
     headers: {
@@ -16,7 +16,7 @@ function changePassword({ oldPasswordMd5, newPasswordMd5 }) {
   }).then((res) => res.json());
 }
 
-function deleteLearnware({ id }) {
+function deleteLearnware({ id }): Promise<Response> {
   return checkedFetch(`${BASE_URL}/delete_learnware`, {
     method: "POST",
     headers: {
@@ -28,7 +28,7 @@ function deleteLearnware({ id }) {
   }).then((res) => res.json());
 }
 
-function getLearnwareList({ page, limit }) {
+function getLearnwareList({ page, limit }): Promise<Response> {
   return checkedFetch(`${BASE_URL}/list_learnware`, {
     method: "POST",
     headers: {
@@ -54,7 +54,7 @@ function addLearnware({
   files,
   learnwareId,
   onProgress,
-}) {
+}): Promise<Response> {
   const { progressedFetch } = useProgressedFetch(onProgress);
 
   return getSemanticSpecification()
@@ -89,7 +89,7 @@ function addLearnware({
     .then((res) => res.json());
 }
 
-function verifyLog({ learnware_id }) {
+function verifyLog({ learnware_id }): Promise<Response> {
   return checkedFetch(`${BASE_URL}/verify_log?learnware_id=${learnware_id}`, {
     method: "GET",
     headers: {
@@ -98,7 +98,7 @@ function verifyLog({ learnware_id }) {
   }).then((res) => res.json());
 }
 
-function createToken() {
+function createToken(): Promise<Response> {
   return checkedFetch(`${BASE_URL}/create_token`, {
     method: "POST",
     headers: {
@@ -107,7 +107,7 @@ function createToken() {
   }).then((res) => res.json());
 }
 
-function listToken() {
+function listToken(): Promise<Response> {
   return checkedFetch(`${BASE_URL}/list_token`, {
     method: "POST",
     headers: {
@@ -116,7 +116,7 @@ function listToken() {
   }).then((res) => res.json());
 }
 
-function deleteToken({ token }) {
+function deleteToken({ token }): Promise<Response> {
   return checkedFetch(`${BASE_URL}/delete_token`, {
     method: "POST",
     headers: {

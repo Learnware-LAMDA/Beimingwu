@@ -1,8 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onActivated, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { fetchex, saveContentToFile } from "@/utils";
+import { fetchex, saveContentToFile } from "../utils";
 import SuccessDialog from "@/components/Dialogs/SuccessDialog.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
 import PageUserList from "@/components/User/PageUserList.vue";
@@ -23,7 +23,7 @@ const newPassword = ref("");
 
 const showError = ref(false);
 const errorMsg = ref("");
-const errorTimer = ref(null);
+const errorTimer = ref<number>();
 
 const userName = ref("");
 const email = ref("");
@@ -40,7 +40,7 @@ const filters = computed(() => ({
   email: email.value,
 }));
 
-function fetchByFilterAndPage(filters, page) {
+function fetchByFilterAndPage(filters, page): Promise<void> {
   loading.value = true;
   showError.value = false;
 
@@ -71,7 +71,7 @@ function fetchByFilterAndPage(filters, page) {
       }
       if (res.code === 11 || res.code === 12) {
         store.commit("setLoggedIn", false);
-        router.go();
+        router.go(0);
       }
       throw new Error(res.msg);
     })
@@ -87,8 +87,8 @@ function fetchByFilterAndPage(filters, page) {
     });
 }
 
-function resetPassword(id) {
-  fetchex("/api/admin/reset_password", {
+function resetPassword(id): Promise<void> {
+  return fetchex("/api/admin/reset_password", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -119,14 +119,14 @@ function resetPassword(id) {
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
-      errorTimer.value = setTimeout(() => {
+      errorTimer.value = Number(setTimeout(() => {
         showError.value = false;
-      }, 3000);
+      }, 3000));
     });
 }
 
-function deleteUser(id) {
-  fetchex("/api/admin/delete_user", {
+function deleteUser(id): Promise<void> {
+  return fetchex("/api/admin/delete_user", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -170,24 +170,24 @@ function deleteUser(id) {
     });
 }
 
-function pageChange(newPage) {
+function pageChange(newPage): void {
   console.log(newPage);
   page.value = newPage;
 }
 
-function handleClickReset(id) {
+function handleClickReset(id): void {
   resetDialog.value.confirm();
   resetId.value = id;
   resetName.value = userItems.value.find((item) => item.id === id).username;
 }
 
-function handleClickDelete(id) {
+function handleClickDelete(id): void {
   deleteDialog.value.confirm();
   deleteId.value = id;
   deleteName.value = userItems.value.find((item) => item.id === id).username;
 }
 
-async function handleClickExport() {
+async function handleClickExport(): Promise<void> {
   const table = [["Username", "Email", "Verified", "Unverified"]];
   for (let _page = 1; _page <= pageNum.value; _page++) {
     await fetchex("/api/admin/list_user", {
@@ -217,7 +217,7 @@ async function handleClickExport() {
         }
         if (res.code === 11 || res.code === 12) {
           store.commit("setLoggedIn", false);
-          router.go();
+          router.go(0);
         }
         throw new Error(res.msg);
       })

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import GridBtns from "./GridBtns.vue";
 import TensorFlowBtn from "../../../assets/images/specification/libraryType/tensorflow.svg?component";

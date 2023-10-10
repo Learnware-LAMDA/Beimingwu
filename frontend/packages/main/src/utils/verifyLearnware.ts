@@ -1,7 +1,7 @@
 import JSZip from "jszip";
 import yaml from "js-yaml";
 
-function getTopFolder(zip) {
+function getTopFolder(zip): string {
   // return top folder when there is only one top folder
   // return '' else
   const topFolders = Object.keys(zip.files).filter((key) => {
@@ -19,7 +19,7 @@ function getTopFolder(zip) {
   return topFolders[0];
 }
 
-function verifyLearnware(file) {
+function verifyLearnware(file): Promise<string | boolean> {
   return JSZip.loadAsync(file).then((zip) => {
     const topFolder = getTopFolder(zip);
     if (!zip.files[topFolder + "__init__.py"]) {

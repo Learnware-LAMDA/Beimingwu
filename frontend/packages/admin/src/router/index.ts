@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import store from "@main/store";
+import { Component } from "vue";
 
 const Router = createRouter({
   history: createWebHashHistory(),
@@ -7,7 +8,8 @@ const Router = createRouter({
     {
       path: "/",
       name: "Home",
-      component: () => import("@/views/Home.vue"),
+      component: (): Promise<Component> => import("@/views/Home.vue"),
+
       meta: {
         showInNavBar: true,
         icon: "mdi-home",
@@ -16,7 +18,7 @@ const Router = createRouter({
     {
       path: "/summary",
       name: "Summary",
-      component: () => import("@/views/Summary.vue"),
+      component: (): Promise<Component> => import("@/views/Summary.vue"),
       meta: {
         showInNavBar: true,
         requiredLogin: true,
@@ -27,7 +29,7 @@ const Router = createRouter({
     {
       path: "/alllearnware",
       name: "Learnwares",
-      component: () => import("@/views/Learnwares.vue"),
+      component: (): Promise<Component> => import("@/views/Learnwares.vue"),
       meta: {
         showInNavBar: true,
         requiredLogin: true,
@@ -38,7 +40,7 @@ const Router = createRouter({
     {
       path: "/submit",
       name: "Submit",
-      component: () => import("@main/views/Submit.vue"),
+      component: (): Promise<Component> => import("@main/views/Submit.vue"),
       meta: {
         showInNavBar: false,
         requiredLogin: true,
@@ -49,7 +51,7 @@ const Router = createRouter({
     {
       path: "/alluser",
       name: "Users",
-      component: () => import("@/views/Users.vue"),
+      component: (): Promise<Component> => import("@/views/Users.vue"),
       meta: {
         showInNavBar: true,
         requiredLogin: true,
@@ -60,7 +62,7 @@ const Router = createRouter({
     {
       path: "/learnwaredetail",
       name: "LearnwareDetail",
-      component: () => import("@main/views/LearnwareDetail.vue"),
+      component: (): Promise<Component> => import("@main/views/LearnwareDetail.vue"),
       meta: {
         showInNavBar: false,
         icon: "mdi-bullseye-arrow",
@@ -69,7 +71,7 @@ const Router = createRouter({
     {
       path: "/userlearnware",
       name: "UserLearnware",
-      component: () => import("@main/views/MyLearnware.vue"),
+      component: (): Promise<Component> => import("@main/views/MyLearnware.vue"),
       meta: {
         name: "My Learnware",
         showInNavBar: false,
@@ -89,7 +91,7 @@ const Router = createRouter({
         {
           path: "/login",
           name: "Login",
-          component: () => import("@/views/Login.vue"),
+          component: (): Promise<Component> => import("@/views/Login.vue"),
           meta: {
             showInNavBar: true,
             hideWhenLoggedIn: true,
@@ -99,7 +101,7 @@ const Router = createRouter({
         {
           path: "/logout",
           name: "Logout",
-          component: () => import("@main/views/Logout.vue"),
+          component: (): Promise<Component> => import("@main/views/Logout.vue"),
           meta: {
             showInNavBar: true,
             requiredLogin: true,
@@ -121,7 +123,7 @@ const Router = createRouter({
         {
           path: "/language/zh",
           name: "Chinese",
-          component: () => import("@main/views/ChangeLanguage.vue"),
+          component: (): Promise<Component> => import("@main/views/ChangeLanguage.vue"),
           meta: {
             showInNavBar: true,
             icon: "🇨🇳",
@@ -131,7 +133,7 @@ const Router = createRouter({
         {
           path: "/language/en",
           name: "English",
-          component: () => import("@main/views/ChangeLanguage.vue"),
+          component: (): Promise<Component> => import("@main/views/ChangeLanguage.vue"),
           meta: {
             showInNavBar: true,
             icon: "🇺🇸",
@@ -143,7 +145,7 @@ const Router = createRouter({
   ],
 });
 
-Router.beforeEach((to, from, next) => {
+Router.beforeEach((to, _from, next) => {
   if (to.matched.some((record) => record.meta.requiredLogin)) {
     if (store && !store.getters.getLoggedIn) {
       store.commit("setShowGlobalError", true);

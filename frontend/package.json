@@ -9,7 +9,8 @@
     "dev:admin": "pnpm --filter admin run dev",
     "build:admin": "pnpm --filter admin run build",
     "lint": "eslint . --ext .js,.vue,.ts",
-    "lint:fix": "eslint --fix . --ext .js,.vue,.ts"
+    "lint:fix": "eslint --fix . --ext .js,.vue,.ts",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "vee-validate": "^4.8.4",
@@ -23,6 +24,8 @@
   "devDependencies": {
     "@mdi/font": "^7.2.96",
     "@types/node": "^20.8.4",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
     "@vitejs/plugin-vue": "^4.1.0",
     "@vue/eslint-config-prettier": "^7.1.0",
     "eslint": "^8.43.0",

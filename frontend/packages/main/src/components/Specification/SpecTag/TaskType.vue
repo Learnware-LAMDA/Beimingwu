@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import GridBtns from "./GridBtns.vue";
 import ClassificationBtn from "../../../assets/images/specification/taskType/classification.svg?component";

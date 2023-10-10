@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { resendEmail } from "../../request/auth";
@@ -22,8 +22,8 @@ onMounted(() => {
   });
 });
 
-function onResend() {
-  resendEmail(email.value)
+function onResend(): Promise<void> {
+  return resendEmail(email.value)
     .then((res) => {
       if (res.code === 0) {
         dialog.value = false;
@@ -74,7 +74,7 @@ function onResend() {
           rounded
           variant="outlined"
           width="90"
-          @click="router.go()"
+          @click="router.go(0)"
         >
           Close
         </v-btn>

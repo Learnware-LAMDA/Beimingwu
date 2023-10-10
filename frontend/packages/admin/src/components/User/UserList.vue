@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import oopsImg from "/oops.svg?url";
@@ -7,40 +7,50 @@ const emits = defineEmits(["click:reset", "click:delete", "click:export"]);
 
 const display = useDisplay();
 
-const props = defineProps({
+export interface Props {
   items: {
-    type: Array,
-    required: true,
-  },
-  cols: {
-    type: Number,
-    default: 2,
-  },
-  md: {
-    type: Number,
-    default: 1,
-  },
-  sm: {
-    type: Number,
-    default: 1,
-  },
-  xs: {
-    type: Number,
-    default: 1,
-  },
+    id: string;
+    username: string;
+    email: string;
+    verified_learnware_count: number;
+    unverified_learnware_count: number;
+  }[],
+  cols?: number,
+  md?: number,
+  sm?: number,
+  xs?: number,
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  cols: 2,
+  md: 1,
+  sm: 1,
+  xs: 1,
 });
 
-const realCols = computed(() => props[display.name.value] || props.cols);
 
-function handleClickReset(id) {
+const realCols = computed(() => {
+  if (display.name.value === "xs") {
+    return props.xs;
+  }
+  if (display.name.value === "sm") {
+    return props.sm;
+  }
+  if (display.name.value === "md") {
+    return props.md;
+  }
+  return props.cols;
+})
+
+function handleClickReset(id: string): void {
   emits("click:reset", id);
 }
 
-function handleClickDelete(id) {
+function handleClickDelete(id: string): void {
   emits("click:delete", id);
 }
 
-function handleClickExport() {
+function handleClickExport(): void {
   emits("click:export");
 }
 </script>
