@@ -1,13 +1,12 @@
 <script setup>
 import { ref, watch, onMounted, nextTick, onActivated } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { fetchex } from "@/utils";
 import UserRequirement from "@main/components/Search/UserRequirement.vue";
 import PageLearnwareList from "@main/components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
 
-const route = useRoute();
 const router = useRouter();
 
 const { t } = useI18n();
@@ -67,7 +66,7 @@ function deleteLearnware(id) {
         case 0: {
           learnwareItems.value.splice(
             learnwareItems.value.findIndex((item) => item.id === id),
-            1
+            1,
           );
           if (learnwareItems.value.length === 0 && page.value > 1) {
             page.value--;
@@ -134,9 +133,7 @@ function fetchByFilterAndPage(filters, page) {
       semanticSpec.Name.Values = filters.name;
       semanticSpec.Data.Values = filters.dataType ? [filters.dataType] : [];
       semanticSpec.Task.Values = filters.taskType ? [filters.taskType] : [];
-      semanticSpec.Library.Values = filters.libraryType
-        ? [filters.libraryType]
-        : [];
+      semanticSpec.Library.Values = filters.libraryType ? [filters.libraryType] : [];
       semanticSpec.Scenario.Values = filters.tagList;
       semanticSpec.Description.Values = "";
 
@@ -160,19 +157,17 @@ function fetchByFilterAndPage(filters, page) {
           switch (res.code) {
             case 0: {
               loading.value = false;
-              learnwareItems.value = res.data.learnware_list_single.map(
-                (item) => ({
-                  id: item.learnware_id,
-                  username: item.username,
-                  lastModify: item.last_modify,
-                  name: item.semantic_specification.Name.Values,
-                  description: item.semantic_specification.Description.Values,
-                  dataType: item.semantic_specification.Data.Values[0],
-                  taskType: item.semantic_specification.Task.Values[0],
-                  libraryType: item.semantic_specification.Library.Values[0],
-                  tagList: item.semantic_specification.Scenario.Values,
-                })
-              );
+              learnwareItems.value = res.data.learnware_list_single.map((item) => ({
+                id: item.learnware_id,
+                username: item.username,
+                lastModify: item.last_modify,
+                name: item.semantic_specification.Name.Values,
+                description: item.semantic_specification.Description.Values,
+                dataType: item.semantic_specification.Data.Values[0],
+                taskType: item.semantic_specification.Task.Values[0],
+                libraryType: item.semantic_specification.Library.Values[0],
+                tagList: item.semantic_specification.Scenario.Values,
+              }));
               pageNum.value = res.data.total_pages;
               return;
             }
@@ -221,13 +216,13 @@ watch(
   () => {
     page.value = 1;
     fetchByFilterAndPage(filters.value, page.value);
-  }
-)
+  },
+);
 
 watch(
   () => filters.value,
   () => (page.value = 1),
-  { deep: true }
+  { deep: true },
 );
 
 watch(
@@ -236,7 +231,7 @@ watch(
     if (contentRef.value) {
       contentRef.value.scrollIntoView();
     }
-  }
+  },
 );
 
 watch(
@@ -246,7 +241,7 @@ watch(
 
     fetchByFilterAndPage(newFilters, newPage);
   },
-  { deep: true }
+  { deep: true },
 );
 
 onActivated(() => {
@@ -265,7 +260,7 @@ onMounted(() => {
 
 <template>
   <div class="search-container">
-    <user-requirement class="max-w-[450px]" v-model:value="filters">
+    <user-requirement v-model:value="filters" class="max-w-[450px]">
       <template #prepend>
         <v-btn
           block
@@ -292,24 +287,19 @@ onMounted(() => {
       </v-scroll-y-transition>
       <v-scroll-y-transition class="fixed z-index-1000 left-2/10 right-2/10">
         <v-card-actions v-if="success">
-          <v-alert
-            closable
-            text="Delete success"
-            type="success"
-            @click:close="success = false"
-          />
+          <v-alert closable text="Delete success" type="success" @click:close="success = false" />
         </v-card-actions>
       </v-scroll-y-transition>
       <page-learnware-list
         :items="learnwareItems"
         :filters="filters"
-        @page-change="pageChange"
         :page="page"
         :page-num="pageNum"
         :page-size="pageSize"
         :loading="loading"
         :is-admin="true"
         :show-pagination="pageNum > 1"
+        @page-change="pageChange"
         @click:edit="(id) => handleClickEdit(id)"
         @click:delete="(id) => handleClickDelete(id)"
       />
@@ -321,8 +311,8 @@ onMounted(() => {
         >?
       </template>
       <template #text>
-        The learnware <b>{{ deleteName }}</b> will be deleted in the learnware
-        market <i>permanently</i>. Do you really want to delete?
+        The learnware <b>{{ deleteName }}</b> will be deleted in the learnware market
+        <i>permanently</i>. Do you really want to delete?
       </template>
     </confirm-dialog>
   </div>

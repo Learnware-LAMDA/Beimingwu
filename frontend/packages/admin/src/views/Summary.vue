@@ -1,14 +1,10 @@
 <script setup>
 import { ref, onActivated } from "vue";
-import { useRoute, useRouter } from "vue-router";
 import { Pie } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { fetchex } from "@/utils";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
-const route = useRoute();
-const router = useRouter();
 
 const countUser = ref(0);
 const countVerifiedLearnware = ref(0);
@@ -23,6 +19,7 @@ const options = ref({
 
 const showError = ref(false);
 const errorMsg = ref("");
+const errorTimer = ref(null);
 
 function fetchSummary() {
   countDetail.value = {};
@@ -66,7 +63,6 @@ function getPieData(counts, key) {
 onActivated(() => {
   fetchSummary();
 });
-
 </script>
 
 <template>
@@ -76,10 +72,7 @@ onActivated(() => {
         <v-card-item>
           <div class="text-h6 mb-1">
             User Count:
-            <router-link
-              to="/alluser"
-              class="text-blue-500 text-decoration: underline"
-            >
+            <router-link to="/alluser" class="text-blue-500 text-decoration: underline">
               {{ countUser }}
             </router-link>
           </div>
@@ -112,11 +105,7 @@ onActivated(() => {
         <v-card-item>
           <div class="flex">
             <v-container v-for="key in Object.keys(countDetail)" :key="key">
-              <Pie
-                :data="getPieData(countDetail[key], key)"
-                :options="options"
-                :width="150"
-              />
+              <Pie :data="getPieData(countDetail[key], key)" :options="options" :width="150" />
             </v-container>
           </div>
         </v-card-item>
