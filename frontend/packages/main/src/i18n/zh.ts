@@ -143,6 +143,7 @@ export default {
         },
         DescriptionInput: {
           Name: "特征",
+          Description: "描述",
           FeatureTips:
             "在左侧为每个特征填写描述，或在右侧粘贴JSON对象。澄清每个特征的描述将有助于您的学件适用于具有异构特征空间的任务。",
           FeatureTipsSmall:
@@ -165,7 +166,7 @@ export default {
           Others: "其他",
           OtherTask: "其他任务",
         },
-        DescriptionInput: {
+        DescriptionOutput: {
           Name: "输出",
           Description: "描述",
           FeatureTips:
@@ -246,5 +247,14 @@ export default {
   },
   Public: {
     Description: "描述",
+  },
+  LearnwareDetail: {
+    VerifyStatus: {
+      VerifyStatus: "验证状态",
+      SUCCESS: "验证成功",
+      Unverified: "未验证",
+    },
+    Logs: "日志",
+    LastModified: "最后修改",
   },
 };

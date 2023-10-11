@@ -121,13 +121,13 @@ const taskTypeDescription = computed({
         taskType === 'Feature Extraction'
       "
       v-model:value="taskTypeDescription"
-      :name="t('Submit.Tag.TaskType.DescriptionInput.Name')"
+      :name="t('Submit.Tag.TaskType.DescriptionOutput.Name')"
     >
       <template #msg>
-        {{ t("Submit.Tag.TaskType.DescriptionInput.FeatureTips") }}
+        {{ t("Submit.Tag.TaskType.DescriptionOutput.FeatureTips") }}
       </template>
       <template #msg-small>
-        {{ t("Submit.Tag.TaskType.DescriptionInput.FeatureTipsSmall") }}
+        {{ t("Submit.Tag.TaskType.DescriptionOutput.FeatureTipsSmall") }}
       </template>
     </description-input>
     <library-type-btns v-model:value="libraryType" />

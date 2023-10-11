@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { getLearnwareDetailById } from "../request/engine";
 import { downloadLearnwareSync } from "../utils";
 import { verifyLog } from "../request/user";
@@ -12,10 +13,15 @@ const router = useRouter();
 
 const display = useDisplay();
 
+const { t } = useI18n();
+
 const learnware = ref(null);
 const learnwareId = ref("");
 const downloading = ref(false);
 const loading = ref(false);
+
+const showInputDescription = ref(false);
+const showOutputDescription = ref(false);
 
 const showError = ref(false);
 const errorMsg = ref("");
@@ -107,30 +113,120 @@ function onLearnwareVerifyLog(learnware_id): Promise<void> {
         {{ learnware.id }}
       </v-card-subtitle>
 
-      <v-card-text>
-        <div>Data type: {{ learnware.dataType }}</div>
-        <div>
-          Input:
-          <pre class="overflow-x-scroll">{{ JSON.stringify(learnware.input, null, 2) }}</pre>
+      <v-card-text class="learnware-container">
+        <div class="flex items-center">
+          <div class="mr-2">
+            <v-switch
+              v-if="learnware.dataType === 'Table'"
+              v-model="showInputDescription"
+              color="primary"
+              density="compact"
+              inset
+              hide-details
+            />
+          </div>
+          <div>
+            <b>{{ t("Submit.Tag.DataType.DataType") }}:</b>
+            {{ t(`Submit.Tag.DataType.Type.${learnware.dataType}`) }}
+          </div>
         </div>
-        <div>Task type: {{ learnware.taskType }}</div>
-        <div>
-          Output:
-          <pre class="overflow-x-scroll">{{ JSON.stringify(learnware.output, null, 2) }}</pre>
+        <v-expand-transition>
+          <div v-if="learnware.dataType === 'Table' && showInputDescription" class="mt-2">
+            <div class="flex font-bold py-3 border-y-1">
+              <div class="w-20">
+                {{ t("Submit.Tag.DataType.DescriptionInput.Name") }}
+              </div>
+              <div class="w-1/1">
+                {{ t("Submit.Tag.DataType.DescriptionInput.Description") }}
+              </div>
+            </div>
+            <v-virtual-scroll :items="Object.entries(learnware.input.Description)" :height="300">
+              <template #default="{ item }">
+                <div class="flex py-2 px-1 border-b-1">
+                  <div class="w-20">{{ Number(item[0]) }}</div>
+                  <div class="w-1/1">{{ item[1] }}</div>
+                </div>
+              </template>
+            </v-virtual-scroll>
+          </div>
+        </v-expand-transition>
+
+        <div class="flex items-center">
+          <div class="mr-2">
+            <v-switch
+              v-if="
+                ['Classification', 'Regression', 'Feature Extraction'].includes(learnware.taskType)
+              "
+              v-model="showOutputDescription"
+              color="primary"
+              density="compact"
+              inset
+              hide-details
+            />
+          </div>
+          <div>
+            <b>{{ t("Submit.Tag.TaskType.TaskType") }}:</b>
+            {{ t(`Submit.Tag.TaskType.Type.${learnware.taskType}`) }}
+          </div>
         </div>
-        <div>Library type: {{ learnware.libraryType }}</div>
-        <div>Tags: {{ learnware.tagList.join(", ") }}</div>
+        <v-expand-transition>
+          <div
+            v-if="
+              ['Classification', 'Regression', 'Feature Extraction'].includes(learnware.taskType) &&
+              showOutputDescription
+            "
+            class="mt-2"
+          >
+            <div class="flex font-bold py-3 border-y-1">
+              <div class="w-20">
+                {{ t("Submit.Tag.TaskType.DescriptionOutput.Name") }}
+              </div>
+              <div class="w-1/1">
+                {{ t("Submit.Tag.TaskType.DescriptionOutput.Description") }}
+              </div>
+            </div>
+            <v-virtual-scroll :items="Object.entries(learnware.output.Description)" :height="300">
+              <template #default="{ item }">
+                <div class="flex py-2 px-1 border-b-1">
+                  <div class="w-20">{{ Number(item[0]) }}</div>
+                  <div class="w-1/1">{{ item[1] }}</div>
+                </div>
+              </template>
+            </v-virtual-scroll>
+          </div>
+        </v-expand-transition>
         <div>
-          Verify status: {{ learnware.verifyStatus }},
+          <b>{{ t("Submit.Tag.LibraryType.LibraryType") }}:</b>
+          {{ t(`Submit.Tag.LibraryType.Type.${learnware.libraryType}`) }}
+        </div>
+        <div>
+          <b>{{ t("Submit.Tag.Scenario.Scenario") }}:</b>
+          <span
+            v-for="(tag, i) in learnware.tagList"
+            :key="i"
+            class="ml-1"
+            :class="
+              filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : undefined
+            "
+          >
+            {{ t(`Submit.Tag.Scenario.Type.${tag}`) }}
+          </span>
+        </div>
+        <div>
+          <b>{{ t("LearnwareDetail.VerifyStatus.VerifyStatus") }}: </b>
+          {{ t(`LearnwareDetail.VerifyStatus.${learnware.verifyStatus}`) }},
           <button class="text-blue-500 underline" @click="onLearnwareVerifyLog(learnware.id)">
-            Logs
+            {{ t("LearnwareDetail.Logs") }}
           </button>
         </div>
-        <div>Last modify: {{ dayjs(learnware.lastModify).format("YYYY-MM-DD HH:mm:ss") }}</div>
-      </v-card-text>
-
-      <v-card-text class="md:(text-xl !leading-7) text-sm">
-        Description: {{ learnware.description }}
+        <div>
+          <b> {{ t("LearnwareDetail.LastModified") }}: </b>
+          {{ dayjs(learnware.lastModify).format("YYYY-MM-DD HH:mm:ss") }}
+        </div>
+        <div>
+          <b>{{ t("Submit.Description.Description") }}:</b>
+          {{ learnware.description }}
+        </div>
       </v-card-text>
     </v-card>
     <v-overlay v-model="downloading" class="flex justify-center items-center">
@@ -142,5 +238,12 @@ function onLearnwareVerifyLog(learnware_id): Promise<void> {
 <style scoped lang="scss">
 .download-button {
   @apply absolute right-2 top-2;
+}
+
+.learnware-container {
+  @apply text-lg;
+  > div {
+    @apply my-3;
+  }
 }
 </style>
