@@ -12,7 +12,10 @@
       "@main": ["./packages/main/src"],
       "@main/*": ["./packages/main/src/*"],
       "@admin": ["./packages/admin/src"],
-      "@admin/*": ["./packages/admin/src/*"]
+      "@admin/*": ["./packages/admin/src/*"],
+      "hooks": ["./packages/hooks/src/index.ts"],
+      "types": ["./packages/types/src/index.ts"],
+      "types/*": ["./packages/types/src/*"],
     },
 
     /* Bundler mode */
