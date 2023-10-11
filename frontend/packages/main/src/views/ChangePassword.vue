@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -90,7 +90,7 @@ const change = handleSubmit((values) => {
     });
 });
 
-function closeErrorAlert() {
+function closeErrorAlert(): void {
   clearTimeout(errorTimer.value);
 }
 </script>

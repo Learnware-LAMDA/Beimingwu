@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onActivated } from "vue";
 import { useI18n } from "vue-i18n";
 import { createToken, listToken, deleteToken } from "../request/user";
@@ -10,9 +10,9 @@ const tokens = ref([]);
 const showError = ref(false);
 const errorMsg = ref("");
 
-function fetchList() {
+function fetchList(): Promise<void> {
   showError.value = false;
-  listToken()
+  return listToken()
     .then((res) => {
       switch (res.code) {
         case 0: {
@@ -31,8 +31,8 @@ function fetchList() {
     });
 }
 
-function onGenerateClick() {
-  createToken()
+function onGenerateClick(): Promise<void> {
+  return createToken()
     .then((res) => {
       switch (res.code) {
         case 0: {
@@ -51,8 +51,8 @@ function onGenerateClick() {
     });
 }
 
-function onDeleteClick(token) {
-  deleteToken({ token })
+function onDeleteClick(token): Promise<void> {
+  return deleteToken({ token })
     .then((res) => {
       switch (res.code) {
         case 0: {

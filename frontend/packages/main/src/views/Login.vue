@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
@@ -77,7 +77,7 @@ const submit = handleSubmit((values) => {
     });
 });
 
-function closeErrorAlert() {
+function closeErrorAlert(): void {
   clearTimeout(errorTimer.value);
 }
 </script>

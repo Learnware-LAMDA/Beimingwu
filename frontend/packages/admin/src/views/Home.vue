@@ -1,5 +1,5 @@
-<script setup>
-import Slogan from '@/components/Home/Slogan.vue'
+<script setup lang="ts">
+import Slogan from "@/components/Home/Slogan.vue";
 </script>
 
 <template>

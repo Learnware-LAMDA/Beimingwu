@@ -55,6 +55,7 @@ class RegisterApi(flask_restful.Resource):
             )
             # send email
             utils.send_verification_email(email, verification_code, email_config=context.config["email"])
+            pass
         else:
             database.update_email_confirm_time(email=email)
             pass
@@ -62,6 +63,29 @@ class RegisterApi(flask_restful.Resource):
         result = {"code": code, "msg": "success", "data": {"user_id": user_id}}
 
         return result, 200
+    pass
+
+
+class ResendEmailConfirmApi(flask_restful.Resource):
+    parser = flask_restful.reqparse.RequestParser()
+    parser.add_argument("email", type=str, required=True, location="json")
+    @api.expect(parser)
+    def post(self):
+
+        body = request.get_json()
+        keys = ["email"]
+        if any([k not in body for k in keys]):
+            return {"code": 21, "msg": "Request parameters error."}, 200
+
+        email = body["email"]
+        verification_code = utils.generate_email_verification_code(
+            email, secret_key=context.config["app_secret_key"])
+        utils.send_verification_email(email, verification_code, email_config=context.config["email"])
+
+        result = {"code": 0, "msg": "success", "data": {}}
+
+        return result, 200
+    pass    
 
 
 class EmailConfirmApi(flask_restful.Resource):
@@ -175,6 +199,7 @@ class GetRoleApi(flask_restful.Resource):
 
 
 api.add_resource(RegisterApi, "/register")
+api.add_resource(ResendEmailConfirmApi, "/resend_email_confirm")
 api.add_resource(EmailConfirmApi, "/email_confirm")
 api.add_resource(LoginApi, "/login")
 api.add_resource(LogoutApi, "/logout")

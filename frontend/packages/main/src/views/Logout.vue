@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";

@@ -27,6 +27,19 @@ def check_user_exist(by, value, conn=None):
         return False
     else:
         return True
+    pass
+
+
+def check_user_exist_exclude(by, value, exclude, conn):
+    rows = context.database.execute(
+        f"SELECT {by} FROM tb_user WHERE {by} = :{by} AND {by} <> :exclude", {by: value, "exclude": exclude}, conn=conn
+    )
+
+    if len(rows) == 0:
+        return False
+    else:
+        return True
+    pass
 
 
 def get_user_info(by, value):
@@ -60,6 +73,17 @@ def add_user(username, password, email, role, nickname, conn=None):
     return rows[0][0]
 
 
+def update_user_info(username, password, email, role, nickname, conn=None):
+    context.database.execute(
+        ("UPDATE tb_user SET username = :username, password = :password, email = :email, role = :role, nickname = :nickname"
+         " WHERE email = :email"
+        ),
+        {"username": username, "password": password, "email": email, "role": role, "nickname": nickname},
+        conn=conn,
+    )
+    return True
+
+
 def register_user(username, password, email) -> Tuple[int, str]:
     """all db ops in register user should in a session"""
 
@@ -90,7 +114,13 @@ def register_user(username, password, email) -> Tuple[int, str]:
                 return 52, "Email already exist.", -1
             else:
                 # email not verified
-                return 53, "Email not verified.", -1
+
+                # we update the user info here
+                if check_user_exist_exclude(by="username", value=username, exclude=user_info["username"], conn=conn):
+                    return 51, "Username already exist.", -1
+                
+                update_user_info(username, password, email, 0, username, conn=conn)
+                return 53, "Email not verified.", user_info["id"]
             pass
         pass
     pass

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -24,16 +24,16 @@ const props = defineProps({
 const dragging = ref(false);
 const fileInput = ref(null);
 
-const handleDrop = (event) => {
+const handleDrop = (event): void => {
   dragging.value = false;
   files.value = Array.from(event.dataTransfer.files);
 };
 
-const chooseFile = () => {
+const chooseFile = (): void => {
   fileInput.value.click();
 };
 
-const computeFileSize = (byte) => {
+const computeFileSize = (byte): string => {
   const unit = ["B", "KB", "MB", "GB"];
   let k = 0;
   while (k < 4) {

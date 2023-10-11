@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "es2020",
+    "lib": ["DOM", "ESNext"],
+    "types": ["vite/client", "node"],
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@main": ["./packages/main/src"],
+      "@main/*": ["./packages/main/src/*"],
+      "@admin": ["./packages/admin/src"],
+      "@admin/*": ["./packages/admin/src/*"]
+    },
+
+    /* Bundler mode */
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["./*.ts", "./packages/**/*.ts", "./packages/**/*.vue"],
+  "exclude": ["**/dist/**", "node_modules", "**/node_modules", "**/encrypt.ts"]
+}

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
@@ -23,7 +23,7 @@ const display = useDisplay();
 
 const store = useStore();
 
-function routeFilter(route) {
+function routeFilter(route): boolean {
   if (route.meta.showInNavBar) {
     if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
       return false;

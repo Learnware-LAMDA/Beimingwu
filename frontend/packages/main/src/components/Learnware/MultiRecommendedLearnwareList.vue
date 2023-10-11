@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useStore } from "vuex";
@@ -59,11 +59,11 @@ const downloading = ref(false);
 
 const realCols = computed(() => props[display.name.value] || props.cols);
 
-function showLearnwareDetail(id) {
+function showLearnwareDetail(id): void {
   router.push({ path: "/learnwaredetail", query: { id } });
 }
 
-function downloadAll() {
+function downloadAll(): void {
   downloading.value = true;
 
   const zip = new JSZip();
@@ -94,7 +94,7 @@ function downloadAll() {
     });
 }
 
-function getColorByScore(score) {
+function getColorByScore(score): string {
   if (score > 80) return colors.green.base;
   if (score > 50) return colors.orange.base;
   return colors.red.base;

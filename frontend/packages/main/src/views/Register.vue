@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from "vue";
 import { useField, useForm } from "vee-validate";
 import { useI18n } from "vue-i18n";
@@ -58,6 +58,7 @@ const submit = handleSubmit((values) => {
     .then((res) => {
       switch (res.code) {
         case 0:
+        case 53:
           return (success.value = true);
         case 21: {
           throw new Error("System error");
@@ -93,7 +94,7 @@ const submit = handleSubmit((values) => {
     <div
       class="flex flex-row justify-center items-center w-1/1 fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100"
     >
-      <reg-suc-dialog v-if="success" />
+      <reg-suc-dialog v-if="success" :email="email" />
 
       <v-card flat class="mx-auto w-1/1 sm:p-6 p-2" max-width="500">
         <v-card-title>

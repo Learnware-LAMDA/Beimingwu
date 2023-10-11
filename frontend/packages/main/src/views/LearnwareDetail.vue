@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
@@ -26,8 +26,8 @@ const showOutputDescription = ref(false);
 const showError = ref(false);
 const errorMsg = ref("");
 
-function getLearnwareDetail(id) {
-  getLearnwareDetailById({ id })
+function getLearnwareDetail(id): Promise<void> {
+  return getLearnwareDetailById({ id })
     .then((res) => {
       switch (res.code) {
         case 0: {
@@ -68,8 +68,8 @@ onMounted(() => {
   getLearnwareDetail(learnwareId.value);
 });
 
-function onLearnwareVerifyLog(learnware_id) {
-  verifyLog({ learnware_id }).then((res) => {
+function onLearnwareVerifyLog(learnware_id): Promise<void> {
+  return verifyLog({ learnware_id }).then((res) => {
     var blob = new Blob([res.data], { type: "text/plain" });
     //var blob = res.blob();
     // blob.type = "text/plain";

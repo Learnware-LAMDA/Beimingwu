@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, nextTick, watch, onActivated } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
@@ -29,10 +29,10 @@ const scrollTop = ref(0);
 const showError = ref(false);
 const errorMsg = ref("");
 
-function handleConfirm() {
+function handleConfirm(): Promise<void> {
   showError.value = false;
 
-  deleteLearnware({ id: deleteId.value })
+  return deleteLearnware({ id: deleteId.value })
     .then((res) => {
       switch (res.code) {
         case 0: {
@@ -56,11 +56,11 @@ function handleConfirm() {
     });
 }
 
-function pageChange(newPage) {
+function pageChange(newPage): void {
   page.value = newPage;
 }
 
-function handleClickEdit(id) {
+function handleClickEdit(id): void {
   router.push({
     path: "/submit",
     query: {
@@ -70,13 +70,13 @@ function handleClickEdit(id) {
   });
 }
 
-function handleClickDelete(id) {
+function handleClickDelete(id): void {
   dialog.value.confirm();
   deleteId.value = id;
   deleteName.value = learnwareItems.value.find((item) => item.id === id).name;
 }
 
-function fetchByFilterAndPage(page) {
+function fetchByFilterAndPage(page): void {
   if (contentRef.value) {
     contentRef.value.scrollTop = 0;
   }

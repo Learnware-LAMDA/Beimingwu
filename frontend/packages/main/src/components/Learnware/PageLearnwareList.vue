@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
@@ -62,29 +62,29 @@ const realCols = computed(() => props[display.name.value] || props.cols);
 
 const greaterThanXs = computed(() => display.name.value !== "xs");
 
-function jumpPage(newPage) {
+function jumpPage(newPage): void {
   if (newPage >= 1 && newPage <= props.pageNum) {
     emit("pageChange", newPage);
   }
 }
 
-function nextPage() {
+function nextPage(): void {
   if (props.page < props.pageNum) {
     jumpPage(props.page + 1);
   }
 }
 
-function formerPage() {
+function formerPage(): void {
   if (props.page > 1) {
     jumpPage(props.page - 1);
   }
 }
 
-function handleClickEdit(id) {
+function handleClickEdit(id): void {
   emit("click:edit", id);
 }
 
-function handleClickDelete(id) {
+function handleClickDelete(id): void {
   emit("click:delete", id);
 }
 </script>

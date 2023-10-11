@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useDisplay } from "vuetify";
 import IconBtn from "./IconBtn.vue";
@@ -54,7 +54,7 @@ const realCols = computed(() => {
   return cols;
 });
 
-function clickBtn(btn) {
+function clickBtn(btn): void {
   value.value = btn.value === value.value ? "" : btn.value;
 }
 
