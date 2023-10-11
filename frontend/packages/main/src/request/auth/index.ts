@@ -43,7 +43,7 @@ function register({
   }).then((res) => res.json());
 }
 
-function getRole(): Promise<Response> {
+function getRole(): Promise<{ code: number; msg: string }> {
   return checkedFetch(`${BASE_URL}/get_role`, {
     method: "POST",
   }).then((res) => res.json());

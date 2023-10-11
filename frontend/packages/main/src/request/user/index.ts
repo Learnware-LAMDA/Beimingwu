@@ -73,7 +73,7 @@ function addLearnware({
   files: File[];
   learnwareId: string;
   onProgress: (progress: number) => void;
-}): Promise<Response> {
+}): Promise<{ code: number; msg: string }> {
   const { progressedFetch } = useProgressedFetch(onProgress);
 
   return getSemanticSpecification()
@@ -104,8 +104,7 @@ function addLearnware({
             method: "POST",
             body: fd,
           }),
-    )
-    .then((res) => res.json());
+    ).then((res) => res.json());
 }
 
 function verifyLog({ learnware_id }: { learnware_id: string }): Promise<Response> {

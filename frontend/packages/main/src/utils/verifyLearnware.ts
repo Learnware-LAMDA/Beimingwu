@@ -19,7 +19,7 @@ function getTopFolder(zip: JSZip): string {
   return topFolders[0];
 }
 
-function verifyLearnware(file: File): Promise<string | boolean> {
+function verifyLearnware(file: ArrayBuffer): Promise<string | boolean> {
   return JSZip.loadAsync(file).then((zip) => {
     const topFolder = getTopFolder(zip);
     if (!zip.files[topFolder + "__init__.py"]) {

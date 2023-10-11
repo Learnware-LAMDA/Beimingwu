@@ -41,7 +41,15 @@ function downloadLearnware({ id }: { id: string }): Promise<Response> {
   return checkedFetch(`${BASE_URL}/download_learnware?learnware_id=${id}`);
 }
 
-function getLearnwareDetailById({ id }: { id: string }): Promise<Response> {
+function getLearnwareDetailById({ id }: { id: string }): Promise<{
+  code: number;
+  msg: string;
+  data: {
+    learnware_info: {
+      semantic_specification: SemanticSpecification;
+    };
+  };
+}> {
   return checkedFetch(`${BASE_URL}/learnware_info?learnware_id=${id}`).then((res) => res.json());
 }
 
