@@ -5,7 +5,7 @@ import { LocaleConfig } from "vitepress";
 import locales from "./locales";
 
 export default defineConfig({
-  title: " ",
+  title: "Beiming",
   description: "A VitePress Site",
   locales: locales as LocaleConfig,
   markdown: {
@@ -20,15 +20,4 @@ export default defineConfig({
       },
     },
   },
-
-  head: [
-    [
-      "link",
-      {
-        rel: "stylesheet",
-        href: "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css",
-        crossorigin: "",
-      },
-    ],
-  ],
 });
