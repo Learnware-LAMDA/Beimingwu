@@ -156,29 +156,31 @@ function PrevStep(): void {
   }
 }
 
-function onProgress(progress: number): void {
-  uploadProgress.value = progress * 100;
-}
-onProgress(0);
-addLearnware;
-const submit = (): void => {};
-/*const submit = handleSubmit((values) => {
+function submit(): Promise<void> {
+  if (!valid.value) {
+    return Promise.reject(new Error("Invalid form"));
+  }
+
   submiting.value = true;
   success.value = false;
   showError.value = false;
   uploadProgress.value = 0;
 
-  addLearnware({
+  function onProgress(progress: number): void {
+    uploadProgress.value = progress * 100;
+  }
+
+  return addLearnware({
     edit: Boolean(route.query.edit),
-    name: values.name,
-    dataType: values.dataType,
-    taskType: values.taskType,
-    libraryType: values.libraryType,
-    tagList: values.tagList,
-    dataTypeDescription: values.dataTypeDescription,
-    taskTypeDescription: values.taskTypeDescription,
-    description: values.description,
-    files: values.files,
+    name: name.value,
+    dataType: dataType.value,
+    taskType: taskType.value,
+    libraryType: libraryType.value,
+    tagList: tagList.value,
+    dataTypeDescription: dataTypeDescription.value,
+    taskTypeDescription: taskTypeDescription.value,
+    description: description.value,
+    files: files.value,
     learnwareId: String(route.query.id),
     onProgress,
   })
@@ -221,7 +223,7 @@ const submit = (): void => {};
     .finally(() => {
       submiting.value = false;
     });
-});*/
+}
 
 function checkLoginStatus(): Promise<void> {
   return getRole()
