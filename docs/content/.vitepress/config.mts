@@ -1,5 +1,6 @@
 import { defineConfig } from "vitepress";
 import mathjax3 from "markdown-it-mathjax3";
+import { customElement } from "./mathjax";
 import { LocaleConfig } from "vitepress";
 import locales from "./locales";
 
@@ -15,7 +16,7 @@ export default defineConfig({
   vue: {
     template: {
       compilerOptions: {
-        isCustomElement: (tag) => ["mjx-container"].includes(tag),
+        isCustomElement: (tag) => customElement.includes(tag),
       },
     },
   },
