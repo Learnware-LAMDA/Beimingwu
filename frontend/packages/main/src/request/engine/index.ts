@@ -1,12 +1,13 @@
 import { checkedFetch } from "../utils";
-import {
+import type {
   Name,
   DataType,
   TaskType,
   LibraryType,
   TagList,
   SemanticSpecification,
-} from "types/learnware";
+  Files,
+} from "types";
 
 const BASE_URL = "./api/engine";
 
@@ -44,12 +45,12 @@ function searchLearnware({
   page,
   limit,
 }: {
-  name: Name
+  name: Name;
   dataType: DataType;
   taskType: TaskType;
   libraryType: LibraryType;
   tagList: TagList;
-  files: File[];
+  files: Files;
   page: number;
   limit: number;
 }): Promise<Response> {

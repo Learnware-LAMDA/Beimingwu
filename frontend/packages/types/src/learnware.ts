@@ -1,5 +1,5 @@
 export type Name = string;
-export type DataType = "Table" | "Image" | "Text" | "Video" | "Audio" | "";
+export type DataType = "Table" | "Image" | "Text" | "Video" | "Audio";
 export type TaskType =
   | "Classification"
   | "Regression"
@@ -27,6 +27,9 @@ export type Tag =
   | "Architecture";
 export type TagList = Tag[];
 export type Description = string;
+export type DataTypeDescription = string;
+export type TaskTypeDescription = string;
+export type Files = File[];
 
 export interface SemanticSpecification {
   Name: {
@@ -47,4 +50,6 @@ export interface SemanticSpecification {
   Description: {
     Values: Description;
   };
+  Input: DataTypeDescription;
+  Output: DataTypeDescription;
 }

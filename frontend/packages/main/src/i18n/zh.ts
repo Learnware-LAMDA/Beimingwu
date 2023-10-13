@@ -221,6 +221,13 @@ export default {
       DragFileHere: "拖拽文件到此处",
       ClickHere: "点击此处",
       ForInstructionsOnHowToCreateTheRequiredZipFile: "查看如何创建所需的zip文件",
+      Error: {
+        FileNotFound: "找不到文件 {filename}",
+        KeyNotFoundInFile: "文件 {filename} 中找不到键 '{key}'",
+        KeyEmptyInFile: "文件 {filename} 中的键 '{key}' 为空",
+        KeyNotFoundOrEmptyInFile: "文件 {filename} 中的键 '{key}' 不存在或为空",
+        KeyNotNonEmptyArrayInFile: "文件 {filename} 中的键 '{key}' 不是非空数组",
+      },
     },
     Navigation: {
       NextStep: "下一步",

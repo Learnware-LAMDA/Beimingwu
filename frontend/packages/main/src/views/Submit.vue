@@ -3,12 +3,13 @@ import { ref, computed, onActivated, onMounted } from "vue";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { useField, useForm } from "vee-validate";
 import { useI18n } from "vue-i18n";
 import { getRole } from "../request/auth";
 import { addLearnware } from "../request/user";
 import { getLearnwareDetailById } from "../request/engine";
 import { promiseReadFile, verifyLearnware } from "../utils";
+import type { Name, DataType, TaskType, LibraryType, TagList, Description } from "types";
+import { useField } from "hooks";
 import VStepperTitle from "../components/Public/VStepperTitle.vue";
 import FileUpload from "../components/Specification/FileUpload.vue";
 import SpecTag from "../components/Specification/SpecTag.vue";
@@ -23,105 +24,54 @@ const store = useStore();
 
 const { t } = useI18n();
 
-const { handleSubmit, meta } = useForm({
-  initialValues: {
-    name: "",
-    dataType: "",
-    taskType: "",
-    libraryType: "",
-    tagList: [],
-    dataTypeDescription: JSON.stringify({
-      Dimension: 7,
-      Description: {
-        0: "gender",
-        1: "age",
-        2: "f2",
-        5: "f5",
-      },
-    }),
-    taskTypeDescription: JSON.stringify({
-      Dimension: 3,
-      Description: {
-        0: "the probability of being a cat",
-        1: "the probability of being a dog",
-        2: "the probability of being a bird",
-      },
-    }),
-    description: "",
-    files: [],
-  },
-  validationSchema: {
-    name(value: string) {
-      if (value?.length >= 5) {
-        return true;
-      }
-      return t("Submit.Name.Error.AtLeast5Chars");
-    },
-    dataType(value: string) {
-      if (value?.length > 0) {
-        return true;
-      }
-      return t("Submit.Tag.DataType.Error.NotEmpty");
-    },
-    taskType(value: string) {
-      if (value?.length > 0) {
-        return true;
-      }
-      return t("Submit.Tag.TaskType.Error.NotEmpty");
-    },
-    libraryType(value: string) {
-      if (value?.length > 0) {
-        return true;
-      }
-      return t("Submit.Tag.LibraryType.Error.NotEmpty");
-    },
-    tagList() {
-      return true;
-    },
-    dataTypeDescription() {
-      // try {
-      //   JSON.parse(value);
-      // } catch (err) {
-      //   return "Data type description must be a valid JSON string.";
-      // }
-      return true;
-    },
-    taskTypeDescription() {
-      return true;
-    },
-    description(value: string) {
-      if (value?.length >= 10) {
-        return true;
-      }
-      return t("Submit.Description.Error.AtLeast10Chars");
-    },
-    files(value: File[]) {
-      if (route.query.edit && value[0]?.name === "Your old learnware") {
-        return true;
-      }
-      if (!value.length || value.length === 0) {
-        return "Please upload your model & statistical specification.";
-      }
-      if (!value[0].name.endsWith(".zip")) {
-        return "You must upload a zip file.";
-      }
-      if (value[0].size > 1024 * 1024 * 1024) {
-        return "File size must be less than 1GB.";
-      }
-      return promiseReadFile(value[0]).then(verifyLearnware);
-    },
-  },
+const name = useField<Name>("", (value: Name): string => {
+  if (value?.length >= 5) {
+    return "";
+  }
+  return t("Submit.Name.Error.AtLeast5Chars");
 });
-
-const name = useField("name");
-const dataType = useField<string>("dataType");
-const taskType = useField<string>("taskType");
-const libraryType = useField<string>("libraryType");
-const tagList = useField<string[]>("tagList");
-const dataTypeDescription = useField<string>("dataTypeDescription");
-const taskTypeDescription = useField<string>("taskTypeDescription");
-const description = useField<string>("description");
-const files = useField<File[]>("files");
+const dataType = useField<DataType | "">("", (value: DataType | ""): string => {
+  if (value?.length > 0) {
+    return "";
+  }
+  return t("Submit.Tag.DataType.Error.NotEmpty");
+});
+const taskType = useField<TaskType | "">("", (value: TaskType | ""): string => {
+  if (value?.length > 0) {
+    return "";
+  }
+  return t("Submit.Tag.TaskType.Error.NotEmpty");
+});
+const libraryType = useField<LibraryType | "">("", (value: LibraryType | ""): string => {
+  if (value?.length > 0) {
+    return "";
+  }
+  return t("Submit.Tag.LibraryType.Error.NotEmpty");
+});
+const tagList = useField<TagList>([]);
+const dataTypeDescription = useField<string>("");
+const taskTypeDescription = useField<string>("");
+const description = useField<Description>("", (value: Description): string => {
+  if (value?.length >= 10) {
+    return "";
+  }
+  return t("Submit.Description.Error.AtLeast10Chars");
+});
+const files = useField<File[]>([], (value): string | Promise<string> => {
+  if (route.query.edit && value[0]?.name === "Your old learnware") {
+    return "";
+  }
+  if (!value.length || value.length === 0) {
+    return "Please upload your model & statistical specification.";
+  }
+  if (!value[0].name.endsWith(".zip")) {
+    return "You must upload a zip file.";
+  }
+  if (value[0].size > 1024 * 1024 * 1024) {
+    return "File size must be less than 1GB.";
+  }
+  return promiseReadFile(value[0]).then((file) => verifyLearnware(file, t));
+});
 
 const currentStep = ref(0);
 const submiting = ref(false);
@@ -154,22 +104,29 @@ const steps = computed(() => [
   },
 ]);
 
-const valid = computed(() => meta.value.valid);
+const valid = computed(
+  () =>
+    name.valid &&
+    dataType.valid &&
+    taskType.valid &&
+    libraryType.valid &&
+    tagList.valid &&
+    description.valid &&
+    files.valid,
+);
 const allowChangePage = computed(() => {
   switch (currentStep.value) {
     case 0: {
-      return name.meta.valid;
+      return name.valid;
     }
     case 1: {
-      return (
-        dataType.meta.valid && taskType.meta.valid && libraryType.meta.valid && tagList.meta.valid
-      );
+      return dataType.valid && taskType.valid && libraryType.valid && tagList.valid;
     }
     case 2: {
-      return description.meta.valid;
+      return description.valid;
     }
     case 3: {
-      return files.meta.valid;
+      return files.valid;
     }
     default: {
       return false;
@@ -202,8 +159,10 @@ function PrevStep(): void {
 function onProgress(progress: number): void {
   uploadProgress.value = progress * 100;
 }
-
-const submit = handleSubmit((values) => {
+onProgress(0);
+addLearnware;
+const submit = (): void => {};
+/*const submit = handleSubmit((values) => {
   submiting.value = true;
   success.value = false;
   showError.value = false;
@@ -220,7 +179,7 @@ const submit = handleSubmit((values) => {
     taskTypeDescription: values.taskTypeDescription,
     description: values.description,
     files: values.files,
-    learnwareId: route.query.id,
+    learnwareId: String(route.query.id),
     onProgress,
   })
     .then((res) => {
@@ -262,7 +221,7 @@ const submit = handleSubmit((values) => {
     .finally(() => {
       submiting.value = false;
     });
-});
+});*/
 
 function checkLoginStatus(): Promise<void> {
   return getRole()
@@ -302,7 +261,7 @@ function checkLoginStatus(): Promise<void> {
 
 function checkIsEditMode(): undefined | Promise<void> {
   if (!!route.query.edit && !!route.query.id) {
-    return getLearnwareDetailById({ id: route.query.id })
+    return getLearnwareDetailById({ id: String(route.query.id) })
       .then((res) => {
         switch (res.code) {
           case 0: {
@@ -314,16 +273,16 @@ function checkIsEditMode(): undefined | Promise<void> {
             }
             currentStep.value = 0;
             const semanticSpec = res.data.learnware_info.semantic_specification;
-            name.value.value = semanticSpec.Name.Values;
-            description.value.value = semanticSpec.Description.Values;
-            dataType.value.value = semanticSpec.Data.Values[0];
-            taskType.value.value = semanticSpec.Task.Values[0];
-            libraryType.value.value = semanticSpec.Library.Values[0];
-            tagList.value.value = semanticSpec.Scenario.Values;
+            name.value = semanticSpec.Name.Values;
+            description.value = semanticSpec.Description.Values;
+            dataType.value = semanticSpec.Data.Values[0];
+            taskType.value = semanticSpec.Task.Values[0];
+            libraryType.value = semanticSpec.Library.Values[0];
+            tagList.value = semanticSpec.Scenario.Values;
             if (semanticSpec.Input) {
-              dataTypeDescription.value.value = JSON.stringify(semanticSpec.Input);
+              dataTypeDescription.value = JSON.stringify(semanticSpec.Input);
             } else {
-              dataTypeDescription.value.value = JSON.stringify({
+              dataTypeDescription.value = JSON.stringify({
                 Dimension: 2,
                 Description: {
                   0: "You have not provided a description of the input data",
@@ -332,9 +291,9 @@ function checkIsEditMode(): undefined | Promise<void> {
               });
             }
             if (semanticSpec.Output) {
-              taskTypeDescription.value.value = JSON.stringify(semanticSpec.Output);
+              taskTypeDescription.value = JSON.stringify(semanticSpec.Output);
             } else {
-              taskTypeDescription.value.value = JSON.stringify({
+              taskTypeDescription.value = JSON.stringify({
                 Dimension: 2,
                 Description: {
                   0: "You have not provided a description of the output data",
@@ -342,7 +301,7 @@ function checkIsEditMode(): undefined | Promise<void> {
                 },
               });
             }
-            files.value.value = [new File([], "Your old learnware")];
+            files.value = [new File([], "Your old learnware")];
             return;
           }
           default: {
@@ -404,13 +363,13 @@ onActivated(init);
           <v-window-item :value="0">
             <v-card-text>
               <v-text-field
-                v-model="name.value.value"
+                v-model="name.value"
                 :label="t('Submit.Name.Name')"
                 :placeholder="t('Submit.Name.Placeholder')"
                 append-inner-icon="mdi-close"
-                :error-messages="name.errorMessage.value"
+                :error-messages="name.errorMessages"
                 counter="30"
-                @click:append-inner="name.value.value = ''"
+                @click:append-inner="name.value = ''"
               ></v-text-field>
               <span class="text-caption text-grey-darken-1">
                 {{ t("Submit.Name.Description") }}
@@ -421,17 +380,17 @@ onActivated(init);
           <v-window-item :value="1">
             <v-card-text class="pt-0">
               <spec-tag
-                v-model:data-type="dataType.value.value"
-                v-model:task-type="taskType.value.value"
-                v-model:library-type="libraryType.value.value"
-                v-model:tag-list="tagList.value.value"
-                v-model:data-type-description="dataTypeDescription.value.value"
-                v-model:task-type-description="taskTypeDescription.value.value"
+                v-model:data-type="dataType.value"
+                v-model:task-type="taskType.value"
+                v-model:library-type="libraryType.value"
+                v-model:tag-list="tagList.value"
+                v-model:data-type-description="dataTypeDescription.value"
+                v-model:task-type-description="taskTypeDescription.value"
                 :error-messages="
-                  dataType.errorMessage.value ||
-                  taskType.errorMessage.value ||
-                  libraryType.errorMessage.value ||
-                  tagList.errorMessage.value
+                  dataType.errorMessages ||
+                  taskType.errorMessages ||
+                  libraryType.errorMessages ||
+                  tagList.errorMessages
                 "
               />
             </v-card-text>
@@ -440,10 +399,10 @@ onActivated(init);
           <v-window-item :value="2">
             <div class="pa-4">
               <v-textarea
-                v-model="description.value.value"
+                v-model="description.value"
                 :label="t('Submit.Description.Description')"
                 :placeholder="t('Submit.Description.Placeholder')"
-                :error-messages="description.errorMessage.value"
+                :error-messages="description.errorMessages"
                 counter="200"
               ></v-textarea>
             </div>
@@ -452,8 +411,8 @@ onActivated(init);
           <v-window-item :value="3">
             <div class="p-4 m-auto">
               <file-upload
-                v-model:files="files.value.value"
-                :error-messages="files.errorMessage.value"
+                v-model:files="files.value"
+                :error-messages="files.errorMessages"
               ></file-upload>
             </div>
             <v-card-text class="text-lg <sm:text-sm">

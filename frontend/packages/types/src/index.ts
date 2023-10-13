@@ -1,1 +1,1 @@
-export * as learnware from "./learnware";
+export * from "./learnware";
