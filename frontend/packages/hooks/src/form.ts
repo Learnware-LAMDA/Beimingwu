@@ -6,14 +6,19 @@ interface Field<T> {
   valid: boolean;
 }
 
-export function useField<T>(
-  defaultValue: T,
-  validate: (value: T) => string | Promise<string> = (): string => "",
-): Field<T> {
+export function useField<T>({
+  defaultValue,
+  defaultValid = false,
+  validate = (): string => "",
+}: {
+  defaultValue: T;
+  defaultValid?: boolean;
+  validate?: (value: T) => string | Promise<string>;
+}): Field<T> {
   const field = reactive<Field<T>>({
     value: defaultValue,
     errorMessages: "",
-    valid: false,
+    valid: defaultValid,
   });
 
   watch(

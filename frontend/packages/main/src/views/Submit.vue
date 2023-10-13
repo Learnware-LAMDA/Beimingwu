@@ -24,53 +24,71 @@ const store = useStore();
 
 const { t } = useI18n();
 
-const name = useField<Name>("", (value: Name): string => {
-  if (value?.length >= 5) {
-    return "";
-  }
-  return t("Submit.Name.Error.AtLeast5Chars");
+const name = useField<Name>({
+  defaultValue: "",
+  validate: (value: Name): string => {
+    if (value?.length >= 5) {
+      return "";
+    }
+    return t("Submit.Name.Error.AtLeast5Chars");
+  },
 });
-const dataType = useField<DataType | "">("", (value: DataType | ""): string => {
-  if (value?.length > 0) {
-    return "";
-  }
-  return t("Submit.Tag.DataType.Error.NotEmpty");
+const dataType = useField<DataType | "">({
+  defaultValue: "",
+  validate: (value: DataType | ""): string => {
+    if (value?.length > 0) {
+      return "";
+    }
+    return t("Submit.Tag.DataType.Error.NotEmpty");
+  },
 });
-const taskType = useField<TaskType | "">("", (value: TaskType | ""): string => {
-  if (value?.length > 0) {
-    return "";
-  }
-  return t("Submit.Tag.TaskType.Error.NotEmpty");
+const taskType = useField<TaskType | "">({
+  defaultValue: "",
+  validate: (value: TaskType | ""): string => {
+    if (value?.length > 0) {
+      return "";
+    }
+    return t("Submit.Tag.TaskType.Error.NotEmpty");
+  },
 });
-const libraryType = useField<LibraryType | "">("", (value: LibraryType | ""): string => {
-  if (value?.length > 0) {
-    return "";
-  }
-  return t("Submit.Tag.LibraryType.Error.NotEmpty");
+const libraryType = useField<LibraryType | "">({
+  defaultValue: "",
+  validate: (value: LibraryType | ""): string => {
+    if (value?.length > 0) {
+      return "";
+    }
+    return t("Submit.Tag.LibraryType.Error.NotEmpty");
+  },
 });
-const tagList = useField<TagList>([]);
-const dataTypeDescription = useField<string>("");
-const taskTypeDescription = useField<string>("");
-const description = useField<Description>("", (value: Description): string => {
-  if (value?.length >= 10) {
-    return "";
-  }
-  return t("Submit.Description.Error.AtLeast10Chars");
+const tagList = useField<TagList>({ defaultValue: [], defaultValid: true });
+const dataTypeDescription = useField<string>({ defaultValue: "" });
+const taskTypeDescription = useField<string>({ defaultValue: "" });
+const description = useField<Description>({
+  defaultValue: "",
+  validate: (value: Description): string => {
+    if (value?.length >= 10) {
+      return "";
+    }
+    return t("Submit.Description.Error.AtLeast10Chars");
+  },
 });
-const files = useField<File[]>([], (value): string | Promise<string> => {
-  if (route.query.edit && value[0]?.name === "Your old learnware") {
-    return "";
-  }
-  if (!value.length || value.length === 0) {
-    return "Please upload your model & statistical specification.";
-  }
-  if (!value[0].name.endsWith(".zip")) {
-    return "You must upload a zip file.";
-  }
-  if (value[0].size > 1024 * 1024 * 1024) {
-    return "File size must be less than 1GB.";
-  }
-  return promiseReadFile(value[0]).then((file) => verifyLearnware(file, t));
+const files = useField<File[]>({
+  defaultValue: [],
+  validate: (value): string | Promise<string> => {
+    if (route.query.edit && value[0]?.name === "Your old learnware") {
+      return "";
+    }
+    if (!value.length || value.length === 0) {
+      return "Please upload your model & statistical specification.";
+    }
+    if (!value[0].name.endsWith(".zip")) {
+      return "You must upload a zip file.";
+    }
+    if (value[0].size > 1024 * 1024 * 1024) {
+      return "File size must be less than 1GB.";
+    }
+    return promiseReadFile(value[0]).then((file) => verifyLearnware(file, t));
+  },
 });
 
 const currentStep = ref(0);
