@@ -8,7 +8,13 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), WindiCSS(), svgLoader(), eslintPlugin(), checker({ typescript: true })],
+  plugins: [
+    vue(),
+    WindiCSS(),
+    svgLoader(),
+    eslintPlugin(),
+    checker({ typescript: true, vueTsc: true }),
+  ],
   base: "./",
   resolve: {
     alias: {

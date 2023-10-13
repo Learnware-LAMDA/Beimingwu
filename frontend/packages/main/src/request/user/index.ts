@@ -1,5 +1,6 @@
 import { checkedFetch, useProgressedFetch } from "../utils";
 import { getSemanticSpecification } from "../engine";
+import type { Name, DataType, TaskType, LibraryType, TagList, Description, Files } from "types";
 
 const BASE_URL = "./api/user";
 
@@ -62,15 +63,15 @@ function addLearnware({
   onProgress,
 }: {
   edit?: boolean;
-  name: string;
-  dataType: string;
-  taskType: string;
-  libraryType: string;
-  tagList: string[];
+  name: Name;
+  dataType: DataType;
+  taskType: TaskType;
+  libraryType: LibraryType;
+  tagList: TagList;
   dataTypeDescription: string;
   taskTypeDescription: string;
-  description: string;
-  files: File[];
+  description: Description
+  files: Files;
   learnwareId: string;
   onProgress: (progress: number) => void;
 }): Promise<{ code: number; msg: string }> {
