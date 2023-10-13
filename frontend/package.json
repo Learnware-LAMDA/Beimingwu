@@ -40,6 +40,7 @@
     "types": "workspace:^",
     "typescript": "^5.2.2",
     "vite": "^4.2.0",
+    "vite-plugin-checker": "^0.6.2",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-windicss": "^1.8.10",
     "vite-svg-loader": "^4.0.0",
