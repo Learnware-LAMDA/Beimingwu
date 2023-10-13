@@ -9,7 +9,7 @@ export type TaskType =
   | "Feature Extraction"
   | "Segmentation"
   | "Others";
-export type LibraryType = "PyTorch" | "TensorFlow" | "scikit" | "Scikit-learn" | "Others";
+export type LibraryType = "PyTorch" | "TensorFlow" | "Scikit-learn" | "Others";
 export type Tag =
   | "Business"
   | "Financial"
