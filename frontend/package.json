@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "dayjs": "^1.10.7",
+    "hooks": "workspace:^",
     "js-yaml": "^4.1.0",
     "jszip": "^3.10.1",
     "vee-validate": "^4.8.4",
@@ -37,6 +38,7 @@
     "eslint-plugin-vue": "^9.15.0",
     "prettier": "^2.8.8",
     "sass": "^1.60.0",
+    "types": "workspace:^",
     "typescript": "^5.2.2",
     "vite": "^4.2.0",
     "vite-plugin-eslint": "^1.8.1",

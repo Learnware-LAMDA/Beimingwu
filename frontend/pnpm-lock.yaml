@@ -11,6 +11,9 @@ importers:
       dayjs:
         specifier: ^1.10.7
         version: 1.10.7
+      hooks:
+        specifier: workspace:^
+        version: link:packages/hooks
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.0
@@ -75,6 +78,9 @@ importers:
       sass:
         specifier: ^1.60.0
         version: 1.60.0
+      types:
+        specifier: workspace:^
+        version: link:packages/types
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -108,15 +114,7 @@ importers:
 
   packages/hooks: {}
 
-  packages/main:
-    dependencies:
-      types:
-        specifier: workspace:^
-        version: link:../types
-    devDependencies:
-      hooks:
-        specifier: workspace:^
-        version: link:../hooks
+  packages/main: {}
 
   packages/types: {}
 
