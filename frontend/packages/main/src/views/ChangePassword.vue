@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { useField, useForm } from "vee-validate";
+import { useField } from "hooks";
 import { useI18n } from "vue-i18n";
 import { changePassword } from "../request/user";
 import { hex_md5 } from "../utils";
@@ -14,29 +14,25 @@ const router = useRouter();
 
 const { t } = useI18n();
 
-const { handleSubmit, meta } = useForm({
-  validationSchema: {
-    oldPassword() {
-      return true;
-    },
-    newPassword(value) {
-      if (value?.length >= 8) return true;
+const oldPassword = useField<string>({ defaultValue: "" });
+const newPassword = useField<string>({
+  defaultValue: "",
+  validate: (value) => {
+    if (value?.length >= 8) return "";
 
-      return t("ChangePassword.Error.NewPasswordAtLeast8Chars");
-    },
-    newPassword2(value) {
-      if (value?.length >= 8) {
-        if (value && value === newPassword.value.value) return true;
-        return t("ChangePassword.Error.NewPasswordNotMatch");
-      }
-      return t("ChangePassword.Error.NewPasswordAtLeast8Chars");
-    },
+    return t("ChangePassword.Error.NewPasswordAtLeast8Chars");
   },
 });
-
-const oldPassword = useField("oldPassword");
-const newPassword = useField("newPassword");
-const newPassword2 = useField("newPassword2");
+const newPassword2 = useField<string>({
+  defaultValue: "",
+  validate: (value) => {
+    if (value?.length >= 8) {
+      if (value && value === newPassword.value) return "";
+      return t("ChangePassword.Error.NewPasswordNotMatch");
+    }
+    return t("ChangePassword.Error.NewPasswordAtLeast8Chars");
+  },
+});
 
 const showOldPassword = ref(false);
 const showNewPassword = ref(false);
@@ -45,14 +41,14 @@ const showError = ref(false);
 const errorMsg = ref("");
 const success = ref(false);
 
-const errorTimer = ref(null);
+const errorTimer = ref<number>();
 
-const valid = computed(() => meta.value.valid);
+const valid = computed(() => oldPassword.valid && newPassword.valid && newPassword2.valid);
 
-const change = handleSubmit((values) => {
-  changePassword({
-    oldPasswordMd5: hex_md5(values.oldPassword),
-    newPasswordMd5: hex_md5(values.newPassword),
+function change(): Promise<void> {
+  return changePassword({
+    oldPasswordMd5: hex_md5(oldPassword.value),
+    newPasswordMd5: hex_md5(newPassword.value),
   })
     .then((res) => {
       switch (res.code) {
@@ -76,7 +72,11 @@ const change = handleSubmit((values) => {
           showError.value = true;
           errorMsg.value = res.msg;
           clearTimeout(errorTimer.value);
-          errorTimer.value = setTimeout(() => (showError.value = false), 3000);
+          errorTimer.value = Number(
+            setTimeout(() => {
+              showError.value = false;
+            }, 3000),
+          );
         }
       }
     })
@@ -84,11 +84,13 @@ const change = handleSubmit((values) => {
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
-      errorTimer.value = setTimeout(() => {
-        showError.value = false;
-      }, 3000);
+      errorTimer.value = Number(
+        setTimeout(() => {
+          showError.value = false;
+        }, 3000),
+      );
     });
-});
+}
 
 function closeErrorAlert(): void {
   clearTimeout(errorTimer.value);
@@ -134,29 +136,29 @@ function closeErrorAlert(): void {
         <v-card-text>
           <v-form ref="form">
             <v-text-field
-              v-model="oldPassword.value.value"
+              v-model="oldPassword.value"
               :append-icon="showOldPassword ? 'mdi-eye' : 'mdi-eye-off'"
               :type="showOldPassword ? 'text' : 'password'"
               :label="t('ChangePassword.OldPassword')"
-              :error-messages="oldPassword.errorMessage.value"
+              :error-messages="oldPassword.errorMessages"
               @click:append="showOldPassword = !showOldPassword"
             >
             </v-text-field>
             <v-text-field
-              v-model="newPassword.value.value"
+              v-model="newPassword.value"
               :append-icon="showNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
               :type="showNewPassword ? 'text' : 'password'"
               :label="t('ChangePassword.NewPassword')"
-              :error-messages="newPassword.errorMessage.value"
+              :error-messages="newPassword.errorMessages"
               @click:append="showNewPassword = !showNewPassword"
             >
             </v-text-field>
             <v-text-field
-              v-model="newPassword2.value.value"
+              v-model="newPassword2.value"
               :append-icon="showNewPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
               :type="showNewPassword2 ? 'text' : 'password'"
               :label="t('ChangePassword.ConfirmNewPassword')"
-              :error-messages="newPassword2.errorMessage.value"
+              :error-messages="newPassword2.errorMessages"
               @click:append="showNewPassword2 = !showNewPassword2"
             >
             </v-text-field>

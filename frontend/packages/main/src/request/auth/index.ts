@@ -2,7 +2,13 @@ import { checkedFetch } from "../utils";
 
 const BASE_URL = "./api/auth";
 
-function login({ email, passwordMd5 }: { email: string; passwordMd5: string }): Promise<Response> {
+function login({
+  email,
+  passwordMd5,
+}: {
+  email: string;
+  passwordMd5: string;
+}): Promise<{ code: number; msg: string; data: { token: string } }> {
   return checkedFetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: {
@@ -29,7 +35,10 @@ function register({
   username: string;
   email: string;
   passwordMd5: string;
-}): Promise<Response> {
+}): Promise<{
+  code: number;
+  msg: string;
+}> {
   return checkedFetch(`${BASE_URL}/register`, {
     method: "POST",
     headers: {

@@ -3,7 +3,7 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useField, useForm } from "vee-validate";
+import { useField } from "hooks";
 import { login } from "../request/auth";
 import { hex_md5 } from "../utils";
 import collaborationImg from "../assets/images/public/collaboration.svg?url";
@@ -14,37 +14,37 @@ const { t } = useI18n();
 
 const router = useRouter();
 
-const { handleSubmit, meta } = useForm({
-  validationSchema: {
-    email(value) {
-      if (/^[a-z.-_]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
-
+const email = useField<string>({
+  defaultValue: "",
+  validate: (value) => {
+    if (!/^[a-z.-_]+@[a-z.-]+\.[a-z]+$/i.test(value)) {
       return t("Login.Error.InvalidEmail");
-    },
-    password(value) {
-      if (value?.length >= 8) return true;
-
-      return t("Login.Error.PasswordAtLeast8Chars");
-    },
+    }
+    return "";
   },
 });
+const password = useField<string>({
+  defaultValue: "",
+  validate: (value) => {
+    if (value?.length >= 8) return "";
 
-const email = useField("email");
-const password = useField("password");
+    return t("Login.Error.PasswordAtLeast8Chars");
+  },
+});
 
 const showPassword = ref(false);
 const showError = ref(false);
 const errorMsg = ref("");
 const success = ref(false);
 
-const errorTimer = ref(null);
+const errorTimer = ref<number>();
 
-const valid = computed(() => meta.value.valid);
+const valid = computed(() => email.valid && password.valid);
 
-const submit = handleSubmit((values) => {
-  login({
-    email: values.email,
-    passwordMd5: hex_md5(values.password),
+function submit(): Promise<void> {
+  return login({
+    email: email.value,
+    passwordMd5: hex_md5(password.value),
   })
     .then((res) => {
       switch (res.code) {
@@ -63,7 +63,7 @@ const submit = handleSubmit((values) => {
           showError.value = true;
           errorMsg.value = res.msg;
           clearTimeout(errorTimer.value);
-          errorTimer.value = setTimeout(() => (showError.value = false), 3000);
+          errorTimer.value = Number(setTimeout(() => (showError.value = false), 3000));
         }
       }
     })
@@ -71,11 +71,13 @@ const submit = handleSubmit((values) => {
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
-      errorTimer.value = setTimeout(() => {
-        showError.value = false;
-      }, 3000);
+      errorTimer.value = Number(
+        setTimeout(() => {
+          showError.value = false;
+        }, 3000),
+      );
     });
-});
+}
 
 function closeErrorAlert(): void {
   clearTimeout(errorTimer.value);
@@ -121,16 +123,16 @@ function closeErrorAlert(): void {
         <v-card-text>
           <v-form ref="form">
             <v-text-field
-              v-model="email.value.value"
+              v-model="email.value"
               :label="t('Login.Email')"
-              :error-messages="email.errorMessage.value"
+              :error-messages="email.errorMessages"
             ></v-text-field>
             <v-text-field
-              v-model="password.value.value"
+              v-model="password.value"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               :type="showPassword ? 'text' : 'password'"
               :label="t('Login.Password')"
-              :error-messages="password.errorMessage.value"
+              :error-messages="password.errorMessages"
               @click:append="showPassword = !showPassword"
               @keyup.enter="submit"
             ></v-text-field>

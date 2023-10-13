@@ -9,7 +9,7 @@ function changePassword({
 }: {
   oldPasswordMd5: string;
   newPasswordMd5: string;
-}): Promise<Response> {
+}): Promise<{ code: number; msg: string }> {
   return checkedFetch(`${BASE_URL}/change_password`, {
     method: "POST",
     headers: {
@@ -104,7 +104,8 @@ function addLearnware({
             method: "POST",
             body: fd,
           }),
-    ).then((res) => res.json());
+    )
+    .then((res) => res.json());
 }
 
 function verifyLog({ learnware_id }: { learnware_id: string }): Promise<Response> {

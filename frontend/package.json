@@ -17,7 +17,6 @@
     "hooks": "workspace:^",
     "js-yaml": "^4.1.0",
     "jszip": "^3.10.1",
-    "vee-validate": "^4.8.4",
     "vue": "^3.2.47",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.1.6",
