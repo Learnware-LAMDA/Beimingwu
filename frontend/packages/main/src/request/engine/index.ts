@@ -1,47 +1,29 @@
 import { checkedFetch } from "../utils";
+import type {
+  Name,
+  DataType,
+  TaskType,
+  LibraryType,
+  TagList,
+  SemanticSpecification,
+  Files,
+} from "types";
 
 const BASE_URL = "./api/engine";
-
-export interface SemanticSpecification {
-  Name: {
-    Values: string;
-    Type: string;
-    Description: string;
-  };
-  Data: {
-    Values: string[];
-    Type: string;
-    Description: string;
-  };
-  Task: {
-    Values: string[];
-    Type: string;
-    Description: string;
-  };
-  Library: {
-    Values: string[];
-    Type: string;
-    Description: string;
-  };
-  Scenario: {
-    Values: string[];
-    Type: string;
-    Description: string;
-  };
-  Description: {
-    Values: string;
-    Type: string;
-    Description: string;
-  };
-  Input: string;
-  Output: string;
-}
 
 function downloadLearnware({ id }: { id: string }): Promise<Response> {
   return checkedFetch(`${BASE_URL}/download_learnware?learnware_id=${id}`);
 }
 
-function getLearnwareDetailById({ id }: { id: string }): Promise<Response> {
+function getLearnwareDetailById({ id }: { id: string }): Promise<{
+  code: number;
+  msg: string;
+  data: {
+    learnware_info: {
+      semantic_specification: SemanticSpecification;
+    };
+  };
+}> {
   return checkedFetch(`${BASE_URL}/learnware_info?learnware_id=${id}`).then((res) => res.json());
 }
 
@@ -63,14 +45,14 @@ function searchLearnware({
   page,
   limit,
 }: {
-  name: string;
-  dataType: string;
-  taskType: string;
-  libraryType: string;
-  tagList: string[];
-  files: File[];
-  page: string;
-  limit: string;
+  name: Name;
+  dataType: DataType;
+  taskType: TaskType;
+  libraryType: LibraryType;
+  tagList: TagList;
+  files: Files;
+  page: number;
+  limit: number;
 }): Promise<Response> {
   return getSemanticSpecification()
     .then((res) => {
@@ -85,8 +67,8 @@ function searchLearnware({
       const fd = new FormData();
       fd.append("semantic_specification", JSON.stringify(semanticSpec));
       fd.append("statistical_specification", (files.length > 0 && files[0]) || "");
-      fd.append("limit", limit);
-      fd.append("page", page);
+      fd.append("limit", String(limit));
+      fd.append("page", String(page));
       return fd;
     })
     .then((fd) =>

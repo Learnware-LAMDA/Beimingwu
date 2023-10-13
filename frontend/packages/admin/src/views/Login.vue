@@ -2,29 +2,35 @@
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { useField, useForm } from "vee-validate";
-import { fetchex } from "../utils"
+import { useField } from "hooks";
+import { fetchex } from "../utils";
 import collaborationImg from "@/assets/images/collaboration.svg?url";
 
 const store = useStore();
 
 const router = useRouter();
 
-const { handleSubmit, meta } = useForm({
-  validationSchema: {
-    // email(value) {
-    //   if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
-    //   return 'Must be a valid e-mail.'
-    // },
-    // password(value) {
-    //   if (value?.length >= 8) return true
-    //   return 'Password needs to be at least 8 characters.'
-    // },
+const email = useField<string>({
+  defaultValue: "",
+  validate: (value) => {
+    if (!value) {
+      return "Email is required";
+    }
+    if (!value.includes("@")) {
+      return "Email is invalid";
+    }
+    return "";
   },
 });
-
-const email = useField("email");
-const password = useField("password");
+const password = useField<string>({
+  defaultValue: "",
+  validate: (value) => {
+    if (!value) {
+      return "Password is required";
+    }
+    return "";
+  },
+});
 
 const showPassword = ref(false);
 const showError = ref(false);
@@ -34,19 +40,29 @@ const success = ref(false);
 const errorTimer = ref<number>();
 
 const valid = computed(() => {
-  return meta.value.valid;
+  return email.valid && password.valid;
 });
 
-const login = handleSubmit((values) => {
+function login(): Promise<void> {
+  if (!valid.value) {
+    showError.value = true;
+    errorMsg.value = "Please fill in all fields";
+    clearTimeout(errorTimer.value);
+    errorTimer.value = Number(
+      setTimeout(() => {
+        showError.value = false;
+      }, 3000),
+    );
+    return Promise.reject();
+  }
   showError.value = false;
 
   const data = {
-    email: values.email,
-    //password: hex_md5(values.password),
-    password: values.password,
+    email: email.value,
+    password: password.value,
   };
 
-  fetchex("/api/auth/login", {
+  return fetchex("/api/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -109,11 +125,13 @@ const login = handleSubmit((values) => {
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
-      errorTimer.value = Number(setTimeout(() => {
-        showError.value = false;
-      }, 3000));
+      errorTimer.value = Number(
+        setTimeout(() => {
+          showError.value = false;
+        }, 3000),
+      );
     });
-});
+}
 
 function closeErrorAlert(): void {
   showError.value = false;
@@ -158,16 +176,16 @@ function closeErrorAlert(): void {
         <v-card-text>
           <v-form ref="form">
             <v-text-field
-              v-model="email.value.value"
+              v-model="email.value"
               label="E-mail"
-              :error-messages="email.errorMessage.value"
+              :error-messages="email.errorMessages"
             ></v-text-field>
             <v-text-field
-              v-model="password.value.value"
+              v-model="password.value"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               :type="showPassword ? 'text' : 'password'"
               label="Password"
-              :error-messages="password.errorMessage.value"
+              :error-messages="password.errorMessages"
               @click:append="showPassword = !showPassword"
               @keyup.enter="login"
             ></v-text-field>

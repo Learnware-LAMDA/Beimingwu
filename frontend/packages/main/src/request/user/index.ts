@@ -9,7 +9,7 @@ function changePassword({
 }: {
   oldPasswordMd5: string;
   newPasswordMd5: string;
-}): Promise<Response> {
+}): Promise<{ code: number; msg: string }> {
   return checkedFetch(`${BASE_URL}/change_password`, {
     method: "POST",
     headers: {
@@ -73,7 +73,7 @@ function addLearnware({
   files: File[];
   learnwareId: string;
   onProgress: (progress: number) => void;
-}): Promise<Response> {
+}): Promise<{ code: number; msg: string }> {
   const { progressedFetch } = useProgressedFetch(onProgress);
 
   return getSemanticSpecification()

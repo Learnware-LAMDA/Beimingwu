@@ -223,6 +223,13 @@ export default {
       ClickHere: "Click here",
       ForInstructionsOnHowToCreateTheRequiredZipFile:
         "For instructions on how to create the required zip file",
+      Error: {
+        FileNotFound: "File {filename} not found",
+        KeyNotFoundInFile: "Key '{key}' not found in file {filename}",
+        KeyEmptyInFile: "Key '{key}' is empty in file {filename}",
+        KeyNotFoundOrEmptyInFile: "Key '{key}' not found or empty in file {filename}",
+        KeyNotNonEmptyArrayInFile: "Key '{key}' is not an non-empty array in file {filename}",
+      },
     },
     Navigation: {
       NextStep: "Next Step",
