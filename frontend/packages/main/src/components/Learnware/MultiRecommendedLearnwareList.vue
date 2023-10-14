@@ -6,9 +6,21 @@ import { useRouter } from "vue-router";
 import { downloadLearnware } from "../../request/engine";
 import JSZip from "jszip";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
-import colors from "vuetify/lib/util/colors";
 import LearnwareCard from "./LearnwareCard.vue";
 import oopsImg from "../../assets/images/public/oops.svg?url";
+import { Learnware } from "types";
+
+export interface Props {
+  items: Learnware.LearnwareCardInfo[];
+  matchScore: number;
+  filters?: Learnware.Filter;
+  showActions?: boolean;
+  cols?: number;
+  md?: number;
+  sm?: number;
+  xs?: number;
+  loading?: boolean;
+}
 
 const display = useDisplay();
 
@@ -16,50 +28,38 @@ const router = useRouter();
 
 const store = useStore();
 
-const props = defineProps({
-  items: {
-    type: Array,
-    required: true,
-  },
-  matchScore: {
-    type: Number,
-    required: true,
-  },
-  filters: {
-    type: Object,
-    default: () => ({}),
-  },
-  showActions: {
-    type: Boolean,
-    default: false,
-  },
-  cols: {
-    type: Number,
-    default: 2,
-  },
-  md: {
-    type: Number,
-    default: 1,
-  },
-  sm: {
-    type: Number,
-    default: 1,
-  },
-  xs: {
-    type: Number,
-    default: 1,
-  },
-  loading: {
-    type: Boolean,
-    default: false,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  filters: () => ({
+    name: "",
+    dataType: "",
+    taskType: "",
+    libraryType: "",
+    tagList: [],
+    files: [],
+  }),
+  showActions: false,
+  cols: 2,
+  md: 1,
+  sm: 1,
+  xs: 1,
+  loading: false,
 });
 
 const downloading = ref(false);
 
-const realCols = computed(() => props[display.name.value] || props.cols);
+const realCols = computed(() => {
+  if (display.name.value === "xs") {
+    return props.xs;
+  } else if (display.name.value === "sm") {
+    return props.sm;
+  } else if (display.name.value === "md") {
+    return props.md;
+  } else {
+    return props.cols;
+  }
+});
 
-function showLearnwareDetail(id): void {
+function showLearnwareDetail(id: string): void {
   router.push({ path: "/learnwaredetail", query: { id } });
 }
 
@@ -94,10 +94,10 @@ function downloadAll(): void {
     });
 }
 
-function getColorByScore(score): string {
-  if (score > 80) return colors.green.base;
-  if (score > 50) return colors.orange.base;
-  return colors.red.base;
+function getColorByScore(score: number): string {
+  if (score > 80) return "#4CAF50";
+  if (score > 50) return "#FF9800";
+  return "#F44336";
 }
 </script>
 
@@ -156,7 +156,7 @@ function getColorByScore(score): string {
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
   >
     <v-skeleton-loader
-      v-for="(item, index) in 4"
+      v-for="(_item, index) in 4"
       :key="index"
       class="w-1/1"
       type="article"

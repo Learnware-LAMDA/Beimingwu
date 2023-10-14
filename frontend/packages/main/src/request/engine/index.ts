@@ -1,13 +1,5 @@
 import { checkedFetch } from "../utils";
-import type {
-  Name,
-  DataType,
-  TaskType,
-  LibraryType,
-  TagList,
-  SemanticSpecification,
-  Files,
-} from "types";
+import { Learnware, Response } from "types";
 
 const BASE_URL = "./api/engine";
 
@@ -19,9 +11,7 @@ function getLearnwareDetailById({ id }: { id: string }): Promise<{
   code: number;
   msg: string;
   data: {
-    learnware_info: {
-      semantic_specification: SemanticSpecification;
-    };
+    learnware_info: Response.LearnwareDetailInfo;
   };
 }> {
   return checkedFetch(`${BASE_URL}/learnware_info?learnware_id=${id}`).then((res) => res.json());
@@ -29,7 +19,7 @@ function getLearnwareDetailById({ id }: { id: string }): Promise<{
 
 function getSemanticSpecification(): Promise<{
   data: {
-    semantic_specification: SemanticSpecification;
+    semantic_specification: Learnware.SemanticSpecification;
   };
 }> {
   return checkedFetch(`${BASE_URL}/semantic_specification`).then((res) => res.json());
@@ -45,15 +35,23 @@ function searchLearnware({
   page,
   limit,
 }: {
-  name: Name;
-  dataType: DataType;
-  taskType: TaskType;
-  libraryType: LibraryType;
-  tagList: TagList;
-  files: Files;
+  name: Learnware.Name;
+  dataType: Learnware.DataType | "";
+  taskType: Learnware.TaskType | "";
+  libraryType: Learnware.LibraryType | "";
+  tagList: Learnware.TagList;
+  files: Learnware.Files;
   page: number;
   limit: number;
-}): Promise<Response> {
+}): Promise<{
+  code: number;
+  msg: string;
+  data: {
+    learnware_list_single: Response.LearnwareSearchInfo[];
+    learnware_list_multi: Response.LearnwareSearchInfo[];
+    total_pages: number;
+  };
+}> {
   return getSemanticSpecification()
     .then((res) => {
       const semanticSpec = res.data.semantic_specification;

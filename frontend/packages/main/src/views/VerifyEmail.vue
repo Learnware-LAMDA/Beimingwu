@@ -11,7 +11,7 @@ const color = ref("");
 
 onMounted(() => {
   const urlParams = new URLSearchParams(String(route.query));
-  verifyEmail(urlParams)
+  verifyEmail(urlParams.toString())
     .then((res) => {
       switch (res.code) {
         case 0: {

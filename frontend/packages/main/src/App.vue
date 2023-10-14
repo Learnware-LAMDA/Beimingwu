@@ -5,6 +5,7 @@ import { useI18n } from "vue-i18n";
 import Router from "./router";
 import NavDrawer from "./components/App/NavDrawer.vue";
 import AppBar from "./components/App/AppBar.vue";
+import { Route } from "types";
 
 const store = useStore();
 
@@ -18,29 +19,29 @@ const initKeepAliveIncludes = Router.getRoutes()
   .map((route) => route.name);
 const keepAliveIncludes = ref([...initKeepAliveIncludes]);
 
-const routes = computed(() =>
-  Router.options.routes.map((route) => {
-    if (route.children) {
-      route.children.forEach((child) => {
-        child.meta = {
-          ...child.meta,
-          title: t(`Page.${String(route.name)}.${String(child.name)}`),
-        };
+const routes = computed<Route.Route[]>(
+  () =>
+    Router.options.routes.map((route) => {
+      if (route.children) {
+        route.children.forEach((child) => {
+          child.meta = {
+            ...child.meta,
+            title: t(`Page.${String(route.name)}.${String(child.name)}`),
+          };
+          route.meta = {
+            ...route.meta,
+            title: t(`Page.${String(route.name)}.${String(route.name)}`),
+          };
+        });
+      } else {
         route.meta = {
           ...route.meta,
-          title: t(`Page.${String(route.name)}.${String(route.name)}`),
+          title: t(`Page.${String(route.name)}`),
         };
-      });
-    } else {
-      route.meta = {
-        ...route.meta,
-        title: t(`Page.${String(route.name)}`),
-      };
-    }
-    return route;
-  }),
+      }
+      return route;
+    }) as Route.Route[],
 );
-console.log(routes.value);
 
 watch(
   () => store.getters.getLoggedIn,
@@ -85,7 +86,7 @@ watch(
     <v-main class="bg-gray-100 bg-opacity-50">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
-          <keep-alive :include="keepAliveIncludes">
+          <keep-alive :include="keepAliveIncludes.join(',')">
             <component :is="Component" />
           </keep-alive>
         </transition>

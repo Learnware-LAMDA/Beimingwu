@@ -7,6 +7,7 @@ import { getLearnwareDetailById } from "../request/engine";
 import { downloadLearnwareSync } from "../utils";
 import { verifyLog } from "../request/user";
 import dayjs from "dayjs";
+import { Learnware}  from "types";
 
 const route = useRoute();
 const router = useRouter();
@@ -15,7 +16,19 @@ const display = useDisplay();
 
 const { t } = useI18n();
 
-const learnware = ref(null);
+const learnware = ref<Learnware.LearnwareDetailInfoWithDescription>({
+  id: "",
+  verifyStatus: "",
+  lastModify: "",
+  name: "",
+  input: "",
+  output: "",
+  description: "",
+  dataType: "",
+  taskType: "",
+  libraryType: "",
+  tagList: [],
+});
 const learnwareId = ref("");
 const downloading = ref(false);
 const loading = ref(false);
@@ -26,25 +39,27 @@ const showOutputDescription = ref(false);
 const showError = ref(false);
 const errorMsg = ref("");
 
-function getLearnwareDetail(id): Promise<void> {
+function getLearnwareDetail(id: string): Promise<void> {
   return getLearnwareDetailById({ id })
     .then((res) => {
       switch (res.code) {
         case 0: {
-          const learnwareInfo = res.data ? res.data.learnware_info : {};
-          learnware.value = {
-            id: learnwareInfo.learnware_id,
-            verifyStatus: learnwareInfo.verify_status,
-            lastModify: learnwareInfo.last_modify,
-            name: learnwareInfo.semantic_specification.Name.Values,
-            input: learnwareInfo.semantic_specification.Input,
-            output: learnwareInfo.semantic_specification.Output,
-            description: learnwareInfo.semantic_specification.Description.Values,
-            dataType: learnwareInfo.semantic_specification.Data.Values[0],
-            taskType: learnwareInfo.semantic_specification.Task.Values[0],
-            libraryType: learnwareInfo.semantic_specification.Library.Values[0],
-            tagList: learnwareInfo.semantic_specification.Scenario.Values,
-          };
+          if (res.data && res.data.learnware_info) {
+            const learnwareInfo = res.data.learnware_info;
+            learnware.value = {
+              id: learnwareInfo.learnware_id,
+              verifyStatus: learnwareInfo.verify_status,
+              lastModify: learnwareInfo.last_modify,
+              name: learnwareInfo.semantic_specification.Name.Values,
+              input: learnwareInfo.semantic_specification.Input,
+              output: learnwareInfo.semantic_specification.Output,
+              description: learnwareInfo.semantic_specification.Description.Values,
+              dataType: learnwareInfo.semantic_specification.Data.Values[0],
+              taskType: learnwareInfo.semantic_specification.Task.Values[0],
+              libraryType: learnwareInfo.semantic_specification.Library.Values[0],
+              tagList: learnwareInfo.semantic_specification.Scenario.Values,
+            };
+          }
           return;
         }
         default: {
@@ -64,17 +79,15 @@ function getLearnwareDetail(id): Promise<void> {
 
 onMounted(() => {
   const _id = route.query.id;
-  learnwareId.value = _id;
+  learnwareId.value = String(_id);
   getLearnwareDetail(learnwareId.value);
 });
 
-function onLearnwareVerifyLog(learnware_id): Promise<void> {
+function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
   return verifyLog({ learnware_id }).then((res) => {
     var blob = new Blob([res.data], { type: "text/plain" });
-    //var blob = res.blob();
-    // blob.type = "text/plain";
     var _url = window.URL.createObjectURL(blob);
-    window.open(_url, "_blank").focus(); // window.open + focus
+    window.open(_url, "_blank")?.focus(); // window.open + focus
   });
 }
 </script>
@@ -140,7 +153,10 @@ function onLearnwareVerifyLog(learnware_id): Promise<void> {
                 {{ t("Submit.Tag.DataType.DescriptionInput.Description") }}
               </div>
             </div>
-            <v-virtual-scroll :items="Object.entries(learnware.input.Description)" :height="300">
+            <v-virtual-scroll
+              :items="Object.entries(JSON.parse(learnware.input).Description)"
+              :height="300"
+            >
               <template #default="{ item }">
                 <div class="flex py-2 px-1 border-b-1">
                   <div class="w-20">{{ Number(item[0]) }}</div>
@@ -185,7 +201,10 @@ function onLearnwareVerifyLog(learnware_id): Promise<void> {
                 {{ t("Submit.Tag.TaskType.DescriptionOutput.Description") }}
               </div>
             </div>
-            <v-virtual-scroll :items="Object.entries(learnware.output.Description)" :height="300">
+            <v-virtual-scroll
+              :items="Object.entries(JSON.parse(learnware.output).Description)"
+              :height="300"
+            >
               <template #default="{ item }">
                 <div class="flex py-2 px-1 border-b-1">
                   <div class="w-20">{{ Number(item[0]) }}</div>
@@ -201,14 +220,7 @@ function onLearnwareVerifyLog(learnware_id): Promise<void> {
         </div>
         <div>
           <b>{{ t("Submit.Tag.Scenario.Scenario") }}:</b>
-          <span
-            v-for="(tag, i) in learnware.tagList"
-            :key="i"
-            class="ml-1"
-            :class="
-              filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : undefined
-            "
-          >
+          <span v-for="(tag, i) in learnware.tagList" :key="i" class="ml-1 active">
             {{ t(`Submit.Tag.Scenario.Type.${tag}`) }}
           </span>
         </div>

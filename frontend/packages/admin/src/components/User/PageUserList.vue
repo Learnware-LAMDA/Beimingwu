@@ -3,51 +3,33 @@ import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import UserList from "./UserList.vue";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
+import { User } from "types";
+
+export interface Props {
+  items: User.User[];
+  page: number;
+  pageSize?: number;
+  pageNum: number;
+  loading?: boolean;
+  showPagination?: boolean;
+  cols?: number;
+  md?: number;
+  sm?: number;
+  xs?: number;
+}
 
 const display = useDisplay();
 
 const emits = defineEmits(["click:reset", "click:delete", "click:export", "pageChange"]);
 
-const props = defineProps({
-  items: {
-    type: Array,
-    default: () => [],
-  },
-  page: {
-    type: Number,
-    default: 1,
-  },
-  pageSize: {
-    type: Number,
-    default: 10,
-  },
-  pageNum: {
-    type: Number,
-    default: 10,
-  },
-  loading: {
-    type: Boolean,
-  },
-  showPagination: {
-    type: Boolean,
-    default: true,
-  },
-  cols: {
-    type: Number,
-    default: 2,
-  },
-  md: {
-    type: Number,
-    default: 1,
-  },
-  sm: {
-    type: Number,
-    default: 1,
-  },
-  xs: {
-    type: Number,
-    default: 1,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  pageSize: 10,
+  loading: false,
+  showPagination: true,
+  cols: 2,
+  md: 1,
+  sm: 1,
+  xs: 1,
 });
 
 const realCols = computed(() => {

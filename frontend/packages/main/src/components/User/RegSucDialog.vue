@@ -7,14 +7,10 @@ const router = useRouter();
 
 const start = ref(false);
 const dialog = ref(true);
-const email = ref(props.email.value);
 
-const props = defineProps({
-  email: {
-    type: String,
-    required: true,
-  },
-});
+const props = defineProps<{
+  email: string;
+}>();
 
 onMounted(() => {
   nextTick(() => {
@@ -23,7 +19,7 @@ onMounted(() => {
 });
 
 function onResend(): Promise<void> {
-  return resendEmail(email.value)
+  return resendEmail(props.email)
     .then((res) => {
       if (res.code === 0) {
         dialog.value = false;

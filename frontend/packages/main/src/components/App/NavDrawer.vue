@@ -2,21 +2,18 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { useDisplay } from "vuetify";
+import { Route } from "types";
+
+export interface Props {
+  drawerOpen: boolean;
+  routes: Route.Route[];
+}
 
 const display = useDisplay();
 
 const emit = defineEmits(["update:drawerOpen"]);
 
-const props = defineProps({
-  drawerOpen: {
-    type: Boolean,
-    required: true,
-  },
-  routes: {
-    type: Array,
-    required: true,
-  },
-});
+const props = defineProps<Props>();
 
 const drawer = computed({
   get: () => props.drawerOpen && ["xs", "sm"].includes(display.name.value),
@@ -25,22 +22,8 @@ const drawer = computed({
 
 const store = useStore();
 
-interface Route {
-  name: string;
-  path: string;
-  meta: {
-    showInNavBar: boolean;
-    hideWhenLoggedIn: boolean;
-    requiredLogin: boolean;
-    icon: string;
-    title: string;
-  };
-  children?: Route[];
-  parent?: Route;
-}
-
 const filteredRoutes = computed(() => {
-  function filter(route: Route): boolean {
+  function filter(route: Route.Route): boolean {
     if (route.meta.showInNavBar) {
       if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
         return false;
@@ -52,10 +35,11 @@ const filteredRoutes = computed(() => {
         return true;
       }
     }
+    return false;
   }
 
-  const routes: Route[] = [];
-  props.routes.forEach((route) => {
+  const routes: Route.Route[] = [];
+  props.routes.forEach((route: Route.Route) => {
     if (route.children) {
       route.children.forEach((child) => {
         child.parent = route;

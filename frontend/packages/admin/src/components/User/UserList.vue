@@ -2,23 +2,18 @@
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import oopsImg from "/oops.svg?url";
+import { User } from "types";
 
 const emits = defineEmits(["click:reset", "click:delete", "click:export"]);
 
 const display = useDisplay();
 
 export interface Props {
-  items: {
-    id: string;
-    username: string;
-    email: string;
-    verified_learnware_count: number;
-    unverified_learnware_count: number;
-  }[],
-  cols?: number,
-  md?: number,
-  sm?: number,
-  xs?: number,
+  items: User.User[];
+  cols?: number;
+  md?: number;
+  sm?: number;
+  xs?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,7 +22,6 @@ const props = withDefaults(defineProps<Props>(), {
   sm: 1,
   xs: 1,
 });
-
 
 const realCols = computed(() => {
   if (display.name.value === "xs") {
@@ -40,7 +34,7 @@ const realCols = computed(() => {
     return props.md;
   }
   return props.cols;
-})
+});
 
 function handleClickReset(id: string): void {
   emits("click:reset", id);
@@ -96,8 +90,8 @@ function handleClickExport(): void {
             </div>
           </div>
           <v-card-actions class="actions">
-            <v-btn icon="mdi-lock-reset" @click.stop="() => handleClickReset(item.id)"></v-btn>
-            <v-btn icon="mdi-delete" @click.stop="() => handleClickDelete(item.id)"></v-btn>
+            <v-btn icon="mdi-lock-reset" @click.stop="() => handleClickReset(String(item.id))"></v-btn>
+            <v-btn icon="mdi-delete" @click.stop="() => handleClickDelete(String(item.id))"></v-btn>
           </v-card-actions>
         </div>
       </div>

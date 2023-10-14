@@ -6,19 +6,20 @@ import { fetchex, saveContentToFile } from "../utils";
 import SuccessDialog from "@/components/Dialogs/SuccessDialog.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
 import PageUserList from "@/components/User/PageUserList.vue";
+import { User } from "types";
 
 const store = useStore();
 const router = useRouter();
 
-const deleteDialog = ref(null);
+const deleteDialog = ref<InstanceType<typeof ConfirmDialog>>(null);
 const deleteId = ref("");
 const deleteName = ref("");
 
-const resetDialog = ref(null);
-const resetId = ref("");
-const resetName = ref("");
+const resetDialog = ref<InstanceType<typeof ConfirmDialog>>(null);
+const resetId = ref<string>("");
+const resetName = ref<string>("");
 
-const newPasswordDialog = ref(null);
+const newPasswordDialog = ref<InstanceType<typeof SuccessDialog>>(null);
 const newPassword = ref("");
 
 const showError = ref(false);
@@ -31,7 +32,7 @@ const email = ref("");
 const page = ref(1);
 const pageSize = ref(10);
 const pageNum = ref(1);
-const userItems = ref([]);
+const userItems = ref<User.User[]>([]);
 
 const loading = ref(false);
 
@@ -40,7 +41,7 @@ const filters = computed(() => ({
   email: email.value,
 }));
 
-function fetchByFilterAndPage(filters, page): Promise<void> {
+function fetchByFilterAndPage(filters: User.Filter, page: number): Promise<void> {
   loading.value = true;
   showError.value = false;
 
@@ -57,24 +58,33 @@ function fetchByFilterAndPage(filters, page): Promise<void> {
     }),
   })
     .then((res) => {
-      if (res.status === 200) {
+      if (res && res.status === 200) {
         return res;
       }
       throw new Error("Network error");
     })
     .then((res) => res.json())
-    .then((res) => {
-      if (res.code === 0) {
-        if (res.data && res.data.user_list) {
-          return res;
+    .then(
+      (res: {
+        code: number;
+        msg: string;
+        data: {
+          user_list: User.User[];
+          total_pages: number;
+        };
+      }) => {
+        if (res.code === 0) {
+          if (res.data && res.data.user_list) {
+            return res;
+          }
         }
-      }
-      if (res.code === 11 || res.code === 12) {
-        store.commit("setLoggedIn", false);
-        router.go(0);
-      }
-      throw new Error(res.msg);
-    })
+        if (res.code === 11 || res.code === 12) {
+          store.commit("setLoggedIn", false);
+          router.go(0);
+        }
+        throw new Error(res.msg);
+      },
+    )
     .then((res) => {
       userItems.value = res.data.user_list;
       pageNum.value = res.data.total_pages;
@@ -87,7 +97,7 @@ function fetchByFilterAndPage(filters, page): Promise<void> {
     });
 }
 
-function resetPassword(id): Promise<void> {
+function resetPassword(id: number): Promise<void> {
   return fetchex("/api/admin/reset_password", {
     method: "POST",
     headers: {
@@ -98,20 +108,28 @@ function resetPassword(id): Promise<void> {
     }),
   })
     .then((res) => {
-      if (res.status === 200) {
+      if (res && res.status === 200) {
         return res;
       }
       throw new Error("Network error");
     })
     .then((res) => res.json())
+    .then(
+      (res: {
+        code: number;
+        msg: string;
+        data: {
+          password: string;
+        };
+      }) => {
+        if (res.code === 0) {
+          return res;
+        }
+        throw new Error(res.msg);
+      },
+    )
     .then((res) => {
-      if (res.code === 0) {
-        return res;
-      }
-      throw new Error(res.msg);
-    })
-    .then((res) => {
-      newPasswordDialog.value.show();
+      newPasswordDialog.value && newPasswordDialog.value.show();
       newPassword.value = res.data.password;
     })
     .catch((err) => {
@@ -119,13 +137,15 @@ function resetPassword(id): Promise<void> {
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
-      errorTimer.value = Number(setTimeout(() => {
-        showError.value = false;
-      }, 3000));
+      errorTimer.value = Number(
+        setTimeout(() => {
+          showError.value = false;
+        }, 3000),
+      );
     });
 }
 
-function deleteUser(id): Promise<void> {
+function deleteUser(id: number): Promise<void> {
   return fetchex("/api/admin/delete_user", {
     method: "POST",
     headers: {
@@ -136,13 +156,13 @@ function deleteUser(id): Promise<void> {
     }),
   })
     .then((res) => {
-      if (res.status === 200) {
+      if (res && res.status === 200) {
         return res;
       }
       throw new Error("Network error");
     })
     .then((res) => res.json())
-    .then((res) => {
+    .then((res: { code: number; msg: string }) => {
       if (res.code === 0) {
         return res;
       }
@@ -164,27 +184,30 @@ function deleteUser(id): Promise<void> {
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
-      errorTimer.value = setTimeout(() => {
-        showError.value = false;
-      }, 3000);
+      errorTimer.value = Number(
+        setTimeout(() => {
+          showError.value = false;
+        }, 3000),
+      );
     });
 }
 
-function pageChange(newPage): void {
-  console.log(newPage);
+function pageChange(newPage: number): void {
   page.value = newPage;
 }
 
-function handleClickReset(id): void {
-  resetDialog.value.confirm();
-  resetId.value = id;
-  resetName.value = userItems.value.find((item) => item.id === id).username;
+function handleClickReset(id: number): void {
+  resetDialog.value && resetDialog.value.confirm();
+  resetId.value = String(id);
+  const userName = userItems.value.find((item) => item.id === id)?.username;
+  userName && (resetName.value = userName);
 }
 
-function handleClickDelete(id): void {
+function handleClickDelete(id: number): void {
   deleteDialog.value.confirm();
-  deleteId.value = id;
-  deleteName.value = userItems.value.find((item) => item.id === id).username;
+  deleteId.value = String(id);
+  const userName = userItems.value.find((item) => item.id === id)?.username;
+  userName && (deleteName.value = userName);
 }
 
 async function handleClickExport(): Promise<void> {
@@ -203,31 +226,40 @@ async function handleClickExport(): Promise<void> {
       }),
     })
       .then((res) => {
-        if (res.status === 200) {
+        if (res && res.status === 200) {
           return res;
         }
         throw new Error("Network error");
       })
       .then((res) => res.json())
-      .then((res) => {
-        if (res.code === 0) {
-          if (res.data && res.data.user_list) {
-            return res;
+      .then(
+        (res: {
+          code: number;
+          msg: string;
+          data: {
+            user_list: User.User[];
+            total_pages: number;
+          };
+        }) => {
+          if (res.code === 0) {
+            if (res.data && res.data.user_list) {
+              return res;
+            }
           }
-        }
-        if (res.code === 11 || res.code === 12) {
-          store.commit("setLoggedIn", false);
-          router.go(0);
-        }
-        throw new Error(res.msg);
-      })
+          if (res.code === 11 || res.code === 12) {
+            store.commit("setLoggedIn", false);
+            router.go(0);
+          }
+          throw new Error(res.msg);
+        },
+      )
       .then((res) => {
         for (const user of res.data.user_list) {
           table.push([
             user.username,
             user.email,
-            user.verified_learnware_count,
-            user.unverified_learnware_count,
+            String(user.verified_learnware_count),
+            String(user.unverified_learnware_count),
           ]);
         }
       })
@@ -236,9 +268,11 @@ async function handleClickExport(): Promise<void> {
         showError.value = true;
         errorMsg.value = err.message;
         clearTimeout(errorTimer.value);
-        errorTimer.value = setTimeout(() => {
-          showError.value = false;
-        }, 3000);
+        errorTimer.value = Number(
+          setTimeout(() => {
+            showError.value = false;
+          }, 3000),
+        );
       });
   }
   const csvContent = "\ufeff" + table.map((e) => e.join(",")).join("\n");
@@ -254,7 +288,7 @@ watch(
 watch(
   () => [filters.value, page.value],
   (newVal) => {
-    const [newFilters, newPage] = newVal;
+    const [newFilters, newPage] = newVal as [User.Filter, number];
 
     fetchByFilterAndPage(newFilters, newPage);
   },
@@ -268,7 +302,7 @@ onActivated(() => {
 
 <template>
   <div class="main-container">
-    <confirm-dialog ref="resetDialog" @confirm="() => resetPassword(resetId)">
+    <confirm-dialog ref="resetDialog" @confirm="() => resetPassword(Number(resetId))">
       <template #title>
         Confirm to reset password of &nbsp; <b>{{ resetName }}</b
         >?
@@ -289,7 +323,7 @@ onActivated(() => {
       </template>
     </success-dialog>
 
-    <confirm-dialog ref="deleteDialog" @confirm="() => deleteUser(deleteId)">
+    <confirm-dialog ref="deleteDialog" @confirm="() => deleteUser(Number(deleteId))">
       <template #title>
         Confirm to delete &nbsp; <b>{{ deleteName }}</b
         >?
@@ -349,8 +383,8 @@ onActivated(() => {
       :page-num="pageNum"
       :loading="loading"
       :show-pagination="pageNum > 1"
-      @click:delete="(id) => handleClickDelete(id)"
-      @click:reset="(id) => handleClickReset(id)"
+      @click:delete="(id: number) => handleClickDelete(id)"
+      @click:reset="(id: number) => handleClickReset(id)"
       @click:export="handleClickExport"
       @page-change="pageChange"
     />

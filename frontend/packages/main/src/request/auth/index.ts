@@ -21,7 +21,10 @@ function login({
   }).then((res) => res.json());
 }
 
-function logout(): Promise<Response> {
+function logout(): Promise<{
+  code: number;
+  msg: string;
+}> {
   return checkedFetch(`${BASE_URL}/logout`, {
     method: "POST",
   }).then((res) => res.json());
@@ -58,13 +61,16 @@ function getRole(): Promise<{ code: number; msg: string }> {
   }).then((res) => res.json());
 }
 
-function verifyEmail(params: string): Promise<Response> {
+function verifyEmail(params: string): Promise<{ code: number; msg: string }> {
   return checkedFetch(`${BASE_URL}/email_confirm?` + params, {
     method: "POST",
   }).then((res) => res.json());
 }
 
-function resendEmail(email: string): Promise<Response> {
+function resendEmail(email: string): Promise<{
+  code: number;
+  msg: string;
+}> {
   return checkedFetch(`${BASE_URL}/resend_email_confirm`, {
     method: "POST",
     headers: {

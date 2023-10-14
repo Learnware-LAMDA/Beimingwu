@@ -6,24 +6,26 @@ import { deleteLearnware, getLearnwareList } from "../request/user";
 import { listLearnware } from "../request/admin";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "../components/Dialogs/ConfirmDialog.vue";
+import { Learnware } from "types";
+import { LearnwareDetailInfo } from "types/response";
 
 const store = useStore();
 
 const route = useRoute();
 const router = useRouter();
 
-const dialog = ref(null);
+const dialog = ref<InstanceType<typeof ConfirmDialog>>();
 const deleteId = ref("");
 const deleteName = ref("");
 
-const learnwareItems = ref([]);
-const page = ref(1);
-const pageNum = ref(1);
-const pageSize = ref(10);
+const learnwareItems = ref<Learnware.LearnwareCardInfo[]>([]);
+const page = ref<number>(1);
+const pageNum = ref<number>(1);
+const pageSize = ref<number>(10);
 
 const loading = ref(false);
 
-const contentRef = ref(null);
+const contentRef = ref<HTMLDivElement | null>(null);
 const scrollTop = ref(0);
 
 const showError = ref(false);
@@ -56,27 +58,27 @@ function handleConfirm(): Promise<void> {
     });
 }
 
-function pageChange(newPage): void {
+function pageChange(newPage: number): void {
   page.value = newPage;
 }
 
-function handleClickEdit(id): void {
+function handleClickEdit(id: string): void {
   router.push({
     path: "/submit",
     query: {
-      edit: true,
+      edit: "true",
       id,
     },
   });
 }
 
-function handleClickDelete(id): void {
-  dialog.value.confirm();
+function handleClickDelete(id: string): void {
+  dialog.value && dialog.value.confirm();
   deleteId.value = id;
-  deleteName.value = learnwareItems.value.find((item) => item.id === id).name;
+  deleteName.value = learnwareItems.value.find((item) => item.id === id)?.name as string;
 }
 
-function fetchByFilterAndPage(page): void {
+function fetchByFilterAndPage(page: number): void {
   if (contentRef.value) {
     contentRef.value.scrollTop = 0;
   }
@@ -84,41 +86,49 @@ function fetchByFilterAndPage(page): void {
   showError.value = false;
   loading.value = true;
 
-  let getLearnwareListAPI, getLearnwareListParams;
-  if (route.query.user_id) {
-    getLearnwareListAPI = listLearnware;
-    getLearnwareListParams = {
-      page: page - 1,
-      limit: pageSize.value,
-      userId: route.query.user_id,
-    };
-  } else {
-    getLearnwareListAPI = getLearnwareList;
-    getLearnwareListParams = {
-      page: page - 1,
-      limit: pageSize.value,
+  interface ResponseType {
+    code: number;
+    msg: string;
+    data: {
+      learnware_list: LearnwareDetailInfo[];
+      page: number;
+      limit: number;
+      total_pages: number;
     };
   }
+  let getLearnwareListAPI: () => Promise<ResponseType>;
+  if (route.query.user_id) {
+    getLearnwareListAPI = (): Promise<ResponseType> =>
+      listLearnware({
+        page: page - 1,
+        limit: pageSize.value,
+        userId: route.query.user_id?.toString() as string,
+      });
+  } else {
+    getLearnwareListAPI = (): Promise<ResponseType> =>
+      getLearnwareList({
+        page: page - 1,
+        limit: pageSize.value,
+      });
+  }
 
-  getLearnwareListAPI(getLearnwareListParams)
+  getLearnwareListAPI()
     .then((res) => {
       switch (res.code) {
         case 0: {
           loading.value = false;
-          learnwareItems.value = (res.data.learnware_list || res.data.learnware_list_single).map(
-            (item) => ({
-              id: item.learnware_id,
-              verifyStatus: item.verify_status,
-              lastModify: item.last_modify,
-              name: item.semantic_specification.Name.Values,
-              description: item.semantic_specification.Description.Values,
-              dataType: item.semantic_specification.Data.Values[0],
-              taskType: item.semantic_specification.Task.Values[0],
-              libraryType: item.semantic_specification.Library.Values[0],
-              tagList: item.semantic_specification.Scenario.Values,
-            }),
-          );
-          pageNum.value = res.data.total_pages || res.total_pages;
+          learnwareItems.value = res.data.learnware_list.map((item) => ({
+            id: item.learnware_id,
+            verifyStatus: item.verify_status,
+            lastModify: item.last_modify,
+            name: item.semantic_specification.Name.Values,
+            description: item.semantic_specification.Description.Values,
+            dataType: item.semantic_specification.Data.Values[0],
+            taskType: item.semantic_specification.Task.Values[0],
+            libraryType: item.semantic_specification.Library.Values[0],
+            tagList: item.semantic_specification.Scenario.Values,
+          }));
+          pageNum.value = res.data.total_pages;
           console.log(pageNum.value);
           return;
         }
@@ -151,15 +161,16 @@ watch(
 );
 
 onActivated(() => {
-  contentRef.value.scrollTop = scrollTop.value;
+  contentRef.value && (contentRef.value.scrollTop = scrollTop.value);
   fetchByFilterAndPage(page.value);
 });
 
 onMounted(() => {
   nextTick(() => {
-    contentRef.value.addEventListener("scroll", () => {
-      scrollTop.value = contentRef.value.scrollTop;
-    });
+    contentRef.value &&
+      contentRef.value.addEventListener("scroll", () => {
+        contentRef.value && (scrollTop.value = contentRef.value.scrollTop);
+      });
     fetchByFilterAndPage(page.value);
   });
 });

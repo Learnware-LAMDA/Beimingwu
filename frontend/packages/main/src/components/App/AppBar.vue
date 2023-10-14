@@ -4,26 +4,23 @@ import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import learnwareLogo from "/logo.svg?url";
+import { Route } from "types";
+
+export interface Props {
+  drawerOpen: boolean;
+  routes: Route.Route[];
+}
 
 const emit = defineEmits(["update:drawerOpen"]);
 const router = useRouter();
 
-const props = defineProps({
-  drawerOpen: {
-    type: Boolean,
-    required: true,
-  },
-  routes: {
-    type: Array,
-    required: true,
-  },
-});
+const props = defineProps<Props>();
 
 const display = useDisplay();
 
 const store = useStore();
 
-function routeFilter(route): boolean {
+function routeFilter(route: Route.Route): boolean {
   if (route.meta.showInNavBar) {
     if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
       return false;
@@ -36,9 +33,9 @@ function routeFilter(route): boolean {
   return false;
 }
 
-const filteredRoutes = computed(() =>
+const filteredRoutes = computed<Route.Route[]>(() =>
   props.routes
-    .map((route) => {
+    .map((route: Route.Route) => {
       if (route.children) {
         return {
           ...route,
@@ -47,7 +44,7 @@ const filteredRoutes = computed(() =>
       }
       return routeFilter(route) ? route : null;
     })
-    .filter((route) => route),
+    .filter((route) => route) as Route.Route[],
 );
 </script>
 
