@@ -14,10 +14,10 @@ const { t } = useI18n();
 const drawerOpen = ref(false);
 const showGlobalError = ref(store.getters.getShowGlobalError);
 
-const initKeepAliveIncludes = Router.getRoutes()
+const initKeepAliveIncludes: string[] = Router.getRoutes()
   .filter((route) => route.meta.keepAlive)
-  .map((route) => route.name);
-const keepAliveIncludes = ref([...initKeepAliveIncludes]);
+  .map((route) => route.name as string);
+const keepAliveIncludes = ref<string[]>([...initKeepAliveIncludes]);
 
 const routes = computed<Route.Route[]>(
   () =>
@@ -86,7 +86,7 @@ watch(
     <v-main class="bg-gray-100 bg-opacity-50">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
-          <keep-alive :include="keepAliveIncludes.join(',')">
+          <keep-alive :include="keepAliveIncludes">
             <component :is="Component" />
           </keep-alive>
         </transition>
