@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onActivated } from "vue";
+import { ref, onMounted } from "vue";
 import { Pie } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { fetchex } from "../utils";
@@ -119,7 +119,7 @@ function getPieData(
   };
 }
 
-onActivated(() => {
+onMounted(() => {
   fetchSummary();
 });
 </script>
