@@ -41,7 +41,6 @@ const routes = computed<Route.Route[]>(() =>
     return route as Route.Route;
   }),
 );
-console.log(routes.value);
 
 watch(
   () => store.getters.getLoggedIn,

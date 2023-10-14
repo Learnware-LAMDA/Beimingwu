@@ -8,7 +8,7 @@ import { getRole } from "../request/auth";
 import { addLearnware } from "../request/user";
 import { getLearnwareDetailById } from "../request/engine";
 import { promiseReadFile, verifyLearnware } from "../utils";
-import { Learnware }from "types";
+import { Learnware } from "types";
 import { useField } from "hooks";
 import VStepperTitle from "../components/Public/VStepperTitle.vue";
 import FileUpload from "../components/Specification/FileUpload.vue";
@@ -65,21 +65,23 @@ const dataTypeDescription = useField<string>({
   defaultValue: JSON.stringify({
     Dimension: 7,
     Description: {
-      "0": "gender",
-      "1": "age",
-      "2": "f2",
-      "5": "f5",
+      0: "gender",
+      1: "age",
+      2: "f2",
+      5: "f5",
     },
   }),
 });
-const taskTypeDescription = useField<string>({ defaultValue: JSON.stringify({
-  "Dimension": 3,
-  "Description": {
-    "0": "the probability of being a cat",
-    "1": "the probability of being a dog",
-    "2": "the probability of being a bird"
-  }
-}) });
+const taskTypeDescription = useField<string>({
+  defaultValue: JSON.stringify({
+    Dimension: 3,
+    Description: {
+      0: "the probability of being a cat",
+      1: "the probability of being a dog",
+      2: "the probability of being a bird",
+    },
+  }),
+});
 const description = useField<Learnware.Description>({
   defaultValue: "",
   validate: (value: Learnware.Description): string => {

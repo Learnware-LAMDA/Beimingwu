@@ -27,8 +27,14 @@ export type Tag =
   | "Architecture";
 export type TagList = Tag[];
 export type Description = string;
-export type DataTypeDescription = string;
-export type TaskTypeDescription = string;
+export type DataTypeDescription = {
+  Dimension: number;
+  Description: Record<number, string>;
+};
+export type TaskTypeDescription = {
+  Dimension: number;
+  Description: Record<number, string>;
+};
 export type Files = File[];
 
 export interface SemanticSpecification {

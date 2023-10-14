@@ -8,7 +8,7 @@ export interface Props {
   name: string;
   value: {
     Dimension: number;
-    Description: Record<string, string>;
+    Description: Record<number, string>;
   };
 }
 

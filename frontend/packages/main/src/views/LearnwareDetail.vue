@@ -7,7 +7,7 @@ import { getLearnwareDetailById } from "../request/engine";
 import { downloadLearnwareSync } from "../utils";
 import { verifyLog } from "../request/user";
 import dayjs from "dayjs";
-import { Learnware}  from "types";
+import { Learnware } from "types";
 
 const route = useRoute();
 const router = useRouter();
@@ -21,8 +21,14 @@ const learnware = ref<Learnware.LearnwareDetailInfoWithDescription>({
   verifyStatus: "",
   lastModify: "",
   name: "",
-  input: "",
-  output: "",
+  input: {
+    Description: {},
+    Dimension: 0,
+  },
+  output: {
+    Description: {},
+    Dimension: 0,
+  },
   description: "",
   dataType: "",
   taskType: "",
@@ -140,7 +146,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
           </div>
           <div>
             <b>{{ t("Submit.Tag.DataType.DataType") }}:</b>
-            {{ t(`Submit.Tag.DataType.Type.${learnware.dataType}`) }}
+            {{ learnware.dataType && t(`Submit.Tag.DataType.Type.${learnware.dataType}`) }}
           </div>
         </div>
         <v-expand-transition>
@@ -153,10 +159,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                 {{ t("Submit.Tag.DataType.DescriptionInput.Description") }}
               </div>
             </div>
-            <v-virtual-scroll
-              :items="Object.entries(JSON.parse(learnware.input).Description)"
-              :height="300"
-            >
+            <v-virtual-scroll :items="Object.entries(learnware.input.Description)" :height="300">
               <template #default="{ item }">
                 <div class="flex py-2 px-1 border-b-1">
                   <div class="w-20">{{ Number(item[0]) }}</div>
@@ -182,7 +185,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
           </div>
           <div>
             <b>{{ t("Submit.Tag.TaskType.TaskType") }}:</b>
-            {{ t(`Submit.Tag.TaskType.Type.${learnware.taskType}`) }}
+            {{ learnware.taskType && t(`Submit.Tag.TaskType.Type.${learnware.taskType}`) }}
           </div>
         </div>
         <v-expand-transition>
@@ -201,10 +204,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                 {{ t("Submit.Tag.TaskType.DescriptionOutput.Description") }}
               </div>
             </div>
-            <v-virtual-scroll
-              :items="Object.entries(JSON.parse(learnware.output).Description)"
-              :height="300"
-            >
+            <v-virtual-scroll :items="Object.entries(learnware.output.Description)" :height="300">
               <template #default="{ item }">
                 <div class="flex py-2 px-1 border-b-1">
                   <div class="w-20">{{ Number(item[0]) }}</div>
@@ -216,7 +216,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
         </v-expand-transition>
         <div>
           <b>{{ t("Submit.Tag.LibraryType.LibraryType") }}:</b>
-          {{ t(`Submit.Tag.LibraryType.Type.${learnware.libraryType}`) }}
+          {{ learnware.libraryType && t(`Submit.Tag.LibraryType.Type.${learnware.libraryType}`) }}
         </div>
         <div>
           <b>{{ t("Submit.Tag.Scenario.Scenario") }}:</b>
@@ -226,7 +226,9 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
         </div>
         <div>
           <b>{{ t("LearnwareDetail.VerifyStatus.VerifyStatus") }}: </b>
-          {{ t(`LearnwareDetail.VerifyStatus.${learnware.verifyStatus}`) }},
+          {{
+            learnware.verifyStatus && t(`LearnwareDetail.VerifyStatus.${learnware.verifyStatus}`)
+          }},
           <button class="text-blue-500 underline" @click="onLearnwareVerifyLog(learnware.id)">
             {{ t("LearnwareDetail.Logs") }}
           </button>

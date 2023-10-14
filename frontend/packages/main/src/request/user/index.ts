@@ -98,8 +98,8 @@ function addLearnware({
       semanticSpec.Library.Values = (libraryType && [libraryType]) || [];
       semanticSpec.Scenario.Values = tagList;
       semanticSpec.Description.Values = description;
-      semanticSpec.Input = dataTypeDescription;
-      semanticSpec.Output = taskTypeDescription;
+      semanticSpec.Input = JSON.parse(dataTypeDescription);
+      semanticSpec.Output = JSON.parse(taskTypeDescription);
 
       const fd = new FormData();
       fd.append("learnware_file", files[0].name === "Your old learnware" ? "" : files[0]);
