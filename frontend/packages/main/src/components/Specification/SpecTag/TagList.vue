@@ -2,6 +2,15 @@
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
+import { Learnware } from "types";
+
+export interface Props {
+  value: Learnware.TagList;
+  cols?: number;
+  md?: number;
+  sm?: number;
+  xs?: number;
+}
 
 const { t } = useI18n();
 
@@ -9,27 +18,11 @@ const emit = defineEmits(["update:value"]);
 
 const display = useDisplay();
 
-const props = defineProps({
-  value: {
-    type: Array,
-    required: true,
-  },
-  cols: {
-    type: Number,
-    default: 4,
-  },
-  md: {
-    type: Number,
-    default: 4,
-  },
-  sm: {
-    type: Number,
-    default: 2,
-  },
-  xs: {
-    type: Number,
-    default: 1,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  cols: 4,
+  md: 4,
+  sm: 2,
+  xs: 1,
 });
 
 const realCols = computed(() => {
@@ -44,7 +37,13 @@ const realCols = computed(() => {
   return cols;
 });
 
-const items = computed(() => [
+const items = computed<
+  {
+    text: string;
+    icon: string;
+    value: Learnware.Tag;
+  }[]
+>(() => [
   {
     text: t("Submit.Tag.Scenario.Type.Business"),
     icon: "mdi-briefcase",
@@ -126,7 +125,7 @@ const selections = computed(() => {
   return [];
 });
 
-function click(value): void {
+function click(value: Learnware.Tag): void {
   if (props.value && props.value.includes(value)) {
     deleteSelect(value);
   } else {
@@ -134,7 +133,7 @@ function click(value): void {
   }
 }
 
-function addSelect(value): void {
+function addSelect(value: Learnware.Tag): void {
   if (props.value) {
     emit("update:value", [...props.value, value]);
   } else {
@@ -142,7 +141,7 @@ function addSelect(value): void {
   }
 }
 
-function deleteSelect(value): void {
+function deleteSelect(value: Learnware.Tag): void {
   if (props.value) {
     emit(
       "update:value",

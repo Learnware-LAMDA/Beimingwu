@@ -5,19 +5,11 @@ import { searchLearnware } from "../request/engine";
 import UserRequirement from "../components/Search/UserRequirement.vue";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import MultiRecommendedLearnwareList from "../components/Learnware/MultiRecommendedLearnwareList.vue";
-
-interface Filter {
-  name: string;
-  dataType: string;
-  taskType: string;
-  libraryType: string;
-  tagList: string[];
-  files: string[];
-}
+import { Learnware } from "types";
 
 const display = useDisplay();
 
-const filters = ref<Filter>({
+const filters = ref<Learnware.Filter>({
   name: "",
   dataType: "",
   taskType: "",
@@ -26,15 +18,15 @@ const filters = ref<Filter>({
   files: [],
 });
 
-const multiRecommendedLearnwareItems = ref([]);
+const multiRecommendedLearnwareItems = ref<Learnware.LearnwareCardInfo[]>([]);
 const multiRecommendedMatchScore = ref<number>(0);
 const singleRecommendedLearnwarePage = ref(1);
 const singleRecommendedLearnwarePageNum = ref(1);
 const singleRecommendedLearnwarePageSize = ref(10);
-const singleRecommendedLearnwareItems = ref([]);
+const singleRecommendedLearnwareItems = ref<Learnware.LearnwareCardInfo[]>([]);
 const loading = ref(false);
 
-const contentRef = ref(null);
+const contentRef = ref<HTMLDivElement | null>(null);
 const anchorRef = ref<HTMLDivElement | null>(null);
 
 const scrollTop = ref(0);
@@ -45,7 +37,9 @@ const errorTimer = ref();
 
 const showMultiRecommended = computed(
   () =>
-    multiRecommendedLearnwareItems.value.length > 1 && singleRecommendedLearnwarePage.value === 1,
+    multiRecommendedLearnwareItems.value &&
+    multiRecommendedLearnwareItems.value.length > 1 &&
+    singleRecommendedLearnwarePage.value === 1,
 );
 const multiRecommendedTips = ref(true);
 const singleRecommendedTips = ref(true);
@@ -54,7 +48,7 @@ function pageChange(newPage: number): void {
   singleRecommendedLearnwarePage.value = newPage;
 }
 
-function fetchByFilterAndPage(filters: Filter, page: number): void {
+function fetchByFilterAndPage(filters: Learnware.Filter, page: number): void {
   showError.value = false;
   loading.value = true;
 
@@ -98,7 +92,7 @@ function fetchByFilterAndPage(filters: Filter, page: number): void {
             taskType: item.semantic_specification.Task.Values[0],
             libraryType: item.semantic_specification.Library.Values[0],
             tagList: item.semantic_specification.Scenario.Values,
-            matchScore: filters.files?.length > 0 ? Math.floor(item.matching * 100) : null,
+            matchScore: filters.files?.length > 0 ? Math.floor(item.matching * 100) : -1,
           }));
           singleRecommendedLearnwarePageNum.value = res.data.total_pages;
           return;
@@ -142,7 +136,7 @@ watch(
 watch(
   () => [filters.value, singleRecommendedLearnwarePage.value],
   (newVal) => {
-    const [newFilters, newPage] = newVal;
+    const [newFilters, newPage] = newVal as [Learnware.Filter, number];
 
     fetchByFilterAndPage(newFilters, newPage - 1);
 
@@ -156,15 +150,21 @@ watch(
 );
 
 onActivated(() => {
-  contentRef.value.scrollTop = scrollTop.value;
+  if (contentRef.value) {
+    contentRef.value.scrollTop = scrollTop.value;
+  }
   fetchByFilterAndPage(filters.value, singleRecommendedLearnwarePage.value - 1);
 });
 
 onMounted(() => {
   nextTick(() => {
-    contentRef.value.addEventListener("scroll", () => {
-      scrollTop.value = contentRef.value.scrollTop;
-    });
+    if (contentRef.value) {
+      contentRef.value.addEventListener("scroll", () => {
+        if (contentRef.value) {
+          scrollTop.value = contentRef.value.scrollTop;
+        }
+      });
+    }
   });
 });
 </script>

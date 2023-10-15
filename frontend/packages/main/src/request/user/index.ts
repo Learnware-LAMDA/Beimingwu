@@ -1,5 +1,6 @@
 import { checkedFetch, useProgressedFetch } from "../utils";
 import { getSemanticSpecification } from "../engine";
+import { Learnware, Response } from "types";
 
 const BASE_URL = "./api/user";
 
@@ -22,7 +23,10 @@ function changePassword({
   }).then((res) => res.json());
 }
 
-function deleteLearnware({ id }: { id: string }): Promise<Response> {
+function deleteLearnware({ id }: { id: string }): Promise<{
+  code: number;
+  msg: string;
+}> {
   return checkedFetch(`${BASE_URL}/delete_learnware`, {
     method: "POST",
     headers: {
@@ -34,7 +38,16 @@ function deleteLearnware({ id }: { id: string }): Promise<Response> {
   }).then((res) => res.json());
 }
 
-function getLearnwareList({ page, limit }: { page: number; limit: number }): Promise<Response> {
+function getLearnwareList({ page, limit }: { page: number; limit: number }): Promise<{
+  code: number;
+  msg: string;
+  data: {
+    learnware_list: Response.LearnwareDetailInfo[];
+    page: number;
+    limit: number;
+    total_pages: number;
+  };
+}> {
   return checkedFetch(`${BASE_URL}/list_learnware`, {
     method: "POST",
     headers: {
@@ -62,15 +75,15 @@ function addLearnware({
   onProgress,
 }: {
   edit?: boolean;
-  name: string;
-  dataType: string;
-  taskType: string;
-  libraryType: string;
-  tagList: string[];
+  name: Learnware.Name;
+  dataType: Learnware.DataType;
+  taskType: Learnware.TaskType;
+  libraryType: Learnware.LibraryType;
+  tagList: Learnware.TagList;
   dataTypeDescription: string;
   taskTypeDescription: string;
-  description: string;
-  files: File[];
+  description: Learnware.Description;
+  files: Learnware.Files;
   learnwareId: string;
   onProgress: (progress: number) => void;
 }): Promise<{ code: number; msg: string }> {
@@ -85,8 +98,8 @@ function addLearnware({
       semanticSpec.Library.Values = (libraryType && [libraryType]) || [];
       semanticSpec.Scenario.Values = tagList;
       semanticSpec.Description.Values = description;
-      semanticSpec.Input = dataTypeDescription;
-      semanticSpec.Output = taskTypeDescription;
+      semanticSpec.Input = JSON.parse(dataTypeDescription);
+      semanticSpec.Output = JSON.parse(taskTypeDescription);
 
       const fd = new FormData();
       fd.append("learnware_file", files[0].name === "Your old learnware" ? "" : files[0]);
@@ -108,7 +121,7 @@ function addLearnware({
     .then((res) => res.json());
 }
 
-function verifyLog({ learnware_id }: { learnware_id: string }): Promise<Response> {
+function verifyLog({ learnware_id }: { learnware_id: string }): Promise<{ data: string }> {
   return checkedFetch(`${BASE_URL}/verify_log?learnware_id=${learnware_id}`, {
     method: "GET",
     headers: {
@@ -117,7 +130,10 @@ function verifyLog({ learnware_id }: { learnware_id: string }): Promise<Response
   }).then((res) => res.json());
 }
 
-function createToken(): Promise<Response> {
+function createToken(): Promise<{
+  code: number;
+  msg: string;
+}> {
   return checkedFetch(`${BASE_URL}/create_token`, {
     method: "POST",
     headers: {
@@ -126,7 +142,13 @@ function createToken(): Promise<Response> {
   }).then((res) => res.json());
 }
 
-function listToken(): Promise<Response> {
+function listToken(): Promise<{
+  code: number;
+  msg: string;
+  data: {
+    token_list: string[];
+  };
+}> {
   return checkedFetch(`${BASE_URL}/list_token`, {
     method: "POST",
     headers: {
@@ -135,7 +157,10 @@ function listToken(): Promise<Response> {
   }).then((res) => res.json());
 }
 
-function deleteToken({ token }: { token: string }): Promise<Response> {
+function deleteToken({ token }: { token: string }): Promise<{
+  code: number;
+  msg: string;
+}> {
   return checkedFetch(`${BASE_URL}/delete_token`, {
     method: "POST",
     headers: {

@@ -5,6 +5,7 @@ import { useI18n } from "vue-i18n";
 import Router from "./router";
 import NavDrawer from "./components/App/NavDrawer.vue";
 import AppBar from "./components/App/AppBar.vue";
+import { Route } from "types";
 
 const store = useStore();
 
@@ -13,34 +14,34 @@ const { t } = useI18n();
 const drawerOpen = ref(false);
 const showGlobalError = ref(store.getters.getShowGlobalError);
 
-const initKeepAliveIncludes = Router.getRoutes()
+const initKeepAliveIncludes: string[] = Router.getRoutes()
   .filter((route) => route.meta.keepAlive)
-  .map((route) => route.name);
-const keepAliveIncludes = ref([...initKeepAliveIncludes]);
+  .map((route) => route.name as string);
+const keepAliveIncludes = ref<string[]>([...initKeepAliveIncludes]);
 
-const routes = computed(() =>
-  Router.options.routes.map((route) => {
-    if (route.children) {
-      route.children.forEach((child) => {
-        child.meta = {
-          ...child.meta,
-          title: t(`Page.${String(route.name)}.${String(child.name)}`),
-        };
+const routes = computed<Route.Route[]>(
+  () =>
+    Router.options.routes.map((route) => {
+      if (route.children) {
+        route.children.forEach((child) => {
+          child.meta = {
+            ...child.meta,
+            title: t(`Page.${String(route.name)}.${String(child.name)}`),
+          };
+          route.meta = {
+            ...route.meta,
+            title: t(`Page.${String(route.name)}.${String(route.name)}`),
+          };
+        });
+      } else {
         route.meta = {
           ...route.meta,
-          title: t(`Page.${String(route.name)}.${String(route.name)}`),
+          title: t(`Page.${String(route.name)}`),
         };
-      });
-    } else {
-      route.meta = {
-        ...route.meta,
-        title: t(`Page.${String(route.name)}`),
-      };
-    }
-    return route;
-  }),
+      }
+      return route;
+    }) as Route.Route[],
 );
-console.log(routes.value);
 
 watch(
   () => store.getters.getLoggedIn,

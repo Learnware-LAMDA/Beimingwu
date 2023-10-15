@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import LearnwareCard from "./LearnwareCard.vue";
 import oopsImg from "../../assets/images/public/oops.svg?url";
+import { Learnware } from "types";
 
 const emit = defineEmits(["click:edit", "click:delete"]);
 
@@ -14,38 +15,43 @@ const router = useRouter();
 
 const { t } = useI18n();
 
-const props = defineProps({
-  items: {
-    type: Array,
-    required: true,
-  },
-  filters: {
-    type: Object,
-    default: () => ({}),
-  },
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
-  cols: {
-    type: Number,
-    default: 2,
-  },
-  md: {
-    type: Number,
-    default: 1,
-  },
-  sm: {
-    type: Number,
-    default: 1,
-  },
-  xs: {
-    type: Number,
-    default: 1,
-  },
+export interface Props {
+  items: Learnware.LearnwareCardInfo[];
+  filters?: Learnware.Filter;
+  isAdmin?: boolean;
+  cols?: number;
+  md?: number;
+  sm?: number;
+  xs?: number;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  filters: () => ({
+    name: "",
+    dataType: "",
+    taskType: "",
+    libraryType: "",
+    tagList: [],
+    files: [],
+  }),
+  isAdmin: false,
+  cols: 2,
+  md: 1,
+  sm: 1,
+  xs: 1,
 });
 
-const realCols = computed(() => props[display.name.value] || props.cols);
+const realCols = computed(() => {
+  if (display.name.value === "xs") {
+    return props.xs;
+  } else if (display.name.value === "sm") {
+    return props.sm;
+  } else if (display.name.value === "md") {
+    return props.md;
+  } else {
+    return props.cols;
+  }
+});
 
 function handleClickEdit(id: string): void {
   emit("click:edit", id);
@@ -67,7 +73,7 @@ function showLearnwareDetail(id: string): void {
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
   >
     <TransitionGroup name="fade">
-      <template v-for="(item, i) in items" :key="i">
+      <template v-for="(item, _i) in items" :key="_i">
         <learnware-card
           :item="item"
           :filters="filters"

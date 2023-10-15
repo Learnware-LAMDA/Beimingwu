@@ -4,6 +4,14 @@ import { useI18n } from "vue-i18n";
 import { useDisplay } from "vuetify";
 import { debounce } from "../../utils";
 
+export interface Props {
+  name: string;
+  value: {
+    Dimension: number;
+    Description: Record<number, string>;
+  };
+}
+
 const { t, locale } = useI18n();
 
 const display = useDisplay();
@@ -22,15 +30,15 @@ const props = defineProps({
   },
 });
 
-const errorMessages = ref("");
+const errorMessages = ref<string>("");
 
 const descriptionJSON = ref(props.value);
-const descriptionArray = ref(
+const descriptionArray = ref<(string | null)[]>(
   [...new Array(props.value.Dimension)].map((_, idx) => props.value?.Description[idx] || null),
 );
 const descriptionString = ref(JSON.stringify(props.value, null, 2));
 
-const debouncedSetErrorMessages = debounce((val) => {
+const debouncedSetErrorMessages = debounce<string>((val) => {
   errorMessages.value = val;
 }, 500);
 
@@ -48,13 +56,16 @@ watch(
 watch(
   () => JSON.stringify(descriptionArray.value),
   (newVal) => {
-    newVal = JSON.parse(newVal);
+    const newValJSON = JSON.parse(newVal);
     descriptionJSON.value = {
-      Dimension: newVal.length,
-      Description: newVal.reduce((acc, cur, idx) => {
-        cur && (acc[idx] = cur);
-        return acc;
-      }, {}),
+      Dimension: newValJSON.length,
+      Description: newValJSON.reduce(
+        (acc: { [key: string]: string | null }, cur: string | null, idx: number) => {
+          cur && (acc[String(idx)] = cur);
+          return acc;
+        },
+        {},
+      ),
     };
   },
 );
@@ -82,7 +93,8 @@ watch(
       descriptionJSON.value = json;
       debouncedSetErrorMessages("");
     } catch (e) {
-      debouncedSetErrorMessages(e.message);
+      const error = e as Error;
+      debouncedSetErrorMessages(error.message);
     }
   },
 );

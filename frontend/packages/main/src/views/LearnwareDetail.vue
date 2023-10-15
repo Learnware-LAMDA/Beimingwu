@@ -7,6 +7,7 @@ import { getLearnwareDetailById } from "../request/engine";
 import { downloadLearnwareSync } from "../utils";
 import { verifyLog } from "../request/user";
 import dayjs from "dayjs";
+import { Learnware } from "types";
 
 const route = useRoute();
 const router = useRouter();
@@ -15,7 +16,25 @@ const display = useDisplay();
 
 const { t } = useI18n();
 
-const learnware = ref(null);
+const learnware = ref<Learnware.LearnwareDetailInfoWithDescription>({
+  id: "",
+  verifyStatus: "",
+  lastModify: "",
+  name: "",
+  input: {
+    Description: {},
+    Dimension: 0,
+  },
+  output: {
+    Description: {},
+    Dimension: 0,
+  },
+  description: "",
+  dataType: "",
+  taskType: "",
+  libraryType: "",
+  tagList: [],
+});
 const learnwareId = ref("");
 const downloading = ref(false);
 const loading = ref(false);
@@ -26,25 +45,27 @@ const showOutputDescription = ref(false);
 const showError = ref(false);
 const errorMsg = ref("");
 
-function getLearnwareDetail(id): Promise<void> {
+function getLearnwareDetail(id: string): Promise<void> {
   return getLearnwareDetailById({ id })
     .then((res) => {
       switch (res.code) {
         case 0: {
-          const learnwareInfo = res.data ? res.data.learnware_info : {};
-          learnware.value = {
-            id: learnwareInfo.learnware_id,
-            verifyStatus: learnwareInfo.verify_status,
-            lastModify: learnwareInfo.last_modify,
-            name: learnwareInfo.semantic_specification.Name.Values,
-            input: learnwareInfo.semantic_specification.Input,
-            output: learnwareInfo.semantic_specification.Output,
-            description: learnwareInfo.semantic_specification.Description.Values,
-            dataType: learnwareInfo.semantic_specification.Data.Values[0],
-            taskType: learnwareInfo.semantic_specification.Task.Values[0],
-            libraryType: learnwareInfo.semantic_specification.Library.Values[0],
-            tagList: learnwareInfo.semantic_specification.Scenario.Values,
-          };
+          if (res.data && res.data.learnware_info) {
+            const learnwareInfo = res.data.learnware_info;
+            learnware.value = {
+              id: learnwareInfo.learnware_id,
+              verifyStatus: learnwareInfo.verify_status,
+              lastModify: learnwareInfo.last_modify,
+              name: learnwareInfo.semantic_specification.Name.Values,
+              input: learnwareInfo.semantic_specification.Input,
+              output: learnwareInfo.semantic_specification.Output,
+              description: learnwareInfo.semantic_specification.Description.Values,
+              dataType: learnwareInfo.semantic_specification.Data.Values[0],
+              taskType: learnwareInfo.semantic_specification.Task.Values[0],
+              libraryType: learnwareInfo.semantic_specification.Library.Values[0],
+              tagList: learnwareInfo.semantic_specification.Scenario.Values,
+            };
+          }
           return;
         }
         default: {
@@ -64,17 +85,15 @@ function getLearnwareDetail(id): Promise<void> {
 
 onMounted(() => {
   const _id = route.query.id;
-  learnwareId.value = _id;
+  learnwareId.value = String(_id);
   getLearnwareDetail(learnwareId.value);
 });
 
-function onLearnwareVerifyLog(learnware_id): Promise<void> {
+function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
   return verifyLog({ learnware_id }).then((res) => {
     var blob = new Blob([res.data], { type: "text/plain" });
-    //var blob = res.blob();
-    // blob.type = "text/plain";
     var _url = window.URL.createObjectURL(blob);
-    window.open(_url, "_blank").focus(); // window.open + focus
+    window.open(_url, "_blank")?.focus(); // window.open + focus
   });
 }
 </script>
@@ -127,7 +146,7 @@ function onLearnwareVerifyLog(learnware_id): Promise<void> {
           </div>
           <div>
             <b>{{ t("Submit.Tag.DataType.DataType") }}:</b>
-            {{ t(`Submit.Tag.DataType.Type.${learnware.dataType}`) }}
+            {{ learnware.dataType && t(`Submit.Tag.DataType.Type.${learnware.dataType}`) }}
           </div>
         </div>
         <v-expand-transition>
@@ -166,7 +185,7 @@ function onLearnwareVerifyLog(learnware_id): Promise<void> {
           </div>
           <div>
             <b>{{ t("Submit.Tag.TaskType.TaskType") }}:</b>
-            {{ t(`Submit.Tag.TaskType.Type.${learnware.taskType}`) }}
+            {{ learnware.taskType && t(`Submit.Tag.TaskType.Type.${learnware.taskType}`) }}
           </div>
         </div>
         <v-expand-transition>
@@ -197,24 +216,19 @@ function onLearnwareVerifyLog(learnware_id): Promise<void> {
         </v-expand-transition>
         <div>
           <b>{{ t("Submit.Tag.LibraryType.LibraryType") }}:</b>
-          {{ t(`Submit.Tag.LibraryType.Type.${learnware.libraryType}`) }}
+          {{ learnware.libraryType && t(`Submit.Tag.LibraryType.Type.${learnware.libraryType}`) }}
         </div>
         <div>
           <b>{{ t("Submit.Tag.Scenario.Scenario") }}:</b>
-          <span
-            v-for="(tag, i) in learnware.tagList"
-            :key="i"
-            class="ml-1"
-            :class="
-              filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : undefined
-            "
-          >
+          <span v-for="(tag, i) in learnware.tagList" :key="i" class="ml-1 active">
             {{ t(`Submit.Tag.Scenario.Type.${tag}`) }}
           </span>
         </div>
         <div>
           <b>{{ t("LearnwareDetail.VerifyStatus.VerifyStatus") }}: </b>
-          {{ t(`LearnwareDetail.VerifyStatus.${learnware.verifyStatus}`) }},
+          {{
+            learnware.verifyStatus && t(`LearnwareDetail.VerifyStatus.${learnware.verifyStatus}`)
+          }},
           <button class="text-blue-500 underline" @click="onLearnwareVerifyLog(learnware.id)">
             {{ t("LearnwareDetail.Logs") }}
           </button>

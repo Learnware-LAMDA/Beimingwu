@@ -6,15 +6,7 @@ import { fetchex } from "../utils/fetchex";
 import UserRequirement from "@main/components/Search/UserRequirement.vue";
 import PageLearnwareList from "@main/components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
-
-export interface Filters {
-  name: string;
-  dataType: string;
-  taskType: string;
-  libraryType: string;
-  tagList: never[];
-  files: never[];
-}
+import { Learnware } from "types";
 
 const router = useRouter();
 
@@ -24,7 +16,7 @@ const dialog = ref<InstanceType<typeof ConfirmDialog>>();
 const deleteId = ref("");
 const deleteName = ref("");
 
-const filters = ref<Filters>({
+const filters = ref<Learnware.Filter>({
   name: "",
   dataType: "",
   taskType: "",
@@ -36,19 +28,7 @@ const filters = ref<Filters>({
 const page = ref(1);
 const pageSize = ref(10);
 const pageNum = ref(1);
-const learnwareItems = ref<
-  {
-    id: string;
-    username: string;
-    lastModify: string;
-    name: string;
-    description: string;
-    dataType: string;
-    taskType: string;
-    libraryType: string;
-    tagList: string[];
-  }[]
->([]);
+const learnwareItems = ref<Learnware.LearnwareCardInfo[]>([]);
 const isVerify = ref(true);
 
 const loading = ref(false);
@@ -145,14 +125,7 @@ function fetchLearnware(
 }
 
 function fetchByFilterAndPage(
-  filters: {
-    name: string;
-    dataType: string;
-    taskType: string;
-    libraryType: string;
-    tagList: never[];
-    files: never[];
-  },
+  filters: Learnware.Filter,
   page: number,
 ): void {
   if (contentRef.value) {
@@ -292,7 +265,7 @@ watch(
 watch(
   () => [filters.value, page.value],
   (newVal) => {
-    const [newFilters, newPage] = newVal as [Filters, number];
+    const [newFilters, newPage] = newVal as [Learnware.Filter, number];
 
     fetchByFilterAndPage(newFilters, newPage);
   },

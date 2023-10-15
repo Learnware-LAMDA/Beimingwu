@@ -3,39 +3,28 @@ import { ref, computed, watch } from "vue";
 import { useDisplay } from "vuetify";
 import IconBtn from "./IconBtn.vue";
 
+export interface Btn {
+  title: string;
+  icon: string;
+}
+
+export interface Props {
+  value: string[];
+  btns: Btn[];
+  title: string;
+  cols?: number;
+  md?: number;
+  sm?: number;
+  xs?: number;
+}
+
 const display = useDisplay();
 
-const props = defineProps({
-  value: {
-    type: Array,
-    require: true,
-    default: () => [],
-  },
-  btns: {
-    type: Array,
-    require: true,
-    default: () => [],
-  },
-  title: {
-    type: String,
-    default: "title",
-  },
-  cols: {
-    type: Number,
-    default: 5,
-  },
-  md: {
-    type: Number,
-    default: 5,
-  },
-  sm: {
-    type: Number,
-    default: 5,
-  },
-  xs: {
-    type: Number,
-    default: 3,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  cols: 5,
+  md: 5,
+  sm: 5,
+  xs: 3,
 });
 
 const emit = defineEmits(["update:value"]);
@@ -54,7 +43,7 @@ const realCols = computed(() => {
   return cols;
 });
 
-function clickBtn(btn): void {
+function clickBtn(btn: Btn): void {
   if (!value.value) {
     value.value = [];
   }

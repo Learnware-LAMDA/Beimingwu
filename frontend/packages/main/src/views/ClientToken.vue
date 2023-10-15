@@ -5,7 +5,7 @@ import { createToken, listToken, deleteToken } from "../request/user";
 
 const { t } = useI18n();
 
-const tokens = ref([]);
+const tokens = ref<string[]>([]);
 
 const showError = ref(false);
 const errorMsg = ref("");
@@ -51,7 +51,7 @@ function onGenerateClick(): Promise<void> {
     });
 }
 
-function onDeleteClick(token): Promise<void> {
+function onDeleteClick(token: string): Promise<void> {
   return deleteToken({ token })
     .then((res) => {
       switch (res.code) {

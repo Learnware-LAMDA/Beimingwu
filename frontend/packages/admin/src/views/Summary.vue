@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onActivated } from "vue";
+import { ref, onMounted } from "vue";
 import { Pie } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { fetchex } from "../utils";
@@ -10,7 +10,25 @@ const countUser = ref(0);
 const countVerifiedLearnware = ref(0);
 const countUnverifiedLearnware = ref(0);
 const countDownload = ref(0);
-const countDetail = ref({});
+const countDetail = ref<{
+  Data: {
+    [key: string]: number;
+  };
+  Task: {
+    [key: string]: number;
+  };
+  Library: {
+    [key: string]: number;
+  };
+  Scenario: {
+    [key: string]: number;
+  };
+}>({
+  Data: {},
+  Task: {},
+  Library: {},
+  Scenario: {},
+});
 
 const options = ref({
   responsive: true,
@@ -22,8 +40,6 @@ const errorMsg = ref("");
 const errorTimer = ref<number>();
 
 function fetchSummary(): void {
-  countDetail.value = {};
-
   fetchex("/api/admin/summary", { method: "POST" })
     .then((res) => {
       if (res && res.status === 200) {
@@ -32,18 +48,43 @@ function fetchSummary(): void {
       throw new Error("Network error");
     })
     .then((res) => res.json())
-    .then((res) => {
-      if (res.code !== 0) {
-        errorMsg.value = res.msg;
-        showError.value = true;
-      } else {
-        countUser.value = res.data.count_user;
-        countVerifiedLearnware.value = res.data.count_verified_learnware;
-        countUnverifiedLearnware.value = res.data.count_unverified_learnware;
-        countDownload.value = res.data.count_download;
-        countDetail.value = res.data.count_detail;
-      }
-    })
+    .then(
+      (res: {
+        code: number;
+        msg: string;
+        data: {
+          count_user: number;
+          count_download: number;
+          count_verified_learnware: number;
+          count_unverified_learnware: number;
+          count_detail: {
+            Data: {
+              [key: string]: number;
+            };
+            Task: {
+              [key: string]: number;
+            };
+            Library: {
+              [key: string]: number;
+            };
+            Scenario: {
+              [key: string]: number;
+            };
+          };
+        };
+      }) => {
+        if (res.code !== 0) {
+          errorMsg.value = res.msg;
+          showError.value = true;
+        } else {
+          countUser.value = res.data.count_user;
+          countVerifiedLearnware.value = res.data.count_verified_learnware;
+          countUnverifiedLearnware.value = res.data.count_unverified_learnware;
+          countDownload.value = res.data.count_download;
+          countDetail.value = res.data.count_detail;
+        }
+      },
+    )
     .catch((err) => {
       console.error(err);
       showError.value = true;
@@ -54,8 +95,10 @@ function fetchSummary(): void {
 }
 
 function getPieData(
-  counts,
-  key,
+  counts: {
+    [key: string]: number;
+  },
+  key: string,
 ): {
   labels: string[];
   datasets: {
@@ -76,7 +119,7 @@ function getPieData(
   };
 }
 
-onActivated(() => {
+onMounted(() => {
   fetchSummary();
 });
 </script>
@@ -120,8 +163,8 @@ onActivated(() => {
         </v-card-item>
         <v-card-item>
           <div class="flex">
-            <v-container v-for="key in Object.keys(countDetail)" :key="key">
-              <Pie :data="getPieData(countDetail[key], key)" :options="options" :width="150" />
+            <v-container v-for="(val, key) in countDetail" :key="key">
+              <Pie :data="getPieData(val, key)" :options="options" :width="150" />
             </v-container>
           </div>
         </v-card-item>

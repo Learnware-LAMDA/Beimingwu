@@ -3,66 +3,59 @@ import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import LearnwareList from "./LearnwareList.vue";
+import { Learnware } from "types";
+
+export interface Props {
+  items: Learnware.LearnwareCardInfo[];
+  filters?: Learnware.Filter;
+  isAdmin?: boolean;
+  page: number;
+  pageSize?: number;
+  pageNum: number;
+  loading: boolean;
+  showPagination: boolean;
+  cols?: number;
+  md?: number;
+  sm?: number;
+  xs?: number;
+}
 
 const display = useDisplay();
 
 const emit = defineEmits(["click:edit", "click:delete", "pageChange"]);
 
-const props = defineProps({
-  items: {
-    type: Array,
-    default: () => [],
-  },
-  filters: {
-    type: Object,
-    default: () => ({}),
-  },
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
-  page: {
-    type: Number,
-    default: 1,
-  },
-  pageSize: {
-    type: Number,
-    default: 10,
-  },
-  pageNum: {
-    type: Number,
-    default: 10,
-  },
-  loading: {
-    type: Boolean,
-  },
-  showPagination: {
-    type: Boolean,
-    default: true,
-  },
-  cols: {
-    type: Number,
-    default: 2,
-  },
-  md: {
-    type: Number,
-    default: 1,
-  },
-  sm: {
-    type: Number,
-    default: 1,
-  },
-  xs: {
-    type: Number,
-    default: 1,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  filters: () => ({
+    name: "",
+    dataType: "",
+    taskType: "",
+    libraryType: "",
+    tagList: [],
+    files: [],
+  }),
+  isAdmin: false,
+  pageSize: 10,
+  cols: 2,
+  md: 1,
+  sm: 1,
+  xs: 1,
 });
 
-const realCols = computed(() => props[display.name.value] || props.cols);
+const realCols = computed(() => {
+  if (display.name.value === "xs") {
+    return props.xs;
+  } else if (display.name.value === "sm") {
+    return props.sm;
+  } else if (display.name.value === "md") {
+    return props.md;
+  } else {
+    return props.cols;
+  }
+});
 
 const greaterThanXs = computed(() => display.name.value !== "xs");
 
-function jumpPage(newPage): void {
+function jumpPage(newPage: number): void {
   if (newPage >= 1 && newPage <= props.pageNum) {
     emit("pageChange", newPage);
   }
@@ -80,11 +73,11 @@ function formerPage(): void {
   }
 }
 
-function handleClickEdit(id): void {
+function handleClickEdit(id: string): void {
   emit("click:edit", id);
 }
 
-function handleClickDelete(id): void {
+function handleClickDelete(id: string): void {
   emit("click:delete", id);
 }
 </script>
@@ -110,10 +103,10 @@ function handleClickDelete(id): void {
       :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
     >
       <v-skeleton-loader
-        v-for="(item, i) in pageSize"
+        v-for="(_item, i) in pageSize"
         :key="i"
         class="w-1/1"
-        :type="items && items[0] && items[0].matchScore ? 'article, table-tfoot' : 'article'"
+        :type="items && items[0] && items[0].matchScore && items[0].matchScore >= 0 ? 'article, table-tfoot' : 'article'"
       ></v-skeleton-loader>
     </div>
 

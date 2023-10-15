@@ -6,6 +6,7 @@
     "types": ["vite/client", "node"],
     "strictNullChecks": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "paths": {

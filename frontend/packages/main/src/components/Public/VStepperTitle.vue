@@ -2,43 +2,27 @@
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 
+export interface Props {
+  currentStep: number;
+  stepTitle: string;
+  steps: {
+    icon: string;
+    title: string;
+    subtitle: string;
+  }[];
+}
+
 const display = useDisplay();
 
 const greaterThanMd = computed(() => ["lg", "xl"].includes(display.name.value));
 
-const emit = defineEmits("active-step");
+const emit = defineEmits(["active-step"]);
 
-const props = defineProps({
-  currentStep: {
-    type: Number,
-    required: true,
-  },
-  stepTitle: {
-    type: String,
-    default: "Step",
-  },
-  steps: {
-    type: Array,
-    default: () => [
-      {
-        icon: "mdi-mail",
-        name: "first",
-        title: "Sample title 1",
-        subtitle: "Subtitle sample",
-      },
-      {
-        icon: "mdi-alert",
-        name: "second",
-        title: "Sample title 2",
-        subtitle: "Subtitle sample",
-      },
-    ],
-  },
-});
+const props = defineProps<Props>();
 
-const isStepActive = (index): void => props.currentStep === index;
+const isStepActive = (index: number): boolean => props.currentStep === index;
 
-const activeStep = (index): void => {
+const activeStep = (index: number): void => {
   emit("active-step", index);
 };
 </script>

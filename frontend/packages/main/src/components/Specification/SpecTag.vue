@@ -6,6 +6,17 @@ import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
 import TagListBtns from "../Specification/SpecTag/TagList.vue";
 import DescriptionInput from "./DescriptionInput.vue";
+import { Learnware } from "types";
+
+export interface Props {
+  dataType: Learnware.DataType | "";
+  taskType: Learnware.TaskType | "";
+  libraryType: Learnware.LibraryType | "";
+  tagList: Learnware.TagList;
+  dataTypeDescription: string;
+  taskTypeDescription: string;
+  errorMessages?: string;
+}
 
 const { t } = useI18n();
 
@@ -18,53 +29,8 @@ const emits = defineEmits([
   "update:taskTypeDescription",
 ]);
 
-const props = defineProps({
-  dataType: {
-    type: String,
-    required: true,
-  },
-  taskType: {
-    type: String,
-    required: true,
-  },
-  libraryType: {
-    type: String,
-    required: true,
-  },
-  tagList: {
-    type: Array,
-    required: true,
-  },
-  dataTypeDescription: {
-    type: String,
-    required: false,
-    default: JSON.stringify({
-      Dimension: 10,
-      Description: {
-        0: "gender",
-        1: "age",
-        2: "f2",
-        5: "f5",
-      },
-    }),
-  },
-  taskTypeDescription: {
-    type: String,
-    required: false,
-    default: JSON.stringify({
-      Dimension: 3,
-      Description: {
-        0: "the probability of being a cat",
-        1: "the probability of being a dog",
-        2: "the probability of being a bird",
-      },
-    }),
-  },
-  errorMessages: {
-    type: String,
-    required: false,
-    default: "",
-  },
+const props = withDefaults(defineProps<Props>(), {
+  errorMessages: "",
 });
 
 const dataType = computed({
