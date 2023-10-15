@@ -66,7 +66,9 @@ def decode_email_verification_code(code: str, secret_key) -> Union[str, None]:
     pass
 
 
-def send_verification_email_worker(sender_email, password, receiver_email, message, smtp_server, port, proxy_host, proxy_port):
+def send_verification_email_worker(
+    sender_email, password, receiver_email, message, smtp_server, port, proxy_host, proxy_port
+):
 
     if len(proxy_host) > 0 and proxy_port > 0:
         socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, proxy_host, proxy_port)
@@ -75,7 +77,7 @@ def send_verification_email_worker(sender_email, password, receiver_email, messa
         pass
 
     context = ssl.create_default_context()
-    
+
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message)
@@ -110,7 +112,8 @@ Subject: Please activate your account\r\n\
 """
 
     thread = mp.Process(
-        target=send_verification_email_worker, args=(sender_email, password, receiver_email, message, smtp_server, port, proxy_host, proxy_port)
+        target=send_verification_email_worker,
+        args=(sender_email, password, receiver_email, message, smtp_server, port, proxy_host, proxy_port),
     )
     thread.start()
     return thread

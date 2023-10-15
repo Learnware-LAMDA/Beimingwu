@@ -1,53 +1,25 @@
 import { checkedFetch } from "../utils";
+import { Learnware, Response } from "types";
 
 const BASE_URL = "./api/engine";
-
-export interface SemanticSpecification {
-  Name: {
-    Values: string;
-    Type: string;
-    Description: string;
-  };
-  Data: {
-    Values: string[];
-    Type: string;
-    Description: string;
-  };
-  Task: {
-    Values: string[];
-    Type: string;
-    Description: string;
-  };
-  Library: {
-    Values: string[];
-    Type: string;
-    Description: string;
-  };
-  Scenario: {
-    Values: string[];
-    Type: string;
-    Description: string;
-  };
-  Description: {
-    Values: string;
-    Type: string;
-    Description: string;
-  };
-  Input: string;
-  Output: string;
-}
 
 function downloadLearnware({ id }: { id: string }): Promise<Response> {
   return checkedFetch(`${BASE_URL}/download_learnware?learnware_id=${id}`);
 }
 
-function getLearnwareDetailById({ id }: { id: string }): Promise<Response> {
+function getLearnwareDetailById({ id }: { id: string }): Promise<{
+  code: number;
+  msg: string;
+  data: {
+    learnware_info: Response.LearnwareDetailInfo;
+  };
+}> {
   return checkedFetch(`${BASE_URL}/learnware_info?learnware_id=${id}`).then((res) => res.json());
 }
 
 function getSemanticSpecification(): Promise<{
   data: {
-    semantic_specification: SemanticSpecification;
+    semantic_specification: Learnware.SemanticSpecification;
   };
 }> {
   return checkedFetch(`${BASE_URL}/semantic_specification`).then((res) => res.json());
@@ -63,15 +35,23 @@ function searchLearnware({
   page,
   limit,
 }: {
-  name: string;
-  dataType: string;
-  taskType: string;
-  libraryType: string;
-  tagList: string[];
-  files: File[];
-  page: string;
-  limit: string;
-}): Promise<Response> {
+  name: Learnware.Name;
+  dataType: Learnware.DataType | "";
+  taskType: Learnware.TaskType | "";
+  libraryType: Learnware.LibraryType | "";
+  tagList: Learnware.TagList;
+  files: Learnware.Files;
+  page: number;
+  limit: number;
+}): Promise<{
+  code: number;
+  msg: string;
+  data: {
+    learnware_list_single: Response.LearnwareSearchInfo[];
+    learnware_list_multi: Response.LearnwareSearchInfo[];
+    total_pages: number;
+  };
+}> {
   return getSemanticSpecification()
     .then((res) => {
       const semanticSpec = res.data.semantic_specification;
@@ -85,8 +65,8 @@ function searchLearnware({
       const fd = new FormData();
       fd.append("semantic_specification", JSON.stringify(semanticSpec));
       fd.append("statistical_specification", (files.length > 0 && files[0]) || "");
-      fd.append("limit", limit);
-      fd.append("page", page);
+      fd.append("limit", String(limit));
+      fd.append("page", String(page));
       return fd;
     })
     .then((fd) =>

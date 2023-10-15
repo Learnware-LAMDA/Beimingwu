@@ -4,9 +4,9 @@ import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
-let observer;
+let observer: IntersectionObserver;
 const active = ref(false);
-const reference = ref(null);
+const reference = ref<HTMLElement>();
 
 onMounted(() => {
   nextTick(() => {
@@ -27,12 +27,12 @@ onMounted(() => {
         threshold: [0.1, 0.6],
       },
     );
-    observer.observe(reference.value);
+    reference.value && observer.observe(reference.value);
   });
 });
 
 onBeforeUnmount(() => {
-  observer.disconnect();
+  observer && observer.disconnect();
 });
 </script>
 

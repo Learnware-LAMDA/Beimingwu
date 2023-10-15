@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Check if there are modifications in the Python files
+if git diff --name-only --cached | grep -q "\.py$"; then
+    # If Python files are modified
+    echo "Python files were modified. Running formatting..."
+    if [ -x "$(command -v black)" ]; then
+        python_files=$(find . -name "*.py")
+        if [ -n "$python_files" ]; then
+            black -l 120 $python_files
+        fi
+    else
+        echo "black is not installed"
+        exit 1
+    fi
+fi
+
+# Check if there are modifications in the frontend directory
+if git diff --name-only --cached | grep -q "^frontend/"; then
+    # If frontend directory is modified
+    echo "Frontend files were modified. Running linting..."
+
+    # Check the operating system
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
+        if where npm &> /dev/null; then
+            npm run --prefix frontend lint
+        else
+            echo "npm is not installed"
+            exit 1
+        fi
+    else
+        if [ -x "$(command -v npm)" ]; then
+            npm run --prefix frontend lint
+        else
+            echo "npm is not installed"
+            exit 1
+        fi
+    fi
+fi

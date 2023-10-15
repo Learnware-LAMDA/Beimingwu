@@ -2,38 +2,37 @@
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 
+export interface Props {
+  files: File[];
+  errorMessages?: string;
+  height?: number;
+}
+
 const { t } = useI18n();
 
 const emit = defineEmits(["update:files"]);
 
-const props = defineProps({
-  files: {
-    type: Array,
-    default: () => [],
-  },
-  errorMessages: {
-    type: String,
-    default: "",
-  },
-  height: {
-    type: Number,
-    default: 40,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  files: () => [],
+  errorMessages: "",
+  height: 40,
 });
 
 const dragging = ref(false);
-const fileInput = ref(null);
+const fileInput = ref<HTMLInputElement>();
 
-const handleDrop = (event): void => {
+const handleDrop = (event: DragEvent): void => {
   dragging.value = false;
-  files.value = Array.from(event.dataTransfer.files);
+  if (event.dataTransfer?.files) {
+    files.value = Array.from(event.dataTransfer.files);
+  }
 };
 
 const chooseFile = (): void => {
-  fileInput.value.click();
+  fileInput.value && fileInput.value.click();
 };
 
-const computeFileSize = (byte): string => {
+const computeFileSize = (byte: number): string => {
   const unit = ["B", "KB", "MB", "GB"];
   let k = 0;
   while (k < 4) {

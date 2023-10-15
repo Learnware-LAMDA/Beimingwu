@@ -75,8 +75,9 @@ def add_user(username, password, email, role, nickname, conn=None):
 
 def update_user_info(username, password, email, role, nickname, conn=None):
     context.database.execute(
-        ("UPDATE tb_user SET username = :username, password = :password, email = :email, role = :role, nickname = :nickname"
-         " WHERE email = :email"
+        (
+            "UPDATE tb_user SET username = :username, password = :password, email = :email, role = :role, nickname = :nickname"
+            " WHERE email = :email"
         ),
         {"username": username, "password": password, "email": email, "role": role, "nickname": nickname},
         conn=conn,
@@ -118,7 +119,7 @@ def register_user(username, password, email) -> Tuple[int, str]:
                 # we update the user info here
                 if check_user_exist_exclude(by="username", value=username, exclude=user_info["username"], conn=conn):
                     return 51, "Username already exist.", -1
-                
+
                 update_user_info(username, password, email, 0, username, conn=conn)
                 return 53, "Email not verified.", user_info["id"]
             pass

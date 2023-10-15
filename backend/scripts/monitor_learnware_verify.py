@@ -170,7 +170,7 @@ def main(num_worker):
     context.init_database()
     context.init_logger()
     if len(context.config["verify_proxy"]) > 0:
-        context.logger.info('set proxy: ' + context.config["verify_proxy"])
+        context.logger.info("set proxy: " + context.config["verify_proxy"])
         proxy_url = context.config["verify_proxy"]
         os.environ["http_proxy"] = proxy_url
         os.environ["https_proxy"] = proxy_url

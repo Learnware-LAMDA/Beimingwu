@@ -8,10 +8,11 @@ const props = defineProps({
   },
 });
 
-const progress = computed({
+const progress = computed<number>({
   get() {
     return props.progress;
   },
+  set() {},
 });
 
 const dialog = ref(true);

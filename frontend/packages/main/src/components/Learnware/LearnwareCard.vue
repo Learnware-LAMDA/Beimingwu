@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
-import colors from "vuetify/lib/util/colors";
 import AudioBtn from "../../assets/images/specification/dataType/audio.svg?component";
 import VideoBtn from "../../assets/images/specification/dataType/video.svg?component";
 import TextBtn from "../../assets/images/specification/dataType/text.svg?component";
@@ -11,27 +10,29 @@ import TableBtn from "../../assets/images/specification/dataType/table.svg?compo
 import { downloadLearnwareSync } from "../../utils";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { Learnware } from "types";
 dayjs.extend(relativeTime);
 
 const { t } = useI18n();
 
-const props = defineProps({
-  item: {
-    type: Object,
-    required: true,
-  },
-  filters: {
-    type: Object,
-    default: () => ({}),
-  },
-  showDownload: {
-    type: Boolean,
-    default: true,
-  },
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
+export interface Props {
+  item: Learnware.LearnwareCardInfo;
+  filters?: Learnware.Filter;
+  showDownload?: boolean;
+  isAdmin?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  filters: () => ({
+    name: "",
+    dataType: "",
+    taskType: "",
+    libraryType: "",
+    tagList: [],
+    files: [],
+  }),
+  showDownload: true,
+  isAdmin: false,
 });
 
 const emit = defineEmits(["click:edit", "click:delete"]);
@@ -42,27 +43,33 @@ const greaterThanXs = computed(() => display.name.value !== "xs");
 
 const greaterThanSm = computed(() => display.name.value !== "xs" && display.name.value !== "sm");
 
-const showEditTips = ref(props.item.showEditTips);
+const avatar = computed(() => {
+  if (props.item.dataType === "Table") {
+    return TableBtn;
+  } else if (props.item.dataType === "Image") {
+    return ImageBtn;
+  } else if (props.item.dataType === "Text") {
+    return TextBtn;
+  } else if (props.item.dataType === "Video") {
+    return VideoBtn;
+  } else if (props.item.dataType === "Audio") {
+    return AudioBtn;
+  } else {
+    return TableBtn;
+  }
+});
 
-const dataTypeBtns = {
-  Table: TableBtn,
-  Image: ImageBtn,
-  Text: TextBtn,
-  Video: VideoBtn,
-  Audio: AudioBtn,
-};
-
-function getColorByScore(score): string {
-  if (score > 80) return colors.green.base;
-  if (score > 50) return colors.orange.base;
-  return colors.red.base;
+function getColorByScore(score: number): string {
+  if (score > 80) return "#4CAF50";
+  if (score > 50) return "#FF9800";
+  return "#F44336";
 }
 
-function handleClickEdit(id): void {
+function handleClickEdit(id: string): void {
   emit("click:edit", id);
 }
 
-function handleClickDelete(id): void {
+function handleClickDelete(id: string): void {
   emit("click:delete", id);
 }
 </script>
@@ -72,12 +79,12 @@ function handleClickDelete(id): void {
     flat
     :density="greaterThanXs ? 'comfortable' : 'compact'"
     class="card"
-    :class="typeof item.matchScore === 'number' ? ['pt-2'] : ['py-2']"
+    :class="item.matchScore && item.matchScore >= 0 ? ['pt-2'] : ['py-2']"
   >
     <div class="first-row">
       <v-card-title class="title">
         <v-avatar :size="greaterThanSm ? 'default' : 'small'" rounded="0">
-          <component :is="dataTypeBtns[item.dataType]" class="w-4/5 opacity-70" />
+          <component :is="avatar" class="w-4/5 opacity-70" />
         </v-avatar>
         {{ `${item.username ? item.username + "/" : ""}${item.name}` }}
       </v-card-title>
@@ -130,30 +137,21 @@ function handleClickDelete(id): void {
     <v-card-text class="card-text">
       <div class="description">{{ item.description }}</div>
     </v-card-text>
-    <v-card-title
-      class="last-row"
-      :class="{ 'justify-between': typeof item.matchScore === 'number' }"
-    >
-      <div v-if="typeof item.matchScore === 'number'" class="xl: text-xl lg:text-lg text-1rem">
+    <v-card-title class="last-row" :class="{ 'justify-between': item.matchScore && item.matchScore >= 0 }">
+      <div v-if="item.matchScore && item.matchScore >= 0" class="xl: text-xl lg:text-lg text-1rem">
         Specification score
         <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{
           item.matchScore
         }}</span>
       </div>
       <div class="actions">
-        <v-tooltip v-model="showEditTips" location="top">
-          <template #activator="{ toolTipProps }">
-            <v-btn
-              v-if="isAdmin"
-              flat
-              icon="mdi-pencil"
-              v-bind="toolTipProps"
-              :size="greaterThanXs ? undefined : 'small'"
-              @click.stop="() => handleClickEdit(item.id)"
-            ></v-btn>
-          </template>
-          <span>Not availble</span>
-        </v-tooltip>
+        <v-btn
+          v-if="isAdmin"
+          flat
+          icon="mdi-pencil"
+          :size="greaterThanXs ? undefined : 'small'"
+          @click.stop="() => handleClickEdit(item.id)"
+        ></v-btn>
         <v-btn
           v-if="showDownload"
           flat

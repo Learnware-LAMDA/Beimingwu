@@ -1,6 +1,6 @@
-function debounce(fn: (...args: unknown[]) => void, delay: number): (...args: unknown[]) => void {
+function debounce<T>(fn: (...args: T[]) => void, delay: number): (...args: T[]) => void {
   let timer: number | null = null;
-  return function (...args: unknown[]) {
+  return function (...args: T[]) {
     if (timer) clearTimeout(timer);
     timer = Number(
       setTimeout(function () {
@@ -10,9 +10,9 @@ function debounce(fn: (...args: unknown[]) => void, delay: number): (...args: un
   };
 }
 
-function throttle(fn: (...args: unknown[]) => void, delay: number): (...args: unknown[]) => void {
+function throttle<T>(fn: (...args: T[]) => void, delay: number): (...args: T[]) => void {
   let timer: number | null = null;
-  return function (...args: unknown[]) {
+  return function (...args: T[]) {
     if (!timer) {
       timer = Number(
         setTimeout(function () {
