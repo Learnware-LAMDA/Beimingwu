@@ -1,9 +1,9 @@
 """context.py: All globals should be defined here.
 
 """
+import os
 from config import Config
 from database import Database, SQLAlchemy
-import os
 
 from learnware.market import EasyMarket
 from market.backend_market import BackendMarket

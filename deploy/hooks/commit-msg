@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Define commit format regex
+commit_msg_regex="^(feat|fix|docs|style|refactor|perf|test|chore|revert)\((\*|(((frontend|backend|deploy|docs)(,?(frontend|backend|deploy|docs))*)))\): .{1,100}"
+
+# Read commit message from stdin
+commit_msg=`cat $1`
+
+# Check commit format
+if ! [[ $commit_msg =~ $commit_msg_regex ]]; then
+    echo "Invalid commit message format. Please follow the format: <type>(<scope>): <subject>" >&2
+    echo -e "\n<type> must be one of the following options:" >&2
+    echo -e "\t- feat: Add new features" >&2
+    echo -e "\t- fix: Fix bugs" >&2
+    echo -e "\t- docs: Modify documents, such as README, CHANGELOG, etc." >&2
+    echo -e "\t- style: Modify the format, including comments, code format, commas, etc., without affecting code execution" >&2
+    echo -e "\t- refactor: Perform code refactoring without adding new features or fixing bugs" >&2
+    echo -e "\t- perf: Related to optimization, such as improving performance and user experience" >&2
+    echo -e "\t- test: Test cases, including unit tests, integration tests, etc." >&2
+    echo -e "\t- chore: Changes to the build process or addition of dependent libraries, tools, etc." >&2
+    echo -e "\t- revert: Roll back to the previous version" >&2
+    echo -e "\n<scope> has the following options: frontend, backend, deploy, docs" >&2
+    echo -e "\t- If multiple scopes are involved, use commas to connect them, or use * directly"
+    echo -e "\nFor example, the following commits are valid:" >&2
+    echo -e "\t- feat(backend): add the modify learnware api" >&2
+    echo -e "\t- fix(frontend,backend): fix email verification" >&2
+    echo -e "\t- docs(*): update README" >&2
+    exit 1
+else
+    exit 0
+fi
