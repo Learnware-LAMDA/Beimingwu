@@ -1,5 +1,5 @@
 export default {
-  label: "简体中文",
+  label: "中文",
   lang: "zh-CN",
   themeConfig: {
     logo: "/logo.svg",
