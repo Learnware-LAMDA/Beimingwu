@@ -63,12 +63,14 @@ class RegisterApi(flask_restful.Resource):
         result = {"code": code, "msg": "success", "data": {"user_id": user_id}}
 
         return result, 200
+
     pass
 
 
 class ResendEmailConfirmApi(flask_restful.Resource):
     parser = flask_restful.reqparse.RequestParser()
     parser.add_argument("email", type=str, required=True, location="json")
+
     @api.expect(parser)
     def post(self):
 
@@ -78,14 +80,14 @@ class ResendEmailConfirmApi(flask_restful.Resource):
             return {"code": 21, "msg": "Request parameters error."}, 200
 
         email = body["email"]
-        verification_code = utils.generate_email_verification_code(
-            email, secret_key=context.config["app_secret_key"])
+        verification_code = utils.generate_email_verification_code(email, secret_key=context.config["app_secret_key"])
         utils.send_verification_email(email, verification_code, email_config=context.config["email"])
 
         result = {"code": 0, "msg": "success", "data": {}}
 
         return result, 200
-    pass    
+
+    pass
 
 
 class EmailConfirmApi(flask_restful.Resource):
