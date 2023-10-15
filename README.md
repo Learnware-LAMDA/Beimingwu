@@ -31,7 +31,7 @@ commit格式: `<type>`(`<scope>`): `<subject>`
     - test: 测试用例，包括单元测试、集成测试等
     - chore: 改变构建流程、或者增加依赖库、工具等
     - revert: 回滚到上一个版本
-- `<scope>` 有以下几个选项: frontend, backend, deploy, docs
+- `<scope>` 有以下几个选项: frontend, backend, docs, deploy
     - 如果涉及多个范围, 则使用逗号连接, 或者直接填写 *
 - `<subject>` 必须填, 均为英文小写字母
 
