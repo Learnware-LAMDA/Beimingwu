@@ -7,7 +7,7 @@ import { listLearnware } from "../request/admin";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "../components/Dialogs/ConfirmDialog.vue";
 import { Learnware } from "types";
-import { LearnwareDetailInfo } from "types/response";
+import { Response } from "types";
 
 const store = useStore();
 
@@ -90,7 +90,7 @@ function fetchByFilterAndPage(page: number): void {
     code: number;
     msg: string;
     data: {
-      learnware_list: LearnwareDetailInfo[];
+      learnware_list: Response.LearnwareDetailInfo[];
       page: number;
       limit: number;
       total_pages: number;
