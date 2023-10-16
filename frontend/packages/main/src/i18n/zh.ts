@@ -78,6 +78,7 @@ export default {
     Password: "密码",
     NoAccount: "没有账号？",
     RegisterFirst: "请先注册",
+    ResetPassword: "重置密码",
     Success: "登录成功",
     Error: {
       InvalidEmail: "邮箱格式不正确",

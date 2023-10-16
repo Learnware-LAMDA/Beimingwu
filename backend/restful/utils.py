@@ -66,7 +66,7 @@ def decode_email_verification_code(code: str, secret_key) -> Union[str, None]:
     pass
 
 
-def send_verification_email_worker(
+def send_email_worker(
     sender_email, password, receiver_email, message, smtp_server, port, proxy_host, proxy_port
 ):
 
@@ -109,10 +109,43 @@ Subject: Please activate your account\r\n\
             { confirm_url }
 
         Cheers!
+        BeiMing Group
 """
 
     thread = mp.Process(
-        target=send_verification_email_worker,
+        target=send_email_worker,
+        args=(sender_email, password, receiver_email, message, smtp_server, port, proxy_host, proxy_port),
+    )
+    thread.start()
+    return thread
+
+
+def send_reset_password_email(email: str, verification_code: str, user_id: str, email_config: dict) -> bool:
+
+    port = email_config["smtp_port"]
+    smtp_server = email_config["smtp_server"]
+    sender_email = email_config["sender_email"]
+    receiver_email = email
+    password = email_config["smtp_password"]
+    confirm_url = email_config["reset_password_url"] + "?code=" + verification_code + "&user_id=" + user_id
+    proxy_host = email_config.get("proxy_host", "")
+    proxy_port = email_config.get("proxy_port", 0)
+
+    message = f"""\
+From: {sender_email}\r\n\
+Subject: Reset your password\r\n\
+\r\n
+        Please follow this link to reset your password:
+
+            { confirm_url }
+
+        Cheers!
+
+        BeiMing Group
+"""
+
+    thread = mp.Process(
+        target=send_email_worker,
         args=(sender_email, password, receiver_email, message, smtp_server, port, proxy_host, proxy_port),
     )
     thread.start()

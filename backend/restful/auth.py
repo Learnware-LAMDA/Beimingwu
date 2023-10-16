@@ -7,6 +7,7 @@ import flask_jwt_extended
 import flask_restx as flask_restful
 import datetime
 import context
+import hashlib
 
 
 auth_blueprint = Blueprint("Auth-API", __name__)
@@ -111,6 +112,65 @@ class EmailConfirmApi(flask_restful.Resource):
         pass
 
 
+class SendResetPasswordEmailApi(flask_restful.Resource):
+    parser = flask_restful.reqparse.RequestParser()
+    parser.add_argument("email", type=str, required=True, location="json")
+    @api.expect(parser)
+    def post(self):
+        body = request.get_json()
+        keys = ["email"]
+        if any([k not in body for k in keys]):
+            return {"code": 21, "msg": "Request parameters error."}, 200
+
+        email = body["email"]
+        user_info = database.get_user_info(by="email", value=email)
+        if user_info is None:
+            return {"code": 51, "msg": "Your email not exist. Please register first"}, 200
+        user_id = user_info["id"]
+        verification_code = utils.generate_email_verification_code(email, secret_key=context.config["app_secret_key"])
+        utils.send_reset_password_email(email, verification_code, str(user_id), email_config=context.config["email"])
+
+        result = {"code": 0, "msg": "success", "data": {}}
+
+        return result, 200
+    pass
+
+
+class ResetPasswordApi(flask_restful.Resource):
+    parser = flask_restful.reqparse.RequestParser()
+    parser.add_argument("code", type=str, required=True, location="json")
+    parser.add_argument("user_id", type=int, required=True, location="json")
+    @api.expect(parser)
+    def post(self):
+        body = request.get_json()
+        keys = ["code", "user_id"]
+        if any([k not in body for k in keys]):
+            return {"code": 21, "msg": "Request parameters error."}, 200
+        
+        code = body["code"]
+        user_id = int(body["user_id"])
+        email = utils.decode_email_verification_code(code, secret_key=context.config["app_secret_key"])
+        if email is None:
+            return {"code": 55, "msg": "Invalid verification code."}, 200
+        user_info = database.get_user_info(by="email", value=email)
+        if user_info is None:
+            return {"code": 51, "msg": "Your email not exist. Please register first"}, 200
+        if user_info["id"] != user_id:
+            return {"code": 56, "msg": "Invalid user id."}, 200
+        
+        new_password = utils.generate_random_str(8)
+        md5 = hashlib.md5(new_password.encode("utf-8")).hexdigest()
+        password_hash = flask_bcrypt.generate_password_hash(md5).decode("utf-8")
+        flag = database.update_user_password(pwd=password_hash, by="id", value=user_id)
+        if not flag:
+            return {"code": 31, "msg": "Update error."}, 200
+
+        # Return profile
+        result = {"code": 0, "msg": "Reset success", "data": {"password": new_password, "md5": md5}}
+
+        return result
+
+
 class LoginApi(flask_restful.Resource):
     def post(self):
         body = request.get_json()
@@ -203,6 +263,8 @@ class GetRoleApi(flask_restful.Resource):
 api.add_resource(RegisterApi, "/register")
 api.add_resource(ResendEmailConfirmApi, "/resend_email_confirm")
 api.add_resource(EmailConfirmApi, "/email_confirm")
+api.add_resource(SendResetPasswordEmailApi, "/send_reset_password_email")
+api.add_resource(ResetPasswordApi, "/reset_password")
 api.add_resource(LoginApi, "/login")
 api.add_resource(LogoutApi, "/logout")
 api.add_resource(GetRoleApi, "/get_role")

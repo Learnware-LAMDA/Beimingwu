@@ -173,6 +173,15 @@ const Router = createRouter({
         icon: "mdi-email-check-outline",
       },
     },
+    {
+      path: "/reset_password",
+      name: "ResetPassword",
+      component: (): Promise<Component> => import("../views/ResetPassword.vue"),
+      meta: {
+        showInNavBar: false,
+        icon: "mdi-email-check-outline",
+      },
+    },
   ],
   scrollBehavior() {
     return { top: 0 };

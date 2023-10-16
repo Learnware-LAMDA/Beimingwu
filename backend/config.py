@@ -60,6 +60,7 @@ class Config:
 ROOT_DIRPATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(os.path.dirname(ROOT_DIRPATH), "backend_data")
 UPLOAD_PATH = os.path.join(DATA_PATH, "upload")
+TEMP_PATH = os.path.join(DATA_PATH, "temp")
 SQLITE_PATH = os.path.join(DATA_PATH, "database.db")
 MARKET_PATH = os.path.join(DATA_PATH, "learnware")
 PROPERTY_PATH = os.path.join(DATA_PATH, "property.json")
@@ -68,6 +69,7 @@ _DEFAULT_CONFIG = {
     # Global config
     "root_path": ROOT_DIRPATH,
     "upload_path": UPLOAD_PATH,
+    "temp_path": TEMP_PATH,
     "remove_upload_file": False,
     # Database config
     "database": {
@@ -98,6 +100,7 @@ _DEFAULT_CONFIG = {
         "smtp_password": "",
         "sender_email": "",
         "verification_url": "",
+        "reset_password_url": "",
         "proxy_host": "",
         "proxy_port": 0,
     },
