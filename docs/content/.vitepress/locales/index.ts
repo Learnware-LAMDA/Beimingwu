@@ -1,7 +1,7 @@
 import en from "./en";
-import zhHans from "./zh-Hans";
+import zhCN from "./zh-CN";
 
 export default {
   root: en,
-  "zh-Hans": zhHans,
+  "zh-CN": zhCN,
 };
