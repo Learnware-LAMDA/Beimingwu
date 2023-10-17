@@ -105,7 +105,8 @@ export default {
     DragFileHere: "Drag file here",
     ClickHere: "Click here",
     ForInstructionsOnHowToCreateTheRequiredZipFile:
-      "For instructions on how to create the required zip file",
+      "for instructions on how to create the required zip file",
+    ToDownloadTemplate: "to download a template",
     Error: {
       FileNotFound: "File {filename} not found",
       KeyNotFoundInFile: "Key '{key}' not found in file {filename}",

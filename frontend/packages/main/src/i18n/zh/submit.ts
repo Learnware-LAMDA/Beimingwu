@@ -105,6 +105,7 @@ export default {
     DragFileHere: "拖拽文件到此处",
     ClickHere: "点击此处",
     ForInstructionsOnHowToCreateTheRequiredZipFile: "查看如何创建所需的zip文件",
+    ToDownloadTemplate: "下载模板学件",
     Error: {
       FileNotFound: "找不到文件 {filename}",
       KeyNotFoundInFile: "文件 {filename} 中找不到键 '{key}'",
