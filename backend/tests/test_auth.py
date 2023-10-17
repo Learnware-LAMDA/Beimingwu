@@ -119,31 +119,26 @@ class TestAuth(unittest.TestCase):
     def test_reset_password(self):
         email = "xiaochuan.zou@polixir.ai"
         result = testops.url_request(
-            "auth/register", {"username": "test3", "password": "test", "email": email, "confirm_email": False})
+            "auth/register", {"username": "test3", "password": "test", "email": email, "confirm_email": False}
+        )
         self.assertEqual(result["code"], 0)
         user_id = result["data"]["user_id"]
-        result = testops.url_request(
-            "auth/send_reset_password_email", {"email": email}
-        )
+        result = testops.url_request("auth/send_reset_password_email", {"email": email})
         self.assertEqual(result["code"], 0)
 
         time.sleep(5)
 
         code = utils.generate_email_verification_code(email, secret_key=context.config["app_secret_key"])
-        result = testops.url_request(
-            "auth/reset_password", {"code": code, "user_id": user_id})      
+        result = testops.url_request("auth/reset_password", {"code": code, "user_id": user_id})
         self.assertEqual(result["code"], 0)
-        password_new = result["data"]["password"]  
+        password_new = result["data"]["password"]
 
         print(password_new)
         password_hash = hashlib.md5(password_new.encode("utf-8")).hexdigest()
-        result = testops.url_request(
-            "auth/login", {"email": email, "password": password_hash}
-        )
+        result = testops.url_request("auth/login", {"email": email, "password": password_hash})
         self.assertEqual(result["code"], 0)
         testops.delete_user_by_email(email)
         pass
-
 
 
 if __name__ == "__main__":
