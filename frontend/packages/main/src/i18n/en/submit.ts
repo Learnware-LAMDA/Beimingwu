@@ -108,6 +108,9 @@ export default {
       "For instructions on how to create the required zip file",
     YourOldLearnware: "Your old learnware",
     Error: {
+      NoFile: "Please upload your model & statistical specification.",
+      NotZipFile: "Please upload a zip file.",
+      GreaterThan1GB: "Please upload a file smaller than 1GB.",
       FileNotFound: "File {filename} not found",
       FileNotJSON: "File {filename} is not a JSON file",
       KeyNotFoundInFile: "Key '{key}' not found in file {filename}",
