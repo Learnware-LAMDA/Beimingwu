@@ -111,7 +111,6 @@ function verifyLearnware(file: ArrayBuffer, t: ComposerTranslation): Promise<str
           if (!zipSpec) {
             return t("Submit.File.Error.FileNotFound", { filename: spec.file_name });
           }
-          console.log(zipSpec);
           return zipSpec
             .async("string")
             .then(JSON.parse)
