@@ -50,7 +50,7 @@ export default {
         OtherTask: "Other Task",
       },
       DescriptionOutput: {
-        Label: "Label",
+        Name: "Label",
         Description: "Description",
         LabelTips:
           "Fill in the description for each label on the left or paste a JSON object on the right. Clarifying the description for each label will help your learnware to be available for tasks with hetergenous label space.",
