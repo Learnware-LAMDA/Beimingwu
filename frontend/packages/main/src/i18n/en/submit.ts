@@ -106,8 +106,13 @@ export default {
     ClickHere: "Click here",
     ForInstructionsOnHowToCreateTheRequiredZipFile:
       "For instructions on how to create the required zip file",
+    YourOldLearnware: "Your old learnware",
     Error: {
+      NoFile: "Please upload your model & statistical specification.",
+      NotZipFile: "Please upload a zip file.",
+      GreaterThan1GB: "Please upload a file smaller than 1GB.",
       FileNotFound: "File {filename} not found",
+      FileNotJSON: "File {filename} is not a JSON file",
       KeyNotFoundInFile: "Key '{key}' not found in file {filename}",
       KeyEmptyInFile: "Key '{key}' is empty in file {filename}",
       KeyNotFoundOrEmptyInFile: "Key '{key}' not found or empty in file {filename}",

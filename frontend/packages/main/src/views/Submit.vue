@@ -94,19 +94,24 @@ const description = useField<Learnware.Description>({
 const files = useField<File[]>({
   defaultValue: [],
   validate: (value): string | Promise<string> => {
-    if (route.query.edit && value[0]?.name === "Your old learnware") {
+    if (route.query.edit && value[0]?.name === t("Submit.File.YourOldLearnware")) {
       return "";
     }
     if (!value.length || value.length === 0) {
-      return "Please upload your model & statistical specification.";
+      return t("Submit.File.Error.NoFile");
     }
     if (!value[0].name.endsWith(".zip")) {
-      return "You must upload a zip file.";
+      return t("Submit.File.Error.NotZipFile");
     }
     if (value[0].size > 1024 * 1024 * 1024) {
-      return "File size must be less than 1GB.";
+      return t("Submit.File.Error.GreaterThan1GB");
     }
-    return promiseReadFile(value[0]).then((file) => verifyLearnware(file, t));
+    return promiseReadFile(value[0])
+      .then((file) => verifyLearnware(file, t))
+      .catch((err) => {
+        console.log(err);
+        return err.message;
+      });
   },
 });
 
@@ -340,7 +345,7 @@ function checkIsEditMode(): undefined | Promise<void> {
                 },
               });
             }
-            files.value = [new File([], "Your old learnware")];
+            files.value = [new File([], t("Submit.File.YourOldLearnware"))];
             return;
           }
           default: {

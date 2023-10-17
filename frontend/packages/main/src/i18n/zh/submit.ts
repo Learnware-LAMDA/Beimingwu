@@ -105,8 +105,13 @@ export default {
     DragFileHere: "拖拽文件到此处",
     ClickHere: "点击此处",
     ForInstructionsOnHowToCreateTheRequiredZipFile: "查看如何创建所需的zip文件",
+    YourOldLearnware: "您的旧学件文件",
     Error: {
+      NoFile: "请上传模型和统计规约",
+      NotZipFile: "请上传 zip 文件",
+      GreaterThan1GB: "请上传小于 1GB 的文件",
       FileNotFound: "找不到文件 {filename}",
+      FileNotJSON: "文件 {filename} 不是JSON文件",
       KeyNotFoundInFile: "文件 {filename} 中找不到键 '{key}'",
       KeyEmptyInFile: "文件 {filename} 中的键 '{key}' 为空",
       KeyNotFoundOrEmptyInFile: "文件 {filename} 中的键 '{key}' 不存在或为空",
