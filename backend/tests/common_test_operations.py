@@ -212,3 +212,13 @@ def download_learnware(learnware_id, headers, download_file):
         f.write(result.content)
         pass
     pass
+
+
+def delete_user(user_id):
+    context.database.execute("DELETE FROM tb_user WHERE id = :user_id", {"user_id": user_id})
+    pass
+
+
+def delete_user_by_email(email):
+    context.database.execute("DELETE FROM tb_user WHERE email = :email", {"email": email})
+    pass

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
-import { verifyEmail } from "../request/auth";
+import { resetPassword } from "../request/auth";
 
 const router = useRouter();
 const route = useRoute();
@@ -10,21 +10,21 @@ const icon = ref("");
 const color = ref("");
 
 onMounted(() => {
-  const urlParams = new URLSearchParams();
   const code = route.query.code;
-  if (!code) {
+  const userId = route.query.user_id;
+  if (!code || !userId) {
     icon.value = "mdi-alert-circle";
     msg.value = "Invalid URL";
     color.value = "error";
     return;
   }
-  urlParams.append("code", code.toString());
-  verifyEmail(urlParams.toString())
+
+  resetPassword(code.toString(), userId.toString())
     .then((res) => {
       switch (res.code) {
         case 0: {
           icon.value = "mdi-check-circle";
-          msg.value = res.msg;
+          msg.value = "Your new password: " + res.data.password;
           color.value = "success";
           return;
         }

@@ -82,4 +82,34 @@ function resendEmail(email: string): Promise<{
   }).then((res) => res.json());
 }
 
-export { login, logout, register, getRole, verifyEmail, resendEmail };
+function sendResetPasswordEmail(
+  email: string,
+): Promise<{ code: number; msg: string}> {
+  return checkedFetch(`${BASE_URL}/send_reset_password_email`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+    }),
+  }).then((res) => res.json());
+}
+
+function resetPassword(
+  verificationCode: string,
+  userId: string
+): Promise<{ code: number; msg: string; data: {password: string}}> {
+  return checkedFetch(`${BASE_URL}/reset_password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      code: verificationCode,
+      user_id: userId,
+    }),
+  }).then((res) => res.json());
+}
+
+export { login, logout, register, getRole, verifyEmail, resendEmail, sendResetPasswordEmail, resetPassword };
