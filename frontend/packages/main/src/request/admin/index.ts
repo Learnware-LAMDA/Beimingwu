@@ -37,7 +37,7 @@ function listLearnware({
       ...json,
       data: {
         ...json.data,
-        learnware_list: json.data.learnware_list,
+        learnware_list: json.data.learnware_list_single,
       },
     }));
 }
