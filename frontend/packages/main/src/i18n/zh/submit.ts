@@ -107,6 +107,7 @@ export default {
     ForInstructionsOnHowToCreateTheRequiredZipFile: "查看如何创建所需的zip文件",
     Error: {
       FileNotFound: "找不到文件 {filename}",
+      FileNotJSON: "文件 {filename} 不是JSON文件",
       KeyNotFoundInFile: "文件 {filename} 中找不到键 '{key}'",
       KeyEmptyInFile: "文件 {filename} 中的键 '{key}' 为空",
       KeyNotFoundOrEmptyInFile: "文件 {filename} 中的键 '{key}' 不存在或为空",

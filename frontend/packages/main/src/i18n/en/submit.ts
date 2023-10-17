@@ -108,6 +108,7 @@ export default {
       "For instructions on how to create the required zip file",
     Error: {
       FileNotFound: "File {filename} not found",
+      FileNotJSON: "File {filename} is not a JSON file",
       KeyNotFoundInFile: "Key '{key}' not found in file {filename}",
       KeyEmptyInFile: "Key '{key}' is empty in file {filename}",
       KeyNotFoundOrEmptyInFile: "Key '{key}' not found or empty in file {filename}",

@@ -106,7 +106,12 @@ const files = useField<File[]>({
     if (value[0].size > 1024 * 1024 * 1024) {
       return "File size must be less than 1GB.";
     }
-    return promiseReadFile(value[0]).then((file) => verifyLearnware(file, t));
+    return promiseReadFile(value[0])
+      .then((file) => verifyLearnware(file, t))
+      .catch((err) => {
+        console.log(err);
+        return err.message;
+      });
   },
 });
 
