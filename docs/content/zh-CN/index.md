@@ -2,23 +2,23 @@
 layout: home
 
 hero:
-  name: "我的精彩項目"
-  text: "一个 VitePress 网站"
-  tagline: 我伟大的项目标语
+  name: "我的精彩项目"
+  text: "一个 VitePress 站点"
+  tagline: 我的伟大项目标语
   image: /image.jpg
   actions:
     - theme: brand
       text: Markdown 示例
-      link: /zh-Hant/markdown-examples
+      link: /zh-CN/markdown-examples
     - theme: alt
       text: API 示例
-      link: /zh-Hant/api-examples
+      link: /zh-CN/api-examples
 
 features:
-  - title: 功能 A
+  - title: 特性 A
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: 功能 B
+  - title: 特性 B
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: 功能 C
+  - title: 特性 C
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
