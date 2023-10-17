@@ -90,10 +90,10 @@ const taskTypeDescription = computed({
       :name="t('Submit.Tag.TaskType.DescriptionOutput.Name')"
     >
       <template #msg>
-        {{ t("Submit.Tag.TaskType.DescriptionOutput.FeatureTips") }}
+        {{ t("Submit.Tag.TaskType.DescriptionOutput.LabelTips") }}
       </template>
       <template #msg-small>
-        {{ t("Submit.Tag.TaskType.DescriptionOutput.FeatureTipsSmall") }}
+        {{ t("Submit.Tag.TaskType.DescriptionOutput.LabelTipsSmall") }}
       </template>
     </description-input>
     <library-type-btns v-model:value="libraryType" />
