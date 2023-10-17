@@ -23,14 +23,17 @@ const routes = computed<Route.Route[]>(
   () =>
     Router.options.routes.map((route) => {
       if (route.children) {
+        route.meta = {
+          ...route.meta,
+          title:
+            route.name === "User" && store.getters.getLoggedIn
+              ? store.getters.getUserName
+              : t(`Page.${String(route.name)}.${String(route.name)}`),
+        };
         route.children.forEach((child) => {
           child.meta = {
             ...child.meta,
             title: t(`Page.${String(route.name)}.${String(child.name)}`),
-          };
-          route.meta = {
-            ...route.meta,
-            title: t(`Page.${String(route.name)}.${String(route.name)}`),
           };
         });
       } else {
