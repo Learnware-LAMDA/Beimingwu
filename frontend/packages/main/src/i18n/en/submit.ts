@@ -106,6 +106,7 @@ export default {
     ClickHere: "Click here",
     ForInstructionsOnHowToCreateTheRequiredZipFile:
       "For instructions on how to create the required zip file",
+    YourOldLearnware: "Your old learnware",
     Error: {
       FileNotFound: "File {filename} not found",
       FileNotJSON: "File {filename} is not a JSON file",

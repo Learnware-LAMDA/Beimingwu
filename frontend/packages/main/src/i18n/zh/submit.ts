@@ -105,6 +105,7 @@ export default {
     DragFileHere: "拖拽文件到此处",
     ClickHere: "点击此处",
     ForInstructionsOnHowToCreateTheRequiredZipFile: "查看如何创建所需的zip文件",
+    YourOldLearnware: "您的旧学件文件",
     Error: {
       FileNotFound: "找不到文件 {filename}",
       FileNotJSON: "文件 {filename} 不是JSON文件",

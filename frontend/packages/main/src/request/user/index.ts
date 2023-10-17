@@ -102,7 +102,7 @@ function addLearnware({
       semanticSpec.Output = JSON.parse(taskTypeDescription);
 
       const fd = new FormData();
-      fd.append("learnware_file", files[0].name === "Your old learnware" ? "" : files[0]);
+      fd.append("learnware_file", files[0].size === 0 ? "" : files[0]);
       fd.append("semantic_specification", JSON.stringify(semanticSpec));
       edit && learnwareId && fd.append("learnware_id", learnwareId);
       return fd;

@@ -94,7 +94,7 @@ const description = useField<Learnware.Description>({
 const files = useField<File[]>({
   defaultValue: [],
   validate: (value): string | Promise<string> => {
-    if (route.query.edit && value[0]?.name === "Your old learnware") {
+    if (route.query.edit && value[0]?.name === t("Submit.File.YourOldLearnware")) {
       return "";
     }
     if (!value.length || value.length === 0) {
@@ -345,7 +345,7 @@ function checkIsEditMode(): undefined | Promise<void> {
                 },
               });
             }
-            files.value = [new File([], "Your old learnware")];
+            files.value = [new File([], t("Submit.File.YourOldLearnware"))];
             return;
           }
           default: {
