@@ -82,10 +82,11 @@ class ListLearnwareApi(flask_restful.Resource):
 
         limit = body["limit"]
         page = body["page"]
+        is_verified = body.get("is_verified", None)
 
         user_id = flask_jwt_extended.get_jwt_identity()
-        # ret, cnt = database.get_learnware_list("user_id", user_id, limit=limit, page=page, is_verified=True)
-        rows, cnt = database.get_learnware_list_by_user_id(user_id, limit=limit, page=page)
+        ret, cnt = database.get_learnware_list("user_id", user_id, limit=limit, page=page, is_verified=is_verified)
+        # rows, cnt = database.get_learnware_list_by_user_id(user_id, limit=limit, page=page)
 
         learnware_list = []
         for row in rows:
