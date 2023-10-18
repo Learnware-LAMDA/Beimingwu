@@ -6,10 +6,12 @@ const BASE_URL = "./api/admin";
 function listLearnware({
   page,
   limit,
+  isVerified,
   userId,
 }: {
   userId: string;
   page: number;
+  isVerified: boolean | null;
   limit: number;
 }): Promise<{
   code: number;
@@ -30,6 +32,7 @@ function listLearnware({
       user_id: userId,
       page,
       limit,
+      is_verified: isVerified,
     }),
   })
     .then((res) => res.json())

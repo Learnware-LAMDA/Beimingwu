@@ -38,7 +38,15 @@ function deleteLearnware({ id }: { id: string }): Promise<{
   }).then((res) => res.json());
 }
 
-function getLearnwareList({ page, limit }: { page: number; limit: number }): Promise<{
+function getLearnwareList({
+  page,
+  limit,
+  isVerified,
+}: {
+  page: number;
+  limit: number;
+  isVerified: boolean | null;
+}): Promise<{
   code: number;
   msg: string;
   data: {
@@ -56,6 +64,7 @@ function getLearnwareList({ page, limit }: { page: number; limit: number }): Pro
     body: JSON.stringify({
       page,
       limit,
+      is_verified: isVerified,
     }),
   }).then((res) => res.json());
 }
