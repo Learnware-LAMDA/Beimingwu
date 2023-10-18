@@ -159,7 +159,15 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                 {{ t("Submit.Tag.DataType.DescriptionInput.Description") }}
               </div>
             </div>
-            <v-virtual-scroll :items="Object.entries(learnware.input.Description)" :height="300">
+            <div v-if="learnware.input.Dimension < 8">
+              <div v-for="[key, val] in Object.entries(learnware.input.Description)" :key="key">
+                <div class="flex py-2 px-1 border-b-1">
+                  <div class="w-20">{{ key }}</div>
+                  <div class="w-1/1">{{ val }}</div>
+                </div>
+              </div>
+            </div>
+            <v-virtual-scroll v-else :items="Object.entries(learnware.input.Description)" :height="300">
               <template #default="{ item }">
                 <div class="flex py-2 px-1 border-b-1">
                   <div class="w-20">{{ Number(item[0]) }}</div>
@@ -204,7 +212,15 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                 {{ t("Submit.Tag.TaskType.DescriptionOutput.Description") }}
               </div>
             </div>
-            <v-virtual-scroll :items="Object.entries(learnware.output.Description)" :height="300">
+            <div v-if="learnware.output.Dimension < 8">
+              <div v-for="[key, val] in Object.entries(learnware.output.Description)" :key="key">
+                <div class="flex py-2 px-1 border-b-1">
+                  <div class="w-20">{{ key }}</div>
+                  <div class="w-1/1">{{ val }}</div>
+                </div>
+              </div>
+            </div>
+            <v-virtual-scroll v-else :items="Object.entries(learnware.output.Description)" :height="300">
               <template #default="{ item }">
                 <div class="flex py-2 px-1 border-b-1">
                   <div class="w-20">{{ Number(item[0]) }}</div>
