@@ -66,6 +66,7 @@ function submit(): Promise<void> {
     .then((res) => {
       switch (res.code) {
         case 0:
+          success.value = true;
           return;
         case 53: {
           success.value = true;
@@ -175,6 +176,9 @@ onUnmounted(() => {
               v-model="email.value"
               :label="t('Register.Email')"
               :error-messages="email.errorMessages"
+              type="text"
+              name="login"
+              autocomplete="username"
             ></v-text-field>
             <v-text-field
               v-model="password.value"

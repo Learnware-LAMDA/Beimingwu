@@ -156,6 +156,9 @@ function onResetPassword(): void {
               v-model="email.value"
               :label="t('Login.Email')"
               :error-messages="email.errorMessages"
+              type="text"
+              name="login"
+              autocomplete="username"
             ></v-text-field>
             <v-text-field
               v-model="password.value"
