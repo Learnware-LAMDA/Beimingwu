@@ -55,9 +55,9 @@ const filteredRoutes = computed<Route.Route[]>(() =>
         v-if="['xs', 'sm'].includes(display.name.value)"
         @click="() => emit('update:drawerOpen', !drawerOpen)"
       ></v-app-bar-nav-icon>
-      <v-appbar-title class="logo" @click="() => router.push('/')">
+      <v-app-bar-title class="logo" @click="() => router.push('/')">
         <img class="logo-img" :src="learnwareLogo" />
-      </v-appbar-title>
+      </v-app-bar-title>
     </div>
 
     <template #append>
