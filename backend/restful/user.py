@@ -187,14 +187,12 @@ class AddLearnwareApi(flask_restful.Resource):
     pass
 
 
-parser_update_learnware = flask_restful.reqparse.RequestParser()
-parser_update_learnware.add_argument("learnware_id", type=str, required=True, location="form")
-parser_update_learnware.add_argument("semantic_specification", type=str, required=True, location="form")
-parser_update_learnware.add_argument("learnware_file", type=werkzeug.datastructures.FileStorage, location="files")
-
-
 class UpdateLearnwareApi(flask_restful.Resource):
-    @api.expect(parser_update_learnware)
+    parser = flask_restful.reqparse.RequestParser()
+    parser.add_argument("learnware_id", type=str, required=True, location="form")
+    parser.add_argument("semantic_specification", type=str, required=True, location="form")
+    parser.add_argument("learnware_file", type=werkzeug.datastructures.FileStorage, location="files")
+    @api.expect(parser)
     @flask_jwt_extended.jwt_required()
     def post(self):
         semantic_specification_str = request.form.get("semantic_specification")
@@ -232,11 +230,13 @@ class UpdateLearnwareApi(flask_restful.Resource):
             print(f"update verified learnware: {learnware_id}")
 
             if learnware_file is None:
-                learnware_path_origin = context.engine.get_learnware_path_by_ids(learnware_id)
-                shutil.copyfile(learnware_path_origin, learnware_path)
+                # only update semantic specification
+                context.engine.update_learnware_semantic_spec(learnware_id, semantic_specification)
                 pass
-            context.engine.delete_learnware(learnware_id)
-            database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
+            else:
+                context.engine.delete_learnware(learnware_id)
+                database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
+                pass
             pass
         elif verify_status == LearnwareVerifyStatus.FAIL.value:
             # this learnware is failed
@@ -310,7 +310,6 @@ class VerifyLog(flask_restful.Resource):
     pass
 
 
-@api.route("/create_token")
 class CreateToken(flask_restful.Resource):
     @flask_jwt_extended.jwt_required()
     def post(self):
@@ -324,7 +323,6 @@ class CreateToken(flask_restful.Resource):
     pass
 
 
-@api.route("/list_token")
 class ListToken(flask_restful.Resource):
     @flask_jwt_extended.jwt_required()
     def post(self):
@@ -339,13 +337,10 @@ class ListToken(flask_restful.Resource):
     pass
 
 
-delete_token_parser = flask_restful.reqparse.RequestParser()
-delete_token_parser.add_argument("token", type=str, required=True, help="token", location="json")
-
-
-@api.route("/delete_token")
 class DeleteToken(flask_restful.Resource):
-    @api.expect(delete_token_parser)
+    parser = flask_restful.reqparse.RequestParser()
+    parser.add_argument("token", type=str, required=True, help="token", location="json")
+    @api.expect(parser)
     @flask_jwt_extended.jwt_required()
     def post(self):
         user_id = flask_jwt_extended.get_jwt_identity()
@@ -361,16 +356,13 @@ class DeleteToken(flask_restful.Resource):
     pass
 
 
-parser_chunked_upload = flask_restful.reqparse.RequestParser()
-parser_chunked_upload.add_argument("chunk_begin", type=int, required=True, location="form")
-parser_chunked_upload.add_argument("file_hash", type=str, required=True, location="form")
-parser_chunked_upload.add_argument("chunk_file", type=werkzeug.datastructures.FileStorage, location="files")
-
-
-@api.route("/chunked_upload")
 class ChunkedUpload(flask_restful.Resource):
+    parser = flask_restful.reqparse.RequestParser()
+    parser.add_argument("chunk_begin", type=int, required=True, location="form")
+    parser.add_argument("file_hash", type=str, required=True, location="form")
+    parser.add_argument("chunk_file", type=werkzeug.datastructures.FileStorage, location="files")
     @flask_jwt_extended.jwt_required()
-    @api.expect(parser_chunked_upload)
+    @api.expect(parser)
     def post(self):
         file = request.files["chunk_file"]
         file_hash = request.form["file_hash"]
@@ -387,15 +379,12 @@ class ChunkedUpload(flask_restful.Resource):
         return {"code": 0, "msg": "success"}, 200
 
 
-parser_add_learnware_uploaded = flask_restful.reqparse.RequestParser()
-parser_add_learnware_uploaded.add_argument("file_hash", type=str, location="json")
-parser_add_learnware_uploaded.add_argument("semantic_specifiction", type=str, location="json")
-
-
-@api.route("/add_learnware_uploaded")
 class AddLearnwareUploaded(flask_restful.Resource):
+    parser = flask_restful.reqparse.RequestParser()
+    parser.add_argument("file_hash", type=str, location="json")
+    parser.add_argument("semantic_specifiction", type=str, location="json")
     @flask_jwt_extended.jwt_required()
-    @api.expect(parser_add_learnware_uploaded)
+    @api.expect(parser)
     def post(self):
         body = request.get_json()
         semantic_specification_str = body.get("semantic_specification")
@@ -425,3 +414,8 @@ api.add_resource(UpdateLearnwareApi, "/update_learnware")
 api.add_resource(AddLearnwareVerifiedApi, "/add_learnware_verified")
 api.add_resource(DeleteLearnwareApi, "/delete_learnware")
 api.add_resource(VerifyLog, "/verify_log")
+api.add_resource(AddLearnwareUploaded, "/add_learnware_uploaded")
+api.add_resource(ChunkedUpload, "/chunked_upload")
+api.add_resource(CreateToken, "/create_token")
+api.add_resource(ListToken, "/list_token")
+api.add_resource(DeleteToken, "/delete_token")

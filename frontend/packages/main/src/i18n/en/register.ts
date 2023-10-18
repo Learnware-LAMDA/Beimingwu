@@ -4,6 +4,10 @@ export default {
   Email: "E-mail",
   Password: "Password",
   ConfirmPassword: "Confirm Password",
+  SentEmail:
+    "We have sent an email with a confirmation link to your email address. Please follow the link in the email.",
+  Resend: "Resend",
+  Close: "Close",
   Error: {
     UsernameAtLeast2Chars: "Username needs to be at least 2 characters.",
     InvalidEmail: "Invalid e-mail address",

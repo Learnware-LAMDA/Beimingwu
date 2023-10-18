@@ -100,7 +100,6 @@ function login(): Promise<void> {
     })
     .then((res) => res.json())
     .then((res) => {
-      console.log(res);
       switch (res.code) {
         case 0: {
           return res;

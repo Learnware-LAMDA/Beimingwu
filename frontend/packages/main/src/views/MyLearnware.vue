@@ -129,7 +129,6 @@ function fetchByFilterAndPage(page: number): void {
             tagList: item.semantic_specification.Scenario.Values,
           }));
           pageNum.value = res.data.total_pages;
-          console.log(pageNum.value);
           return;
         }
         case 11: {

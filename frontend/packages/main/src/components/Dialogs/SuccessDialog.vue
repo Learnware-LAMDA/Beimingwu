@@ -1,35 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
-import { useRouter } from "vue-router";
-import { resendEmail } from "../../request/auth";
-
-const router = useRouter();
 
 const start = ref(false);
 const dialog = ref(true);
-
-const props = defineProps<{
-  email: string;
-}>();
 
 onMounted(() => {
   nextTick(() => {
     start.value = true;
   });
 });
-
-function onResend(): Promise<void> {
-  return resendEmail(props.email)
-    .then((res) => {
-      if (res.code === 0) {
-        dialog.value = false;
-        router.push("/login");
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
 </script>
 
 <template>
@@ -55,25 +34,10 @@ function onResend(): Promise<void> {
         ></path>
       </svg>
 
-      <h2 class="text-h5 mt-6 mb-8">
-        We have sent an email with a confirmation link to your email address. Please follow the link
-        in the email.
-      </h2>
+      <slot name="msg" />
 
       <div class="text-end">
-        <v-btn class="text-none mr-3" color="primary" rounded variant="flat" @click="onResend()">
-          Resend Email
-        </v-btn>
-        <v-btn
-          class="text-none"
-          color="primary"
-          rounded
-          variant="outlined"
-          width="90"
-          @click="router.go(0)"
-        >
-          Close
-        </v-btn>
+        <slot name="buttons" />
       </div>
     </v-sheet>
   </v-dialog>
