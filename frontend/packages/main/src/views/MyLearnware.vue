@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick, watch, onActivated } from "vue";
+import { ref, onMounted, nextTick, computed, watch, onActivated } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
+import { useDisplay } from "vuetify";
 import { deleteLearnware, getLearnwareList } from "../request/user";
 import { listLearnware } from "../request/admin";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
@@ -14,11 +15,14 @@ const store = useStore();
 const route = useRoute();
 const router = useRouter();
 
+const display = useDisplay();
+
 const dialog = ref<InstanceType<typeof ConfirmDialog>>();
 const deleteId = ref("");
 const deleteName = ref("");
 
 const learnwareItems = ref<Learnware.LearnwareCardInfo[]>([]);
+const verifiedFilter = ref<string>("All");
 const page = ref<number>(1);
 const pageNum = ref<number>(1);
 const pageSize = ref<number>(10);
@@ -102,6 +106,7 @@ function fetchByFilterAndPage(page: number): void {
       listLearnware({
         page: page - 1,
         limit: pageSize.value,
+        isVerified: verifiedFilter.value === "All" ? null : verifiedFilter.value === "Verified",
         userId: route.query.user_id?.toString() as string,
       });
   } else {
@@ -109,6 +114,7 @@ function fetchByFilterAndPage(page: number): void {
       getLearnwareList({
         page: page - 1,
         limit: pageSize.value,
+        isVerified: verifiedFilter.value === "All" ? null : verifiedFilter.value === "Verified",
       });
   }
 
@@ -152,8 +158,15 @@ function fetchByFilterAndPage(page: number): void {
 }
 
 watch(
-  () => page.value,
-  (newPage) => {
+  () => display.mdAndUp.value,
+  (newVal) => console.log(newVal),
+);
+const direction = computed(() => (display.mdAndUp.value ? "vertical" : "horizontal"));
+
+watch(
+  () => [page.value, verifiedFilter.value],
+  (newVal) => {
+    const [newPage] = newVal as [number, string];
     fetchByFilterAndPage(newPage);
   },
   { deep: true },
@@ -192,20 +205,77 @@ onMounted(() => {
         <v-alert closable :text="errorMsg" type="error" @click:close="showError = false" />
       </v-card-actions>
     </v-scroll-y-transition>
-    <div class="w-1/1 max-w-900px">
-      <page-learnware-list
-        :show-pagination="pageNum > 1"
-        :items="learnwareItems"
-        :page="page"
-        :page-num="pageNum"
-        :page-size="pageSize"
-        :loading="loading"
-        :cols="1"
-        :is-admin="true"
-        @page-change="pageChange"
-        @click:edit="(id) => handleClickEdit(id)"
-        @click:delete="(id) => handleClickDelete(id)"
-      />
+
+    <div class="w-1/1 max-w-950px">
+      <div :class="direction === 'vertical' ? 'flex' : ''">
+        <v-tabs v-model="verifiedFilter" :direction="direction" color="primary">
+          <v-tab value="All">
+            <v-icon start> mdi-shield-account-outline </v-icon>
+            All
+          </v-tab>
+          <v-tab value="Verified">
+            <v-icon start> mdi-shield-check </v-icon>
+            Verified
+          </v-tab>
+          <v-tab value="Unverified">
+            <v-icon start> mdi-shield-off-outline </v-icon>
+            Unverified
+          </v-tab>
+        </v-tabs>
+        <v-window v-model="verifiedFilter" class="w-1/1">
+          <v-window-item value="All">
+            <div class="w-1/1">
+              <page-learnware-list
+                :show-pagination="pageNum > 1"
+                :items="learnwareItems"
+                :page="page"
+                :page-num="pageNum"
+                :page-size="pageSize"
+                :loading="loading"
+                :cols="1"
+                :is-admin="true"
+                @page-change="pageChange"
+                @click:edit="(id: string) => handleClickEdit(id)"
+                @click:delete="(id: string) => handleClickDelete(id)"
+              />
+            </div>
+          </v-window-item>
+          <v-window-item value="Verified">
+            <div class="w-1/1">
+              <page-learnware-list
+                :show-pagination="pageNum > 1"
+                :items="learnwareItems"
+                :page="page"
+                :page-num="pageNum"
+                :page-size="pageSize"
+                :loading="loading"
+                :cols="1"
+                :is-admin="true"
+                @page-change="pageChange"
+                @click:edit="(id) => handleClickEdit(id)"
+                @click:delete="(id) => handleClickDelete(id)"
+              />
+            </div>
+          </v-window-item>
+          <v-window-item value="Unverified">
+            <div class="w-1/1">
+              <page-learnware-list
+                :show-pagination="pageNum > 1"
+                :items="learnwareItems"
+                :page="page"
+                :page-num="pageNum"
+                :page-size="pageSize"
+                :loading="loading"
+                :cols="1"
+                :is-admin="true"
+                @page-change="pageChange"
+                @click:edit="(id) => handleClickEdit(id)"
+                @click:delete="(id) => handleClickDelete(id)"
+              />
+            </div>
+          </v-window-item>
+        </v-window>
+      </div>
     </div>
   </div>
 </template>

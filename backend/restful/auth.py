@@ -115,6 +115,7 @@ class EmailConfirmApi(flask_restful.Resource):
 class SendResetPasswordEmailApi(flask_restful.Resource):
     parser = flask_restful.reqparse.RequestParser()
     parser.add_argument("email", type=str, required=True, location="json")
+
     @api.expect(parser)
     def post(self):
         body = request.get_json()
@@ -133,6 +134,7 @@ class SendResetPasswordEmailApi(flask_restful.Resource):
         result = {"code": 0, "msg": "success", "data": {}}
 
         return result, 200
+
     pass
 
 
@@ -140,13 +142,14 @@ class ResetPasswordApi(flask_restful.Resource):
     parser = flask_restful.reqparse.RequestParser()
     parser.add_argument("code", type=str, required=True, location="json")
     parser.add_argument("user_id", type=int, required=True, location="json")
+
     @api.expect(parser)
     def post(self):
         body = request.get_json()
         keys = ["code", "user_id"]
         if any([k not in body for k in keys]):
             return {"code": 21, "msg": "Request parameters error."}, 200
-        
+
         code = body["code"]
         user_id = int(body["user_id"])
         email = utils.decode_email_verification_code(code, secret_key=context.config["app_secret_key"])
@@ -157,7 +160,7 @@ class ResetPasswordApi(flask_restful.Resource):
             return {"code": 51, "msg": "Your email not exist. Please register first"}, 200
         if user_info["id"] != user_id:
             return {"code": 56, "msg": "Invalid user id."}, 200
-        
+
         new_password = utils.generate_random_str(8)
         md5 = hashlib.md5(new_password.encode("utf-8")).hexdigest()
         password_hash = flask_bcrypt.generate_password_hash(md5).decode("utf-8")
