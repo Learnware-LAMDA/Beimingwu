@@ -4,6 +4,19 @@ import { Learnware, Response } from "types";
 
 const BASE_URL = "./api/user";
 
+function getProfile(): Promise<{
+  code: number;
+  msg: string;
+  data: {
+    username: string;
+    email: string;
+  };
+}> {
+  return checkedFetch(`${BASE_URL}/profile`, {
+    method: "POST",
+  }).then((res) => res.json());
+}
+
 function changePassword({
   oldPasswordMd5,
   newPasswordMd5,
@@ -173,6 +186,7 @@ function deleteToken({ token }: { token: string }): Promise<{
 }
 
 export {
+  getProfile,
   changePassword,
   deleteLearnware,
   getLearnwareList,
