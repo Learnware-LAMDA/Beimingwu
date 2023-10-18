@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onUnmounted } from "vue";
+import { useRouter } from "vue-router";
 import { useField } from "hooks";
 import { useI18n } from "vue-i18n";
-import RegSucDialog from "../components/User/RegSucDialog.vue";
+import SuccessDialog from "../components/Dialogs/SuccessDialog.vue";
 import { register } from "../request/auth";
 import { hex_md5 } from "../utils";
 import collaborationImg from "../assets/images/public/collaboration.svg?url";
+import { resendEmail } from "../request/auth";
+import { useTimeout } from "hooks";
 
 const { t } = useI18n();
+const router = useRouter();
 
 const userName = useField<string>({
   defaultValue: "",
@@ -49,6 +53,7 @@ const errorMsg = ref("");
 const success = ref(false);
 
 const errorTimer = ref<number>();
+const { ok, remain, start: startTimer, stop: stopTimer } = useTimeout(60 * 1000);
 
 const valid = computed(() => userName.valid && email.valid && password.valid && password2.valid);
 
@@ -90,6 +95,22 @@ function submit(): Promise<void> {
       );
     });
 }
+
+function onResend(): Promise<void> {
+  return resendEmail(email.value)
+    .then((res) => {
+      if (res.code === 0) {
+        startTimer();
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+onUnmounted(() => {
+  stopTimer();
+});
 </script>
 
 <template>
@@ -106,7 +127,35 @@ function submit(): Promise<void> {
     <div
       class="flex flex-row justify-center items-center w-1/1 fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100"
     >
-      <reg-suc-dialog v-if="success" :email="email.value" />
+      <success-dialog v-if="success">
+        <template #msg>
+          <div class="text-lg mt-6 mb-8">
+            {{ t("Register.SentEmail") }}
+          </div>
+        </template>
+        <template #buttons>
+          <v-btn
+            class="text-none mr-3"
+            color="primary"
+            rounded
+            variant="flat"
+            :disabled="!ok"
+            @click="onResend()"
+          >
+            {{ t("Register.Resend") }} <span v-if="!ok">({{ remain / 1000 }})</span>
+          </v-btn>
+          <v-btn
+            class="text-none"
+            color="primary"
+            rounded
+            variant="outlined"
+            width="90"
+            @click="() => router.push('/login')"
+          >
+            {{ t("Register.Close") }}
+          </v-btn>
+        </template>
+      </success-dialog>
 
       <v-card flat class="mx-auto w-1/1 sm:p-6 p-2" max-width="500">
         <v-card-title>
