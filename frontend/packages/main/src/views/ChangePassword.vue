@@ -55,14 +55,14 @@ function change(): Promise<void> {
         case 0: {
           success.value = true;
           setTimeout(() => {
-            store.commit("setLoggedIn", false);
+            store.dispatch("logout");
             router.push("/login");
           }, 1000);
           return;
         }
         case 11: {
           success.value = false;
-          store.commit("setLoggedIn", false);
+          store.dispatch("logout");
           setTimeout(() => {
             router.push("/login");
           }, 1000);

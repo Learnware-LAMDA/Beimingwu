@@ -7,8 +7,8 @@ function checkStatus(res: Response): Response {
   }
   if (res.status === 401) {
     // Unauthorized
+    Store.dispatch("logout");
     Router.push("/login");
-    Store.commit("setLoggedIn", false);
     return res;
   }
   throw new Error(`Network error: ${res.status}${res.statusText ? ` - ${res.statusText}` : ""}`);
