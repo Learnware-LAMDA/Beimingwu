@@ -16,6 +16,7 @@ import lib.engine as engine_ops
 import yaml
 import shutil
 from typing import Tuple
+import learnware.utils
 
 
 def verify_learnware_by_script(
@@ -95,7 +96,7 @@ def worker_process_func(q: queue.Queue, env: dict):
         process_result_filename = learnware_filename + ".result"
         learnware_processed_filename = learnware_filename[:-4] + "_processed.zip"
 
-        with tempfile.TemporaryDirectory() as tmpdir:
+        with tempfile.TemporaryDirectory(dir=context.config["TEMP_PATH"]) as tmpdir:
             extract_path = tmpdir
             if not os.path.exists(extract_path):
                 os.makedirs(extract_path)
@@ -125,15 +126,7 @@ def worker_process_func(q: queue.Queue, env: dict):
                 verify_status = LearnwareVerifyStatus.FAIL
                 pass
 
-            with zipfile.ZipFile(learnware_processed_filename, "w") as zip_ref:
-                for root, dirs, files in os.walk(extract_path):
-                    for file in files:
-                        if file.endswith(".pyc"):
-                            continue
-                        zip_ref.write(os.path.join(root, file), arcname=file)
-                        pass
-                    pass
-                pass
+            learnware.utils.zip_learnware_folder(extract_path, learnware_processed_filename)
             pass
 
         if verify_status == LearnwareVerifyStatus.SUCCESS:

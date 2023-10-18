@@ -239,8 +239,7 @@ class TestUser(unittest.TestCase):
         self.assertEqual(result["code"], 0)
         learnware_info = result["data"]["learnware_list"][0]
         self.assertEqual(learnware_info["semantic_specification"]["Name"]["Values"], "Test Classification 2")
-        self.assertEqual(learnware_info["verify_status"], "WAITING")
-        self.assertTrue(os.path.exists(context.get_learnware_verify_file_path(learnware_id)))
+        self.assertEqual(learnware_info["verify_status"], "SUCCESS")
 
         testops.delete_learnware(learnware_id, headers)
         pass
@@ -286,6 +285,13 @@ class TestUser(unittest.TestCase):
             headers=headers,
         )
         learnware_file.close()
+
+        result = testops.url_request("user/list_learnware", {"page": 0, "limit": 10}, headers=headers)
+
+        self.assertEqual(result["code"], 0)
+        learnware_info = result["data"]["learnware_list"][0]
+        self.assertEqual(learnware_info["verify_status"], "WAITING")
+        self.assertTrue(os.path.exists(context.get_learnware_verify_file_path(learnware_id)))
 
         response = testops.url_request(
             "engine/download_learnware",
