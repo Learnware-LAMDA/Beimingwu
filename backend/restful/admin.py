@@ -123,10 +123,10 @@ class ListLearnware(flask_restful.Resource):
             "msg": "Ok",
             "data": {
                 "learnware_list_single": datas,
+                "page": page,
+                "limit": limit,
+                "total_pages": (cnt + limit - 1) // limit,
             },
-            "page": page,
-            "limit": limit,
-            "total_pages": (cnt + limit - 1) // limit,
         }
         return result, 200
         pass
