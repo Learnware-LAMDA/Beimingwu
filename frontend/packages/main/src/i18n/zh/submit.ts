@@ -105,6 +105,7 @@ export default {
     DragFileHere: "拖拽文件到此处",
     ClickHere: "点击此处",
     ForInstructionsOnHowToCreateTheRequiredZipFile: "查看如何创建所需的zip文件",
+    ToDownloadTemplate: "下载模板学件",
     YourOldLearnware: "您的旧学件文件",
     Error: {
       NoFile: "请上传模型和统计规约",

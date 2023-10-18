@@ -459,7 +459,7 @@ onActivated(init);
                 :error-messages="files.errorMessages"
               ></file-upload>
             </div>
-            <v-card-text class="text-lg <sm:text-sm">
+            <v-card-text class="py-2 text-lg <sm:text-sm">
               <a
                 class="underline"
                 href="http://36.111.128.21:30006/workflow/submit.html"
@@ -468,6 +468,16 @@ onActivated(init);
                 {{ t("Submit.File.ClickHere") }}
               </a>
               {{ t("Submit.File.ForInstructionsOnHowToCreateTheRequiredZipFile") }}
+            </v-card-text>
+            <v-card-text class="pt-2 text-lg <sm:text-sm">
+              <a
+                class="underline"
+                href="./static/learnware-template"
+                target="_blank"
+              >
+                {{ t("Submit.File.ClickHere") }}
+              </a>
+              {{ t("Submit.File.ToDownloadTemplate") }}
             </v-card-text>
           </v-window-item>
         </v-window>

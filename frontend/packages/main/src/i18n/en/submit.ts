@@ -105,6 +105,8 @@ export default {
     DragFileHere: "Drag file here",
     ClickHere: "Click here",
     ForInstructionsOnHowToCreateTheRequiredZipFile:
+      "for instructions on how to create the required zip file",
+    ToDownloadTemplate: "to download a template",
       "For instructions on how to create the required zip file",
     YourOldLearnware: "Your old learnware",
     Error: {
