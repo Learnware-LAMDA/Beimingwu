@@ -144,7 +144,6 @@ class SqliteHelper(DatabaseHelper):
 
 
 class SQLAlchemy(Database):
-
     DATASET_INIT_DATA = [
         "INSERT INTO tb_user (username, nickname, email, password, role, register, email_confirm_time) VALUES ('admin',  'adminitrator', 'admin@localhost', :admin_password, 1, :now, :now)",
         "INSERT INTO tb_global_counter (name, value) VALUES ('learnware_id', 0)",

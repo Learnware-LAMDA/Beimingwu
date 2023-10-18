@@ -195,6 +195,7 @@ class UpdateLearnwareApi(flask_restful.Resource):
     parser.add_argument("learnware_id", type=str, required=True, location="form")
     parser.add_argument("semantic_specification", type=str, required=True, location="form")
     parser.add_argument("learnware_file", type=werkzeug.datastructures.FileStorage, location="files")
+
     @api.expect(parser)
     @flask_jwt_extended.jwt_required()
     def post(self):
@@ -343,6 +344,7 @@ class ListToken(flask_restful.Resource):
 class DeleteToken(flask_restful.Resource):
     parser = flask_restful.reqparse.RequestParser()
     parser.add_argument("token", type=str, required=True, help="token", location="json")
+
     @api.expect(parser)
     @flask_jwt_extended.jwt_required()
     def post(self):
@@ -364,6 +366,7 @@ class ChunkedUpload(flask_restful.Resource):
     parser.add_argument("chunk_begin", type=int, required=True, location="form")
     parser.add_argument("file_hash", type=str, required=True, location="form")
     parser.add_argument("chunk_file", type=werkzeug.datastructures.FileStorage, location="files")
+
     @flask_jwt_extended.jwt_required()
     @api.expect(parser)
     def post(self):
@@ -386,6 +389,7 @@ class AddLearnwareUploaded(flask_restful.Resource):
     parser = flask_restful.reqparse.RequestParser()
     parser.add_argument("file_hash", type=str, location="json")
     parser.add_argument("semantic_specifiction", type=str, location="json")
+
     @flask_jwt_extended.jwt_required()
     @api.expect(parser)
     def post(self):

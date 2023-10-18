@@ -165,7 +165,6 @@ def filter_nonexist_conda_packages_file(yaml_file: str, output_yaml_file: str):
 
 
 def filter_nonexist_pip_packages_file(requirements_file: str, output_file: str):
-
     packages, lines = read_pip_packages_from_requirements(requirements_file)
 
     exist_packages, nonexist_packages = filter_nonexist_pip_packages(packages)

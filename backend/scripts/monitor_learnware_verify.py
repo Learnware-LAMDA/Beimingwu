@@ -22,7 +22,6 @@ import learnware.utils
 def verify_learnware_by_script(
     learnware_id: str, learnware_path: str, semantic_spec_filename: str, process_result_filename: str
 ) -> Tuple[bool, str]:
-
     verify_script = os.path.join("scripts", "verify_learnware.py")
     verify_command = (
         f"python3 {verify_script} --learnware-path {learnware_path}"

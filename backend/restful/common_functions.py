@@ -38,7 +38,6 @@ def add_learnware(learnware_path, semantic_specification, learnware_id):
 
 
 def delete_learnware(user_id, learnware_id):
-
     print(f"delete learnware: {learnware_id}")
 
     # Check permission
