@@ -132,7 +132,7 @@ function fetchByFilterAndPage(page: number): void {
           return;
         }
         case 11: {
-          store.commit("setLoggedIn", false);
+          store.dispatch("logout");
           setTimeout(() => {
             router.push("/login");
           }, 1000);

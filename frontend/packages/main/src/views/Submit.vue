@@ -238,7 +238,7 @@ function submit(): Promise<void> {
           return;
         }
         case 11: {
-          store.commit("setLoggedIn", false);
+          store.dispatch("logout");
           store.commit("setShowGlobalError", true);
           store.commit("setGlobalErrorMsg", "Please login first");
           setTimeout(() => {
@@ -275,7 +275,7 @@ function checkLoginStatus(): Promise<void> {
           return;
         }
         case 11: {
-          store.commit("setLoggedIn", false);
+          store.dispatch("logout");
           store.commit("setShowGlobalError", true);
           store.commit("setGlobalErrorMsg", "Please login first");
           setTimeout(() => {

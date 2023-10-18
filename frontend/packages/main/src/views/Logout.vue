@@ -22,7 +22,7 @@ onMounted(() => {
       store.commit("setGlobalErrorMsg", err.message);
     })
     .finally(() => {
-      store.commit("setLoggedIn", false);
+      store.dispatch("logout");
       router.push("/");
     });
 });

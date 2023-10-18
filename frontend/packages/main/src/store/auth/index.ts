@@ -13,13 +13,20 @@ const auth = {
   mutations: {
     setLoggedIn(state: AuthState, loggedIn: boolean): void {
       state.loggedIn = loggedIn;
-      if (loggedIn) {
-        getProfile().then((res) => {
-          state.userName = res.data.username;
-        });
-      } else {
-        state.userName = "";
-      }
+    },
+    setUserName(state: AuthState, userName: string): void {
+      state.userName = userName;
+    },
+  },
+  actions: {
+    async login({ commit }: { commit: (arg0: string, arg1: unknown) => void }): Promise<void> {
+      const res = await getProfile();
+      commit("setLoggedIn", true);
+      commit("setUserName", res.data.username);
+    },
+    async logout({ commit }: { commit: (arg0: string, arg1: unknown) => void }): Promise<void> {
+      commit("setLoggedIn", false);
+      commit("setUserName", "");
     },
   },
   getters: {

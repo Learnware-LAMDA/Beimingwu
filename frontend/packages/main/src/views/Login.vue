@@ -53,7 +53,7 @@ function submit(): Promise<void> {
         case 0: {
           success.value = true;
           setTimeout(() => {
-            store.commit("setLoggedIn", true);
+            store.dispatch("login");
             router.push("/");
           }, 1000);
 

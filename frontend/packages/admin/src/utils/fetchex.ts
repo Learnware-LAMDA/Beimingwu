@@ -14,7 +14,7 @@ async function fetchex(url: string, options: RequestInit = {}): Promise<Response
     if (response.status === 401) {
       // Unauthorized
       Router.push("/login");
-      store.commit("setLoggedIn", false);
+      store.dispatch("logout");
       return;
     }
     throw new Error(

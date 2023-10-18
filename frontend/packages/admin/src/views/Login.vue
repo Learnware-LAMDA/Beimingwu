@@ -113,7 +113,7 @@ function login(): Promise<void> {
       if (res.data && res.data.role === 1) {
         success.value = true;
         setTimeout(() => {
-          store.commit("setLoggedIn", true);
+          store.dispatch("login");
           router.push("/");
         }, 1000);
         return;

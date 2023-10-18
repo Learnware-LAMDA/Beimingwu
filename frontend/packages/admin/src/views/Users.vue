@@ -79,7 +79,7 @@ function fetchByFilterAndPage(filters: User.Filter, page: number): Promise<void>
           }
         }
         if (res.code === 11 || res.code === 12) {
-          store.commit("setLoggedIn", false);
+          store.dispatch("logout");
           router.go(0);
         }
         throw new Error(res.msg);
@@ -247,7 +247,7 @@ async function handleClickExport(): Promise<void> {
             }
           }
           if (res.code === 11 || res.code === 12) {
-            store.commit("setLoggedIn", false);
+            store.dispatch("logout");
             router.go(0);
           }
           throw new Error(res.msg);
