@@ -53,7 +53,6 @@ class TestAuth(unittest.TestCase):
         pass
 
     def test_02_login_by_token(self):
-
         result = testops.url_request(
             "auth/login", {"email": "test@localhost", "password": "test", "confirm_email": False}
         )

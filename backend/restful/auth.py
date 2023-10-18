@@ -74,7 +74,6 @@ class ResendEmailConfirmApi(flask_restful.Resource):
 
     @api.expect(parser)
     def post(self):
-
         body = request.get_json()
         keys = ["email"]
         if any([k not in body for k in keys]):

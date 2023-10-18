@@ -199,7 +199,6 @@ def get_all_learnware_list(columns, limit=None, page=None, is_verified=None, use
 
 
 def get_learnware_list(by, value, limit=None, page=None, is_verified=None):
-
     sql = f"FROM tb_user_learnware_relation WHERE {by} = :{by}"
     if is_verified is None:
         pass

@@ -307,7 +307,6 @@ class TestUser(unittest.TestCase):
         pass
 
     def test_verify_log(self):
-
         learnware_id = testops.add_test_learnware(TestUser.email, TestUser.password)
         dbops.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.SUCCESS, "test result")
         headers = testops.login(TestUser.email, TestUser.password)

@@ -67,7 +67,6 @@ def decode_email_verification_code(code: str, secret_key) -> Union[str, None]:
 
 
 def send_email_worker(sender_email, password, receiver_email, message, smtp_server, port, proxy_host, proxy_port):
-
     if len(proxy_host) > 0 and proxy_port > 0:
         socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, proxy_host, proxy_port)
         original_socket = socket.socket
@@ -88,7 +87,6 @@ def send_email_worker(sender_email, password, receiver_email, message, smtp_serv
 
 
 def send_verification_email(email: str, verification_code: str, email_config: dict) -> bool:
-
     port = email_config["smtp_port"]
     smtp_server = email_config["smtp_server"]
     sender_email = email_config["sender_email"]
@@ -119,7 +117,6 @@ Subject: Please activate your account\r\n\
 
 
 def send_reset_password_email(email: str, verification_code: str, user_id: str, email_config: dict) -> bool:
-
     port = email_config["smtp_port"]
     smtp_server = email_config["smtp_server"]
     sender_email = email_config["sender_email"]
