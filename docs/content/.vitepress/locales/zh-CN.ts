@@ -1,11 +1,23 @@
-export default {
+import type { LocaleSpecificConfig } from "vitepress";
+
+const zhCN: LocaleSpecificConfig & {
+  label: string;
+  link?: string;
+  changeLang?: string;
+} = {
   label: "中文",
   lang: "zh-CN",
+  changeLang: "语言",
   themeConfig: {
     logo: "/logo.svg",
     nav: [
-      { text: "🏠 首页", link: "/zh-CN/" },
-      { text: "🌰 示例", link: "/zh-CN/overview/system-overview" },
+      { text: "首页", link: "/zh-CN/", icon: "mdi-home" },
+      {
+        text: "示例",
+        link: "/zh-CN/overview/system-overview",
+        icon: "mdi-collage",
+      },
+      { text: "系统", link: "https://www.lamda.nju.edu.cn/learnware", icon: "mdi-domain"},
     ],
 
     sidebar: [
@@ -25,8 +37,14 @@ export default {
             text: "学件上传",
             collapsed: true,
             items: [
-              { text: "如何准备一个学件？", link: "/zh-CN/user-guide/learnware-upload" },
-              { text: "如何上传学件？", link: "/zh-CN/user-guide/learnware-upload" },
+              {
+                text: "如何准备一个学件？",
+                link: "/zh-CN/user-guide/learnware-upload",
+              },
+              {
+                text: "如何上传学件？",
+                link: "/zh-CN/user-guide/learnware-upload",
+              },
             ],
           },
           { text: "学件查搜", link: "/zh-CN/user-guide/learnware-search" },
@@ -37,13 +55,22 @@ export default {
         text: "开发指南",
         collapsed: false,
         items: [
-          { text: "项目结构与开发规范", link: "/zh-CN/developer-guide/structure-and-guidelines" },
+          {
+            text: "项目结构与开发规范",
+            link: "/zh-CN/developer-guide/structure-and-guidelines",
+          },
           {
             text: "系统快速部署",
             collapsed: true,
             items: [
-              { text: "单机本地部署", link: "/zh-CN/developer-guide/deploy/local-deploy" },
-              { text: "多机 Kubernetes 部署", link: "/zh-CN/developer-guide/deploy/k8s-deploy" },
+              {
+                text: "单机本地部署",
+                link: "/zh-CN/developer-guide/deploy/local-deploy",
+              },
+              {
+                text: "多机 Kubernetes 部署",
+                link: "/zh-CN/developer-guide/deploy/k8s-deploy",
+              },
             ],
           },
           { text: "前端开发指南", link: "/zh-CN/developer-guide/dev-frontend" },
@@ -53,20 +80,24 @@ export default {
       },
       {
         text: "版本公告",
-        link: "/zh-CN/markdown-examples"
+        link: "/zh-CN/markdown-examples",
       },
       {
         text: "常见问题",
-        link: "/zh-CN/markdown-examples"
+        link: "/zh-CN/markdown-examples",
       },
       {
         text: "联系我们",
-        link: "/zh-CN/markdown-examples"
+        link: "/zh-CN/markdown-examples",
       },
     ],
+
+    outline: { label: "大纲" },
 
     socialLinks: [
       { icon: "github", link: "https://github.com/vuejs/vitepress" },
     ],
   },
 };
+
+export default zhCN;
