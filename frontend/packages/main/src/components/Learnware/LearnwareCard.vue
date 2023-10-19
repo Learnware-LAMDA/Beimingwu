@@ -82,11 +82,14 @@ function handleClickDelete(id: string): void {
     :class="item.matchScore && item.matchScore >= 0 ? ['pt-2'] : ['py-2']"
   >
     <div class="first-row">
-      <v-card-title class="title">
-        <v-avatar :size="greaterThanSm ? 'default' : 'small'" rounded="0">
-          <component :is="avatar" class="w-4/5 opacity-70" />
+      <v-card-title class="title flex" :class="item.username ? '' : 'items-center'">
+        <v-avatar :size="greaterThanSm ? 'default' : 'small'" class="mr-2" rounded="0">
+          <component :is="avatar" :class="item.username ? 'w-1/1' : 'w-4/5'" class="opacity-70" />
         </v-avatar>
-        {{ `${item.username ? item.username + "/" : ""}${item.name}` }}
+        <div>
+          <div>{{ item.name }}</div>
+          <div v-if="item.username" class="text-sm text-gray-600">{{ item.username }}</div>
+        </div>
       </v-card-title>
     </div>
     <v-card-subtitle>
@@ -137,7 +140,10 @@ function handleClickDelete(id: string): void {
     <v-card-text class="card-text">
       <div class="description">{{ item.description }}</div>
     </v-card-text>
-    <v-card-title class="last-row" :class="{ 'justify-between': item.matchScore && item.matchScore >= 0 }">
+    <v-card-title
+      class="last-row"
+      :class="{ 'justify-between': item.matchScore && item.matchScore >= 0 }"
+    >
       <div v-if="item.matchScore && item.matchScore >= 0" class="xl: text-xl lg:text-lg text-1rem">
         Specification score
         <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{
