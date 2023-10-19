@@ -5,7 +5,14 @@
     "preview": "vitepress preview content"
   },
   "devDependencies": {
+    "@vueuse/core": "^10.5.0",
     "markdown-it-mathjax3": "^4.3.2",
-    "vitepress": "1.0.0-rc.21"
+    "typescript": "^5.2.2",
+    "url": "^0.11.3",
+    "vitepress": "1.0.0-rc.21",
+    "vue": "^3.3.4"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.3.67"
   }
 }
