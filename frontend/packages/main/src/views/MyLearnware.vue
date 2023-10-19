@@ -25,7 +25,7 @@ const learnwareItems = ref<Learnware.LearnwareCardInfo[]>([]);
 const verifiedFilter = ref<string>("All");
 const page = ref<number>(1);
 const pageNum = ref<number>(1);
-const pageSize = ref<number>(10);
+const pageSize = ref<number>(Math.ceil(display.height.value / 900) * 10);
 
 const loading = ref(false);
 

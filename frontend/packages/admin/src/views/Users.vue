@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onActivated, watch } from "vue";
+import { useDisplay } from "vuetify";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { fetchex, saveContentToFile } from "../utils";
@@ -7,6 +8,8 @@ import SuccessDialog from "@/components/Dialogs/SuccessDialog.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
 import PageUserList from "@/components/User/PageUserList.vue";
 import { User } from "types";
+
+const display = useDisplay();
 
 const store = useStore();
 const router = useRouter();
@@ -30,7 +33,7 @@ const userName = ref("");
 const email = ref("");
 
 const page = ref(1);
-const pageSize = ref(10);
+const pageSize = ref(Math.ceil(display.height.value / 900) * 10);
 const pageNum = ref(1);
 const userItems = ref<User.User[]>([]);
 

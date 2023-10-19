@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, nextTick, onActivated } from "vue";
+import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { fetchex } from "../utils/fetchex";
@@ -7,6 +8,8 @@ import UserRequirement from "@main/components/Search/UserRequirement.vue";
 import PageLearnwareList from "@main/components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
 import { Learnware } from "types";
+
+const display = useDisplay();
 
 const router = useRouter();
 
@@ -26,7 +29,7 @@ const filters = ref<Learnware.Filter>({
 });
 
 const page = ref(1);
-const pageSize = ref(10);
+const pageSize = ref(Math.ceil(display.height.value / 900) * 10);
 const pageNum = ref(1);
 const learnwareItems = ref<Learnware.LearnwareCardInfo[]>([]);
 const isVerify = ref(true);
@@ -124,10 +127,7 @@ function fetchLearnware(
   }
 }
 
-function fetchByFilterAndPage(
-  filters: Learnware.Filter,
-  page: number,
-): void {
+function fetchByFilterAndPage(filters: Learnware.Filter, page: number): void {
   if (contentRef.value) {
     contentRef.value.scrollTop = 0;
   }
