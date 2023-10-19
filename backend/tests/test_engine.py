@@ -90,7 +90,7 @@ class TestEngine(unittest.TestCase):
         self.assertGreaterEqual(len(result["data"]["learnware_list_single"]), 1)
         self.assertIn(TestEngine.learnware_id, [x["learnware_id"] for x in result["data"]["learnware_list_single"]])
         self.assertGreater(result["data"]["learnware_list_single"][0]["last_modify"], "2020-01-01 00:00:00")
-        
+
         # Test fuzzy search
         sematic_specification["Name"]["Values"] = "Testx"
         result = testops.url_request(
@@ -102,7 +102,7 @@ class TestEngine(unittest.TestCase):
         self.assertGreaterEqual(len(result["data"]["learnware_list_single"]), 1)
         self.assertIn(TestEngine.learnware_id, [x["learnware_id"] for x in result["data"]["learnware_list_single"]])
         self.assertGreater(result["data"]["learnware_list_single"][0]["last_modify"], "2020-01-01 00:00:00")
-        
+
         # Test fuzzy search
         sematic_specification["Name"]["Values"] = "Region"
         result = testops.url_request(
