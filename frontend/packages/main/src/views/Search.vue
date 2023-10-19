@@ -22,7 +22,7 @@ const multiRecommendedLearnwareItems = ref<Learnware.LearnwareCardInfo[]>([]);
 const multiRecommendedMatchScore = ref<number>(0);
 const singleRecommendedLearnwarePage = ref(1);
 const singleRecommendedLearnwarePageNum = ref(1);
-const singleRecommendedLearnwarePageSize = ref(10);
+const singleRecommendedLearnwarePageSize = ref(Math.ceil(display.height.value / 900) * 10);
 const singleRecommendedLearnwareItems = ref<Learnware.LearnwareCardInfo[]>([]);
 const loading = ref(false);
 
