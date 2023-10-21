@@ -5,9 +5,17 @@
   "files": [
     "dist"
   ],
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "types": "./dist/index.d.ts",
+  "import": "./dist/index.js",
+  "require": "./dist/index.cjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./*": "./dist/*"
+  },
   "scripts": {
     "build": "tsup src/*.ts",
     "dev": "tsup src/*.ts --watch",
