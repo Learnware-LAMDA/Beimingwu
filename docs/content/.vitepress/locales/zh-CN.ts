@@ -26,6 +26,7 @@ const zhCN: LocaleSpecificConfig & {
         items: [
           { text: "北冥系统介绍", link: "/zh-CN/overview/system-overview" },
           { text: "快速上手", link: "/zh-CN/overview/quick-start" },
+          { text: "环境安装", link: "/zh-CN/overview/installation" },
         ],
         collapsed: false,
       },
