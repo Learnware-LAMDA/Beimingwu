@@ -143,7 +143,7 @@ onUnmounted(() => {
             :disabled="!ok"
             @click="onResend()"
           >
-            {{ t("Register.Resend") }} <span v-if="!ok">({{ remain / 1000 }})</span>
+            {{ t("Register.Resend") }} <span v-if="!ok">({{ Number(remain) / 1000 }})</span>
           </v-btn>
           <v-btn
             class="text-none"
