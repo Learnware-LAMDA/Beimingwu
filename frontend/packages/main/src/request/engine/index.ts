@@ -7,8 +7,8 @@ import type {
   TagList,
   Files,
   SemanticSpecification,
-} from "types/learnware";
-import type { LearnwareDetailInfo, LearnwareSearchInfo } from "types/response";
+} from "@beiming-system/types/learnware";
+import type { LearnwareDetailInfo, LearnwareSearchInfo } from "@beiming-system/types/response";
 
 const BASE_URL = "./api/engine";
 

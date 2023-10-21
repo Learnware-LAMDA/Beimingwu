@@ -5,7 +5,7 @@ import { useI18n } from "vue-i18n";
 import Router from "./router";
 import NavDrawer from "./components/App/NavDrawer.vue";
 import AppBar from "./components/App/AppBar.vue";
-import type { Route } from "types/route";
+import type { Route } from "@beiming-system/types/route";
 
 const store = useStore();
 

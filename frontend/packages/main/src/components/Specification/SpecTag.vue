@@ -6,7 +6,7 @@ import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
 import TagListBtns from "../Specification/SpecTag/TagList.vue";
 import DescriptionInput from "./DescriptionInput.vue";
-import type { DataType, TaskType, LibraryType, TagList } from "types/learnware";
+import type { DataType, TaskType, LibraryType, TagList } from "@beiming-system/types/learnware";
 
 export interface Props {
   dataType: DataType | "";

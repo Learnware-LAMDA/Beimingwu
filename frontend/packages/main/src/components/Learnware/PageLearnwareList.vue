@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import LearnwareList from "./LearnwareList.vue";
-import type { LearnwareCardInfo, Filter } from "types/learnware";
+import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
 
 export interface Props {
   items: LearnwareCardInfo[];

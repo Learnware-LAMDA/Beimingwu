@@ -10,7 +10,7 @@ import TableBtn from "../../assets/images/specification/dataType/table.svg?compo
 import { downloadLearnwareSync } from "../../utils";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import type { LearnwareCardInfo, Filter } from "types/learnware";
+import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
 dayjs.extend(relativeTime);
 
 const { t } = useI18n();

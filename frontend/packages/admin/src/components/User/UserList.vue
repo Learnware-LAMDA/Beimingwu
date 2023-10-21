@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import oopsImg from "/oops.svg?url";
-import type { User } from "types/user";
+import type { User } from "@beiming-system/types/user";
 
 const emits = defineEmits(["click:reset", "click:delete", "click:export"]);
 

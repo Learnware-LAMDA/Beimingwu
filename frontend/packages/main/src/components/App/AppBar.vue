@@ -4,7 +4,7 @@ import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import learnwareLogo from "/logo.svg?url";
-import type { Route } from "types/route";
+import type { Route } from "@beiming-system/types/route";
 
 export interface Props {
   drawerOpen: boolean;

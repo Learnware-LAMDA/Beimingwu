@@ -7,7 +7,7 @@ import { getLearnwareDetailById } from "../request/engine";
 import { downloadLearnwareSync } from "../utils";
 import { verifyLog } from "../request/user";
 import dayjs from "dayjs";
-import type { LearnwareDetailInfoWithDescription } from "types/learnware";
+import type { LearnwareDetailInfoWithDescription } from "@beiming-system/types/learnware";
 
 const route = useRoute();
 const router = useRouter();

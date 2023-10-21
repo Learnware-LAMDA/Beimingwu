@@ -3,7 +3,7 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useField } from "hooks";
+import { useField } from "@beiming-system/hooks";
 import { login, sendResetPasswordEmail } from "../request/auth";
 import { hex_md5 } from "../utils";
 import collaborationImg from "../assets/images/public/collaboration.svg?url";

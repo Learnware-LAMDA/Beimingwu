@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
-import type { Tag, TagList } from "types/learnware";
+import type { Tag, TagList } from "@beiming-system/types/learnware";
 
 export interface Props {
   value: TagList;

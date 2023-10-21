@@ -7,7 +7,7 @@ import { fetchex, saveContentToFile } from "../utils";
 import SuccessDialog from "@/components/Dialogs/SuccessDialog.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
 import PageUserList from "@/components/User/PageUserList.vue";
-import type { User, Filter } from "types/user";
+import type { User, Filter } from "@beiming-system/types/user";
 
 const display = useDisplay();
 

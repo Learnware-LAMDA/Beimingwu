@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import UserList from "./UserList.vue";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
-import type { User } from "types/user";
+import type { User } from "@beiming-system/types/user";
 
 export interface Props {
   items: User[];

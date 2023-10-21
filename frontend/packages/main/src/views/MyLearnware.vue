@@ -7,8 +7,8 @@ import { deleteLearnware, getLearnwareList } from "../request/user";
 import { listLearnware } from "../request/admin";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "../components/Dialogs/ConfirmDialog.vue";
-import type { LearnwareCardInfo } from "types/learnware";
-import type { LearnwareDetailInfo } from "types/response";
+import type { LearnwareCardInfo } from "@beiming-system/types/learnware";
+import type { LearnwareDetailInfo } from "@beiming-system/types/response";
 
 const store = useStore();
 

@@ -1,7 +1,19 @@
 {
-  "name": "hooks",
-  "private": true,
+  "name": "@beiming-system/hooks",
   "version": "1.0.0",
   "type": "module",
-  "main": "./src/index.ts"
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/*.ts",
+    "dev": "tsup src/*.ts --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "vue": "^3.2.47"
+  }
 }

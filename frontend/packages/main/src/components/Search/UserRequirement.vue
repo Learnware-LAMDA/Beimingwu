@@ -7,7 +7,7 @@ import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
 import FileUpload from "../Specification/FileUpload.vue";
 import TagListBtns from "../Specification/SpecTag/TagList.vue";
-import type { DataType, TaskType, LibraryType } from "types/learnware";
+import type { DataType, TaskType, LibraryType } from "@beiming-system/types/learnware";
 
 const { t } = useI18n();
 

@@ -5,7 +5,7 @@ import { searchLearnware } from "../request/engine";
 import UserRequirement from "../components/Search/UserRequirement.vue";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import MultiRecommendedLearnwareList from "../components/Learnware/MultiRecommendedLearnwareList.vue";
-import type { Filter, LearnwareCardInfo } from "types/learnware";
+import type { Filter, LearnwareCardInfo } from "@beiming-system/types/learnware";
 
 const display = useDisplay();
 

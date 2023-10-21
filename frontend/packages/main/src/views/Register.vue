@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
-import { useField } from "hooks";
+import { useField } from "@beiming-system/hooks";
 import { useI18n } from "vue-i18n";
 import SuccessDialog from "../components/Dialogs/SuccessDialog.vue";
 import { register } from "../request/auth";
 import { hex_md5 } from "../utils";
 import collaborationImg from "../assets/images/public/collaboration.svg?url";
 import { resendEmail } from "../request/auth";
-import { useTimeout } from "hooks";
+import { useTimeout } from "@beiming-system/hooks";
 
 const { t } = useI18n();
 const router = useRouter();

@@ -1,5 +1,5 @@
 import { checkedFetch } from "../utils";
-import type { LearnwareDetailInfo } from "types/response";
+import type { LearnwareDetailInfo } from "@beiming-system/types/response";
 
 const BASE_URL = "./api/admin";
 

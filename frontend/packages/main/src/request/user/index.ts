@@ -8,8 +8,8 @@ import type {
   TagList,
   Files,
   Description,
-} from "types/learnware";
-import type { LearnwareDetailInfo } from "types/response";
+} from "@beiming-system/types/learnware";
+import type { LearnwareDetailInfo } from "@beiming-system/types/response";
 
 const BASE_URL = "./api/user";
 

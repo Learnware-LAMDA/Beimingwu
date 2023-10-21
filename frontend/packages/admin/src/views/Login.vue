@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { useField } from "hooks";
+import { useField } from "@beiming-system/hooks";
 import { fetchex } from "../utils";
 import collaborationImg from "@/assets/images/collaboration.svg?url";
 

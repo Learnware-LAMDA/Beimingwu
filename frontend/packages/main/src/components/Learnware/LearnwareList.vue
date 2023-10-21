@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import LearnwareCard from "./LearnwareCard.vue";
 import oopsImg from "../../assets/images/public/oops.svg?url";
-import type { LearnwareCardInfo, Filter } from "types/learnware";
+import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
 
 const emit = defineEmits(["click:edit", "click:delete"]);
 
