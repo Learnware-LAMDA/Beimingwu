@@ -1,7 +1,33 @@
 {
-  "name": "types",
+  "name": "@beiming/types",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "main": "./src/index.ts"
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "index.d.ts",
+  "files": [
+    "index.d.ts",
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./*": "./dist/*"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/*"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsup src/*.ts",
+    "dev": "tsup src/*.ts --watch",
+    "prepublishOnly": "npm run build"
+  }
 }

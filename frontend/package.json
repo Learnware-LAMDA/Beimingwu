@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "dev": "pnpm -r --filter=./packages/** --parallel run dev",
     "dev:main": "pnpm --filter main run dev",
     "build:main": "pnpm --filter main run build",
     "dev:admin": "pnpm --filter admin run dev",
@@ -39,6 +40,7 @@
     "eslint-plugin-vue": "^9.15.0",
     "prettier": "^2.8.8",
     "sass": "^1.60.0",
+    "tsup": "^7.2.0",
     "types": "workspace:^",
     "typescript": "^5.2.2",
     "vite": "^4.5.0",
