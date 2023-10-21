@@ -11,7 +11,7 @@
     "build:admin": "pnpm --filter admin run build",
     "lint": "eslint . --ext .js,.vue,.ts",
     "lint:fix": "eslint --fix . --ext .js,.vue,.ts",
-    "type-check": "tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@beiming-system/hooks": "workspace:^",
