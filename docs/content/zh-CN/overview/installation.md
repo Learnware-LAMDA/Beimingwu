@@ -12,3 +12,12 @@ pip install learnware
 conda install -c pytorch faiss
 pip install learnware
 ```
+
+`learnware` 包的源代码同时发布在 [Gitee](https://gitee.com/Learnware-LAMDA/Learnware) 和 [Github](https://github.com/Learnware-LAMDA/Learnware) 平台上，用户也可以从任一平台下载源代码进行安装。以 Github 平台为例：
+```bash
+git clone https://github.com/Learnware-LAMDA/Learnware.git
+cd Learnware
+git fetch origin main
+git checkout main
+pip install .
+```
