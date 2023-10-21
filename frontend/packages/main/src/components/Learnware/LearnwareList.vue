@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import LearnwareCard from "./LearnwareCard.vue";
 import oopsImg from "../../assets/images/public/oops.svg?url";
-import { Learnware } from "types";
+import type { LearnwareCardInfo, Filter } from "types/learnware";
 
 const emit = defineEmits(["click:edit", "click:delete"]);
 
@@ -16,8 +16,8 @@ const router = useRouter();
 const { t } = useI18n();
 
 export interface Props {
-  items: Learnware.LearnwareCardInfo[];
-  filters?: Learnware.Filter;
+  items: LearnwareCardInfo[];
+  filters?: Filter;
   isAdmin?: boolean;
   cols?: number;
   md?: number;

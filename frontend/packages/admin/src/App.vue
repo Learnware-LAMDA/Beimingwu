@@ -5,7 +5,7 @@ import { useI18n } from "vue-i18n";
 import Router from "./router";
 import NavDrawer from "@main/components/App/NavDrawer.vue";
 import AppBar from "@main/components/App/AppBar.vue";
-import { Route } from "types";
+import type { Route } from "types/route";
 
 const store = useStore();
 
@@ -19,7 +19,7 @@ const initKeepAliveIncludes: string[] = Router.getRoutes()
   .map((route) => route.name as string);
 const keepAliveIncludes = ref<string[]>([...initKeepAliveIncludes]);
 
-const routes = computed<Route.Route[]>(() =>
+const routes = computed<Route[]>(() =>
   Router.options.routes.map((route) => {
     if (route.children) {
       route.children.forEach((child) => {
@@ -38,7 +38,7 @@ const routes = computed<Route.Route[]>(() =>
         title: t(`Page.${route.name?.toString()}`),
       };
     }
-    return route as Route.Route;
+    return route as Route;
   }),
 );
 

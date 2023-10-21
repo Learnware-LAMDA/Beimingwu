@@ -7,7 +7,7 @@ import { getLearnwareDetailById } from "../request/engine";
 import { downloadLearnwareSync } from "../utils";
 import { verifyLog } from "../request/user";
 import dayjs from "dayjs";
-import { Learnware } from "types";
+import type { LearnwareDetailInfoWithDescription } from "types/learnware";
 
 const route = useRoute();
 const router = useRouter();
@@ -16,7 +16,7 @@ const display = useDisplay();
 
 const { t } = useI18n();
 
-const learnware = ref<Learnware.LearnwareDetailInfoWithDescription>({
+const learnware = ref<LearnwareDetailInfoWithDescription>({
   id: "",
   verifyStatus: "",
   lastModify: "",
@@ -167,7 +167,11 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                 </div>
               </div>
             </div>
-            <v-virtual-scroll v-else :items="Object.entries(learnware.input.Description)" :height="300">
+            <v-virtual-scroll
+              v-else
+              :items="Object.entries(learnware.input.Description)"
+              :height="300"
+            >
               <template #default="{ item }">
                 <div class="flex py-2 px-1 border-b-1">
                   <div class="w-20">{{ Number(item[0]) }}</div>
@@ -220,7 +224,11 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                 </div>
               </div>
             </div>
-            <v-virtual-scroll v-else :items="Object.entries(learnware.output.Description)" :height="300">
+            <v-virtual-scroll
+              v-else
+              :items="Object.entries(learnware.output.Description)"
+              :height="300"
+            >
               <template #default="{ item }">
                 <div class="flex py-2 px-1 border-b-1">
                   <div class="w-20">{{ Number(item[0]) }}</div>

@@ -2,11 +2,11 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { useDisplay } from "vuetify";
-import { Route } from "types";
+import type { Route } from "types/route";
 
 export interface Props {
   drawerOpen: boolean;
-  routes: Route.Route[];
+  routes: Route[];
 }
 
 const display = useDisplay();
@@ -23,7 +23,7 @@ const drawer = computed({
 const store = useStore();
 
 const filteredRoutes = computed(() => {
-  function filter(route: Route.Route): boolean {
+  function filter(route: Route): boolean {
     if (route.meta.showInNavBar) {
       if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
         return false;
@@ -38,10 +38,10 @@ const filteredRoutes = computed(() => {
     return false;
   }
 
-  const routes: Route.Route[] = [];
-  props.routes.forEach((route: Route.Route) => {
+  const routes: Route[] = [];
+  props.routes.forEach((route: Route) => {
     if (route.children) {
-      route.children.forEach((child) => {
+      route.children.forEach((child: Route) => {
         child.parent = route;
         filter(child) && routes.push(child);
       });

@@ -7,7 +7,7 @@ import { fetchex, saveContentToFile } from "../utils";
 import SuccessDialog from "@/components/Dialogs/SuccessDialog.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
 import PageUserList from "@/components/User/PageUserList.vue";
-import { User } from "types";
+import type { User, Filter } from "types/user";
 
 const display = useDisplay();
 
@@ -35,7 +35,7 @@ const email = ref("");
 const page = ref(1);
 const pageSize = ref(Math.ceil(display.height.value / 900) * 10);
 const pageNum = ref(1);
-const userItems = ref<User.User[]>([]);
+const userItems = ref<User[]>([]);
 
 const loading = ref(false);
 
@@ -44,7 +44,7 @@ const filters = computed(() => ({
   email: email.value,
 }));
 
-function fetchByFilterAndPage(filters: User.Filter, page: number): Promise<void> {
+function fetchByFilterAndPage(filters: Filter, page: number): Promise<void> {
   loading.value = true;
   showError.value = false;
 
@@ -72,7 +72,7 @@ function fetchByFilterAndPage(filters: User.Filter, page: number): Promise<void>
         code: number;
         msg: string;
         data: {
-          user_list: User.User[];
+          user_list: User[];
           total_pages: number;
         };
       }) => {
@@ -240,7 +240,7 @@ async function handleClickExport(): Promise<void> {
           code: number;
           msg: string;
           data: {
-            user_list: User.User[];
+            user_list: User[];
             total_pages: number;
           };
         }) => {
@@ -291,7 +291,7 @@ watch(
 watch(
   () => [filters.value, page.value],
   (newVal) => {
-    const [newFilters, newPage] = newVal as [User.Filter, number];
+    const [newFilters, newPage] = newVal as [Filter, number];
 
     fetchByFilterAndPage(newFilters, newPage);
   },

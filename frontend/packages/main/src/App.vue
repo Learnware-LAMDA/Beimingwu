@@ -5,7 +5,7 @@ import { useI18n } from "vue-i18n";
 import Router from "./router";
 import NavDrawer from "./components/App/NavDrawer.vue";
 import AppBar from "./components/App/AppBar.vue";
-import { Route } from "types";
+import type { Route } from "types/route";
 
 const store = useStore();
 
@@ -19,7 +19,7 @@ const initKeepAliveIncludes: string[] = Router.getRoutes()
   .map((route) => route.name as string);
 const keepAliveIncludes = ref<string[]>([...initKeepAliveIncludes]);
 
-const routes = computed<Route.Route[]>(
+const routes = computed<Route[]>(
   () =>
     Router.options.routes.map((route) => {
       if (route.children) {
@@ -43,7 +43,7 @@ const routes = computed<Route.Route[]>(
         };
       }
       return route;
-    }) as Route.Route[],
+    }) as Route[],
 );
 
 watch(

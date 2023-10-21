@@ -3,11 +3,11 @@ import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import LearnwareList from "./LearnwareList.vue";
-import { Learnware } from "types";
+import type { LearnwareCardInfo, Filter } from "types/learnware";
 
 export interface Props {
-  items: Learnware.LearnwareCardInfo[];
-  filters?: Learnware.Filter;
+  items: LearnwareCardInfo[];
+  filters?: Filter;
   isAdmin?: boolean;
   page: number;
   pageSize?: number;
@@ -106,7 +106,11 @@ function handleClickDelete(id: string): void {
         v-for="(_item, i) in pageSize"
         :key="i"
         class="w-1/1"
-        :type="items && items[0] && items[0].matchScore && items[0].matchScore >= 0 ? 'article, table-tfoot' : 'article'"
+        :type="
+          items && items[0] && items[0].matchScore && items[0].matchScore >= 0
+            ? 'article, table-tfoot'
+            : 'article'
+        "
       ></v-skeleton-loader>
     </div>
 

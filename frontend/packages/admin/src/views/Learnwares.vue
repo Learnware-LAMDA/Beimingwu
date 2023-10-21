@@ -7,7 +7,7 @@ import { fetchex } from "../utils/fetchex";
 import UserRequirement from "@main/components/Search/UserRequirement.vue";
 import PageLearnwareList from "@main/components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
-import { Learnware } from "types";
+import type { Filter, LearnwareCardInfo } from "types/learnware";
 
 const display = useDisplay();
 
@@ -19,7 +19,7 @@ const dialog = ref<InstanceType<typeof ConfirmDialog>>();
 const deleteId = ref("");
 const deleteName = ref("");
 
-const filters = ref<Learnware.Filter>({
+const filters = ref<Filter>({
   name: "",
   dataType: "",
   taskType: "",
@@ -31,7 +31,7 @@ const filters = ref<Learnware.Filter>({
 const page = ref(1);
 const pageSize = ref(Math.ceil(display.height.value / 900) * 10);
 const pageNum = ref(1);
-const learnwareItems = ref<Learnware.LearnwareCardInfo[]>([]);
+const learnwareItems = ref<LearnwareCardInfo[]>([]);
 const isVerify = ref(true);
 
 const loading = ref(false);
@@ -127,7 +127,7 @@ function fetchLearnware(
   }
 }
 
-function fetchByFilterAndPage(filters: Learnware.Filter, page: number): void {
+function fetchByFilterAndPage(filters: Filter, page: number): void {
   if (contentRef.value) {
     contentRef.value.scrollTop = 0;
   }
@@ -265,7 +265,7 @@ watch(
 watch(
   () => [filters.value, page.value],
   (newVal) => {
-    const [newFilters, newPage] = newVal as [Learnware.Filter, number];
+    const [newFilters, newPage] = newVal as [Filter, number];
 
     fetchByFilterAndPage(newFilters, newPage);
   },

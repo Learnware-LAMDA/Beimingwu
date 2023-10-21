@@ -6,13 +6,13 @@ import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
 import TagListBtns from "../Specification/SpecTag/TagList.vue";
 import DescriptionInput from "./DescriptionInput.vue";
-import { Learnware } from "types";
+import type { DataType, TaskType, LibraryType, TagList } from "types/learnware";
 
 export interface Props {
-  dataType: Learnware.DataType | "";
-  taskType: Learnware.TaskType | "";
-  libraryType: Learnware.LibraryType | "";
-  tagList: Learnware.TagList;
+  dataType: DataType | "";
+  taskType: TaskType | "";
+  libraryType: LibraryType | "";
+  tagList: TagList;
   dataTypeDescription: string;
   taskTypeDescription: string;
   errorMessages?: string;

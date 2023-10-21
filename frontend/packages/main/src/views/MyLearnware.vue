@@ -7,8 +7,8 @@ import { deleteLearnware, getLearnwareList } from "../request/user";
 import { listLearnware } from "../request/admin";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "../components/Dialogs/ConfirmDialog.vue";
-import { Learnware } from "types";
-import { Response } from "types";
+import type { LearnwareCardInfo } from "types/learnware";
+import type { LearnwareDetailInfo } from "types/response";
 
 const store = useStore();
 
@@ -21,7 +21,7 @@ const dialog = ref<InstanceType<typeof ConfirmDialog>>();
 const deleteId = ref("");
 const deleteName = ref("");
 
-const learnwareItems = ref<Learnware.LearnwareCardInfo[]>([]);
+const learnwareItems = ref<LearnwareCardInfo[]>([]);
 const verifiedFilter = ref<string>("All");
 const page = ref<number>(1);
 const pageNum = ref<number>(1);
@@ -94,7 +94,7 @@ function fetchByFilterAndPage(page: number): void {
     code: number;
     msg: string;
     data: {
-      learnware_list: Response.LearnwareDetailInfo[];
+      learnware_list: LearnwareDetailInfo[];
       page: number;
       limit: number;
       total_pages: number;

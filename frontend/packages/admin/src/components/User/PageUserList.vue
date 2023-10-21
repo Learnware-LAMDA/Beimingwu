@@ -3,10 +3,10 @@ import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import UserList from "./UserList.vue";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
-import { User } from "types";
+import type { User } from "types/user";
 
 export interface Props {
-  items: User.User[];
+  items: User[];
   page: number;
   pageSize?: number;
   pageNum: number;
