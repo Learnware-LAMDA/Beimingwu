@@ -128,8 +128,7 @@ class TestLearnwareClient(unittest.TestCase):
         testops.add_learnware_to_engine(learnware_id, client.headers)
 
         client.download_learnware(learnware_id, f"{learnware_id}.zip")
-        client.install_environment(f"{learnware_id}.zip")
-        learnware = client.load_learnware(f"{learnware_id}.zip")
+        learnware = client.load_learnware(f"{learnware_id}.zip", runnable_option="conda_env")
         os.remove(f"{learnware_id}.zip")
 
         learnware.instantiate_model()
@@ -141,9 +140,9 @@ class TestLearnwareClient(unittest.TestCase):
         client.delete_learnware(learnware_id)
         pass
 
-    def test_test_learnware(self):
+    def test_check_learnware(self):
         client = LearnwareClient(self.backend_host)
-        client.test_learnware(os.path.join("tests", "data", "test_learnware_multi_import.zip"))
+        client.check_learnware(os.path.join("tests", "data", "test_learnware_multi_import.zip"))
         pass
 
 
