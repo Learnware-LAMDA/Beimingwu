@@ -472,7 +472,7 @@ onActivated(init);
             <v-card-text class="pt-2 text-lg <sm:text-sm">
               <a
                 class="underline"
-                href="./static/learnware-template"
+                href="./static/learnware-template.zip"
                 target="_blank"
               >
                 {{ t("Submit.File.ClickHere") }}
