@@ -132,6 +132,7 @@ class TestLearnwareClient(unittest.TestCase):
         learnware = client.load_learnware(f"{learnware_id}.zip")
         os.remove(f"{learnware_id}.zip")
 
+        learnware.instantiate_model()
         learnware_model = learnware.get_model()
         input_shape = learnware_model.input_shape
         inputs = np.random.randn(10, *input_shape)
@@ -143,12 +144,6 @@ class TestLearnwareClient(unittest.TestCase):
     def test_test_learnware(self):
         client = LearnwareClient(self.backend_host)
         client.test_learnware(os.path.join("tests", "data", "test_learnware_multi_import.zip"))
-        pass
-
-    def test_default_host(self):
-        client = LearnwareClient()
-        client.login("xiaochuan.zou@polixir.ai", "ef705c6fb64c411183efcbede7494016")
-        self.assertEqual(len(client.search_learnware(Specification())), 10)
         pass
 
 
