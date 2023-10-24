@@ -8,7 +8,9 @@
 
 创建上述四个文件时，需要使用 `learnware` Python 包，其具体安装方式可查看：[环境安装](/zh-CN/overview/installation)。
 
-接下来，我们将详细介绍这四个文件的具体内容。
+为方便大家构建学件，我们提供了[学件模板](http://www.lamda.nju.edu.cn/learnware/static/learnware-template.zip)，大家可在其基础上构建自己的学件。
+
+接下来，我们将详细介绍上述四个文件的具体内容。
 
 
 ## 模型调用文件 `__init__.py`
@@ -41,6 +43,11 @@ class MyModel(BaseModel):
 
 需要注意 MyModel 类要继承 learnware.model 中的 BaseModel，且类的名字（e.g., MyModel）需要在后续的 learnware.yaml 文件中标明。
 
+另外，如果 \_\_init\_\_.py 文件中需要导入 zip 包内其它的模块，请采用相对导入的方式。例如：
+```py
+from .package_name import *
+from .package_name import module_name
+```
 
 ## 学件统计规约 `stat.json`
 
@@ -104,6 +111,10 @@ stat_specifications:
 
 由于后台验证学件的过程相对耗时，为了提高学件通过验证的几率，我们建议您在上传之前，先使用以下代码在本地对学件进行验证：
 ```py
+from learnware.client import LearnwareClient
+
+zip_path = "learnware.zip"  # 待验证的学件 zip 包
+LearnwareClient.check_learnware(zip_path)
 ```
 
 在本地成功通过验证后，再将学件上传至系统，以提高学件验证效率。
