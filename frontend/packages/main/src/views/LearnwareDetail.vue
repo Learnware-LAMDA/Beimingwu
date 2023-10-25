@@ -134,9 +134,8 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
 
       <v-card-text class="learnware-container">
         <div class="flex items-center">
-          <div class="mr-2">
+          <div v-if="learnware.dataType === 'Table'" class="mr-2">
             <v-switch
-              v-if="learnware.dataType === 'Table'"
               v-model="showInputDescription"
               color="primary"
               density="compact"
@@ -167,7 +166,11 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                 </div>
               </div>
             </div>
-            <v-virtual-scroll v-else :items="Object.entries(learnware.input.Description)" :height="300">
+            <v-virtual-scroll
+              v-else
+              :items="Object.entries(learnware.input.Description)"
+              :height="300"
+            >
               <template #default="{ item }">
                 <div class="flex py-2 px-1 border-b-1">
                   <div class="w-20">{{ Number(item[0]) }}</div>
@@ -179,11 +182,13 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
         </v-expand-transition>
 
         <div class="flex items-center">
-          <div class="mr-2">
+          <div
+            v-if="
+              ['Classification', 'Regression', 'Feature Extraction'].includes(learnware.taskType)
+            "
+            class="mr-2"
+          >
             <v-switch
-              v-if="
-                ['Classification', 'Regression', 'Feature Extraction'].includes(learnware.taskType)
-              "
               v-model="showOutputDescription"
               color="primary"
               density="compact"
@@ -220,7 +225,11 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                 </div>
               </div>
             </div>
-            <v-virtual-scroll v-else :items="Object.entries(learnware.output.Description)" :height="300">
+            <v-virtual-scroll
+              v-else
+              :items="Object.entries(learnware.output.Description)"
+              :height="300"
+            >
               <template #default="{ item }">
                 <div class="flex py-2 px-1 border-b-1">
                   <div class="w-20">{{ Number(item[0]) }}</div>
