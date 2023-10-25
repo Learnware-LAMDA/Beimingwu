@@ -46,6 +46,7 @@ def init_backend():
     global config
 
     os.makedirs(config.upload_path, exist_ok=True)
+    os.makedirs(config.temp_path, exist_ok=True)
     pass
 
 
