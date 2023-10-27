@@ -8,9 +8,9 @@ export default {
   Resend: "重新发送",
   Close: "关闭",
   Error: {
-    UsernameAtLeast2Chars: "用户名至少需要2个字符",
+    UsernameAtLeast2Chars: "用户名至少需要 2 个字符",
     InvalidEmail: "邮箱格式不正确",
-    PasswordAtLeast8Chars: "密码至少需要8个字符",
+    PasswordAtLeast8Chars: "密码至少需要 8 个字符",
     PasswordNotEmpty: "密码不能为空",
     PasswordNotMatch: "两次输入的密码不一致",
   },

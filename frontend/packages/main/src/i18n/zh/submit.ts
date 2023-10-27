@@ -6,7 +6,7 @@ export default {
     Placeholder: "请输入学件名称",
     Description: "这是您将提交的学件的名称",
     Error: {
-      AtLeast5Chars: "学件名称至少需要5个字符",
+      AtLeast5Chars: "学件名称至少需要 5 个字符",
     },
   },
   Tag: {
@@ -28,9 +28,9 @@ export default {
         Name: "特征",
         Description: "描述",
         FeatureTips:
-          "在左侧为每个特征填写描述，或在右侧粘贴JSON对象。澄清每个特征的描述将有助于您的学件适用于具有异构特征空间的任务。",
+          "在左侧为每个特征填写描述，或在右侧粘贴 JSON 对象。澄清每个特征的描述将有助于您的学件适用于具有异构特征空间的任务。",
         FeatureTipsSmall:
-          "为每个特征填写描述或粘贴JSON对象。澄清每个特征的描述将有助于您的学件适用于具有异构特征空间的任务。",
+          "为每个特征填写描述或粘贴 JSON 对象。澄清每个特征的描述将有助于您的学件适用于具有异构特征空间的任务。",
       },
     },
     TaskType: {
@@ -53,9 +53,9 @@ export default {
         Name: "输出",
         Description: "描述",
         LabelTips:
-          "在左侧为每个输出维度填写描述，或在右侧粘贴JSON对象。澄清每个特征的描述将有助于您的学件适用于具有异构输出空间的任务。",
+          "在左侧为每个输出维度填写描述，或在右侧粘贴 JSON 对象。澄清每个特征的描述将有助于您的学件适用于具有异构输出空间的任务。",
         LabelTipsSmall:
-          "为每个输出维度填写描述或粘贴JSON对象。澄清每个特征的描述将有助于您的学件适用于具有异构输出空间的任务。",
+          "为每个输出维度填写描述或粘贴 JSON 对象。澄清每个特征的描述将有助于您的学件适用于具有异构输出空间的任务。",
       },
     },
     LibraryType: {
@@ -96,7 +96,7 @@ export default {
     Title: "输入学件的描述",
     Placeholder: "请输入学件的描述",
     Error: {
-      AtLeast10Chars: "描述至少需要10个字符",
+      AtLeast10Chars: "描述至少需要 10 个字符",
     },
   },
   File: {
@@ -104,7 +104,7 @@ export default {
     Title: "上传模型和统计规约",
     DragFileHere: "拖拽文件到此处",
     ClickHere: "点击此处",
-    ForInstructionsOnHowToCreateTheRequiredZipFile: "查看如何创建所需的zip文件",
+    ForInstructionsOnHowToCreateTheRequiredZipFile: "查看如何创建所需的 zip 文件",
     ToDownloadTemplate: "下载模板学件",
     YourOldLearnware: "您的旧学件文件",
     Error: {
@@ -112,7 +112,7 @@ export default {
       NotZipFile: "请上传 zip 文件",
       GreaterThan1GB: "请上传小于 1GB 的文件",
       FileNotFound: "找不到文件 {filename}",
-      FileNotJSON: "文件 {filename} 不是JSON文件",
+      FileNotJSON: "文件 {filename} 不是 JSON 文件",
       KeyNotFoundInFile: "文件 {filename} 中找不到键 '{key}'",
       KeyEmptyInFile: "文件 {filename} 中的键 '{key}' 为空",
       KeyNotFoundOrEmptyInFile: "文件 {filename} 中的键 '{key}' 不存在或为空",
