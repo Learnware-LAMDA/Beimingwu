@@ -19,5 +19,7 @@ git clone https://github.com/Learnware-LAMDA/Learnware.git
 cd Learnware
 git fetch origin main
 git checkout main
-pip install .
+pip install -e .
 ```
+
+请注意，若 Python 版本在 3.11 及以上，可能会有部分依赖无法安装，并对某些功能产生影响。
