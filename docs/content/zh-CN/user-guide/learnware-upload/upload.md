@@ -71,9 +71,10 @@ semantic_spec = client.create_semantic_specification(
 )
 ```
 需注意，填写语义规约时有一些限制：
-- data\_type 必须在 `["Table", "Image", "Text"]` 之中；
-- task\_type 必须在 `["Classification", "Regression", "Clustering", "Feature Extraction", "Segmentation", "Object Detection", "Others"]` 之中；
-- scenarios 只能在 `["Business", "Financial", "Health", "Politics", "Computer", "Internet", "Traffic", "Nature", "Fashion", "Industry", "Agriculture", "Education", "Entertainment", "Architecture"]` 中进行选择；
+- data\_type 必须在 `client.list_semantic_specification_values(key="Data")` 之中；
+- task\_type 必须在 `client.list_semantic_specification_values(key="Task")` 之中；
+- library\_type 必须在 `client.list_semantic_specification_values(key="Library")` 之中；
+- scenarios 必须为 `client.list_semantic_specification_values(key="Scenario")` 的子集；
 - 当 data\_type 为 `"Table"` 时，需要填写「输入描述」；
 - 当 task\_type 在 `["Classification", "Regression", "Feature Extraction"]` 中时，需要填写「输出描述」。
 
@@ -91,3 +92,6 @@ client.check_learnware(learnware_zip_path=zip_path, semantic_specification=seman
 learnware_id = client.upload_learnware(learnware_zip_path=zip_path, semantic_specification=semantic_spec)
 ```
 
+学件上传成功后，可以在「个人信息 - 我的学件」处看到上传的学件。
+
+学件上传后，后台会对学件进行检查。点击学件，可在「验证状态」处查看。检查通过后，学件的 `Unverified` 标签会消失，且上传的学件会在学件市场中出现。
