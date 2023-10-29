@@ -1,9 +1,20 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, type ComputedRef } from "vue";
+import { useI18n } from "vue-i18n";
 import { Pie } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { fetchex } from "../utils";
 import Router from "../router";
+import type { DataType, TaskType, LibraryType, Tag } from "@beiming-system/types/learnware";
+
+export interface CountDetail {
+  Data: Record<DataType, number>;
+  Task: Record<TaskType, number>;
+  Library: Record<LibraryType, number>;
+  Scenario: Record<Tag, number>;
+}
+
+const { t } = useI18n();
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -11,25 +22,7 @@ const countUser = ref(0);
 const countVerifiedLearnware = ref(0);
 const countUnverifiedLearnware = ref(0);
 const countDownload = ref(0);
-const countDetail = ref<{
-  Data: {
-    [key: string]: number;
-  };
-  Task: {
-    [key: string]: number;
-  };
-  Library: {
-    [key: string]: number;
-  };
-  Scenario: {
-    [key: string]: number;
-  };
-}>({
-  Data: {},
-  Task: {},
-  Library: {},
-  Scenario: {},
-});
+const countDetail = ref<CountDetail>();
 
 const options = ref({
   responsive: true,
@@ -43,25 +36,25 @@ const errorTimer = ref<number>();
 const numberItems = computed(() => {
   return [
     {
-      title: "User Count",
+      title: t("Summary.UserCount"),
       icon: "mdi-account",
       value: countUser.value,
       to: "/alluser",
     },
     {
-      title: "Verified Learnware Count",
+      title: t("Summary.VerifiedLearnwareCount"),
       icon: "mdi-check",
       value: countVerifiedLearnware.value,
       to: "/alllearnware?is_verify=true",
     },
     {
-      title: "Unverified Learnware Count",
+      title: t("Summary.UnverifiedLearnwareCount"),
       icon: "mdi-close",
       value: countUnverifiedLearnware.value,
       to: "/alllearnware?is_verify=false",
     },
     {
-      title: "Download Count",
+      title: t("Summary.DownloadCount"),
       icon: "mdi-download",
       value: countDownload.value,
     },
@@ -86,20 +79,7 @@ function fetchSummary(): void {
           count_download: number;
           count_verified_learnware: number;
           count_unverified_learnware: number;
-          count_detail: {
-            Data: {
-              [key: string]: number;
-            };
-            Task: {
-              [key: string]: number;
-            };
-            Library: {
-              [key: string]: number;
-            };
-            Scenario: {
-              [key: string]: number;
-            };
-          };
+          count_detail: CountDetail;
         };
       }) => {
         if (res.code === 0) {
@@ -143,11 +123,42 @@ function getPieData(
     datasets: [
       {
         label: key,
-        backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#DD1B16"],
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#4BC0C0",
+          "#FF8A80",
+          "#FFD180",
+          "#A1887F",
+          "#90CAF9",
+          "#80CBC4",
+          "#B39DDB",
+          "#F48FB1",
+          "#CE93D8",
+          "#FFAB91",
+          "#BCAAA4",
+          "#EEEEEE",
+          "#B0BEC5",
+          "#9E9E9E",
+          "#E0E0E0",
+          "#FFEB3B",
+          "#FFC107",
+          "#FF9800",
+          "#FF5722",
+          "#795548",
+          "#607D8B",
+        ],
         data: Object.values(counts),
       },
     ],
   };
+}
+
+function translateKey<T>(obj: Record<string, T>, prefix: string): ComputedRef<Record<string, T>> {
+  return computed(() =>
+    Object.fromEntries(Object.entries(obj).map(([key, val]) => [t(prefix + key), val])),
+  );
 }
 
 onMounted(() => {
@@ -162,7 +173,13 @@ onMounted(() => {
     </v-snackbar>
 
     <div class="grid md:(grid-cols-2) md:gap-2 md:m-2">
-      <v-card v-for="item in numberItems" flat class="md:border-1 border-b-1" :to="item.to" :key="item.title">
+      <v-card
+        v-for="item in numberItems"
+        flat
+        class="md:border-1 border-b-1"
+        :to="item.to"
+        :key="item.title"
+      >
         <v-card-title>
           <v-icon>{{ item.icon }}</v-icon>
           {{ item.title }}
@@ -177,12 +194,57 @@ onMounted(() => {
       <v-card flat class="md:border-1">
         <v-card-title>
           <v-icon>mdi-chart-pie</v-icon>
-          Chart
+          {{ t("Summary.Chart") }}
         </v-card-title>
         <v-card-item>
           <div class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4">
-            <div v-for="(val, key) in countDetail" :key="key">
-              <Pie :data="getPieData(val, key)" :options="options" />
+            <div>
+              <Pie
+                v-if="countDetail"
+                :data="
+                  getPieData(
+                    translateKey(countDetail.Data, 'Submit.Tag.DataType.Type.').value,
+                    'Data',
+                  )
+                "
+                :options="options"
+              />
+            </div>
+            <div>
+              <Pie
+                v-if="countDetail"
+                :data="
+                  getPieData(
+                    translateKey(countDetail.Task, 'Submit.Tag.TaskType.Type.').value,
+                    'Task',
+                  )
+                "
+                :options="options"
+              />
+            </div>
+            <div>
+              <Pie
+                v-if="countDetail"
+                :data="
+                  getPieData(
+                    translateKey(countDetail.Library, 'Submit.Tag.LibraryType.Type.').value,
+                    'Library',
+                  )
+                "
+                :options="options"
+              />
+            </div>
+            <div>
+              <Pie
+                v-if="countDetail"
+                :data="
+                  getPieData(
+                    translateKey(countDetail.Scenario, 'Submit.Tag.Scenario.Type.').value,
+                    'Scenario',
+                  )
+                "
+                :options="options"
+              />
             </div>
           </div>
         </v-card-item>
