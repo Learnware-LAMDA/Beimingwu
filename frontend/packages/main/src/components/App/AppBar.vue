@@ -55,9 +55,9 @@ const filteredRoutes = computed<Route[]>(() =>
         v-if="['xs', 'sm'].includes(display.name.value)"
         @click="() => emit('update:drawerOpen', !drawerOpen)"
       ></v-app-bar-nav-icon>
-      <v-app-bar-title class="logo" @click="() => router.push('/')">
+      <div class="logo" @click="() => router.push('/')">
         <img class="logo-img" :src="learnwareLogo" />
-      </v-app-bar-title>
+      </div>
     </div>
 
     <template #append>
@@ -116,7 +116,7 @@ const filteredRoutes = computed<Route[]>(() =>
 
 <style scoped lang="scss">
 .prepend {
-  @apply flex items-center h-full p-4;
+  @apply flex items-center h-full p-4.5;
   .logo {
     @apply cursor-pointer h-full;
     .logo-img {
