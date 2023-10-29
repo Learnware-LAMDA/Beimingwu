@@ -11,6 +11,9 @@ importers:
       '@beiming-system/hooks':
         specifier: workspace:^
         version: link:packages/hooks
+      '@beiming-system/locale':
+        specifier: workspace:^
+        version: link:packages/locale
       chart.js:
         specifier: ^4.4.0
         version: 4.4.0
