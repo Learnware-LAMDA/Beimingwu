@@ -10,6 +10,7 @@ import AllLearnware from "./allLearnware";
 import Learnware from "./learnware";
 import Public from "./public";
 import LearnwareDetail from "./learnwareDetail";
+import MyLearnware from "./myLearnware";
 
 export default {
   Page,
@@ -24,4 +25,5 @@ export default {
   Learnware,
   Public,
   LearnwareDetail,
+  MyLearnware,
 };
