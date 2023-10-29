@@ -134,9 +134,8 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
 
       <v-card-text class="learnware-container">
         <div class="flex items-center">
-          <div class="mr-2">
+          <div v-if="learnware.dataType === 'Table'" class="mr-2">
             <v-switch
-              v-if="learnware.dataType === 'Table'"
               v-model="showInputDescription"
               color="primary"
               density="compact"
@@ -183,11 +182,13 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
         </v-expand-transition>
 
         <div class="flex items-center">
-          <div class="mr-2">
+          <div
+            v-if="
+              ['Classification', 'Regression', 'Feature Extraction'].includes(learnware.taskType)
+            "
+            class="mr-2"
+          >
             <v-switch
-              v-if="
-                ['Classification', 'Regression', 'Feature Extraction'].includes(learnware.taskType)
-              "
               v-model="showOutputDescription"
               color="primary"
               density="compact"

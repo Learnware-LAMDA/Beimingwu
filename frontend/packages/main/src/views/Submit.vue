@@ -470,7 +470,11 @@ onActivated(init);
               {{ t("Submit.File.ForInstructionsOnHowToCreateTheRequiredZipFile") }}
             </v-card-text>
             <v-card-text class="pt-2 text-lg <sm:text-sm">
-              <a class="underline" href="./static/learnware-template" target="_blank">
+              <a
+                class="underline"
+                href="./static/learnware-template.zip"
+                target="_blank"
+              >
                 {{ t("Submit.File.ClickHere") }}
               </a>
               {{ t("Submit.File.ToDownloadTemplate") }}

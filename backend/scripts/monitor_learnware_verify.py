@@ -95,7 +95,7 @@ def worker_process_func(q: queue.Queue, env: dict):
         process_result_filename = learnware_filename + ".result"
         learnware_processed_filename = learnware_filename[:-4] + "_processed.zip"
 
-        with tempfile.TemporaryDirectory(dir=context.config["TEMP_PATH"]) as tmpdir:
+        with tempfile.TemporaryDirectory(dir=context.config["temp_path"]) as tmpdir:
             extract_path = tmpdir
             if not os.path.exists(extract_path):
                 os.makedirs(extract_path)

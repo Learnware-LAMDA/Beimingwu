@@ -1,0 +1,8 @@
+model:
+  class_name: MyModel
+  kwargs: {}
+stat_specifications:
+  - module_path: learnware.specification
+    class_name: RKMEStatSpecification
+    file_name: stat.json
+    kwargs: {}

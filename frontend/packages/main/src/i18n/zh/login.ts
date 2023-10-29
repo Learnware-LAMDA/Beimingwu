@@ -8,6 +8,6 @@ export default {
   Success: "登录成功",
   Error: {
     InvalidEmail: "邮箱格式不正确",
-    PasswordAtLeast8Chars: "密码至少需要8个字符",
+    PasswordAtLeast8Chars: "密码至少需要 8 个字符",
   },
 };

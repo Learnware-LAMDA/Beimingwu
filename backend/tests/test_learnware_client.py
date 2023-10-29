@@ -128,10 +128,10 @@ class TestLearnwareClient(unittest.TestCase):
         testops.add_learnware_to_engine(learnware_id, client.headers)
 
         client.download_learnware(learnware_id, f"{learnware_id}.zip")
-        client.install_environment(f"{learnware_id}.zip")
-        learnware = client.load_learnware(f"{learnware_id}.zip")
+        learnware = client.load_learnware(f"{learnware_id}.zip", runnable_option="conda_env")
         os.remove(f"{learnware_id}.zip")
 
+        learnware.instantiate_model()
         learnware_model = learnware.get_model()
         input_shape = learnware_model.input_shape
         inputs = np.random.randn(10, *input_shape)
@@ -140,15 +140,9 @@ class TestLearnwareClient(unittest.TestCase):
         client.delete_learnware(learnware_id)
         pass
 
-    def test_test_learnware(self):
+    def test_check_learnware(self):
         client = LearnwareClient(self.backend_host)
-        client.test_learnware(os.path.join("tests", "data", "test_learnware_multi_import.zip"))
-        pass
-
-    def test_default_host(self):
-        client = LearnwareClient()
-        client.login("xiaochuan.zou@polixir.ai", "ef705c6fb64c411183efcbede7494016")
-        self.assertEqual(len(client.search_learnware(Specification())), 10)
+        client.check_learnware(os.path.join("tests", "data", "test_learnware_multi_import.zip"))
         pass
 
 

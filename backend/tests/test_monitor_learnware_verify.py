@@ -24,6 +24,7 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
 
         testops.wait_port_open(context.config.listen_port, 10)
         context.init_database()
+        context.init_logger()
         testops.clear_db()
         TestMonitorLearnwareVerify.monitor_process = multiprocessing.Process(
             target=monitor_learnware_verify.main, args=(2,)
@@ -113,6 +114,9 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
         )
 
         status = self.wait_verify_end(learnware_id)
+
+        context.logger.info(f"status: {status}")
+        context.logger.info(f"learnware_id: {learnware_id}")
 
         self.assertEqual(status, LearnwareVerifyStatus.SUCCESS.value)
         self.assertFalse(os.path.exists(context.get_learnware_verify_file_path(learnware_id)))
