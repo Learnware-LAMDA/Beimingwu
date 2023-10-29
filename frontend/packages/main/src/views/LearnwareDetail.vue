@@ -33,7 +33,7 @@ const learnware = ref<LearnwareDetailInfoWithDescription>({
   dataType: "",
   taskType: "",
   libraryType: "",
-  tagList: [],
+  scenarioList: [],
 });
 const learnwareId = ref("");
 const downloading = ref(false);
@@ -63,7 +63,7 @@ function getLearnwareDetail(id: string): Promise<void> {
               dataType: learnwareInfo.semantic_specification.Data.Values[0],
               taskType: learnwareInfo.semantic_specification.Task.Values[0],
               libraryType: learnwareInfo.semantic_specification.Library.Values[0],
-              tagList: learnwareInfo.semantic_specification.Scenario.Values,
+              scenarioList: learnwareInfo.semantic_specification.Scenario.Values,
             };
           }
           return;
@@ -144,18 +144,21 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
             />
           </div>
           <div>
-            <b>{{ t("Submit.Tag.DataType.DataType") }}:</b>
-            {{ learnware.dataType && t(`Submit.Tag.DataType.Type.${learnware.dataType}`) }}
+            <b>{{ t("Submit.SemanticSpecification.DataType.DataType") }}:</b>
+            {{
+              learnware.dataType &&
+              t(`Submit.SemanticSpecification.DataType.Type.${learnware.dataType}`)
+            }}
           </div>
         </div>
         <v-expand-transition>
           <div v-if="learnware.dataType === 'Table' && showInputDescription" class="mt-2">
             <div class="flex font-bold py-3 border-y-1">
               <div class="w-20">
-                {{ t("Submit.Tag.DataType.DescriptionInput.Name") }}
+                {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
               </div>
               <div class="w-1/1">
-                {{ t("Submit.Tag.DataType.DescriptionInput.Description") }}
+                {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Description") }}
               </div>
             </div>
             <div v-if="learnware.input.Dimension < 8">
@@ -197,8 +200,11 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
             />
           </div>
           <div>
-            <b>{{ t("Submit.Tag.TaskType.TaskType") }}:</b>
-            {{ learnware.taskType && t(`Submit.Tag.TaskType.Type.${learnware.taskType}`) }}
+            <b>{{ t("Submit.SemanticSpecification.TaskType.TaskType") }}:</b>
+            {{
+              learnware.taskType &&
+              t(`Submit.SemanticSpecification.TaskType.Type.${learnware.taskType}`)
+            }}
           </div>
         </div>
         <v-expand-transition>
@@ -211,10 +217,10 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
           >
             <div class="flex font-bold py-3 border-y-1">
               <div class="w-20">
-                {{ t("Submit.Tag.TaskType.DescriptionOutput.Name") }}
+                {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
               </div>
               <div class="w-1/1">
-                {{ t("Submit.Tag.TaskType.DescriptionOutput.Description") }}
+                {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Description") }}
               </div>
             </div>
             <div v-if="learnware.output.Dimension < 8">
@@ -240,13 +246,16 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
           </div>
         </v-expand-transition>
         <div>
-          <b>{{ t("Submit.Tag.LibraryType.LibraryType") }}:</b>
-          {{ learnware.libraryType && t(`Submit.Tag.LibraryType.Type.${learnware.libraryType}`) }}
+          <b>{{ t("Submit.SemanticSpecification.LibraryType.LibraryType") }}:</b>
+          {{
+            learnware.libraryType &&
+            t(`Submit.SemanticSpecification.LibraryType.Type.${learnware.libraryType}`)
+          }}
         </div>
         <div>
-          <b>{{ t("Submit.Tag.Scenario.Scenario") }}:</b>
-          <span v-for="(tag, i) in learnware.tagList" :key="i" class="ml-1 active">
-            {{ t(`Submit.Tag.Scenario.Type.${tag}`) }}
+          <b>{{ t("Submit.SemanticSpecification.Scenario.Scenario") }}:</b>
+          <span v-for="(scenario, i) in learnware.scenarioList" :key="i" class="ml-1 active">
+            {{ t(`Submit.SemanticSpecification.Scenario.Type.${scenario}`) }}
           </span>
         </div>
         <div>

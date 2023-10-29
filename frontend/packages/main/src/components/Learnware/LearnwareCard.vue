@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
     dataType: "",
     taskType: "",
     libraryType: "",
-    tagList: [],
+    scenarioList: [],
     files: [],
   }),
   showDownload: true,
@@ -106,7 +106,7 @@ function handleClickDelete(id: string): void {
             : undefined
         "
       >
-        {{ t(`Submit.Tag.DataType.Type.${item.dataType}`) }}
+        {{ t(`Submit.SemanticSpecification.DataType.Type.${item.dataType}`) }}
       </div>
       <div
         class="label"
@@ -116,7 +116,14 @@ function handleClickDelete(id: string): void {
             : undefined
         "
       >
-        {{ t(`Submit.Tag.TaskType.Type.${item.taskType.replace("Others", "OtherTask")}`) }}
+        {{
+          t(
+            `Submit.SemanticSpecification.TaskType.Type.${item.taskType.replace(
+              "Others",
+              "OtherTask",
+            )}`,
+          )
+        }}
       </div>
       <div
         class="label"
@@ -126,15 +133,26 @@ function handleClickDelete(id: string): void {
             : undefined
         "
       >
-        {{ t(`Submit.Tag.LibraryType.Type.${item.libraryType.replace("Others", "OtherLibrary")}`) }}
+        {{
+          t(
+            `Submit.SemanticSpecification.LibraryType.Type.${item.libraryType.replace(
+              "Others",
+              "OtherLibrary",
+            )}`,
+          )
+        }}
       </div>
       <div
-        v-for="(tag, i) in item.tagList"
+        v-for="(scenario, i) in item.scenarioList"
         :key="i"
-        class="tag"
-        :class="filters && filters.tagList && filters.tagList.includes(tag) ? 'active' : undefined"
+        class="scenario"
+        :class="
+          filters && filters.scenarioList && filters.scenarioList.includes(scenario)
+            ? 'active'
+            : undefined
+        "
       >
-        {{ t(`Submit.Tag.Scenario.Type.${tag}`) }}
+        {{ t(`Submit.SemanticSpecification.Scenario.Type.${scenario}`) }}
       </div>
     </v-card-text>
     <v-card-text class="card-text">
@@ -217,7 +235,7 @@ function handleClickDelete(id: string): void {
       @apply px-2 border-gray-700 bg-gray-400 text-xs text-white rounded;
     }
 
-    .tag {
+    .scenario {
       @apply px-2 border-gray-700 bg-gray-400 text-xs text-white rounded-1em;
     }
 
@@ -225,7 +243,7 @@ function handleClickDelete(id: string): void {
       background: rgb(var(--v-theme-primary));
     }
 
-    .tag.active {
+    .scenario.active {
       @apply bg-orange-600;
     }
 

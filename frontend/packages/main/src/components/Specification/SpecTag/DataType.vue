@@ -44,27 +44,27 @@ watch(
 
 const dataTypeBtns = computed(() => [
   {
-    title: t("Submit.Tag.DataType.Type.Table"),
+    title: t("Submit.SemanticSpecification.DataType.Type.Table"),
     icon: TableBtn,
     value: "Table",
   },
   {
-    title: t("Submit.Tag.DataType.Type.Image"),
+    title: t("Submit.SemanticSpecification.DataType.Type.Image"),
     icon: ImageBtn,
     value: "Image",
   },
   {
-    title: t("Submit.Tag.DataType.Type.Text"),
+    title: t("Submit.SemanticSpecification.DataType.Type.Text"),
     icon: TextBtn,
     value: "Text",
   },
   {
-    title: t("Submit.Tag.DataType.Type.Video"),
+    title: t("Submit.SemanticSpecification.DataType.Type.Video"),
     icon: VideoBtn,
     value: "Video",
   },
   {
-    title: t("Submit.Tag.DataType.Type.Audio"),
+    title: t("Submit.SemanticSpecification.DataType.Type.Audio"),
     icon: AudioBtn,
     value: "Audio",
   },
@@ -75,7 +75,7 @@ const dataTypeBtns = computed(() => [
   <grid-btns
     v-model:value="value"
     :btns="dataTypeBtns"
-    :title="t('Submit.Tag.DataType.DataType')"
+    :title="t('Submit.SemanticSpecification.DataType.DataType')"
     :cols="cols"
     :md="md"
     :sm="sm"

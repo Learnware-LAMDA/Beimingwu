@@ -10,7 +10,7 @@ export type TaskType =
   | "Segmentation"
   | "Others";
 export type LibraryType = "PyTorch" | "TensorFlow" | "Scikit-learn" | "Others";
-export type Tag =
+export type Scenario =
   | "Business"
   | "Financial"
   | "Health"
@@ -25,7 +25,7 @@ export type Tag =
   | "Education"
   | "Entertainment"
   | "Architecture";
-export type TagList = Tag[];
+export type ScenarioList = Scenario[];
 export type Description = string;
 export type DataTypeDescription = {
   Dimension: number;
@@ -51,7 +51,7 @@ export interface SemanticSpecification {
     Values: LibraryType[];
   };
   Scenario: {
-    Values: TagList;
+    Values: ScenarioList;
   };
   Description: {
     Values: Description;
@@ -67,7 +67,7 @@ export interface LearnwareInfo {
   dataType: DataType | "";
   taskType: TaskType | "";
   libraryType: LibraryType | "";
-  tagList: TagList;
+  scenarioList: ScenarioList;
 }
 
 export interface LearnwareDetailInfo extends LearnwareInfo {
@@ -105,6 +105,6 @@ export interface Filter {
   dataType: DataType | "";
   taskType: TaskType | "";
   libraryType: LibraryType | "";
-  tagList: TagList;
+  scenarioList: ScenarioList;
   files: Files;
 }

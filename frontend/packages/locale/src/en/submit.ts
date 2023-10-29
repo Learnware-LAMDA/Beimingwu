@@ -9,7 +9,7 @@ export default {
       AtLeast5Chars: "Learnware name needs to be at least 5 characters.",
     },
   },
-  Tag: {
+  SemanticSpecification: {
     Tag: "Tag",
     Title: "Choose the tags (semantic specification)",
     DataType: {

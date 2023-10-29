@@ -4,15 +4,20 @@ import { useI18n } from "vue-i18n";
 import DataTypeBtns from "../Specification/SpecTag/DataType.vue";
 import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
-import TagListBtns from "../Specification/SpecTag/TagList.vue";
+import ScenarioListBtns from "../Specification/SpecTag/ScenarioList.vue";
 import DescriptionInput from "./DescriptionInput.vue";
-import type { DataType, TaskType, LibraryType, TagList } from "@beiming-system/types/learnware";
+import type {
+  DataType,
+  TaskType,
+  LibraryType,
+  ScenarioList,
+} from "@beiming-system/types/learnware";
 
 export interface Props {
   dataType: DataType | "";
   taskType: TaskType | "";
   libraryType: LibraryType | "";
-  tagList: TagList;
+  scenarioList: ScenarioList;
   dataTypeDescription: string;
   taskTypeDescription: string;
   errorMessages?: string;
@@ -24,7 +29,7 @@ const emits = defineEmits([
   "update:dataType",
   "update:taskType",
   "update:libraryType",
-  "update:tagList",
+  "update:scenarioList",
   "update:dataTypeDescription",
   "update:taskTypeDescription",
 ]);
@@ -45,9 +50,9 @@ const libraryType = computed({
   get: () => props.libraryType,
   set: (val) => emits("update:libraryType", val),
 });
-const tagList = computed({
-  get: () => props.tagList,
-  set: (val) => emits("update:tagList", val),
+const scenarioList = computed({
+  get: () => props.scenarioList,
+  set: (val) => emits("update:scenarioList", val),
 });
 const dataTypeDescription = computed({
   get: () => JSON.parse(props.dataTypeDescription),
@@ -70,13 +75,13 @@ const taskTypeDescription = computed({
     <description-input
       v-if="dataType === 'Table'"
       v-model:value="dataTypeDescription"
-      :name="t('Submit.Tag.DataType.DescriptionInput.Name')"
+      :name="t('Submit.SemanticSpecification.DataType.DescriptionInput.Name')"
     >
       <template #msg>
-        {{ t("Submit.Tag.DataType.DescriptionInput.FeatureTips") }}
+        {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.FeatureTips") }}
       </template>
       <template #msg-small>
-        {{ t("Submit.Tag.DataType.DescriptionInput.FeatureTipsSmall") }}
+        {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.FeatureTipsSmall") }}
       </template>
     </description-input>
     <task-type-btns v-model:value="taskType" />
@@ -87,16 +92,16 @@ const taskTypeDescription = computed({
         taskType === 'Feature Extraction'
       "
       v-model:value="taskTypeDescription"
-      :name="t('Submit.Tag.TaskType.DescriptionOutput.Name')"
+      :name="t('Submit.SemanticSpecification.TaskType.DescriptionOutput.Name')"
     >
       <template #msg>
-        {{ t("Submit.Tag.TaskType.DescriptionOutput.LabelTips") }}
+        {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTips") }}
       </template>
       <template #msg-small>
-        {{ t("Submit.Tag.TaskType.DescriptionOutput.LabelTipsSmall") }}
+        {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTipsSmall") }}
       </template>
     </description-input>
     <library-type-btns v-model:value="libraryType" />
-    <tag-list-btns v-model:value="tagList" />
+    <scenario-list-btns v-model:value="scenarioList" />
   </div>
 </template>

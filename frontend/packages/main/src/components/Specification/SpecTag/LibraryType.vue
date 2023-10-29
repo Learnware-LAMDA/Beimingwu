@@ -44,22 +44,22 @@ watch(
 
 const libraryTypeBtns = computed(() => [
   {
-    title: t("Submit.Tag.LibraryType.Type.PyTorch"),
+    title: t("Submit.SemanticSpecification.LibraryType.Type.PyTorch"),
     icon: PyTorchBtn,
     value: "PyTorch",
   },
   {
-    title: t("Submit.Tag.LibraryType.Type.TensorFlow"),
+    title: t("Submit.SemanticSpecification.LibraryType.Type.TensorFlow"),
     icon: TensorFlowBtn,
     value: "TensorFlow",
   },
   {
-    title: t("Submit.Tag.LibraryType.Type.Scikit-learn"),
+    title: t("Submit.SemanticSpecification.LibraryType.Type.Scikit-learn"),
     icon: ScikitLearnBtn,
     value: "Scikit-learn",
   },
   {
-    title: t("Submit.Tag.LibraryType.Type.Others"),
+    title: t("Submit.SemanticSpecification.LibraryType.Type.Others"),
     icon: OthersBtn,
     value: "Others",
   },
@@ -70,7 +70,7 @@ const libraryTypeBtns = computed(() => [
   <grid-btns
     v-model:value="value"
     :btns="libraryTypeBtns"
-    :title="t('Submit.Tag.LibraryType.LibraryType')"
+    :title="t('Submit.SemanticSpecification.LibraryType.LibraryType')"
     :cols="cols"
     :md="md"
     :sm="sm"

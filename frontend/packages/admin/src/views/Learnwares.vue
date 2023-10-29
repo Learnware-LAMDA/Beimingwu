@@ -24,7 +24,7 @@ const filters = ref<Filter>({
   dataType: "",
   taskType: "",
   libraryType: "",
-  tagList: [],
+  scenarioList: [],
   files: [],
 });
 
@@ -148,7 +148,7 @@ function fetchByFilterAndPage(filters: Filter, page: number): void {
       semanticSpec.Data.Values = filters.dataType ? [filters.dataType] : [];
       semanticSpec.Task.Values = filters.taskType ? [filters.taskType] : [];
       semanticSpec.Library.Values = filters.libraryType ? [filters.libraryType] : [];
-      semanticSpec.Scenario.Values = filters.tagList;
+      semanticSpec.Scenario.Values = filters.scenarioList;
       semanticSpec.Description.Values = "";
 
       const fd = new FormData();
@@ -193,7 +193,7 @@ function fetchByFilterAndPage(filters: Filter, page: number): void {
                   dataType: item.semantic_specification.Data.Values[0],
                   taskType: item.semantic_specification.Task.Values[0],
                   libraryType: item.semantic_specification.Library.Values[0],
-                  tagList: item.semantic_specification.Scenario.Values,
+                  scenarioList: item.semantic_specification.Scenario.Values,
                 }),
               );
               pageNum.value = res.data.total_pages;

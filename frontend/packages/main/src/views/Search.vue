@@ -14,7 +14,7 @@ const filters = ref<Filter>({
   dataType: "",
   taskType: "",
   libraryType: "",
-  tagList: [],
+  scenarioList: [],
   files: [],
 });
 
@@ -57,7 +57,7 @@ function fetchByFilterAndPage(filters: Filter, page: number): void {
     dataType: filters.dataType,
     taskType: filters.taskType,
     libraryType: filters.libraryType,
-    tagList: filters.tagList,
+    scenarioList: filters.scenarioList,
     files: filters.files,
     page,
     limit: singleRecommendedLearnwarePageSize.value,
@@ -74,7 +74,7 @@ function fetchByFilterAndPage(filters: Filter, page: number): void {
             dataType: item.semantic_specification.Data.Values[0],
             taskType: item.semantic_specification.Task.Values[0],
             libraryType: item.semantic_specification.Library.Values[0],
-            tagList: item.semantic_specification.Scenario.Values,
+            scenarioList: item.semantic_specification.Scenario.Values,
           }));
           if (res.data.learnware_list_multi.length > 0) {
             multiRecommendedMatchScore.value = Math.floor(
@@ -91,7 +91,7 @@ function fetchByFilterAndPage(filters: Filter, page: number): void {
             dataType: item.semantic_specification.Data.Values[0],
             taskType: item.semantic_specification.Task.Values[0],
             libraryType: item.semantic_specification.Library.Values[0],
-            tagList: item.semantic_specification.Scenario.Values,
+            scenarioList: item.semantic_specification.Scenario.Values,
             matchScore: filters.files?.length > 0 ? Math.floor(item.matching * 100) : -1,
           }));
           singleRecommendedLearnwarePageNum.value = res.data.total_pages;

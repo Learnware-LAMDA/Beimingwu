@@ -8,7 +8,14 @@ import { getRole } from "../request/auth";
 import { addLearnware } from "../request/user";
 import { getLearnwareDetailById } from "../request/engine";
 import { promiseReadFile, verifyLearnware } from "../utils";
-import type { Name, DataType, TaskType, LibraryType, TagList, Description } from "@beiming-system/types/learnware";
+import type {
+  Name,
+  DataType,
+  TaskType,
+  LibraryType,
+  ScenarioList,
+  Description,
+} from "@beiming-system/types/learnware";
 import { useField } from "@beiming-system/hooks";
 import VStepperTitle from "../components/Public/VStepperTitle.vue";
 import FileUpload from "../components/Specification/FileUpload.vue";
@@ -39,7 +46,7 @@ const dataType = useField<DataType | "">({
     if (value?.length > 0) {
       return "";
     }
-    return t("Submit.Tag.DataType.Error.NotEmpty");
+    return t("Submit.SemanticSpecification.DataType.Error.NotEmpty");
   },
 });
 const taskType = useField<TaskType | "">({
@@ -48,7 +55,7 @@ const taskType = useField<TaskType | "">({
     if (value?.length > 0) {
       return "";
     }
-    return t("Submit.Tag.TaskType.Error.NotEmpty");
+    return t("Submit.SemanticSpecification.TaskType.Error.NotEmpty");
   },
 });
 const libraryType = useField<LibraryType | "">({
@@ -57,10 +64,10 @@ const libraryType = useField<LibraryType | "">({
     if (value?.length > 0) {
       return "";
     }
-    return t("Submit.Tag.LibraryType.Error.NotEmpty");
+    return t("Submit.SemanticSpecification.LibraryType.Error.NotEmpty");
   },
 });
-const tagList = useField<TagList>({ defaultValue: [], defaultValid: true });
+const scenarioList = useField<ScenarioList>({ defaultValue: [], defaultValid: true });
 const dataTypeDescription = useField<string>({
   defaultValue: JSON.stringify({
     Dimension: 7,
@@ -130,8 +137,8 @@ const steps = computed(() => [
     icon: "mdi-rename",
   },
   {
-    title: t("Submit.Tag.Title"),
-    subtitle: t("Submit.Tag.Tag"),
+    title: t("Submit.SemanticSpecification.Title"),
+    subtitle: t("Submit.SemanticSpecification.Tag"),
     icon: "mdi-label-multiple",
   },
   {
@@ -152,7 +159,7 @@ const valid = computed(
     dataType.valid &&
     taskType.valid &&
     libraryType.valid &&
-    tagList.valid &&
+    scenarioList.valid &&
     description.valid &&
     files.valid,
 );
@@ -162,7 +169,7 @@ const allowChangePage = computed(() => {
       return name.valid;
     }
     case 1: {
-      return dataType.valid && taskType.valid && libraryType.valid && tagList.valid;
+      return dataType.valid && taskType.valid && libraryType.valid && scenarioList.valid;
     }
     case 2: {
       return description.valid;
@@ -218,7 +225,7 @@ function submit(): Promise<void> {
     dataType: dataType.value as DataType,
     taskType: taskType.value as TaskType,
     libraryType: libraryType.value as LibraryType,
-    tagList: tagList.value,
+    scenarioList: scenarioList.value,
     dataTypeDescription: dataTypeDescription.value,
     taskTypeDescription: taskTypeDescription.value,
     description: description.value,
@@ -322,7 +329,7 @@ function checkIsEditMode(): undefined | Promise<void> {
             dataType.value = semanticSpec.Data.Values[0];
             taskType.value = semanticSpec.Task.Values[0];
             libraryType.value = semanticSpec.Library.Values[0];
-            tagList.value = semanticSpec.Scenario.Values;
+            scenarioList.value = semanticSpec.Scenario.Values;
             if (semanticSpec.Input) {
               dataTypeDescription.value = JSON.stringify(semanticSpec.Input);
             } else {
@@ -427,14 +434,14 @@ onActivated(init);
                 v-model:data-type="dataType.value"
                 v-model:task-type="taskType.value"
                 v-model:library-type="libraryType.value"
-                v-model:tag-list="tagList.value"
+                v-model:scenario-list="scenarioList.value"
                 v-model:data-type-description="dataTypeDescription.value"
                 v-model:task-type-description="taskTypeDescription.value"
                 :error-messages="
                   dataType.errorMessages ||
                   taskType.errorMessages ||
                   libraryType.errorMessages ||
-                  tagList.errorMessages
+                  scenarioList.errorMessages
                 "
               />
             </v-card-text>
@@ -470,11 +477,7 @@ onActivated(init);
               {{ t("Submit.File.ForInstructionsOnHowToCreateTheRequiredZipFile") }}
             </v-card-text>
             <v-card-text class="pt-2 text-lg <sm:text-sm">
-              <a
-                class="underline"
-                href="./static/learnware-template.zip"
-                target="_blank"
-              >
+              <a class="underline" href="./static/learnware-template.zip" target="_blank">
                 {{ t("Submit.File.ClickHere") }}
               </a>
               {{ t("Submit.File.ToDownloadTemplate") }}

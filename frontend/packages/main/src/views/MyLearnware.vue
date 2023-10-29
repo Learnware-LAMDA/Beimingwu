@@ -135,7 +135,7 @@ function fetchByFilterAndPage(page: number): void {
             dataType: item.semantic_specification.Data.Values[0],
             taskType: item.semantic_specification.Task.Values[0],
             libraryType: item.semantic_specification.Library.Values[0],
-            tagList: item.semantic_specification.Scenario.Values,
+            scenarioList: item.semantic_specification.Scenario.Values,
           }));
           pageNum.value = res.data.total_pages;
           return;

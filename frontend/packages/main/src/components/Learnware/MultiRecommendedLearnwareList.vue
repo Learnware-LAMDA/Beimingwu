@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
     dataType: "",
     taskType: "",
     libraryType: "",
-    tagList: [],
+    scenarioList: [],
     files: [],
   }),
   showActions: false,
@@ -194,7 +194,7 @@ function getColorByScore(score: number): string {
         @apply px-2 border-gray-700 bg-gray-200 text-xs text-black rounded;
       }
 
-      .tag {
+      .scenario {
         @apply px-2 border-gray-700 bg-gray-200 text-xs text-black rounded-1em;
       }
 
@@ -203,7 +203,7 @@ function getColorByScore(score: number): string {
         color: rgb(var(--v-theme-primary));
       }
 
-      .tag.active {
+      .scenario.active {
         @apply bg-gray-100 text-orange-600 border-0;
       }
 
