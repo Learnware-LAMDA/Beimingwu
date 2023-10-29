@@ -4,4 +4,4 @@ export default {
   UnverifiedLearnwareCount: "Unverified Learnware Count",
   DownloadCount: "Download Count",
   Chart: "Chart",
-}
+};

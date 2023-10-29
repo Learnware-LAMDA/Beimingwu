@@ -5,13 +5,13 @@ import { Pie } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { fetchex } from "../utils";
 import Router from "../router";
-import type { DataType, TaskType, LibraryType, Tag } from "@beiming-system/types/learnware";
+import type { DataType, TaskType, LibraryType, Scenario } from "@beiming-system/types/learnware";
 
 export interface CountDetail {
   Data: Record<DataType, number>;
   Task: Record<TaskType, number>;
   Library: Record<LibraryType, number>;
-  Scenario: Record<Tag, number>;
+  Scenario: Record<Scenario, number>;
 }
 
 const { t } = useI18n();
@@ -203,7 +203,8 @@ onMounted(() => {
                 v-if="countDetail"
                 :data="
                   getPieData(
-                    translateKey(countDetail.Data, 'Submit.Tag.DataType.Type.').value,
+                    translateKey(countDetail.Data, 'Submit.SemanticSpecification.DataType.Type.')
+                      .value,
                     'Data',
                   )
                 "
@@ -215,7 +216,8 @@ onMounted(() => {
                 v-if="countDetail"
                 :data="
                   getPieData(
-                    translateKey(countDetail.Task, 'Submit.Tag.TaskType.Type.').value,
+                    translateKey(countDetail.Task, 'Submit.SemanticSpecification.TaskType.Type.')
+                      .value,
                     'Task',
                   )
                 "
@@ -227,7 +229,10 @@ onMounted(() => {
                 v-if="countDetail"
                 :data="
                   getPieData(
-                    translateKey(countDetail.Library, 'Submit.Tag.LibraryType.Type.').value,
+                    translateKey(
+                      countDetail.Library,
+                      'Submit.SemanticSpecification.LibraryType.Type.',
+                    ).value,
                     'Library',
                   )
                 "
@@ -239,7 +244,10 @@ onMounted(() => {
                 v-if="countDetail"
                 :data="
                   getPieData(
-                    translateKey(countDetail.Scenario, 'Submit.Tag.Scenario.Type.').value,
+                    translateKey(
+                      countDetail.Scenario,
+                      'Submit.SemanticSpecification.Scenario.Type.',
+                    ).value,
                     'Scenario',
                   )
                 "

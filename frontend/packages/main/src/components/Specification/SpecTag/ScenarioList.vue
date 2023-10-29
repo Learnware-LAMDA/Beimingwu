@@ -2,10 +2,10 @@
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
-import type { Tag, TagList } from "@beiming-system/types/learnware";
+import type { Scenario, ScenarioList } from "@beiming-system/types/learnware";
 
 export interface Props {
-  value: TagList;
+  value: ScenarioList;
   cols?: number;
   md?: number;
   sm?: number;
@@ -41,76 +41,76 @@ const items = computed<
   {
     text: string;
     icon: string;
-    value: Tag;
+    value: Scenario;
   }[]
 >(() => [
   {
-    text: t("Submit.Tag.Scenario.Type.Business"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Business"),
     icon: "mdi-briefcase",
     value: "Business",
   },
   {
-    text: t("Submit.Tag.Scenario.Type.Financial"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Financial"),
     icon: "mdi-currency-usd",
     value: "Financial",
   },
   {
-    text: t("Submit.Tag.Scenario.Type.Health"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Health"),
     icon: "mdi-heart",
     value: "Health",
   },
   {
-    text: t("Submit.Tag.Scenario.Type.Politics"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Politics"),
     icon: "mdi-account-group",
     value: "Politics",
   },
   {
-    text: t("Submit.Tag.Scenario.Type.Computer"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Computer"),
     icon: "mdi-desktop-classic",
     value: "Computer",
   },
   {
-    text: t("Submit.Tag.Scenario.Type.Internet"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Internet"),
     icon: "mdi-earth",
     value: "Internet",
   },
   {
-    text: t("Submit.Tag.Scenario.Type.Traffic"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Traffic"),
     icon: "mdi-car",
     value: "Traffic",
   },
   {
-    text: t("Submit.Tag.Scenario.Type.Nature"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Nature"),
     icon: "mdi-tree",
     value: "Nature",
   },
   {
-    text: t("Submit.Tag.Scenario.Type.Fashion"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Fashion"),
     icon: "mdi-tshirt-crew",
     value: "Fashion",
   },
   {
-    text: t("Submit.Tag.Scenario.Type.Industry"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Industry"),
     icon: "mdi-factory",
     value: "Industry",
   },
   {
-    text: t("Submit.Tag.Scenario.Type.Agriculture"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Agriculture"),
     icon: "mdi-tractor",
     value: "Agriculture",
   },
   {
-    text: t("Submit.Tag.Scenario.Type.Education"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Education"),
     icon: "mdi-school",
     value: "Education",
   },
   {
-    text: t("Submit.Tag.Scenario.Type.Entertainment"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Entertainment"),
     icon: "mdi-movie",
     value: "Entertainment",
   },
   {
-    text: t("Submit.Tag.Scenario.Type.Architecture"),
+    text: t("Submit.SemanticSpecification.Scenario.Type.Architecture"),
     icon: "mdi-home-city",
     value: "Architecture",
   },
@@ -125,7 +125,7 @@ const selections = computed(() => {
   return [];
 });
 
-function click(value: Tag): void {
+function click(value: Scenario): void {
   if (props.value && props.value.includes(value)) {
     deleteSelect(value);
   } else {
@@ -133,7 +133,7 @@ function click(value: Tag): void {
   }
 }
 
-function addSelect(value: Tag): void {
+function addSelect(value: Scenario): void {
   if (props.value) {
     emit("update:value", [...props.value, value]);
   } else {
@@ -141,7 +141,7 @@ function addSelect(value: Tag): void {
   }
 }
 
-function deleteSelect(value: Tag): void {
+function deleteSelect(value: Scenario): void {
   if (props.value) {
     emit(
       "update:value",
@@ -154,9 +154,9 @@ function deleteSelect(value: Tag): void {
 </script>
 
 <template>
-  <div class="tag-container" flat>
+  <div class="scenario-container" flat>
     <div class="title text-h6 !text-1rem">
-      {{ t("Submit.Tag.Scenario.Scenario") }}
+      {{ t("Submit.SemanticSpecification.Scenario.Scenario") }}
     </div>
 
     <v-divider v-if="!allSelected"></v-divider>
@@ -177,7 +177,7 @@ function deleteSelect(value: Tag): void {
 </template>
 
 <style scoped lang="scss">
-.tag-container {
+.scenario-container {
   .title {
     @apply mt-7 mb-5;
   }

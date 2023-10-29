@@ -4,7 +4,7 @@ import type {
   DataType,
   TaskType,
   LibraryType,
-  TagList,
+  ScenarioList,
   Files,
   SemanticSpecification,
 } from "@beiming-system/types/learnware";
@@ -39,7 +39,7 @@ function searchLearnware({
   dataType,
   taskType,
   libraryType,
-  tagList,
+  scenarioList,
   files,
   page,
   limit,
@@ -48,7 +48,7 @@ function searchLearnware({
   dataType: DataType | "";
   taskType: TaskType | "";
   libraryType: LibraryType | "";
-  tagList: TagList;
+  scenarioList: ScenarioList;
   files: Files;
   page: number;
   limit: number;
@@ -68,7 +68,8 @@ function searchLearnware({
       semanticSpec.Data.Values = (dataType && [dataType]) || [];
       semanticSpec.Task.Values = (taskType && [taskType]) || [];
       semanticSpec.Library.Values = (libraryType && [libraryType]) || [];
-      semanticSpec.Scenario.Values = (tagList && tagList.map((tag) => tag)) || [];
+      semanticSpec.Scenario.Values =
+        (scenarioList && scenarioList.map((scenario) => scenario)) || [];
       semanticSpec.Description.Values = "";
 
       const fd = new FormData();

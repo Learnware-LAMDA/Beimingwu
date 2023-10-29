@@ -11,6 +11,7 @@
     "build:admin": "pnpm --filter admin run build",
     "lint": "eslint . --ext .js,.vue,.ts",
     "lint:fix": "eslint --fix . --ext .js,.vue,.ts",
+    "prettier": "prettier --write .",
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {

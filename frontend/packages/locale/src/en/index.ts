@@ -28,6 +28,6 @@ export default {
   Public,
   LearnwareDetail,
   MyLearnware,
-  AllUser,  
+  AllUser,
   Summary,
 };

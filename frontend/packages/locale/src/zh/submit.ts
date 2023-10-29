@@ -9,7 +9,7 @@ export default {
       AtLeast5Chars: "学件名称至少需要 5 个字符",
     },
   },
-  Tag: {
+  SemanticSpecification: {
     Tag: "标签",
     Title: "选择学件的标签（语义规约）",
     DataType: {

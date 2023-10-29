@@ -6,7 +6,7 @@ import DataTypeBtns from "../Specification/SpecTag/DataType.vue";
 import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
 import FileUpload from "../Specification/FileUpload.vue";
-import TagListBtns from "../Specification/SpecTag/TagList.vue";
+import ScenarioListBtns from "../Specification/SpecTag/ScenarioList.vue";
 import type { DataType, TaskType, LibraryType } from "@beiming-system/types/learnware";
 
 const { t } = useI18n();
@@ -28,13 +28,13 @@ const taskType = ref<TaskType | "">((route.query.taskType?.toString() as TaskTyp
 const libraryType = ref<LibraryType | "">(
   (route.query.libraryType?.toString() as LibraryType) || "",
 );
-let tryTagList;
+let tryScenarioList;
 try {
-  tryTagList = JSON.parse(route.query.tagList?.toString() as string);
+  tryScenarioList = JSON.parse(route.query.scenarioList?.toString() as string);
 } catch {
-  tryTagList = [];
+  tryScenarioList = [];
 }
-const tagList = ref(tryTagList);
+const scenarioList = ref(tryScenarioList);
 
 const files = ref([]);
 
@@ -43,7 +43,7 @@ const requirement = computed(() => ({
   dataType: dataType.value,
   taskType: taskType.value,
   libraryType: libraryType.value,
-  tagList: tagList.value,
+  scenarioList: scenarioList.value,
   files: files.value,
 }));
 
@@ -86,14 +86,14 @@ watch(
         :sm="2"
         :xs="2"
       ></library-type-btns>
-      <tag-list-btns
-        v-model:value="tagList"
+      <scenario-list-btns
+        v-model:value="scenarioList"
         :cols="2"
         :md="2"
         :sm="2"
         :xs="2"
         class="bg-transparent !text-1rem"
-      ></tag-list-btns>
+      />
       <slot name="append" />
     </div>
 

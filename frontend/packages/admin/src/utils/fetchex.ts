@@ -18,9 +18,7 @@ async function fetchex(url: string, options: RequestInit = {}): Promise<Response
       return;
     }
     throw new Error(
-      `Network error: ${response.status}${
-        response.statusText ? ` - ${response.statusText}` : ""
-      }`,
+      `Network error: ${response.status}${response.statusText ? ` - ${response.statusText}` : ""}`,
     );
   });
 }

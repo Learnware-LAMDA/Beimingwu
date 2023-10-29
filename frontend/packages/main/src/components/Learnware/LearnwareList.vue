@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
     dataType: "",
     taskType: "",
     libraryType: "",
-    tagList: [],
+    scenarioList: [],
     files: [],
   }),
   isAdmin: false,

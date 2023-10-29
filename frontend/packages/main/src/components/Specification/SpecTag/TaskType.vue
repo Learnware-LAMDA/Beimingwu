@@ -47,42 +47,42 @@ watch(
 
 const taskTypeBtns = computed(() => [
   {
-    title: t("Submit.Tag.TaskType.Type.Classification"),
+    title: t("Submit.SemanticSpecification.TaskType.Type.Classification"),
     icon: ClassificationBtn,
     value: "Classification",
   },
   {
-    title: t("Submit.Tag.TaskType.Type.Regression"),
+    title: t("Submit.SemanticSpecification.TaskType.Type.Regression"),
     icon: RegressionBtn,
     value: "Regression",
   },
   {
-    title: t("Submit.Tag.TaskType.Type.Clustering"),
+    title: t("Submit.SemanticSpecification.TaskType.Type.Clustering"),
     icon: ClusteringBtn,
     value: "Clustering",
   },
   {
-    title: t("Submit.Tag.TaskType.Type.Ranking"),
+    title: t("Submit.SemanticSpecification.TaskType.Type.Ranking"),
     icon: RankingBtn,
     value: "Ranking",
   },
   {
-    title: t("Submit.Tag.TaskType.Type.ObjectDetection"),
+    title: t("Submit.SemanticSpecification.TaskType.Type.ObjectDetection"),
     icon: DetectionBtn,
     value: "Object Detection",
   },
   {
-    title: t("Submit.Tag.TaskType.Type.FeatureExtraction"),
+    title: t("Submit.SemanticSpecification.TaskType.Type.FeatureExtraction"),
     icon: ExtractionBtn,
     value: "Feature Extraction",
   },
   {
-    title: t("Submit.Tag.TaskType.Type.Segmentation"),
+    title: t("Submit.SemanticSpecification.TaskType.Type.Segmentation"),
     icon: SegmantationBtn,
     value: "Segmentation",
   },
   {
-    title: t("Submit.Tag.TaskType.Type.Others"),
+    title: t("Submit.SemanticSpecification.TaskType.Type.Others"),
     icon: OthersBtn,
     value: "Others",
   },
@@ -93,7 +93,7 @@ const taskTypeBtns = computed(() => [
   <grid-btns
     v-model:value="value"
     :btns="taskTypeBtns"
-    :title="t('Submit.Tag.TaskType.TaskType')"
+    :title="t('Submit.SemanticSpecification.TaskType.TaskType')"
     :cols="cols"
     :md="md"
     :sm="sm"

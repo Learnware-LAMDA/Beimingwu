@@ -10,7 +10,7 @@ function promiseReadFile(file: File): Promise<ArrayBuffer> {
         reject(new Error("event.target is null"));
         return;
       }
-      if (typeof event.target.result === 'string') {
+      if (typeof event.target.result === "string") {
         reject(new Error("event.target.result is a string"));
         return;
       }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-const emits = defineEmits(["confirm"])
+const emits = defineEmits(["confirm"]);
 
 const dialog = ref<boolean>(false);
 
