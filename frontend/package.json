@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@beiming-system/hooks": "workspace:^",
+    "@beiming-system/locale": "workspace:^",
     "chart.js": "^4.4.0",
     "dayjs": "^1.10.7",
     "js-yaml": "^4.1.0",

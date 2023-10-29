@@ -17,6 +17,7 @@
       "@beiming-system/hooks": ["./packages/hooks/src/index.ts"],
       "@beiming-system/types": ["./packages/types/src/index.ts"],
       "@beiming-system/types/*": ["./packages/types/src/*"],
+      "@beiming-system/locale": ["./packages/locale/src/index.ts"],
     },
 
     /* Bundler mode */
