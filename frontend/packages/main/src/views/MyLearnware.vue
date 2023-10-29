@@ -3,6 +3,7 @@ import { ref, onMounted, nextTick, computed, watch, onActivated } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
+import { useI18n } from "vue-i18n";
 import { deleteLearnware, getLearnwareList } from "../request/user";
 import { listLearnware } from "../request/admin";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
@@ -16,6 +17,8 @@ const route = useRoute();
 const router = useRouter();
 
 const display = useDisplay();
+
+const { t } = useI18n();
 
 const dialog = ref<InstanceType<typeof ConfirmDialog>>();
 const deleteId = ref("");
@@ -192,12 +195,12 @@ onMounted(() => {
   <div ref="contentRef" class="fixed learnware-container">
     <confirm-dialog ref="dialog" @confirm="handleConfirm">
       <template #title>
-        Confirm to delete &nbsp; <b>{{ deleteName }}</b
-        >?
+        {{ t("MyLearnware.ConfirmToDelete") }} &nbsp; <b>{{ deleteName }}</b
+        >{{ t("MyLearnware.?") }}
       </template>
       <template #text>
-        Your learnware <b>{{ deleteName }}</b> will be deleted in the learnware market
-        <i>permanently</i>. Do you really want to delete?
+        {{ t("MyLearnware.YourLearnware") }} <b>{{ deleteName }}</b>
+        {{ t("MyLearnware.DeleteContinue") }}
       </template>
     </confirm-dialog>
     <v-scroll-y-transition>
@@ -211,15 +214,15 @@ onMounted(() => {
         <v-tabs v-model="verifiedFilter" :direction="direction" color="primary">
           <v-tab value="All">
             <v-icon start> mdi-shield-account-outline </v-icon>
-            All
+            {{ t("MyLearnware.All") }}
           </v-tab>
           <v-tab value="Verified">
             <v-icon start> mdi-shield-check </v-icon>
-            Verified
+            {{ t("MyLearnware.Verified") }}
           </v-tab>
           <v-tab value="Unverified">
             <v-icon start> mdi-shield-off-outline </v-icon>
-            Unverified
+            {{ t("MyLearnware.Unverified") }}
           </v-tab>
         </v-tabs>
         <v-window v-model="verifiedFilter" class="w-1/1">

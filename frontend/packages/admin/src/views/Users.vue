@@ -3,6 +3,7 @@ import { ref, computed, onActivated, watch } from "vue";
 import { useDisplay } from "vuetify";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { fetchex, saveContentToFile } from "../utils";
 import SuccessDialog from "@/components/Dialogs/SuccessDialog.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
@@ -13,6 +14,8 @@ const display = useDisplay();
 
 const store = useStore();
 const router = useRouter();
+
+const { t } = useI18n();
 
 const deleteDialog = ref<InstanceType<typeof ConfirmDialog>>(null);
 const deleteId = ref("");
@@ -351,11 +354,11 @@ onActivated(() => {
     <v-card flat class="search">
       <div class="search-row">
         <v-card-title>
-          Search by username
+          {{ t("AllUser.SearchByUsername") }}
           <v-spacer></v-spacer>
           <v-text-field
             v-model="userName"
-            label="Username"
+            :label="t('AllUser.Username')"
             single-line
             hide-details
             append-inner-icon="mdi-close"
@@ -363,11 +366,11 @@ onActivated(() => {
           ></v-text-field>
         </v-card-title>
         <v-card-title>
-          Search by email
+          {{ t("AllUser.SearchByEmail") }}
           <v-spacer></v-spacer>
           <v-text-field
             v-model="email"
-            label="Email"
+            :label="t('AllUser.Email')"
             single-line
             hide-details
             append-inner-icon="mdi-close"

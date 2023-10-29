@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
+import { useI18n } from "vue-i18n";
 import oopsImg from "/oops.svg?url";
 import type { User } from "@beiming-system/types/user";
 
 const emits = defineEmits(["click:reset", "click:delete", "click:export"]);
 
 const display = useDisplay();
+
+const { t } = useI18n();
 
 export interface Props {
   items: User[];
@@ -59,10 +62,18 @@ function handleClickExport(): void {
       <div v-if="items && items.length > 0" flat class="item">
         <div class="row">
           <div class="columns">
-            <div class="title">Username</div>
-            <div class="title">Email</div>
-            <div class="title">Verified</div>
-            <div class="title">Unverified</div>
+            <div class="title">
+              {{ t("AllUser.Username") }}
+            </div>
+            <div class="title">
+              {{ t("AllUser.Email") }}
+            </div>
+            <div class="title">
+              {{ t("AllUser.Verified") }}  
+            </div>
+            <div class="title">
+              {{ t("AllUser.Unverified") }}  
+            </div>
           </div>
           <v-card-actions class="actions">
             <v-btn class="opacity-0" icon="mdi-lock-reset" disabled=""></v-btn>
@@ -90,14 +101,17 @@ function handleClickExport(): void {
             </div>
           </div>
           <v-card-actions class="actions">
-            <v-btn icon="mdi-lock-reset" @click.stop="() => handleClickReset(String(item.id))"></v-btn>
+            <v-btn
+              icon="mdi-lock-reset"
+              @click.stop="() => handleClickReset(String(item.id))"
+            ></v-btn>
             <v-btn icon="mdi-delete" @click.stop="() => handleClickDelete(String(item.id))"></v-btn>
           </v-card-actions>
         </div>
       </div>
     </TransitionGroup>
     <div v-if="items.length === 0" flat class="no-user">
-      Oops! There are no users.
+      {{ t("AllUser.OopsNoUser") }}
       <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
     </div>
   </div>
