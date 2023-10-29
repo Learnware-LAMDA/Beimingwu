@@ -4,9 +4,17 @@ import WindiCSS from "vite-plugin-windicss";
 import eslintPlugin from "vite-plugin-eslint";
 import checker from "vite-plugin-checker";
 import svgLoader from "vite-svg-loader";
+import { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      "@beiming-system/types": resolve("../types/src/index"),
+      "@beiming-system/hooks": resolve("../hooks/src/index"),
+      "@beiming-system/locale": resolve("../locale/src/index"),
+    },
+  },
   plugins: [
     vue(),
     WindiCSS(),
