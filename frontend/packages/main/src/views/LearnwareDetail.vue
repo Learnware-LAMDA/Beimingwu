@@ -7,7 +7,7 @@ import { getLearnwareDetailById } from "../request/engine";
 import { downloadLearnwareSync } from "../utils";
 import { verifyLog } from "../request/user";
 import dayjs from "dayjs";
-import { Learnware } from "types";
+import type { LearnwareDetailInfoWithDescription } from "@beiming-system/types/learnware";
 
 const route = useRoute();
 const router = useRouter();
@@ -16,7 +16,7 @@ const display = useDisplay();
 
 const { t } = useI18n();
 
-const learnware = ref<Learnware.LearnwareDetailInfoWithDescription>({
+const learnware = ref<LearnwareDetailInfoWithDescription>({
   id: "",
   verifyStatus: "",
   lastModify: "",

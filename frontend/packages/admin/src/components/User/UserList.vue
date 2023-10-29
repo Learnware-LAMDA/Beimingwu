@@ -2,14 +2,14 @@
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import oopsImg from "/oops.svg?url";
-import { User } from "types";
+import type { User } from "@beiming-system/types/user";
 
 const emits = defineEmits(["click:reset", "click:delete", "click:export"]);
 
 const display = useDisplay();
 
 export interface Props {
-  items: User.User[];
+  items: User[];
   cols?: number;
   md?: number;
   sm?: number;

@@ -10,14 +10,14 @@ import TableBtn from "../../assets/images/specification/dataType/table.svg?compo
 import { downloadLearnwareSync } from "../../utils";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Learnware } from "types";
+import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
 dayjs.extend(relativeTime);
 
 const { t } = useI18n();
 
 export interface Props {
-  item: Learnware.LearnwareCardInfo;
-  filters?: Learnware.Filter;
+  item: LearnwareCardInfo;
+  filters?: Filter;
   showDownload?: boolean;
   isAdmin?: boolean;
 }

@@ -5,11 +5,11 @@ import { searchLearnware } from "../request/engine";
 import UserRequirement from "../components/Search/UserRequirement.vue";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import MultiRecommendedLearnwareList from "../components/Learnware/MultiRecommendedLearnwareList.vue";
-import { Learnware } from "types";
+import type { Filter, LearnwareCardInfo } from "@beiming-system/types/learnware";
 
 const display = useDisplay();
 
-const filters = ref<Learnware.Filter>({
+const filters = ref<Filter>({
   name: "",
   dataType: "",
   taskType: "",
@@ -18,12 +18,12 @@ const filters = ref<Learnware.Filter>({
   files: [],
 });
 
-const multiRecommendedLearnwareItems = ref<Learnware.LearnwareCardInfo[]>([]);
+const multiRecommendedLearnwareItems = ref<LearnwareCardInfo[]>([]);
 const multiRecommendedMatchScore = ref<number>(0);
 const singleRecommendedLearnwarePage = ref(1);
 const singleRecommendedLearnwarePageNum = ref(1);
 const singleRecommendedLearnwarePageSize = ref(Math.ceil(display.height.value / 900) * 10);
-const singleRecommendedLearnwareItems = ref<Learnware.LearnwareCardInfo[]>([]);
+const singleRecommendedLearnwareItems = ref<LearnwareCardInfo[]>([]);
 const loading = ref(false);
 
 const contentRef = ref<HTMLDivElement | null>(null);
@@ -48,7 +48,7 @@ function pageChange(newPage: number): void {
   singleRecommendedLearnwarePage.value = newPage;
 }
 
-function fetchByFilterAndPage(filters: Learnware.Filter, page: number): void {
+function fetchByFilterAndPage(filters: Filter, page: number): void {
   showError.value = false;
   loading.value = true;
 
@@ -136,7 +136,7 @@ watch(
 watch(
   () => [filters.value, singleRecommendedLearnwarePage.value],
   (newVal) => {
-    const [newFilters, newPage] = newVal as [Learnware.Filter, number];
+    const [newFilters, newPage] = newVal as [Filter, number];
 
     fetchByFilterAndPage(newFilters, newPage - 1);
 

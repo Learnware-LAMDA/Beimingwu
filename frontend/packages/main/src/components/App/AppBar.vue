@@ -4,11 +4,11 @@ import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import learnwareLogo from "/logo.svg?url";
-import { Route } from "types";
+import type { Route } from "@beiming-system/types/route";
 
 export interface Props {
   drawerOpen: boolean;
-  routes: Route.Route[];
+  routes: Route[];
 }
 
 const emit = defineEmits(["update:drawerOpen"]);
@@ -20,7 +20,7 @@ const display = useDisplay();
 
 const store = useStore();
 
-function routeFilter(route: Route.Route): boolean {
+function routeFilter(route: Route): boolean {
   if (route.meta.showInNavBar) {
     if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
       return false;
@@ -33,9 +33,9 @@ function routeFilter(route: Route.Route): boolean {
   return false;
 }
 
-const filteredRoutes = computed<Route.Route[]>(() =>
+const filteredRoutes = computed<Route[]>(() =>
   props.routes
-    .map((route: Route.Route) => {
+    .map((route: Route) => {
       if (route.children) {
         return {
           ...route,
@@ -44,7 +44,7 @@ const filteredRoutes = computed<Route.Route[]>(() =>
       }
       return routeFilter(route) ? route : null;
     })
-    .filter((route) => route) as Route.Route[],
+    .filter((route) => route) as Route[],
 );
 </script>
 

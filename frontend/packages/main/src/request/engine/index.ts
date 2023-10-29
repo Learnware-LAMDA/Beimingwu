@@ -1,5 +1,14 @@
 import { checkedFetch } from "../utils";
-import { Learnware, Response } from "types";
+import type {
+  Name,
+  DataType,
+  TaskType,
+  LibraryType,
+  TagList,
+  Files,
+  SemanticSpecification,
+} from "@beiming-system/types/learnware";
+import type { LearnwareDetailInfo, LearnwareSearchInfo } from "@beiming-system/types/response";
 
 const BASE_URL = "./api/engine";
 
@@ -11,7 +20,7 @@ function getLearnwareDetailById({ id }: { id: string }): Promise<{
   code: number;
   msg: string;
   data: {
-    learnware_info: Response.LearnwareDetailInfo;
+    learnware_info: LearnwareDetailInfo;
   };
 }> {
   return checkedFetch(`${BASE_URL}/learnware_info?learnware_id=${id}`).then((res) => res.json());
@@ -19,7 +28,7 @@ function getLearnwareDetailById({ id }: { id: string }): Promise<{
 
 function getSemanticSpecification(): Promise<{
   data: {
-    semantic_specification: Learnware.SemanticSpecification;
+    semantic_specification: SemanticSpecification;
   };
 }> {
   return checkedFetch(`${BASE_URL}/semantic_specification`).then((res) => res.json());
@@ -35,20 +44,20 @@ function searchLearnware({
   page,
   limit,
 }: {
-  name: Learnware.Name;
-  dataType: Learnware.DataType | "";
-  taskType: Learnware.TaskType | "";
-  libraryType: Learnware.LibraryType | "";
-  tagList: Learnware.TagList;
-  files: Learnware.Files;
+  name: Name;
+  dataType: DataType | "";
+  taskType: TaskType | "";
+  libraryType: LibraryType | "";
+  tagList: TagList;
+  files: Files;
   page: number;
   limit: number;
 }): Promise<{
   code: number;
   msg: string;
   data: {
-    learnware_list_single: Response.LearnwareSearchInfo[];
-    learnware_list_multi: Response.LearnwareSearchInfo[];
+    learnware_list_single: LearnwareSearchInfo[];
+    learnware_list_multi: LearnwareSearchInfo[];
     total_pages: number;
   };
 }> {

@@ -7,7 +7,7 @@ import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
 import FileUpload from "../Specification/FileUpload.vue";
 import TagListBtns from "../Specification/SpecTag/TagList.vue";
-import { Learnware } from "types";
+import type { DataType, TaskType, LibraryType } from "@beiming-system/types/learnware";
 
 const { t } = useI18n();
 
@@ -23,14 +23,10 @@ defineProps({
 const route = useRoute();
 
 const search = ref(route.query.search || "");
-const dataType = ref<Learnware.DataType | "">(
-  (route.query.dataType?.toString() as Learnware.DataType) || "",
-);
-const taskType = ref<Learnware.TaskType | "">(
-  (route.query.taskType?.toString() as Learnware.TaskType) || "",
-);
-const libraryType = ref<Learnware.LibraryType | "">(
-  (route.query.libraryType?.toString() as Learnware.LibraryType) || "",
+const dataType = ref<DataType | "">((route.query.dataType?.toString() as DataType) || "");
+const taskType = ref<TaskType | "">((route.query.taskType?.toString() as TaskType) || "");
+const libraryType = ref<LibraryType | "">(
+  (route.query.libraryType?.toString() as LibraryType) || "",
 );
 let tryTagList;
 try {

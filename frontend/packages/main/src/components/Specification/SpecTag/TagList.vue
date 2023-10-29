@@ -2,10 +2,10 @@
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
-import { Learnware } from "types";
+import type { Tag, TagList } from "@beiming-system/types/learnware";
 
 export interface Props {
-  value: Learnware.TagList;
+  value: TagList;
   cols?: number;
   md?: number;
   sm?: number;
@@ -41,7 +41,7 @@ const items = computed<
   {
     text: string;
     icon: string;
-    value: Learnware.Tag;
+    value: Tag;
   }[]
 >(() => [
   {
@@ -125,7 +125,7 @@ const selections = computed(() => {
   return [];
 });
 
-function click(value: Learnware.Tag): void {
+function click(value: Tag): void {
   if (props.value && props.value.includes(value)) {
     deleteSelect(value);
   } else {
@@ -133,7 +133,7 @@ function click(value: Learnware.Tag): void {
   }
 }
 
-function addSelect(value: Learnware.Tag): void {
+function addSelect(value: Tag): void {
   if (props.value) {
     emit("update:value", [...props.value, value]);
   } else {
@@ -141,7 +141,7 @@ function addSelect(value: Learnware.Tag): void {
   }
 }
 
-function deleteSelect(value: Learnware.Tag): void {
+function deleteSelect(value: Tag): void {
   if (props.value) {
     emit(
       "update:value",

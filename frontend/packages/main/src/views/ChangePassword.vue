@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { useField } from "hooks";
+import { useField } from "@beiming-system/hooks";
 import { useI18n } from "vue-i18n";
 import { changePassword } from "../request/user";
 import { hex_md5 } from "../utils";

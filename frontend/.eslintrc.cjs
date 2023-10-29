@@ -20,6 +20,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     extraFileExtensions: [".vue"],
   },
+  ignorePatterns: ["node_modules", "dist", "public", ".eslintrc.cjs", "encrypt.ts"],
   plugins: ["@typescript-eslint", "vue"],
   rules: {
     "vue/multi-word-component-names": "off",

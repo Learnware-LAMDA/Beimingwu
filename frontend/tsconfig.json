@@ -14,9 +14,9 @@
       "@main/*": ["./packages/main/src/*"],
       "@admin": ["./packages/admin/src"],
       "@admin/*": ["./packages/admin/src/*"],
-      "hooks": ["./packages/hooks/src/index.ts"],
-      "types": ["./packages/types/src/index.ts"],
-      "types/*": ["./packages/types/src/*"],
+      "@beiming-system/hooks": ["./packages/hooks/src/index.ts"],
+      "@beiming-system/types": ["./packages/types/src/index.ts"],
+      "@beiming-system/types/*": ["./packages/types/src/*"],
     },
 
     /* Bundler mode */

@@ -4,18 +4,19 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "dev": "pnpm -r --filter=./packages/** --parallel run dev",
     "dev:main": "pnpm --filter main run dev",
     "build:main": "pnpm --filter main run build",
     "dev:admin": "pnpm --filter admin run dev",
     "build:admin": "pnpm --filter admin run build",
     "lint": "eslint . --ext .js,.vue,.ts",
     "lint:fix": "eslint --fix . --ext .js,.vue,.ts",
-    "type-check": "tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@beiming-system/hooks": "workspace:^",
     "chart.js": "^4.4.0",
     "dayjs": "^1.10.7",
-    "hooks": "workspace:^",
     "js-yaml": "^4.1.0",
     "jszip": "^3.10.1",
     "vue": "^3.2.47",
@@ -27,6 +28,7 @@
     "vuex-persist": "^3.1.3"
   },
   "devDependencies": {
+    "@beiming-system/types": "workspace:^",
     "@mdi/font": "^7.2.96",
     "@types/js-yaml": "^4.0.6",
     "@types/node": "^20.8.4",
@@ -39,7 +41,7 @@
     "eslint-plugin-vue": "^9.15.0",
     "prettier": "^2.8.8",
     "sass": "^1.60.0",
-    "types": "workspace:^",
+    "tsup": "^7.2.0",
     "typescript": "^5.2.2",
     "vite": "^4.5.0",
     "vite-plugin-checker": "^0.6.2",

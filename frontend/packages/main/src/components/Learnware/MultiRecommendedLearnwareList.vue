@@ -8,12 +8,12 @@ import JSZip from "jszip";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import LearnwareCard from "./LearnwareCard.vue";
 import oopsImg from "../../assets/images/public/oops.svg?url";
-import { Learnware } from "types";
+import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
 
 export interface Props {
-  items: Learnware.LearnwareCardInfo[];
+  items: LearnwareCardInfo[];
   matchScore: number;
-  filters?: Learnware.Filter;
+  filters?: Filter;
   showActions?: boolean;
   cols?: number;
   md?: number;

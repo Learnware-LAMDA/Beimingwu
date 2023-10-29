@@ -1,5 +1,5 @@
 import { checkedFetch } from "../utils";
-import { Response } from "types";
+import type { LearnwareDetailInfo } from "@beiming-system/types/response";
 
 const BASE_URL = "./api/admin";
 
@@ -17,7 +17,7 @@ function listLearnware({
   code: number;
   msg: string;
   data: {
-    learnware_list: Response.LearnwareDetailInfo[];
+    learnware_list: LearnwareDetailInfo[];
     page: number;
     limit: number;
     total_pages: number;

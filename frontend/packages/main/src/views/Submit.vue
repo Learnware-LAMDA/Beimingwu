@@ -8,8 +8,8 @@ import { getRole } from "../request/auth";
 import { addLearnware } from "../request/user";
 import { getLearnwareDetailById } from "../request/engine";
 import { promiseReadFile, verifyLearnware } from "../utils";
-import { Learnware } from "types";
-import { useField } from "hooks";
+import type { Name, DataType, TaskType, LibraryType, TagList, Description } from "@beiming-system/types/learnware";
+import { useField } from "@beiming-system/hooks";
 import VStepperTitle from "../components/Public/VStepperTitle.vue";
 import FileUpload from "../components/Specification/FileUpload.vue";
 import SpecTag from "../components/Specification/SpecTag.vue";
@@ -24,43 +24,43 @@ const store = useStore();
 
 const { t } = useI18n();
 
-const name = useField<Learnware.Name>({
+const name = useField<Name>({
   defaultValue: "",
-  validate: (value: Learnware.Name): string => {
+  validate: (value: Name): string => {
     if (value?.length >= 5) {
       return "";
     }
     return t("Submit.Name.Error.AtLeast5Chars");
   },
 });
-const dataType = useField<Learnware.DataType | "">({
+const dataType = useField<DataType | "">({
   defaultValue: "",
-  validate: (value: Learnware.DataType | ""): string => {
+  validate: (value: DataType | ""): string => {
     if (value?.length > 0) {
       return "";
     }
     return t("Submit.Tag.DataType.Error.NotEmpty");
   },
 });
-const taskType = useField<Learnware.TaskType | "">({
+const taskType = useField<TaskType | "">({
   defaultValue: "",
-  validate: (value: Learnware.TaskType | ""): string => {
+  validate: (value: TaskType | ""): string => {
     if (value?.length > 0) {
       return "";
     }
     return t("Submit.Tag.TaskType.Error.NotEmpty");
   },
 });
-const libraryType = useField<Learnware.LibraryType | "">({
+const libraryType = useField<LibraryType | "">({
   defaultValue: "",
-  validate: (value: Learnware.LibraryType | ""): string => {
+  validate: (value: LibraryType | ""): string => {
     if (value?.length > 0) {
       return "";
     }
     return t("Submit.Tag.LibraryType.Error.NotEmpty");
   },
 });
-const tagList = useField<Learnware.TagList>({ defaultValue: [], defaultValid: true });
+const tagList = useField<TagList>({ defaultValue: [], defaultValid: true });
 const dataTypeDescription = useField<string>({
   defaultValue: JSON.stringify({
     Dimension: 7,
@@ -82,9 +82,9 @@ const taskTypeDescription = useField<string>({
     },
   }),
 });
-const description = useField<Learnware.Description>({
+const description = useField<Description>({
   defaultValue: "",
-  validate: (value: Learnware.Description): string => {
+  validate: (value: Description): string => {
     if (value?.length >= 10) {
       return "";
     }
@@ -215,9 +215,9 @@ function submit(): Promise<void> {
   return addLearnware({
     edit: Boolean(route.query.edit),
     name: name.value,
-    dataType: dataType.value as Learnware.DataType,
-    taskType: taskType.value as Learnware.TaskType,
-    libraryType: libraryType.value as Learnware.LibraryType,
+    dataType: dataType.value as DataType,
+    taskType: taskType.value as TaskType,
+    libraryType: libraryType.value as LibraryType,
     tagList: tagList.value,
     dataTypeDescription: dataTypeDescription.value,
     taskTypeDescription: taskTypeDescription.value,
