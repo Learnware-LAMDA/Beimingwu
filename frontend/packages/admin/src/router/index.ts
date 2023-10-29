@@ -7,22 +7,11 @@ const Router = createRouter({
   routes: [
     {
       path: "/",
-      name: "Home",
-      component: (): Promise<Component> => import("@/views/Home.vue"),
-
-      meta: {
-        showInNavBar: true,
-        icon: "mdi-home",
-      },
-    },
-    {
-      path: "/summary",
       name: "Summary",
       component: (): Promise<Component> => import("@/views/Summary.vue"),
       meta: {
         showInNavBar: true,
-        requiredLogin: true,
-        icon: "mdi-file-eye",
+        icon: "mdi-eye",
       },
     },
     {

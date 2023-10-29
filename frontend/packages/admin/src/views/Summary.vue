@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 import { Pie } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { fetchex } from "../utils";
+import Router from "../router";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -73,15 +74,17 @@ function fetchSummary(): void {
           };
         };
       }) => {
-        if (res.code !== 0) {
-          errorMsg.value = res.msg;
-          showError.value = true;
-        } else {
+        if (res.code === 0) {
           countUser.value = res.data.count_user;
           countVerifiedLearnware.value = res.data.count_verified_learnware;
           countUnverifiedLearnware.value = res.data.count_unverified_learnware;
           countDownload.value = res.data.count_download;
           countDetail.value = res.data.count_detail;
+        } else if (res.code === 11) {
+          Router.push("/login");
+        } else {
+          errorMsg.value = res.msg;
+          showError.value = true;
         }
       },
     )
@@ -126,6 +129,10 @@ onMounted(() => {
 
 <template>
   <div>
+    <v-snackbar v-model="showError" :timeout="2000" color="error">
+      {{ errorMsg }}
+    </v-snackbar>
+
     <v-container class="md:flex max-w-1000px <sm:p-1">
       <v-card flat>
         <v-card-item>
