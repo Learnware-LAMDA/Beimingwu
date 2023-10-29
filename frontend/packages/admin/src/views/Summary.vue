@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { Pie } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { fetchex } from "../utils";
@@ -33,12 +33,40 @@ const countDetail = ref<{
 
 const options = ref({
   responsive: true,
-  maintainAspectRatio: false,
+  maintainAspectRatio: true,
 });
 
 const showError = ref(false);
 const errorMsg = ref("");
 const errorTimer = ref<number>();
+
+const numberItems = computed(() => {
+  return [
+    {
+      title: "User Count",
+      icon: "mdi-account",
+      value: countUser.value,
+      to: "/alluser",
+    },
+    {
+      title: "Verified Learnware Count",
+      icon: "mdi-check",
+      value: countVerifiedLearnware.value,
+      to: "/alllearnware?is_verify=true",
+    },
+    {
+      title: "Unverified Learnware Count",
+      icon: "mdi-close",
+      value: countUnverifiedLearnware.value,
+      to: "/alllearnware?is_verify=false",
+    },
+    {
+      title: "Download Count",
+      icon: "mdi-download",
+      value: countDownload.value,
+    },
+  ];
+});
 
 function fetchSummary(): void {
   fetchex("/api/admin/summary", { method: "POST" })
@@ -128,54 +156,37 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div class="m-auto md:max-w-6xl <sm:p-1">
     <v-snackbar v-model="showError" :timeout="2000" color="error">
       {{ errorMsg }}
     </v-snackbar>
 
-    <v-container class="md:flex max-w-1000px <sm:p-1">
-      <v-card flat>
-        <v-card-item>
-          <div class="text-h6 mb-1">
-            User Count:
-            <router-link to="/alluser" class="text-blue-500 text-decoration: underline">
-              {{ countUser }}
-            </router-link>
-          </div>
-          <div class="text-h6 mb-1">
-            Verified Learnware Count:
-            <router-link
-              class="text-blue-500 text-decoration: underline"
-              to="/alllearnware?is_verify=true"
-              >{{ countVerifiedLearnware }}
-            </router-link>
-          </div>
-          <div class="text-h6 mb-1">
-            Unverified Learnware Count:
-            <router-link
-              class="text-blue-500 text-decoration: underline"
-              to="/alllearnware?is_verify=false"
-              >{{ countUnverifiedLearnware }}</router-link
-            >
-          </div>
-          <div class="text-h6 mb-1">Download Count: {{ countDownload }}</div>
-        </v-card-item>
+    <div class="grid md:(grid-cols-2) gap-2 m-2">
+      <v-card v-for="item in numberItems" flat class="lg:border-1" :to="item.to" :key="item.title">
+        <v-card-title>
+          <v-icon>{{ item.icon }}</v-icon>
+          {{ item.title }}
+        </v-card-title>
+        <v-card-text class="my-8 text-h3 text-center font-bold">
+          {{ item.value }}
+        </v-card-text>
       </v-card>
-    </v-container>
+    </div>
 
-    <v-container flat class="flex max-w-1000px <sm:p-1">
-      <v-card>
+    <div class="m-2">
+      <v-card flat class="border-1">
+        <v-card-title>
+          <v-icon>mdi-chart-pie</v-icon>
+          Chart
+        </v-card-title>
         <v-card-item>
-          <div class="text-h6 mb-1">Details</div>
-        </v-card-item>
-        <v-card-item>
-          <div class="flex">
-            <v-container v-for="(val, key) in countDetail" :key="key">
-              <Pie :data="getPieData(val, key)" :options="options" :width="150" />
-            </v-container>
+          <div class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4">
+            <div v-for="(val, key) in countDetail" :key="key">
+              <Pie :data="getPieData(val, key)" :options="options" />
+            </div>
           </div>
         </v-card-item>
       </v-card>
-    </v-container>
+    </div>
   </div>
 </template>
