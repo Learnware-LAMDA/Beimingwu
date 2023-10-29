@@ -156,13 +156,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="m-auto md:max-w-6xl <sm:p-1">
+  <div class="m-auto md:max-w-6xl">
     <v-snackbar v-model="showError" :timeout="2000" color="error">
       {{ errorMsg }}
     </v-snackbar>
 
-    <div class="grid md:(grid-cols-2) gap-2 m-2">
-      <v-card v-for="item in numberItems" flat class="lg:border-1" :to="item.to" :key="item.title">
+    <div class="grid md:(grid-cols-2) md:gap-2 md:m-2">
+      <v-card v-for="item in numberItems" flat class="md:border-1 border-b-1" :to="item.to" :key="item.title">
         <v-card-title>
           <v-icon>{{ item.icon }}</v-icon>
           {{ item.title }}
@@ -173,8 +173,8 @@ onMounted(() => {
       </v-card>
     </div>
 
-    <div class="m-2">
-      <v-card flat class="border-1">
+    <div class="md:m-2">
+      <v-card flat class="md:border-1">
         <v-card-title>
           <v-icon>mdi-chart-pie</v-icon>
           Chart
