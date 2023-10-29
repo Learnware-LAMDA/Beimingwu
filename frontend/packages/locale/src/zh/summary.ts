@@ -4,4 +4,4 @@ export default {
   UnverifiedLearnwareCount: "未验证学件数量",
   DownloadCount: "下载量",
   Chart: "图表",
-}
+};

@@ -63,7 +63,7 @@ function submit(): Promise<void> {
         }
         default: {
           if (res.code == 52) {
-            showResetPassword.value = true
+            showResetPassword.value = true;
           }
           showError.value = true;
           errorMsg.value = res.msg;
@@ -100,17 +100,17 @@ function showErrorMessage(msg: string): void {
 }
 
 function onResetPassword(): void {
-  sendResetPasswordEmail(email.value).then((res) => {
-    if (res.code === 0) {
-      showResetPasswordDialog.value = true;
-    }
-    else {
-      showErrorMessage(res.msg);
-    }
-  })
-  .catch((err) => {
-    showErrorMessage(err.message);
-  });
+  sendResetPasswordEmail(email.value)
+    .then((res) => {
+      if (res.code === 0) {
+        showResetPasswordDialog.value = true;
+      } else {
+        showErrorMessage(res.msg);
+      }
+    })
+    .catch((err) => {
+      showErrorMessage(err.message);
+    });
 }
 </script>
 
@@ -188,46 +188,45 @@ function onResetPassword(): void {
         </v-card-actions>
       </v-card>
       <v-dialog v-model="showResetPasswordDialog">
-      <v-sheet
-        elevation="12"
-        max-width="600"
-        rounded="lg"
-        width="100%"
-        class="pa-4 text-center mx-auto"
-      >
-    
-        <svg class="m-auto w-120px h-120px" viewBox="0 0 200 200">
-          <circle style="fill: rgb(var(--v-theme-success))" cx="100" cy="100" r="80" />
-          <path
-            d="M50 100 L90 134 L152 64"
-            stroke="white"
-            stroke-width="16"
-            fill="none"
-            stroke-dasharray="146"
-            stroke-dashoffset="0"
-            class="transition-all duration-800"
-          ></path>
-        </svg>
-      
-        <h2 class="text-h5 mt-6 mb-8">
-          We have sent an email to your email address. Please follow the link
-          in the email to reset your password.
-        </h2>
+        <v-sheet
+          elevation="12"
+          max-width="600"
+          rounded="lg"
+          width="100%"
+          class="pa-4 text-center mx-auto"
+        >
+          <svg class="m-auto w-120px h-120px" viewBox="0 0 200 200">
+            <circle style="fill: rgb(var(--v-theme-success))" cx="100" cy="100" r="80" />
+            <path
+              d="M50 100 L90 134 L152 64"
+              stroke="white"
+              stroke-width="16"
+              fill="none"
+              stroke-dasharray="146"
+              stroke-dashoffset="0"
+              class="transition-all duration-800"
+            ></path>
+          </svg>
 
-        <div class="text-end">
-          <v-btn
-            class="text-none"
-            color="primary"
-            rounded
-            variant="outlined"
-            width="90"
-            @click="router.go(0)"
-          >
-            Close
-          </v-btn>
-        </div>
-      </v-sheet>
-    </v-dialog>
+          <h2 class="text-h5 mt-6 mb-8">
+            We have sent an email to your email address. Please follow the link in the email to
+            reset your password.
+          </h2>
+
+          <div class="text-end">
+            <v-btn
+              class="text-none"
+              color="primary"
+              rounded
+              variant="outlined"
+              width="90"
+              @click="router.go(0)"
+            >
+              Close
+            </v-btn>
+          </div>
+        </v-sheet>
+      </v-dialog>
     </div>
   </div>
 </template>

@@ -35,7 +35,7 @@ interface Fetch {
 }
 
 function useProgressedFetch(onProgress: (progress: number) => void): {
-  progressedFetch: Fetch
+  progressedFetch: Fetch;
 } {
   const progressedFetch = (url: string, options: RequestInit = {}): Promise<Response> => {
     return new Promise<Response>((resolve, reject) => {

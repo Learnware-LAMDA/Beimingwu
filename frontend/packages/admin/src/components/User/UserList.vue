@@ -69,10 +69,10 @@ function handleClickExport(): void {
               {{ t("AllUser.Email") }}
             </div>
             <div class="title">
-              {{ t("AllUser.Verified") }}  
+              {{ t("AllUser.Verified") }}
             </div>
             <div class="title">
-              {{ t("AllUser.Unverified") }}  
+              {{ t("AllUser.Unverified") }}
             </div>
           </div>
           <v-card-actions class="actions">

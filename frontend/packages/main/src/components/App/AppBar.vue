@@ -33,18 +33,19 @@ function routeFilter(route: Route): boolean {
   return false;
 }
 
-const filteredRoutes = computed<Route[]>(() =>
-  props.routes
-    .map((route: Route) => {
-      if (route.children) {
-        return {
-          ...route,
-          children: route.children.filter(routeFilter),
-        };
-      }
-      return routeFilter(route) ? route : null;
-    })
-    .filter((route) => route) as Route[],
+const filteredRoutes = computed<Route[]>(
+  () =>
+    props.routes
+      .map((route: Route) => {
+        if (route.children) {
+          return {
+            ...route,
+            children: route.children.filter(routeFilter),
+          };
+        }
+        return routeFilter(route) ? route : null;
+      })
+      .filter((route) => route) as Route[],
 );
 </script>
 

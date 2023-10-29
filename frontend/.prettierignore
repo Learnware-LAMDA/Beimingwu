@@ -1,0 +1,32 @@
+# Ignore artifacts:
+dist
+build
+coverage
+node_modules
+
+# Ignore version control files:
+.git
+.hg
+.svn
+
+# Ignore configuration files:
+*.config.js
+*.env
+*.eslintrc.js
+*.flowconfig
+*.json
+*.lock
+*.md
+*.yml
+*.yaml
+
+# Ignore compiled files:
+*.css
+*.html
+*.map
+*.min.js
+*.svg
+*.webp
+
+# Ignore test files:
+*.test.js
