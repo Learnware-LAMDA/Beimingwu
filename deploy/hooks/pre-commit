@@ -23,16 +23,14 @@ if git diff --name-only --cached | grep -q "^frontend/"; then
     # Check the operating system
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
         if where npm &> /dev/null; then
-            npm run --prefix frontend prettier
-            npm run --prefix frontend lint
+            npm run --prefix frontend prettier && npm run --prefix frontend lint
         else
             echo "npm is not installed"
             exit 1
         fi
     else
         if [ -x "$(command -v npm)" ]; then
-            npm run --prefix frontend prettier
-            npm run --prefix frontend lint
+            npm run --prefix frontend prettier && npm run --prefix frontend lint
         else
             echo "npm is not installed"
             exit 1
