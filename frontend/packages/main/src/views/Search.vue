@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, nextTick, onActivated } from "vue";
 import { useDisplay } from "vuetify";
+import { useI18n } from "vue-i18n";
 import { searchLearnware } from "../request/engine";
 import UserRequirement from "../components/Search/UserRequirement.vue";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import MultiRecommendedLearnwareList from "../components/Learnware/MultiRecommendedLearnwareList.vue";
 import type { Filter, LearnwareCardInfo } from "@beiming-system/types/learnware";
+import { promiseReadFile } from "../utils";
 
 const display = useDisplay();
+
+const { t } = useI18n();
 
 const filters = ref<Filter>({
   name: "",
@@ -24,6 +28,8 @@ const singleRecommendedLearnwarePage = ref(1);
 const singleRecommendedLearnwarePageNum = ref(1);
 const singleRecommendedLearnwarePageSize = ref(Math.ceil(display.height.value / 900) * 10);
 const singleRecommendedLearnwareItems = ref<LearnwareCardInfo[]>([]);
+const heterogeneousMode = ref<boolean>(false);
+const rkmeTypeTable = ref<boolean>(false);
 const loading = ref(false);
 
 const contentRef = ref<HTMLDivElement | null>(null);
@@ -44,11 +50,22 @@ const showMultiRecommended = computed(
 const multiRecommendedTips = ref(true);
 const singleRecommendedTips = ref(true);
 
+const showHeterogeneousSearchSwitch = computed(
+  () =>
+    singleRecommendedLearnwareItems.value?.length === 0 &&
+    multiRecommendedLearnwareItems.value?.length === 0 &&
+    rkmeTypeTable.value,
+);
+
 function pageChange(newPage: number): void {
   singleRecommendedLearnwarePage.value = newPage;
 }
 
-function fetchByFilterAndPage(filters: Filter, page: number): void {
+function fetchByFilterAndPage(
+  filters: Filter,
+  page: number,
+  heterogeneousMode: boolean = false,
+): void {
   showError.value = false;
   loading.value = true;
 
@@ -59,6 +76,7 @@ function fetchByFilterAndPage(filters: Filter, page: number): void {
     libraryType: filters.libraryType,
     scenarioList: filters.scenarioList,
     files: filters.files,
+    heterogeneousMode,
     page,
     limit: singleRecommendedLearnwarePageSize.value,
   })
@@ -134,16 +152,37 @@ watch(
 );
 
 watch(
-  () => [filters.value, singleRecommendedLearnwarePage.value],
+  () => [filters.value, singleRecommendedLearnwarePage.value, heterogeneousMode.value],
   (newVal) => {
-    const [newFilters, newPage] = newVal as [Filter, number];
+    const [newFilters, newPage, newHeterogeneousMode] = newVal as [Filter, number, boolean];
 
-    fetchByFilterAndPage(newFilters, newPage - 1);
+    fetchByFilterAndPage(newFilters, newPage - 1, newHeterogeneousMode);
 
     if (contentRef.value) {
       if (display.name.value !== "xs") {
         contentRef.value.scrollTop = 0;
       }
+    }
+  },
+  { deep: true },
+);
+
+watch(
+  () => filters.value.files,
+  (newVal) => {
+    rkmeTypeTable.value = false;
+    if (newVal.length > 0) {
+      promiseReadFile(newVal[0])
+        .then((res: ArrayBuffer) => new TextDecoder("ascii").decode(res))
+        .then((res) => JSON.parse(res))
+        .then((res) => {
+          if (res.type === "table") {
+            rkmeTypeTable.value = true;
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
   },
   { deep: true },
@@ -183,7 +222,13 @@ onMounted(() => {
       </v-card-actions>
     </v-scroll-y-transition>
 
-    <user-requirement v-model:value="filters" />
+    <user-requirement v-model:value="filters">
+      <template v-if="heterogeneousMode" #prepend>
+        <v-btn block variant="outlined" color="red" @click="() => (heterogeneousMode = false)">
+          {{ t("Search.TurnOffHeterogeneousSearch") }}
+        </v-btn>
+      </template>
+    </user-requirement>
 
     <div ref="contentRef" class="content">
       <v-card v-if="showMultiRecommended" flat class="sm:m-2 mt-4 bg-transparent">
@@ -237,6 +282,17 @@ onMounted(() => {
           @page-change="pageChange"
         />
       </v-card>
+
+      <div v-if="showHeterogeneousSearchSwitch && !heterogeneousMode" class="text-center">
+        <v-btn
+          class="px-8"
+          variant="outlined"
+          color="red"
+          @click="() => (heterogeneousMode = true)"
+        >
+          {{ t("Search.HeterogeneousSearch") }}
+        </v-btn>
+      </div>
     </div>
   </div>
 </template>

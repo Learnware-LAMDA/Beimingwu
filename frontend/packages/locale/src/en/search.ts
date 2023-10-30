@@ -6,4 +6,6 @@ export default {
   UploadStatisticalRequirement: "Upload statistical requirement",
   SpecificationScore: "Specification score",
   Updated: "Updated",
+  HeterogeneousSearch: "Heterogeneous Search",
+  TurnOffHeterogeneousSearch: "Turn off heterogeneous search",
 };

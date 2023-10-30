@@ -6,4 +6,6 @@ export default {
   UploadStatisticalRequirement: "上传统计需求",
   SpecificationScore: "规约匹配分数",
   Updated: "更新于",
+  HeterogeneousSearch: "异构查搜",
+  TurnOffHeterogeneousSearch: "关闭异构查搜",
 };
