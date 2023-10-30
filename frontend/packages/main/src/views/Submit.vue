@@ -74,8 +74,8 @@ const dataTypeDescription = useField<string>({
     Description: {
       0: "gender",
       1: "age",
-      2: "f2",
-      5: "f5",
+      2: "the description of feature 2",
+      5: "the description of feature 5",
     },
   }),
 });
