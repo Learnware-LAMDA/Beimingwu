@@ -7,10 +7,12 @@ if git diff --name-only --cached | grep -q "\.py$"; then
     if [ -x "$(command -v black)" ]; then
         python_files=$(find . -name "*.py")
         cached_python_files=$(git diff --name-only --cached | grep "\.py$")
-        
+
         if [ -n "$python_files" ]; then
             black -l 120 $python_files
-            git add $cached_python_files
+            for file in $cached_python_files; do
+                git add $file
+            done
         fi
     else
         echo "black is not installed"
@@ -26,11 +28,13 @@ if git diff --name-only --cached | grep -q "^frontend/"; then
 
     # Check the operating system
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
-        if where npm &> /dev/null; then
+        if where npm &>/dev/null; then
             for file in $(git diff --name-only --cached | grep "^frontend/"); do
-                npx eslint --fix $file
-                npx prettier --write $file
-                git add $file
+                if [ -f "$file" ] && [[ "$file" =~ \.(js|ts|vue)$ ]]; then
+                    npx eslint --fix $file
+                    npx prettier --write $file
+                    git add $file
+                fi
             done
         else
             echo "npm is not installed"
@@ -39,9 +43,11 @@ if git diff --name-only --cached | grep -q "^frontend/"; then
     else
         if [ -x "$(command -v npm)" ]; then
             for file in $(git diff --name-only --cached | grep "^frontend/"); do
-                npx eslint --fix $file
-                npx prettier --write $file
-                git add $file
+                if [ -f "$file" ] && [[ "$file" =~ \.(js|ts|vue)$ ]]; then
+                    npx eslint --fix $file
+                    npx prettier --write $file
+                    git add $file
+                fi
             done
         else
             echo "npm is not installed"

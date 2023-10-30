@@ -22,8 +22,6 @@ files/*
 *.pyd
 *.ipynb
 .ipynb_checkpoints
-learnware
-learnware_pool/
 
 # Frontend
 logs

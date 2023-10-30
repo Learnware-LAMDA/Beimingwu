@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
-import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import LearnwareCard from "./LearnwareCard.vue";
 import oopsImg from "../../assets/images/public/oops.svg?url";
@@ -10,8 +9,6 @@ import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware"
 const emit = defineEmits(["click:edit", "click:delete"]);
 
 const display = useDisplay();
-
-const router = useRouter();
 
 const { t } = useI18n();
 
@@ -60,10 +57,6 @@ function handleClickEdit(id: string): void {
 function handleClickDelete(id: string): void {
   emit("click:delete", id);
 }
-
-function showLearnwareDetail(id: string): void {
-  router.push({ path: "/learnwaredetail", query: { id } });
-}
 </script>
 
 <template>
@@ -78,7 +71,7 @@ function showLearnwareDetail(id: string): void {
           :item="item"
           :filters="filters"
           :is-admin="isAdmin"
-          @click="showLearnwareDetail(item.id)"
+          :to="`/learnwaredetail?id=${item.id}`"
           @click:edit="(id) => handleClickEdit(id)"
           @click:delete="(id) => handleClickDelete(id)"
         />
