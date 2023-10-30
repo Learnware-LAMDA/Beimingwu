@@ -41,6 +41,7 @@ function searchLearnware({
   libraryType,
   scenarioList,
   files,
+  heterogeneousMode,
   page,
   limit,
 }: {
@@ -50,6 +51,7 @@ function searchLearnware({
   libraryType: LibraryType | "";
   scenarioList: ScenarioList;
   files: Files;
+  heterogeneousMode: boolean;
   page: number;
   limit: number;
 }): Promise<{
@@ -75,6 +77,7 @@ function searchLearnware({
       const fd = new FormData();
       fd.append("semantic_specification", JSON.stringify(semanticSpec));
       fd.append("statistical_specification", (files.length > 0 && files[0]) || "");
+      fd.append("heterogeneous_mode", String(heterogeneousMode));
       fd.append("limit", String(limit));
       fd.append("page", String(page));
       return fd;
