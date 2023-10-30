@@ -102,7 +102,7 @@ export default {
   File: {
     File: "文件",
     Title: "上传模型和统计规约",
-    DragFileHere: "拖拽文件到此处",
+    DragFileHere: "拖拽{file}文件到此处",
     ClickHere: "点击此处",
     ForInstructionsOnHowToCreateTheRequiredZipFile: "查看如何创建所需的 zip 文件",
     ToDownloadTemplate: "下载模板学件",

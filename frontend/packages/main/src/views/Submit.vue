@@ -74,8 +74,8 @@ const dataTypeDescription = useField<string>({
     Description: {
       0: "gender",
       1: "age",
-      2: "f2",
-      5: "f5",
+      2: "the description of feature 2",
+      5: "the description of feature 5",
     },
   }),
 });
@@ -464,6 +464,7 @@ onActivated(init);
               <file-upload
                 v-model:files="files.value"
                 :error-messages="files.errorMessages"
+                :tips="t('Submit.File.DragFileHere', { file: 'zip' })"
               ></file-upload>
             </div>
             <v-card-text class="py-2 text-lg <sm:text-sm">

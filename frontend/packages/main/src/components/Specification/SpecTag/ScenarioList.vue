@@ -81,7 +81,7 @@ const items = computed<
   },
   {
     text: t("Submit.SemanticSpecification.Scenario.Type.Nature"),
-    icon: "mdi-tree",
+    icon: "mdi-forest",
     value: "Nature",
   },
   {
@@ -96,7 +96,7 @@ const items = computed<
   },
   {
     text: t("Submit.SemanticSpecification.Scenario.Type.Agriculture"),
-    icon: "mdi-tractor",
+    icon: "mdi-sprout",
     value: "Agriculture",
   },
   {

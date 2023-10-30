@@ -102,7 +102,7 @@ export default {
   File: {
     File: "File",
     Title: "Upload your model & statistical specification",
-    DragFileHere: "Drag file here",
+    DragFileHere: "Drag {file} file here",
     ClickHere: "Click here",
     ForInstructionsOnHowToCreateTheRequiredZipFile:
       "for instructions on how to create the required zip file",
