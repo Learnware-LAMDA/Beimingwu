@@ -21,8 +21,22 @@ def admin_login_required(view):
         user_id = flask_jwt_extended.get_jwt_identity()
         user = database.get_user_info(by="id", value=user_id)
 
-        if user["role"] != 1:
+        if user["role"] < 1:
             return {"code": 12, "msg": "Admin account required."}, 200
+        return view(*args, **kwargs)
+
+    return wrapped_view
+
+
+def super_admin_login_required(view):
+    @flask_jwt_extended.jwt_required()
+    @functools.wraps(view)
+    def wrapped_view(*args, **kwargs):
+        user_id = flask_jwt_extended.get_jwt_identity()
+        user = database.get_user_info(by="id", value=user_id)
+
+        if user["role"] < 2:
+            return {"code": 12, "msg": "Super Admin account required."}, 200
         return view(*args, **kwargs)
 
     return wrapped_view

@@ -6,6 +6,7 @@ import context
 from tests import common_test_operations as testops
 import lib.database_operations as dbops
 import flask_bcrypt
+import hashlib
 
 
 class TestAdmin(unittest.TestCase):
@@ -30,7 +31,7 @@ class TestAdmin(unittest.TestCase):
     def test_list_user(
         self,
     ):
-        headers = testops.login("admin@localhost", TestAdmin.password)
+        headers = testops.login("admin@localhost", TestAdmin.password, hash_password=True)
         result = testops.url_request("admin/list_user", {"page": 0, "limit": 10}, headers=headers)
 
         self.assertEqual(result["code"], 0)
@@ -41,7 +42,7 @@ class TestAdmin(unittest.TestCase):
     def test_delete_user(
         self,
     ):
-        headers = testops.login("admin@localhost", TestAdmin.password)
+        headers = testops.login("admin@localhost", TestAdmin.password, hash_password=True)
         result = testops.url_request(
             "admin/delete_learnware", {"learnware_id": TestAdmin.learnware_id}, headers=headers
         )
@@ -67,7 +68,7 @@ class TestAdmin(unittest.TestCase):
         pass
 
     def test_reset_password(self):
-        headers = testops.login("admin@localhost", TestAdmin.password)
+        headers = testops.login("admin@localhost", TestAdmin.password, hash_password=True)
         result = testops.url_request("admin/reset_password", {"id": TestAdmin.user_id}, headers=headers)
 
         self.assertEqual(result["code"], 0)
@@ -79,22 +80,21 @@ class TestAdmin(unittest.TestCase):
 
         self.assertEqual(result["code"], 0)
 
+        origin_admin_pwd = dbops.get_user_info(by="id", value=1)["password"]
         result = testops.url_request("admin/reset_password", {"id": 1}, headers=headers)
 
         self.assertEqual(result["code"], 0)
 
-        password = result["data"]["password"]
+        password = result["data"]["md5"]
         result = testops.url_request("auth/login", {"email": "admin@localhost", "password": password})
 
+        dbops.update_user_password(by="email", value="admin@localhost", pwd=origin_admin_pwd)
         self.assertEqual(result["code"], 0)
 
-        dbops.update_user_password(
-            "email", "admin@localhost", flask_bcrypt.generate_password_hash("admin").decode("utf-8")
-        )
         pass
 
     def test_summary(self):
-        headers = testops.login("admin@localhost", TestAdmin.password)
+        headers = testops.login("admin@localhost", TestAdmin.password, hash_password=True)
         result = testops.url_request("admin/summary", headers=headers)
 
         self.assertEqual(result["code"], 0)
@@ -106,7 +106,7 @@ class TestAdmin(unittest.TestCase):
         pass
 
     def test_list_learnware(self):
-        headers = testops.login("admin@localhost", TestAdmin.password)
+        headers = testops.login("admin@localhost", TestAdmin.password, hash_password=True)
         result = testops.url_request("admin/list_learnware", {"page": 0, "limit": 10}, headers=headers)
 
         self.assertEqual(result["code"], 0)
@@ -132,10 +132,32 @@ class TestAdmin(unittest.TestCase):
     def test_delete_learnware(self):
         learnware_id = testops.add_test_learnware_unverified("test@localhost", "test")
 
-        headers = testops.login("admin@localhost", TestAdmin.password)
+        headers = testops.login("admin@localhost", TestAdmin.password, hash_password=True)
         result = testops.url_request("admin/delete_learnware", {"learnware_id": learnware_id}, headers=headers)
 
         self.assertEqual(result["code"], 0)
+        pass
+
+    def test_set_user_role(self):
+        user_id = testops.url_request(
+            "auth/register",
+            {"username": "test2", "password": "test", "email": "test2@localhost", "confirm_email": False},
+        )["data"]["user_id"]
+
+        super_admin_header = testops.login("admin@localhost", TestAdmin.password, hash_password=True)
+
+        result = testops.url_request("admin/set_user_role", {"user_id": user_id, "role": 1}, headers=super_admin_header)
+        self.assertEqual(result["code"], 0)
+
+        user_header = testops.login("test2@localhost", "test")
+        result = testops.url_request("admin/list_user", {"page": 0, "limit": 10}, headers=user_header)
+
+        self.assertEqual(result["code"], 0)
+
+        result = testops.url_request("admin/set_user_role", {"user_id": user_id, "role": 1}, headers=user_header)
+        self.assertEqual(result["code"], 12)
+
+        testops.url_request("admin/delete_user", {"user_id": user_id}, headers=super_admin_header)
         pass
 
 
