@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm -r --filter=./packages/** --parallel run dev",
-    "dev:main": "pnpm --filter main run dev",
+    "dev:main": "pnpm -r --filter=./packages/proxy --filter=./packages/main --parallel dev",
+    "dev:admin": "pnpm -r --filter=./packages/proxy --filter=./packages/admin --parallel dev",
+    "build": "pnpm -r --filter=./packages/** --parallel run build",
     "build:main": "pnpm --filter main run build",
-    "dev:admin": "pnpm --filter admin run dev",
     "build:admin": "pnpm --filter admin run build",
     "lint": "eslint . --ext .js,.vue,.ts",
     "lint:fix": "eslint --fix . --ext .js,.vue,.ts",
