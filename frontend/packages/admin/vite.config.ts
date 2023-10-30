@@ -29,8 +29,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        // target: "http://localhost:5000",
-        target: "http://learnware-backend-cluster.learnware:8088/",
+        target: "http://localhost:8088/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
