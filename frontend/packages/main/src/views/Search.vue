@@ -243,7 +243,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .search-container {
-  @apply md: (fixed flex) mx-auto w-1/1;
+  @apply lg: (fixed flex) mx-auto w-1/1;
   height: calc(100% - var(--v-layout-top));
 
   .content {
