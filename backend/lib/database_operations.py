@@ -361,7 +361,7 @@ def get_all_user_list(columns, limit=None, page=None, username=None, email=None)
     )
     results = [dict(zip(columns + ["verified_learnware_count", "unverified_learnware_count"], user)) for user in rows]
 
-    return results, cnt[0][0]
+    return results, len(cnt)
 
 
 def get_next_learnware_id():
