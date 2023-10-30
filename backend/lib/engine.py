@@ -74,7 +74,7 @@ def search_learnware(semantic_str, statistical_str, user_id):
     try:
         with open(statistical_path, "wb") as stats:
             stats.write(statistical_str)
-        statistical_specification = specification.rkme.RKMEStatSpecification()
+        statistical_specification = specification.RKMEStatSpecification()
         statistical_specification.load(statistical_path)
     except:
         os.remove(statistical_path)
