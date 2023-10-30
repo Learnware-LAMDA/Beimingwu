@@ -39,11 +39,11 @@ const realCols = computed(() => {
   return props.cols;
 });
 
-function handleClickReset(id: string): void {
+function handleClickReset(id: number): void {
   emits("click:reset", id);
 }
 
-function handleClickDelete(id: string): void {
+function handleClickDelete(id: number): void {
   emits("click:delete", id);
 }
 
@@ -101,11 +101,8 @@ function handleClickExport(): void {
             </div>
           </div>
           <v-card-actions class="actions">
-            <v-btn
-              icon="mdi-lock-reset"
-              @click.stop="() => handleClickReset(String(item.id))"
-            ></v-btn>
-            <v-btn icon="mdi-delete" @click.stop="() => handleClickDelete(String(item.id))"></v-btn>
+            <v-btn icon="mdi-lock-reset" @click.stop="() => handleClickReset(item.id)"></v-btn>
+            <v-btn icon="mdi-delete" @click.stop="() => handleClickDelete(item.id)"></v-btn>
           </v-card-actions>
         </div>
       </div>
