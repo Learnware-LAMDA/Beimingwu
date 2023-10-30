@@ -330,8 +330,6 @@ def remove_user(by, value):
 
 def get_all_user_list(columns, limit=None, page=None, username=None, email=None):
     column_str = ", ".join(columns)
-    cnt = context.database.execute(f"SELECT COUNT(*) FROM tb_user")
-
     query = f"""
         SELECT
             {column_str},
@@ -358,9 +356,12 @@ def get_all_user_list(columns, limit=None, page=None, username=None, email=None)
     rows = context.database.execute(
         f"{query} {like_suffix} {group_suffix} {page_suffix}", {"verify_status": LearnwareVerifyStatus.SUCCESS.value}
     )
+    cnt = context.database.execute(
+        f"{query} {like_suffix} {group_suffix}", {"verify_status": LearnwareVerifyStatus.SUCCESS.value}
+    )
     results = [dict(zip(columns + ["verified_learnware_count", "unverified_learnware_count"], user)) for user in rows]
 
-    return results, cnt[0][0]
+    return results, len(cnt)
 
 
 def get_next_learnware_id():
