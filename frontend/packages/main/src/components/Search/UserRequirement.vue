@@ -103,7 +103,11 @@ watch(
         {{ t("Search.UploadStatisticalRequirement") }}
       </div>
 
-      <file-upload v-model:files="files" :height="28"></file-upload>
+      <file-upload
+        v-model:files="files"
+        :height="28"
+        :tips="t('Submit.File.DragFileHere', { file: 'json' })"
+      />
     </div>
   </div>
 </template>

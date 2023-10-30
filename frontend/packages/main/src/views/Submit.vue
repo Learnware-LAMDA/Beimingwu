@@ -464,6 +464,7 @@ onActivated(init);
               <file-upload
                 v-model:files="files.value"
                 :error-messages="files.errorMessages"
+                :tips="t('Submit.File.DragFileHere', { file: 'zip' })"
               ></file-upload>
             </div>
             <v-card-text class="py-2 text-lg <sm:text-sm">
