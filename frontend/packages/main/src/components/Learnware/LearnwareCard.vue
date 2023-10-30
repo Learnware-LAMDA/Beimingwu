@@ -9,9 +9,7 @@ import ImageBtn from "../../assets/images/specification/dataType/image.svg?compo
 import TableBtn from "../../assets/images/specification/dataType/table.svg?component";
 import { downloadLearnwareSync } from "../../utils";
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
-dayjs.extend(relativeTime);
 
 const { t } = useI18n();
 
@@ -75,23 +73,17 @@ function handleClickDelete(id: string): void {
 </script>
 
 <template>
-  <v-card
-    flat
-    :density="greaterThanXs ? 'comfortable' : 'compact'"
-    class="card"
-    :class="item.matchScore && item.matchScore >= 0 ? ['pt-2'] : ['py-2']"
-  >
-    <div class="first-row">
-      <v-card-title class="title flex" :class="item.username ? '' : 'items-center'">
-        <v-avatar :size="greaterThanSm ? 'default' : 'small'" class="mr-2" rounded="0">
-          <component :is="avatar" :class="item.username ? 'w-1/1' : 'w-4/5'" class="opacity-70" />
-        </v-avatar>
-        <div>
-          <div>{{ item.name }}</div>
-          <div v-if="item.username" class="text-sm text-gray-600">{{ item.username }}</div>
-        </div>
-      </v-card-title>
-    </div>
+  <v-card flat :density="greaterThanXs ? 'comfortable' : 'compact'" class="card py-2">
+    <v-card-title class="title flex" :class="item.username ? '' : 'items-center'">
+      <v-avatar :size="greaterThanSm ? 'default' : 'small'" class="mr-2" rounded="0">
+        <component :is="avatar" :class="item.username ? 'w-1/1' : 'w-4/5'" class="opacity-70" />
+      </v-avatar>
+      <div class="w-full overflow-hidden">
+        <div class="w-full truncate">{{ item.name }}</div>
+        <div v-if="item.username" class="text-sm text-gray-600">{{ item.username }}</div>
+      </div>
+    </v-card-title>
+
     <v-card-subtitle>
       <div style="color: red">
         {{ item.verifyStatus != undefined && item.verifyStatus != "SUCCESS" ? "Unverified" : "" }}
@@ -158,43 +150,41 @@ function handleClickDelete(id: string): void {
     <v-card-text class="card-text">
       <div class="description">{{ item.description }}</div>
     </v-card-text>
-    <v-card-title
-      class="last-row"
-      :class="{ 'justify-between': item.matchScore && item.matchScore >= 0 }"
-    >
-      <div v-if="item.matchScore && item.matchScore >= 0" class="xl: text-xl lg:text-lg text-1rem">
-        Specification score
-        <span class="ml-2 text-xl" :style="`color: ${getColorByScore(item.matchScore)}`">{{
-          item.matchScore
-        }}</span>
+    <v-card-text class="flex justify-between items-end py-2">
+      <div>
+        <div v-if="item.matchScore && item.matchScore >= 0" class="xl:text-lg lg:text-lg text-base">
+          {{ t("Search.SpecificationScore") }}:
+          <span :style="`color: ${getColorByScore(item.matchScore)}`">{{ item.matchScore }}</span>
+        </div>
+        <span class="text-gray-500 text-xs">
+          {{ t("Search.Updated") }} {{ dayjs(item.lastModify).fromNow() }}
+        </span>
       </div>
-      <div class="actions">
-        <v-btn
-          v-if="isAdmin"
-          flat
-          icon="mdi-pencil"
-          :size="greaterThanXs ? undefined : 'small'"
-          @click.stop="() => handleClickEdit(item.id)"
-        ></v-btn>
-        <v-btn
-          v-if="showDownload"
-          flat
-          icon="mdi-download"
-          :size="greaterThanXs ? undefined : 'small'"
-          @click.stop="() => downloadLearnwareSync(item.id)"
-        ></v-btn>
-        <v-btn
-          v-if="isAdmin"
-          flat
-          icon="mdi-delete"
-          :size="greaterThanXs ? undefined : 'small'"
-          @click.stop="handleClickDelete(item.id)"
-        ></v-btn>
-      </div>
-    </v-card-title>
-    <v-card-text>
-      <div style="color: gray; font-size: xx-small">
-        Updated {{ dayjs(item.lastModify).fromNow() }}
+
+      <div class="flex items-center">
+        <div class="actions -mr-3 -mb-2">
+          <v-btn
+            v-if="isAdmin"
+            flat
+            icon="mdi-pencil"
+            :size="greaterThanXs ? undefined : 'small'"
+            @click.stop="() => handleClickEdit(item.id)"
+          ></v-btn>
+          <v-btn
+            v-if="showDownload"
+            flat
+            icon="mdi-download"
+            :size="greaterThanXs ? undefined : 'small'"
+            @click.stop="() => downloadLearnwareSync(item.id)"
+          ></v-btn>
+          <v-btn
+            v-if="isAdmin"
+            flat
+            icon="mdi-delete"
+            :size="greaterThanXs ? undefined : 'small'"
+            @click.stop="handleClickDelete(item.id)"
+          ></v-btn>
+        </div>
       </div>
     </v-card-text>
   </v-card>
@@ -209,18 +199,6 @@ function handleClickDelete(id: string): void {
 
     .title {
       @apply xl: text-xl lg:text-lg text-1rem;
-    }
-  }
-
-  .last-row {
-    @apply flex items-center absolute right-0 bottom-0;
-
-    .actions {
-      @apply flex flex-row justify-end;
-
-      * {
-        @apply <sm: mx-0;
-      }
     }
   }
 

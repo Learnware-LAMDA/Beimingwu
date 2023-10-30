@@ -150,7 +150,7 @@ watch(
             <v-textarea
               v-model="descriptionString"
               auto-grow
-              :label="`${name}${locale != 'zh' ? ' ' : ''}${t('Public.Description')}`"
+              :label="`${name}${locale != 'zh-cn' ? ' ' : ''}${t('Public.Description')}`"
               :error-messages="errorMessages"
             />
           </div>
