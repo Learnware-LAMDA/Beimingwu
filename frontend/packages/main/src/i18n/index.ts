@@ -1,16 +1,18 @@
 import { createI18n } from "vue-i18n";
-import { zh, en } from "@beiming-system/locale";
+import { zhCn, en } from "@beiming-system/locale";
 
 const messages = {
   en,
-  zh,
+  "zh-cn": zhCn,
 };
+
 const language =
   JSON.parse(localStorage.getItem("vuex") || "{}")?.i18n?.locale ||
   (navigator.language || "en").toLocaleLowerCase();
+
 const i18n = createI18n({
   legacy: false,
-  locale: language.split("-")[0] || "en",
+  locale: language || "en",
   fallbackLocale: "en",
   messages,
 });

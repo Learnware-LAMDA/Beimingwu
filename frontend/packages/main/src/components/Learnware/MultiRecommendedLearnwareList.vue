@@ -114,10 +114,10 @@ function getColorByScore(score: number): string {
       </v-card-title>
       <v-btn
         variant="flat"
+        size="x-large"
         class="!px-4 text-body-2 !text-1em border-1"
         @click.stop="() => downloadAll()"
       >
-        size="x-large">
         <span v-if="!downloading">
           <v-icon icon="mdi-download"></v-icon>
           Download All

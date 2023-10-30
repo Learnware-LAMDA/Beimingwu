@@ -4,4 +4,6 @@ export default {
   SearchByName: "按名称查找",
   LearnwareName: "学件名称",
   UploadStatisticalRequirement: "上传统计需求",
+  SpecificationScore: "规约匹配分数",
+  Updated: "更新于",
 };

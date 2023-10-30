@@ -4,4 +4,6 @@ export default {
   SearchByName: "Search by name",
   LearnwareName: "Learnware Name",
   UploadStatisticalRequirement: "Upload statistical requirement",
+  SpecificationScore: "Specification score",
+  Updated: "Updated",
 };

@@ -134,7 +134,7 @@ const Router = createRouter({
       },
       children: [
         {
-          path: "/language/zh",
+          path: "/language/zh-cn",
           name: "Chinese",
           component: (): Promise<Component> => import("../views/ChangeLanguage.vue"),
           meta: {
