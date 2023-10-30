@@ -6,8 +6,11 @@ if git diff --name-only --cached | grep -q "\.py$"; then
     echo "Python files were modified. Running formatting..."
     if [ -x "$(command -v black)" ]; then
         python_files=$(find . -name "*.py")
+        cached_python_files=$(git diff --name-only --cached | grep "\.py$")
+        
         if [ -n "$python_files" ]; then
             black -l 120 $python_files
+            git add $cached_python_files
         fi
     else
         echo "black is not installed"
@@ -19,20 +22,27 @@ fi
 if git diff --name-only --cached | grep -q "^frontend/"; then
     # If frontend directory is modified
     echo "Frontend files were modified. Running linting..."
+    cached_frontend_files=$(git diff --name-only --cached | grep "^frontend/")
 
     # Check the operating system
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
         if where npm &> /dev/null; then
-            npm run --prefix frontend prettier
-            npm run --prefix frontend lint
+            for file in $(git diff --name-only --cached | grep "^frontend/"); do
+                npx eslint --fix $file
+                npx prettier --write $file
+                git add $file
+            done
         else
             echo "npm is not installed"
             exit 1
         fi
     else
         if [ -x "$(command -v npm)" ]; then
-            npm run --prefix frontend prettier
-            npm run --prefix frontend lint
+            for file in $(git diff --name-only --cached | grep "^frontend/"); do
+                npx eslint --fix $file
+                npx prettier --write $file
+                git add $file
+            done
         else
             echo "npm is not installed"
             exit 1
