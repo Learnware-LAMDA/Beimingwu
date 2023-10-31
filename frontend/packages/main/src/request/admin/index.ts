@@ -1,7 +1,8 @@
 import { checkedFetch } from "../utils";
 import type { LearnwareDetailInfo } from "@beiming-system/types/response";
+import { BACKEND_URL } from "..";
 
-const BASE_URL = "./api/admin";
+const BASE_URL = BACKEND_URL + "/admin";
 
 function listLearnware({
   page,

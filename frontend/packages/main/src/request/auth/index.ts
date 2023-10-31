@@ -1,6 +1,7 @@
 import { checkedFetch } from "../utils";
+import { BACKEND_URL } from "..";
 
-const BASE_URL = "./api/auth";
+const BASE_URL = BACKEND_URL + "/auth";
 
 function login({
   email,

@@ -1,5 +1,6 @@
 import { checkedFetch, useProgressedFetch } from "../utils";
 import { getSemanticSpecification } from "../engine";
+import { BACKEND_URL } from "..";
 import type {
   Name,
   DataType,
@@ -11,7 +12,7 @@ import type {
 } from "@beiming-system/types/learnware";
 import type { LearnwareDetailInfo } from "@beiming-system/types/response";
 
-const BASE_URL = "./api/user";
+const BASE_URL = BACKEND_URL + "/user";
 
 function getProfile(): Promise<{
   code: number;

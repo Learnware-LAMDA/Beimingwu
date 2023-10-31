@@ -4,6 +4,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useField } from "@beiming-system/hooks";
 import { fetchex, hex_md5 } from "../utils";
+import { BACKEND_URL } from "@main/request";
 import collaborationImg from "@/assets/images/collaboration.svg?url";
 
 const store = useStore();
@@ -62,7 +63,7 @@ function login(): Promise<void> {
     password: hex_md5(password.value),
   };
 
-  return fetchex("/api/auth/login", {
+  return fetchex(BACKEND_URL + "/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -88,7 +89,7 @@ function login(): Promise<void> {
       }
     })
     .then(() =>
-      fetchex("/api/auth/get_role", {
+      fetchex(BACKEND_URL + "/auth/get_role", {
         method: "POST",
       }),
     )

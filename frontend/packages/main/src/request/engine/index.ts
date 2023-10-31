@@ -9,8 +9,9 @@ import type {
   SemanticSpecification,
 } from "@beiming-system/types/learnware";
 import type { LearnwareDetailInfo, LearnwareSearchInfo } from "@beiming-system/types/response";
+import { BACKEND_URL } from "..";
 
-const BASE_URL = "./api/engine";
+const BASE_URL = BACKEND_URL + "/engine";
 
 function downloadLearnware({ id }: { id: string }): Promise<Response> {
   return checkedFetch(`${BASE_URL}/download_learnware?learnware_id=${id}`);
