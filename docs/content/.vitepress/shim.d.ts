@@ -8,6 +8,7 @@ declare module "segmentit" {
   export function useDefault(segmentInstance: Segment): Segment;
   export class Segment {
     doSegment(text: string, option: { simple: boolean }): string[];
+    loadStopwordDict(dict: string): void;
   }
 }
 

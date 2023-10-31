@@ -1,0 +1,16 @@
+.vp-doc {
+  details {
+    ul {
+      border-left: 1px solid var(--vp-c-border);
+      margin-left: 0.25rem;
+      list-style: none;
+    }
+    summary {
+      margin: 0;
+      font-weight: 500;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
