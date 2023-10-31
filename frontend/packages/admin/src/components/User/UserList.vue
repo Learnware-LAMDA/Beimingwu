@@ -5,7 +5,7 @@ import { useI18n } from "vue-i18n";
 import oopsImg from "/oops.svg?url";
 import type { User } from "@beiming-system/types/user";
 
-const emits = defineEmits(["click:reset", "click:delete", "click:export"]);
+const emits = defineEmits(["click:reset", "click:delete", "click:export", "click:setRole"]);
 
 const display = useDisplay();
 
@@ -17,6 +17,7 @@ export interface Props {
   md?: number;
   sm?: number;
   xs?: number;
+  enableSetRole?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -50,6 +51,10 @@ function handleClickDelete(id: number): void {
 function handleClickExport(): void {
   emits("click:export");
 }
+
+function handleClickSetRole(id: number, role: number): void {
+  emits("click:setRole", id, role);
+}
 </script>
 
 <template>
@@ -73,6 +78,9 @@ function handleClickExport(): void {
             </div>
             <div class="title">
               {{ t("AllUser.Unverified") }}
+            </div>
+            <div class="title">
+              {{ t("AllUser.IsAdmin") }}
             </div>
           </div>
           <v-card-actions class="actions">
@@ -98,6 +106,16 @@ function handleClickExport(): void {
             </div>
             <div class="title">
               <span class="small-title">Unverified: </span>{{ item.unverified_learnware_count }}
+            </div>
+            <div class="title">
+              <v-card-actions class="actions">
+                <v-checkbox
+                  :model-value="item.role >= 1"
+                  :disabled="!enableSetRole || item.email === 'admin@localhost'"
+                  class="title"
+                  @click="handleClickSetRole(item.id, item.role == 1 ? 0 : 1)"
+                ></v-checkbox>
+              </v-card-actions>
             </div>
           </div>
           <v-card-actions class="actions">
@@ -137,7 +155,7 @@ function handleClickExport(): void {
       @apply flex items-center;
 
       .columns {
-        @apply grid sm: "grid-cols-[3fr,3fr,1fr,1fr]" w-1/1;
+        @apply grid sm: "grid-cols-[3fr,3fr,1fr,1fr,1fr]" w-1/1;
 
         .title {
           @apply xl: text-1rem lg:text-lg text-xs sm: (flex flex-col items-start justify-center);

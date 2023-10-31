@@ -6,4 +6,5 @@ export default {
   SearchByUsername: "按用户名搜索",
   SearchByEmail: "按邮箱搜索",
   OopsNoUser: "哦豁！没有找到用户",
+  IsAdmin: "管理员",
 };

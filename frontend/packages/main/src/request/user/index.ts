@@ -19,6 +19,7 @@ function getProfile(): Promise<{
   data: {
     username: string;
     email: string;
+    role: number;
   };
 }> {
   return checkedFetch(`${BASE_URL}/profile`, {

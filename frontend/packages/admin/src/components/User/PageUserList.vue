@@ -12,6 +12,7 @@ export interface Props {
   pageNum: number;
   loading?: boolean;
   showPagination?: boolean;
+  enableSetRole?: boolean;
   cols?: number;
   md?: number;
   sm?: number;
@@ -20,12 +21,19 @@ export interface Props {
 
 const display = useDisplay();
 
-const emits = defineEmits(["click:reset", "click:delete", "click:export", "pageChange"]);
+const emits = defineEmits([
+  "click:reset",
+  "click:delete",
+  "click:export",
+  "click:setRole",
+  "pageChange",
+]);
 
 const props = withDefaults(defineProps<Props>(), {
   pageSize: 10,
   loading: false,
   showPagination: true,
+  enableSetRole: false,
   cols: 2,
   md: 1,
   sm: 1,
@@ -78,6 +86,10 @@ function handleClickDelete(id: string): void {
 function handleClickExport(id: string): void {
   emits("click:export", id);
 }
+
+function handleClickSetRole(id: string, role: number): void {
+  emits("click:setRole", id, role);
+}
 </script>
 
 <template>
@@ -89,9 +101,11 @@ function handleClickExport(id: string): void {
       :md="md"
       :sm="sm"
       :xs="xs"
+      :enable-set-role="enableSetRole"
       @click:delete="handleClickDelete"
       @click:reset="handleClickReset"
       @click:export="handleClickExport"
+      @click:set-role="handleClickSetRole"
     />
 
     <div
