@@ -1,5 +1,0 @@
-{
-  "watch": ["src"],
-  "ext": "ts", 
-  "exec": "tsup src/*.ts && node dist/index.js -p 8088 -t https://www.lamda.nju.edu.cn/learnware/api"
-}
