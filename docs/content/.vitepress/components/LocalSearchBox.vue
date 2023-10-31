@@ -32,6 +32,7 @@ import { pathToFile } from "vitepress/dist/client/app/utils";
 import { useData } from "vitepress/client";
 import { createTranslate } from "../configs/search/translate";
 import { Segment, useDefault } from "segmentit";
+import stopWords from "../configs/search/stopwords";
 
 const segmentit = useDefault(new Segment());
 
@@ -85,9 +86,11 @@ const searchIndex = computedAsync(async () => {
   };
 
   options.searchOptions.tokenize = (s: string) => {
-    return segmentit.doSegment(s, {
-      simple: true,
-    });
+    return segmentit
+      .doSegment(s, {
+        simple: true,
+      })
+      .filter((w) => !stopWords.includes(w));
   };
   options.tokenize = options.searchOptions.tokenize;
 
