@@ -541,5 +541,12 @@ def get_user_id_by_learnware(learnware_id):
     return result[0][0]
 
 
+def update_user_role(user_id, role):
+    result = context.database.execute(
+        "UPDATE tb_user SET role = :role WHERE id = :user_id", {"user_id": user_id, "role": role}
+    )
+    pass
+
+
 def begin():
     return context.database.begin()

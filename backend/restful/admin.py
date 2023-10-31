@@ -3,7 +3,7 @@ import context
 from context import config as C
 import hashlib
 import os
-from .auth import admin_login_required
+from .auth import admin_login_required, super_admin_login_required
 from .utils import get_parameters, generate_random_str
 from . import common_functions
 
@@ -11,9 +11,9 @@ import lib.database_operations as database
 
 import lib.engine as engine_helper
 import lib.data_utils as data_utils
-import flask_jwt_extended
 import flask_restx as flask_restful
 import flask_bcrypt
+import flask_jwt_extended
 
 
 admin_blueprint = Blueprint("Admin-API", __name__)
@@ -66,8 +66,15 @@ class DeleteUser(flask_restful.Resource):
         user_id = data["user_id"]
 
         # Check user existence
-        if not database.check_user_exist("id", user_id):
+        user_info = database.get_user_info(by="id", value=user_id)
+
+        if user_info is None:
             return {"code": 51, "msg": "User not found."}, 200
+
+        op_user_id = flask_jwt_extended.get_jwt_identity()
+        op_user_info = database.get_user_info(by="id", value=op_user_id)
+        if op_user_info["role"] <= user_info["role"]:
+            return {"code": 52, "msg": "cannot delete user with higher priority"}, 200
 
         # Check learnware
         ret, cnt = database.get_learnware_list("user_id", user_id)
@@ -164,13 +171,7 @@ class ResetPassword(flask_restful.Resource):
         if user is None:
             return {"code": 51, "msg": "Account not exist."}, 200
 
-        if user["email"] == "admin@localhost":
-            # admin is no hash
-            password_hash = flask_bcrypt.generate_password_hash(password).decode("utf-8")
-            pass
-        else:
-            password_hash = flask_bcrypt.generate_password_hash(md5).decode("utf-8")
-            pass
+        password_hash = flask_bcrypt.generate_password_hash(md5).decode("utf-8")
 
         flag = database.update_user_password(pwd=password_hash, by="id", value=user_id)
         if not flag:
@@ -179,6 +180,28 @@ class ResetPassword(flask_restful.Resource):
         # Return profile
         result = {"code": 0, "msg": "Reset success", "data": {"password": password, "md5": md5}}
         return result, 200
+
+
+class SetUserRole(flask_restful.Resource):
+    parser = flask_restful.reqparse.RequestParser()
+    parser.add_argument("role", type=str, required=True, location="json")
+    parser.add_argument("user_id", type=str, required=True, location="json")
+
+    @super_admin_login_required
+    def post(self):
+        body = request.get_json()
+
+        if body is None or "role" not in body or "user_id" not in body:
+            return {"code": 21, "msg": "Request parameters error."}, 200
+
+        role = body["role"]
+        user_id = body["user_id"]
+
+        database.update_user_role(user_id, role)
+
+        return {"code": 0, "msg": "Set user role success."}, 200
+
+    pass
 
 
 class Summary(flask_restful.Resource):
@@ -214,3 +237,4 @@ api.add_resource(ListLearnware, "/list_learnware")
 api.add_resource(DeleteLearnware, "/delete_learnware")
 api.add_resource(ResetPassword, "/reset_password")
 api.add_resource(Summary, "/summary")
+api.add_resource(SetUserRole, "/set_user_role")

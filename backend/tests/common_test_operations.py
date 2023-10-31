@@ -8,6 +8,7 @@ import json
 import os
 from database.base import LearnwareVerifyStatus
 import shutil
+import hashlib
 
 
 def clear_db():
@@ -71,8 +72,15 @@ def url_request(
     pass
 
 
-def login(email, password):
+def login(email, password, hash_password=False):
+    if hash_password:
+        password = hashlib.md5(password.encode("utf-8")).hexdigest()
+        pass
+
     result = url_request("auth/login", {"email": email, "password": password})
+
+    if result["code"] != 0:
+        raise Exception("login failed: " + json.dumps(result))
 
     if "token" not in result["data"]:
         raise Exception("login failed: " + json.dumps(result))

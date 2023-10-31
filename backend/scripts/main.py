@@ -12,6 +12,7 @@ from context import config as C
 import flask_bcrypt
 import flask_jwt_extended
 import requests
+import hashlib
 
 
 app = Flask(__name__)
@@ -35,9 +36,11 @@ def main():
     context.init_backend()
 
     # Init database
-    admin_password = flask_bcrypt.generate_password_hash("admin").decode("utf-8")
+    admin_password = "admin"
+    admin_password_hash = hashlib.md5(admin_password.encode("utf-8")).hexdigest()
+    admin_password_encrypt = flask_bcrypt.generate_password_hash(admin_password_hash).decode("utf-8")
 
-    context.init_database(admin_password)
+    context.init_database(admin_password_encrypt)
     context.stats = 0
 
     # Init engine
