@@ -37,12 +37,8 @@ watchPostEffect(() => {
     <div class="container">
       <div class="title">
         <VPNavBarTitle>
-          <template #nav-bar-title-before
-            ><slot name="nav-bar-title-before"
-          /></template>
-          <template #nav-bar-title-after
-            ><slot name="nav-bar-title-after"
-          /></template>
+          <template #nav-bar-title-before><slot name="nav-bar-title-before" /></template>
+          <template #nav-bar-title-after><slot name="nav-bar-title-after" /></template>
         </VPNavBarTitle>
       </div>
 
@@ -140,14 +136,8 @@ watchPostEffect(() => {
 
 @media (min-width: 1440px) {
   .VPNavBar.has-sidebar .title {
-    padding-left: max(
-      32px,
-      calc((100% - (var(--vp-layout-max-width) - 64px)) / 2)
-    );
-    width: calc(
-      (100% - (var(--vp-layout-max-width) - 64px)) / 2 + var(--vp-sidebar-width) -
-        32px
-    );
+    padding-left: max(32px, calc((100% - (var(--vp-layout-max-width) - 64px)) / 2));
+    width: calc((100% - (var(--vp-layout-max-width) - 64px)) / 2 + var(--vp-sidebar-width) - 32px);
   }
 }
 
@@ -167,9 +157,7 @@ watchPostEffect(() => {
 @media (min-width: 1440px) {
   .VPNavBar.has-sidebar .content {
     padding-right: calc((100vw - var(--vp-layout-max-width)) / 2 + 32px);
-    padding-left: calc(
-      (100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width)
-    );
+    padding-left: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width));
   }
 }
 
@@ -240,10 +228,7 @@ watchPostEffect(() => {
 
 @media (min-width: 1440px) {
   .VPNavBar.has-sidebar .curtain {
-    width: calc(
-      100% -
-        ((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width))
-    );
+    width: calc(100% - ((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width)));
   }
 }
 </style>

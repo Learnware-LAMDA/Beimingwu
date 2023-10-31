@@ -2,10 +2,20 @@
   "scripts": {
     "dev": "vitepress dev content",
     "build": "vitepress build content",
-    "preview": "vitepress preview content"
+    "preview": "vitepress preview content",
+    "prettier": "prettier --write content/*.md content/**/*.md content/.vitepress/*.{js,ts,vue} content/.vitepress/**/*.{js,ts,vue}",
+    "lint": "eslint --ext .ts,.js,.vue content/.vitepress",
+    "lint:fix": "eslint --fix --ext .ts,.js,.vue content/.vitepress"
   },
+  "type": "module",
   "devDependencies": {
-    "@vueuse/core": "^10.5.0",
+    "@types/mark.js": "^8.11.10",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "@vue/eslint-config-prettier": "^7.1.0",
+    "eslint": "^8.43.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-vue": "^9.15.0",
     "markdown-it-mathjax3": "^4.3.2",
     "typescript": "^5.2.2",
     "url": "^0.11.3",
@@ -13,6 +23,11 @@
     "vue": "^3.3.4"
   },
   "dependencies": {
-    "@mdi/font": "^7.3.67"
+    "@mdi/font": "^7.3.67",
+    "@vueuse/core": "^10.5.0",
+    "@vueuse/integrations": "^10.5.0",
+    "mark.js": "^8.11.1",
+    "minisearch": "^6.2.0",
+    "segmentit": "^2.0.3"
   }
 }
