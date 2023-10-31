@@ -17,6 +17,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-vue": "^9.15.0",
     "markdown-it-mathjax3": "^4.3.2",
+    "sass": "^1.69.5",
     "typescript": "^5.2.2",
     "url": "^0.11.3",
     "vitepress": "1.0.0-rc.21",
