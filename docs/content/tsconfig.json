@@ -1,4 +1,12 @@
 {
-  "include": ["./**/*.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts", "**/cache/**/*", "**/dist/**/*"],
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": ["esnext", "dom"],
+    "strict": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["./.vitepress/**/*.ts", "./.vitepress/**/*.vue"],
+  "exclude": ["node_modules", "**/*.spec.ts", "**/cache/**/*", "**/dist/**/*"]
 }
