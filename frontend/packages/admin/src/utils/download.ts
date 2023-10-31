@@ -1,5 +1,7 @@
+import { BACKEND_URL } from "@main/request";
+
 function downloadLearnware(id: string): void {
-  const url = `/api/engine/download_learnware?learnware_id=${id}`;
+  const url = `${BACKEND_URL}/engine/download_learnware?learnware_id=${id}`;
   window.open(url);
 }
 

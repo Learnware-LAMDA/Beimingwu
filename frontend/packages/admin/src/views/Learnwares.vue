@@ -4,6 +4,7 @@ import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { fetchex } from "../utils/fetchex";
+import { BACKEND_URL } from "@main/request";
 import UserRequirement from "@main/components/Search/UserRequirement.vue";
 import PageLearnwareList from "@main/components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
@@ -49,7 +50,7 @@ const errorTimer = ref<string | number | undefined>();
 function deleteLearnware(id: string): void {
   showError.value = false;
 
-  fetchex("/api/admin/delete_learnware", {
+  fetchex(BACKEND_URL + "/admin/delete_learnware", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -108,12 +109,12 @@ function fetchLearnware(
   fd: FormData,
 ): Promise<Response | undefined> {
   if (isVerify) {
-    return fetchex("/api/engine/search_learnware", {
+    return fetchex(BACKEND_URL + "/engine/search_learnware", {
       method: "POST",
       body: fd,
     });
   } else {
-    return fetchex("/api/admin/list_learnware", {
+    return fetchex(BACKEND_URL + "/admin/list_learnware", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -135,7 +136,7 @@ function fetchByFilterAndPage(filters: Filter, page: number): void {
   showError.value = false;
   loading.value = true;
 
-  fetchex("/api/engine/semantic_specification")
+  fetchex(BACKEND_URL + "/engine/semantic_specification")
     .then((res) => {
       if (res) {
         return res.json();

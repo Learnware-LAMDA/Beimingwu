@@ -5,6 +5,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { fetchex, saveContentToFile } from "../utils";
+import { BACKEND_URL } from "@main/request";
 import SuccessDialog from "@/components/Dialogs/SuccessDialog.vue";
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
 import PageUserList from "@/components/User/PageUserList.vue";
@@ -56,7 +57,7 @@ function fetchByFilterAndPage(filters: Filter, page: number): Promise<void> {
   loading.value = true;
   showError.value = false;
 
-  return fetchex("/api/admin/list_user", {
+  return fetchex(BACKEND_URL + "/admin/list_user", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -109,7 +110,7 @@ function fetchByFilterAndPage(filters: Filter, page: number): Promise<void> {
 }
 
 function resetPassword(id: number): Promise<void> {
-  return fetchex("/api/admin/reset_password", {
+  return fetchex(BACKEND_URL + "/admin/reset_password", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -157,7 +158,7 @@ function resetPassword(id: number): Promise<void> {
 }
 
 function deleteUser(id: number): Promise<void> {
-  return fetchex("/api/admin/delete_user", {
+  return fetchex(BACKEND_URL + "/admin/delete_user", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -231,7 +232,7 @@ function handleClickSetRole(id: number, role: number): void {
 }
 
 function setRole(id: number, role: number): Promise<void> {
-  return fetchex("/api/admin/set_user_role", {
+  return fetchex(BACKEND_URL + "/admin/set_user_role", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -275,7 +276,7 @@ function setRole(id: number, role: number): Promise<void> {
 async function handleClickExport(): Promise<void> {
   const table = [["Username", "Email", "Verified", "Unverified"]];
   for (let _page = 1; _page <= pageNum.value; _page++) {
-    await fetchex("/api/admin/list_user", {
+    await fetchex(BACKEND_URL + "/admin/list_user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

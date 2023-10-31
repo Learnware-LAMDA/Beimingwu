@@ -4,6 +4,7 @@ import { useI18n } from "vue-i18n";
 import { Pie } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { fetchex } from "../utils";
+import { BACKEND_URL } from "@main/request";
 import Router from "../router";
 import type { DataType, TaskType, LibraryType, Scenario } from "@beiming-system/types/learnware";
 
@@ -62,7 +63,7 @@ const numberItems = computed(() => {
 });
 
 function fetchSummary(): void {
-  fetchex("/api/admin/summary", { method: "POST" })
+  fetchex(BACKEND_URL + "/admin/summary", { method: "POST" })
     .then((res) => {
       if (res && res.status === 200) {
         return res;
