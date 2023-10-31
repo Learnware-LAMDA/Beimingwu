@@ -18,7 +18,7 @@ declare module "vitepress/dist/client/app/utils" {
 declare module "vitepress/dist/client/theme-default/support/translate.js" {
   export function createTranslate(
     themeObject: any,
-    defaultTranslations: Record<string, any>
+    defaultTranslations: Record<string, any>,
   ): (key: string) => string;
 }
 

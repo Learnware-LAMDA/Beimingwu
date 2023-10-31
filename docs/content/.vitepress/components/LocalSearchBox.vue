@@ -94,8 +94,8 @@ const searchIndex = computedAsync(async () => {
   return markRaw(
     MiniSearch.loadJSON<Result>(
       (await searchIndexData.value[localeIndex.value]?.())?.default,
-      options
-    )
+      options,
+    ),
   );
 });
 
@@ -112,8 +112,7 @@ const filterText = disableQueryPersistence.value
 
 const showDetailedList = useLocalStorage(
   "vitepress:local-search-detailed-list",
-  theme.value.search?.provider === "local" &&
-    theme.value.search.options?.detailedView === true
+  theme.value.search?.provider === "local" && theme.value.search.options?.detailedView === true,
 );
 
 const disableDetailedView = computed(() => {
@@ -164,9 +163,7 @@ debouncedWatch(
     if (!index) return;
 
     // Search
-    results.value = index
-      .search(filterTextValue)
-      .slice(0, 16) as (SearchResult & Result)[];
+    results.value = index.search(filterTextValue).slice(0, 16) as (SearchResult & Result)[];
     enableNoResults.value = true;
 
     // Highlighting
@@ -241,14 +238,12 @@ debouncedWatch(
 
     const excerpts = el.value?.querySelectorAll(".result .excerpt") ?? [];
     for (const excerpt of Array.from(excerpts)) {
-      excerpt
-        .querySelector('mark[data-markjs="true"]')
-        ?.scrollIntoView({ block: "center" });
+      excerpt.querySelector('mark[data-markjs="true"]')?.scrollIntoView({ block: "center" });
     }
     // FIXME: without this whole page scrolls to the bottom
     resultsEl.value?.firstElementChild?.scrollIntoView({ block: "start" });
   },
-  { debounce: 200, immediate: true }
+  { debounce: 200, immediate: true },
 );
 
 async function fetchExcerpt(id: string) {
@@ -327,8 +322,7 @@ onKeyStroke("ArrowDown", (event) => {
 const router = useRouter();
 
 onKeyStroke("Enter", (e) => {
-  if (e.target instanceof HTMLButtonElement && e.target.type !== "submit")
-    return;
+  if (e.target instanceof HTMLButtonElement && e.target.type !== "submit") return;
 
   const selectedPackage = results.value[selectedIndex.value];
   if (e.target instanceof HTMLInputElement && !selectedPackage) {
@@ -403,12 +397,10 @@ function formMarkRegex(terms: Set<string>) {
     [...terms]
       .sort((a, b) => b.length - a.length)
       .map((term) => {
-        return `(${term
-          .replace(/[|\\{}()[\]^$+*?.]/g, "\\$&")
-          .replace(/-/g, "\\x2d")})`;
+        return `(${term.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&").replace(/-/g, "\\x2d")})`;
       })
       .join("|"),
-    "gi"
+    "gi",
   );
 }
 </script>
@@ -427,23 +419,9 @@ function formMarkRegex(terms: Set<string>) {
       <div class="backdrop" @click="$emit('close')" />
 
       <div class="shell">
-        <form
-          class="search-bar"
-          @pointerup="onSearchBarClick($event)"
-          @submit.prevent=""
-        >
-          <label
-            :title="buttonText"
-            id="localsearch-label"
-            for="localsearch-input"
-          >
-            <svg
-              class="search-icon"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
+        <form class="search-bar" @pointerup="onSearchBarClick($event)" @submit.prevent="">
+          <label :title="buttonText" id="localsearch-label" for="localsearch-input">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
               <g
                 fill="none"
                 stroke="currentColor"
@@ -462,12 +440,7 @@ function formMarkRegex(terms: Set<string>) {
               :title="$t('modal.backButtonTitle')"
               @click="$emit('close')"
             >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   fill="none"
                   stroke="currentColor"
@@ -494,16 +467,9 @@ function formMarkRegex(terms: Set<string>) {
               type="button"
               :class="{ 'detailed-list': showDetailedList }"
               :title="$t('modal.displayDetails')"
-              @click="
-                selectedIndex > -1 && (showDetailedList = !showDetailedList)
-              "
+              @click="selectedIndex > -1 && (showDetailedList = !showDetailedList)"
             >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   fill="none"
                   stroke="currentColor"
@@ -522,12 +488,7 @@ function formMarkRegex(terms: Set<string>) {
               :title="$t('modal.resetButtonTitle')"
               @click="resetSearch"
             >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   fill="none"
                   stroke="currentColor"
@@ -569,11 +530,7 @@ function formMarkRegex(terms: Set<string>) {
               <div>
                 <div class="titles">
                   <span class="title-icon">#</span>
-                  <span
-                    v-for="(t, index) in p.titles"
-                    :key="index"
-                    class="title"
-                  >
+                  <span v-for="(t, index) in p.titles" :key="index" class="title">
                     <span class="text" v-html="t" />
                     <svg width="18" height="18" viewBox="0 0 24 24">
                       <path
@@ -601,10 +558,7 @@ function formMarkRegex(terms: Set<string>) {
               </div>
             </a>
           </li>
-          <li
-            v-if="filterText && !results.length && enableNoResults"
-            class="no-results"
-          >
+          <li v-if="filterText && !results.length && enableNoResults" class="no-results">
             {{ $t("modal.noResultsText") }} "<strong>{{ filterText }}</strong
             >"
           </li>

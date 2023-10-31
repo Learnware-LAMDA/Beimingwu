@@ -2,7 +2,10 @@
   "scripts": {
     "dev": "vitepress dev content",
     "build": "vitepress build content",
-    "preview": "vitepress preview content"
+    "preview": "vitepress preview content",
+    "prettier": "prettier --write content/*.md content/**/*.md content/.vitepress/*.{js,ts,vue} content/.vitepress/**/*.{js,ts,vue}",
+    "lint": "eslint --ext .ts,.js,.vue content/.vitepress",
+    "lint:fix": "eslint --fix --ext .ts,.js,.vue content/.vitepress"
   },
   "type": "module",
   "devDependencies": {

@@ -30,19 +30,10 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: [
-        replaceComponent(
-          /^.*\/VPNavBarMenuLink\.vue$/,
-          "./components/NavBarMenuLink.vue"
-        ),
+        replaceComponent(/^.*\/VPNavBarMenuLink\.vue$/, "./components/NavBarMenuLink.vue"),
         replaceComponent(/^.*\/VPNavBar\.vue$/, "./components/NavBar.vue"),
-        replaceComponent(
-          /^.*\/VPNavBarTranslations\.vue$/,
-          "./components/NavBarTranslations.vue"
-        ),
-        replaceComponent(
-          /^.*\/VPLocalSearchBox\.vue$/,
-          "./components/LocalSearchBox.vue"
-        ),
+        replaceComponent(/^.*\/VPNavBarTranslations\.vue$/, "./components/NavBarTranslations.vue"),
+        replaceComponent(/^.*\/VPLocalSearchBox\.vue$/, "./components/LocalSearchBox.vue"),
       ],
     },
   },
