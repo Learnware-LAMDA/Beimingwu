@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable no-unused-vars */
 /*
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
  * Digest Algorithm, as defined in RFC 1321.
@@ -8,7 +9,7 @@
  * See http://pajhome.org.uk/crypt/md5 for more info.
  */
 /*
- * Configurable letiables. You may need to tweak these to be compatible with
+ * Configurable variables. You may need to tweak these to be compatible with
  * the server-side, but the defaults work in most cases.
  */
 const hexcase = 0; /* hex output format. 0 - lowercase; 1 - uppercase        */
@@ -17,13 +18,13 @@ const chrsz = 8; /* bits per input character. 8 - ASCII; 16 - Unicode      */
  * These are the functions you'll usually want to call
  * They take string arguments and return either hex or base-64 encoded strings
  */
-function hex_md5(s) {
+function hex_md5(s: string) {
   return binl2hex(core_md5(str2binl(s), s.length * chrsz));
 }
 /*
  * Calculate the MD5 of an array of little-endian words, and a bit length
  */
-function core_md5(x, len) {
+function core_md5(x: number[], len: number) {
   /* append padding */
   x[len >> 5] |= 0x80 << len % 32;
   x[(((len + 64) >>> 9) << 4) + 14] = len;
@@ -110,26 +111,26 @@ function core_md5(x, len) {
 /*
  * These functions implement the four basic operations the algorithm uses.
  */
-function md5_cmn(q, a, b, x, s, t) {
+function md5_cmn(q: number, a: number, b: number, x: number, s: number, t: number) {
   return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s), b);
 }
-function md5_ff(a, b, c, d, x, s, t) {
+function md5_ff(a: number, b: number, c: number, d: number, x: number, s: number, t: number) {
   return md5_cmn((b & c) | (~b & d), a, b, x, s, t);
 }
-function md5_gg(a, b, c, d, x, s, t) {
+function md5_gg(a: number, b: number, c: number, d: number, x: number, s: number, t: number) {
   return md5_cmn((b & d) | (c & ~d), a, b, x, s, t);
 }
-function md5_hh(a, b, c, d, x, s, t) {
+function md5_hh(a: number, b: number, c: number, d: number, x: number, s: number, t: number) {
   return md5_cmn(b ^ c ^ d, a, b, x, s, t);
 }
-function md5_ii(a, b, c, d, x, s, t) {
+function md5_ii(a: number, b: number, c: number, d: number, x: number, s: number, t: number) {
   return md5_cmn(c ^ (b | ~d), a, b, x, s, t);
 }
 /*
  * Add integers, wrapping at 2^32. This uses 16-bit operations internally
  * to work around bugs in some JS interpreters.
  */
-function safe_add(x, y) {
+function safe_add(x: number, y: number) {
   const lsw = (x & 0xffff) + (y & 0xffff);
   const msw = (x >> 16) + (y >> 16) + (lsw >> 16);
   return (msw << 16) | (lsw & 0xffff);
@@ -137,24 +138,21 @@ function safe_add(x, y) {
 /*
  * Bitwise rotate a 32-bit number to the left.
  */
-function bit_rol(num, cnt) {
+function bit_rol(num: number, cnt: number) {
   return (num << cnt) | (num >>> (32 - cnt));
 }
 /*
  * Convert a string to an array of little-endian words
  * If chrsz is ASCII, characters >255 have their hi-byte silently ignored.
  */
-function str2binl(str) {
-  const bin = [];
+function str2binl(str: string) {
+  const bin: number[] = [];
   const mask = (1 << chrsz) - 1;
   for (let i = 0; i < str.length * chrsz; i += chrsz)
     bin[i >> 5] |= (str.charCodeAt(i / chrsz) & mask) << i % 32;
   return bin;
 }
-/*
- * Convert an array of little-endian words to a hex string.
- */
-function binl2hex(binarray) {
+function binl2hex(binarray: number[]) {
   const hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
   let str = "";
   for (let i = 0; i < binarray.length * 4; i++) {

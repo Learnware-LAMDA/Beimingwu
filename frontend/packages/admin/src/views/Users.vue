@@ -28,6 +28,11 @@ const resetName = ref<string>("");
 const newPasswordDialog = ref<InstanceType<typeof SuccessDialog>>(null);
 const newPassword = ref("");
 
+const setRoleDialog = ref<InstanceType<typeof ConfirmDialog>>(null);
+const setRoleId = ref<number>(-1);
+const setRoleRole = ref<number>(0);
+const setRoleName = ref<string>("");
+
 const showError = ref(false);
 const errorMsg = ref("");
 const errorTimer = ref<number>();
@@ -216,6 +221,57 @@ function handleClickDelete(id: number): void {
   userName && (deleteName.value = userName);
 }
 
+function handleClickSetRole(id: number, role: number): void {
+  setRoleDialog.value.confirm();
+  setRoleId.value = Number(id);
+  setRoleRole.value = Number(role);
+  const userName = userItems.value.find((item) => item.id === id)?.username;
+  userName && (setRoleName.value = userName);
+  fetchByFilterAndPage(filters.value, page.value);
+}
+
+function setRole(id: number, role: number): Promise<void> {
+  return fetchex("/api/admin/set_user_role", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      user_id: id,
+      role: role,
+    }),
+  })
+    .then((res) => {
+      if (res && res.status === 200) {
+        return res;
+      }
+      throw new Error("Network error");
+    })
+    .then((res) => res.json())
+    .then((res: { code: number; msg: string }) => {
+      if (res.code === 0) {
+        return res;
+      }
+      throw new Error(res.msg);
+    })
+    .then(() => {
+      store.commit("setShowGlobalError", true);
+      store.commit("setGlobalErrorMsg", "set successfully.");
+      fetchByFilterAndPage(filters.value, page.value);
+    })
+    .catch((err) => {
+      console.error(err);
+      showError.value = true;
+      errorMsg.value = err.message;
+      clearTimeout(errorTimer.value);
+      errorTimer.value = Number(
+        setTimeout(() => {
+          showError.value = false;
+        }, 3000),
+      );
+    });
+}
+
 async function handleClickExport(): Promise<void> {
   const table = [["Username", "Email", "Verified", "Unverified"]];
   for (let _page = 1; _page <= pageNum.value; _page++) {
@@ -340,6 +396,20 @@ onActivated(() => {
       </template>
     </confirm-dialog>
 
+    <confirm-dialog
+      ref="setRoleDialog"
+      @confirm="() => setRole(Number(setRoleId), Number(setRoleRole))"
+    >
+      <template #title>
+        Confirm to set role of &nbsp; <b>{{ setRoleName }}</b
+        >?
+      </template>
+      <template #text>
+        User <b>{{ setRoleName }}</b> will be set as
+        <i>{{ setRoleRole === 1 ? "admin" : "normal" }} user</i>. Do you really want to do this?
+      </template>
+    </confirm-dialog>
+
     <v-scroll-y-transition class="fixed left-0 right-0 z-index-10000">
       <v-card-actions v-if="showError">
         <v-alert
@@ -389,8 +459,10 @@ onActivated(() => {
       :page-num="pageNum"
       :loading="loading"
       :show-pagination="pageNum > 1"
+      :enable-set-role="store.getters.getRole === 2"
       @click:delete="(id: number) => handleClickDelete(id)"
       @click:reset="(id: number) => handleClickReset(id)"
+      @click:set-role="(id: number, role: number) => handleClickSetRole(id, role)"
       @click:export="handleClickExport"
       @page-change="pageChange"
     />

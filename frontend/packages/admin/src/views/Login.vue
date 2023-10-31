@@ -3,7 +3,7 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useField } from "@beiming-system/hooks";
-import { fetchex } from "../utils";
+import { fetchex, hex_md5 } from "../utils";
 import collaborationImg from "@/assets/images/collaboration.svg?url";
 
 const store = useStore();
@@ -59,7 +59,7 @@ function login(): Promise<void> {
 
   const data = {
     email: email.value,
-    password: password.value,
+    password: hex_md5(password.value),
   };
 
   return fetchex("/api/auth/login", {
@@ -110,7 +110,7 @@ function login(): Promise<void> {
       }
     })
     .then((res) => {
-      if (res.data && res.data.role === 1) {
+      if (res.data && res.data.role >= 1) {
         success.value = true;
         setTimeout(() => {
           store.dispatch("login");

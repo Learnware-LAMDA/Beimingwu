@@ -6,4 +6,5 @@ export default {
   SearchByUsername: "Search by username",
   SearchByEmail: "Search by email",
   OopsNoUser: "Oops! No user found",
+  IsAdmin: "admin",
 };
