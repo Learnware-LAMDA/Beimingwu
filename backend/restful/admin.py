@@ -31,7 +31,9 @@ class ListUser(flask_restful.Resource):
 
         # Return whole user list directly
         if data is None or "limit" not in data:
-            ret, cnt = database.get_all_user_list(columns=["id", "username", "email"], username=username, email=email)
+            ret, cnt = database.get_all_user_list(
+                columns=["id", "username", "email", "role"], username=username, email=email
+            )
             result = {"code": 0, "msg": "Get user list success.", "data": {"user_list": ret}}
             return result, 200
 
@@ -43,7 +45,7 @@ class ListUser(flask_restful.Resource):
         page = 0 if "page" not in data else data["page"]
 
         ret, cnt = database.get_all_user_list(
-            columns=["id", "username", "email"], limit=limit, page=page, username=username, email=email
+            columns=["id", "username", "email", "role"], limit=limit, page=page, username=username, email=email
         )
         result = {
             "code": 0,

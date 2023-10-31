@@ -33,7 +33,7 @@ class ProfileApi(flask_restful.Resource):
         result = {
             "code": 0,
             "msg": "Get profile success.",
-            "data": {"username": user["username"], "email": user["email"]},
+            "data": {"username": user["username"], "email": user["email"], "role": user["role"]},
         }
         return result
 
