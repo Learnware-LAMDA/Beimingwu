@@ -232,12 +232,14 @@ onMounted(() => {
 
     <div ref="contentRef" class="content">
       <v-card v-if="showMultiRecommended" flat class="sm:m-2 mt-4 bg-transparent">
-        <v-card-title v-if="!multiRecommendedTips">Recommended multiple learnwares</v-card-title>
+        <v-card-title v-if="!multiRecommendedTips">
+          {{ t("Search.RecommendedMultipleLearnware") }}
+        </v-card-title>
         <v-card-text v-if="multiRecommendedTips" class="!p-2">
           <v-alert
             v-model="multiRecommendedTips"
-            title="Recommended multiple learnwares"
-            text="The learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to great effectiveness."
+            :title="t('Search.RecommendedMultipleLearnware')"
+            :text="t('Search.RecommendedMultipleLearnwareTips')"
             closable
             color="success"
           >
@@ -255,14 +257,14 @@ onMounted(() => {
         />
       </v-card>
       <v-card flat class="sm:m-2 mt-4 bg-transparent">
-        <v-card-title v-if="showMultiRecommended && !singleRecommendedTips"
-          >Recommended single learnwares</v-card-title
-        >
+        <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">
+          {{ t("Search.RecommendedSingleLearnware") }}
+        </v-card-title>
         <v-card-text v-if="showMultiRecommended && singleRecommendedTips" class="!p-2">
           <v-alert
             v-model="singleRecommendedTips"
-            title="Recommended single learnware"
-            text="The listed learnwares are not highly recommended as they may not precisely match your task requirements in terms of statistical specifications. However, they are still available for your use."
+            :title="t('Search.RecommendedSingleLearnware')"
+            :text="t('Search.RecommendedSingleLearnwareTips')"
             closable
             color="info"
           >
