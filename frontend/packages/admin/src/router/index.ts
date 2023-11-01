@@ -8,7 +8,7 @@ const Router = createRouter({
     {
       path: "/",
       name: "Summary",
-      component: (): Promise<Component> => import("@/views/Summary.vue"),
+      component: (): Promise<Component> => import("@admin/views/Summary.vue"),
       meta: {
         showInNavBar: true,
         icon: "mdi-eye",
@@ -17,7 +17,7 @@ const Router = createRouter({
     {
       path: "/alllearnware",
       name: "Learnwares",
-      component: (): Promise<Component> => import("@/views/Learnwares.vue"),
+      component: (): Promise<Component> => import("@admin/views/Learnwares.vue"),
       meta: {
         showInNavBar: true,
         requiredLogin: true,
@@ -39,7 +39,7 @@ const Router = createRouter({
     {
       path: "/alluser",
       name: "Users",
-      component: (): Promise<Component> => import("@/views/Users.vue"),
+      component: (): Promise<Component> => import("@admin/views/Users.vue"),
       meta: {
         showInNavBar: true,
         requiredLogin: true,
@@ -79,7 +79,7 @@ const Router = createRouter({
         {
           path: "/login",
           name: "Login",
-          component: (): Promise<Component> => import("@/views/Login.vue"),
+          component: (): Promise<Component> => import("@admin/views/Login.vue"),
           meta: {
             showInNavBar: true,
             hideWhenLoggedIn: true,

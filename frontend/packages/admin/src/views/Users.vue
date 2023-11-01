@@ -6,9 +6,9 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { fetchex, saveContentToFile } from "../utils";
 import { BACKEND_URL } from "@main/request";
-import SuccessDialog from "@/components/Dialogs/SuccessDialog.vue";
-import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
-import PageUserList from "@/components/User/PageUserList.vue";
+import SuccessDialog from "@admin/components/Dialogs/SuccessDialog.vue";
+import ConfirmDialog from "@admin/components/Dialogs/ConfirmDialog.vue";
+import PageUserList from "@admin/components/User/PageUserList.vue";
 import type { User, Filter } from "@beiming-system/types/user";
 
 const display = useDisplay();
@@ -18,18 +18,18 @@ const router = useRouter();
 
 const { t } = useI18n();
 
-const deleteDialog = ref<InstanceType<typeof ConfirmDialog>>(null);
+const deleteDialog = ref<InstanceType<typeof ConfirmDialog>>();
 const deleteId = ref("");
 const deleteName = ref("");
 
-const resetDialog = ref<InstanceType<typeof ConfirmDialog>>(null);
+const resetDialog = ref<InstanceType<typeof ConfirmDialog>>();
 const resetId = ref<string>("");
 const resetName = ref<string>("");
 
-const newPasswordDialog = ref<InstanceType<typeof SuccessDialog>>(null);
+const newPasswordDialog = ref<InstanceType<typeof SuccessDialog>>();
 const newPassword = ref("");
 
-const setRoleDialog = ref<InstanceType<typeof ConfirmDialog>>(null);
+const setRoleDialog = ref<InstanceType<typeof ConfirmDialog>>();
 const setRoleId = ref<number>(-1);
 const setRoleRole = ref<number>(0);
 const setRoleName = ref<string>("");
@@ -216,19 +216,22 @@ function handleClickReset(id: number): void {
 }
 
 function handleClickDelete(id: number): void {
-  deleteDialog.value.confirm();
-  deleteId.value = String(id);
-  const userName = userItems.value.find((item) => item.id === id)?.username;
-  userName && (deleteName.value = userName);
+  if (deleteDialog.value) {
+    deleteDialog.value.confirm();
+    deleteId.value = String(id);
+    const userName = userItems.value.find((item) => item.id === id)?.username;
+    userName && (deleteName.value = userName);
+  }
 }
 
 function handleClickSetRole(id: number, role: number): void {
-  setRoleDialog.value.confirm();
-  setRoleId.value = Number(id);
-  setRoleRole.value = Number(role);
-  const userName = userItems.value.find((item) => item.id === id)?.username;
-  userName && (setRoleName.value = userName);
-  fetchByFilterAndPage(filters.value, page.value);
+  if (setRoleDialog.value) {
+    setRoleDialog.value.confirm();
+    setRoleId.value = Number(id);
+    setRoleRole.value = Number(role);
+    const userName = userItems.value.find((item) => item.id === id)?.username;
+    userName && (setRoleName.value = userName);
+  }
 }
 
 function setRole(id: number, role: number): Promise<void> {
