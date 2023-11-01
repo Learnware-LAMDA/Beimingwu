@@ -86,7 +86,11 @@ function handleClickDelete(id: string): void {
 
     <v-card-subtitle>
       <div style="color: red">
-        {{ item.verifyStatus != undefined && item.verifyStatus != "SUCCESS" ? "Unverified" : "" }}
+        {{
+          item.verifyStatus != undefined && item.verifyStatus != "SUCCESS"
+            ? t("Learnware.Unverified")
+            : ""
+        }}
       </div>
     </v-card-subtitle>
     <v-card-text class="card-text">
