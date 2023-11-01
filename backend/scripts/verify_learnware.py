@@ -7,7 +7,8 @@ import shortuuid
 import os
 import zipfile
 import tempfile
-from market.backend_market import BackendMarket
+from learnware.market import BaseChecker
+from learnware.market.easy2 import EasyStatisticalChecker
 from lib import package_utils
 
 
@@ -32,8 +33,9 @@ def main(learnware_path, semantic_path, result_file_path):
 
     learnware_obj = learnware.learnware.get_learnware_from_dirpath("test_id", semantic_specification, learnware_path)
 
-    check_result = BackendMarket.check_learnware(learnware_obj)
-    if check_result == BackendMarket.USABLE_LEARWARE:
+    statistic_checker = EasyStatisticalChecker()
+    check_result = statistic_checker(learnware_obj)
+    if check_result == BaseChecker.USABLE_LEARWARE:
         result_code = "SUCCESS"
         pass
     else:

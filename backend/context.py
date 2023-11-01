@@ -5,8 +5,7 @@ import os
 from config import Config
 from database import Database, SQLAlchemy
 
-from learnware.market import EasyMarket
-from market.backend_market import BackendMarket
+from learnware.market import instatiate_learnware_market
 import logging
 
 
@@ -33,12 +32,10 @@ def init_database(admin_password: str = None):
 
 def init_engine():
     global config, engine
-    if config.engine["type"] == "easymarket":
-        engine = EasyMarket()
-    elif config.engine["type"] == "backend_market":
-        engine = BackendMarket()
+    if config.engine["type"] == "easy":
+        engine = instatiate_learnware_market(market_id="default", name="easy")
     else:
-        raise ValueError(f"Learnware engine type {config.engine_type} is not supproted.")
+        raise ValueError(f"Learnware engine type {config.engine['type']} is not supproted.")
     pass
 
 
