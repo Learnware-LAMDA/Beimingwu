@@ -230,3 +230,15 @@ def delete_user(user_id):
 def delete_user_by_email(email):
     context.database.execute("DELETE FROM tb_user WHERE email = :email", {"email": email})
     pass
+
+
+def cleanup_folder():
+    root_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    backend_data_path = os.path.join(root_path, "backend_data")
+    learnware_data_path = os.path.join(os.path.expanduser("~"), ".learnware")
+
+    if os.path.exists(backend_data_path):
+        shutil.rmtree(backend_data_path)
+
+    if os.path.exists(learnware_data_path):
+        shutil.rmtree(learnware_data_path)

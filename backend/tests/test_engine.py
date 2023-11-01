@@ -15,6 +15,7 @@ import tempfile
 
 class TestEngine(unittest.TestCase):
     def setUpClass() -> None:
+        testops.cleanup_folder()
         unittest.TestCase.setUpClass()
         TestEngine.server_process = multiprocessing.Process(target=main.main)
         TestEngine.server_process.start()
@@ -72,7 +73,7 @@ class TestEngine(unittest.TestCase):
         self.assertGreaterEqual(len(result["data"]["learnware_list_single"]), 1)
         self.assertIn(TestEngine.learnware_id, [x["learnware_id"] for x in result["data"]["learnware_list_single"]])
         self.assertGreater(result["data"]["learnware_list_single"][0]["last_modify"], "2020-01-01 00:00:00")
-        pass
+        assert result["data"]["learnware_list_single"][0]["matching"] > 0
 
     def test_search_learnware_use_name(self):
         headers = self.login()

@@ -235,7 +235,7 @@ class UpdateLearnwareApi(flask_restful.Resource):
 
             if learnware_file is None:
                 # only update semantic specification
-                context.engine.update_learnware_semantic_spec(learnware_id, semantic_specification)
+                context.engine.update_learnware_semantic_specification(learnware_id, semantic_specification)
                 pass
             else:
                 context.engine.delete_learnware(learnware_id)
