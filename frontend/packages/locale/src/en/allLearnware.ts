@@ -1,4 +1,4 @@
 export default {
-  ShowVerified: "Show verified learnwares",
-  ShowUnverified: "Show unverified learnwares",
+  ShowVerified: "Showing verified learnwares",
+  ShowUnverified: "Showing unverified learnwares",
 };
