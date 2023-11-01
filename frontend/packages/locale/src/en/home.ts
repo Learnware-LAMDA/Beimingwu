@@ -1,7 +1,6 @@
 export default {
   Cover: {
-    SmallModelsDo: "Small models do",
-    Big: "Big",
+    Beiming: "Beiming: A Learnware Dock System",
     Slogan:
       "Learnware paradigm systematically reuses numerous various models to do things that may even be beyond their original purposes, and enables users to easily identify and reuse helpful models, not need to build their models from scratch.",
     Try: "Try It Out",
