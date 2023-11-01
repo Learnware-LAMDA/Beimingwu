@@ -83,13 +83,11 @@ def search_learnware(semantic_str, statistical_str, user_id):
         with open(statistical_path, "wb") as stats:
             stats.write(statistical_str)
 
-        # with open(statistical_path, "r") as f:
-        #     data = json.load(f)
-        #     statistical_specification_type = data.get("type", "RKMETableSpecification")
+        with open(statistical_path, "r") as f:
+            data = json.load(f)
+            statistical_specification_type = data.get("type", "RKMETableSpecification")
 
-        statistical_specification_type = "RKMETableSpecification"
-        statistical_specification = specification.RKMETableSpecification()
-        # statistical_specification = statistical_specification_dict[statistical_specification_type]
+        statistical_specification = statistical_specification_dict[statistical_specification_type]
         statistical_specification.load(statistical_path)
     except:
         os.remove(statistical_path)
@@ -107,6 +105,7 @@ def search_learnware(semantic_str, statistical_str, user_id):
     )
 
     try:
+        context.logger.info(f"stat_info in user: {user_info.stat_info}")
         matching, single_learnware_list, multi_score, multi_learnware = context.engine.search_learnware(user_info)
     except Exception as err:
         print(err)
