@@ -27,11 +27,6 @@ class TestEngine(unittest.TestCase):
         )
         TestEngine.learnware_id = testops.add_test_learnware("test@localhost", "test")
 
-    @staticmethod
-    def remove_folder(folder):
-        if os.path.exists(folder):
-            os.rmdir(data_dir)
-
     def tearDownClass() -> None:
         unittest.TestCase.tearDownClass()
         headers = testops.login("test@localhost", "test")
