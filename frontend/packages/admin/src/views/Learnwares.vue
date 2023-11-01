@@ -227,9 +227,13 @@ function handleClickEdit(id: string): void {
 }
 
 function handleClickDelete(id: string): void {
-  dialog.value.confirm();
-  deleteId.value = id;
-  deleteName.value = (learnwareItems.value.find((item) => item.id === id) as { name: string }).name;
+  if (dialog.value) {
+    dialog.value.confirm();
+    deleteId.value = id;
+    deleteName.value = (
+      learnwareItems.value.find((item) => item.id === id) as { name: string }
+    ).name;
+  }
 }
 
 watch(
