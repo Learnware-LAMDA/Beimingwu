@@ -1,7 +1,7 @@
-const BASE_URL = "./api/engine";
+import { BACKEND_URL } from "@main/request";
 
 function downloadLearnwareSync(id: string): void {
-  const url = `${BASE_URL}/download_learnware?learnware_id=${id}`;
+  const url = `${BACKEND_URL}/download_learnware?learnware_id=${id}`;
   window.open(url);
 }
 
