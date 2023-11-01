@@ -12,6 +12,7 @@ import flask_restx as flask_restful
 import traceback
 import lib.database_operations as dbops
 import lib.data_utils as data_utils
+from learnware.config import C as learnware_conf
 
 
 engine_blueprint = Blueprint("Engine-API", __name__)
@@ -27,7 +28,7 @@ class SematicSpecification(flask_restful.Resource):
             result = {
                 "code": 0,
                 "msg": "Ok",
-                "data": {"semantic_specification": context.engine.get_semantic_spec_list()},
+                "data": {"semantic_specification": context.engine_config.semantic_specs},
             }
             return result, 200
         except:

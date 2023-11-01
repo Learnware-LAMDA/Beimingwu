@@ -6,11 +6,13 @@ from config import Config
 from database import Database, SQLAlchemy
 
 from learnware.market import instatiate_learnware_market
+from learnware.config import C as leanrware_conf
 import logging
 
 
 database: Database = None
 engine = None
+engine_config = None
 stats = 0
 
 config = Config()
@@ -31,9 +33,10 @@ def init_database(admin_password: str = None):
 
 
 def init_engine():
-    global config, engine
+    global config, engine, engine_config
     if config.engine["type"] == "easy":
         engine = instatiate_learnware_market(market_id="default", name="easy")
+        engine_config = leanrware_conf
     else:
         raise ValueError(f"Learnware engine type {config.engine['type']} is not supproted.")
     pass
