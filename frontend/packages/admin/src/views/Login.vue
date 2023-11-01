@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 import { useField } from "@beiming-system/hooks";
 import { fetchex, hex_md5 } from "../utils";
 import { BACKEND_URL } from "@main/request";
-import collaborationImg from "@/assets/images/collaboration.svg?url";
+import collaborationImg from "@admin/assets/images/collaboration.svg?url";
 
 const store = useStore();
 

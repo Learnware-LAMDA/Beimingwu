@@ -7,7 +7,7 @@ import { fetchex } from "../utils/fetchex";
 import { BACKEND_URL } from "@main/request";
 import UserRequirement from "@main/components/Search/UserRequirement.vue";
 import PageLearnwareList from "@main/components/Learnware/PageLearnwareList.vue";
-import ConfirmDialog from "@/components/Dialogs/ConfirmDialog.vue";
+import ConfirmDialog from "@admin/components/Dialogs/ConfirmDialog.vue";
 import type { Filter, LearnwareCardInfo } from "@beiming-system/types/learnware";
 
 const display = useDisplay();
