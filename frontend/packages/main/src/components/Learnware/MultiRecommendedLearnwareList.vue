@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { downloadLearnware } from "../../request/engine";
 import JSZip from "jszip";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
@@ -27,6 +28,8 @@ const display = useDisplay();
 const router = useRouter();
 
 const store = useStore();
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   filters: () => ({
@@ -109,7 +112,7 @@ function getColorByScore(score: number): string {
   >
     <div v-if="items.length > 0" class="flex justify-between">
       <v-card-title v-if="matchScore" class="score">
-        Total specification score
+        {{ t("Search.TotalSpecificationScore") }}
         <span class="ml-2" :style="`color: ${getColorByScore(matchScore)}`">{{ matchScore }}</span>
       </v-card-title>
       <v-btn
@@ -120,11 +123,11 @@ function getColorByScore(score: number): string {
       >
         <span v-if="!downloading">
           <v-icon icon="mdi-download"></v-icon>
-          Download All
+          {{ t("Search.DownloadAll") }}
         </span>
         <span v-else class="flex items-center">
           <v-progress-circular class="mr-3" indeterminate></v-progress-circular>
-          Downloading ...
+          {{ t("Search.Downloading") }}
         </span>
       </v-btn>
     </div>
@@ -146,7 +149,7 @@ function getColorByScore(score: number): string {
       </TransitionGroup>
       <div v-if="items.length === 0" flat class="no-learnware">
         <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
-        Oops! There are no learnwares.
+        {{ t("Learnware.OopsThereNoLearnware") }}
       </div>
     </v-card>
   </div>

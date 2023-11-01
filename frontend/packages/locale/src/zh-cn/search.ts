@@ -8,4 +8,7 @@ export default {
   Updated: "更新于",
   HeterogeneousSearch: "异构查搜",
   TurnOffHeterogeneousSearch: "关闭异构查搜",
+  TotalSpecificationScore: "规约匹配总分数",
+  DownloadAll: "下载全部",
+  Downloading: "下载中...",
 };

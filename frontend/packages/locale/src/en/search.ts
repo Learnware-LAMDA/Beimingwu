@@ -8,4 +8,7 @@ export default {
   Updated: "Updated",
   HeterogeneousSearch: "Heterogeneous Search",
   TurnOffHeterogeneousSearch: "Turn off heterogeneous search",
+  TotalSpecificationScore: "Total specification score",
+  DownloadAll: "Download all",
+  Downloading: "Downloading...",
 };
