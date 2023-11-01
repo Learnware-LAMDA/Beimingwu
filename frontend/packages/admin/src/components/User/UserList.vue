@@ -107,15 +107,16 @@ function handleClickSetRole(id: number, role: number): void {
             <div class="title">
               <span class="small-title">Unverified: </span>{{ item.unverified_learnware_count }}
             </div>
-            <div class="title">
-              <v-card-actions class="actions">
-                <v-checkbox
-                  :model-value="item.role >= 1"
-                  :disabled="!enableSetRole || item.email === 'admin@localhost'"
-                  class="title"
-                  @click="handleClickSetRole(item.id, item.role == 1 ? 0 : 1)"
-                ></v-checkbox>
-              </v-card-actions>
+            <div class="title flex">
+              <span class="small-title mr-2">IsAdmin: </span>
+              <v-checkbox
+                class="title"
+                :model-value="item.role >= 1"
+                :disabled="!enableSetRole || item.email === 'admin@localhost'"
+                @click.prevent="handleClickSetRole(item.id, item.role == 1 ? 0 : 1)"
+                density="dense"
+                hide-details
+              ></v-checkbox>
             </div>
           </div>
           <v-card-actions class="actions">
@@ -158,7 +159,7 @@ function handleClickSetRole(id: number, role: number): void {
         @apply grid sm: "grid-cols-[3fr,3fr,1fr,1fr,1fr]" w-1/1;
 
         .title {
-          @apply xl: text-1rem lg:text-lg text-xs sm: (flex flex-col items-start justify-center);
+          @apply xl: text-1rem lg:text-lg text-sm sm: (flex flex-col items-start justify-center);
           .link {
             @apply underline;
           }
