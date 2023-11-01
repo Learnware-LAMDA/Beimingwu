@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, List
 from datetime import datetime
 import context
 import database.base
@@ -465,7 +465,7 @@ def create_user_token(user_id, token):
     pass
 
 
-def get_user_tokens(user_id) -> list[str]:
+def get_user_tokens(user_id) -> List[str]:
     result = context.database.execute("SELECT token FROM tb_user_token WHERE user_id = :user_id", {"user_id": user_id})
     if len(result) == 0:
         return []
