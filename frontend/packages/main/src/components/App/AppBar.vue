@@ -50,7 +50,7 @@ const filteredRoutes = computed<Route[]>(
 </script>
 
 <template>
-  <v-app-bar app flat class="bg-white border-b-1">
+  <v-app-bar flat class="bg-white border-b-1">
     <div class="prepend">
       <v-app-bar-nav-icon
         v-if="['xs', 'sm'].includes(display.name.value)"

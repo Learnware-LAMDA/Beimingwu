@@ -74,7 +74,7 @@ function handleClickDelete(id: string): void {
 
 <template>
   <v-card flat :density="greaterThanXs ? 'comfortable' : 'compact'" class="card py-2">
-    <v-card-title class="title flex" :class="item.username ? '' : 'items-center'">
+    <v-card-title class="my-title flex" :class="item.username ? '' : 'items-center'">
       <v-avatar :size="greaterThanSm ? 'default' : 'small'" class="mr-2" rounded="0">
         <component :is="avatar" :class="item.username ? 'w-1/1' : 'w-4/5'" class="opacity-70" />
       </v-avatar>
@@ -168,25 +168,25 @@ function handleClickDelete(id: string): void {
       <div class="flex items-center">
         <div class="actions -mr-3 -mb-2">
           <v-btn
-            v-if="isAdmin"
-            flat
-            icon="mdi-pencil"
-            :size="greaterThanXs ? undefined : 'small'"
-            @click.stop="() => handleClickEdit(item.id)"
-          ></v-btn>
-          <v-btn
             v-if="showDownload"
-            flat
+            variant="flat"
             icon="mdi-download"
             :size="greaterThanXs ? undefined : 'small'"
-            @click.stop="() => downloadLearnwareSync(item.id)"
+            @click.stop.prevent="() => downloadLearnwareSync(item.id)"
           ></v-btn>
           <v-btn
             v-if="isAdmin"
-            flat
+            variant="flat"
+            icon="mdi-pencil"
+            :size="greaterThanXs ? undefined : 'small'"
+            @click.stop.prevent="() => handleClickEdit(item.id)"
+          ></v-btn>
+          <v-btn
+            v-if="isAdmin"
+            variant="flat"
             icon="mdi-delete"
             :size="greaterThanXs ? undefined : 'small'"
-            @click.stop="handleClickDelete(item.id)"
+            @click.stop.prevent="handleClickDelete(item.id)"
           ></v-btn>
         </div>
       </div>
@@ -201,7 +201,7 @@ function handleClickDelete(id: string): void {
   .first-row {
     @apply flex justify-between items-start;
 
-    .title {
+    .my-title {
       @apply xl: text-xl lg:text-lg text-1rem;
     }
   }

@@ -16,7 +16,7 @@ const { t } = useI18n();
       </p>
     </div>
     <v-responsive class="mt-10 sm:shadow-md border-1" :aspect-ratio="96 / 55">
-      <v-img contain width="100%" :src="process" />
+      <v-img cover width="100%" :src="process" />
     </v-responsive>
   </div>
 </template>

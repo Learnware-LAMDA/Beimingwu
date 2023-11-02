@@ -122,7 +122,7 @@ function handleClickDelete(id: string): void {
           :key="i"
           class="mx-1 !px-2 !min-w-0"
           :color="i === page ? 'primary' : 'default'"
-          flat
+          variant="flat"
           @click="() => jumpPage(i)"
         >
           {{ i }}

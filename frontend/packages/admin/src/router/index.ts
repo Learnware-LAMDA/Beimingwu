@@ -79,7 +79,7 @@ const Router = createRouter({
         {
           path: "/login",
           name: "Login",
-          component: (): Promise<Component> => import("@admin/views/Login.vue"),
+          component: (): Promise<Component> => import("@main/views/Login.vue"),
           meta: {
             showInNavBar: true,
             hideWhenLoggedIn: true,
