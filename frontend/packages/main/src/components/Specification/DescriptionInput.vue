@@ -140,7 +140,12 @@ watch(
             </template>
           </v-virtual-scroll>
           <div>
-            <v-btn block flat class="mt-1" @click="descriptionArray = [...descriptionArray, null]">
+            <v-btn
+              block
+              variant="flat"
+              class="mt-1"
+              @click="descriptionArray = [...descriptionArray, null]"
+            >
               <v-icon size="large" color="#555">mdi-plus</v-icon>
             </v-btn>
           </div>

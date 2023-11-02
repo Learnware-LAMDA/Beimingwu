@@ -65,7 +65,7 @@ watch(
 
 <template>
   <div class="grid-container">
-    <div class="title text-h6 !text-1rem">{{ title }}</div>
+    <div class="my-title text-h6 !text-1rem">{{ title }}</div>
     <div
       class="btn-container"
       :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
@@ -84,7 +84,7 @@ watch(
 
 <style scoped lang="scss">
 .grid-container {
-  .title {
+  .my-title {
     @apply mt-7 mb-5;
   }
 

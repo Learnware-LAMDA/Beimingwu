@@ -14,10 +14,10 @@ defineExpose({
 </script>
 
 <template>
-  <v-dialog v-model="dialog" class="dialog-container">
-    <v-card class="dialog">
-      <v-card-title class="title">
-        <v-icon class="icon" icon="mdi-check-circle" color="success"></v-icon>
+  <v-dialog v-model="dialog" class="mx-auto w-1/1 max-w-600px">
+    <v-card class="mx-2">
+      <v-card-title class="flex m-2">
+        <v-icon class="mr-2" icon="mdi-check-circle" color="success"></v-icon>
         <slot name="title" />
       </v-card-title>
       <svg class="m-auto w-120px h-120px" viewBox="0 0 200 200">
@@ -43,25 +43,3 @@ defineExpose({
     </v-card>
   </v-dialog>
 </template>
-
-<style scoped lang="scss">
-.dialog-container {
-  @apply mx-auto w-1/1 max-w-600px;
-
-  .dialog {
-    @apply mx-2;
-
-    .title {
-      @apply flex m-2;
-
-      .icon {
-        @apply mr-2;
-      }
-    }
-  }
-}
-
-.offset-animate {
-  stroke-dashoffset: 0;
-}
-</style>
