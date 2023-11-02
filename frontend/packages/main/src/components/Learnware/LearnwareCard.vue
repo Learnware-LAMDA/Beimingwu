@@ -168,25 +168,25 @@ function handleClickDelete(id: string): void {
       <div class="flex items-center">
         <div class="actions -mr-3 -mb-2">
           <v-btn
-            v-if="isAdmin"
-            variant="flat"
-            icon="mdi-pencil"
-            :size="greaterThanXs ? undefined : 'small'"
-            @click.stop="() => handleClickEdit(item.id)"
-          ></v-btn>
-          <v-btn
             v-if="showDownload"
             variant="flat"
             icon="mdi-download"
             :size="greaterThanXs ? undefined : 'small'"
-            @click.stop="() => downloadLearnwareSync(item.id)"
+            @click.stop.prevent="() => downloadLearnwareSync(item.id)"
+          ></v-btn>
+          <v-btn
+            v-if="isAdmin"
+            variant="flat"
+            icon="mdi-pencil"
+            :size="greaterThanXs ? undefined : 'small'"
+            @click.stop.prevent="() => handleClickEdit(item.id)"
           ></v-btn>
           <v-btn
             v-if="isAdmin"
             variant="flat"
             icon="mdi-delete"
             :size="greaterThanXs ? undefined : 'small'"
-            @click.stop="handleClickDelete(item.id)"
+            @click.stop.prevent="handleClickDelete(item.id)"
           ></v-btn>
         </div>
       </div>
