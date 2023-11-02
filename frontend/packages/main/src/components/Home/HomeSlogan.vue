@@ -2,7 +2,7 @@
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import BigTitle from "../Public/BigTitle.vue";
-import system from "/public/system.png";
+import system from "../../../public/system.png";
 
 const { t } = useI18n();
 
