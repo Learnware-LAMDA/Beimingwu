@@ -29,7 +29,7 @@ const router = useRouter();
     </div>
 
     <div class="mx-auto px-8 max-w-7xl">
-      <v-img class="border rounded-t-lg" :src="system" />
+      <v-img class="border rounded-lg elevation-24 filter brightness-80 opacity-80" :src="system" />
     </div>
   </div>
 </template>
