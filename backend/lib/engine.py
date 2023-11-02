@@ -77,6 +77,7 @@ def search_learnware(semantic_str, statistical_str, user_id):
     statistical_specification_dict = {
         "RKMETableSpecification": specification.RKMETableSpecification(),
         "RKMEImageSpecification": specification.RKMEImageSpecification(),
+        "RKMETextSpecification": specification.RKMETextSpecification(),
     }
 
     try:
@@ -217,23 +218,29 @@ def check_learnware_file(semantic_specification, learnware_file):
     temp_dir = tempfile.TemporaryDirectory(prefix="learnware_check_file_")
 
     try:
-        yaml_file = learnware.config.C.learnware_folder_config["yaml_file"]
+        # Check semantic_specification
+        if (
+            market.EasySemanticChecker.check_semantic_spec(semantic_specification)
+            == market.EasySemanticChecker.INVALID_LEARNWARE
+        ):
+            return False, f"Semantic specification check failed!"
 
         with zipfile.ZipFile(learnware_file, "r") as z_file:
             top_folder = common_utils.get_top_folder_in_zip(z_file)
 
+            yaml_file = learnware.config.C.learnware_folder_config["yaml_file"]
             yaml_file = top_folder + yaml_file
             z_file.extract(yaml_file, temp_dir.name)
 
             with open(os.path.join(temp_dir.name, yaml_file), "r") as fin:
                 learnware_config = yaml.safe_load(fin)
-                pass
 
             stat_specs = learnware_config.get("stat_specifications")
 
             if stat_specs is None:
                 return False, f"no stat_specifications in {yaml_file}"
 
+            # Check stat_specifications
             for stat_spec in stat_specs:
                 member = stat_spec["file_name"]
                 member = top_folder + member
@@ -241,19 +248,16 @@ def check_learnware_file(semantic_specification, learnware_file):
                 stat_spec["file_name"] = os.path.join(temp_dir.name, member)
                 stat_spec_name, stat_spec_obj = get_stat_spec_from_config(stat_spec)
 
-                if stat_spec_name == "RKMEStatSpecification":
+                if stat_spec_name == "RKMEStatSpecification" or stat_spec_name == "RKMETableSpecification":
                     if semantic_specification["Data"]["Values"][0] == "Table":
                         dim_table = int(semantic_specification["Input"]["Dimension"])
                         dim_rkme = stat_spec_obj.get_z().shape[1]
                         if dim_table != dim_rkme:
                             return False, f"dimension of table is {dim_table}, dimension of rkme is {dim_rkme}"
-                        pass
-                    pass
-                pass
-            pass
-        pass
+
     except Exception as err:
         return False, f"extract statistical specification error: {err}"
+
     finally:
         temp_dir.cleanup()
 
@@ -272,9 +276,5 @@ def get_learnware_count_detail():
         for key, value in count_detail.items():
             for v in semantic_spec[key]["Values"]:
                 value[v] += 1
-                pass
-            pass
-        pass
 
     return count_detail
-    pass

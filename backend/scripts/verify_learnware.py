@@ -7,8 +7,7 @@ import shortuuid
 import os
 import zipfile
 import tempfile
-from learnware.market import BaseChecker
-from learnware.market.easy2 import EasyStatisticalChecker
+from learnware.market import BaseChecker, EasyStatisticalChecker
 from lib import package_utils
 
 
