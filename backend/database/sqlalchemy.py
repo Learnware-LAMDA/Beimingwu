@@ -3,6 +3,9 @@ import os
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, text
 from sqlalchemy import Column, Integer, Text, DateTime, String, PrimaryKeyConstraint, UniqueConstraint, Index
+import sqlalchemy.engine
+from lib import command_executor
+import shutil
 
 from datetime import datetime
 
@@ -77,10 +80,24 @@ class Log(DeclarativeBase):
 
 
 class DatabaseHelper(object):
-    def database_exists(self):
+    @classmethod
+    def create_from_url(cls, url: str) -> "DatabaseHelper":
+        if url.startswith("sqlite"):
+            helper = SqliteHelper()
+        elif url.startswith("postgresql"):
+            helper = PostgresHelper()
+        else:
+            raise Exception(f"Unsupported database url: {url}")
+            pass
+        return helper
+
+    def database_exists(self, url: str):
         raise NotImplementedError()
 
-    def create_database(self):
+    def create_database(self, url: str):
+        raise NotImplementedError()
+
+    def dump_database(self, url: str, filename: str):
         raise NotImplementedError()
 
     pass
@@ -122,6 +139,17 @@ class PostgresHelper(DatabaseHelper):
             pass
         pass
 
+    def dump_database(self, url: str, filename: str):
+        url_struct = sqlalchemy.engine.url.make_url(url)
+        os.environ["PGPASSWORD"] = url_struct.password
+        cmd = f"pg_dump -U {url_struct.username} -h {url_struct.host}"
+        if url_struct.port is not None:
+            cmd = cmd + f" -p {url_struct.port}"
+            pass
+        cmd = cmd + f" {url_struct.database} > {filename}"
+        command_executor.execute_shell(cmd, check=True)
+        pass
+
 
 class SqliteHelper(DatabaseHelper):
     def get_path(self, url: str):
@@ -142,6 +170,11 @@ class SqliteHelper(DatabaseHelper):
         os.makedirs(os.path.dirname(path), exist_ok=True)
         pass
 
+    def dump_database(self, url: str, filename: str):
+        url_struct = sqlalchemy.engine.url.make_url(url)
+        print(url_struct.database)
+        shutil.copyfile(url_struct.database, filename)
+
 
 class SQLAlchemy(Database):
     DATASET_INIT_DATA = [
@@ -155,13 +188,7 @@ class SQLAlchemy(Database):
         pass
 
     def install(self, admin_password):
-        if self.url.startswith("sqlite"):
-            helper = SqliteHelper()
-        elif self.url.startswith("postgresql"):
-            helper = PostgresHelper()
-        else:
-            raise Exception(f"Unsupported database url: {self.url}")
-            pass
+        helper = DatabaseHelper.create_from_url(self.url)
 
         if not helper.database_exists(self.url):
             if admin_password is None:
