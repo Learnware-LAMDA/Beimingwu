@@ -18,44 +18,34 @@ import yaml
 import shutil
 from typing import Tuple
 import learnware.utils
+from learnware.market import CondaChecker, EasyStatChecker
+from learnware.learnware import get_learnware_from_dirpath
 
 
 def verify_learnware_by_script(
     learnware_id: str, learnware_path: str, semantic_spec_filename: str, process_result_filename: str
 ) -> Tuple[bool, str]:
-    verify_script = os.path.join("scripts", "verify_learnware.py")
-    verify_command = (
-        f"python3 {verify_script} --learnware-path {learnware_path}"
-        f" --semantic-path {semantic_spec_filename}"
-        f" --result-file-path {process_result_filename} --create-env"
-    )
+    verify_sucess = True
+    command_output = ""
+    try:
+        with open(semantic_spec_filename, "r") as fin:
+            semantic_specification = json.load(fin)
+        learnware = get_learnware_from_dirpath(
+            id=learnware_id, semantic_spec=semantic_specification, learnware_dirpath=learnware_path, raise_error=True
+        )
+    except Exception as e:
+        verify_sucess = False
+        command_output = f"initiate learnware failed due to {str(e)}"
+        return verify_sucess, command_output
 
     try:
-        command_output = command_executor.execute_shell(verify_command, timeout=context.config.verify_timeout)
-    except Exception as e:
-        context.logger.exception(e)
-        command_output = str(e)
-        pass
-
-    verify_sucess = True
-
-    if not os.path.exists(process_result_filename):
-        verify_sucess = False
-        pass
-    else:
-        try:
-            with open(process_result_filename, "r") as f:
-                verify_result = json.load(f)
-                pass
-
-            if verify_result["result_code"] != "SUCCESS":
-                verify_sucess = False
-                pass
-        except Exception:
+        stat_checker = CondaChecker(inner_checker=EasyStatChecker())
+        if stat_checker(learnware=learnware) == EasyStatChecker.INVALID_LEARNWARE:
             verify_sucess = False
-            pass
-        os.remove(process_result_filename)
-        pass
+            command_output = "Statistical checker does not pass"
+    except Exception as e:
+        verify_sucess = False
+        command_output = f"Statistical checker runtime error due to {str(e)}"
 
     return verify_sucess, command_output
 
@@ -112,7 +102,7 @@ def worker_process_func(q: queue.Queue, env: dict):
             update_learnware_yaml_file(extract_path, learnware_id, semantic_spec_filename)
 
             verify_success, command_output = verify_learnware_by_script(
-                learnware_id, extract_path, semantic_spec_filename, process_result_filename
+                learnware_id, extract_path, semantic_spec_filename
             )
 
             # the learnware my be deleted
