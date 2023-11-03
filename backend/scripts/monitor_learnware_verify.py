@@ -22,7 +22,7 @@ from learnware.market import CondaChecker, EasyStatChecker
 from learnware.learnware import get_learnware_from_dirpath
 
 
-def verify_learnware_by_script(
+def verify_learnware_with_conda_checker(
     learnware_id: str, learnware_path: str, semantic_spec_filename: str, process_result_filename: str
 ) -> Tuple[bool, str]:
     verify_sucess = True
@@ -101,7 +101,7 @@ def worker_process_func(q: queue.Queue, env: dict):
             extract_path = os.path.join(extract_path, top_folder)
             update_learnware_yaml_file(extract_path, learnware_id, semantic_spec_filename)
 
-            verify_success, command_output = verify_learnware_by_script(
+            verify_success, command_output = verify_learnware_with_conda_checker(
                 learnware_id, extract_path, semantic_spec_filename
             )
 
