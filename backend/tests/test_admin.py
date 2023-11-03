@@ -11,6 +11,7 @@ import hashlib
 
 class TestAdmin(unittest.TestCase):
     def setUpClass() -> None:
+        testops.cleanup_folder()
         unittest.TestCase.setUpClass()
         TestAdmin.server_process = multiprocessing.Process(target=main.main)
         TestAdmin.server_process.start()

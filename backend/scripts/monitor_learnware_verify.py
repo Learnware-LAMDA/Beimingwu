@@ -8,6 +8,7 @@ import argparse
 import os
 import lib.command_executor as command_executor
 from database.base import LearnwareVerifyStatus
+from learnware.market import BaseChecker
 import json
 import lib.restful_wrapper as restful_wrapper
 import tempfile
@@ -87,13 +88,13 @@ def worker_process_func(q: queue.Queue, env: dict):
         if not dbops.check_learnware_exist(learnware_id=learnware_id):
             context.logger.info(f"learnware is deleted, no need to process: {learnware_id}")
             continue
-            pass
 
         dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.PROCESSING)
         learnware_filename = context.get_learnware_verify_file_path(learnware_id)
         semantic_spec_filename = learnware_filename[:-4] + ".json"
         process_result_filename = learnware_filename + ".result"
         learnware_processed_filename = learnware_filename[:-4] + "_processed.zip"
+        learnware_check_status = BaseChecker.NONUSABLE_LEARNWARE
 
         with tempfile.TemporaryDirectory(dir=context.config["temp_path"]) as tmpdir:
             extract_path = tmpdir
@@ -121,41 +122,33 @@ def worker_process_func(q: queue.Queue, env: dict):
 
             if verify_success:
                 verify_status = LearnwareVerifyStatus.SUCCESS
+                learnware_check_status = BaseChecker.USABLE_LEARWARE
             else:
                 verify_status = LearnwareVerifyStatus.FAIL
-                pass
 
             learnware.utils.zip_learnware_folder(extract_path, learnware_processed_filename)
-            pass
 
-        if verify_status == LearnwareVerifyStatus.SUCCESS:
-            try:
-                # internal service should not use proxy
-                os.environ.pop("http_proxy", "")
-                original_proxy = os.environ.pop("https_proxy", "")
-                restful_wrapper.add_learnware_verified(learnware_id)
+        try:
+            # internal service should not use proxy
+            os.environ.pop("http_proxy", "")
+            original_proxy = os.environ.pop("https_proxy", "")
+            restful_wrapper.add_learnware_verified(learnware_id, learnware_check_status)
 
-                # restore proxy
-                os.environ["http_proxy"] = original_proxy
-                os.environ["https_proxy"] = original_proxy
+            # restore proxy
+            os.environ["http_proxy"] = original_proxy
+            os.environ["https_proxy"] = original_proxy
 
-            except Exception as e:
-                verify_status = LearnwareVerifyStatus.FAIL
-                command_output += "\n\n" + str(e)
-                pass
-            pass
+        except Exception as e:
+            verify_status = LearnwareVerifyStatus.FAIL
+            command_output += "\n\n" + str(e)
 
         if verify_status == LearnwareVerifyStatus.SUCCESS:
             os.remove(learnware_filename)
             os.remove(semantic_spec_filename)
             os.remove(learnware_processed_filename)
-            pass
 
         dbops.update_learnware_verify_result(learnware_id, verify_status, command_output)
-
         context.logger.info(f"Finish to verify learnware: {learnware_id}")
-        pass
-    pass
 
 
 def main(num_worker):

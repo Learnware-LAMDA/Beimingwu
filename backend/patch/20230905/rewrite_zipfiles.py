@@ -11,10 +11,10 @@ if __name__ == "__main__":
 
     engine = context.engine
 
-    for learnware_id, learnware in engine.learnware_list.items():
+    for learnware_id, learnware in engine.learnware_organizer.learnware_list.items():
         print(f"processing learnware: {learnware_id}")
-        zip_path = engine.learnware_zip_list[learnware_id]
-        unzip_path = engine.learnware_folder_list[learnware_id]
+        zip_path = engine.learnware_organizer.learnware_zip_list[learnware_id]
+        unzip_path = engine.learnware_organizer.learnware_folder_list[learnware_id]
 
         with zipfile.ZipFile(zip_path, "w") as f:
             for root, dirs, files in os.walk(unzip_path):
@@ -23,9 +23,3 @@ if __name__ == "__main__":
                         os.remove(os.path.join(root, file))
                     else:
                         f.write(os.path.join(root, file), arcname=file)
-                        pass
-                    pass
-                pass
-            pass
-        pass
-    pass

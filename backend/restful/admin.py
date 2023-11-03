@@ -1,10 +1,8 @@
 from flask import Blueprint, request
-import context
 from context import config as C
 import hashlib
-import os
 from .auth import admin_login_required, super_admin_login_required
-from .utils import get_parameters, generate_random_str
+from .utils import generate_random_str
 from . import common_functions
 
 import lib.database_operations as database
@@ -53,7 +51,6 @@ class ListUser(flask_restful.Resource):
             "data": {"user_list": ret, "page": page, "limit": limit, "total_pages": (cnt + limit - 1) // limit},
         }
         return result, 200
-        pass
 
 
 class DeleteUser(flask_restful.Resource):
@@ -94,7 +91,6 @@ class DeleteUser(flask_restful.Resource):
                 "msg": "System error.",
             }
         return result, 200
-        pass
 
 
 class ListLearnware(flask_restful.Resource):
@@ -125,7 +121,6 @@ class ListLearnware(flask_restful.Resource):
             data["last_modify"] = row["last_modify"].strftime("%Y-%m-%d %H:%M:%S.%f %Z")
             data["verify_status"] = row["verify_status"]
             datas.append(data)
-            pass
 
         result = {
             "code": 0,
@@ -138,7 +133,6 @@ class ListLearnware(flask_restful.Resource):
             },
         }
         return result, 200
-        pass
 
 
 class DeleteLearnware(flask_restful.Resource):
@@ -156,7 +150,6 @@ class DeleteLearnware(flask_restful.Resource):
         print(f"delete learnware: {learnware_id}")
 
         return common_functions.delete_learnware(user_id, learnware_id)
-        pass
 
 
 class ResetPassword(flask_restful.Resource):
@@ -203,8 +196,6 @@ class SetUserRole(flask_restful.Resource):
 
         return {"code": 0, "msg": "Set user role success."}, 200
 
-    pass
-
 
 class Summary(flask_restful.Resource):
     @admin_login_required
@@ -229,8 +220,6 @@ class Summary(flask_restful.Resource):
         }
 
         return result, 200
-
-    pass
 
 
 api.add_resource(ListUser, "/list_user")

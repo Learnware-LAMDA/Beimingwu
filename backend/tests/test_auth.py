@@ -14,6 +14,7 @@ import hashlib
 
 class TestAuth(unittest.TestCase):
     def setUpClass() -> None:
+        testops.cleanup_folder()
         unittest.TestCase.setUpClass()
         TestAuth.server_process = multiprocessing.Process(target=main.main)
         TestAuth.server_process.start()

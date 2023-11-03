@@ -97,7 +97,9 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
 
         self.assertEqual(status, LearnwareVerifyStatus.FAIL.value)
         self.assertTrue(os.path.exists(context.get_learnware_verify_file_path(learnware_id)))
-        result = testops.url_request("user/list_learnware_unverified", {"page": 0, "limit": 10}, headers=headers)
+        result = testops.url_request(
+            "user/list_learnware", {"page": 0, "limit": 10, "is_verified": False}, headers=headers
+        )
 
         self.assertEqual(result["code"], 0)
         self.assertEqual(result["data"]["total_pages"], 1)

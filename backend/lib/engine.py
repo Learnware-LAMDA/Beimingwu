@@ -60,7 +60,7 @@ def get_learnware_by_id(ids):
     return learneare_list
 
 
-def search_learnware(semantic_str, statistical_str, user_id):
+def search_learnware(semantic_str, statistical_str, user_id, check_status=None):
     # Load semantic specification
     try:
         semantic_specification = json.loads(semantic_str)
@@ -107,7 +107,9 @@ def search_learnware(semantic_str, statistical_str, user_id):
 
     try:
         context.logger.info(f"stat_info in user: {user_info.stat_info}")
-        matching, single_learnware_list, multi_score, multi_learnware = context.engine.search_learnware(user_info)
+        matching, single_learnware_list, multi_score, multi_learnware = context.engine.search_learnware(
+            user_info, check_status=check_status
+        )
     except Exception as err:
         print(err)
         traceback.print_exc()
@@ -117,7 +119,7 @@ def search_learnware(semantic_str, statistical_str, user_id):
     return True, "", (matching, single_learnware_list, multi_score, multi_learnware)
 
 
-def search_learnware_by_semantic(semantic_str, user_id):
+def search_learnware_by_semantic(semantic_str, user_id, check_status=None):
     # Load semantic specification
     try:
         semantic_specification = json.loads(semantic_str)
@@ -131,7 +133,9 @@ def search_learnware_by_semantic(semantic_str, user_id):
         stat_info={},  # No statistical specification
     )
     try:
-        matching, single_learnware_list, multi_score, multi_learnware = context.engine.search_learnware(info)
+        matching, single_learnware_list, multi_score, multi_learnware = context.engine.search_learnware(
+            info, check_status=check_status
+        )
     except Exception as err:
         return False, f"Engine search learnware error.", None
 
@@ -179,7 +183,7 @@ def parse_semantic_specification(semantic_str):
         return None, "Output is not 1"
 
     task_type = task_type_values[0]
-    if task_type in ("Classification", "Regression", "Feature Extraction"):
+    if task_type in ("Classification", "Regression"):
         task_output = semantic_specification["Output"]
         if isinstance(task_output, str):
             try:
@@ -264,14 +268,14 @@ def check_learnware_file(semantic_specification, learnware_file):
     return True, ""
 
 
-def get_learnware_count_detail():
+def get_learnware_count_detail(check_status=None):
     count_detail = dict()
     count_detail["Data"] = defaultdict(int)
     count_detail["Task"] = defaultdict(int)
     count_detail["Library"] = defaultdict(int)
     count_detail["Scenario"] = defaultdict(int)
 
-    for learnware_obj in context.engine.get_all_learnware():
+    for learnware_obj in context.engine.get_learnwares(check_status=check_status):
         semantic_spec = learnware_obj.get_specification().get_semantic_spec()
         for key, value in count_detail.items():
             for v in semantic_spec[key]["Values"]:

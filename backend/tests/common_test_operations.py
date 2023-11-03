@@ -7,6 +7,7 @@ from context import config as C
 import json
 import os
 from database.base import LearnwareVerifyStatus
+from learnware.market import BaseChecker
 import shutil
 import hashlib
 
@@ -140,7 +141,11 @@ def add_learnware_to_engine(learnware_id, headers):
     print(learnware_file)
     shutil.copyfile(learnware_file, learnware_file[:-4] + "_processed.zip")
 
-    result = url_request("user/add_learnware_verified", {"learnware_id": learnware_id}, headers=headers)
+    result = url_request(
+        "user/add_learnware_verified",
+        {"learnware_id": learnware_id, "check_status": BaseChecker.USABLE_LEARWARE},
+        headers=headers,
+    )
 
     if result["code"] != 0:
         raise Exception("add learnware verified failed: " + json.dumps(result))
