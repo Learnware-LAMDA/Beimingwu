@@ -250,12 +250,13 @@ def check_learnware_file(semantic_specification, learnware_file):
                 member = top_folder + member
                 z_file.extract(member, temp_dir.name)
                 stat_spec["file_name"] = os.path.join(temp_dir.name, member)
-                stat_spec_name, stat_spec_obj = get_stat_spec_from_config(stat_spec)
+                stat_spec_obj = get_stat_spec_from_config(stat_spec)
 
-                if stat_spec_name == "RKMEStatSpecification" or stat_spec_name == "RKMETableSpecification":
+                if stat_spec_obj.type == "RKMETableSpecification":
                     if semantic_specification["Data"]["Values"][0] == "Table":
                         dim_table = int(semantic_specification["Input"]["Dimension"])
                         dim_rkme = stat_spec_obj.get_z().shape[1]
+
                         if dim_table != dim_rkme:
                             return False, f"dimension of table is {dim_table}, dimension of rkme is {dim_rkme}"
 
