@@ -23,7 +23,7 @@ from learnware.learnware import get_learnware_from_dirpath
 
 
 def verify_learnware_with_conda_checker(
-    learnware_id: str, learnware_path: str, semantic_spec_filename: str, process_result_filename: str
+    learnware_id: str, learnware_path: str, semantic_spec_filename: str
 ) -> Tuple[bool, str]:
     verify_sucess = True
     command_output = ""
