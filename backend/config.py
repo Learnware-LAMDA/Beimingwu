@@ -61,6 +61,7 @@ ROOT_DIRPATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(os.path.dirname(ROOT_DIRPATH), "backend_data")
 UPLOAD_PATH = os.path.join(DATA_PATH, "upload")
 TEMP_PATH = os.path.join(DATA_PATH, "temp")
+BACKUP_PATH = os.path.join(DATA_PATH, "backup")
 SQLITE_PATH = os.path.join(DATA_PATH, "database.db")
 MARKET_PATH = os.path.join(DATA_PATH, "learnware")
 PROPERTY_PATH = os.path.join(DATA_PATH, "property.json")
@@ -70,6 +71,8 @@ _DEFAULT_CONFIG = {
     "root_path": ROOT_DIRPATH,
     "upload_path": UPLOAD_PATH,
     "temp_path": TEMP_PATH,
+    "backup_path": BACKUP_PATH,
+    "backup_max_count": 7,
     "remove_upload_file": False,
     # Database config
     "database": {
