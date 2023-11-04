@@ -12,6 +12,7 @@ import flask_restx as flask_restful
 import traceback
 import lib.database_operations as dbops
 import lib.data_utils as data_utils
+from learnware.market import BaseChecker
 from learnware.config import C as learnware_conf
 
 
@@ -43,6 +44,8 @@ class SearchLearnware(flask_restful.Resource):
         user_id = flask_jwt_extended.get_jwt_identity()
 
         semantic_str = request.form.get("semantic_specification")
+        is_verified = request.form.get("is_verified", True)
+
         if semantic_str is None:
             return {"code": 21, "msg": f"Request parameters error."}, 200
         context.logger.info(f"search learnware, semantic_str: {semantic_str}")
@@ -56,11 +59,20 @@ class SearchLearnware(flask_restful.Resource):
             statistical_file = request.files["statistical_specification"]
             statistical_str = statistical_file.read()
 
+        # Acquire check_status
+        if is_verified == True:
+            check_status = BaseChecker.USABLE_LEARWARE
+        else:
+            # TODO: requires administrator rights
+            check_status = BaseChecker.NONUSABLE_LEARNWARE
+
         # Cached Search learnware
         if statistical_str is None:
-            status, msg, ret = adv_engine.search_learnware_by_semantic(semantic_str, user_id)
+            status, msg, ret = adv_engine.search_learnware_by_semantic(semantic_str, user_id, check_status=check_status)
         else:
-            status, msg, ret = adv_engine.search_learnware(semantic_str, statistical_str, user_id)
+            status, msg, ret = adv_engine.search_learnware(
+                semantic_str, statistical_str, user_id, check_status=check_status
+            )
             pass
 
         print(msg)
