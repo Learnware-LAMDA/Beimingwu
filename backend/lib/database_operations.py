@@ -198,6 +198,23 @@ def get_all_learnware_list(columns, limit=None, page=None, is_verified=None, use
     return results, count[0][0]
 
 
+def convert_modify_time_to_datetime(rows):
+    rows_ = []
+    for row in rows:
+        row_ = dict()
+        for k, v in row._mapping.items():
+            if k == "last_modify":
+                row_[k] = convert_datetime(v)
+                pass
+            else:
+                row_[k] = v
+                pass
+            pass
+        rows_.append(row_)
+        pass
+    return rows_
+
+
 def get_learnware_list(by, value, limit=None, page=None, is_verified=None):
     sql = f"FROM tb_user_learnware_relation WHERE {by} = :{by}"
     if is_verified is None:
@@ -219,7 +236,8 @@ def get_learnware_list(by, value, limit=None, page=None, is_verified=None):
         "SELECT * " + sql + order + suffix, {by: value, "verify_status": LearnwareVerifyStatus.SUCCESS.value}
     )
 
-    return [r._mapping for r in rows], cnt[0][0]
+    rows_ = convert_modify_time_to_datetime(rows=rows)
+    return rows_, cnt[0][0]
 
 
 def get_learnware_list_by_user_id(user_id, limit, page):
@@ -256,19 +274,7 @@ def get_learnware_list_by_user_id(user_id, limit, page):
         },
     )
 
-    rows_ = []
-    for row in rows:
-        row_ = dict()
-        for k, v in row._mapping.items():
-            if k == "last_modify":
-                row_[k] = convert_datetime(v)
-                pass
-            else:
-                row_[k] = v
-                pass
-            pass
-        rows_.append(row_)
-        pass
+    rows_ = convert_modify_time_to_datetime(rows=rows)
 
     return rows_, cnt
 
