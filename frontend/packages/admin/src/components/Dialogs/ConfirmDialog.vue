@@ -20,10 +20,10 @@ defineExpose({
 </script>
 
 <template>
-  <v-dialog v-model="dialog" class="dialog-container">
-    <v-card class="dialog">
-      <v-card-title class="title">
-        <v-icon class="icon" icon="mdi-alert" color="red"></v-icon>
+  <v-dialog v-model="dialog" class="mx-auto w-1/1 max-w-600px">
+    <v-card class="mx-2">
+      <v-card-title class="flex m-2">
+        <v-icon class="mr-2" icon="mdi-alert" color="red"></v-icon>
         <slot name="title" />
       </v-card-title>
       <v-card-text>
@@ -37,21 +37,3 @@ defineExpose({
     </v-card>
   </v-dialog>
 </template>
-
-<style scoped lang="scss">
-.dialog-container {
-  @apply mx-auto w-1/1 max-w-600px;
-
-  .dialog {
-    @apply mx-2;
-
-    .title {
-      @apply flex m-2;
-
-      .icon {
-        @apply mr-2;
-      }
-    }
-  }
-}
-</style>

@@ -54,7 +54,7 @@ const filteredRoutes = computed(() => {
 </script>
 
 <template>
-  <v-navigation-drawer v-model="drawer" app clipped>
+  <v-navigation-drawer v-model="drawer">
     <!--v-list navigation from router-->
     <v-list>
       <h1 class="ma-4">Pages</h1>

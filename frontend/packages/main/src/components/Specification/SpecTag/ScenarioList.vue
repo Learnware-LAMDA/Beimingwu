@@ -155,7 +155,7 @@ function deleteSelect(value: Scenario): void {
 
 <template>
   <div class="scenario-container" flat>
-    <div class="title text-h6 !text-1rem">
+    <div class="my-title text-h6 !text-1rem">
       {{ t("Submit.SemanticSpecification.Scenario.Scenario") }}
     </div>
 
@@ -178,7 +178,7 @@ function deleteSelect(value: Scenario): void {
 
 <style scoped lang="scss">
 .scenario-container {
-  .title {
+  .my-title {
     @apply mt-7 mb-5;
   }
 

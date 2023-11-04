@@ -101,7 +101,7 @@ onActivated(() => {
           {{ token }}
         </div>
         <v-spacer></v-spacer>
-        <v-btn flat icon="mdi-delete" @click="() => onDeleteClick(token)"></v-btn>
+        <v-btn variant="flat" icon="mdi-delete" @click="() => onDeleteClick(token)"></v-btn>
       </v-card-text>
       <v-card-actions>
         <v-btn variant="outlined" @click="onGenerateClick">

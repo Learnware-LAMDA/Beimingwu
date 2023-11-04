@@ -77,7 +77,7 @@ const files = computed({
           </div>
           <v-btn
             v-if="files.length > 0"
-            flat
+            variant="flat"
             icon="mdi-close"
             @click.stop="() => (files = [])"
           ></v-btn>

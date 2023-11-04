@@ -67,19 +67,19 @@ function handleClickSetRole(id: number, role: number): void {
       <div v-if="items && items.length > 0" flat class="item">
         <div class="row">
           <div class="columns">
-            <div class="title">
+            <div class="my-title">
               {{ t("AllUser.Username") }}
             </div>
-            <div class="title">
+            <div class="my-title">
               {{ t("AllUser.Email") }}
             </div>
-            <div class="title">
+            <div class="my-title">
               {{ t("AllUser.Verified") }}
             </div>
-            <div class="title">
+            <div class="my-title">
               {{ t("AllUser.Unverified") }}
             </div>
-            <div class="title">
+            <div class="my-title">
               {{ t("AllUser.IsAdmin") }}
             </div>
           </div>
@@ -92,7 +92,7 @@ function handleClickSetRole(id: number, role: number): void {
       <div v-for="(item, i) in items" :key="i" class="item">
         <div class="row">
           <div class="columns">
-            <div class="title">
+            <div class="my-title">
               <span class="small-title">Username: </span>
               <span class="link">
                 <router-link :to="{ name: 'UserLearnware', query: { user_id: item.id } }">
@@ -100,17 +100,17 @@ function handleClickSetRole(id: number, role: number): void {
                 </router-link>
               </span>
             </div>
-            <div class="title"><span class="small-title">Email: </span>{{ item.email }}</div>
-            <div class="title">
+            <div class="my-title"><span class="small-title">Email: </span>{{ item.email }}</div>
+            <div class="my-title">
               <span class="small-title">Verified: </span>{{ item.verified_learnware_count }}
             </div>
-            <div class="title">
+            <div class="my-title">
               <span class="small-title">Unverified: </span>{{ item.unverified_learnware_count }}
             </div>
-            <div class="title flex">
+            <div class="my-title flex">
               <span class="small-title mr-2">IsAdmin: </span>
               <v-checkbox
-                class="title"
+                class="my-title"
                 :model-value="item.role >= 1"
                 :disabled="!enableSetRole || item.email === 'admin@localhost'"
                 @click.prevent="handleClickSetRole(item.id, item.role == 1 ? 0 : 1)"
@@ -158,7 +158,7 @@ function handleClickSetRole(id: number, role: number): void {
       .columns {
         @apply grid sm: "grid-cols-[3fr,3fr,1fr,1fr,1fr]" w-1/1;
 
-        .title {
+        .my-title {
           @apply xl: text-1rem lg:text-lg text-sm sm: (flex flex-col items-start justify-center);
           .link {
             @apply underline;

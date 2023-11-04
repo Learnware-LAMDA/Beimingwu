@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, nextTick, onActivated } from "vue";
 import { useDisplay } from "vuetify";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { fetchex } from "../utils/fetchex";
 import { BACKEND_URL } from "@main/request";
@@ -11,6 +11,8 @@ import ConfirmDialog from "@admin/components/Dialogs/ConfirmDialog.vue";
 import type { Filter, LearnwareCardInfo } from "@beiming-system/types/learnware";
 
 const display = useDisplay();
+
+const route = useRoute();
 
 const router = useRouter();
 
@@ -33,7 +35,7 @@ const page = ref(1);
 const pageSize = ref(Math.ceil(display.height.value / 900) * 10);
 const pageNum = ref(1);
 const learnwareItems = ref<LearnwareCardInfo[]>([]);
-const isVerify = ref(true);
+const isVerify = ref(route.query.is_verify ? route.query.is_verify === "true" : true);
 
 const loading = ref(false);
 
@@ -278,6 +280,9 @@ watch(
 );
 
 onActivated(() => {
+  if (route.query.is_verify) {
+    isVerify.value = route.query.is_verify === "true";
+  }
   if (contentRef.value) {
     contentRef.value.scrollTop = scrollTop.value;
   }

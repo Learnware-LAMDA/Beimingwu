@@ -2,7 +2,7 @@
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import BigTitle from "../Public/BigTitle.vue";
-import system from "/public/system.png";
+import system from "../../../public/system.png";
 
 const { t } = useI18n();
 
@@ -29,7 +29,7 @@ const router = useRouter();
     </div>
 
     <div class="mx-auto px-8 max-w-7xl">
-      <v-img class="border rounded-t-lg" :src="system" />
+      <v-img class="border rounded-lg elevation-24 filter brightness-80 opacity-80" :src="system" />
     </div>
   </div>
 </template>

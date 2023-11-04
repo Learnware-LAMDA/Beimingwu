@@ -27,7 +27,7 @@ defineProps({
     <v-responsive class="responsive" :aspect-ratio="1 / 1">
       <slot />
     </v-responsive>
-    <div class="title">
+    <div class="my-title">
       <span v-if="showTitle">{{ title }}</span>
     </div>
   </div>
@@ -47,7 +47,7 @@ defineProps({
     }
   }
 
-  .title {
+  .my-title {
     @apply lg:text-1rem sm:text-sm text-xs '!leading-5';
   }
 }
