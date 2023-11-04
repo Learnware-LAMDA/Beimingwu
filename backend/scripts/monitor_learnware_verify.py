@@ -31,7 +31,7 @@ def verify_learnware_with_conda_checker(
         with open(semantic_spec_filename, "r") as fin:
             semantic_specification = json.load(fin)
         learnware = get_learnware_from_dirpath(
-            id=learnware_id, semantic_spec=semantic_specification, learnware_dirpath=learnware_path, raise_error=True
+            id=learnware_id, semantic_spec=semantic_specification, learnware_dirpath=learnware_path, ignore_error=False
         )
     except Exception as e:
         verify_sucess = False
