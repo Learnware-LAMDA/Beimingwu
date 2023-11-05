@@ -181,19 +181,13 @@ class DownloadLearnware(flask_restful.Resource):
         if learnware_id is None:
             return {"code": 21, "msg": "Request parameters error."}, 200
 
-        verify_status = dbops.get_learnware_verify_status(learnware_id)
+        try:
+            learnware_zip_path = context.engine.get_learnware_zip_path_by_ids(learnware_id)
+        except:
+            return {"code": 42, "msg": "Engine download learnware error."}, 200
 
-        if verify_status == dbops.LearnwareVerifyStatus.SUCCESS.value:
-            try:
-                learnware_zip_path = context.engine.get_learnware_zip_path_by_ids(learnware_id)
-            except:
-                return {"code": 42, "msg": "Engine download learnware error."}, 200
-
-            if learnware_zip_path is None:
-                return {"code": 41, "msg": "Learnware not found."}, 200
-        else:
+        if learnware_zip_path is None:
             learnware_zip_path = context.get_learnware_verify_file_path(learnware_id)
-            pass
 
         zip_directory = os.path.dirname(learnware_zip_path)
         zip_filename = os.path.basename(learnware_zip_path)
