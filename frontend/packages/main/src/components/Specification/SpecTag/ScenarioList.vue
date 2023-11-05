@@ -155,7 +155,7 @@ function deleteSelect(value: Scenario): void {
 
 <template>
   <div class="scenario-container" flat>
-    <div class="my-title text-h6 !text-1rem">
+    <div class="my-title text-h6 !text-base">
       {{ t("Submit.SemanticSpecification.Scenario.Scenario") }}
     </div>
 
@@ -183,10 +183,10 @@ function deleteSelect(value: Scenario): void {
   }
 
   .list {
-    @apply grid sm: gap-2 gap-1 bg-transparent;
+    @apply grid sm:gap-2 gap-1 bg-transparent;
 
     .item {
-      @apply flex items-center p-3 pl-4 bg-gray-400 text-white rounded-2em cursor-pointer;
+      @apply flex items-center p-3 pl-4 bg-gray-400 text-white rounded-[2em] cursor-pointer;
     }
 
     .active {
@@ -194,16 +194,16 @@ function deleteSelect(value: Scenario): void {
     }
 
     .v-list-item {
-      @apply '!overflow-visible';
+      @apply overflow-visible;
 
       * {
-        @apply '!overflow-visible';
+        @apply overflow-visible;
       }
     }
   }
 
   .text {
-    @apply lg: text-1rem sm:text-sm text-xs;
+    @apply lg:text-base sm:text-sm text-xs;
   }
 }
 </style>

@@ -73,12 +73,12 @@ function handleClickDelete(id: string): void {
 </script>
 
 <template>
-  <v-card flat :density="greaterThanXs ? 'comfortable' : 'compact'" class="card py-2">
-    <v-card-title class="my-title flex" :class="item.username ? '' : 'items-center'">
-      <v-avatar :size="greaterThanSm ? 'default' : 'small'" class="mr-2" rounded="0">
-        <component :is="avatar" :class="item.username ? 'w-1/1' : 'w-4/5'" class="opacity-70" />
+  <v-card flat :density="greaterThanXs ? 'comfortable' : 'compact'" class="card !py-2">
+    <v-card-title class="my-title !flex" :class="item.username ? '' : 'items-center'">
+      <v-avatar :size="greaterThanSm ? 'default' : 'small'" class="mr-2 !rounded-[0]">
+        <component :is="avatar" :class="item.username ? 'w-full' : 'w-4/5'" class="opacity-70" />
       </v-avatar>
-      <div class="w-full overflow-hidden">
+      <div class="flex-1 overflow-hidden">
         <div class="w-full truncate">{{ item.name }}</div>
         <div v-if="item.username" class="text-sm text-gray-600">{{ item.username }}</div>
       </div>
@@ -154,7 +154,7 @@ function handleClickDelete(id: string): void {
     <v-card-text class="card-text">
       <div class="description">{{ item.description }}</div>
     </v-card-text>
-    <v-card-text class="flex justify-between items-end py-2">
+    <v-card-text class="flex justify-between items-end !py-2">
       <div>
         <div v-if="item.matchScore && item.matchScore >= 0" class="xl:text-lg lg:text-lg text-base">
           {{ t("Search.SpecificationScore") }}:
@@ -196,13 +196,13 @@ function handleClickDelete(id: string): void {
 
 <style scoped lang="scss">
 .card {
-  @apply sm: (border-1 hover: (border-1 border-purple-500)) <sm: (border-b-1 rounded-0px);
+  @apply border-b sm:border sm:hover:border sm:hover:border-purple-500;
 
   .first-row {
     @apply flex justify-between items-start;
 
     .my-title {
-      @apply xl: text-xl lg:text-lg text-1rem;
+      @apply xl:text-xl lg:text-lg text-base;
     }
   }
 
@@ -218,7 +218,7 @@ function handleClickDelete(id: string): void {
     }
 
     .scenario {
-      @apply px-2 border-gray-700 bg-gray-400 text-xs text-white rounded-1em;
+      @apply px-2 border-gray-700 bg-gray-400 text-xs text-white rounded-[1em];
     }
 
     .label.active {

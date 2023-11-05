@@ -14,7 +14,7 @@ defineExpose({
 </script>
 
 <template>
-  <v-dialog v-model="dialog" class="mx-auto w-1/1 max-w-600px">
+  <v-dialog v-model="dialog" class="mx-auto w-full max-w-[600px]">
     <v-card class="mx-2">
       <v-card-title class="flex m-2">
         <v-icon class="mr-2" icon="mdi-check-circle" color="success"></v-icon>
@@ -37,7 +37,7 @@ defineExpose({
         <slot name="text" />
       </v-card-text>
       <v-card-actions>
-        <v-spacer></v-spacer>
+        <v-spacer class="flex-1"></v-spacer>
         <v-btn class="bg-success" @click="dialog = false"> OK </v-btn>
       </v-card-actions>
     </v-card>

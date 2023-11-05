@@ -57,7 +57,6 @@ const filteredRoutes = computed(() => {
   <v-navigation-drawer v-model="drawer">
     <!--v-list navigation from router-->
     <v-list>
-      <h1 class="ma-4">Pages</h1>
       <v-list-item
         v-for="(route, i) in filteredRoutes"
         :key="i"

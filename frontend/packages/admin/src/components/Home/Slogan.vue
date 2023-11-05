@@ -16,7 +16,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="slogan-container bg-primary">
+  <div
+    class="flex flex-col justify-center items-center w-full h-full xl:py-30 lg:py-25 <lg:py-10 text-center bg-primary"
+  >
     <div class="xl:text-8xl lg:text-7xl md:text-6xl sm:text-5xl text-2.75rem font-700">
       <div v-if="store.getters.getLoggedIn">
         <h1>Hello, dear</h1>
@@ -34,9 +36,3 @@ onMounted(() => {
     >
   </div>
 </template>
-
-<style scoped lang="scss">
-.slogan-container {
-  @apply flex flex-col justify-center items-center w-1/1 h-1/1 xl:py-30 lg:py-25 <lg:py-10 text-center;
-}
-</style>

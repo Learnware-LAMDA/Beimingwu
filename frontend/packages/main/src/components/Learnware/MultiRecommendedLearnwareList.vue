@@ -108,7 +108,7 @@ function getColorByScore(score: number): string {
   <div
     v-if="!loading"
     class="m-2 p-2 rounded-lg hover:border-purple-500"
-    :class="items.length > 0 ? ['border-1'] : []"
+    :class="items.length > 0 ? ['border'] : []"
   >
     <div v-if="items.length > 0" class="flex justify-between">
       <v-card-title v-if="matchScore" class="score">
@@ -118,7 +118,7 @@ function getColorByScore(score: number): string {
       <v-btn
         variant="flat"
         size="x-large"
-        class="!px-4 text-body-2 !text-1em border-1"
+        class="!px-4 text-body-2 !text-[1em] border"
         @click.stop="() => downloadAll()"
       >
         <span v-if="!downloading">
@@ -134,7 +134,7 @@ function getColorByScore(score: number): string {
     <v-card
       flat
       class="learnware-list-container"
-      :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null"
+      :class="items.length === 0 ? ['!grid-cols-1', 'h-full'] : null"
       :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
     >
       <TransitionGroup name="fade">
@@ -161,7 +161,7 @@ function getColorByScore(score: number): string {
     <v-skeleton-loader
       v-for="(_item, index) in 4"
       :key="index"
-      class="w-1/1"
+      class="w-full"
       type="article"
     ></v-skeleton-loader>
   </div>
@@ -169,16 +169,16 @@ function getColorByScore(score: number): string {
 
 <style scoped lang="scss">
 .learnware-list-container {
-  @apply relative m-2 grid xl: grid-cols-2 lg:grid-cols-2 gap-3 bg-transparent;
+  @apply relative m-2 grid xl:grid-cols-2 lg:grid-cols-2 gap-3 bg-transparent;
 
   .card {
-    @apply border-1;
+    @apply border;
 
     .first-row {
       @apply flex justify-between items-center;
 
       .title {
-        @apply xl: text-xl lg:text-lg text-1rem;
+        @apply xl:text-xl lg:text-lg text-base;
       }
 
       .actions {
@@ -198,7 +198,7 @@ function getColorByScore(score: number): string {
       }
 
       .scenario {
-        @apply px-2 border-gray-700 bg-gray-200 text-xs text-black rounded-1em;
+        @apply px-2 border-gray-700 bg-gray-200 text-xs text-black rounded-[1em];
       }
 
       .label.active {
@@ -221,11 +221,12 @@ function getColorByScore(score: number): string {
   }
 
   .score {
-    @apply my-2 lg: '!text-1.3rem' '!text-0.8rem';
+    @apply my-2;
+    @apply lg:text-[1.3rem] text-[0.8rem];
   }
 
   .no-learnware {
-    @apply py-5 w-1/1 text-center text-2xl;
+    @apply py-5 w-full text-center text-2xl;
 
     .oops-img {
       @apply mx-auto;

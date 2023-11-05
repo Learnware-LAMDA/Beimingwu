@@ -56,7 +56,7 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-col w-1/1 lg:max-w-460px sm:border-r-1">
+  <div class="flex flex-col w-full lg:max-w-[460px] sm:border-r-1">
     <div class="filter">
       <slot name="prepend" />
       <div class="my-3 text-h6">
@@ -65,7 +65,7 @@ watch(
       </div>
 
       <div>
-        <div class="mt-7 mb-3 text-h6 !text-1rem">
+        <div class="mt-7 mb-3 text-h6 !text-base">
           {{ t("Search.SearchByName") }}
         </div>
         <v-text-field
@@ -92,13 +92,13 @@ watch(
         :md="2"
         :sm="2"
         :xs="2"
-        class="bg-transparent !text-1rem"
+        class="bg-transparent !text-base"
       />
       <slot name="append" />
     </div>
 
-    <div class="pa-4 pt-0 border-t-1 border-gray-300">
-      <div ref="anchorRef" class="mt-3 mb-5 w-1/1 text-h6 transition-all truncate">
+    <div class="p-4 pt-0 border-t-1 border-gray-300">
+      <div ref="anchorRef" class="mt-3 mb-5 w-full text-h6 transition-all truncate">
         <v-icon class="mr-3" icon="mdi-upload" color="black" size="small"></v-icon>
         {{ t("Search.UploadStatisticalRequirement") }}
       </div>
@@ -114,7 +114,7 @@ watch(
 
 <style scoped lang="scss">
 .filter {
-  @apply p-2 w-1/1 md:(h-1/1 overflow-y-scroll) sm:px-5;
+  @apply p-2 w-full md:h-full md:overflow-y-scroll sm:px-5;
 
   * {
     @apply mt-2;

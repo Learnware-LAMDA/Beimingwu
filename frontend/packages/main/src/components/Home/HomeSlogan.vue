@@ -19,7 +19,7 @@ const router = useRouter();
       </big-title>
 
       <div class="flex justify-center pt-10">
-        <v-btn class="mx-3" size="large" @click="router.push('/search')">
+        <v-btn class="mx-3 bg-white" size="large" @click="router.push('/search')">
           {{ t("Home.Cover.Try") }}
         </v-btn>
         <v-btn class="mx-3" variant="outlined" size="large" @click="router.push('/submit')">
@@ -29,7 +29,7 @@ const router = useRouter();
     </div>
 
     <div class="mx-auto px-8 max-w-7xl">
-      <v-img class="border rounded-lg elevation-24 filter brightness-80 opacity-80" :src="system" />
+      <v-img class="border rounded-lg elevation-24" :src="system" />
     </div>
   </div>
 </template>

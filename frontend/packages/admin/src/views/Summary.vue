@@ -173,11 +173,11 @@ onMounted(() => {
       {{ errorMsg }}
     </v-snackbar>
 
-    <div class="grid md:(grid-cols-2) md:gap-2 md:m-2">
+    <div class="grid md:grid-cols-2 md:gap-2 md:m-2">
       <v-card
         v-for="item in numberItems"
         flat
-        class="md:border-1 border-b-1"
+        class="md:border border-b"
         :to="item.to"
         :key="item.title"
       >
@@ -192,7 +192,7 @@ onMounted(() => {
     </div>
 
     <div class="md:m-2">
-      <v-card flat class="md:border-1">
+      <v-card flat class="md:border">
         <v-card-title>
           <v-icon>mdi-chart-pie</v-icon>
           {{ t("Summary.Chart") }}

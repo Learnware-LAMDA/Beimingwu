@@ -62,7 +62,7 @@ function handleClickDelete(id: string): void {
 <template>
   <div
     class="learnware-list-container"
-    :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : []"
+    :class="items.length === 0 ? ['!grid-cols-1', 'h-full'] : []"
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
   >
     <TransitionGroup name="fade">
@@ -86,14 +86,14 @@ function handleClickDelete(id: string): void {
 
 <style scoped lang="scss">
 .learnware-list-container {
-  @apply relative sm:p-2 p-1 grid xl: grid-cols-2 lg:grid-cols-2 sm:gap-3;
+  @apply relative sm:p-2 p-1 grid xl:grid-cols-2 lg:grid-cols-2 sm:gap-3;
 
   .score {
-    @apply lg: '!text-1rem' '!text-0.8rem';
+    @apply lg:text-base text-[0.8rem];
   }
 
   .no-learnware {
-    @apply py-5 w-1/1 text-center text-2xl;
+    @apply py-5 w-full text-center text-2xl;
 
     .oops-img {
       @apply mx-auto;

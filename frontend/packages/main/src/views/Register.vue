@@ -50,7 +50,7 @@ const showPassword = ref(false);
 const showPassword2 = ref(false);
 const showError = ref(false);
 const errorMsg = ref("");
-const success = ref(false);
+const success = ref(true);
 
 const errorTimer = ref<number>();
 const { ok, remain, start: startTimer, stop: stopTimer } = useTimeout(60 * 1000);
@@ -115,9 +115,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex h-1/1 bg-gray-100">
+  <div class="flex h-full bg-gray-100">
     <div
-      class="d-md-block d-none w-1/1 h-1/1"
+      class="d-md-block d-none w-full h-full"
       :style="{
         background: `url(${collaborationImg})`,
         backgroundSize: 'contain',
@@ -126,7 +126,7 @@ onUnmounted(() => {
       }"
     />
     <div
-      class="flex flex-row justify-center items-center w-1/1 fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100"
+      class="flex flex-row justify-center items-center w-full fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100"
     >
       <success-dialog v-if="success">
         <template #msg>
@@ -158,9 +158,9 @@ onUnmounted(() => {
         </template>
       </success-dialog>
 
-      <v-card flat class="mx-auto w-1/1 sm:p-6 p-2" max-width="500">
+      <v-card flat class="mx-auto w-full sm:p-6 p-2" max-width="500">
         <v-card-title>
-          <h1 class="text-h5 !text-1.3em !<sm:(text-1.6em my-6) m-2 mb-5">
+          <h1 class="text-h5 !text-1.3em !<sm:text-1.6em !<sm:my-6 m-2 mb-5">
             {{ t("Register.Register") }}
           </h1>
         </v-card-title>

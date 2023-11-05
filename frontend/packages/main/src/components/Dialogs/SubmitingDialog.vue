@@ -37,7 +37,7 @@ const dialog = ref(true);
 
 <style scoped lang="scss">
 .dialog {
-  @apply max-w-600px w-1/1;
+  @apply max-w-[600px] w-full;
   .main {
     @apply mb-4 text-center;
     .svg {

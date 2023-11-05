@@ -60,7 +60,7 @@ function handleClickSetRole(id: number, role: number): void {
 <template>
   <div
     class="user-list-container"
-    :class="items.length === 0 ? ['!grid-cols-1', 'h-1/1'] : null"
+    :class="items.length === 0 ? ['grid-cols-1', 'h-full'] : null"
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
   >
     <TransitionGroup name="fade">
@@ -138,45 +138,45 @@ function handleClickSetRole(id: number, role: number): void {
   @apply relative p-1;
 
   .item:nth-child(1) {
-    @apply border-t-1 sm: visible <sm:hidden;
+    @apply border-t sm:block hidden;
 
     .columns {
-      @apply font-weight-bold;
+      @apply font-bold;
     }
   }
 
   .item:nth-child(2) {
-    @apply <sm: border-t-1;
+    @apply border-t sm:border-t-0;
   }
 
   .item {
-    @apply px-3 <sm:py-3 border-1 border-t-0;
+    @apply px-3 py-3 sm:py-0 border border-t-0;
 
     .row {
       @apply flex items-center;
 
       .columns {
-        @apply grid sm: "grid-cols-[3fr,3fr,1fr,1fr,1fr]" w-1/1;
+        @apply grid sm:grid-cols-[3fr,3fr,1fr,1fr,1fr] w-full;
 
         .my-title {
-          @apply xl: text-1rem lg:text-lg text-sm sm: (flex flex-col items-start justify-center);
+          @apply xl:text-base lg:text-lg text-sm sm:flex sm:flex-col sm:items-start sm:justify-center;
           .link {
             @apply underline;
           }
           .small-title {
-            @apply sm: hidden font-weight-bold;
+            @apply sm:hidden font-bold;
           }
         }
       }
 
       .actions {
-        @apply '!p-0' justify-end;
+        @apply justify-end p-0;
       }
     }
   }
 
   .no-user {
-    @apply flex flex-col justify-center items-center w-1/1 bottom-0 text-2xl;
+    @apply flex flex-col justify-center items-center w-full bottom-0 text-2xl;
 
     .oops-img {
       @apply mx-auto;

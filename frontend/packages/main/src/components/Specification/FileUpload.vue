@@ -62,16 +62,16 @@ const files = computed({
       @click="chooseFile"
     >
       <v-card-text
-        class="drag rounded-lg border-gray-500 border-2 border-dashed flex flex-column justify-center items-center md:text-xl text-1.1rem"
+        class="drag rounded-lg border-gray-500 border-2 border-dashed flex flex-column justify-center items-center"
         :class="{ 'drag-hover': dragging }"
         :style="{ height: Number(height) / 4 + 'rem' }"
       >
-        <div class="flex justify-center items-center max-w-1/1">
+        <div class="flex justify-center items-center max-w-full md:text-xl text-base">
           <p v-if="files.length === 0">
             <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>
             {{ tips }}
           </p>
-          <div v-else class="w-1/1 truncate">
+          <div v-else class="w-full truncate">
             <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ files[0].name }}
             <span class="ml-2 text-sm">{{ computeFileSize(files[0].size) }}</span>
           </div>

@@ -36,16 +36,16 @@ const reasons = computed(() => [
 </script>
 
 <template>
-  <div class="mx-auto md:pb-30 <md:pb-20 md:px-10 max-w-1200px w-1/1">
-    <div class="<md:px-5">
-      <div class="xl:(text-5xl my-10) lg:(text-4xl my-7) md:(text-3xl my-5) <md:(text-4xl my-5)">
+  <div class="mx-auto pb-20 md:pb-30 md:px-10 max-w-[1200px] w-full">
+    <div class="px-5 md:px-0">
+      <div class="text-4xl my-5 md:text-3xl md:my-5 lg:text-4xl lg:my-7 xl:text-5xl xl:my-10">
         {{ t("Home.Why.Title") }}
       </div>
       <p class="text-gray-500">
         {{ t("Home.Why.Description") }}
       </p>
     </div>
-    <div class="mt-8 grid sm:grid-cols-2 sm:gap-5 gap-2">
+    <div class="mt-8 grid gap-2 sm:grid-cols-2 sm:gap-5">
       <div v-for="reason in reasons" :key="reason.title">
         <v-hover v-slot="{ isHovering, props }">
           <v-card
@@ -62,11 +62,11 @@ const reasons = computed(() => [
               <v-icon :size="iconSize">{{ reason.icon }}</v-icon>
             </v-card-title>
             <v-card-title
-              class="mb-4 xl:text-2xl lg:text-xl md:text-xl text-lg font-600 text-center"
+              class="mb-4 text-lg font-600 text-center md:text-xl lg:text-xl xl:text-2xl"
             >
               {{ reason.title }}
             </v-card-title>
-            <v-card-text class="xl:text-md lg:text-md md:text-sm text-sm !leading-5">
+            <v-card-text class="text-sm md:text-sm lg:text-md xl:text-md !leading-5">
               {{ reason.description }}
             </v-card-text>
           </v-card>
