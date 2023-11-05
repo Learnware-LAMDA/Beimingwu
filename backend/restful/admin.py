@@ -1,5 +1,7 @@
 from flask import Blueprint, request
+import context
 from context import config as C
+from learnware.market import BaseChecker
 import hashlib
 from .auth import admin_login_required, super_admin_login_required
 from .utils import generate_random_str
@@ -202,8 +204,15 @@ class Summary(flask_restful.Resource):
     def post(self):
         count_user = database.get_user_count()
         count_verified_learnware = database.get_learnware_count_verified()
-        count_unverified_learnware = database.get_learnware_count_unverified()
         count_download = database.get_download_count()
+
+        count_unverified_learnware_total = database.get_learnware_count_unverified()
+        count_unverified_learnware_in_engine = len(
+            context.engine.get_learnware_ids(check_status=BaseChecker.NONUSABLE_LEARNWARE)
+        )
+        count_unverified_learnware_not_in_engine = (
+            count_unverified_learnware_total - count_unverified_learnware_in_engine
+        )
 
         count_detail = engine_helper.get_learnware_count_detail()
 
@@ -213,7 +222,8 @@ class Summary(flask_restful.Resource):
             "data": {
                 "count_user": count_user,
                 "count_verified_learnware": count_verified_learnware,
-                "count_unverified_learnware": count_unverified_learnware,
+                "count_unverified_learnware": count_unverified_learnware_in_engine,
+                "count_learnware_awaiting_storage": count_unverified_learnware_not_in_engine,
                 "count_download": count_download,
                 "count_detail": count_detail,
             },
