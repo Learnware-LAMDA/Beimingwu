@@ -25,6 +25,7 @@ class TestAuth(unittest.TestCase):
     def tearDownClass() -> None:
         unittest.TestCase.tearDownClass()
         TestAuth.server_process.kill()
+        testops.cleanup_folder()
 
     def test_01_login(self):
         # first we need register a user

@@ -32,6 +32,7 @@ class TestEngine(unittest.TestCase):
         headers = testops.login("test@localhost", "test")
         testops.delete_learnware(TestEngine.learnware_id, headers)
         TestEngine.server_process.kill()
+        testops.cleanup_folder()
         pass
 
     def login(self):
@@ -173,6 +174,24 @@ class TestEngine(unittest.TestCase):
         )
         self.assertGreater(result["data"]["learnware_info"]["last_modify"], "2020-01-01 00:00:00")
         pass
+
+    def test_get_learnware(self):
+        headers = self.login()
+
+        result = testops.url_request(
+            "engine/get_learnware", {"learnware_id": TestEngine.learnware_id}, headers=headers, method="get"
+        )
+        self.assertEqual(result["code"], 0)
+        assert result["data"]["learnware_dirpath"].endswith(TestEngine.learnware_id)
+        self.assertEqual(
+            result["data"]["semantic_specification"]["Name"],
+            testops.test_learnware_semantic_specification()["Name"],
+        )
+
+        result = testops.url_request("engine/get_learnware", {"learnware_id": "001"}, headers=headers, method="get")
+        self.assertEqual(result["code"], 0)
+        assert result["data"]["learnware_dirpath"] is None
+        assert result["data"]["semantic_specification"] is None
 
 
 if __name__ == "__main__":

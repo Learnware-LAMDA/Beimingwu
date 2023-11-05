@@ -18,6 +18,7 @@ import yaml
 class TestMonitorLearnwareVerify(unittest.TestCase):
     def setUpClass() -> None:
         unittest.TestCase.setUpClass()
+        testops.cleanup_folder()
 
         TestMonitorLearnwareVerify.server_process = multiprocessing.Process(target=main.main)
         TestMonitorLearnwareVerify.server_process.start()
@@ -48,6 +49,7 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
         unittest.TestCase.tearDownClass()
         TestMonitorLearnwareVerify.server_process.kill()
         TestMonitorLearnwareVerify.monitor_process.kill()
+        testops.cleanup_folder()
         pass
 
     def test_add_valid_learnware(self):
@@ -156,7 +158,7 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
         return result
 
     def wait_verify_end(self, learnware_id):
-        for i in range(10):
+        for i in range(100):
             status = dbops.get_learnware_verify_status(learnware_id)
 
             if status == LearnwareVerifyStatus.PROCESSING.value:

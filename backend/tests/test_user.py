@@ -38,6 +38,7 @@ class TestUser(unittest.TestCase):
     def tearDownClass() -> None:
         unittest.TestCase.tearDownClass()
         TestUser.server_process.kill()
+        testops.cleanup_folder()
         pass
 
     def test_profile(self):

@@ -27,6 +27,7 @@ class TestAdmin(unittest.TestCase):
     def tearDownClass() -> None:
         unittest.TestCase.tearDownClass()
         TestAdmin.server_process.kill()
+        testops.cleanup_folder()
         pass
 
     def test_list_user(
