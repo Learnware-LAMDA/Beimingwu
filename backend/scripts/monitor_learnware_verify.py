@@ -18,7 +18,7 @@ import yaml
 import shutil
 from typing import Tuple
 import learnware.utils
-from learnware.market import CondaChecker, EasyStatChecker
+from learnware.market import CondaChecker, EasyStatChecker, EasySemanticChecker
 from learnware.learnware import get_learnware_from_dirpath
 
 
@@ -39,10 +39,16 @@ def verify_learnware_with_conda_checker(
         return verify_sucess, command_output
 
     try:
-        stat_checker = CondaChecker(inner_checker=EasyStatChecker())
-        if stat_checker(learnware=learnware) == EasyStatChecker.INVALID_LEARNWARE:
+        semantic_checker = EasySemanticChecker()
+        if semantic_checker(learnware=learnware) == EasySemanticChecker.INVALID_LEARNWARE:
             verify_sucess = False
             command_output = "Statistical checker does not pass"
+
+        stat_checker = CondaChecker(inner_checker=EasyStatChecker())
+        if verify_sucess and stat_checker(learnware=learnware) == EasyStatChecker.INVALID_LEARNWARE:
+            verify_sucess = False
+            command_output = "Statistical checker does not pass"
+
     except Exception as e:
         verify_sucess = False
         command_output = f"Statistical checker runtime error due to {str(e)}"
@@ -129,7 +135,8 @@ def worker_process_func(q: queue.Queue, env: dict):
             os.environ["https_proxy"] = original_proxy
 
         except Exception as e:
-            verify_status = LearnwareVerifyStatus.FAIL
+            # Add engine database failed, need to retry
+            verify_status = LearnwareVerifyStatus.WAITING
             command_output += "\n\n" + str(e)
 
         if verify_status == LearnwareVerifyStatus.SUCCESS:
