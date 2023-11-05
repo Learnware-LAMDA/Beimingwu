@@ -202,7 +202,9 @@ class SetUserRole(flask_restful.Resource):
 class Summary(flask_restful.Resource):
     @admin_login_required
     def post(self):
-        count_user = database.get_user_count()
+        count_verified_user = database.get_user_count(is_verified=True)
+        count_unverified_user = database.get_user_count(is_verified=False)
+
         count_verified_learnware = database.get_learnware_count_verified()
         count_download = database.get_download_count()
 
@@ -220,7 +222,8 @@ class Summary(flask_restful.Resource):
             "code": 0,
             "msg": "Get summary success.",
             "data": {
-                "count_user": count_user,
+                "count_verified_user": count_verified_user,
+                "count_unverified_user": count_unverified_user,
                 "count_verified_learnware": count_verified_learnware,
                 "count_unverified_learnware": count_unverified_learnware_in_engine,
                 "count_learnware_awaiting_storage": count_unverified_learnware_not_in_engine,

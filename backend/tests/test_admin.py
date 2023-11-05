@@ -99,7 +99,8 @@ class TestAdmin(unittest.TestCase):
         result = testops.url_request("admin/summary", headers=headers)
 
         self.assertEqual(result["code"], 0)
-        self.assertEqual(result["data"]["count_user"], 2)
+        self.assertEqual(result["data"]["count_verified_user"], 2)
+        self.assertEqual(result["data"]["count_unverified_user"], 0)
         self.assertEqual(result["data"]["count_verified_learnware"], 1)
         self.assertEqual(result["data"]["count_unverified_learnware"], 0)
         self.assertEqual(result["data"]["count_learnware_awaiting_storage"], 0)

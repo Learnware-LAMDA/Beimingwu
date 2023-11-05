@@ -498,8 +498,13 @@ def add_log(name, info):
     pass
 
 
-def get_user_count():
-    result = context.database.execute("SELECT COUNT(1) FROM tb_user")
+def get_user_count(is_verified=None):
+    if is_verified == True:
+        result = context.database.execute("SELECT COUNT(1) FROM tb_user WHERE email_confirm_time IS NOT NULL")
+    elif is_verified == False:
+        result = context.database.execute("SELECT COUNT(1) FROM tb_user WHERE email_confirm_time IS NULL")
+    else:
+        result = context.database.execute("SELECT COUNT(1) FROM tb_user")
     return result[0][0]
 
 
