@@ -183,6 +183,8 @@ class UpdateLearnwareApi(flask_restful.Resource):
         if learnware_file is not None:
             learnware_file.seek(0)
             learnware_file.save(learnware_path)
+        else:
+            learnware_path = None
 
         database.update_learnware_timestamp(learnware_id)
 
