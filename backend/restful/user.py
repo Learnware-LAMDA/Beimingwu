@@ -209,14 +209,15 @@ class AddLearnwareVerifiedApi(flask_restful.Resource):
         body = request.get_json()
         learnware_id = body["learnware_id"]
         check_status = body["check_status"]
-        learnware_file = context.get_learnware_verify_file_path(learnware_id)
-        learnware_file_processed = learnware_file[:-4] + "_processed.zip"
-        learnware_semantic_spec_path = learnware_file[:-4] + ".json"
-
-        with open(learnware_semantic_spec_path, "r") as f:
-            semantic_specification = json.load(f)
 
         if context.engine.get_learnware_by_ids(learnware_id) is None:
+            learnware_file = context.get_learnware_verify_file_path(learnware_id)
+            learnware_file_processed = learnware_file[:-4] + "_processed.zip"
+            learnware_semantic_spec_path = learnware_file[:-4] + ".json"
+
+            with open(learnware_semantic_spec_path, "r") as f:
+                semantic_specification = json.load(f)
+
             final_id, final_status = context.engine.add_learnware(
                 zip_path=learnware_file_processed,
                 semantic_spec=semantic_specification,
@@ -228,8 +229,6 @@ class AddLearnwareVerifiedApi(flask_restful.Resource):
 
         final_status = context.engine.update_learnware(
             id=learnware_id,
-            zip_path=learnware_file_processed,
-            semantic_spec=semantic_specification,
             checker_names=[],
             check_status=check_status,
         )
