@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import WindiCSS from "vite-plugin-windicss";
 import eslintPlugin from "vite-plugin-eslint";
 import checker from "vite-plugin-checker";
 import svgLoader from "vite-svg-loader";
@@ -8,13 +7,7 @@ import { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    WindiCSS(),
-    svgLoader(),
-    eslintPlugin(),
-    checker({ typescript: true, vueTsc: true }),
-  ],
+  plugins: [vue(), svgLoader(), eslintPlugin(), checker({ typescript: true, vueTsc: true })],
   base: "./",
   resolve: {
     alias: {

@@ -378,8 +378,8 @@ onActivated(init);
 </script>
 
 <template>
-  <v-container class="h-1/1 <sm:p-0">
-    <v-card class="relative max-w-1000px w-1/1 m-auto" :flat="display.name.value === 'xs'">
+  <v-container class="h-full <sm:p-0">
+    <v-card class="relative max-w-[1000px] w-full m-auto" :flat="display.name.value === 'xs'">
       <v-scroll-y-transition>
         <v-card-actions v-if="success">
           <v-alert
@@ -396,7 +396,7 @@ onActivated(init);
         </v-card-actions>
       </v-scroll-y-transition>
       <v-stepper-title
-        class="mt-2 mb-5 w-1/1"
+        class="mt-2 mb-5 w-full"
         :step-title="t('Submit.Step')"
         :steps="steps"
         :current-step="currentStep"
@@ -405,8 +405,8 @@ onActivated(init);
 
       <v-divider class="border-black"></v-divider>
 
-      <div class="w-1/1 mx-auto sm:px-2 pt-2 sm:pb-2">
-        <v-card-title class="!md:text-2xl text-1.2rem <sm:pb-0">
+      <div class="w-full mx-auto sm:px-2 pt-2 sm:pb-2">
+        <v-card-title class="md:!text-2xl text-1.2rem <sm:pb-0">
           <span>{{ steps[currentStep].title }}</span>
         </v-card-title>
 
@@ -448,7 +448,7 @@ onActivated(init);
           </v-window-item>
 
           <v-window-item :value="2">
-            <div class="pa-4">
+            <div class="p-4">
               <v-textarea
                 v-model="description.value"
                 :label="t('Submit.Description.Description')"
@@ -465,6 +465,7 @@ onActivated(init);
                 v-model:files="files.value"
                 :error-messages="files.errorMessages"
                 :tips="t('Submit.File.DragFileHere', { file: 'zip' })"
+                class="text-xl"
               ></file-upload>
             </div>
             <v-card-text class="py-2 text-lg <sm:text-sm">
@@ -492,7 +493,7 @@ onActivated(init);
           <v-btn v-if="currentStep > 0" variant="outlined" @click="PrevStep">
             {{ t("Submit.Navigation.PreviousStep") }}
           </v-btn>
-          <v-spacer></v-spacer>
+          <v-spacer class="flex-1"></v-spacer>
           <v-btn
             v-if="currentStep < steps.length - 1"
             color="primary"

@@ -59,7 +59,7 @@ watch(
 
 <template>
   <div class="grid-container">
-    <div class="my-title text-h6 !text-1rem">{{ title }}</div>
+    <div class="my-title text-h6 !text-base">{{ title }}</div>
     <div
       class="btn-container"
       :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
@@ -91,7 +91,7 @@ watch(
       @apply pr-3;
 
       .icon {
-        @apply w-1/1 h-1/1;
+        @apply w-full h-full;
         fill: rgb(var(--v-theme-on-primary));
       }
     }

@@ -43,7 +43,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-card flat class="mx-auto w-1/1 sm:p-7 p-2" max-width="500">
+  <v-card flat class="mx-auto w-full sm:p-7 p-2" max-width="500">
     <v-card-item>
       <div class="items-center justify-center flex-1 d-flex">
         <v-icon :color="color">{{ icon }}</v-icon>

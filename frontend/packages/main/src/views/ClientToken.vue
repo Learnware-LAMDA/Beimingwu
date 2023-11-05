@@ -77,8 +77,8 @@ onActivated(() => {
 </script>
 
 <template>
-  <v-container class="h-1/1 <sm:p-0">
-    <v-card class="relative max-w-600px w-1/1 m-auto" flat>
+  <v-container class="h-full <sm:p-0">
+    <v-card class="relative max-w-[600px] w-full m-auto" flat>
       <v-card-title>
         <div class="text-h4">
           {{ t("ClientToken.Title") }}
@@ -100,7 +100,7 @@ onActivated(() => {
         <div>
           {{ token }}
         </div>
-        <v-spacer></v-spacer>
+        <v-spacer class="flex-1"></v-spacer>
         <v-btn variant="flat" icon="mdi-delete" @click="() => onDeleteClick(token)"></v-btn>
       </v-card-text>
       <v-card-actions>

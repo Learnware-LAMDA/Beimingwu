@@ -35,20 +35,21 @@ defineProps({
 
 <style scoped lang="scss">
 .btn {
-  @apply flex justify-start items-center py-4 h-full rounded-lg bg-gray-400 border-1 transition text-0.9rem cursor-pointer;
+  @apply flex justify-start items-center py-4 h-full rounded-lg bg-gray-400 border transition text-[0.9rem] cursor-pointer;
   color: rgb(var(--v-theme-on-primary));
 
   .responsive {
-    @apply w-1/1 lg:max-w-6 md:max-w-8 sm:max-w-6 max-w-5 md:mr-5 ml-3 sm:mr-1 mr-4;
+    @apply w-full lg:max-w-[1.5rem] md:max-w-[2rem] sm:max-w-[1.5rem] max-w-[1.25rem] md:mr-5 ml-3 sm:mr-1 mr-4;
 
     .icon {
-      @apply w-1/1 h-1/1;
+      @apply w-full h-full;
       fill: rgb(var(--v-theme-on-primary));
     }
   }
 
   .my-title {
-    @apply lg:text-1rem sm:text-sm text-xs '!leading-5';
+    @apply lg:text-base sm:text-sm text-xs;
+    @apply leading-5;
   }
 }
 

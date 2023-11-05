@@ -30,7 +30,7 @@ defineExpose({
         <slot name="text" />
       </v-card-text>
       <v-card-actions>
-        <v-spacer></v-spacer>
+        <v-spacer class="flex-1"></v-spacer>
         <v-btn class="bg-red" @click="() => emitConfirm()"> Confirm </v-btn>
         <v-btn variant="outlined" @click="dialog = false"> Cancel </v-btn>
       </v-card-actions>
@@ -40,7 +40,7 @@ defineExpose({
 
 <style scoped lang="scss">
 .dialog-container {
-  @apply mx-auto w-1/1 max-w-600px;
+  @apply mx-auto w-full max-w-[600px];
 
   .dialog {
     @apply mx-2;
@@ -49,7 +49,6 @@ defineExpose({
       @apply flex m-2;
 
       .icon {
-        @apply mr-2;
       }
     }
   }

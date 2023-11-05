@@ -68,7 +68,7 @@ const taskTypeDescription = computed({
   <div class="spec-tag">
     <v-scroll-y-transition class="fixed left-0 right-0 z-index-10" style="top: var(--v-layout-top)">
       <v-card-actions v-if="errorMessages">
-        <v-alert class="w-1/1 max-w-900px mx-auto" closable :text="errorMessages" type="error" />
+        <v-alert class="w-full max-w-[900px] mx-auto" closable :text="errorMessages" type="error" />
       </v-card-actions>
     </v-scroll-y-transition>
     <data-type-btns v-model:value="dataType" />

@@ -6,9 +6,9 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="mx-auto md:py-30 <md:py-20 md:px-10 max-w-1200px w-1/1">
-    <div class="<md:px-5">
-      <div class="xl:(text-5xl my-10) lg:(text-4xl my-7) md:(text-3xl my-5) <md:(text-4xl my-5)">
+  <div class="mx-auto py-20 md:py-30 md:px-10 max-w-[1200px] w-full">
+    <div class="px-5 md:px-0">
+      <div class="text-4xl my-5 md:text-3xl md:my-5 lg:text-4xl lg:my-7 xl:text-5xl xl:my-10">
         {{ t("Home.What.Title") }}
       </div>
       <p class="text-gray-500">

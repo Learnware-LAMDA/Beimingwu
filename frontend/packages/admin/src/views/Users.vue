@@ -417,7 +417,7 @@ onActivated(() => {
     <v-scroll-y-transition class="fixed left-0 right-0 z-index-10000">
       <v-card-actions v-if="showError">
         <v-alert
-          class="w-1/1 max-w-900px mx-auto"
+          class="w-full max-w-[900px] mx-auto"
           closable
           :text="errorMsg"
           type="error"
@@ -429,7 +429,7 @@ onActivated(() => {
       <div class="search-row">
         <v-card-title>
           {{ t("AllUser.SearchByUsername") }}
-          <v-spacer></v-spacer>
+          <v-spacer class="flex-1"></v-spacer>
           <v-text-field
             v-model="userName"
             :label="t('AllUser.Username')"
@@ -441,7 +441,7 @@ onActivated(() => {
         </v-card-title>
         <v-card-title>
           {{ t("AllUser.SearchByEmail") }}
-          <v-spacer></v-spacer>
+          <v-spacer class="flex-1"></v-spacer>
           <v-text-field
             v-model="email"
             :label="t('AllUser.Email')"
@@ -475,13 +475,13 @@ onActivated(() => {
 
 <style scoped lang="scss">
 .main-container {
-  @apply mx-auto w-1/1 h-1/1 max-w-1500px overflow-hidden;
+  @apply mx-auto w-full h-full max-w-[1500px] overflow-hidden;
 
   .search {
-    @apply mt-3 w-1/1 max-w-1500px border-1 z-1000;
+    @apply mt-3 w-full max-w-[1500px] border z-50;
 
     .search-row {
-      @apply grid md: grid-cols-2;
+      @apply grid md:grid-cols-2;
     }
   }
 }

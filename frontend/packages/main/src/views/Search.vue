@@ -210,10 +210,10 @@ onMounted(() => {
 
 <template>
   <div class="search-container">
-    <v-scroll-y-transition class="fixed w-1/1 z-index-10">
+    <v-scroll-y-transition class="fixed w-full z-index-10">
       <v-card-actions v-if="showError">
         <v-alert
-          class="w-1/1 max-w-900px mx-auto"
+          class="w-full max-w-[900px] mx-auto"
           closable
           :text="errorMsg"
           type="error"
@@ -301,11 +301,11 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .search-container {
-  @apply lg: (fixed flex) mx-auto w-1/1;
+  @apply lg:fixed lg:flex mx-auto w-full;
   height: calc(100% - var(--v-layout-top));
 
   .content {
-    @apply w-1/1 overflow-y-scroll;
+    @apply w-full overflow-y-scroll;
   }
 }
 </style>

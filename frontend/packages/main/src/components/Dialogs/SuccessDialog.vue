@@ -18,9 +18,9 @@ onMounted(() => {
       max-width="600"
       rounded="lg"
       width="100%"
-      class="pa-4 text-center mx-auto"
+      class="p-4 text-center mx-auto"
     >
-      <svg class="m-auto w-120px h-120px" viewBox="0 0 200 200">
+      <svg class="m-auto w-[120px] h-[120px]" viewBox="0 0 200 200">
         <circle style="fill: rgb(var(--v-theme-success))" cx="100" cy="100" r="80" />
         <path
           d="M50 100 L90 134 L152 64"

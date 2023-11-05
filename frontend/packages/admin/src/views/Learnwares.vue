@@ -319,7 +319,7 @@ onMounted(() => {
       <v-scroll-y-transition class="fixed left-0 right-0 z-index-10">
         <v-card-actions v-if="showError">
           <v-alert
-            class="w-1/1 max-w-900px mx-auto"
+            class="w-full max-w-[900px] mx-auto"
             closable
             :text="errorMsg"
             type="error"
@@ -362,23 +362,11 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .search-container {
-  @apply md: (fixed flex) mx-auto w-1/1;
+  @apply md:fixed md:flex mx-auto w-full;
   height: calc(100% - var(--v-layout-top));
 
-  .filter {
-    @apply p-2 w-1/1 md: (h-1/1 w-150 overflow-y-scroll) sm:px-5;
-
-    * {
-      @apply mt-2;
-    }
-  }
-
-  .filter.hide {
-    @apply h-0;
-  }
-
   .content {
-    @apply w-1/1 md: h-1/1 overflow-y-scroll;
+    @apply w-full md:h-full overflow-y-scroll;
   }
 }
 </style>

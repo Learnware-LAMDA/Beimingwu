@@ -50,7 +50,7 @@ const filteredRoutes = computed<Route[]>(
 </script>
 
 <template>
-  <v-app-bar flat class="bg-white border-b-1">
+  <v-app-bar flat class="bg-white !border-b">
     <div class="prepend">
       <v-app-bar-nav-icon
         v-if="['xs', 'sm'].includes(display.name.value)"
@@ -64,6 +64,7 @@ const filteredRoutes = computed<Route[]>(
     <template #append>
       <v-toolbar-items v-if="!['xs', 'sm'].includes(display.name.value)" class="my-3">
         <router-link
+          class="text-black"
           v-for="route in filteredRoutes"
           :key="route.name"
           :to="route.children ? '' : route.path"
@@ -71,7 +72,7 @@ const filteredRoutes = computed<Route[]>(
           <v-menu v-if="route.children" open-on-hover>
             <template #activator="{ props: menuProps }">
               <v-btn
-                class="mr-2 h-100 text-body-2 rounded"
+                class="mr-2 !h-full text-body-2 rounded"
                 :variant="route.meta.variant"
                 :class="route.meta.class"
                 v-bind="menuProps"
@@ -85,7 +86,7 @@ const filteredRoutes = computed<Route[]>(
               <v-list-item
                 v-for="child in route.children"
                 :key="child.name"
-                class="text-body-2 font-weight-bold"
+                class="text-body-2 font-bold"
                 :to="child.path"
               >
                 <v-icon
@@ -102,7 +103,7 @@ const filteredRoutes = computed<Route[]>(
           </v-menu>
           <v-btn
             v-else
-            class="mr-2 h-100 text-body-2 rounded"
+            class="mr-2 !h-full text-body-2 rounded"
             :variant="route.meta.variant"
             :class="route.meta.class"
           >
@@ -117,7 +118,7 @@ const filteredRoutes = computed<Route[]>(
 
 <style scoped lang="scss">
 .prepend {
-  @apply flex items-center h-full p-4.5;
+  @apply flex items-center h-full p-[1.1rem];
   .logo {
     @apply cursor-pointer h-full;
     .logo-img {

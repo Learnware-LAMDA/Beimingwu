@@ -28,7 +28,7 @@ const activeStep = (index: number): void => {
 </script>
 
 <template>
-  <div class="w-1/1 mx-auto p-2">
+  <div class="w-full mx-auto p-2">
     <div class="stepper-box">
       <div class="steps-wrapper">
         <div
@@ -59,16 +59,16 @@ const activeStep = (index: number): void => {
   @apply relative;
 
   .steps-wrapper {
-    @apply flex justify-between items-center md: mx-5;
+    @apply flex justify-between items-center md:mx-5;
 
     .step {
       @apply flex flex-col items-center mx-2 cursor-pointer;
 
       .icon {
-        @apply md: p-3 p-1 bg-white;
+        @apply md:p-3 p-1 bg-white;
 
         .circle {
-          @apply p-3 flex justify-center items-center rounded-100rem;
+          @apply p-3 flex justify-center items-center rounded-full;
         }
       }
 
@@ -79,7 +79,7 @@ const activeStep = (index: number): void => {
   }
 
   .divider-line {
-    @apply absolute w-4/5 left-1/10 border-b-#CCC md:border-2 border-1 -z-1;
+    @apply absolute w-4/5 left-[10%] md:border-2 border -z-10;
   }
 }
 </style>

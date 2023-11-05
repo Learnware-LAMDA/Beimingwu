@@ -209,7 +209,7 @@ onMounted(() => {
       </v-card-actions>
     </v-scroll-y-transition>
 
-    <div class="w-1/1 max-w-950px">
+    <div class="w-full max-w-[950px]">
       <div :class="direction === 'vertical' ? 'flex' : ''">
         <v-tabs v-model="verifiedFilter" :direction="direction" color="primary">
           <v-tab value="All">
@@ -225,9 +225,9 @@ onMounted(() => {
             {{ t("MyLearnware.Unverified") }}
           </v-tab>
         </v-tabs>
-        <v-window v-model="verifiedFilter" class="w-1/1">
+        <v-window v-model="verifiedFilter" class="w-full">
           <v-window-item value="All">
-            <div class="w-1/1">
+            <div class="w-full">
               <page-learnware-list
                 :show-pagination="pageNum > 1"
                 :items="learnwareItems"
@@ -244,7 +244,7 @@ onMounted(() => {
             </div>
           </v-window-item>
           <v-window-item value="Verified">
-            <div class="w-1/1">
+            <div class="w-full">
               <page-learnware-list
                 :show-pagination="pageNum > 1"
                 :items="learnwareItems"
@@ -261,7 +261,7 @@ onMounted(() => {
             </div>
           </v-window-item>
           <v-window-item value="Unverified">
-            <div class="w-1/1">
+            <div class="w-full">
               <page-learnware-list
                 :show-pagination="pageNum > 1"
                 :items="learnwareItems"
@@ -285,7 +285,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .learnware-container {
-  @apply flex flex-col w-1/1 overflow-y-scroll justify-start items-center;
+  @apply flex flex-col w-full overflow-y-scroll justify-start items-center;
 }
 .fixed {
   height: calc(100% - var(--v-layout-top));
