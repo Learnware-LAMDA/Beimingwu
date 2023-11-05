@@ -11,7 +11,9 @@ if git diff --name-only --cached | grep -q "\.py$"; then
         if [ -n "$python_files" ]; then
             black -l 120 $python_files
             for file in $cached_python_files; do
-                git add $file
+                if [ -f "$file" ]; then
+                    git add $file
+                fi
             done
         fi
     else
