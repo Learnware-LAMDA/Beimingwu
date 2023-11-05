@@ -23,13 +23,11 @@ from learnware.learnware import get_learnware_from_dirpath
 
 
 def verify_learnware_with_conda_checker(
-    learnware_id: str, learnware_path: str, semantic_spec_filename: str
+    learnware_id: str, learnware_path: str, semantic_specification: dict
 ) -> Tuple[bool, str]:
     verify_sucess = True
     command_output = ""
     try:
-        with open(semantic_spec_filename, "r") as fin:
-            semantic_specification = json.load(fin)
         learnware = get_learnware_from_dirpath(
             id=learnware_id, semantic_spec=semantic_specification, learnware_dirpath=learnware_path, ignore_error=False
         )
@@ -86,30 +84,41 @@ def worker_process_func(q: queue.Queue, env: dict):
             continue
 
         dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.PROCESSING)
-        learnware_filename = context.get_learnware_verify_file_path(learnware_id)
-        semantic_spec_filename = learnware_filename[:-4] + ".json"
-        process_result_filename = learnware_filename + ".result"
-        learnware_processed_filename = learnware_filename[:-4] + "_processed.zip"
-        learnware_check_status = BaseChecker.NONUSABLE_LEARNWARE
 
-        with tempfile.TemporaryDirectory(dir=context.config["temp_path"]) as tmpdir:
-            extract_path = tmpdir
-            if not os.path.exists(extract_path):
-                os.makedirs(extract_path)
-                pass
+        try:
+            learnware_dirpath, semantic_specification = restful_wrapper.get_learnware(learnware_id)
+            learnware_check_status = BaseChecker.NONUSABLE_LEARNWARE
 
-            context.logger.info(f"Extracting learnware to {extract_path}")
-            with zipfile.ZipFile(learnware_filename, "r") as zip_ref:
-                top_folder = common_utils.get_top_folder_in_zip(zip_ref)
-                zip_ref.extractall(extract_path)
-                pass
+            if learnware_dirpath is None:
+                learnware_filename = context.get_learnware_verify_file_path(learnware_id)
+                semantic_spec_filename = learnware_filename[:-4] + ".json"
+                process_result_filename = learnware_filename + ".result"
+                learnware_processed_filename = learnware_filename[:-4] + "_processed.zip"
 
-            extract_path = os.path.join(extract_path, top_folder)
-            update_learnware_yaml_file(extract_path, learnware_id, semantic_spec_filename)
+                with open(semantic_spec_filename, "r") as fin:
+                    semantic_specification = json.load(fin)
 
-            verify_success, command_output = verify_learnware_with_conda_checker(
-                learnware_id, extract_path, semantic_spec_filename
-            )
+                with tempfile.TemporaryDirectory(dir=context.config["temp_path"]) as tmpdir:
+                    extract_path = tmpdir
+                    if not os.path.exists(extract_path):
+                        os.makedirs(extract_path)
+
+                    context.logger.info(f"Extracting learnware to {extract_path}")
+                    with zipfile.ZipFile(learnware_filename, "r") as zip_ref:
+                        top_folder = common_utils.get_top_folder_in_zip(zip_ref)
+                        zip_ref.extractall(extract_path)
+
+                    extract_path = os.path.join(extract_path, top_folder)
+                    update_learnware_yaml_file(extract_path, learnware_id, semantic_spec_filename)
+
+                    verify_success, command_output = verify_learnware_with_conda_checker(
+                        learnware_id, extract_path, semantic_specification
+                    )
+                    learnware.utils.zip_learnware_folder(extract_path, learnware_processed_filename)
+            else:
+                verify_success, command_output = verify_learnware_with_conda_checker(
+                    learnware_id, learnware_dirpath, semantic_specification
+                )
 
             # the learnware my be deleted
             if not dbops.check_learnware_exist(learnware_id=learnware_id):
@@ -122,7 +131,10 @@ def worker_process_func(q: queue.Queue, env: dict):
             else:
                 verify_status = LearnwareVerifyStatus.FAIL
 
-            learnware.utils.zip_learnware_folder(extract_path, learnware_processed_filename)
+        except Exception as e:
+            print("-" * 100, str(e))
+            verify_status = LearnwareVerifyStatus.WAITING
+            command_output = "\n\n" + str(e)
 
         try:
             # internal service should not use proxy

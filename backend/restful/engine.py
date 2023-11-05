@@ -185,7 +185,7 @@ class DownloadLearnware(flask_restful.Resource):
 
         if verify_status == dbops.LearnwareVerifyStatus.SUCCESS.value:
             try:
-                learnware_zip_path = context.engine.get_learnware_path_by_ids(learnware_id)
+                learnware_zip_path = context.engine.get_learnware_zip_path_by_ids(learnware_id)
             except:
                 return {"code": 42, "msg": "Engine download learnware error."}, 200
 
@@ -243,7 +243,9 @@ class DownloadMultiLearnware(flask_restful.Resource):
             return {"code": 21, "msg": "Request parameters error."}, 200
 
         try:
-            learnware_paths = [context.engine.get_learnware_path_by_ids(learnware_id) for learnware_id in learnware_ids]
+            learnware_paths = [
+                context.engine.get_learnware_zip_path_by_ids(learnware_id) for learnware_id in learnware_ids
+            ]
         except:
             return {"code": 42, "msg": "Engine download learnware error."}, 200
 
@@ -262,8 +264,38 @@ class DownloadMultiLearnware(flask_restful.Resource):
         return res
 
 
+class GetLearnware(flask_restful.Resource):
+    def get(self):
+        learnware_id = request.args.get("learnware_id")
+
+        if learnware_id is None:
+            return {"code": 21, "msg": "Request parameters error."}, 200
+
+        try:
+            learnware = context.engine.get_learnware_by_ids(learnware_id)
+        except:
+            return {"code": 42, "msg": "Engine get learnware error."}, 200
+
+        if learnware is None:
+            learnware_dirpath = None
+            semantic_specification = None
+        else:
+            try:
+                learnware_dirpath = learnware.get_dirpath()
+                semantic_specification = learnware.get_specification().get_semantic_spec()
+            except:
+                return {"code": 42, "msg": "Engine get learnware path error."}, 200
+
+        return {
+            "code": 0,
+            "msg": "Ok",
+            "data": {"learnware_dirpath": learnware_dirpath, "semantic_specification": semantic_specification},
+        }, 200
+
+
 api.add_resource(SematicSpecification, "/semantic_specification")
 api.add_resource(SearchLearnware, "/search_learnware")
 api.add_resource(DownloadLearnware, "/download_learnware")
 api.add_resource(LearnwareInfo, "/learnware_info")
 api.add_resource(DownloadMultiLearnware, "/download_multi_learnware")
+api.add_resource(GetLearnware, "/get_learnware")
