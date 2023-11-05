@@ -192,7 +192,7 @@ class UpdateLearnwareApi(flask_restful.Resource):
             if context.engine.get_learnware_by_ids(learnware_id) is not None:
                 context.engine.update_learnware(
                     id=learnware_id,
-                    zip_path=learnware_file,
+                    zip_path=learnware_path,
                     semantic_spec=semantic_specification,
                     checker_names=[],
                     check_status=EasySemanticChecker.NONUSABLE_LEARNWARE,
