@@ -152,6 +152,44 @@ class TestEngine(unittest.TestCase):
         self.assertEqual(len(result["data"]["learnware_list_single"]), 0)
         pass
 
+    def test_search_verified_learnware_use_id(self):
+        headers = self.login()
+        sematic_specification = testops.test_learnware_semantic_specification()
+        result = testops.url_request(
+            "engine/search_learnware",
+            data={"semantic_specification": json.dumps(sematic_specification), "learnware_id": TestEngine.learnware_id},
+            headers=headers,
+        )
+
+        self.assertEqual(result["code"], 0)
+        self.assertGreaterEqual(len(result["data"]["learnware_list_single"]), 1)
+        self.assertIn(TestEngine.learnware_id, [x["learnware_id"] for x in result["data"]["learnware_list_single"]])
+        self.assertGreater(result["data"]["learnware_list_single"][0]["last_modify"], "2020-01-01 00:00:00")
+
+    def test_search_unverified_learnware_use_id(self):
+        headers = self.login()
+        sematic_specification = testops.test_learnware_semantic_specification()
+        result = testops.url_request(
+            "user/update_learnware",
+            data={"learnware_id": TestEngine.learnware_id, "semantic_specification": json.dumps(sematic_specification)},
+            headers=headers,
+        )
+        result = testops.url_request(
+            "engine/search_learnware",
+            data={
+                "semantic_specification": json.dumps(sematic_specification),
+                "learnware_id": TestEngine.learnware_id,
+                "is_verified": "false",
+            },
+            headers=headers,
+        )
+
+        self.assertEqual(result["code"], 0)
+        self.assertGreaterEqual(len(result["data"]["learnware_list_single"]), 1)
+        self.assertIn(TestEngine.learnware_id, [x["learnware_id"] for x in result["data"]["learnware_list_single"]])
+        self.assertGreater(result["data"]["learnware_list_single"][0]["last_modify"], "2020-01-01 00:00:00")
+        testops.add_learnware_to_engine(TestEngine.learnware_id, headers)
+
     def test_download_learnware(self):
         headers = self.login()
         result = testops.url_request(
