@@ -40,12 +40,12 @@ def verify_learnware_with_conda_checker(
         semantic_checker = EasySemanticChecker()
         if semantic_checker(learnware=learnware) == EasySemanticChecker.INVALID_LEARNWARE:
             verify_sucess = False
-            command_output = "Statistical checker does not pass"
+            command_output = "semantic checker does not pass"
 
         stat_checker = CondaChecker(inner_checker=EasyStatChecker())
         if verify_sucess and stat_checker(learnware=learnware) == EasyStatChecker.INVALID_LEARNWARE:
             verify_sucess = False
-            command_output = "Statistical checker does not pass"
+            command_output = "conda checker does not pass"
 
     except Exception as e:
         verify_sucess = False
@@ -85,11 +85,13 @@ def worker_process_func(q: queue.Queue, env: dict):
 
         dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.PROCESSING)
 
+        context.logger.info(f"env1: {os.environ}")
         try:
             learnware_dirpath, semantic_specification = restful_wrapper.get_learnware(learnware_id)
             learnware_check_status = BaseChecker.NONUSABLE_LEARNWARE
 
             if learnware_dirpath is None:
+                # it is in the upload folder, not learnware engine
                 learnware_filename = context.get_learnware_verify_file_path(learnware_id)
                 semantic_spec_filename = learnware_filename[:-4] + ".json"
                 process_result_filename = learnware_filename + ".result"
@@ -116,6 +118,7 @@ def worker_process_func(q: queue.Queue, env: dict):
                     )
                     learnware.utils.zip_learnware_folder(extract_path, learnware_processed_filename)
             else:
+                # it is in the learnware engine
                 verify_success, command_output = verify_learnware_with_conda_checker(
                     learnware_id, learnware_dirpath, semantic_specification
                 )
