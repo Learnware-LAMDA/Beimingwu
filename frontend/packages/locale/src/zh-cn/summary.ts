@@ -1,7 +1,9 @@
 export default {
-  UserCount: "用户数量",
+  VerifiedUserCount: "已验证用户数量",
+  UnverifiedUserCount: "未验证用户数量",
   VerifiedLearnwareCount: "已验证学件数量",
   UnverifiedLearnwareCount: "未验证学件数量",
+  AwaitingStorageLearnwareCount: "待存储学件数量",
   DownloadCount: "下载量",
   Chart: "图表",
 };
