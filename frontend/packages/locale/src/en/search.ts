@@ -1,6 +1,8 @@
 export default {
   Search: "Search",
   ChooseSemanticRequirement: "Choose semantic requirement",
+  SearchById: "Search by id",
+  LearnwareId: "Learnware Id",
   SearchByName: "Search by name",
   LearnwareName: "Learnware Name",
   UploadStatisticalRequirement: "Upload statistical requirement",

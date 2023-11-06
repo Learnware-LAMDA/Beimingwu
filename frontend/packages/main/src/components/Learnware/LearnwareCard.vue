@@ -22,6 +22,7 @@ export interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   filters: () => ({
+    id: "",
     name: "",
     dataType: "",
     taskType: "",

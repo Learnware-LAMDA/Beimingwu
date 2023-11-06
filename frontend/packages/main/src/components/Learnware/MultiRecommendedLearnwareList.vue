@@ -33,6 +33,7 @@ const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   filters: () => ({
+    id: "",
     name: "",
     dataType: "",
     taskType: "",

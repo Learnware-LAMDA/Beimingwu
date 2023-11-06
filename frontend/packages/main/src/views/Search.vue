@@ -28,6 +28,7 @@ const router = useRouter();
 const { t } = useI18n();
 
 const filters = ref<Filter>({
+  id: "",
   name: "",
   dataType: "",
   taskType: "",
@@ -87,6 +88,7 @@ function fetchByFilterAndPage(
   loading.value = true;
 
   searchLearnware({
+    id: filters.id,
     name: filters.name,
     dataType: filters.dataType,
     taskType: filters.taskType,
@@ -307,9 +309,10 @@ onMounted(() => init());
 
     <div class="w-full lg:max-w-[460px]">
       <user-requirement
-        v-model:value="filters"
+        v-model="filters"
         class="bottom-0 w-full lg:fixed lg:max-w-[460px]"
         style="top: var(--v-layout-top)"
+        :is-admin="isAdmin"
       >
         <template #prepend>
           <v-btn

@@ -1,6 +1,8 @@
 export default {
   Search: "查搜",
   ChooseSemanticRequirement: "选择语义需求",
+  SearchById: "按ID查找",
+  LearnwareId: "学件ID",
   SearchByName: "按名称查找",
   LearnwareName: "学件名称",
   UploadStatisticalRequirement: "上传统计需求",
