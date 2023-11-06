@@ -46,7 +46,7 @@ class TestEngine(unittest.TestCase):
 
         pass
 
-    def test_search_learnware(self):
+    def test_search_verified_learnware(self):
         headers = self.login()
         sematic_specification = testops.test_learnware_semantic_specification()
 
@@ -75,6 +75,42 @@ class TestEngine(unittest.TestCase):
         self.assertIn(TestEngine.learnware_id, [x["learnware_id"] for x in result["data"]["learnware_list_single"]])
         self.assertGreater(result["data"]["learnware_list_single"][0]["last_modify"], "2020-01-01 00:00:00")
         assert result["data"]["learnware_list_single"][0]["matching"] > 0
+
+    def test_search_unverified_learnware(self):
+        headers = self.login()
+        sematic_specification = testops.test_learnware_semantic_specification()
+        result = testops.url_request(
+            "user/update_learnware",
+            data={"learnware_id": TestEngine.learnware_id, "semantic_specification": json.dumps(sematic_specification)},
+            headers=headers,
+        )
+
+        test_learnware_path = os.path.join("tests", "data", "test_learnware.zip")
+
+        with tempfile.TemporaryDirectory() as tempdir:
+            with zipfile.ZipFile(test_learnware_path, "r") as zip_ref:
+                zip_ref.extract("stat.json", tempdir)
+                pass
+
+            stat_file = open(os.path.join(tempdir, "stat.json"), "rb")
+            result = testops.url_request(
+                "engine/search_learnware",
+                {"semantic_specification": json.dumps(sematic_specification), "is_verified": "false"},
+                files={"statistical_specification": stat_file},
+                headers=headers,
+            )
+
+            stat_file.close()
+            pass
+
+        print(result)
+        self.assertEqual(result["code"], 0)
+        print(list(result["data"]["learnware_list_single"][0].keys()))
+        self.assertGreaterEqual(len(result["data"]["learnware_list_single"]), 1)
+        self.assertIn(TestEngine.learnware_id, [x["learnware_id"] for x in result["data"]["learnware_list_single"]])
+        self.assertGreater(result["data"]["learnware_list_single"][0]["last_modify"], "2020-01-01 00:00:00")
+        assert result["data"]["learnware_list_single"][0]["matching"] > 0
+        testops.add_learnware_to_engine(TestEngine.learnware_id, headers)
 
     def test_search_learnware_use_name(self):
         headers = self.login()
