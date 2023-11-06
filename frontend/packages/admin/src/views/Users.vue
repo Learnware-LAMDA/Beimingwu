@@ -7,7 +7,7 @@ import { useI18n } from "vue-i18n";
 import { fetchex, saveContentToFile } from "../utils";
 import { BACKEND_URL } from "@main/request";
 import SuccessDialog from "@admin/components/Dialogs/SuccessDialog.vue";
-import ConfirmDialog from "@admin/components/Dialogs/ConfirmDialog.vue";
+import ConfirmDialog from "@main/components/Dialogs/ConfirmDialog.vue";
 import PageUserList from "@admin/components/User/PageUserList.vue";
 import type { User, Filter } from "@beiming-system/types/user";
 

@@ -46,13 +46,13 @@ const numberItems = computed(() => {
       title: t("Summary.VerifiedLearnwareCount"),
       icon: "mdi-check",
       value: countVerifiedLearnware.value,
-      to: "/alllearnware?is_verify=true",
+      to: "/alllearnware?is_verified=true",
     },
     {
       title: t("Summary.UnverifiedLearnwareCount"),
       icon: "mdi-close",
       value: countUnverifiedLearnware.value,
-      to: "/alllearnware?is_verify=false",
+      to: "/alllearnware?is_verified=false",
     },
     {
       title: t("Summary.DownloadCount"),

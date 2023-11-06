@@ -203,7 +203,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
             <v-expansion-panel elevation="0" class="rounded-lg">
               <v-expansion-panel-title class="text-lg">
                 <b>{{ t("Submit.SemanticSpecification.DataType.DataType") }}:</b>
-                {{
+                &nbsp;{{
                   learnware.dataType &&
                   t(`Submit.SemanticSpecification.DataType.Type.${learnware.dataType}`)
                 }}
@@ -242,7 +242,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
           </v-expansion-panels>
           <div v-else>
             <b>{{ t("Submit.SemanticSpecification.DataType.DataType") }}:</b>
-            {{
+            &nbsp;{{
               learnware.dataType &&
               t(`Submit.SemanticSpecification.DataType.Type.${learnware.dataType}`)
             }}
