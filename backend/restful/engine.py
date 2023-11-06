@@ -44,7 +44,7 @@ class SearchLearnware(flask_restful.Resource):
         user_id = flask_jwt_extended.get_jwt_identity()
 
         semantic_str = request.form.get("semantic_specification")
-        is_verified = request.form.get("is_verified", True)
+        is_verified = request.form.get("is_verified", "true")
 
         if semantic_str is None:
             return {"code": 21, "msg": f"Request parameters error."}, 200
@@ -60,11 +60,11 @@ class SearchLearnware(flask_restful.Resource):
             statistical_str = statistical_file.read()
 
         # Acquire check_status
-        if is_verified == True:
-            check_status = BaseChecker.USABLE_LEARWARE
-        else:
+        if is_verified == "false":
             # TODO: requires administrator rights
             check_status = BaseChecker.NONUSABLE_LEARNWARE
+        else:
+            check_status = BaseChecker.USABLE_LEARWARE
 
         # Cached Search learnware
         if statistical_str is None:
