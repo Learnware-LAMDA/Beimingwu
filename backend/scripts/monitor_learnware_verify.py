@@ -72,9 +72,7 @@ def update_learnware_yaml_file(learnware_path, learnware_id, semantic_spec_filen
 
 def worker_process_func(q: queue.Queue, env: dict):
     if env is not None:
-        context.logger.info(f"received env: {env}")
         os.environ.update(env)
-        context.logger.info(f"set env: {os.environ}")
         pass
 
     while True:
@@ -140,20 +138,20 @@ def worker_process_func(q: queue.Queue, env: dict):
             verify_status = LearnwareVerifyStatus.WAITING
             command_output = "\n\n" + str(e)
 
+        # internal service should not use proxy
+        os.environ.pop("http_proxy", "")
+        original_proxy = os.environ.pop("https_proxy", "")
         try:
-            # internal service should not use proxy
-            os.environ.pop("http_proxy", "")
-            original_proxy = os.environ.pop("https_proxy", "")
             restful_wrapper.add_learnware_verified(learnware_id, learnware_check_status)
-
-            # restore proxy
-            os.environ["http_proxy"] = original_proxy
-            os.environ["https_proxy"] = original_proxy
 
         except Exception as e:
             # Add engine database failed, need to retry
             verify_status = LearnwareVerifyStatus.WAITING
             command_output += "\n\n" + str(e)
+
+        # restore proxy
+        os.environ["http_proxy"] = original_proxy
+        os.environ["https_proxy"] = original_proxy
 
         if verify_status == LearnwareVerifyStatus.SUCCESS:
             os.remove(learnware_filename)
