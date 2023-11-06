@@ -202,11 +202,13 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
           <v-expansion-panels v-if="learnware.dataType === 'Table'" class="mt-2 border rounded-lg">
             <v-expansion-panel elevation="0" class="rounded-lg">
               <v-expansion-panel-title class="text-lg">
-                <b>{{ t("Submit.SemanticSpecification.DataType.DataType") }}:</b>
-                &nbsp;{{
-                  learnware.dataType &&
-                  t(`Submit.SemanticSpecification.DataType.Type.${learnware.dataType}`)
-                }}
+                <div>
+                  <b>{{ t("Submit.SemanticSpecification.DataType.DataType") }}:</b>
+                  {{
+                    learnware.dataType &&
+                    t(`Submit.SemanticSpecification.DataType.Type.${learnware.dataType}`)
+                  }}
+                </div>
               </v-expansion-panel-title>
               <v-expansion-panel-text>
                 <div class="flex font-bold py-3 border-y">
@@ -242,7 +244,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
           </v-expansion-panels>
           <div v-else>
             <b>{{ t("Submit.SemanticSpecification.DataType.DataType") }}:</b>
-            &nbsp;{{
+            {{
               learnware.dataType &&
               t(`Submit.SemanticSpecification.DataType.Type.${learnware.dataType}`)
             }}
@@ -256,11 +258,13 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
           >
             <v-expansion-panel elevation="0" class="rounded-lg">
               <v-expansion-panel-title class="text-lg">
-                <b>{{ t("Submit.SemanticSpecification.TaskType.TaskType") }}:</b>
-                {{
-                  learnware.taskType &&
-                  t(`Submit.SemanticSpecification.TaskType.Type.${learnware.taskType}`)
-                }}
+                <div>
+                  <b>{{ t("Submit.SemanticSpecification.TaskType.TaskType") }}:</b>
+                  {{
+                    learnware.taskType &&
+                    t(`Submit.SemanticSpecification.TaskType.Type.${learnware.taskType}`)
+                  }}
+                </div>
               </v-expansion-panel-title>
               <v-expansion-panel-text>
                 <div
@@ -306,6 +310,14 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
               </v-expansion-panel-text>
             </v-expansion-panel>
           </v-expansion-panels>
+
+          <div v-else>
+            <b>{{ t("Submit.SemanticSpecification.TaskType.TaskType") }}:</b>
+            {{
+              learnware.taskType &&
+              t(`Submit.SemanticSpecification.TaskType.Type.${learnware.taskType}`)
+            }}
+          </div>
 
           <div>
             <b>{{ t("Submit.SemanticSpecification.LibraryType.LibraryType") }}:</b>
