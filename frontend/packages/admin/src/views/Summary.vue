@@ -19,9 +19,11 @@ const { t } = useI18n();
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const countUser = ref(0);
+const countVerifiedUser = ref(0);
+const countUnverifiedUser = ref(0);
 const countVerifiedLearnware = ref(0);
 const countUnverifiedLearnware = ref(0);
+const countLearnwareAwaitingStorage = ref(0);
 const countDownload = ref(0);
 const countDetail = ref<CountDetail>();
 
@@ -37,9 +39,15 @@ const errorTimer = ref<number>();
 const numberItems = computed(() => {
   return [
     {
-      title: t("Summary.UserCount"),
+      title: t("Summary.VerifiedUserCount"),
       icon: "mdi-account",
-      value: countUser.value,
+      value: countVerifiedUser.value,
+      to: "/alluser",
+    },
+    {
+      title: t("Summary.UnverifiedUserCount"),
+      icon: "mdi-account",
+      value: countUnverifiedUser.value,
       to: "/alluser",
     },
     {
@@ -53,6 +61,11 @@ const numberItems = computed(() => {
       icon: "mdi-close",
       value: countUnverifiedLearnware.value,
       to: "/alllearnware?is_verify=false",
+    },
+    {
+      title: t("Summary.AwaitingStorageLearnwareCount"),
+      icon: "mdi-clock",
+      value: countLearnwareAwaitingStorage.value,
     },
     {
       title: t("Summary.DownloadCount"),
@@ -76,17 +89,21 @@ function fetchSummary(): void {
         code: number;
         msg: string;
         data: {
-          count_user: number;
+          count_verified_user: number;
+          count_unverified_user: number;
           count_download: number;
           count_verified_learnware: number;
           count_unverified_learnware: number;
+          count_learnware_awaiting_storage: number;
           count_detail: CountDetail;
         };
       }) => {
         if (res.code === 0) {
-          countUser.value = res.data.count_user;
+          countVerifiedUser.value = res.data.count_verified_user;
+          countUnverifiedUser.value = res.data.count_unverified_user;
           countVerifiedLearnware.value = res.data.count_verified_learnware;
           countUnverifiedLearnware.value = res.data.count_unverified_learnware;
+          countLearnwareAwaitingStorage.value = res.data.count_learnware_awaiting_storage;
           countDownload.value = res.data.count_download;
           countDetail.value = res.data.count_detail;
         } else if (res.code === 11) {
