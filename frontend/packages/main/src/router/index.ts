@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import store from "../store";
-import { Component } from "vue";
+import type { Component } from "vue";
+import NProgress from "../plugins/nprogress";
 
 const Router = createRouter({
   history: createWebHashHistory(),
@@ -189,6 +190,8 @@ const Router = createRouter({
 });
 
 Router.beforeEach((to, from, next) => {
+  NProgress.start();
+
   if (from.name === to.name) {
     return next(false);
   }
@@ -206,6 +209,10 @@ Router.beforeEach((to, from, next) => {
   } else {
     next();
   }
+});
+
+Router.afterEach(() => {
+  NProgress.done();
 });
 
 export default Router;
