@@ -43,7 +43,7 @@ const singleRecommendedLearnwarePage = ref(1);
 const singleRecommendedLearnwarePageNum = ref(1);
 const singleRecommendedLearnwarePageSize = ref(Math.ceil(display.height.value / 900) * 10);
 const singleRecommendedLearnwareItems = ref<LearnwareCardInfo[]>([]);
-const heterogeneousMode = ref<boolean>(false);
+const isHeterogeneous = ref<boolean>(false);
 const rkmeTypeTable = ref<boolean>(false);
 const loading = ref(false);
 const isVerified = ref(route.query.is_verified ? route.query.is_verified === "true" : true);
@@ -82,7 +82,7 @@ function fetchByFilterAndPage(
   filters: Filter,
   page: number,
   isVerified: boolean = false,
-  heterogeneousMode: boolean = false,
+  isHeterogeneous: boolean = false,
 ): void {
   showError.value = false;
   loading.value = true;
@@ -96,7 +96,7 @@ function fetchByFilterAndPage(
     scenarioList: filters.scenarioList,
     files: filters.files,
     isVerified,
-    heterogeneousMode,
+    isHeterogeneous,
     page,
     limit: singleRecommendedLearnwarePageSize.value,
   })
@@ -233,17 +233,17 @@ watch(
     filters.value,
     singleRecommendedLearnwarePage.value,
     isVerified.value,
-    heterogeneousMode.value,
+    isHeterogeneous.value,
   ],
   (newVal) => {
-    const [newFilters, newPage, newIsVerified, newHeterogeneousMode] = newVal as [
+    const [newFilters, newPage, newIsVerified, newIsHeterogeneous] = newVal as [
       Filter,
       number,
       boolean,
       boolean,
     ];
 
-    fetchByFilterAndPage(newFilters, newPage - 1, newIsVerified, newHeterogeneousMode);
+    fetchByFilterAndPage(newFilters, newPage - 1, newIsVerified, newIsHeterogeneous);
   },
   { deep: true },
 );
@@ -286,7 +286,7 @@ function init(): void {
     filters.value,
     singleRecommendedLearnwarePage.value - 1,
     isVerified.value,
-    heterogeneousMode.value,
+    isHeterogeneous.value,
   );
 }
 
@@ -316,11 +316,11 @@ onMounted(() => init());
       >
         <template #prepend>
           <v-btn
-            v-if="heterogeneousMode"
+            v-if="isHeterogeneous"
             block
             variant="outlined"
             color="red"
-            @click="() => (heterogeneousMode = false)"
+            @click="() => (isHeterogeneous = false)"
           >
             {{ t("Search.TurnOffHeterogeneousSearch") }}
           </v-btn>
@@ -395,13 +395,8 @@ onMounted(() => init());
         />
       </v-card>
 
-      <div v-if="showHeterogeneousSearchSwitch && !heterogeneousMode" class="text-center">
-        <v-btn
-          class="px-8"
-          variant="outlined"
-          color="red"
-          @click="() => (heterogeneousMode = true)"
-        >
+      <div v-if="showHeterogeneousSearchSwitch && !isHeterogeneous" class="text-center">
+        <v-btn class="px-8" variant="outlined" color="red" @click="() => (isHeterogeneous = true)">
           {{ t("Search.HeterogeneousSearch") }}
         </v-btn>
       </div>

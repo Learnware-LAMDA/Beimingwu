@@ -12,6 +12,7 @@ import type { DataType, TaskType, LibraryType, Filter } from "@beiming-system/ty
 export interface Props {
   modelValue: Filter;
   isAdmin?: boolean;
+  isHeterogeneous?: boolean;
 }
 
 const { t } = useI18n();
@@ -20,6 +21,7 @@ const emits = defineEmits(["update:modelValue"]);
 
 withDefaults(defineProps<Props>(), {
   isAdmin: false,
+  isHeterogeneous: false,
 });
 
 const route = useRoute();

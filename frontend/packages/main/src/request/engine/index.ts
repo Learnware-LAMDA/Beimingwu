@@ -44,7 +44,7 @@ function searchLearnware({
   scenarioList,
   files,
   isVerified,
-  heterogeneousMode,
+  isHeterogeneous,
   page,
   limit,
 }: {
@@ -56,7 +56,7 @@ function searchLearnware({
   scenarioList: ScenarioList;
   files: Files;
   isVerified: boolean;
-  heterogeneousMode: boolean;
+  isHeterogeneous: boolean;
   page: number;
   limit: number;
 }): Promise<{
@@ -85,7 +85,7 @@ function searchLearnware({
       }
       fd.append("semantic_specification", JSON.stringify(semanticSpec));
       fd.append("statistical_specification", (files.length > 0 && files[0]) || "");
-      fd.append("heterogeneous_mode", String(heterogeneousMode));
+      fd.append("is_heterogeneous", String(isHeterogeneous));
       fd.append("is_verified", String(isVerified));
       fd.append("limit", String(limit));
       fd.append("page", String(page));
