@@ -117,7 +117,7 @@ function onResetPassword(): void {
 <template>
   <div class="flex h-full bg-gray-100">
     <div
-      class="d-md-block d-none w-full h-full"
+      class="hidden w-full h-full md:block"
       :style="{
         background: `url(${collaborationImg})`,
         backgroundSize: 'contain',
