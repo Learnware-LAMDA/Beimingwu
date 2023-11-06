@@ -46,4 +46,16 @@ function listLearnware({
     }));
 }
 
-export { listLearnware };
+function deleteLearnware(id: string): Promise<{ code: number; msg: string }> {
+  return checkedFetch(BACKEND_URL + "/admin/delete_learnware", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      learnware_id: id,
+    }),
+  }).then((res) => res.json());
+}
+
+export { listLearnware, deleteLearnware };

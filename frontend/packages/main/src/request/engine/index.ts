@@ -42,6 +42,7 @@ function searchLearnware({
   libraryType,
   scenarioList,
   files,
+  isVerified,
   heterogeneousMode,
   page,
   limit,
@@ -52,6 +53,7 @@ function searchLearnware({
   libraryType: LibraryType | "";
   scenarioList: ScenarioList;
   files: Files;
+  isVerified: boolean;
   heterogeneousMode: boolean;
   page: number;
   limit: number;
@@ -79,6 +81,7 @@ function searchLearnware({
       fd.append("semantic_specification", JSON.stringify(semanticSpec));
       fd.append("statistical_specification", (files.length > 0 && files[0]) || "");
       fd.append("heterogeneous_mode", String(heterogeneousMode));
+      fd.append("is_verified", String(isVerified));
       fd.append("limit", String(limit));
       fd.append("page", String(page));
       return fd;

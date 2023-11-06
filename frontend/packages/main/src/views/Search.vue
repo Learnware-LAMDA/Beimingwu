@@ -1,15 +1,29 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, nextTick, onActivated } from "vue";
 import { useDisplay } from "vuetify";
+import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { searchLearnware } from "../request/engine";
+import { deleteLearnware } from "../request/admin";
+import ConfirmDialog from "../components/Dialogs/ConfirmDialog.vue";
 import UserRequirement from "../components/Search/UserRequirement.vue";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import MultiRecommendedLearnwareList from "../components/Learnware/MultiRecommendedLearnwareList.vue";
 import type { Filter, LearnwareCardInfo } from "@beiming-system/types/learnware";
 import { promiseReadFile } from "../utils";
 
+export interface SearchProps {
+  isAdmin?: boolean;
+}
+
+withDefaults(defineProps<SearchProps>(), {
+  isAdmin: false,
+});
+
 const display = useDisplay();
+
+const route = useRoute();
+const router = useRouter();
 
 const { t } = useI18n();
 
@@ -31,6 +45,7 @@ const singleRecommendedLearnwareItems = ref<LearnwareCardInfo[]>([]);
 const heterogeneousMode = ref<boolean>(false);
 const rkmeTypeTable = ref<boolean>(false);
 const loading = ref(false);
+const isVerified = ref(route.query.is_verified ? route.query.is_verified === "true" : true);
 
 const contentRef = ref<HTMLDivElement | null>(null);
 const anchorRef = ref<HTMLDivElement | null>(null);
@@ -40,6 +55,10 @@ const scrollTop = ref(0);
 const showError = ref(false);
 const errorMsg = ref("");
 const errorTimer = ref();
+
+const dialog = ref<InstanceType<typeof ConfirmDialog>>();
+const deleteId = ref("");
+const deleteName = ref("");
 
 const showMultiRecommended = computed(
   () =>
@@ -64,6 +83,7 @@ function pageChange(newPage: number): void {
 function fetchByFilterAndPage(
   filters: Filter,
   page: number,
+  isVerified: boolean = false,
   heterogeneousMode: boolean = false,
 ): void {
   showError.value = false;
@@ -76,6 +96,7 @@ function fetchByFilterAndPage(
     libraryType: filters.libraryType,
     scenarioList: filters.scenarioList,
     files: filters.files,
+    isVerified,
     heterogeneousMode,
     page,
     limit: singleRecommendedLearnwarePageSize.value,
@@ -132,6 +153,55 @@ function fetchByFilterAndPage(
     });
 }
 
+function handleConfirmDeleteLearnware(id: string): void {
+  showError.value = false;
+
+  deleteLearnware(id)
+    .then((res) => {
+      switch (res.code) {
+        case 0: {
+          fetchByFilterAndPage(
+            filters.value,
+            singleRecommendedLearnwarePage.value - 1,
+            isVerified.value,
+          );
+          return;
+        }
+        default: {
+          throw new Error(res.msg);
+        }
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      loading.value = false;
+      showError.value = true;
+      errorMsg.value = err.message;
+      clearTimeout(errorTimer.value);
+      setTimeout(() => (showError.value = false), 2000);
+    });
+}
+
+function handleClickEdit(id: string): void {
+  router.push({
+    path: "/submit",
+    query: {
+      edit: "true",
+      id,
+    },
+  });
+}
+
+function handleClickDelete(id: string): void {
+  if (dialog.value) {
+    dialog.value.confirm();
+    deleteId.value = id;
+    deleteName.value = (
+      singleRecommendedLearnwareItems.value.find((item) => item.id === id) as { name: string }
+    ).name;
+  }
+}
+
 watch(
   () => filters.value,
   () => {
@@ -152,11 +222,33 @@ watch(
 );
 
 watch(
-  () => [filters.value, singleRecommendedLearnwarePage.value, heterogeneousMode.value],
+  () => isVerified.value,
   (newVal) => {
-    const [newFilters, newPage, newHeterogeneousMode] = newVal as [Filter, number, boolean];
+    router.replace({
+      query: {
+        ...route.query,
+        is_verified: String(newVal),
+      },
+    });
+  },
+);
 
-    fetchByFilterAndPage(newFilters, newPage - 1, newHeterogeneousMode);
+watch(
+  () => [
+    filters.value,
+    singleRecommendedLearnwarePage.value,
+    isVerified.value,
+    heterogeneousMode.value,
+  ],
+  (newVal) => {
+    const [newFilters, newPage, newIsVerified, newHeterogeneousMode] = newVal as [
+      Filter,
+      number,
+      boolean,
+      boolean,
+    ];
+
+    fetchByFilterAndPage(newFilters, newPage - 1, newIsVerified, newHeterogeneousMode);
 
     if (contentRef.value) {
       if (display.name.value !== "xs") {
@@ -192,7 +284,12 @@ onActivated(() => {
   if (contentRef.value) {
     contentRef.value.scrollTop = scrollTop.value;
   }
-  fetchByFilterAndPage(filters.value, singleRecommendedLearnwarePage.value - 1);
+  fetchByFilterAndPage(
+    filters.value,
+    singleRecommendedLearnwarePage.value - 1,
+    isVerified.value,
+    heterogeneousMode.value,
+  );
 });
 
 onMounted(() => {
@@ -205,6 +302,12 @@ onMounted(() => {
       });
     }
   });
+  fetchByFilterAndPage(
+    filters.value,
+    singleRecommendedLearnwarePage.value - 1,
+    isVerified.value,
+    heterogeneousMode.value,
+  );
 });
 </script>
 
@@ -223,9 +326,24 @@ onMounted(() => {
     </v-scroll-y-transition>
 
     <user-requirement v-model:value="filters">
-      <template v-if="heterogeneousMode" #prepend>
-        <v-btn block variant="outlined" color="red" @click="() => (heterogeneousMode = false)">
+      <template #prepend>
+        <v-btn
+          v-if="heterogeneousMode"
+          block
+          variant="outlined"
+          color="red"
+          @click="() => (heterogeneousMode = false)"
+        >
           {{ t("Search.TurnOffHeterogeneousSearch") }}
+        </v-btn>
+        <v-btn
+          v-if="isAdmin"
+          block
+          class="mr-2"
+          :color="isVerified ? 'primary' : 'error'"
+          @click="() => (isVerified = !isVerified)"
+        >
+          {{ isVerified ? t("AllLearnware.ShowVerified") : t("AllLearnware.ShowUnverified") }}
         </v-btn>
       </template>
     </user-requirement>
@@ -280,8 +398,11 @@ onMounted(() => {
           :page-num="singleRecommendedLearnwarePageNum"
           :page-size="singleRecommendedLearnwarePageSize"
           :loading="loading"
+          :is-admin="isAdmin"
           :show-pagination="singleRecommendedLearnwarePageNum > 1"
           @page-change="pageChange"
+          @click:edit="(id) => handleClickEdit(id)"
+          @click:delete="(id) => handleClickDelete(id)"
         />
       </v-card>
 
@@ -296,6 +417,17 @@ onMounted(() => {
         </v-btn>
       </div>
     </div>
+
+    <confirm-dialog ref="dialog" @confirm="() => handleConfirmDeleteLearnware(deleteId)">
+      <template #title>
+        Confirm to delete &nbsp; <b>{{ deleteName }}</b
+        >?
+      </template>
+      <template #text>
+        The learnware <b>{{ deleteName }}</b> will be deleted in the learnware market
+        <i>permanently</i>. Do you really want to delete?
+      </template>
+    </confirm-dialog>
   </div>
 </template>
 
