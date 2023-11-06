@@ -21,6 +21,7 @@ import numpy as np
 class TestLearnwareClient(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
+        testops.cleanup_folder()
         self.server_process = multiprocessing.Process(target=main.main)
         self.server_process.start()
         testops.wait_port_open(context.config.listen_port, 10)
@@ -45,6 +46,7 @@ class TestLearnwareClient(unittest.TestCase):
     def tearDown(self) -> None:
         super().tearDown()
         self.server_process.kill()
+        testops.cleanup_folder()
         pass
 
     def test_upload_learnware(self):
@@ -52,7 +54,7 @@ class TestLearnwareClient(unittest.TestCase):
 
         client.login("test@localhost", self.token)
         learnware_id = client.upload_learnware(
-            testops.test_learnware_semantic_specification_table(), os.path.join("tests", "data", "test_learnware.zip")
+            os.path.join("tests", "data", "test_learnware.zip"), testops.test_learnware_semantic_specification_table()
         )
 
         learnware_list = client.list_learnware()
@@ -74,7 +76,7 @@ class TestLearnwareClient(unittest.TestCase):
         client = LearnwareClient(self.backend_host)
         client.login("test@localhost", self.token)
         learnware_id = client.upload_learnware(
-            testops.test_learnware_semantic_specification_table(), os.path.join("tests", "data", "test_learnware.zip")
+            os.path.join("tests", "data", "test_learnware.zip"), testops.test_learnware_semantic_specification_table()
         )
 
         testops.add_learnware_to_engine(learnware_id, client.headers)
@@ -96,7 +98,7 @@ class TestLearnwareClient(unittest.TestCase):
         client = LearnwareClient(self.backend_host)
         client.login("test@localhost", self.token)
         learnware_id = client.upload_learnware(
-            testops.test_learnware_semantic_specification_table(), os.path.join("tests", "data", "test_learnware.zip")
+            os.path.join("tests", "data", "test_learnware.zip"), testops.test_learnware_semantic_specification_table()
         )
 
         testops.add_learnware_to_engine(learnware_id, client.headers)
@@ -112,7 +114,6 @@ class TestLearnwareClient(unittest.TestCase):
     def test_list_semantic_specification_values(self):
         client = LearnwareClient(self.backend_host)
         client.login("test@localhost", self.token)
-
         data_type_values = client.list_semantic_specification_values(SemanticSpecificationKey.DATA_TYPE)
 
         self.assertIn("Table", data_type_values)
@@ -122,7 +123,7 @@ class TestLearnwareClient(unittest.TestCase):
         client = LearnwareClient(self.backend_host)
         client.login("test@localhost", self.token)
         learnware_id = client.upload_learnware(
-            testops.test_learnware_semantic_specification_table(), os.path.join("tests", "data", "test_learnware.zip")
+            os.path.join("tests", "data", "test_learnware.zip"), testops.test_learnware_semantic_specification_table()
         )
 
         testops.add_learnware_to_engine(learnware_id, client.headers)

@@ -15,6 +15,7 @@ import datetime
 
 class TestUser(unittest.TestCase):
     def setUpClass() -> None:
+        testops.cleanup_folder()
         unittest.TestCase.setUpClass()
         TestUser.server_process = multiprocessing.Process(target=main.main)
         TestUser.server_process.start()
@@ -37,6 +38,7 @@ class TestUser(unittest.TestCase):
     def tearDownClass() -> None:
         unittest.TestCase.tearDownClass()
         TestUser.server_process.kill()
+        testops.cleanup_folder()
         pass
 
     def test_profile(self):
@@ -108,7 +110,9 @@ class TestUser(unittest.TestCase):
 
         self.assertEqual(result["code"], 0)
 
-        result = testops.url_request("user/list_learnware_unverified", {"page": 0, "limit": 10}, headers=headers)
+        result = testops.url_request(
+            "user/list_learnware", {"page": 0, "limit": 10, "is_verified": False}, headers=headers
+        )
 
         self.assertEqual(result["code"], 0)
         self.assertEqual(len(result["data"]["learnware_list"]), 0)
@@ -234,12 +238,14 @@ class TestUser(unittest.TestCase):
         )
 
         self.assertEqual(result["code"], 0)
-        result = testops.url_request("user/list_learnware", {"page": 0, "limit": 10}, headers=headers)
+        result = testops.url_request(
+            "user/list_learnware", {"page": 0, "limit": 10, "is_verified": False}, headers=headers
+        )
 
         self.assertEqual(result["code"], 0)
         learnware_info = result["data"]["learnware_list"][0]
         self.assertEqual(learnware_info["semantic_specification"]["Name"]["Values"], "Test Classification 2")
-        self.assertEqual(learnware_info["verify_status"], "SUCCESS")
+        assert learnware_info["verify_status"] != "SUCCESS"
 
         testops.delete_learnware(learnware_id, headers)
         pass
@@ -328,7 +334,7 @@ class TestUser(unittest.TestCase):
     def test_verify_log_by_admin(self):
         learnware_id = testops.add_test_learnware(TestUser.email, TestUser.password)
         dbops.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.SUCCESS, "test result")
-        headers = testops.login("admin@localhost", "admin")
+        headers = testops.login("test@localhost", "test")
 
         result = testops.url_request(
             "user/verify_log?learnware_id={}".format(learnware_id),

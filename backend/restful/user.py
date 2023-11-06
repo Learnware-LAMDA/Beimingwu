@@ -10,6 +10,7 @@ import lib.database_operations as database
 import lib.engine as engine_helper
 from database.base import LearnwareVerifyStatus
 import context
+from learnware.market import EasySemanticChecker
 from context import config as C
 from . import auth
 import flask_jwt_extended
@@ -116,48 +117,6 @@ class ListLearnwareApi(flask_restful.Resource):
         }
         return result, 200
 
-    pass
-
-
-class ListLearnwareUnverifiedApi(flask_restful.Resource):
-    @flask_jwt_extended.jwt_required()
-    def post(self):
-        body = request.get_json()
-        keys = ["limit", "page"]
-        if any([k not in body for k in keys]):
-            return {"code": 21, "msg": "Request parameters error."}, 200
-
-        limit = body["limit"]
-        page = body["page"]
-
-        user_id = flask_jwt_extended.get_jwt_identity()
-        ret, cnt = database.get_learnware_list("user_id", user_id, limit=limit, page=page, is_verified=False)
-
-        # read semantic specification
-        learnware_list = []
-        for row in ret:
-            learnware_id = row["learnware_id"]
-            learnware_info = dict()
-            semantic_spec_path = context.get_learnware_verify_file_path(learnware_id)[:-4] + ".json"
-            with open(semantic_spec_path, "r") as f:
-                learnware_info["semantic_specification"] = json.load(f)
-                pass
-            learnware_info["learnware_id"] = learnware_id
-            learnware_list.append(learnware_info)
-            pass
-
-        result = {
-            "code": 0,
-            "msg": "Ok.",
-            "data": {
-                "learnware_list": learnware_list,
-                "page": page,
-                "limit": limit,
-                "total_pages": (cnt + limit - 1) // limit,
-            },
-        }
-        return result, 200
-
 
 class AddLearnwareApi(flask_restful.Resource):
     @flask_jwt_extended.jwt_required()
@@ -187,8 +146,6 @@ class AddLearnwareApi(flask_restful.Resource):
 
         return result, retcd
 
-    pass
-
 
 class UpdateLearnwareApi(flask_restful.Resource):
     parser = flask_restful.reqparse.RequestParser()
@@ -207,48 +164,43 @@ class UpdateLearnwareApi(flask_restful.Resource):
         if semantic_specification is None:
             return {"code": 41, "msg": err_msg}, 200
 
-        verify_status = database.get_learnware_verify_status(learnware_id)
+        if EasySemanticChecker.check_semantic_spec(semantic_specification) == EasySemanticChecker.INVALID_LEARNWARE:
+            return {"code": 41, "msg": "Semantic specification check failed!"}, 200
 
+        verify_status = database.get_learnware_verify_status(learnware_id)
         if verify_status == LearnwareVerifyStatus.PROCESSING.value:
             return {"code": 51, "msg": "Learnware is verifying."}, 200
 
         learnware_file = None
         if request.files is not None:
             learnware_file = request.files.get("learnware_file")
-            pass
 
         learnware_path = context.get_learnware_verify_file_path(learnware_id)
         learnware_semantic_spec_path = learnware_path[:-4] + ".json"
         with open(learnware_semantic_spec_path, "w") as f:
             json.dump(semantic_specification, f)
-            pass
+
         if learnware_file is not None:
             learnware_file.seek(0)
             learnware_file.save(learnware_path)
-            pass
+        else:
+            learnware_path = None
 
         database.update_learnware_timestamp(learnware_id)
 
-        if verify_status == LearnwareVerifyStatus.SUCCESS.value:
-            # this learnware is verified
-            print(f"update verified learnware: {learnware_id}")
+        if verify_status in [LearnwareVerifyStatus.SUCCESS.value, LearnwareVerifyStatus.FAIL.value]:
+            print(f"update learnware: {learnware_id}")
 
-            if learnware_file is None:
-                # only update semantic specification
-                context.engine.update_learnware_semantic_specification(learnware_id, semantic_specification)
-                pass
-            else:
-                context.engine.delete_learnware(learnware_id)
-                database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
-                pass
-            pass
-        elif verify_status == LearnwareVerifyStatus.FAIL.value:
-            # this learnware is failed
-            print(f"update failed learnware: {learnware_id}")
+            if context.engine.get_learnware_by_ids(learnware_id) is not None:
+                context.engine.update_learnware(
+                    id=learnware_id,
+                    zip_path=learnware_path,
+                    semantic_spec=semantic_specification,
+                    checker_names=[],
+                    check_status=EasySemanticChecker.NONUSABLE_LEARNWARE,
+                )
+
             database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
-            pass
-        else:
-            pass
 
         return {"code": 0, "msg": "success"}, 200
 
@@ -257,21 +209,35 @@ class AddLearnwareVerifiedApi(flask_restful.Resource):
     # todo: this api should be protected
     def post(self):
         body = request.get_json()
-
         learnware_id = body["learnware_id"]
-        learnware_file = context.get_learnware_verify_file_path(learnware_id)
-        learnware_file_processed = learnware_file[:-4] + "_processed.zip"
-        learnware_semantic_spec_path = learnware_file[:-4] + ".json"
+        check_status = body["check_status"]
 
-        with open(learnware_semantic_spec_path, "r") as f:
-            semantic_specification = json.load(f)
-            pass
+        if context.engine.get_learnware_by_ids(learnware_id) is None:
+            learnware_file = context.get_learnware_verify_file_path(learnware_id)
+            learnware_file_processed = learnware_file[:-4] + "_processed.zip"
+            learnware_semantic_spec_path = learnware_file[:-4] + ".json"
 
-        context.engine.add_learnware(learnware_file_processed, semantic_specification, learnware_id=learnware_id)
+            with open(learnware_semantic_spec_path, "r") as f:
+                semantic_specification = json.load(f)
+
+            final_id, final_status = context.engine.add_learnware(
+                zip_path=learnware_file_processed,
+                semantic_spec=semantic_specification,
+                checker_names=[],
+                learnware_id=learnware_id,
+            )
+            if final_id is None:
+                return {"code": 51, "msg": "Learnware add failed!"}, 200
+
+        final_status = context.engine.update_learnware(
+            id=learnware_id,
+            checker_names=[],
+            check_status=check_status,
+        )
+        if final_status == EasySemanticChecker.INVALID_LEARNWARE:
+            return {"code": 51, "msg": "Learnware check_status update failed!"}, 200
 
         return {"code": 0, "msg": "success"}, 200
-
-    pass
 
 
 class DeleteLearnwareApi(flask_restful.Resource):
@@ -288,11 +254,8 @@ class DeleteLearnwareApi(flask_restful.Resource):
 
         if database.check_user_admin(user_id):
             user_id = database.get_user_id_by_learnware(learnware_id)
-            pass
 
         return common_functions.delete_learnware(user_id, learnware_id)
-
-    pass
 
 
 @api.doc(params={"learnware_id": "learnware id"})
@@ -305,13 +268,10 @@ class VerifyLog(flask_restful.Resource):
         # check if user is admin
         if database.check_user_admin(user_id):
             user_id = database.get_user_id_by_learnware(learnware_id)
-            pass
 
         result = database.get_verify_log(user_id, learnware_id)
 
         return {"code": 0, "data": result}, 200
-
-    pass
 
 
 class CreateToken(flask_restful.Resource):
@@ -324,8 +284,6 @@ class CreateToken(flask_restful.Resource):
 
         return {"code": 0, "data": {"token": token}}, 200
 
-    pass
-
 
 class ListToken(flask_restful.Resource):
     @flask_jwt_extended.jwt_required()
@@ -337,8 +295,6 @@ class ListToken(flask_restful.Resource):
         result = {"token_list": result}
 
         return {"code": 0, "data": result}, 200
-
-    pass
 
 
 class DeleteToken(flask_restful.Resource):
@@ -357,8 +313,6 @@ class DeleteToken(flask_restful.Resource):
         database.delete_user_token(user_id, token)
 
         return {"code": 0, "msg": "success"}, 200
-
-    pass
 
 
 class ChunkedUpload(flask_restful.Resource):
@@ -380,7 +334,6 @@ class ChunkedUpload(flask_restful.Resource):
         with open(file_path, "ab+") as fout:
             fout.seek(chunk_begin)
             fout.write(file.stream.read())
-            pass
 
         return {"code": 0, "msg": "success"}, 200
 
@@ -415,7 +368,6 @@ class AddLearnwareUploaded(flask_restful.Resource):
 api.add_resource(ProfileApi, "/profile")
 api.add_resource(ChangePasswordApi, "/change_password")
 api.add_resource(ListLearnwareApi, "/list_learnware")
-api.add_resource(ListLearnwareUnverifiedApi, "/list_learnware_unverified")
 api.add_resource(AddLearnwareApi, "/add_learnware")
 api.add_resource(UpdateLearnwareApi, "/update_learnware")
 api.add_resource(AddLearnwareVerifiedApi, "/add_learnware_verified")

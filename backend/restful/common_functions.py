@@ -3,10 +3,9 @@ import json
 import flask_jwt_extended
 import lib.database_operations as dbops
 from database.base import LearnwareVerifyStatus
+from learnware.market import BaseChecker
 import context
 import os
-import zipfile
-import tempfile
 
 
 def add_learnware(learnware_path, semantic_specification, learnware_id):
@@ -50,7 +49,7 @@ def delete_learnware(user_id, learnware_id):
 
     learnware_info = learnware_infos[0]
 
-    if learnware_info["verify_status"] == LearnwareVerifyStatus.SUCCESS.value:
+    if context.engine.get_learnware_by_ids(learnware_id) is not None:
         ret = context.engine.delete_learnware(learnware_id)
         if not ret:
             return {"code": 42, "msg": "Engine delete learnware error."}, 200
@@ -61,11 +60,9 @@ def delete_learnware(user_id, learnware_id):
         learnware_sematic_spec_path = learnware_path[:-4] + ".json"
         os.remove(learnware_path)
         os.remove(learnware_sematic_spec_path)
-        pass
 
     cnt = dbops.remove_learnware("learnware_id", learnware_id)
 
     result = {"code": 0, "msg": "Delete success."}
 
     return result, 200
-    pass

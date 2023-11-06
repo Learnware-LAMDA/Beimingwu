@@ -81,7 +81,7 @@ _DEFAULT_CONFIG = {
     },
     # Engine config
     "engine": {
-        "type": "backend_market",
+        "type": "easy",
         "market_path": MARKET_PATH,
         "property_path": PROPERTY_PATH,
         "load_mode": "database",

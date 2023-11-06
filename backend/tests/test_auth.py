@@ -14,6 +14,7 @@ import hashlib
 
 class TestAuth(unittest.TestCase):
     def setUpClass() -> None:
+        testops.cleanup_folder()
         unittest.TestCase.setUpClass()
         TestAuth.server_process = multiprocessing.Process(target=main.main)
         TestAuth.server_process.start()
@@ -24,6 +25,7 @@ class TestAuth(unittest.TestCase):
     def tearDownClass() -> None:
         unittest.TestCase.tearDownClass()
         TestAuth.server_process.kill()
+        testops.cleanup_folder()
 
     def test_01_login(self):
         # first we need register a user

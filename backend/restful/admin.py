@@ -1,10 +1,10 @@
 from flask import Blueprint, request
 import context
 from context import config as C
+from learnware.market import BaseChecker
 import hashlib
-import os
 from .auth import admin_login_required, super_admin_login_required
-from .utils import get_parameters, generate_random_str
+from .utils import generate_random_str
 from . import common_functions
 
 import lib.database_operations as database
@@ -53,7 +53,6 @@ class ListUser(flask_restful.Resource):
             "data": {"user_list": ret, "page": page, "limit": limit, "total_pages": (cnt + limit - 1) // limit},
         }
         return result, 200
-        pass
 
 
 class DeleteUser(flask_restful.Resource):
@@ -94,7 +93,6 @@ class DeleteUser(flask_restful.Resource):
                 "msg": "System error.",
             }
         return result, 200
-        pass
 
 
 class ListLearnware(flask_restful.Resource):
@@ -125,7 +123,6 @@ class ListLearnware(flask_restful.Resource):
             data["last_modify"] = row["last_modify"].strftime("%Y-%m-%d %H:%M:%S.%f %Z")
             data["verify_status"] = row["verify_status"]
             datas.append(data)
-            pass
 
         result = {
             "code": 0,
@@ -138,7 +135,6 @@ class ListLearnware(flask_restful.Resource):
             },
         }
         return result, 200
-        pass
 
 
 class DeleteLearnware(flask_restful.Resource):
@@ -156,7 +152,6 @@ class DeleteLearnware(flask_restful.Resource):
         print(f"delete learnware: {learnware_id}")
 
         return common_functions.delete_learnware(user_id, learnware_id)
-        pass
 
 
 class ResetPassword(flask_restful.Resource):
@@ -203,16 +198,23 @@ class SetUserRole(flask_restful.Resource):
 
         return {"code": 0, "msg": "Set user role success."}, 200
 
-    pass
-
 
 class Summary(flask_restful.Resource):
     @admin_login_required
     def post(self):
-        count_user = database.get_user_count()
+        count_verified_user = database.get_user_count(is_verified=True)
+        count_unverified_user = database.get_user_count(is_verified=False)
+
         count_verified_learnware = database.get_learnware_count_verified()
-        count_unverified_learnware = database.get_learnware_count_unverified()
         count_download = database.get_download_count()
+
+        count_unverified_learnware_total = database.get_learnware_count_unverified()
+        count_unverified_learnware_in_engine = len(
+            context.engine.get_learnware_ids(check_status=BaseChecker.NONUSABLE_LEARNWARE)
+        )
+        count_unverified_learnware_not_in_engine = (
+            count_unverified_learnware_total - count_unverified_learnware_in_engine
+        )
 
         count_detail = engine_helper.get_learnware_count_detail()
 
@@ -220,17 +222,17 @@ class Summary(flask_restful.Resource):
             "code": 0,
             "msg": "Get summary success.",
             "data": {
-                "count_user": count_user,
+                "count_verified_user": count_verified_user,
+                "count_unverified_user": count_unverified_user,
                 "count_verified_learnware": count_verified_learnware,
-                "count_unverified_learnware": count_unverified_learnware,
+                "count_unverified_learnware": count_unverified_learnware_in_engine,
+                "count_learnware_awaiting_storage": count_unverified_learnware_not_in_engine,
                 "count_download": count_download,
                 "count_detail": count_detail,
             },
         }
 
         return result, 200
-
-    pass
 
 
 api.add_resource(ListUser, "/list_user")

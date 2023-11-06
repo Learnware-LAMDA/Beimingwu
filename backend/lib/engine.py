@@ -60,7 +60,7 @@ def get_learnware_by_id(ids):
     return learneare_list
 
 
-def search_learnware(semantic_str, statistical_str, user_id):
+def search_learnware(semantic_str, statistical_str, user_id, check_status=None):
     # Load semantic specification
     try:
         semantic_specification = json.loads(semantic_str)
@@ -77,6 +77,7 @@ def search_learnware(semantic_str, statistical_str, user_id):
     statistical_specification_dict = {
         "RKMETableSpecification": specification.RKMETableSpecification(),
         "RKMEImageSpecification": specification.RKMEImageSpecification(),
+        "RKMETextSpecification": specification.RKMETextSpecification(),
     }
 
     try:
@@ -106,7 +107,9 @@ def search_learnware(semantic_str, statistical_str, user_id):
 
     try:
         context.logger.info(f"stat_info in user: {user_info.stat_info}")
-        matching, single_learnware_list, multi_score, multi_learnware = context.engine.search_learnware(user_info)
+        matching, single_learnware_list, multi_score, multi_learnware = context.engine.search_learnware(
+            user_info, check_status=check_status
+        )
     except Exception as err:
         print(err)
         traceback.print_exc()
@@ -116,7 +119,7 @@ def search_learnware(semantic_str, statistical_str, user_id):
     return True, "", (matching, single_learnware_list, multi_score, multi_learnware)
 
 
-def search_learnware_by_semantic(semantic_str, user_id):
+def search_learnware_by_semantic(semantic_str, user_id, check_status=None):
     # Load semantic specification
     try:
         semantic_specification = json.loads(semantic_str)
@@ -130,7 +133,9 @@ def search_learnware_by_semantic(semantic_str, user_id):
         stat_info={},  # No statistical specification
     )
     try:
-        matching, single_learnware_list, multi_score, multi_learnware = context.engine.search_learnware(info)
+        matching, single_learnware_list, multi_score, multi_learnware = context.engine.search_learnware(
+            info, check_status=check_status
+        )
     except Exception as err:
         return False, f"Engine search learnware error.", None
 
@@ -178,7 +183,7 @@ def parse_semantic_specification(semantic_str):
         return None, "Output is not 1"
 
     task_type = task_type_values[0]
-    if task_type in ("Classification", "Regression", "Feature Extraction"):
+    if task_type in ("Classification", "Regression"):
         task_output = semantic_specification["Output"]
         if isinstance(task_output, str):
             try:
@@ -217,64 +222,64 @@ def check_learnware_file(semantic_specification, learnware_file):
     temp_dir = tempfile.TemporaryDirectory(prefix="learnware_check_file_")
 
     try:
-        yaml_file = learnware.config.C.learnware_folder_config["yaml_file"]
+        # Check semantic_specification
+        if (
+            market.EasySemanticChecker.check_semantic_spec(semantic_specification)
+            == market.EasySemanticChecker.INVALID_LEARNWARE
+        ):
+            return False, f"Semantic specification check failed!"
 
         with zipfile.ZipFile(learnware_file, "r") as z_file:
             top_folder = common_utils.get_top_folder_in_zip(z_file)
 
+            yaml_file = learnware.config.C.learnware_folder_config["yaml_file"]
             yaml_file = top_folder + yaml_file
             z_file.extract(yaml_file, temp_dir.name)
 
             with open(os.path.join(temp_dir.name, yaml_file), "r") as fin:
                 learnware_config = yaml.safe_load(fin)
-                pass
 
             stat_specs = learnware_config.get("stat_specifications")
 
             if stat_specs is None:
                 return False, f"no stat_specifications in {yaml_file}"
 
+            # Check stat_specifications
             for stat_spec in stat_specs:
                 member = stat_spec["file_name"]
                 member = top_folder + member
                 z_file.extract(member, temp_dir.name)
                 stat_spec["file_name"] = os.path.join(temp_dir.name, member)
-                stat_spec_name, stat_spec_obj = get_stat_spec_from_config(stat_spec)
+                stat_spec_obj = get_stat_spec_from_config(stat_spec)
 
-                if stat_spec_name == "RKMEStatSpecification":
+                if stat_spec_obj.type == "RKMETableSpecification":
                     if semantic_specification["Data"]["Values"][0] == "Table":
                         dim_table = int(semantic_specification["Input"]["Dimension"])
                         dim_rkme = stat_spec_obj.get_z().shape[1]
+
                         if dim_table != dim_rkme:
                             return False, f"dimension of table is {dim_table}, dimension of rkme is {dim_rkme}"
-                        pass
-                    pass
-                pass
-            pass
-        pass
+
     except Exception as err:
         return False, f"extract statistical specification error: {err}"
+
     finally:
         temp_dir.cleanup()
 
     return True, ""
 
 
-def get_learnware_count_detail():
+def get_learnware_count_detail(check_status=None):
     count_detail = dict()
     count_detail["Data"] = defaultdict(int)
     count_detail["Task"] = defaultdict(int)
     count_detail["Library"] = defaultdict(int)
     count_detail["Scenario"] = defaultdict(int)
 
-    for learnware_obj in context.engine.get_all_learnware():
+    for learnware_obj in context.engine.get_learnwares(check_status=check_status):
         semantic_spec = learnware_obj.get_specification().get_semantic_spec()
         for key, value in count_detail.items():
             for v in semantic_spec[key]["Values"]:
                 value[v] += 1
-                pass
-            pass
-        pass
 
     return count_detail
-    pass

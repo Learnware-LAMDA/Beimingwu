@@ -1,18 +1,32 @@
 import os
+import context
 import unittest
+import multiprocessing
+from scripts import main
+from context import config as C
 from scripts import backup_data
 import common_test_operations as testops
 from learnware.config import C as learnware_config
 
 
 class TestBackupData(unittest.TestCase):
-    def setUp(
-        self,
-    ) -> None:
-        super().setUp()
+    def setUpClass() -> None:
+        testops.cleanup_folder()
+        unittest.TestCase.setUpClass()
+        TestBackupData.server_process = multiprocessing.Process(target=main.main)
+        TestBackupData.server_process.start()
+        testops.wait_port_open(C.listen_port, 10)
+        context.init_database()
+        testops.clear_db()
+        testops.url_request(
+            "auth/register", {"username": "test", "password": "test", "email": "test@localhost", "confirm_email": False}
+        )
 
-    def tearDown(self) -> None:
-        super().tearDown()
+    def tearDownClass() -> None:
+        unittest.TestCase.tearDownClass()
+        headers = testops.login("test@localhost", "test")
+        TestBackupData.server_process.kill()
+        testops.cleanup_folder()
         pass
 
     def test_run_backup(self):

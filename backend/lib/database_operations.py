@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, List
 from datetime import datetime
 import context
 import database.base
@@ -198,6 +198,23 @@ def get_all_learnware_list(columns, limit=None, page=None, is_verified=None, use
     return results, count[0][0]
 
 
+def convert_modify_time_to_datetime(rows):
+    rows_ = []
+    for row in rows:
+        row_ = dict()
+        for k, v in row._mapping.items():
+            if k == "last_modify":
+                row_[k] = convert_datetime(v)
+                pass
+            else:
+                row_[k] = v
+                pass
+            pass
+        rows_.append(row_)
+        pass
+    return rows_
+
+
 def get_learnware_list(by, value, limit=None, page=None, is_verified=None):
     sql = f"FROM tb_user_learnware_relation WHERE {by} = :{by}"
     if is_verified is None:
@@ -219,7 +236,8 @@ def get_learnware_list(by, value, limit=None, page=None, is_verified=None):
         "SELECT * " + sql + order + suffix, {by: value, "verify_status": LearnwareVerifyStatus.SUCCESS.value}
     )
 
-    return [r._mapping for r in rows], cnt[0][0]
+    rows_ = convert_modify_time_to_datetime(rows=rows)
+    return rows_, cnt[0][0]
 
 
 def get_learnware_list_by_user_id(user_id, limit, page):
@@ -256,19 +274,7 @@ def get_learnware_list_by_user_id(user_id, limit, page):
         },
     )
 
-    rows_ = []
-    for row in rows:
-        row_ = dict()
-        for k, v in row._mapping.items():
-            if k == "last_modify":
-                row_[k] = convert_datetime(v)
-                pass
-            else:
-                row_[k] = v
-                pass
-            pass
-        rows_.append(row_)
-        pass
+    rows_ = convert_modify_time_to_datetime(rows=rows)
 
     return rows_, cnt
 
@@ -465,7 +471,7 @@ def create_user_token(user_id, token):
     pass
 
 
-def get_user_tokens(user_id) -> list[str]:
+def get_user_tokens(user_id) -> List[str]:
     result = context.database.execute("SELECT token FROM tb_user_token WHERE user_id = :user_id", {"user_id": user_id})
     if len(result) == 0:
         return []
@@ -492,8 +498,13 @@ def add_log(name, info):
     pass
 
 
-def get_user_count():
-    result = context.database.execute("SELECT COUNT(1) FROM tb_user")
+def get_user_count(is_verified=None):
+    if is_verified == True:
+        result = context.database.execute("SELECT COUNT(1) FROM tb_user WHERE email_confirm_time IS NOT NULL")
+    elif is_verified == False:
+        result = context.database.execute("SELECT COUNT(1) FROM tb_user WHERE email_confirm_time IS NULL")
+    else:
+        result = context.database.execute("SELECT COUNT(1) FROM tb_user")
     return result[0][0]
 
 

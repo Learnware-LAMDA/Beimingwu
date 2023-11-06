@@ -11,6 +11,7 @@ import hashlib
 
 class TestAdmin(unittest.TestCase):
     def setUpClass() -> None:
+        testops.cleanup_folder()
         unittest.TestCase.setUpClass()
         TestAdmin.server_process = multiprocessing.Process(target=main.main)
         TestAdmin.server_process.start()
@@ -26,6 +27,7 @@ class TestAdmin(unittest.TestCase):
     def tearDownClass() -> None:
         unittest.TestCase.tearDownClass()
         TestAdmin.server_process.kill()
+        testops.cleanup_folder()
         pass
 
     def test_list_user(
@@ -98,9 +100,11 @@ class TestAdmin(unittest.TestCase):
         result = testops.url_request("admin/summary", headers=headers)
 
         self.assertEqual(result["code"], 0)
-        self.assertEqual(result["data"]["count_user"], 2)
+        self.assertEqual(result["data"]["count_verified_user"], 2)
+        self.assertEqual(result["data"]["count_unverified_user"], 0)
         self.assertEqual(result["data"]["count_verified_learnware"], 1)
         self.assertEqual(result["data"]["count_unverified_learnware"], 0)
+        self.assertEqual(result["data"]["count_learnware_awaiting_storage"], 0)
         self.assertEqual(result["data"]["count_download"], 0)
         self.assertGreaterEqual(result["data"]["count_detail"]["Data"]["Image"], 1)
         pass

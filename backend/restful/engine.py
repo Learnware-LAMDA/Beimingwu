@@ -12,6 +12,8 @@ import flask_restx as flask_restful
 import traceback
 import lib.database_operations as dbops
 import lib.data_utils as data_utils
+from learnware.market import BaseChecker
+from learnware.config import C as learnware_conf
 
 
 engine_blueprint = Blueprint("Engine-API", __name__)
@@ -27,7 +29,7 @@ class SematicSpecification(flask_restful.Resource):
             result = {
                 "code": 0,
                 "msg": "Ok",
-                "data": {"semantic_specification": context.engine.get_semantic_spec_list()},
+                "data": {"semantic_specification": context.engine_config.semantic_specs},
             }
             return result, 200
         except:
@@ -42,6 +44,8 @@ class SearchLearnware(flask_restful.Resource):
         user_id = flask_jwt_extended.get_jwt_identity()
 
         semantic_str = request.form.get("semantic_specification")
+        is_verified = request.form.get("is_verified", "true")
+
         if semantic_str is None:
             return {"code": 21, "msg": f"Request parameters error."}, 200
         context.logger.info(f"search learnware, semantic_str: {semantic_str}")
@@ -55,11 +59,20 @@ class SearchLearnware(flask_restful.Resource):
             statistical_file = request.files["statistical_specification"]
             statistical_str = statistical_file.read()
 
+        # Acquire check_status
+        if is_verified == "false":
+            # TODO: requires administrator rights
+            check_status = BaseChecker.NONUSABLE_LEARNWARE
+        else:
+            check_status = BaseChecker.USABLE_LEARWARE
+
         # Cached Search learnware
         if statistical_str is None:
-            status, msg, ret = adv_engine.search_learnware_by_semantic(semantic_str, user_id)
+            status, msg, ret = adv_engine.search_learnware_by_semantic(semantic_str, user_id, check_status=check_status)
         else:
-            status, msg, ret = adv_engine.search_learnware(semantic_str, statistical_str, user_id)
+            status, msg, ret = adv_engine.search_learnware(
+                semantic_str, statistical_str, user_id, check_status=check_status
+            )
             pass
 
         print(msg)
@@ -168,19 +181,13 @@ class DownloadLearnware(flask_restful.Resource):
         if learnware_id is None:
             return {"code": 21, "msg": "Request parameters error."}, 200
 
-        verify_status = dbops.get_learnware_verify_status(learnware_id)
+        try:
+            learnware_zip_path = context.engine.get_learnware_zip_path_by_ids(learnware_id)
+        except:
+            return {"code": 42, "msg": "Engine download learnware error."}, 200
 
-        if verify_status == dbops.LearnwareVerifyStatus.SUCCESS.value:
-            try:
-                learnware_zip_path = context.engine.get_learnware_path_by_ids(learnware_id)
-            except:
-                return {"code": 42, "msg": "Engine download learnware error."}, 200
-
-            if learnware_zip_path is None:
-                return {"code": 41, "msg": "Learnware not found."}, 200
-        else:
+        if learnware_zip_path is None:
             learnware_zip_path = context.get_learnware_verify_file_path(learnware_id)
-            pass
 
         zip_directory = os.path.dirname(learnware_zip_path)
         zip_filename = os.path.basename(learnware_zip_path)
@@ -230,7 +237,9 @@ class DownloadMultiLearnware(flask_restful.Resource):
             return {"code": 21, "msg": "Request parameters error."}, 200
 
         try:
-            learnware_paths = [context.engine.get_learnware_path_by_ids(learnware_id) for learnware_id in learnware_ids]
+            learnware_paths = [
+                context.engine.get_learnware_zip_path_by_ids(learnware_id) for learnware_id in learnware_ids
+            ]
         except:
             return {"code": 42, "msg": "Engine download learnware error."}, 200
 
@@ -249,8 +258,38 @@ class DownloadMultiLearnware(flask_restful.Resource):
         return res
 
 
+class GetLearnware(flask_restful.Resource):
+    def get(self):
+        learnware_id = request.args.get("learnware_id")
+
+        if learnware_id is None:
+            return {"code": 21, "msg": "Request parameters error."}, 200
+
+        try:
+            learnware = context.engine.get_learnware_by_ids(learnware_id)
+        except:
+            return {"code": 42, "msg": "Engine get learnware error."}, 200
+
+        if learnware is None:
+            learnware_dirpath = None
+            semantic_specification = None
+        else:
+            try:
+                learnware_dirpath = learnware.get_dirpath()
+                semantic_specification = learnware.get_specification().get_semantic_spec()
+            except:
+                return {"code": 42, "msg": "Engine get learnware path error."}, 200
+
+        return {
+            "code": 0,
+            "msg": "Ok",
+            "data": {"learnware_dirpath": learnware_dirpath, "semantic_specification": semantic_specification},
+        }, 200
+
+
 api.add_resource(SematicSpecification, "/semantic_specification")
 api.add_resource(SearchLearnware, "/search_learnware")
 api.add_resource(DownloadLearnware, "/download_learnware")
 api.add_resource(LearnwareInfo, "/learnware_info")
 api.add_resource(DownloadMultiLearnware, "/download_multi_learnware")
+api.add_resource(GetLearnware, "/get_learnware")
