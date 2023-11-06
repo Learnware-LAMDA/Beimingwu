@@ -6,6 +6,7 @@ import queue
 import multiprocessing.dummy as mp
 import argparse
 import os
+import functools
 import lib.command_executor as command_executor
 from database.base import LearnwareVerifyStatus
 from learnware.market import BaseChecker
@@ -70,6 +71,20 @@ def update_learnware_yaml_file(learnware_path, learnware_id, semantic_spec_filen
     pass
 
 
+def call_internal_service(func):
+    os.environ.pop("http_proxy", "")
+    original_proxy = os.environ.pop("https_proxy", "")
+
+    try:
+        return func()
+    finally:
+        # restore proxy
+        os.environ["http_proxy"] = original_proxy
+        os.environ["https_proxy"] = original_proxy
+        pass
+    pass
+
+
 def worker_process_func(q: queue.Queue, env: dict):
     if env is not None:
         os.environ.update(env)
@@ -86,7 +101,9 @@ def worker_process_func(q: queue.Queue, env: dict):
         dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.PROCESSING)
 
         try:
-            learnware_dirpath, semantic_specification = restful_wrapper.get_learnware(learnware_id)
+            learnware_dirpath, semantic_specification = call_internal_service(
+                functools.partial(restful_wrapper.get_learnware, learnware_id)
+            )
             learnware_check_status = BaseChecker.NONUSABLE_LEARNWARE
 
             if learnware_dirpath is None:
@@ -117,6 +134,9 @@ def worker_process_func(q: queue.Queue, env: dict):
                     )
                     learnware.utils.zip_learnware_folder(extract_path, learnware_processed_filename)
             else:
+                learnware_filename = None
+                semantic_spec_filename = None
+                learnware_processed_filename = None
                 # it is in the learnware engine
                 verify_success, command_output = verify_learnware_with_conda_checker(
                     learnware_id, learnware_dirpath, semantic_specification
@@ -134,29 +154,29 @@ def worker_process_func(q: queue.Queue, env: dict):
                 verify_status = LearnwareVerifyStatus.FAIL
 
         except Exception as e:
-            print("-" * 100, str(e))
+            context.logger.exception(e)
             verify_status = LearnwareVerifyStatus.WAITING
             command_output = "\n\n" + str(e)
+            pass
 
-        # internal service should not use proxy
-        os.environ.pop("http_proxy", "")
-        original_proxy = os.environ.pop("https_proxy", "")
         try:
-            restful_wrapper.add_learnware_verified(learnware_id, learnware_check_status)
-
+            call_internal_service(
+                functools.partial(restful_wrapper.add_learnware_verified, learnware_id, learnware_check_status)
+            )
         except Exception as e:
             # Add engine database failed, need to retry
+            context.logger.exception(e)
             verify_status = LearnwareVerifyStatus.WAITING
             command_output += "\n\n" + str(e)
-
-        # restore proxy
-        os.environ["http_proxy"] = original_proxy
-        os.environ["https_proxy"] = original_proxy
+            pass
 
         if verify_status == LearnwareVerifyStatus.SUCCESS:
-            os.remove(learnware_filename)
-            os.remove(semantic_spec_filename)
-            os.remove(learnware_processed_filename)
+            if learnware_filename is not None:
+                os.remove(learnware_filename)
+                os.remove(semantic_spec_filename)
+                os.remove(learnware_processed_filename)
+                pass
+            pass
 
         dbops.update_learnware_verify_result(learnware_id, verify_status, command_output)
         context.logger.info(f"Finish to verify learnware: {learnware_id}")
