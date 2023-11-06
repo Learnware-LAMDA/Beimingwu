@@ -267,6 +267,18 @@ watch(
   { deep: true },
 );
 
+watch(
+  () => isVerified.value,
+  (newVal) => {
+    router.replace({
+      path: route.path,
+      query: {
+        is_verified: String(newVal),
+      },
+    });
+  },
+);
+
 function init(): void {
   fetchByFilterAndPage(
     filters.value,
