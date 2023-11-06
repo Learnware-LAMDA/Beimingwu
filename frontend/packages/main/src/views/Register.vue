@@ -50,7 +50,7 @@ const showPassword = ref(false);
 const showPassword2 = ref(false);
 const showError = ref(false);
 const errorMsg = ref("");
-const success = ref(true);
+const success = ref(false);
 
 const errorTimer = ref<number>();
 const { ok, remain, start: startTimer, stop: stopTimer } = useTimeout(60 * 1000);
@@ -117,7 +117,7 @@ onUnmounted(() => {
 <template>
   <div class="flex h-full bg-gray-100">
     <div
-      class="d-md-block d-none w-full h-full"
+      class="hidden w-full h-full md:block"
       :style="{
         background: `url(${collaborationImg})`,
         backgroundSize: 'contain',
