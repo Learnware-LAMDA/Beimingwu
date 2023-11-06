@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import store from "@main/store";
 import { Component } from "vue";
+import NProgress from "@main/plugins/nprogress";
 
 const Router = createRouter({
   history: createWebHashHistory(),
@@ -137,6 +138,8 @@ const Router = createRouter({
 });
 
 Router.beforeEach((to, _from, next) => {
+  NProgress.start();
+
   if (to.matched.some((record) => record.meta.requiredLogin)) {
     if (store && !store.getters.getLoggedIn) {
       store.commit("setShowGlobalError", true);
@@ -151,6 +154,10 @@ Router.beforeEach((to, _from, next) => {
   } else {
     next();
   }
+});
+
+Router.afterEach(() => {
+  NProgress.done();
 });
 
 export default Router;
