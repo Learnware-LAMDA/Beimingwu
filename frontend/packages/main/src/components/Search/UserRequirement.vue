@@ -56,7 +56,7 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-col w-full lg:max-w-[460px] sm:border-r-1">
+  <div class="flex flex-col w-full sm:border-r-1">
     <div class="filter">
       <slot name="prepend" />
       <div class="my-3 text-h6">

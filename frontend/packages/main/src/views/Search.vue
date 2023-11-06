@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick, onActivated } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
@@ -47,11 +47,6 @@ const rkmeTypeTable = ref<boolean>(false);
 const loading = ref(false);
 const isVerified = ref(route.query.is_verified ? route.query.is_verified === "true" : true);
 
-const contentRef = ref<HTMLDivElement | null>(null);
-const anchorRef = ref<HTMLDivElement | null>(null);
-
-const scrollTop = ref(0);
-
 const showError = ref(false);
 const errorMsg = ref("");
 const errorTimer = ref();
@@ -59,6 +54,8 @@ const errorTimer = ref();
 const dialog = ref<InstanceType<typeof ConfirmDialog>>();
 const deleteId = ref("");
 const deleteName = ref("");
+
+const anchorRef = ref<HTMLElement>();
 
 const showMultiRecommended = computed(
   () =>
@@ -203,34 +200,30 @@ function handleClickDelete(id: string): void {
 }
 
 watch(
-  () => filters.value,
-  () => {
-    singleRecommendedLearnwarePage.value = 1;
-  },
-  { deep: true },
-);
-
-watch(
   () => singleRecommendedLearnwarePage.value,
   () => {
-    if (anchorRef.value) {
-      if (display.name.value === "xs") {
-        anchorRef.value.scrollIntoView();
+    if (display.smAndDown.value) {
+      if (anchorRef.value) {
+        const layoutTop = Number(
+          getComputedStyle(anchorRef.value).getPropertyValue("--v-layout-top").replace("px", ""),
+        );
+        const offset = anchorRef.value?.offsetTop - layoutTop;
+        if (offset) {
+          window.scrollTo(0, offset);
+        }
       }
+    } else {
+      window.scrollTo(0, 0);
     }
   },
 );
 
 watch(
-  () => isVerified.value,
-  (newVal) => {
-    router.replace({
-      query: {
-        ...route.query,
-        is_verified: String(newVal),
-      },
-    });
+  () => filters.value,
+  () => {
+    singleRecommendedLearnwarePage.value = 1;
   },
+  { deep: true },
 );
 
 watch(
@@ -249,12 +242,6 @@ watch(
     ];
 
     fetchByFilterAndPage(newFilters, newPage - 1, newIsVerified, newHeterogeneousMode);
-
-    if (contentRef.value) {
-      if (display.name.value !== "xs") {
-        contentRef.value.scrollTop = 0;
-      }
-    }
   },
   { deep: true },
 );
@@ -280,39 +267,20 @@ watch(
   { deep: true },
 );
 
-onActivated(() => {
-  if (contentRef.value) {
-    contentRef.value.scrollTop = scrollTop.value;
-  }
+function init(): void {
   fetchByFilterAndPage(
     filters.value,
     singleRecommendedLearnwarePage.value - 1,
     isVerified.value,
     heterogeneousMode.value,
   );
-});
+}
 
-onMounted(() => {
-  nextTick(() => {
-    if (contentRef.value) {
-      contentRef.value.addEventListener("scroll", () => {
-        if (contentRef.value) {
-          scrollTop.value = contentRef.value.scrollTop;
-        }
-      });
-    }
-  });
-  fetchByFilterAndPage(
-    filters.value,
-    singleRecommendedLearnwarePage.value - 1,
-    isVerified.value,
-    heterogeneousMode.value,
-  );
-});
+onMounted(() => init());
 </script>
 
 <template>
-  <div class="search-container">
+  <div class="mx-auto w-full lg:flex">
     <v-scroll-y-transition class="fixed w-full z-index-10">
       <v-card-actions v-if="showError">
         <v-alert
@@ -325,30 +293,36 @@ onMounted(() => {
       </v-card-actions>
     </v-scroll-y-transition>
 
-    <user-requirement v-model:value="filters">
-      <template #prepend>
-        <v-btn
-          v-if="heterogeneousMode"
-          block
-          variant="outlined"
-          color="red"
-          @click="() => (heterogeneousMode = false)"
-        >
-          {{ t("Search.TurnOffHeterogeneousSearch") }}
-        </v-btn>
-        <v-btn
-          v-if="isAdmin"
-          block
-          class="mr-2"
-          :color="isVerified ? 'primary' : 'error'"
-          @click="() => (isVerified = !isVerified)"
-        >
-          {{ isVerified ? t("AllLearnware.ShowVerified") : t("AllLearnware.ShowUnverified") }}
-        </v-btn>
-      </template>
-    </user-requirement>
+    <div class="w-full lg:max-w-[460px]">
+      <user-requirement
+        v-model:value="filters"
+        class="bottom-0 w-full lg:fixed lg:max-w-[460px]"
+        style="top: var(--v-layout-top)"
+      >
+        <template #prepend>
+          <v-btn
+            v-if="heterogeneousMode"
+            block
+            variant="outlined"
+            color="red"
+            @click="() => (heterogeneousMode = false)"
+          >
+            {{ t("Search.TurnOffHeterogeneousSearch") }}
+          </v-btn>
+          <v-btn
+            v-if="isAdmin"
+            block
+            class="mr-2"
+            :color="isVerified ? 'primary' : 'error'"
+            @click="() => (isVerified = !isVerified)"
+          >
+            {{ isVerified ? t("AllLearnware.ShowVerified") : t("AllLearnware.ShowUnverified") }}
+          </v-btn>
+        </template>
+      </user-requirement>
+    </div>
 
-    <div ref="contentRef" class="content">
+    <div ref="anchorRef" class="flex-1">
       <v-card v-if="showMultiRecommended" flat class="sm:m-2 mt-4 bg-transparent">
         <v-card-title v-if="!multiRecommendedTips">
           {{ t("Search.RecommendedMultipleLearnware") }}
@@ -430,14 +404,3 @@ onMounted(() => {
     </confirm-dialog>
   </div>
 </template>
-
-<style scoped lang="scss">
-.search-container {
-  @apply lg:fixed lg:flex mx-auto w-full;
-  height: calc(100% - var(--v-layout-top));
-
-  .content {
-    @apply w-full overflow-y-scroll;
-  }
-}
-</style>

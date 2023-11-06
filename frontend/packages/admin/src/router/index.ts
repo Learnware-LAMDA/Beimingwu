@@ -17,7 +17,7 @@ const Router = createRouter({
     },
     {
       path: "/alllearnware",
-      name: "Learnwares",
+      name: "Search",
       component: (): Promise<Component> => import("@main/views/Search.vue"),
       props: {
         isAdmin: true,
