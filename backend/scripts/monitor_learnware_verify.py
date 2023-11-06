@@ -72,7 +72,9 @@ def update_learnware_yaml_file(learnware_path, learnware_id, semantic_spec_filen
 
 def worker_process_func(q: queue.Queue, env: dict):
     if env is not None:
+        context.logger.info(f"received env: {env}")
         os.environ.update(env)
+        context.logger.info(f"set env: {os.environ}")
         pass
 
     while True:
@@ -85,7 +87,6 @@ def worker_process_func(q: queue.Queue, env: dict):
 
         dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.PROCESSING)
 
-        context.logger.info(f"env1: {os.environ}")
         try:
             learnware_dirpath, semantic_specification = restful_wrapper.get_learnware(learnware_id)
             learnware_check_status = BaseChecker.NONUSABLE_LEARNWARE
