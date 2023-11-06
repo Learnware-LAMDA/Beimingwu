@@ -26,6 +26,7 @@ const emit = defineEmits(["click:edit", "click:delete", "pageChange"]);
 
 const props = withDefaults(defineProps<Props>(), {
   filters: () => ({
+    id: "",
     name: "",
     dataType: "",
     taskType: "",

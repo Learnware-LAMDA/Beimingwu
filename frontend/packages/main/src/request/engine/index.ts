@@ -36,6 +36,7 @@ function getSemanticSpecification(): Promise<{
 }
 
 function searchLearnware({
+  id,
   name,
   dataType,
   taskType,
@@ -47,6 +48,7 @@ function searchLearnware({
   page,
   limit,
 }: {
+  id: string;
   name: Name;
   dataType: DataType | "";
   taskType: TaskType | "";
@@ -78,6 +80,9 @@ function searchLearnware({
       semanticSpec.Description.Values = "";
 
       const fd = new FormData();
+      if (id) {
+        fd.append("learnware_id", id);
+      }
       fd.append("semantic_specification", JSON.stringify(semanticSpec));
       fd.append("statistical_specification", (files.length > 0 && files[0]) || "");
       fd.append("heterogeneous_mode", String(heterogeneousMode));

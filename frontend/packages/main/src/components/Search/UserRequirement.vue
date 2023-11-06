@@ -7,21 +7,24 @@ import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
 import FileUpload from "../Specification/FileUpload.vue";
 import ScenarioListBtns from "../Specification/SpecTag/ScenarioList.vue";
-import type { DataType, TaskType, LibraryType } from "@beiming-system/types/learnware";
+import type { DataType, TaskType, LibraryType, Filter } from "@beiming-system/types/learnware";
+
+export interface Props {
+  modelValue: Filter;
+  isAdmin?: boolean;
+}
 
 const { t } = useI18n();
 
-const emits = defineEmits(["update:value"]);
+const emits = defineEmits(["update:modelValue"]);
 
-defineProps({
-  value: {
-    type: Object,
-    default: () => ({}),
-  },
+withDefaults(defineProps<Props>(), {
+  isAdmin: false,
 });
 
 const route = useRoute();
 
+const id = ref(route.query.id || "");
 const search = ref(route.query.search || "");
 const dataType = ref<DataType | "">((route.query.dataType?.toString() as DataType) || "");
 const taskType = ref<TaskType | "">((route.query.taskType?.toString() as TaskType) || "");
@@ -39,6 +42,7 @@ const scenarioList = ref(tryScenarioList);
 const files = ref([]);
 
 const requirement = computed(() => ({
+  id: id.value,
   name: search.value,
   dataType: dataType.value,
   taskType: taskType.value,
@@ -50,7 +54,7 @@ const requirement = computed(() => ({
 watch(
   () => requirement.value,
   () => {
-    emits("update:value", requirement.value);
+    emits("update:modelValue", requirement.value);
   },
 );
 </script>
@@ -62,6 +66,19 @@ watch(
       <div class="my-3 text-h6">
         <v-icon class="!mt-0 mr-3" icon="mdi-tag-text" color="black" size="small"></v-icon>
         {{ t("Search.ChooseSemanticRequirement") }}
+      </div>
+
+      <div v-if="isAdmin">
+        <div class="mt-7 mb-3 text-h6 !text-base">
+          {{ t("Search.SearchById") }}
+        </div>
+        <v-text-field
+          v-model="id"
+          :label="t('Search.LearnwareId')"
+          hide-details
+          append-inner-icon="mdi-close"
+          @click:append-inner="id = ''"
+        ></v-text-field>
       </div>
 
       <div>

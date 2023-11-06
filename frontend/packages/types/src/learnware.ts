@@ -101,6 +101,7 @@ export interface LearnwareCardInfo extends LearnwareInfo {
 }
 
 export interface Filter {
+  id: string;
   name: Name;
   dataType: DataType | "";
   taskType: TaskType | "";
