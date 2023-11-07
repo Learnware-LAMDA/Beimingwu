@@ -71,10 +71,10 @@ const taskTypeDescription = computed({
         <v-alert class="w-full max-w-[900px] mx-auto" closable :text="errorMessages" type="error" />
       </v-card-actions>
     </v-scroll-y-transition>
-    <data-type-btns v-model:value="dataType" />
+    <data-type-btns v-model="dataType" />
     <description-input
       v-if="dataType === 'Table'"
-      v-model:value="dataTypeDescription"
+      v-model="dataTypeDescription"
       :name="t('Submit.SemanticSpecification.DataType.DescriptionInput.Name')"
     >
       <template #msg>
@@ -84,14 +84,14 @@ const taskTypeDescription = computed({
         {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.FeatureTipsSmall") }}
       </template>
     </description-input>
-    <task-type-btns v-model:value="taskType" />
+    <task-type-btns v-model="taskType" />
     <description-input
       v-if="
         taskType === 'Classification' ||
         taskType === 'Regression' ||
         taskType === 'Feature Extraction'
       "
-      v-model:value="taskTypeDescription"
+      v-model="taskTypeDescription"
       :name="t('Submit.SemanticSpecification.TaskType.DescriptionOutput.Name')"
     >
       <template #msg>
@@ -101,7 +101,7 @@ const taskTypeDescription = computed({
         {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTipsSmall") }}
       </template>
     </description-input>
-    <library-type-btns v-model:value="libraryType" />
-    <scenario-list-btns v-model:value="scenarioList" />
+    <library-type-btns v-model="libraryType" />
+    <scenario-list-btns v-model="scenarioList" />
   </div>
 </template>

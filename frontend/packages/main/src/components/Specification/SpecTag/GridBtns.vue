@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import IconBtn from "./IconBtn.vue";
 import type { FunctionalComponent, SVGAttributes } from "vue";
@@ -11,7 +11,7 @@ export interface Btn {
 }
 
 export interface Props {
-  value: string;
+  modelValue: string;
   btns: Btn[];
   title: string;
   cols?: number;
@@ -29,9 +29,16 @@ const props = withDefaults(defineProps<Props>(), {
   xs: 3,
 });
 
-const emit = defineEmits(["update:value"]);
+const emit = defineEmits(["update:modelValue"]);
 
-const value = ref(props.value);
+const value = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(val) {
+    emit("update:modelValue", val);
+  },
+});
 
 const realCols = computed(() => {
   let { cols } = props;
@@ -48,13 +55,6 @@ const realCols = computed(() => {
 function clickBtn(btn: Btn): void {
   value.value = btn.value === value.value ? "" : btn.value;
 }
-
-watch(
-  () => value.value,
-  (newValue) => {
-    emit("update:value", newValue);
-  },
-);
 </script>
 
 <template>

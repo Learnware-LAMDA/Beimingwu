@@ -96,17 +96,17 @@ watch(
         ></v-text-field>
       </div>
 
-      <data-type-btns v-model:value="dataType" :cols="3" :md="2" :sm="2" :xs="2"></data-type-btns>
-      <task-type-btns v-model:value="taskType" :cols="2" :md="2" :sm="2" :xs="2"></task-type-btns>
+      <data-type-btns v-model="dataType" :cols="3" :md="2" :sm="2" :xs="2"></data-type-btns>
+      <task-type-btns v-model="taskType" :cols="2" :md="2" :sm="2" :xs="2"></task-type-btns>
       <library-type-btns
-        v-model:value="libraryType"
+        v-model="libraryType"
         :cols="2"
         :md="2"
         :sm="2"
         :xs="2"
       ></library-type-btns>
       <scenario-list-btns
-        v-model:value="scenarioList"
+        v-model="scenarioList"
         :cols="2"
         :md="2"
         :sm="2"
@@ -117,13 +117,26 @@ watch(
     </div>
 
     <div class="p-4 pt-0 border-t-1 border-gray-300">
+      <template v-if="isHeterogeneous">
+        <div ref="anchorRef" class="mt-3 mb-5 w-full text-h6 transition-all truncate">
+          <v-icon class="mr-3" icon="mdi-upload" color="black" size="small"></v-icon>
+          Upload Feature Description
+        </div>
+
+        <file-upload
+          v-model="files"
+          :height="28"
+          :tips="t('Submit.File.DragFileHere', { file: 'json' })"
+        />
+      </template>
+
       <div ref="anchorRef" class="mt-3 mb-5 w-full text-h6 transition-all truncate">
         <v-icon class="mr-3" icon="mdi-upload" color="black" size="small"></v-icon>
         {{ t("Search.UploadStatisticalRequirement") }}
       </div>
 
       <file-upload
-        v-model:files="files"
+        v-model="files"
         :height="28"
         :tips="t('Submit.File.DragFileHere', { file: 'json' })"
       />

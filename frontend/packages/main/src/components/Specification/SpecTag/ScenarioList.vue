@@ -5,7 +5,7 @@ import { useI18n } from "vue-i18n";
 import type { Scenario, ScenarioList } from "@beiming-system/types/learnware";
 
 export interface Props {
-  value: ScenarioList;
+  modelValue: ScenarioList;
   cols?: number;
   md?: number;
   sm?: number;
@@ -14,7 +14,7 @@ export interface Props {
 
 const { t } = useI18n();
 
-const emit = defineEmits(["update:value"]);
+const emit = defineEmits(["update:modelValue"]);
 
 const display = useDisplay();
 
@@ -116,17 +116,19 @@ const items = computed<
   },
 ]);
 
-const allSelected = computed(() => props.value && props.value.length === items.value.length);
+const allSelected = computed(
+  () => props.modelValue && props.modelValue.length === items.value.length,
+);
 
 const selections = computed(() => {
-  if (props.value) {
-    return props.value.map((s) => items.value.find((item) => item.value === s));
+  if (props.modelValue) {
+    return props.modelValue.map((s) => items.value.find((item) => item.value === s));
   }
   return [];
 });
 
 function click(value: Scenario): void {
-  if (props.value && props.value.includes(value)) {
+  if (props.modelValue && props.modelValue.includes(value)) {
     deleteSelect(value);
   } else {
     addSelect(value);
@@ -134,21 +136,21 @@ function click(value: Scenario): void {
 }
 
 function addSelect(value: Scenario): void {
-  if (props.value) {
-    emit("update:value", [...props.value, value]);
+  if (props.modelValue) {
+    emit("update:modelValue", [...props.modelValue, value]);
   } else {
-    emit("update:value", [value]);
+    emit("update:modelValue", [value]);
   }
 }
 
 function deleteSelect(value: Scenario): void {
-  if (props.value) {
+  if (props.modelValue) {
     emit(
-      "update:value",
-      props.value.filter((s) => s !== value),
+      "update:modelValue",
+      props.modelValue.filter((s) => s !== value),
     );
   } else {
-    emit("update:value", []);
+    emit("update:modelValue", []);
   }
 }
 </script>

@@ -5,19 +5,19 @@ import { useDisplay } from "vuetify";
 import type { Route } from "@beiming-system/types/route";
 
 export interface Props {
-  drawerOpen: boolean;
+  modelValue: boolean;
   routes: Route[];
 }
 
 const display = useDisplay();
 
-const emit = defineEmits(["update:drawerOpen"]);
+const emit = defineEmits(["update:modelValue"]);
 
 const props = defineProps<Props>();
 
 const drawer = computed({
-  get: () => props.drawerOpen && ["xs", "sm"].includes(display.name.value),
-  set: (value) => emit("update:drawerOpen", value),
+  get: () => props.modelValue && ["xs", "sm"].includes(display.name.value),
+  set: (value) => emit("update:modelValue", value),
 });
 
 const store = useStore();

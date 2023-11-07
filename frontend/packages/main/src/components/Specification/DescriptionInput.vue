@@ -6,7 +6,7 @@ import { debounce } from "../../utils";
 
 export interface Props {
   name: string;
-  value: {
+  modelValue: {
     Dimension: number;
     Description: Record<number, string>;
   };
@@ -16,27 +16,19 @@ const { t, locale } = useI18n();
 
 const display = useDisplay();
 
-const emits = defineEmits(["update:value"]);
+const emits = defineEmits(["update:modelValue"]);
 
-const props = defineProps({
-  name: {
-    type: String,
-    required: false,
-    default: "feature",
-  },
-  value: {
-    type: Object,
-    required: true,
-  },
-});
+const props = defineProps<Props>();
 
 const errorMessages = ref<string>("");
 
-const descriptionJSON = ref(props.value);
+const descriptionJSON = ref(props.modelValue);
 const descriptionArray = ref<(string | null)[]>(
-  [...new Array(props.value.Dimension)].map((_, idx) => props.value?.Description[idx] || null),
+  [...new Array(props.modelValue.Dimension)].map(
+    (_, idx) => props.modelValue?.Description[idx] || null,
+  ),
 );
-const descriptionString = ref(JSON.stringify(props.value, null, 2));
+const descriptionString = ref(JSON.stringify(props.modelValue, null, 2));
 
 const debouncedSetErrorMessages = debounce<string>((val) => {
   errorMessages.value = val;
@@ -50,7 +42,7 @@ watch(
       (_, idx) => newVal.Description[idx] || null,
     );
     descriptionString.value = JSON.stringify(newVal, null, 2);
-    emits("update:value", newVal);
+    emits("update:modelValue", newVal);
   },
 );
 watch(

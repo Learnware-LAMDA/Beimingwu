@@ -7,11 +7,11 @@ import learnwareLogo from "/logo.svg?url";
 import type { Route } from "@beiming-system/types/route";
 
 export interface Props {
-  drawerOpen: boolean;
+  modelValue: boolean;
   routes: Route[];
 }
 
-const emit = defineEmits(["update:drawerOpen"]);
+const emit = defineEmits(["update:modelValue"]);
 const router = useRouter();
 
 const props = defineProps<Props>();
@@ -54,7 +54,7 @@ const filteredRoutes = computed<Route[]>(
     <div class="prepend">
       <v-app-bar-nav-icon
         v-if="['xs', 'sm'].includes(display.name.value)"
-        @click="() => emit('update:drawerOpen', !drawerOpen)"
+        @click="() => emit('update:modelValue', !modelValue)"
       ></v-app-bar-nav-icon>
       <div class="logo" @click="() => router.push('/')">
         <img class="logo-img" :src="learnwareLogo" />
