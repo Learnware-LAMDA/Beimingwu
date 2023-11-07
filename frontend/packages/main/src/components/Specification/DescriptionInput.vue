@@ -91,8 +91,8 @@ watch(
 
 <template>
   <div class="grid grid-cols-1 gap-0 md:grid-cols-2 md:gap-3">
-    <div class="flex flex-col max-h-[600px] overflow-scroll">
-      <v-virtual-scroll v-if="modelValue.Dimension > 10" :items="descriptionArray" class="flex-1">
+    <div class="flex flex-col max-h-[600px]">
+      <v-virtual-scroll v-if="modelValue.Dimension > 7" :items="descriptionArray" class="flex-1">
         <template #default="{ index: idx }">
           <v-hover>
             <template #default="{ isHovering, props: hoverProps }">
@@ -161,7 +161,7 @@ watch(
     </div>
 
     <div class="max-h-[600px]">
-      <div class="h-full overflow-y-scroll">
+      <div class="h-full overflow-y-auto">
         <v-textarea
           v-model="descriptionString"
           auto-grow

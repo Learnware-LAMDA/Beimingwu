@@ -179,7 +179,7 @@ watch(
               </v-tabs>
             </div>
 
-            <v-window v-model="heterTab" class="overflow-y-scroll">
+            <v-window v-model="heterTab">
               <v-window-item value="dataType">
                 <div class="flex justify-between">
                   <div class="text-h4 font-semibold">
@@ -258,7 +258,7 @@ watch(
 
 <style scoped lang="scss">
 .filter {
-  @apply p-2 w-full md:h-full md:overflow-y-scroll sm:px-5;
+  @apply p-2 w-full md:h-full md:overflow-y-auto sm:px-5;
 
   * {
     @apply mt-2;
