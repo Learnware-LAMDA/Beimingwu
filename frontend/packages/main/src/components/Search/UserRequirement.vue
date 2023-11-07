@@ -7,6 +7,8 @@ import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
 import FileUpload from "../Specification/FileUpload.vue";
 import ScenarioListBtns from "../Specification/SpecTag/ScenarioList.vue";
+import DescriptionInput from "../Specification/DescriptionInput.vue";
+import { saveContentToFile } from "../../utils";
 import type { DataType, TaskType, LibraryType, Filter } from "@beiming-system/types/learnware";
 
 export interface Props {
@@ -43,6 +45,27 @@ const scenarioList = ref(tryScenarioList);
 
 const files = ref([]);
 
+const heterDialog = ref(false);
+const heterTab = ref<"dataType" | "taskType">("dataType");
+const dataTypeDescription = ref({
+  Dimension: 7,
+  Description: {
+    0: "gender",
+    1: "age",
+    2: "the description of feature 2",
+    5: "the description of feature 5",
+  },
+});
+const taskTypeDescription = ref({
+  Dimension: 2,
+  Description: {
+    0: "the description of label 0",
+    1: "the description of label 1",
+  },
+});
+const tempDataTypeDescription = ref(dataTypeDescription.value);
+const tempTaskTypeDescription = ref(taskTypeDescription.value);
+
 const requirement = computed(() => ({
   id: id.value,
   name: search.value,
@@ -51,7 +74,19 @@ const requirement = computed(() => ({
   libraryType: libraryType.value,
   scenarioList: scenarioList.value,
   files: files.value,
+  dataTypeDescription: dataTypeDescription.value,
+  taskTypeDescription: taskTypeDescription.value,
 }));
+
+watch(
+  () => heterDialog.value,
+  (val) => {
+    if (!val) {
+      dataTypeDescription.value = tempDataTypeDescription.value;
+      taskTypeDescription.value = tempTaskTypeDescription.value;
+    }
+  },
+);
 
 watch(
   () => requirement.value,
@@ -118,19 +153,96 @@ watch(
 
     <div class="p-4 pt-0 border-t-1 border-gray-300">
       <template v-if="isHeterogeneous">
-        <div ref="anchorRef" class="mt-3 mb-5 w-full text-h6 transition-all truncate">
-          <v-icon class="mr-3" icon="mdi-upload" color="black" size="small"></v-icon>
-          Upload Feature Description
+        <div class="mt-3 mb-5 w-full text-h6 transition-all truncate">
+          <v-icon class="mr-3" icon="mdi-vector-difference" color="black" size="small"></v-icon>
+          {{ t("Search.UploadHeterogeneousRequirement") }}
         </div>
 
-        <file-upload
-          v-model="files"
-          :height="28"
-          :tips="t('Submit.File.DragFileHere', { file: 'json' })"
-        />
+        <v-dialog v-model="heterDialog" width="1024">
+          <template v-slot:activator="{ props }">
+            <v-card v-bind="props" flat class="border-gray-500 border-2 rounded-lg bg-transparent">
+              <v-card-text class="text-center text-base md:text-xl">
+                {{ t("Search.StartHeterogeneousSearch") }}
+              </v-card-text>
+            </v-card>
+          </template>
+
+          <v-card class="p-4 md:p-8 md:pt-4">
+            <div>
+              <v-tabs v-model="heterTab" align-tabs="center">
+                <v-tab value="dataType">{{
+                  t("Submit.SemanticSpecification.DataType.DescriptionInput.Name")
+                }}</v-tab>
+                <v-tab value="taskType">{{
+                  t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name")
+                }}</v-tab>
+              </v-tabs>
+            </div>
+
+            <v-window v-model="heterTab" class="overflow-y-scroll">
+              <v-window-item value="dataType">
+                <div class="flex justify-between">
+                  <div class="text-h4 font-semibold">
+                    {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
+                  </div>
+                  <v-btn
+                    icon="mdi-download"
+                    variant="flat"
+                    @click="
+                      () =>
+                        saveContentToFile(
+                          JSON.stringify(tempDataTypeDescription, undefined, 2),
+                          'text/json',
+                          'dataTypeDescription.json',
+                        )
+                    "
+                  />
+                </div>
+                <description-input
+                  v-model="tempDataTypeDescription"
+                  :name="t('Submit.SemanticSpecification.DataType.DescriptionInput.Name')"
+                  class="mt-4"
+                >
+                </description-input>
+              </v-window-item>
+
+              <v-window-item value="taskType">
+                <div class="flex justify-between">
+                  <div class="mt-4 text-h4 font-semibold">
+                    {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
+                  </div>
+                  <v-btn
+                    icon="mdi-download"
+                    variant="flat"
+                    @click="
+                      () =>
+                        saveContentToFile(
+                          JSON.stringify(tempTaskTypeDescription, undefined, 2),
+                          'text/json',
+                          'dataTypeDescription.json',
+                        )
+                    "
+                  />
+                </div>
+                <description-input
+                  v-model="tempTaskTypeDescription"
+                  :name="t('Submit.SemanticSpecification.TaskType.DescriptionOutput.Name')"
+                  class="mt-4"
+                >
+                </description-input>
+              </v-window-item>
+            </v-window>
+
+            <div class="flex justify-end mt-4">
+              <v-btn color="primary" rounded variant="flat" @click="heterDialog = false">
+                {{ t("Public.Finish") }}
+              </v-btn>
+            </div>
+          </v-card>
+        </v-dialog>
       </template>
 
-      <div ref="anchorRef" class="mt-3 mb-5 w-full text-h6 transition-all truncate">
+      <div class="mt-3 mb-5 w-full text-h6 transition-all truncate">
         <v-icon class="mr-3" icon="mdi-upload" color="black" size="small"></v-icon>
         {{ t("Search.UploadStatisticalRequirement") }}
       </div>

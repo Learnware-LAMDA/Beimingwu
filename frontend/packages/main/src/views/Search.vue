@@ -257,7 +257,7 @@ watch(
         .then((res: ArrayBuffer) => new TextDecoder("ascii").decode(res))
         .then((res) => JSON.parse(res))
         .then((res) => {
-          if (res.type === "table") {
+          if (res.type === "RKMETableSpecification") {
             rkmeTypeTable.value = true;
           }
         })
@@ -295,16 +295,16 @@ onMounted(() => init());
 
 <template>
   <div class="mx-auto w-full lg:flex">
-    <v-scroll-y-transition class="fixed w-full z-index-10">
-      <v-card-actions v-if="showError">
+    <v-scroll-y-transition>
+      <div v-if="showError" class="fixed w-full z-10">
         <v-alert
-          class="w-full max-w-[900px] mx-auto"
+          class="max-w-[900px] mx-auto z-10"
           closable
           :text="errorMsg"
           type="error"
           @click:close="showError = false"
         />
-      </v-card-actions>
+      </div>
     </v-scroll-y-transition>
 
     <div class="w-full lg:max-w-[460px]">
@@ -313,6 +313,7 @@ onMounted(() => init());
         class="bottom-0 w-full lg:fixed lg:max-w-[460px]"
         style="top: var(--v-layout-top)"
         :is-admin="isAdmin"
+        :is-heterogeneous="isHeterogeneous"
       >
         <template #prepend>
           <v-btn
