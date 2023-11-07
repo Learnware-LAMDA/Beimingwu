@@ -60,6 +60,10 @@ const files = computed({
       @drop.prevent="handleDrop"
       @click="chooseFile"
     >
+      <div
+        v-if="dragging"
+        class="absolute left-0 top-0 right-0 bottom-0 flex flex-col justify-center items-center bg-gray-200 z-10 opacity-80 rounded pointer-events-none text-lg"
+      />
       <v-card-text
         class="drag rounded-lg border-gray-500 border-2 border-dashed flex flex-column justify-center items-center"
         :class="{ 'drag-hover': dragging }"
