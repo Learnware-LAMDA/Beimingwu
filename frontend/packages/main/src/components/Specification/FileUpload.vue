@@ -79,6 +79,7 @@ const files = computed({
       </div>
       <v-btn
         v-if="files.length > 0"
+        class="pointer-events-auto"
         variant="flat"
         icon="mdi-close"
         color="transparent"
@@ -88,9 +89,8 @@ const files = computed({
 
     <v-file-input v-show="false" ref="fileInput" v-model="files" label="select a file">
     </v-file-input>
-
-    <v-scroll-y-transition>
-      <v-card-text v-if="errorMessages" class="text-error">{{ errorMessages }}</v-card-text>
-    </v-scroll-y-transition>
   </div>
+  <v-scroll-y-transition>
+    <v-card-text v-if="errorMessages" class="text-error">{{ errorMessages }}</v-card-text>
+  </v-scroll-y-transition>
 </template>
