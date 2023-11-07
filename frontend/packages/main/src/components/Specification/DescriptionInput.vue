@@ -27,9 +27,20 @@ const descriptionArray = ref<(string | null)[]>(
 );
 const descriptionString = ref(JSON.stringify(props.modelValue, null, 2));
 
+const dragging = ref(false);
+
 const debouncedSetErrorMessages = debounce<string>((val) => {
   errorMessages.value = val;
 }, 500);
+
+const handleDrop = (event: DragEvent): void => {
+  dragging.value = false;
+  if (event.dataTransfer?.files) {
+    event.dataTransfer.files[0].text().then((text) => {
+      descriptionString.value = text;
+    });
+  }
+};
 
 watch(
   () => descriptionJSON.value,
@@ -165,9 +176,25 @@ watch(
         <v-textarea
           v-model="descriptionString"
           auto-grow
+          class="relative rounded"
+          :class="dragging ? 'drag-hover' : ''"
           :label="`${name}${locale != 'zh-cn' ? ' ' : ''}${t('Public.Description')}`"
           :error-messages="errorMessages"
-        />
+          :messages="t('Public.TryDragYourJSONFileHere')"
+          @drop.prevent="handleDrop"
+          @dragover.prevent
+          @dragenter.prevent="dragging = true"
+          @dragleave.prevent="dragging = false"
+        >
+          <template #prepend>
+            <div
+              v-if="dragging"
+              class="absolute left-0 top-0 right-0 bottom-0 flex flex-col justify-center items-center bg-gray-200 z-10 opacity-80 rounded border-2 border-dashed border-gray-500 pointer-events-none text-lg"
+            >
+              {{ t("Public.DropYourJSONFileHere") }}
+            </div>
+          </template>
+        </v-textarea>
       </div>
     </div>
   </div>
