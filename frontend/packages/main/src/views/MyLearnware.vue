@@ -169,6 +169,7 @@ const direction = computed(() => (display.mdAndUp.value ? "vertical" : "horizont
 watch(
   () => [page.value, verifiedFilter.value],
   (newVal) => {
+    window.scrollTo(0, 0);
     const [newPage] = newVal as [number, string];
     fetchByFilterAndPage(newPage);
   },
@@ -192,7 +193,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="contentRef" class="fixed learnware-container">
+  <div ref="contentRef" class="learnware-container">
     <confirm-dialog ref="dialog" @confirm="handleConfirm">
       <template #title>
         {{ t("MyLearnware.ConfirmToDelete") }} &nbsp; <b>{{ deleteName }}</b
@@ -285,7 +286,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .learnware-container {
-  @apply flex flex-col w-full overflow-y-scroll justify-start items-center;
+  @apply flex flex-col w-full justify-start items-center;
 }
 .fixed {
   height: calc(100% - var(--v-layout-top));
