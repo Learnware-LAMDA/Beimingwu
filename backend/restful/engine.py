@@ -6,6 +6,7 @@ import context
 from context import config as C
 import os, json, time
 import lib.engine as adv_engine
+from database.base import LearnwareVerifyStatus
 from .utils import dump_learnware, get_parameters, generate_random_str
 import flask_jwt_extended
 import flask_restx as flask_restful
@@ -45,6 +46,7 @@ class SearchLearnware(flask_restful.Resource):
 
         semantic_str = request.form.get("semantic_specification")
         is_verified = request.form.get("is_verified", "true")
+        learnware_id = request.form.get("learnware_id", None)
 
         if semantic_str is None:
             return {"code": 21, "msg": f"Request parameters error."}, 200
@@ -67,13 +69,36 @@ class SearchLearnware(flask_restful.Resource):
             check_status = BaseChecker.USABLE_LEARWARE
 
         # Cached Search learnware
-        if statistical_str is None:
-            status, msg, ret = adv_engine.search_learnware_by_semantic(semantic_str, user_id, check_status=check_status)
+        if learnware_id is not None:
+            # TODO: requires administrator rights
+            try:
+                status, msg = True, ""
+                learnware = context.engine.get_learnware_by_ids(learnware_id)
+                if learnware is None:
+                    ret = (None, [], None, None)
+                else:
+                    verify_status = dbops.get_learnware_verify_status(learnware_id)
+                    if verify_status == LearnwareVerifyStatus.SUCCESS.value:
+                        verify_status = "true"
+                    else:
+                        verify_status = "false"
+
+                    if verify_status == is_verified:
+                        ret = (None, [learnware], None, None)
+                    else:
+                        ret = (None, [], None, None)
+            except Exception as err:
+                status, msg, ret = False, str(err), None
         else:
-            status, msg, ret = adv_engine.search_learnware(
-                semantic_str, statistical_str, user_id, check_status=check_status
-            )
-            pass
+            if statistical_str is None:
+                status, msg, ret = adv_engine.search_learnware_by_semantic(
+                    semantic_str, user_id, check_status=check_status
+                )
+            else:
+                status, msg, ret = adv_engine.search_learnware(
+                    semantic_str, statistical_str, user_id, check_status=check_status
+                )
+                pass
 
         print(msg)
         try:
