@@ -357,6 +357,8 @@ watch(
     const [newFilters, newPage] = newVal as [Filter, number];
 
     fetchByFilterAndPage(newFilters, newPage);
+
+    window.scrollTo(0, 0);
   },
   { deep: true },
 );
@@ -428,7 +430,9 @@ onActivated(() => {
     <v-card flat class="search">
       <div class="search-row">
         <v-card-title>
-          {{ t("AllUser.SearchByUsername") }}
+          <span class="hidden sm:inline">
+            {{ t("AllUser.SearchByUsername") }}
+          </span>
           <v-spacer class="flex-1"></v-spacer>
           <v-text-field
             v-model="userName"
@@ -440,7 +444,9 @@ onActivated(() => {
           ></v-text-field>
         </v-card-title>
         <v-card-title>
-          {{ t("AllUser.SearchByEmail") }}
+          <span class="hidden sm:inline">
+            {{ t("AllUser.SearchByEmail") }}
+          </span>
           <v-spacer class="flex-1"></v-spacer>
           <v-text-field
             v-model="email"
@@ -481,7 +487,7 @@ onActivated(() => {
     @apply mt-3 w-full max-w-[1500px] border z-50;
 
     .search-row {
-      @apply grid md:grid-cols-2;
+      @apply grid grid-cols-2;
     }
   }
 }
