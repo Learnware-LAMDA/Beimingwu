@@ -160,10 +160,10 @@ watch(
 
         <v-dialog v-model="heterDialog" width="1024">
           <template v-slot:activator="{ props }">
-            <v-card v-bind="props" flat class="border-gray-500 border-2 rounded-lg bg-transparent">
-              <v-card-text class="text-center text-base md:text-xl">
+            <v-card v-bind="props" flat class="border-gray-500 bg-transparent">
+              <v-btn block variant="outlined">
                 {{ t("Search.StartHeterogeneousSearch") }}
-              </v-card-text>
+              </v-btn>
             </v-card>
           </template>
 
