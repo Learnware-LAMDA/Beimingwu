@@ -50,45 +50,44 @@ const files = computed({
 </script>
 
 <template>
-  <div>
-    <v-card
-      class="bg-transparent"
-      flat
-      @dragover.prevent
-      @dragenter.prevent="dragging = true"
-      @dragleave.prevent="dragging = false"
-      @drop.prevent="handleDrop"
-      @click="chooseFile"
+  <div
+    class="relative rounded-lg border-gray-500 border-2 flex flex-column justify-center items-center"
+    :class="{ 'border-dashed': dragging }"
+    :style="{ height: Number(height) / 4 + 'rem' }"
+    @dragover.prevent
+    @dragenter.prevent="dragging = true"
+    @dragleave.prevent="dragging = false"
+    @drop.prevent="handleDrop"
+    @click="chooseFile"
+  >
+    <div
+      v-if="dragging"
+      class="absolute inset-0 bg-gray-500 opacity-25 rounded-lg pointer-events-none"
+    ></div>
+
+    <div
+      class="flex justify-center items-center max-w-full md:text-xl text-base pointer-events-none"
     >
-      <div
-        v-if="dragging"
-        class="absolute left-0 top-0 right-0 bottom-0 flex flex-col justify-center items-center bg-gray-200 z-10 opacity-80 rounded pointer-events-none text-lg"
-      />
-      <v-card-text
-        class="drag rounded-lg border-gray-500 border-2 border-dashed flex flex-column justify-center items-center"
-        :class="{ 'drag-hover': dragging }"
-        :style="{ height: Number(height) / 4 + 'rem' }"
-      >
-        <div class="flex justify-center items-center max-w-full md:text-xl text-base">
-          <p v-if="files.length === 0">
-            <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>
-            {{ tips }}
-          </p>
-          <div v-else class="w-full truncate">
-            <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ files[0].name }}
-            <span class="ml-2 text-sm">{{ computeFileSize(files[0].size) }}</span>
-          </div>
-          <v-btn
-            v-if="files.length > 0"
-            variant="flat"
-            icon="mdi-close"
-            @click.stop="() => (files = [])"
-          ></v-btn>
-        </div>
-      </v-card-text>
-      <v-file-input v-show="false" ref="fileInput" v-model="files" label="select a file">
-      </v-file-input>
-    </v-card>
+      <p v-if="files.length === 0">
+        <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>
+        {{ tips }}
+      </p>
+      <div v-else class="w-full truncate">
+        <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ files[0].name }}
+        <span class="ml-2 text-sm">{{ computeFileSize(files[0].size) }}</span>
+      </div>
+      <v-btn
+        v-if="files.length > 0"
+        variant="flat"
+        icon="mdi-close"
+        color="transparent"
+        @click.stop="() => (files = [])"
+      ></v-btn>
+    </div>
+
+    <v-file-input v-show="false" ref="fileInput" v-model="files" label="select a file">
+    </v-file-input>
+
     <v-scroll-y-transition>
       <v-card-text v-if="errorMessages" class="text-error">{{ errorMessages }}</v-card-text>
     </v-scroll-y-transition>
