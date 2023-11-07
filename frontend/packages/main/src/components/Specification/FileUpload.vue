@@ -51,7 +51,8 @@ const files = computed({
 
 <template>
   <div
-    class="relative rounded-lg border-gray-500 border-2 flex flex-column justify-center items-center"
+    v-ripple
+    class="relative rounded-lg border-gray-500 border-2 border-dashed flex flex-column justify-center items-center hover:bg-gray-200 cursor-pointer"
     :class="{ 'border-dashed': dragging }"
     :style="{ height: Number(height) / 4 + 'rem' }"
     @dragover.prevent
