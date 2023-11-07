@@ -71,37 +71,49 @@ const taskTypeDescription = computed({
         <v-alert class="w-full max-w-[900px] mx-auto" closable :text="errorMessages" type="error" />
       </v-card-actions>
     </v-scroll-y-transition>
-    <data-type-btns v-model:value="dataType" />
-    <description-input
-      v-if="dataType === 'Table'"
-      v-model:value="dataTypeDescription"
-      :name="t('Submit.SemanticSpecification.DataType.DescriptionInput.Name')"
-    >
-      <template #msg>
-        {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.FeatureTips") }}
-      </template>
-      <template #msg-small>
-        {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.FeatureTipsSmall") }}
-      </template>
-    </description-input>
-    <task-type-btns v-model:value="taskType" />
-    <description-input
+    <data-type-btns v-model="dataType" />
+
+    <template v-if="dataType === 'Table'">
+      <v-alert class="mt-3" type="info" color="primary" closable>
+        <span class="hidden sm:inline">{{
+          t("Submit.SemanticSpecification.DataType.DescriptionInput.FeatureTips")
+        }}</span>
+        <span class="sm:hidden">{{
+          t("Submit.SemanticSpecification.DataType.DescriptionInput.FeatureTipsSmall")
+        }}</span>
+      </v-alert>
+      <description-input
+        v-model="dataTypeDescription"
+        :name="t('Submit.SemanticSpecification.DataType.DescriptionInput.Name')"
+        class="mt-3"
+      />
+    </template>
+
+    <task-type-btns v-model="taskType" />
+
+    <template
       v-if="
         taskType === 'Classification' ||
         taskType === 'Regression' ||
         taskType === 'Feature Extraction'
       "
-      v-model:value="taskTypeDescription"
-      :name="t('Submit.SemanticSpecification.TaskType.DescriptionOutput.Name')"
     >
-      <template #msg>
-        {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTips") }}
-      </template>
-      <template #msg-small>
-        {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTipsSmall") }}
-      </template>
-    </description-input>
-    <library-type-btns v-model:value="libraryType" />
-    <scenario-list-btns v-model:value="scenarioList" />
+      <v-alert class="mt-3" type="info" color="primary" closable>
+        <span class="hidden sm:inline">{{
+          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTips")
+        }}</span>
+        <span class="sm:hidden">{{
+          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTipsSmall")
+        }}</span>
+      </v-alert>
+      <description-input
+        v-model="taskTypeDescription"
+        :name="t('Submit.SemanticSpecification.TaskType.DescriptionOutput.Name')"
+        class="mt-3"
+      />
+    </template>
+
+    <library-type-btns v-model="libraryType" />
+    <scenario-list-btns v-model="scenarioList" />
   </div>
 </template>

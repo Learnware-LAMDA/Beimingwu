@@ -342,7 +342,7 @@ async function handleClickExport(): Promise<void> {
       });
   }
   const csvContent = "\ufeff" + table.map((e) => e.join(",")).join("\n");
-  saveContentToFile(csvContent, "user_list.csv");
+  saveContentToFile(csvContent, "text/csv;charset=utf-8", "user_list.csv");
 }
 
 watch(

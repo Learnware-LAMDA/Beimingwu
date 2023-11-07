@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { computed } from "vue";
 import GridBtns from "./GridBtns.vue";
 import TensorFlowBtn from "../../../assets/images/specification/libraryType/tensorflow.svg?component";
 import PyTorchBtn from "../../../assets/images/specification/libraryType/pytorch.svg?component";
@@ -7,40 +7,33 @@ import ScikitLearnBtn from "../../../assets/images/specification/libraryType/sci
 import OthersBtn from "../../../assets/images/specification/libraryType/others.svg?component";
 import { useI18n } from "vue-i18n";
 
-const { t } = useI18n();
+export interface LibraryTypeProps {
+  modelValue: string;
+  cols?: number;
+  md?: number;
+  sm?: number;
+  xs?: number;
+}
 
-const emit = defineEmits(["update:value"]);
-
-const props = defineProps({
-  value: {
-    type: String,
-    required: true,
-  },
-  cols: {
-    type: Number,
-    default: 4,
-  },
-  md: {
-    type: Number,
-    default: 4,
-  },
-  sm: {
-    type: Number,
-    default: 4,
-  },
-  xs: {
-    type: Number,
-    default: 2,
-  },
+const props = withDefaults(defineProps<LibraryTypeProps>(), {
+  cols: 4,
+  md: 4,
+  sm: 4,
+  xs: 2,
 });
 
-const value = ref(props.value);
+const { t } = useI18n();
 
-watch(
-  () => value.value,
-  (newVal) => emit("update:value", newVal),
-  { deep: true },
-);
+const emit = defineEmits(["update:modelValue"]);
+
+const modelValue = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(val) {
+    emit("update:modelValue", val);
+  },
+});
 
 const libraryTypeBtns = computed(() => [
   {
@@ -68,7 +61,7 @@ const libraryTypeBtns = computed(() => [
 
 <template>
   <grid-btns
-    v-model:value="value"
+    v-model="modelValue"
     :btns="libraryTypeBtns"
     :title="t('Submit.SemanticSpecification.LibraryType.LibraryType')"
     :cols="cols"

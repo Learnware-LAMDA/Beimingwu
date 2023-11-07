@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
+import { computed } from "vue";
 import GridBtns from "./GridBtns.vue";
 import AudioBtn from "../../../assets/images/specification/dataType/audio.svg?component";
 import VideoBtn from "../../../assets/images/specification/dataType/video.svg?component";
@@ -8,39 +8,33 @@ import ImageBtn from "../../../assets/images/specification/dataType/image.svg?co
 import TableBtn from "../../../assets/images/specification/dataType/table.svg?component";
 import { useI18n } from "vue-i18n";
 
-const { t } = useI18n();
+export interface DataTypeProps {
+  modelValue: string;
+  cols?: number;
+  md?: number;
+  sm?: number;
+  xs?: number;
+}
 
-const emit = defineEmits(["update:value"]);
-
-const props = defineProps({
-  value: {
-    type: String,
-    required: true,
-  },
-  cols: {
-    type: Number,
-    default: 5,
-  },
-  md: {
-    type: Number,
-    default: 4,
-  },
-  sm: {
-    type: Number,
-    default: 4,
-  },
-  xs: {
-    type: Number,
-    default: 2,
-  },
+const props = withDefaults(defineProps<DataTypeProps>(), {
+  cols: 5,
+  md: 4,
+  sm: 4,
+  xs: 2,
 });
 
-const value = ref(props.value);
+const { t } = useI18n();
 
-watch(
-  () => value.value,
-  (newVal) => emit("update:value", newVal),
-);
+const emit = defineEmits(["update:modelValue"]);
+
+const modelValue = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(val) {
+    emit("update:modelValue", val);
+  },
+});
 
 const dataTypeBtns = computed(() => [
   {
@@ -73,7 +67,7 @@ const dataTypeBtns = computed(() => [
 
 <template>
   <grid-btns
-    v-model:value="value"
+    v-model="modelValue"
     :btns="dataTypeBtns"
     :title="t('Submit.SemanticSpecification.DataType.DataType')"
     :cols="cols"

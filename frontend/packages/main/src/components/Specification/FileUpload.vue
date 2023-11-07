@@ -2,16 +2,15 @@
 import { ref, computed } from "vue";
 
 export interface Props {
-  files: File[];
+  modelValue: File[];
   tips: string;
   errorMessages?: string;
   height?: number;
 }
 
-const emit = defineEmits(["update:files"]);
+const emit = defineEmits(["update:modelValue"]);
 
 const props = withDefaults(defineProps<Props>(), {
-  files: () => [],
   errorMessages: "",
   height: 40,
 });
@@ -43,9 +42,9 @@ const computeFileSize = (byte: number): string => {
 };
 
 const files = computed({
-  get: () => props.files,
+  get: () => props.modelValue,
   set: (val) => {
-    emit("update:files", val);
+    emit("update:modelValue", val);
   },
 });
 </script>

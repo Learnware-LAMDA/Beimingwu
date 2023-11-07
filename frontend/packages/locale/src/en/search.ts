@@ -10,6 +10,8 @@ export default {
   Updated: "Updated",
   HeterogeneousSearch: "Heterogeneous Search",
   TurnOffHeterogeneousSearch: "Turn off heterogeneous search",
+  UploadHeterogeneousRequirement: "Upload heterogeneous requirement",
+  StartHeterogeneousSearch: "Start heterogeneous search",
   RecommendedMultipleLearnware: "Recommended multiple learnware",
   RecommendedMultipleLearnwareTips:
     "The learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to great effectiveness.",

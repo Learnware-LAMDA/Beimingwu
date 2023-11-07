@@ -82,9 +82,9 @@ watch(
 
 <template>
   <v-app>
-    <app-bar v-model:drawerOpen="drawerOpen" :routes="routes"></app-bar>
+    <app-bar v-model="drawerOpen" :routes="routes"></app-bar>
 
-    <nav-drawer v-model:drawerOpen="drawerOpen" :routes="routes"></nav-drawer>
+    <nav-drawer v-model="drawerOpen" :routes="routes"></nav-drawer>
 
     <v-main class="bg-gray-100 bg-opacity-50">
       <router-view v-slot="{ Component }">

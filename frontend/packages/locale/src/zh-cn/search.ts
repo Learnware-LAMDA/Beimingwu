@@ -10,6 +10,8 @@ export default {
   Updated: "更新于",
   HeterogeneousSearch: "异构查搜",
   TurnOffHeterogeneousSearch: "关闭异构查搜",
+  UploadHeterogeneousRequirement: "上传异构需求",
+  StartHeterogeneousSearch: "开始异构查搜",
   RecommendedMultipleLearnware: "推荐多个学件",
   RecommendedMultipleLearnwareTips:
     "以下学件被推荐，因为它们与您的任务具有最高的统计规约相似性。结合这些学件可以带来很好的效果。",

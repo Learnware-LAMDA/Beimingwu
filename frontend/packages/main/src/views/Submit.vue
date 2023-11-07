@@ -462,7 +462,7 @@ onActivated(init);
           <v-window-item :value="3">
             <div class="p-4 m-auto">
               <file-upload
-                v-model:files="files.value"
+                v-model="files.value"
                 :error-messages="files.errorMessages"
                 :tips="t('Submit.File.DragFileHere', { file: 'zip' })"
                 class="text-xl"
