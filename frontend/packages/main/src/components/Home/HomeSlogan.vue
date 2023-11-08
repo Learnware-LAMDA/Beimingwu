@@ -23,6 +23,12 @@ onMounted(() => {
   });
 });
 
+function handleProgress(progress: number): void {
+  if (videoElement.value) {
+    videoElement.value.currentTime = duration.value * progress;
+  }
+}
+
 const router = useRouter();
 </script>
 
@@ -45,18 +51,11 @@ const router = useRouter();
       </div>
     </div>
 
-    <scroll-animate class="h-[800vh]">
-      <template #default="{ progress }">
+    <scroll-animate class="h-[800vh]" @progress="handleProgress">
+      <template #default>
         <div class="h-main-full w-full flex flex-col justify-center items-center">
           <div class="w-full max-w-7xl">
-            duration: {{ duration }} progress: {{ progress }} currentTime:
-            {{ (duration * progress).toFixed(3) }}
-            <video
-              ref="videoElement"
-              muted
-              class="w-full rounded-lg"
-              :currentTime="(duration * progress).toFixed(3)"
-            >
+            <video ref="videoElement" muted class="w-full rounded-lg">
               <source :src="system" type="video/mp4" />
             </video>
           </div>

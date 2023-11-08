@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useElementBounding } from "@vueuse/core";
+
+const emit = defineEmits(["progress"]);
 
 const anchorElement = ref<HTMLElement>();
 const stickyElement = ref<HTMLElement>();
@@ -16,6 +18,14 @@ const progress = computed(() => {
   }
   return Math.max(0, Math.min(1, -y.value / (stickyHeight.value - animateHeight.value)));
 });
+
+watch(
+  () => progress.value,
+  (newProgress) => {
+    emit("progress", newProgress);
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
