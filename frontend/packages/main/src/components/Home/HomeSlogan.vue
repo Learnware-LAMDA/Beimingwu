@@ -49,13 +49,14 @@ const router = useRouter();
       <template #default="{ progress }">
         <div class="h-main-full w-full flex flex-col justify-center items-center">
           <div class="w-full max-w-7xl">
+            duration: {{ duration }} progress: {{ progress }} currentTime:
+            {{ (duration * progress).toFixed(3) }}
             <video
               ref="videoElement"
               muted
               class="w-full rounded-lg"
-              :currentTime="duration * progress"
+              :currentTime="(duration * progress).toFixed(3)"
             >
-              duration: {{ duration }}
               <source :src="system" type="video/mp4" />
             </video>
           </div>

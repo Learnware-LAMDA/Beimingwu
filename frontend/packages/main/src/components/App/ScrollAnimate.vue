@@ -11,6 +11,9 @@ const { height: stickyHeight } = useElementBounding(stickyElement);
 const { height: animateHeight } = useElementBounding(animateElement);
 
 const progress = computed(() => {
+  if (stickyHeight.value === animateHeight.value) {
+    return 0;
+  }
   return Math.max(0, Math.min(1, -y.value / (stickyHeight.value - animateHeight.value)));
 });
 </script>
