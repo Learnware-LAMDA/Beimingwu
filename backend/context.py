@@ -8,11 +8,13 @@ from database import Database, SQLAlchemy
 from learnware.market import instantiate_learnware_market
 from learnware.config import C as leanrware_conf
 import logging
+import redis
 
 
 database: Database = None
 engine = None
 engine_config = None
+redis_client = None
 stats = 0
 
 config = Config()
@@ -48,6 +50,13 @@ def init_backend():
     os.makedirs(config.upload_path, exist_ok=True)
     os.makedirs(config.temp_path, exist_ok=True)
     os.makedirs(config.backup_path, exist_ok=True)
+    pass
+
+
+def init_redis():
+    global config, redis_client
+
+    redis_client = redis.Redis(host=config.redis["host"], port=config.redis["port"], decode_responses=True)
     pass
 
 
