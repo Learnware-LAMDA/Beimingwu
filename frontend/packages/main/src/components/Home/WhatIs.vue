@@ -346,15 +346,9 @@ const vOffset = {
             </g>
           </defs>
 
-          <use
-            v-for="i in 3"
-            :ref="`task${i}Element`"
-            :href="`#task${i}`"
-            :x="100"
-            :y="300 * i - 250"
-            clip-path="url(#task-clip)"
-            :key="i"
-          />
+          <use ref="task1Element" href="#task1" x="100" y="50" clip-path="url(#task-clip)" />
+          <use ref="task2Element" href="#task2" x="100" y="350" clip-path="url(#task-clip)" />
+          <use ref="task3Element" href="#task3" x="100" y="650" clip-path="url(#task-clip)" />
 
           <g ref="axisElement" style="transform: skew(-9deg, -1deg)">
             <path
