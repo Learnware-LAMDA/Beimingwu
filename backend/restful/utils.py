@@ -36,7 +36,6 @@ def generate_random_str(randomlength: int) -> str:
 def dump_learnware(learnware: learnware.Learnware, matching: int = None, last_modify: str = None):
     ret = {
         "learnware_id": learnware.id,
-        "username": dbops.get_learnware_owner(learnware.id),
         "semantic_specification": learnware.get_specification().get_semantic_spec(),
     }
 

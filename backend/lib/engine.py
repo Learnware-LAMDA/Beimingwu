@@ -16,6 +16,7 @@ import yaml
 from learnware.learnware.utils import get_stat_spec_from_config
 from learnware.config import C as learnware_config
 from . import common_utils
+import uuid
 
 
 def cache(seconds: int, maxsize: int = 128, typed: bool = False):
@@ -68,12 +69,14 @@ def search_learnware(semantic_str, statistical_str, user_id, check_status=None):
         return False, "Semantic specification error", None
 
     # Load statistical specification
-    statistical_name = f"{int(time.time())}_" + hashlib.md5(statistical_str).hexdigest() + ".json"
+    # statistical_name = f"{int(time.time())}_" + hashlib.md5(statistical_str).hexdigest() + ".json"
+    statistical_name = uuid.uuid4().hex + ".json"
     statistical_path = os.path.join(C.upload_path, statistical_name)
 
     # Define statistical specification
     statistical_specification = None
     statistical_specification_type = ""
+    context.logger.info(specification.__dict__)
     statistical_specification_dict = {
         "RKMETableSpecification": specification.RKMETableSpecification(),
         "RKMEImageSpecification": specification.RKMEImageSpecification(),
