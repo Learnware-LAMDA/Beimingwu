@@ -10,6 +10,12 @@ export interface LearnwareDetailInfo extends LearnwareInfo {
   verify_status: string;
 }
 
+export interface LearnwareDetailInfoWithUserId extends LearnwareInfo {
+  user_id: string;
+  last_modify: string;
+  verify_status: string;
+}
+
 export interface LearnwareSearchInfo extends LearnwareInfo {
   last_modify: string;
   username: string;

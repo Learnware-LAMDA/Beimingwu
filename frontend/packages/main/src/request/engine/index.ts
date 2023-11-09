@@ -8,7 +8,10 @@ import type {
   Files,
   SemanticSpecification,
 } from "@beiming-system/types/learnware";
-import type { LearnwareDetailInfo, LearnwareSearchInfo } from "@beiming-system/types/response";
+import type {
+  LearnwareDetailInfoWithUserId,
+  LearnwareSearchInfo,
+} from "@beiming-system/types/response";
 import { BACKEND_URL } from "..";
 
 const BASE_URL = BACKEND_URL + "/engine";
@@ -21,7 +24,7 @@ function getLearnwareDetailById({ id }: { id: string }): Promise<{
   code: number;
   msg: string;
   data: {
-    learnware_info: LearnwareDetailInfo;
+    learnware_info: LearnwareDetailInfoWithUserId;
   };
 }> {
   return checkedFetch(`${BASE_URL}/learnware_info?learnware_id=${id}`).then((res) => res.json());

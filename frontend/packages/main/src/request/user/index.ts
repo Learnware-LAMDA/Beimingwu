@@ -18,6 +18,7 @@ function getProfile(): Promise<{
   code: number;
   msg: string;
   data: {
+    user_id: string;
     username: string;
     email: string;
     role: number;

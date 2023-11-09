@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { getLearnwareDetailById } from "../request/engine";
+import { getProfile } from "../request/user";
 import { deleteLearnware } from "../request/user";
 import { downloadLearnwareSync } from "../utils";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
@@ -40,6 +41,8 @@ const learnwareId = ref("");
 const downloading = ref(false);
 const loading = ref(false);
 
+const editable = ref(false);
+
 const deleteDialog = ref<InstanceType<typeof ConfirmDialog>>();
 const deleteId = ref("");
 const deleteName = ref("");
@@ -68,12 +71,24 @@ function getLearnwareDetail(id: string): Promise<void> {
               libraryType: learnwareInfo.semantic_specification.Library.Values[0],
               scenarioList: learnwareInfo.semantic_specification.Scenario.Values,
             };
+            return learnwareInfo.user_id;
           }
           return;
         }
         default: {
           throw new Error(res.msg);
         }
+      }
+    })
+    .then(async (learnwareUserId: string | undefined): Promise<void> => {
+      if (!learnwareUserId) {
+        editable.value = false;
+        return;
+      }
+      const { data } = await getProfile();
+      if ([1, 2].includes(data.role) || learnwareUserId === data.user_id) {
+        editable.value = true;
+        return;
       }
     })
     .catch((err) => {
@@ -182,18 +197,24 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
             icon="mdi-download"
             @click="() => downloadLearnwareSync(learnware.id)"
           />
-          <v-btn
-            variant="flat"
-            icon="mdi-pencil"
-            :to="{
-              path: '/submit',
-              query: {
-                edit: 'true',
-                id: learnware.id,
-              },
-            }"
-          />
-          <v-btn variant="flat" icon="mdi-delete" @click="() => handleClickDelete(learnware.id)" />
+          <template v-if="editable">
+            <v-btn
+              variant="flat"
+              icon="mdi-pencil"
+              :to="{
+                path: '/submit',
+                query: {
+                  edit: 'true',
+                  id: learnware.id,
+                },
+              }"
+            />
+            <v-btn
+              variant="flat"
+              icon="mdi-delete"
+              @click="() => handleClickDelete(learnware.id)"
+            />
+          </template>
         </div>
       </div>
 
