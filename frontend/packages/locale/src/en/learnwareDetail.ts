@@ -4,6 +4,8 @@ export default {
     SUCCESS: "SUCCESS",
     FAIL: "FAIL",
     Unverified: "UNVERIFIED",
+    WAITING: "WAITING",
+    PROCESSING: "PROCESSING",
   },
   Logs: "Logs",
   LastModified: "Last Modified",
