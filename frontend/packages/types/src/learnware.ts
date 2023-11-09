@@ -1,10 +1,8 @@
 export type Name = string;
-export type DataType = "Table" | "Image" | "Text" | "Video" | "Audio";
+export type DataType = "Table" | "Image" | "Text";
 export type TaskType =
   | "Classification"
   | "Regression"
-  | "Clustering"
-  | "Ranking"
   | "Object Detection"
   | "Feature Extraction"
   | "Segmentation"

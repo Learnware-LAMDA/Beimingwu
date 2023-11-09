@@ -21,8 +21,6 @@ export default {
         Table: "Table",
         Image: "Image",
         Text: "Text",
-        Audio: "Audio",
-        Video: "Video",
       },
       DescriptionInput: {
         Name: "Feature",
@@ -41,8 +39,6 @@ export default {
       Type: {
         Classification: "Classification",
         Regression: "Regression",
-        Clustering: "Clustering",
-        Ranking: "Ranking",
         ObjectDetection: "Object Detection",
         FeatureExtraction: "Feature Extraction",
         Segmentation: "Segmentation",

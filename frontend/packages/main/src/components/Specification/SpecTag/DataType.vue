@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import GridBtns from "./GridBtns.vue";
-import AudioBtn from "../../../assets/images/specification/dataType/audio.svg?component";
-import VideoBtn from "../../../assets/images/specification/dataType/video.svg?component";
 import TextBtn from "../../../assets/images/specification/dataType/text.svg?component";
 import ImageBtn from "../../../assets/images/specification/dataType/image.svg?component";
 import TableBtn from "../../../assets/images/specification/dataType/table.svg?component";
@@ -51,16 +49,6 @@ const dataTypeBtns = computed(() => [
     title: t("Submit.SemanticSpecification.DataType.Type.Text"),
     icon: TextBtn,
     value: "Text",
-  },
-  {
-    title: t("Submit.SemanticSpecification.DataType.Type.Video"),
-    icon: VideoBtn,
-    value: "Video",
-  },
-  {
-    title: t("Submit.SemanticSpecification.DataType.Type.Audio"),
-    icon: AudioBtn,
-    value: "Audio",
   },
 ]);
 </script>

@@ -2,8 +2,6 @@
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
-import AudioBtn from "../../assets/images/specification/dataType/audio.svg?component";
-import VideoBtn from "../../assets/images/specification/dataType/video.svg?component";
 import TextBtn from "../../assets/images/specification/dataType/text.svg?component";
 import ImageBtn from "../../assets/images/specification/dataType/image.svg?component";
 import TableBtn from "../../assets/images/specification/dataType/table.svg?component";
@@ -49,10 +47,6 @@ const avatar = computed(() => {
     return ImageBtn;
   } else if (props.item.dataType === "Text") {
     return TextBtn;
-  } else if (props.item.dataType === "Video") {
-    return VideoBtn;
-  } else if (props.item.dataType === "Audio") {
-    return AudioBtn;
   } else {
     return TableBtn;
   }
