@@ -19,6 +19,7 @@
     "@beiming-system/hooks": "workspace:^",
     "@beiming-system/locale": "workspace:^",
     "@vueuse/core": "^10.5.0",
+    "animejs": "^3.2.1",
     "chart.js": "^4.4.0",
     "dayjs": "^1.10.7",
     "js-yaml": "^4.1.0",
@@ -35,6 +36,7 @@
   "devDependencies": {
     "@beiming-system/types": "workspace:^",
     "@mdi/font": "^7.2.96",
+    "@types/animejs": "^3.1.11",
     "@types/js-yaml": "^4.0.6",
     "@types/node": "^20.8.4",
     "@types/nprogress": "^0.2.2",
