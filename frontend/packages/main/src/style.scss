@@ -98,3 +98,7 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-600;
 }
+
+.h-main-full {
+  height: calc(100vh - var(--v-layout-top)) !important;
+}

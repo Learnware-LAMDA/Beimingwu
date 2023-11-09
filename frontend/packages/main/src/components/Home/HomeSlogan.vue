@@ -1,10 +1,33 @@
 <script setup lang="ts">
+import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import BigTitle from "../Public/BigTitle.vue";
-import system from "../../../public/system.png";
+import system from "../../../public/search.mp4";
+import ScrollAnimate from "../App/ScrollAnimate.vue";
 
 const { t } = useI18n();
+
+const videoElement = ref<HTMLVideoElement | null>(null);
+const duration = ref(0);
+
+onMounted(() => {
+  nextTick(() => {
+    setTimeout(() => {
+      if (videoElement.value) {
+        videoElement.value.onloadedmetadata = (): void => {
+          duration.value = videoElement.value?.duration ?? 0;
+        };
+      }
+    });
+  });
+});
+
+function handleProgress(progress: number): void {
+  if (videoElement.value) {
+    videoElement.value.currentTime = duration.value * Math.pow(progress, 2);
+  }
+}
 
 const router = useRouter();
 </script>
@@ -18,6 +41,10 @@ const router = useRouter();
         <h1>{{ t("Home.Cover.Beiming") }}</h1>
       </big-title>
 
+      <div class="mt-6 px-10 mx-auto max-w-7xl sm:px-20 md:px-40 lg:px-60">
+        {{ t("Home.Cover.Introduction") }}
+      </div>
+
       <div class="flex justify-center pt-10">
         <v-btn class="mx-3 bg-white" size="large" @click="router.push('/search')">
           {{ t("Home.Cover.Try") }}
@@ -28,8 +55,16 @@ const router = useRouter();
       </div>
     </div>
 
-    <div class="mx-auto px-8 max-w-7xl">
-      <v-img class="border rounded-lg elevation-24" :src="system" />
-    </div>
+    <scroll-animate class="h-[800vh]" @progress="handleProgress">
+      <template #default>
+        <div class="h-main-full w-full flex flex-col justify-center items-center">
+          <div class="w-full max-w-7xl">
+            <video ref="videoElement" muted class="w-full rounded-lg">
+              <source :src="system" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </template>
+    </scroll-animate>
   </div>
 </template>
