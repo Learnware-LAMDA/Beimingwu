@@ -1,12 +1,9 @@
-# 学件查搜
+# 如何查搜学件？
 
 在北冥系统中，学件既可以通过网页端查搜，也可以使用 `learnware` Python 包进行查搜。
 
 接下来，我们将分别对这两种方式进行介绍。
 
-
-
----
 
 ## 通过网页端查搜
 
@@ -14,12 +11,12 @@
 
 点击网站导航栏处的「[查搜](https://www.lamda.nju.edu.cn/learnware/#/search)」按钮，即可开始学件查搜。
 
-系统支持通过语义需求进行学件查搜，也可以通过填写统计需求进行查搜，还可以将两种查搜方式结合到一起。
+系统支持通过语义规约进行学件查搜，也可以通过上传统计规约进行查搜，还可以将两种查搜方式结合到一起。
 
-- 语义需求查搜：支持通过学件名称搜索和通过标签搜索；查搜时输入名称或者选择标签
-- 统计需求查搜：支持通过表格，图像，文本数据的统计需求进行查搜；查搜时上传统计需求`json`文件
+- 语义规约查搜：支持通过学件名称搜索和通过标签搜索；查搜时输入名称或者选择标签；
+- 统计规约查搜：支持通过表格、图像、文本数据的统计规约进行查搜；查搜时上传统计规约对应的 `json` 文件。
 
-进行统计需求查搜时，各种数据类型对应的统计需求可以通过如下命令生成
+进行统计规约查搜时，各种数据类型对应的统计规约可以通过如下命令生成：
 
 ```python
 from learnware.specification import generate_rkme_image_spec, generate_rkme_spec, generate_rkme_text_spec
@@ -40,9 +37,9 @@ rkme_text = generate_rkme_text_spec(text_feature)
 
 ### 异构表格查搜
 
-对于表格数据的统计需求，常规查搜仅能在特征空间维度相同的学件中进行查搜，当学件市场中没有维度相匹配的学件时，常规查搜将返回空列表。此时页面将弹出提示，提醒您可以开启异构查搜。
+对于表格数据的统计规约，常规查搜仅能在特征空间维度相同的学件中进行查搜，当学件市场中没有维度相匹配的学件时，常规查搜将返回空列表。此时页面将弹出提示，提醒您可以开启异构查搜。
 
-当您选择开启异构表格查搜后，系统需要您额外提供每一维度的语义信息，这一过程可以通过手动填写或者直接上传维度语义信息的`json`文件，语义信息的`json`文件格式如下
+当您选择开启异构表格查搜后，系统需要您额外提供每一个维度的语义信息，这一过程可以通过手动填写或者直接上传维度语义信息的 `json` 文件，语义信息的 `json` 文件格式如下：
 
 ```json
 {
@@ -54,13 +51,10 @@ rkme_text = generate_rkme_text_spec(text_feature)
 }
 ```
 
-值得注意的是，推荐的特征空间不同的模型无法在您的任务上直接进行预测，请参考「[学件部署](http://210.28.134.132:30012/zh-CN/user-guide/learnware-deploy.html)」页面的指南进行异构表格学件的部署。
+值得注意的是，推荐的特征空间不同的模型无法在您的任务上直接进行预测，请参考「[学件部署](/zh-CN/user-guide/learnware-deploy)」页面的指南进行异构表格学件的部署。
 
 
-
----
-
-## 通过learnware包查搜
+## 通过 learnware 包查搜
 
 网页端外，`learnware` 包也提供学件查搜的接口，首先需要登录：
 
@@ -78,9 +72,9 @@ client.login(email="your email", token="your token")
 
 ### 常规查搜
 
-与网页端查搜相对应，learnware包也支持语义需求查搜，统计需求查搜，语义需求+统计需求的混合查搜。
+与网页端查搜相对应，learnware 包也支持语义规约查搜、统计规约查搜、语义规约 + 统计规约的混合查搜。
 
-您可以通过语义需求在学件市场中查搜学件，所有符合语义需求的学件都将通过API返回。例如，下列代码将得到市场中所有任务类型为分类的学件。
+您可以通过语义规约在学件市场中查搜学件，所有符合语义规约的学件都将通过API返回。例如，下列代码将得到市场中所有任务类型为分类的学件：
 
 ```python
 user_semantic = {
@@ -92,7 +86,7 @@ specification.update_semantic_spec(user_semantic)
 learnware_list = client.search_learnware(specification, page_size=None)
 ```
 
-您也可以通过统计需求在学件市场中查搜学件，所有分布相似的学件都将通过API返回。通过上述提到的`generate_rkme_image_spec, generate_rkme_spec, generate_rkme_text_spec`函数，您可以便捷的得到您当前任务对应的统计规约`rkme_spec`，通过下列代码您可以得到市场中同一类型数据下满足您任务统计需求的学件。
+您也可以通过统计规约在学件市场中查搜学件，所有分布相似的学件都将通过 API 返回。通过上述提到的 `generate_rkme_image_spec`、`generate_rkme_spec`、`generate_rkme_text_spec` 函数，您可以便捷地得到您当前任务对应的统计规约 `rkme_spec`，随后通过下列代码即可得到市场中同一类型数据下满足您任务统计规约的学件：
 
 ```python
 specification = Specification()
@@ -100,7 +94,7 @@ specification.update_stat_spec(rkme_spec)
 learnware_list = client.search_learnware(specification, page_size=None)
 ```
 
-通过将统计需求和语义需求结合起来，您可以进行更加细致的查搜，比如下列代码将在表格型数据中查搜满足您语义需求的学件。
+通过将统计规约和语义规约结合起来，您可以进行更加细致的查搜，比如下列代码将在表格型数据中查搜满足您语义规约的学件：
 
 ```python
 user_semantic = {
@@ -115,22 +109,21 @@ specification.update_stat_spec(rkme_table)
 learnware_list = client.search_learnware(specification, page_size=None)
 ```
 
-当学件查搜完成后，您可以通过下列代码完成学件的下载及环境的配置
+当学件查搜完成后，您可以通过下列代码完成学件的下载及环境的配置：
 
 ```python
 for temp_learnware in learnware_list:
     learnware_id = temp_learnware["learnware_id"]
-	client.download_learnware(learnware_id, zip_path)
-	client.install_environment(zip_path)
-	learnware = client.load_learnware(zip_path)
+    learnware = client.load_learnware(learnware_id=learnware_id, runnable_option="conda_env")
 	# you can use the learnware to make prediction now
 ```
 
+更详细的部署指南可查看：[学件部署](/zh-CN/user-guide/learnware-deploy)。
 
 
 ### 异构表格查搜
 
-当您提供表格型数据的统计需求时，并且语义需求中包含了每一维特征语义维度的描述时，系统将自行开启异构表格查搜，而不仅仅是在维度相匹配的数据类型为表格的学件中进行查搜。以下代码将进行通过API进行异构表格查搜。
+当您提供表格型数据的统计规约，并且在语义规约中包含了每一维特征语义维度的描述时，系统将自行开启异构表格查搜，而不仅仅是在维度相匹配的数据类型为表格的学件中进行查搜。以下代码将进行通过 API 进行异构表格查搜：
 
 ```python
 input_description = {
