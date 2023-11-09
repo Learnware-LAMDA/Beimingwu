@@ -107,4 +107,6 @@ _DEFAULT_CONFIG = {
         "proxy_host": "",
         "proxy_port": 0,
     },
+    # redis config
+    "redis": {"host": "127.0.0.1", "port": 6379},
 }

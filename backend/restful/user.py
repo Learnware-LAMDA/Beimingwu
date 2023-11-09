@@ -19,6 +19,7 @@ import flask_bcrypt
 import lib.data_utils as data_utils
 import uuid
 from . import common_functions
+from lib import redis_utils
 
 
 user_blueprint = Blueprint("USER-API", __name__)
@@ -202,6 +203,7 @@ class UpdateLearnwareApi(flask_restful.Resource):
 
             database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
 
+        redis_utils.publish_reload_learnware(learnware_id)
         return {"code": 0, "msg": "success"}, 200
 
 
@@ -234,6 +236,9 @@ class AddLearnwareVerifiedApi(flask_restful.Resource):
             checker_names=[],
             check_status=check_status,
         )
+
+        redis_utils.publish_reload_learnware(learnware_id)
+
         if final_status == EasySemanticChecker.INVALID_LEARNWARE:
             return {"code": 51, "msg": "Learnware check_status update failed!"}, 200
 

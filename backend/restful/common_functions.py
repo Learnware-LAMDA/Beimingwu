@@ -6,6 +6,7 @@ from database.base import LearnwareVerifyStatus
 from learnware.market import BaseChecker
 import context
 import os
+from lib import redis_utils
 
 
 def add_learnware(learnware_path, semantic_specification, learnware_id):
@@ -53,6 +54,7 @@ def delete_learnware(user_id, learnware_id):
         ret = context.engine.delete_learnware(learnware_id)
         if not ret:
             return {"code": 42, "msg": "Engine delete learnware error."}, 200
+        redis_utils.publish_delete_learnware(learnware_id)
         pass
     else:
         # Delete learnware file

@@ -13,6 +13,8 @@ import flask_bcrypt
 import flask_jwt_extended
 import requests
 import hashlib
+import threading
+from lib import redis_utils
 
 
 app = Flask(__name__)
@@ -48,6 +50,11 @@ def main():
 
     # Init logger
     context.init_logger()
+
+    # Init redis
+    context.init_redis()
+    sub_thread = threading.Thread(target=redis_utils.subscribe)
+    sub_thread.start()
 
     # Init flask
     app.register_blueprint(restful.auth.auth_blueprint, url_prefix="/auth")
