@@ -1,8 +1,8 @@
 export default {
   Cover: {
     Beiming: "Beiming: A Learnware Dock System",
-    Slogan:
-      "Learnware paradigm systematically reuses numerous various models to do things that may even be beyond their original purposes, and enables users to easily identify and reuse helpful models, not need to build their models from scratch.",
+    Introduction:
+      "Beiming is based on the learnware paradigm, which systematically covers the complete process of learnware from submission to deployment, helping users effectively identify and reuse helpful learnwares without building machine learning models from scratch.",
     Try: "Try It Out",
     Submit: "Be A Developer",
   },

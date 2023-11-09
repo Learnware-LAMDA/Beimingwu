@@ -41,6 +41,10 @@ const router = useRouter();
         <h1>{{ t("Home.Cover.Beiming") }}</h1>
       </big-title>
 
+      <div class="mt-6 px-10 mx-auto max-w-7xl sm:px-20 md:px-40 lg:px-60">
+        {{ t("Home.Cover.Introduction") }}
+      </div>
+
       <div class="flex justify-center pt-10">
         <v-btn class="mx-3 bg-white" size="large" @click="router.push('/search')">
           {{ t("Home.Cover.Try") }}
