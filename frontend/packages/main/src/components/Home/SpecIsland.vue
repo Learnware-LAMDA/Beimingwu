@@ -58,7 +58,8 @@ onMounted(() => {
           duration: 500,
         },
         "-=100",
-      );
+      )
+      .add({ duration: 200 });
   });
 });
 </script>
