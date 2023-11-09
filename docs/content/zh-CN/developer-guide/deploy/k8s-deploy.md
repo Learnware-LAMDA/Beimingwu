@@ -7,7 +7,7 @@
 kubectl patch storageclass rook-cephfs -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ```
 
-### 部署Postgres数据
+### 部署Postgres数据库
 克隆[PostgresOperator](https://github.com/zalando/postgres-operator.git)仓库。并按照仓库说明进行安装，以下为举例。
 #### 部署PostgresOperator
 ```shell
@@ -91,7 +91,7 @@ kubectl create configmap learnware-backend -n learnware --from-file=config.json
 kubectl create configmap learnware -n learnware --from-file=config_learnware.json
 
 IMAGE_NAME="lamda/bm-system-backend:0.0.1"
-cat deployment.yaml \
+cat backend.yaml \
   | sed "s#{{IMAGE_NAME}}#$IMAGE_NAME#g" \
   | kubectl apply -f -
 ```
@@ -100,7 +100,7 @@ cat deployment.yaml \
 进入deploy目录执行
 ```shell
 IMAGE_NAME="lamda/bm-system-frontend:0.0.1"
-cat deployment.yaml \
+cat frontend.yaml \
   | sed "s#{{IMAGE_NAME}}#$IMAGE_NAME#g" \
   | kubectl apply -f -
 ```
@@ -109,7 +109,7 @@ cat deployment.yaml \
 进入deploy目录执行
 ```shell
 IMAGE_NAME="lamda/bm-system-admin-frontend:0.0.1"
-cat deployment.yaml \
+cat admin-frontend.yaml \
   | sed "s#{{IMAGE_NAME}}#$IMAGE_NAME#g" \
   | kubectl apply -f -
 ```
@@ -125,4 +125,9 @@ learnware-docs-fb8495555-6l54p              1/1     Running     6 (7d7h ago)   1
 learnware-frontend-6479f7bcb5-t5sx5         1/1     Running     0              3h18m
 learnware-system-docs-79df779cb4-f9tgz      1/1     Running     0              4d13h
 monitor-learnware-verify-0                  1/1     Running     0              94m
+```
+
+## 卸载
+```shell
+kubectl delete ns learnware
 ```
