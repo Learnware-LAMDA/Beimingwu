@@ -39,8 +39,8 @@ export default {
       Type: {
         Classification: "Classification",
         Regression: "Regression",
-        ObjectDetection: "Object Detection",
-        FeatureExtraction: "Feature Extraction",
+        "Object Detection": "Object Detection",
+        "Feature Extraction": "Feature Extraction",
         Segmentation: "Segmentation",
         Others: "Others",
         OtherTask: "Other Task",

@@ -39,8 +39,8 @@ export default {
       Type: {
         Classification: "分类",
         Regression: "回归",
-        ObjectDetection: "目标检测",
-        FeatureExtraction: "特征提取",
+        "Object Detection": "目标检测",
+        "Feature Extraction": "特征提取",
         Segmentation: "分割",
         Others: "其他",
         OtherTask: "其他任务",
