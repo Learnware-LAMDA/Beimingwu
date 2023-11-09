@@ -91,13 +91,7 @@ const taskTypeDescription = computed({
 
     <task-type-btns v-model="taskType" />
 
-    <template
-      v-if="
-        taskType === 'Classification' ||
-        taskType === 'Regression' ||
-        taskType === 'Feature Extraction'
-      "
-    >
+    <template v-if="taskType === 'Classification' || taskType === 'Regression'">
       <v-alert class="mt-3" type="info" color="primary" closable>
         <span class="hidden sm:inline">{{
           t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTips")
