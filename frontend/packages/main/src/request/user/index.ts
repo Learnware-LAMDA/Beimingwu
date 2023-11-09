@@ -26,7 +26,14 @@ function getProfile(): Promise<{
 }> {
   return checkedFetch(`${BASE_URL}/profile`, {
     method: "POST",
-  }).then((res) => res.json());
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.code === 0) {
+        return json;
+      }
+      throw new Error(json.msg);
+    });
 }
 
 function changePassword({

@@ -85,9 +85,14 @@ function getLearnwareDetail(id: string): Promise<void> {
         editable.value = false;
         return;
       }
-      const { data } = await getProfile();
-      if ([1, 2].includes(data.role) || learnwareUserId === data.user_id) {
-        editable.value = true;
+      try {
+        const { data } = await getProfile();
+
+        if ([1, 2].includes(data.role) || learnwareUserId === data.user_id) {
+          editable.value = true;
+          return;
+        }
+      } catch (err) {
         return;
       }
     })
