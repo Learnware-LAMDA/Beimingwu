@@ -1,0 +1,58 @@
+version: '3'
+services:
+  postgres:
+    container_name: learnware-postgres
+    image: postgres:13.3
+    environment:
+     - POSTGRES_PASSWORD=my-secret-pw
+    networks:
+     - learnware
+    ports:
+      - '5432:5432'
+    stdin_open: true
+    tty: true
+    restart: always
+    volumes:
+     - postgres_data:/var/lib/postgresql/data
+  redis:
+    container_name: learnware-redis
+    image: redis
+    networks:
+     - learnware
+    ports:
+     - '6379:6379'
+    stdin_open: true
+    tty: true
+    restart: always
+    privileged: true
+    volumes:
+     - redis_data:/data
+  backend:
+    image: lamda/bm-system-backend:0.0.1
+    container_name: learnware-backend
+    restart: always
+    networks:
+    - learnware
+    ports:
+    - '8088:8088'
+    volumes:
+      - backend_data:/backend_data
+      - learnware_storage:/root/.learnware
+  frontend:
+    container_name: learnware-frontend
+    image: lamda/bm-system-frontend:0.0.1
+    stdin_open: true
+    tty: true
+    restart: always
+    networks:
+      - learnware
+    expose:
+      - '5173'
+networks:
+  learnware:
+    driver: 'bridge'
+volumes:
+  learnware_storage:
+  backend_data:
+  postgres_data:
+  redis_data:

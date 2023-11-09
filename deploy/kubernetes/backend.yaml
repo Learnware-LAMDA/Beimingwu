@@ -1,0 +1,200 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: learnware
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: learnware
+  name: learnware-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 160Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: learnware
+  name: pip-cache
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 16Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: learnware
+  name: conda-cache
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 64Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: learnware
+  name: backend-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 32Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: learnware-backend
+  namespace: learnware
+  labels:
+    app: learnware-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: learnware-backend
+  template:
+    metadata:
+      labels:
+        app: learnware-backend
+    spec:
+      containers:
+      - name: learnware-backend
+        image: {{IMAGE_NAME}}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: {{PORT}}
+        volumeMounts:
+        - name: learnware-storage
+          mountPath: /root/.learnware
+        - name: backend-data
+          mountPath: "/backend_data"
+      volumes:
+      - name: learnware-storage
+        persistentVolumeClaim:
+          claimName: learnware-storage
+      - name: backend-data
+        persistentVolumeClaim:
+          claimName: backend-data
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: monitor-learnware-verify
+  namespace: learnware
+  labels:
+    app: monitor-learnware-verify
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitor-learnware-verify
+  template:
+    metadata:
+      labels:
+        app: monitor-learnware-verify
+    spec:
+      containers:
+      - name: monitor-learnware-verify
+        command: ["python3"]
+        args: ["scripts/monitor_learnware_verify.py", "--num-worker", "1"]
+        image: {{IMAGE_NAME}}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: {{PORT}}
+        volumeMounts:
+        - name: pip-cache
+          mountPath: /root/.cache/pip
+        - name: conda-cache
+          mountPath: /opt/conda/pkgs
+        - name: backend-data
+          mountPath: "/backend_data"
+        - name: learnware-storage
+          mountPath: /root/.learnware
+        resources:
+          limits:
+            memory: 8Gi
+          requests:
+            memory: 8Gi
+      volumes:
+      - name: pip-cache
+        persistentVolumeClaim:
+          claimName: pip-cache
+      - name: backend-data
+        persistentVolumeClaim:
+          claimName: backend-data
+      - name: conda-cache
+        persistentVolumeClaim:
+          claimName: conda-cache
+      - name: learnware-storage
+        persistentVolumeClaim:
+          claimName: learnware-storage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: learnware-backend
+  namespace: learnware
+spec:
+  type: NodePort
+  selector:
+    app: learnware-backend
+  ports:
+    - port: {{PORT}}
+      targetPort: {{PORT}}
+      nodePort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: learnware-backend-cluster
+  namespace: learnware
+spec:
+  type: ClusterIP
+  selector:
+    app: learnware-backend
+  ports:
+    - port: {{PORT}}
+      targetPort: {{PORT}}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-data
+  namespace: learnware
+spec:
+  schedule: "0 3 * * *"
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup-data
+            image: "{{IMAGE_NAME}}"
+            command: ["python3"]
+            args: ["scripts/backup_data.py"]
+            imagePullPolicy: IfNotPresent
+            volumeMounts:
+            - name: learnware-storage
+              mountPath: /root/.learnware
+            - name: backend-data
+              mountPath: "/backend_data"
+          volumes:
+          - name: learnware-storage
+            persistentVolumeClaim:
+              claimName: learnware-storage
+          - name: backend-data
+            persistentVolumeClaim:
+              claimName: backend-data
+          restartPolicy: Never
