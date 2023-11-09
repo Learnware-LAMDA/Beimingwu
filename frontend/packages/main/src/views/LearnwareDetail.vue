@@ -251,9 +251,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
           </div>
 
           <v-expansion-panels
-            v-if="
-              ['Classification', 'Regression', 'Feature Extraction'].includes(learnware.taskType)
-            "
+            v-if="['Classification', 'Regression'].includes(learnware.taskType)"
             class="mr-2 border rounded-lg"
           >
             <v-expansion-panel elevation="0" class="rounded-lg">

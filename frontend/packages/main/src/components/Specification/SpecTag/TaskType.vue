@@ -2,12 +2,10 @@
 import { computed } from "vue";
 import GridBtns from "./GridBtns.vue";
 import ClassificationBtn from "../../../assets/images/specification/taskType/classification.svg?component";
-import ClusteringBtn from "../../../assets/images/specification/taskType/clustering.svg?component";
 import DetectionBtn from "../../../assets/images/specification/taskType/detection.svg?component";
 import ExtractionBtn from "../../../assets/images/specification/taskType/extraction.svg?component";
 import RegressionBtn from "../../../assets/images/specification/taskType/regression.svg?component";
 import SegmantationBtn from "../../../assets/images/specification/taskType/segmantation.svg?component";
-import RankingBtn from "../../../assets/images/specification/taskType/ranking.svg?component";
 import OthersBtn from "../../../assets/images/specification/taskType/others.svg?component";
 import { useI18n } from "vue-i18n";
 
@@ -49,16 +47,6 @@ const taskTypeBtns = computed(() => [
     title: t("Submit.SemanticSpecification.TaskType.Type.Regression"),
     icon: RegressionBtn,
     value: "Regression",
-  },
-  {
-    title: t("Submit.SemanticSpecification.TaskType.Type.Clustering"),
-    icon: ClusteringBtn,
-    value: "Clustering",
-  },
-  {
-    title: t("Submit.SemanticSpecification.TaskType.Type.Ranking"),
-    icon: RankingBtn,
-    value: "Ranking",
   },
   {
     title: t("Submit.SemanticSpecification.TaskType.Type.ObjectDetection"),

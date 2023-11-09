@@ -21,8 +21,6 @@ export default {
         Table: "表格",
         Image: "图像",
         Text: "文本",
-        Audio: "音频",
-        Video: "视频",
       },
       DescriptionInput: {
         Name: "特征",
@@ -41,8 +39,6 @@ export default {
       Type: {
         Classification: "分类",
         Regression: "回归",
-        Clustering: "聚类",
-        Ranking: "排序",
         ObjectDetection: "目标检测",
         FeatureExtraction: "特征提取",
         Segmentation: "分割",
