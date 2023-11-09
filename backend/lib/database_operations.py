@@ -293,7 +293,7 @@ def get_verify_log(user_id, learnware_id):
 
 def get_learnware_by_learnware_id(learnware_id):
     rows = context.database.execute(
-        "SELECT learnware_id, last_modify, verify_status FROM tb_user_learnware_relation WHERE learnware_id = :learnware_id",
+        "SELECT user_id, learnware_id, last_modify, verify_status FROM tb_user_learnware_relation WHERE learnware_id = :learnware_id",
         {"learnware_id": learnware_id},
     )
 
