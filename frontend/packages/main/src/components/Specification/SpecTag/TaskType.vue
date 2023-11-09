@@ -49,12 +49,12 @@ const taskTypeBtns = computed(() => [
     value: "Regression",
   },
   {
-    title: t("Submit.SemanticSpecification.TaskType.Type.ObjectDetection"),
+    title: t("Submit.SemanticSpecification.TaskType.Type.Object Detection"),
     icon: DetectionBtn,
     value: "Object Detection",
   },
   {
-    title: t("Submit.SemanticSpecification.TaskType.Type.FeatureExtraction"),
+    title: t("Submit.SemanticSpecification.TaskType.Type.Feature Extraction"),
     icon: ExtractionBtn,
     value: "Feature Extraction",
   },
