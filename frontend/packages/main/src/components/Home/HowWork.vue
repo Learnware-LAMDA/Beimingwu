@@ -8,9 +8,7 @@ const { t } = useI18n();
 <template>
   <div class="w-full max-w-[1200px] mx-auto pb-20 md:pb-30 md:px-10">
     <div class="px-5 md:px-0">
-      <div
-        class="xl:text-5xl xl:my-10 lg:text-4xl lg:my-7 md:text-3xl md:my-5 <md:text-4xl <md:my-5"
-      >
+      <div class="text-3xl my-5 <md:text-4xl <md:my-5 lg:text-4xl lg:my-7 xl:text-5xl xl:my-10">
         {{ t("Home.How.Title") }}
       </div>
       <p class="text-gray-500">

@@ -67,9 +67,7 @@ onMounted(() => {
   <scroll-animate class="h-[300vh]" @progress="handleProgress">
     <div ref="reference" class="w-full max-w-[1200px] mx-auto grid pb-20 md:grid-cols-2 md:pb-30">
       <div class="flex flex-col justify-center px-5 md:px-0 md:pl-10">
-        <div
-          class="xl:text-5xl xl:my-10 lg:text-4xl lg:my-7 md:text-3xl md:my-5 <md:text-4xl <md:my-5"
-        >
+        <div class="text-3xl my-5 <md:text-4xl <md:my-5 lg:text-4xl lg:my-7 xl:text-5xl xl:my-10">
           {{ t("Home.SpecificationWorld.Title") }}
         </div>
         <p class="text-gray-500">

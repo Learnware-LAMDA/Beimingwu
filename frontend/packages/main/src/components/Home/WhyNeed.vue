@@ -38,7 +38,7 @@ const reasons = computed(() => [
 <template>
   <div class="mx-auto pb-20 md:pb-30 md:px-10 max-w-[1200px] w-full">
     <div class="px-5 md:px-0">
-      <div class="text-4xl my-5 md:text-3xl md:my-5 lg:text-4xl lg:my-7 xl:text-5xl xl:my-10">
+      <div class="text-3xl my-5 <md:text-4xl <md:my-5 lg:text-4xl lg:my-7 xl:text-5xl xl:my-10">
         {{ t("Home.Why.Title") }}
       </div>
       <p class="text-gray-500">
