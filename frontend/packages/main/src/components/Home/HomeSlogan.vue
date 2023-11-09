@@ -25,7 +25,7 @@ onMounted(() => {
 
 function handleProgress(progress: number): void {
   if (videoElement.value) {
-    videoElement.value.currentTime = duration.value * progress;
+    videoElement.value.currentTime = duration.value * Math.pow(progress, 2);
   }
 }
 
