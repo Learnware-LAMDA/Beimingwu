@@ -94,8 +94,10 @@ def login(email, password, hash_password=False):
 def test_learnware_semantic_specification():
     semantic_specification = dict()
 
-    semantic_specification["Data"] = {"Type": "Class", "Values": ["Image"]}
-    semantic_specification["Task"] = {"Type": "Class", "Values": ["Segmentation"]}
+    semantic_specification["Input"] = {"Dimension": 64, "Description": {"0": "f0", "1": "f1"}}
+    semantic_specification["Output"] = {"Dimension": 10, "Description": {"0": "c0"}}
+    semantic_specification["Data"] = {"Type": "Class", "Values": ["Table"]}
+    semantic_specification["Task"] = {"Type": "Class", "Values": ["Classification"]}
     semantic_specification["Library"] = {"Type": "Class", "Values": ["Scikit-learn"]}
     semantic_specification["Scenario"] = {"Type": "Tag", "Values": ["Business"]}
     semantic_specification["Name"] = {"Type": "String", "Values": "Test Classification"}
@@ -107,10 +109,10 @@ def test_learnware_semantic_specification():
 def test_learnware_semantic_specification_ex():
     semantic_specification = dict()
 
-    semantic_specification["Input"] = {}
-    semantic_specification["Output"] = {}
-    semantic_specification["Data"] = {"Type": "Class", "Values": ["Image"]}
-    semantic_specification["Task"] = {"Type": "Class", "Values": ["Segmentation"]}
+    semantic_specification["Input"] = {"Dimension": 64, "Description": {"0": "f0", "1": "f1"}}
+    semantic_specification["Output"] = {"Dimension": 10, "Description": {"0": "c0"}}
+    semantic_specification["Data"] = {"Type": "Class", "Values": ["Table"]}
+    semantic_specification["Task"] = {"Type": "Class", "Values": ["Classification"]}
     semantic_specification["Library"] = {"Type": "Class", "Values": ["Scikit-learn"]}
     semantic_specification["Scenario"] = {"Type": "Tag", "Values": ["Business"]}
     semantic_specification["Name"] = {"Type": "String", "Values": "Test Classification"}

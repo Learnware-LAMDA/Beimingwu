@@ -160,36 +160,37 @@ class UpdateLearnwareApi(flask_restful.Resource):
         semantic_specification_str = request.form.get("semantic_specification")
         learnware_id = request.form.get("learnware_id")
 
+        verify_status = database.get_learnware_verify_status(learnware_id)
+        if verify_status == LearnwareVerifyStatus.PROCESSING.value:
+            return {"code": 51, "msg": "Learnware is verifying."}, 200
+
         print(semantic_specification_str)
         semantic_specification, err_msg = engine_helper.parse_semantic_specification(semantic_specification_str)
         if semantic_specification is None:
             return {"code": 41, "msg": err_msg}, 200
 
-        if EasySemanticChecker.check_semantic_spec(semantic_specification) == EasySemanticChecker.INVALID_LEARNWARE:
-            return {"code": 41, "msg": "Semantic specification check failed!"}, 200
-
-        verify_status = database.get_learnware_verify_status(learnware_id)
-        if verify_status == LearnwareVerifyStatus.PROCESSING.value:
-            return {"code": 51, "msg": "Learnware is verifying."}, 200
-
         learnware_file = None
         if request.files is not None:
             learnware_file = request.files.get("learnware_file")
-
         learnware_path = context.get_learnware_verify_file_path(learnware_id)
         learnware_semantic_spec_path = learnware_path[:-4] + ".json"
-        with open(learnware_semantic_spec_path, "w") as f:
-            json.dump(semantic_specification, f)
 
-        if learnware_file is not None:
+        if learnware_file is None:
+            if EasySemanticChecker.check_semantic_spec(semantic_specification) == EasySemanticChecker.INVALID_LEARNWARE:
+                return {"code": 41, "msg": "Semantic specification check failed!"}, 200
+            learnware_path = None
+        else:
             learnware_file.seek(0)
             learnware_file.save(learnware_path)
-        else:
-            learnware_path = None
+            check_result, msg = engine_helper.check_learnware_file(semantic_specification, learnware_path)
+            if not check_result:
+                return {"code": 51, "msg": msg}, 200
 
+        with open(learnware_semantic_spec_path, "w") as f:
+            json.dump(semantic_specification, f)
         database.update_learnware_timestamp(learnware_id)
 
-        if verify_status in [LearnwareVerifyStatus.SUCCESS.value, LearnwareVerifyStatus.FAIL.value]:
+        if verify_status != LearnwareVerifyStatus.PROCESSING.value:
             print(f"update learnware: {learnware_id}")
 
             if context.engine.get_learnware_by_ids(learnware_id) is not None:

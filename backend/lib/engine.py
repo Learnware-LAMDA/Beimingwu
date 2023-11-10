@@ -251,14 +251,24 @@ def check_learnware_file(semantic_specification, learnware_file):
                 z_file.extract(member, temp_dir.name)
                 stat_spec["file_name"] = os.path.join(temp_dir.name, member)
                 stat_spec_obj = get_stat_spec_from_config(stat_spec)
+                data_type = semantic_specification["Data"]["Values"][0]
 
-                if stat_spec_obj.type == "RKMETableSpecification":
-                    if semantic_specification["Data"]["Values"][0] == "Table":
+                if data_type == "Table":
+                    if stat_spec_obj.type != "RKMETableSpecification":
+                        return False, f"data type does not match statistical specition type"
+                    else:
                         dim_table = int(semantic_specification["Input"]["Dimension"])
                         dim_rkme = stat_spec_obj.get_z().shape[1]
-
                         if dim_table != dim_rkme:
                             return False, f"dimension of table is {dim_table}, dimension of rkme is {dim_rkme}"
+                elif data_type == "Image":
+                    if stat_spec_obj.type != "RKMEImageSpecification":
+                        return False, f"data type does not match statistical specition type"
+                elif data_type == "Text":
+                    if stat_spec_obj.type != "RKMETextSpecification":
+                        return False, f"data type does not match statistical specition type"
+                else:
+                    return False, f"data_type must be in ['Table', 'Image', 'Text']"
 
     except Exception as err:
         return False, f"extract statistical specification error: {err}"
@@ -277,8 +287,6 @@ def get_learnware_count_detail(check_status=None):
     count_detail["Scenario"] = defaultdict(int)
 
     for learnware_obj in context.engine.get_learnwares(check_status=check_status):
-        if learnware_obj is None:
-            continue
         semantic_spec = learnware_obj.get_specification().get_semantic_spec()
         for key, value in count_detail.items():
             for v in semantic_spec[key]["Values"]:

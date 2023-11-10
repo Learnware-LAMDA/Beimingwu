@@ -106,7 +106,7 @@ class TestAdmin(unittest.TestCase):
         self.assertEqual(result["data"]["count_unverified_learnware"], 0)
         self.assertEqual(result["data"]["count_learnware_awaiting_storage"], 0)
         self.assertEqual(result["data"]["count_download"], 0)
-        self.assertGreaterEqual(result["data"]["count_detail"]["Data"]["Image"], 1)
+        self.assertGreaterEqual(result["data"]["count_detail"]["Data"]["Table"], 1)
         pass
 
     def test_list_learnware(self):
