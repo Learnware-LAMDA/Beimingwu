@@ -139,7 +139,7 @@ const vOffset = {
 
     <scroll-animate class="h-[1500vh]" @progress="handleProgress">
       <div class="h-main-full flex flex-col justify-center items-center">
-        <svg class="w-full" viewBox="0 0 1600 900">
+        <svg class="w-full" viewBox="0 0 1600 910">
           <defs>
             <path id="path" transform="translate(0, 200)" d="M 0 0 S 400 0 800 300" />
 
