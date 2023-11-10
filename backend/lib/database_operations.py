@@ -359,11 +359,13 @@ def get_all_user_list(columns, limit=None, page=None, username=None, email=None)
         else:
             like_suffix = f"WHERE username LIKE '%{username}%' AND email LIKE '%{email}%'"
     page_suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
+    order = "ORDER BY id DESC"
     rows = context.database.execute(
-        f"{query} {like_suffix} {group_suffix} {page_suffix}", {"verify_status": LearnwareVerifyStatus.SUCCESS.value}
+        f"{query} {like_suffix} {group_suffix} {order} {page_suffix}",
+        {"verify_status": LearnwareVerifyStatus.SUCCESS.value},
     )
     cnt = context.database.execute(
-        f"{query} {like_suffix} {group_suffix}", {"verify_status": LearnwareVerifyStatus.SUCCESS.value}
+        f"{query} {like_suffix} {group_suffix} {order}", {"verify_status": LearnwareVerifyStatus.SUCCESS.value}
     )
     results = [dict(zip(columns + ["verified_learnware_count", "unverified_learnware_count"], user)) for user in rows]
 
