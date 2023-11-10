@@ -13,20 +13,20 @@ const t1 = anime.timeline({
   autoplay: false,
 });
 
-const tasksElement = ref<(SVGUseElement | null)[]>([]);
-const curvesElement = ref<(SVGPathElement | null)[]>([]);
-const textsElement = ref<(SVGTextElement | null)[]>([]);
-const textPathsElement = ref<(SVGTextPathElement | null)[]>([]);
-const circlesElement = ref<(SVGCircleElement | null)[]>([]);
-const circleNewsElement = ref<(SVGCircleElement | null)[]>([]);
+const taskElements = ref<(SVGUseElement | null)[]>([]);
+const curveElements = ref<(SVGPathElement | null)[]>([]);
+const textElements = ref<(SVGTextElement | null)[]>([]);
+const textPathElements = ref<(SVGTextPathElement | null)[]>([]);
+const circleElements = ref<(SVGCircleElement | null)[]>([]);
+const circleNewElements = ref<(SVGCircleElement | null)[]>([]);
 const axisElement = ref<SVGGElement | null>(null);
-const learnwareCardBordersElement = ref<(SVGUseElement | null)[]>([]);
-const learnwareCardsElement = ref<(SVGGElement | null)[]>([]);
+const learnwareCardBorderElements = ref<(SVGUseElement | null)[]>([]);
+const learnwareCardElements = ref<(SVGGElement | null)[]>([]);
 
 onMounted(() => {
   nextTick(() => {
     t1.add({
-      targets: curvesElement.value,
+      targets: curveElements.value,
       keyframes: [
         { strokeDashoffset: 0, duration: 500 },
         {
@@ -38,7 +38,7 @@ onMounted(() => {
     })
       .add(
         {
-          targets: textsElement.value,
+          targets: textElements.value,
           keyframes: [
             { opacity: 1, duration: 1 },
             { opacity: 1, duration: 499 },
@@ -51,7 +51,7 @@ onMounted(() => {
       )
       .add(
         {
-          targets: textPathsElement.value,
+          targets: textPathElements.value,
           startOffset: "100%",
           duration: 500,
           delay: anime.stagger(600),
@@ -60,7 +60,7 @@ onMounted(() => {
       )
       .add(
         {
-          targets: circlesElement.value,
+          targets: circleElements.value,
           duration: 100,
           r: 8,
           delay: anime.stagger(600),
@@ -73,7 +73,7 @@ onMounted(() => {
         duration: 1,
       })
       .add({
-        targets: circleNewsElement.value,
+        targets: circleNewElements.value,
         keyframes: [
           { opacity: 1, duration: 1 },
           {
@@ -86,21 +86,21 @@ onMounted(() => {
       })
       .add(
         {
-          targets: tasksElement.value,
+          targets: taskElements.value,
           x: 450,
           duration: 500,
         },
         "-=500",
       )
       .add({
-        targets: learnwareCardBordersElement.value,
+        targets: learnwareCardBorderElements.value,
         strokeDashoffset: 0,
         duration: 1000,
         delay: anime.stagger(700),
       })
       .add(
         {
-          targets: learnwareCardsElement.value,
+          targets: learnwareCardElements.value,
           opacity: 1,
           duration: 500,
           delay: anime.stagger(700),
@@ -261,7 +261,7 @@ const vOffset = {
 
           <use
             v-for="i in 3"
-            ref="tasksElement"
+            ref="taskElements"
             :href="`#task${i}`"
             x="100"
             :y="300 * i - 250"
@@ -284,7 +284,7 @@ const vOffset = {
 
             <circle
               v-for="i in 3"
-              ref="circlesElement"
+              ref="circleElements"
               :cx="[1320, 1285, 1325][i - 1]"
               :cy="[515, 540, 580][i - 1]"
               r="0"
@@ -297,7 +297,7 @@ const vOffset = {
 
           <circle
             v-for="i in 3"
-            ref="circleNewsElement"
+            ref="circleNewElements"
             :cx="[1238, 1200, 1233][i - 1]"
             :cy="[492, 518, 557][i - 1]"
             r="8"
@@ -310,7 +310,7 @@ const vOffset = {
             v-for="i in 3"
             v-offset
             :id="`curve${i}`"
-            ref="curvesElement"
+            ref="curveElements"
             :d="
               [
                 'M 600 140 S1000 120 1220 480',
@@ -326,7 +326,7 @@ const vOffset = {
 
           <text
             v-for="i in 3"
-            ref="textsElement"
+            ref="textElements"
             :class="['fill-blue-600', 'fill-green-800', 'fill-red-700'][i - 1]"
             font-size="30"
             transform="translate(0, -20)"
@@ -334,7 +334,7 @@ const vOffset = {
             :key="i"
           >
             <textPath
-              ref="textPathsElement"
+              ref="textPathElements"
               :href="`#curve${i}`"
               startOffset="0%"
               text-anchor="middle"
@@ -344,7 +344,7 @@ const vOffset = {
             </textPath>
           </text>
 
-          <g v-for="i in 3" ref="learnwareCardsElement" opacity="0" :key="i">
+          <g v-for="i in 3" ref="learnwareCardElements" opacity="0" :key="i">
             <use x="400" :y="10 + 300 * (i - 1)" href="#learnware" />
             <use
               :href="['#image', '#table', '#table'][i - 1]"
@@ -368,7 +368,7 @@ const vOffset = {
           <path
             v-for="i in 3"
             v-offset
-            ref="learnwareCardBordersElement"
+            ref="learnwareCardBorderElements"
             :d="`M 400 ${
               300 * (i - 1) + 20
             } a 10 10 0 0 1 10 -10 h750 a 10 10 0 0 1 10 10 v 270 a 10 10 0 0 1 -10 10 h-750 a 10 10 0 0 1 -10 -10 z`"
