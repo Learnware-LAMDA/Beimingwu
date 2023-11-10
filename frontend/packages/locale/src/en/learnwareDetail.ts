@@ -6,6 +6,7 @@ export default {
     Unverified: "UNVERIFIED",
     WAITING: "WAITING",
     PROCESSING: "PROCESSING",
+    QUEUE: "QUEUE",
   },
   Logs: "Logs",
   LastModified: "Last Modified",

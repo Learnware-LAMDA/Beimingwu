@@ -6,6 +6,7 @@ export default {
     Unverified: "未验证",
     WAITING: "等待中",
     PROCESSING: "处理中",
+    QUEUE: "排队中",
   },
   Logs: "日志",
   LastModified: "最后修改",
