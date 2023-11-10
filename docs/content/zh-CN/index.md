@@ -2,23 +2,23 @@
 layout: home
 
 hero:
-  name: "我的精彩项目"
-  text: "一个 VitePress 站点"
-  tagline: 我的伟大项目标语
+  name: "北冥坞：学件基座系统"
+  # text: "系统文档"
+  tagline: 学件范式的首次系统性实现，帮助用户有效查搜和复用学件，而无需从零开始构建机器学习模型。
   image: /image.jpg
   actions:
     - theme: brand
-      text: Markdown 示例
-      link: /zh-CN/markdown-examples
+      text: 系统介绍
+      link: /zh-CN/overview/system-overview
     - theme: alt
-      text: API 示例
-      link: /zh-CN/api-examples
+      text: 快速上手
+      link: /zh-CN/overview/quick-start
 
 features:
-  - title: 特性 A
+  - title: Feature A
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: 特性 B
+  - title: Feature B
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: 特性 C
+  - title: Feature C
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---

@@ -2,11 +2,11 @@
 outline: deep
 ---
 
-# 运行时 API 示例
+# Runtime API Examples
 
-本页演示了由 VitePress 提供的一些运行时 API 的用法。
+This page demonstrates usage of some of the runtime APIs provided by VitePress.
 
-主要的 `useData()` API 可用于访问当前页面的站点、主题和页面数据。它可以在 `.md` 和 `.vue` 文件中使用：
+The main `useData()` API can be used to access site, theme, and page data for the current page. It works in both `.md` and `.vue` files:
 
 ```md
 <script setup>
@@ -15,43 +15,46 @@ import { useData } from 'vitepress'
 const { theme, page, frontmatter } = useData()
 </script>
 
-## 结果
+## Results
 
-### 主题数据
+### Theme Data
 
 <pre>{{ theme }}</pre>
 
-### 页面数据
+### Page Data
 
 <pre>{{ page }}</pre>
 
-### 页面前言
+### Page Frontmatter
 
 <pre>{{ frontmatter }}</pre>
 ```
 
-```vue
 <script setup>
-import { useData } from "vitepress";
+import { useData } from 'vitepress'
 
-const { site, theme, page, frontmatter } = useData();
+const { site, theme, page, frontmatter } = useData()
 </script>
 
-## 结果 ### 主题数据
+## Results
+
+### Theme Data
+
 <pre>{{ theme }}</pre>
 
-### 页面数据
+### Page Data
+
 <pre>{{ page }}</pre>
 
-### 页面前言
+### Page Frontmatter
+
 <pre>{{ frontmatter }}</pre>
-```
 
-## 更多
+## More
 
-查看[运行时 API 的完整列表文档](https://vitepress.dev/reference/runtime-api#usedata)。
+Check out the documentation for the [full list of runtime APIs](https://vitepress.dev/reference/runtime-api#usedata).
 
-## 方程
+## Equation
 
 $$
 \begin{aligned}
@@ -60,3 +63,5 @@ u(x, 0) &= \sin(\pi x), \\
 u(0, t) &= u(1, t) = 0.
 \end{aligned}
 $$
+
+haha
