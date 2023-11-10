@@ -277,6 +277,8 @@ def get_learnware_count_detail(check_status=None):
     count_detail["Scenario"] = defaultdict(int)
 
     for learnware_obj in context.engine.get_learnwares(check_status=check_status):
+        if learnware_obj is None:
+            continue
         semantic_spec = learnware_obj.get_specification().get_semantic_spec()
         for key, value in count_detail.items():
             for v in semantic_spec[key]["Values"]:
