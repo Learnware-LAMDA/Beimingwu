@@ -19,6 +19,12 @@ const task3Element = ref<SVGUseElement | null>(null);
 const curve1Element = ref<SVGPathElement | null>(null);
 const curve2Element = ref<SVGPathElement | null>(null);
 const curve3Element = ref<SVGPathElement | null>(null);
+const text1Element = ref<SVGTextElement | null>(null);
+const text2Element = ref<SVGTextElement | null>(null);
+const text3Element = ref<SVGTextElement | null>(null);
+const textPath1Element = ref<SVGTextPathElement | null>(null);
+const textPath2Element = ref<SVGTextPathElement | null>(null);
+const textPath3Element = ref<SVGTextPathElement | null>(null);
 const circle1Element = ref<SVGCircleElement | null>(null);
 const circle2Element = ref<SVGCircleElement | null>(null);
 const circle3Element = ref<SVGCircleElement | null>(null);
@@ -42,12 +48,30 @@ onMounted(() => {
     })
       .add(
         {
-          targets: curve1Element.value,
-          strokeDashoffset: -Number(curve1Element.value?.getAttribute("path-length")),
-          duration: 500,
+          targets: text1Element.value,
+          opacity: 1,
+          duration: 1,
         },
-        "-=300",
+        "-=500",
       )
+      .add(
+        {
+          targets: textPath1Element.value,
+          duration: 500,
+          startOffset: "100%",
+        },
+        "-=500",
+      )
+      .add({
+        targets: text1Element.value,
+        opacity: 0,
+        duration: 1,
+      })
+      .add({
+        targets: curve1Element.value,
+        strokeDashoffset: -Number(curve1Element.value?.getAttribute("path-length")),
+        duration: 500,
+      })
       .add(
         {
           targets: circle1Element.value,
@@ -64,6 +88,27 @@ onMounted(() => {
         },
         "-=400",
       )
+      .add(
+        {
+          targets: text2Element.value,
+          opacity: 1,
+          duration: 1,
+        },
+        "-=500",
+      )
+      .add(
+        {
+          targets: textPath2Element.value,
+          duration: 500,
+          startOffset: "100%",
+        },
+        "-=500",
+      )
+      .add({
+        targets: text2Element.value,
+        opacity: 0,
+        duration: 1,
+      })
       .add(
         {
           targets: curve2Element.value,
@@ -88,6 +133,27 @@ onMounted(() => {
         },
         "-=400",
       )
+      .add(
+        {
+          targets: text3Element.value,
+          opacity: 1,
+          duration: 1,
+        },
+        "-=500",
+      )
+      .add(
+        {
+          targets: textPath3Element.value,
+          duration: 500,
+          startOffset: "100%",
+        },
+        "-=500",
+      )
+      .add({
+        targets: text3Element.value,
+        opacity: 0,
+        duration: 1,
+      })
       .add(
         {
           targets: curve3Element.value,
@@ -398,6 +464,7 @@ const vOffset = {
 
           <path
             v-offset
+            id="curve1"
             ref="curve1Element"
             d="M 600 140 S1000 120 1220 480"
             class="stroke-blue-600 stroke-[4] fill-none"
@@ -405,6 +472,7 @@ const vOffset = {
           />
           <path
             v-offset
+            id="curve2"
             ref="curve2Element"
             d="M 600 440 S1000 120 1180 500"
             class="stroke-green-800 stroke-[4] fill-none"
@@ -412,11 +480,64 @@ const vOffset = {
           />
           <path
             v-offset
+            id="curve3"
             ref="curve3Element"
             d="M 600 740 S1000 400 1220 540"
             class="stroke-red-800 stroke-[4] fill-none"
             stroke-linecap="round"
           />
+
+          <text
+            ref="text1Element"
+            class="fill-blue-600"
+            font-size="30"
+            transform="translate(0, -20)"
+            opacity="0"
+          >
+            <textPath
+              ref="textPath1Element"
+              href="#curve1"
+              startOffset="0%"
+              text-anchor="middle"
+              dominant-baseline="middle"
+            >
+              RKME
+            </textPath>
+          </text>
+          <text
+            ref="text2Element"
+            class="fill-green-800"
+            font-size="30"
+            transform="translate(0, -20)"
+            opacity="0"
+          >
+            <textPath
+              ref="textPath2Element"
+              href="#curve2"
+              startOffset="0%"
+              text-anchor="middle"
+              dominant-baseline="middle"
+            >
+              RKME
+            </textPath>
+          </text>
+          <text
+            ref="text3Element"
+            class="fill-red-700"
+            font-size="30"
+            transform="translate(0, -20)"
+            opacity="0"
+          >
+            <textPath
+              ref="textPath3Element"
+              href="#curve3"
+              startOffset="0%"
+              text-anchor="middle"
+              dominant-baseline="middle"
+            >
+              RKME
+            </textPath>
+          </text>
 
           <g ref="learnwareCard1Element" opacity="0">
             <use x="400" y="10" href="#learnware" />
