@@ -337,10 +337,10 @@ const vOffset = {
               ref="textPathElements"
               :href="`#curve${i}`"
               startOffset="0%"
-              text-anchor="middle"
+              text-anchor="end"
               dominant-baseline="middle"
             >
-              RKME
+              RKME Specification
             </textPath>
           </text>
 
