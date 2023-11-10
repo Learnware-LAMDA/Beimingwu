@@ -286,10 +286,14 @@ def get_learnware_count_detail(check_status=None):
     count_detail["Library"] = defaultdict(int)
     count_detail["Scenario"] = defaultdict(int)
 
-    for learnware_obj in context.engine.get_learnwares(check_status=check_status):
-        semantic_spec = learnware_obj.get_specification().get_semantic_spec()
-        for key, value in count_detail.items():
-            for v in semantic_spec[key]["Values"]:
-                value[v] += 1
+    for learnware_id in context.engine.get_learnware_ids(check_status=check_status):
+        try:
+            learnware_obj = context.engine.get_learnware_by_ids(learnware_id)
+            semantic_spec = learnware_obj.get_specification().get_semantic_spec()
+            for key, value in count_detail.items():
+                for v in semantic_spec[key]["Values"]:
+                    value[v] += 1
+        except Exception as err:
+            print(f"load {learnware_id} failed due to {err}!")
 
     return count_detail
