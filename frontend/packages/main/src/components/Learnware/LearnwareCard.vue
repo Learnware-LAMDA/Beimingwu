@@ -143,7 +143,14 @@ function handleClickDelete(id: string): void {
             : undefined
         "
       >
-        {{ t(`Submit.SemanticSpecification.Scenario.Type.${scenario}`) }}
+        {{
+          t(
+            `Submit.SemanticSpecification.Scenario.Type.${scenario.replace(
+              "Others",
+              "OtherScenario",
+            )}`,
+          )
+        }}
       </div>
     </v-card-text>
     <v-card-text class="card-text">

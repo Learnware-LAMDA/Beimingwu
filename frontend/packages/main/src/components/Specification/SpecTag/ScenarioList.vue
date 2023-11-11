@@ -114,6 +114,11 @@ const items = computed<
     icon: "mdi-home-city",
     value: "Architecture",
   },
+  {
+    text: t("Submit.SemanticSpecification.Scenario.Type.Others"),
+    icon: "mdi-dots-horizontal-circle",
+    value: "Others",
+  },
 ]);
 
 const allSelected = computed(
