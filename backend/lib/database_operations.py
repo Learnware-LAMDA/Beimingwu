@@ -314,14 +314,31 @@ def add_learnware(user_id, learnware_id):
     return 1
 
 
-def get_learnware_owner(learnware_id):
+def get_learnware_owners(learnware_ids):
+    if len(learnware_ids) == 0:
+        return []
+
     rows = context.database.execute(
-        "SELECT username FROM tb_user WHERE id IN (SELECT user_id FROM tb_user_learnware_relation WHERE learnware_id = :learnware_id)",
-        {"learnware_id": learnware_id},
+        (
+            "SELECT learnware_id, username FROM tb_user tb1 "
+            " JOIN tb_user_learnware_relation tb2 ON tb1.id=tb2.user_id WHERE learnware_id in {0}".format(
+                "(" + ",".join(["'" + learnware_id + "'" for learnware_id in learnware_ids]) + ")"
+            )
+        )
     )
-    if len(rows) == 0 or len(rows[0]) == 0:
-        return "Unknown"
-    return rows[0][0]
+
+    rmap = {r[0]: r[1] for r in rows}
+    usernames = []
+
+    for learnware_id in learnware_ids:
+        username = rmap.get(learnware_id, None)
+        if username is None:
+            username = "Unknown"
+            pass
+        usernames.append(username)
+        pass
+
+    return usernames
 
 
 def remove_learnware(by, value):
@@ -414,15 +431,32 @@ def update_learnware_timestamp(learnware_id, timestamp: datetime = None):
     pass
 
 
-def get_learnware_timestamp(learnware_id):
-    result = context.database.execute(
-        "SELECT last_modify FROM tb_user_learnware_relation WHERE learnware_id = :learnware_id",
-        {"learnware_id": learnware_id},
-    )
-    if len(result) == 0:
-        return datetime.strptime("2021-01-01", "%Y-%m-%d")
+def get_learnware_timestamps(learnware_ids):
+    if len(learnware_ids) == 0:
+        return []
 
-    return convert_datetime(result[0][0])
+    # if isinstance(learnware_ids, list):
+    #     learnware_ids = tuple(learnware_ids)
+    #     pass
+
+    result = context.database.execute(
+        "SELECT learnware_id, last_modify FROM tb_user_learnware_relation WHERE learnware_id in {0}".format(
+            "(" + ",".join(["'" + learnware_id + "'" for learnware_id in learnware_ids]) + ")"
+        ),
+        # {"learnware_ids": learnware_ids},
+    )
+    result = {r[0]: r[1] for r in result}
+
+    timestamps = []
+    for learnware_id in learnware_ids:
+        ts = result.get(learnware_id, None)
+        if ts is None:
+            ts = datetime.strptime("2021-01-01", "%Y-%m-%d")
+            pass
+        timestamps.append(convert_datetime(ts))
+        pass
+
+    return timestamps
 
 
 def update_learnware_verify_status(learnware_id, status: LearnwareVerifyStatus):

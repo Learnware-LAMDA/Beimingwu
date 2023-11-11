@@ -138,8 +138,8 @@ class SearchLearnware(flask_restful.Resource):
             try:
                 learnware_id = x.id
                 learnware = context.engine.get_learnware_by_ids(learnware_id)
-                last_modify = dbops.get_learnware_timestamp(learnware_id).strftime("%Y-%m-%d %H:%M:%S.%f %Z")
-                mul_list.append(dump_learnware(learnware, multi_score, last_modify))
+
+                mul_list.append(dump_learnware(learnware, multi_score))
             except Exception as err:
                 print(err)
                 traceback.print_exc()
@@ -148,8 +148,7 @@ class SearchLearnware(flask_restful.Resource):
             try:
                 learnware_id = single_learnware_list[i].id
                 learnware = context.engine.get_learnware_by_ids(learnware_id)
-                last_modify = dbops.get_learnware_timestamp(learnware_id).strftime("%Y-%m-%d %H:%M:%S.%f %Z")
-                sin_list.append(dump_learnware(learnware, matching[i], last_modify))
+                sin_list.append(dump_learnware(learnware, matching[i]))
             except Exception as err:
                 print(err)
                 traceback.print_exc()
@@ -166,6 +165,8 @@ class SearchLearnware(flask_restful.Resource):
                     "learnware_list_single": sin_list,
                 },
             }
+            self.set_learnware_info(result["data"]["learnware_list_single"])
+            self.set_learnware_info(result["data"]["learnware_list_multi"])
             return result, 200
 
         # Paging
@@ -195,7 +196,21 @@ class SearchLearnware(flask_restful.Resource):
             sin_list[i] for i in range(page * limit, min(n, page * limit + limit))
         ]
 
+        self.set_learnware_info(result["data"]["learnware_list_single"])
+        self.set_learnware_info(result["data"]["learnware_list_multi"])
+
         return result, 200
+        pass
+
+    def set_learnware_info(self, learnware_list):
+        learnware_ids = [learnware["learnware_id"] for learnware in learnware_list]
+        ts = dbops.get_learnware_timestamps(learnware_ids)
+        usernames = dbops.get_learnware_owners(learnware_ids)
+
+        for i in range(len(learnware_list)):
+            learnware_list[i]["last_modify"] = ts[i].strftime("%Y-%m-%d %H:%M:%S.%f %Z")
+            learnware_list[i]["username"] = usernames[i]
+            pass
         pass
 
 
