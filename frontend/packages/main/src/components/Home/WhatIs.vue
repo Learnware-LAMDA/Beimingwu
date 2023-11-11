@@ -13,162 +13,59 @@ const t1 = anime.timeline({
   autoplay: false,
 });
 
-const task1Element = ref<SVGUseElement | null>(null);
-const task2Element = ref<SVGUseElement | null>(null);
-const task3Element = ref<SVGUseElement | null>(null);
-const curve1Element = ref<SVGPathElement | null>(null);
-const curve2Element = ref<SVGPathElement | null>(null);
-const curve3Element = ref<SVGPathElement | null>(null);
-const text1Element = ref<SVGTextElement | null>(null);
-const text2Element = ref<SVGTextElement | null>(null);
-const text3Element = ref<SVGTextElement | null>(null);
-const textPath1Element = ref<SVGTextPathElement | null>(null);
-const textPath2Element = ref<SVGTextPathElement | null>(null);
-const textPath3Element = ref<SVGTextPathElement | null>(null);
-const circle1Element = ref<SVGCircleElement | null>(null);
-const circle2Element = ref<SVGCircleElement | null>(null);
-const circle3Element = ref<SVGCircleElement | null>(null);
-const circleNew1Element = ref<SVGCircleElement | null>(null);
-const circleNew2Element = ref<SVGCircleElement | null>(null);
-const circleNew3Element = ref<SVGCircleElement | null>(null);
+const taskElements = ref<(SVGUseElement | null)[]>([]);
+const curveElements = ref<(SVGPathElement | null)[]>([]);
+const textElements = ref<(SVGTextElement | null)[]>([]);
+const textPathElements = ref<(SVGTextPathElement | null)[]>([]);
+const circleElements = ref<(SVGCircleElement | null)[]>([]);
+const circleNewElements = ref<(SVGCircleElement | null)[]>([]);
 const axisElement = ref<SVGGElement | null>(null);
-const learnwareCard1BorderElement = ref<SVGUseElement | null>(null);
-const learnwareCard2BorderElement = ref<SVGUseElement | null>(null);
-const learnwareCard3BorderElement = ref<SVGUseElement | null>(null);
-const learnwareCard1Element = ref<SVGUseElement | null>(null);
-const learnwareCard2Element = ref<SVGUseElement | null>(null);
-const learnwareCard3Element = ref<SVGUseElement | null>(null);
+const learnwareCardBorderElements = ref<(SVGUseElement | null)[]>([]);
+const learnwareCardElements = ref<(SVGGElement | null)[]>([]);
 
 onMounted(() => {
   nextTick(() => {
     t1.add({
-      targets: curve1Element.value,
-      duration: 500,
-      strokeDashoffset: 0,
+      targets: curveElements.value,
+      keyframes: [
+        { strokeDashoffset: 0, duration: 500 },
+        {
+          strokeDashoffset: (el: SVGPathElement): number => -Number(el.getAttribute("path-length")),
+          duration: 300,
+        },
+      ],
+      delay: anime.stagger(600),
     })
       .add(
         {
-          targets: text1Element.value,
-          opacity: 1,
-          duration: 1,
+          targets: textElements.value,
+          keyframes: [
+            { opacity: 1, duration: 1 },
+            { opacity: 1, duration: 499 },
+            { opacity: 0, duration: 1 },
+            { opacity: 0, duration: 499 },
+          ],
+          delay: anime.stagger(600),
         },
-        "-=500",
+        "-=2000",
       )
       .add(
         {
-          targets: textPath1Element.value,
-          duration: 500,
+          targets: textPathElements.value,
           startOffset: "100%",
+          duration: 500,
+          delay: anime.stagger(600),
         },
-        "-=500",
+        "-=2200",
       )
-      .add({
-        targets: text1Element.value,
-        opacity: 0,
-        duration: 1,
-      })
-      .add({
-        targets: curve1Element.value,
-        strokeDashoffset: -Number(curve1Element.value?.getAttribute("path-length")),
-        duration: 500,
-      })
       .add(
         {
-          targets: circle1Element.value,
+          targets: circleElements.value,
           duration: 100,
           r: 8,
+          delay: anime.stagger(600),
         },
-        "-=300",
-      )
-      .add(
-        {
-          targets: curve2Element.value,
-          duration: 500,
-          strokeDashoffset: 0,
-        },
-        "-=400",
-      )
-      .add(
-        {
-          targets: text2Element.value,
-          opacity: 1,
-          duration: 1,
-        },
-        "-=500",
-      )
-      .add(
-        {
-          targets: textPath2Element.value,
-          duration: 500,
-          startOffset: "100%",
-        },
-        "-=500",
-      )
-      .add({
-        targets: text2Element.value,
-        opacity: 0,
-        duration: 1,
-      })
-      .add(
-        {
-          targets: curve2Element.value,
-          strokeDashoffset: -Number(curve2Element.value?.getAttribute("path-length")),
-          duration: 500,
-        },
-        "-=300",
-      )
-      .add(
-        {
-          targets: circle2Element.value,
-          duration: 100,
-          r: 8,
-        },
-        "-=300",
-      )
-      .add(
-        {
-          targets: curve3Element.value,
-          duration: 500,
-          strokeDashoffset: 0,
-        },
-        "-=400",
-      )
-      .add(
-        {
-          targets: text3Element.value,
-          opacity: 1,
-          duration: 1,
-        },
-        "-=500",
-      )
-      .add(
-        {
-          targets: textPath3Element.value,
-          duration: 500,
-          startOffset: "100%",
-        },
-        "-=500",
-      )
-      .add({
-        targets: text3Element.value,
-        opacity: 0,
-        duration: 1,
-      })
-      .add(
-        {
-          targets: curve3Element.value,
-          strokeDashoffset: -Number(curve3Element.value?.getAttribute("path-length")),
-          duration: 500,
-        },
-        "-=300",
-      )
-      .add(
-        {
-          targets: circle3Element.value,
-          duration: 100,
-          r: 8,
-        },
-        "-=300",
+        "-=1800",
       )
       .add({
         targets: axisElement.value,
@@ -176,89 +73,39 @@ onMounted(() => {
         duration: 1,
       })
       .add({
-        targets: [circleNew1Element.value, circleNew2Element.value, circleNew3Element.value],
-        opacity: 1,
-        duration: 1,
+        targets: circleNewElements.value,
+        keyframes: [
+          { opacity: 1, duration: 1 },
+          {
+            cx: 1050,
+            cy: (_el: SVGCircleElement, i: number): number => 300 * i + 140,
+            r: 15,
+            duration: 500,
+          },
+        ],
       })
-      .add({
-        targets: circleNew1Element.value,
-        cx: 1050,
-        cy: 140,
-        r: 15,
-        duration: 500,
-      })
       .add(
         {
-          targets: circleNew2Element.value,
-          cx: 1050,
-          cy: 440,
-          duration: 500,
-          r: 15,
-        },
-        "-=500",
-      )
-      .add(
-        {
-          targets: circleNew3Element.value,
-          cx: 1050,
-          cy: 740,
-          duration: 500,
-          r: 15,
-        },
-        "-=500",
-      )
-      .add(
-        {
-          targets: [task1Element.value, task2Element.value, task3Element.value],
+          targets: taskElements.value,
           x: 450,
           duration: 500,
         },
         "-=500",
       )
       .add({
-        targets: learnwareCard1BorderElement.value,
+        targets: learnwareCardBorderElements.value,
         strokeDashoffset: 0,
         duration: 1000,
+        delay: anime.stagger(700),
       })
       .add(
         {
-          targets: learnwareCard1Element.value,
+          targets: learnwareCardElements.value,
           opacity: 1,
           duration: 500,
+          delay: anime.stagger(700),
         },
-        "-=300",
-      )
-      .add(
-        {
-          targets: learnwareCard2BorderElement.value,
-          strokeDashoffset: 0,
-          duration: 1000,
-        },
-        "-=500",
-      )
-      .add(
-        {
-          targets: learnwareCard2Element.value,
-          opacity: 1,
-          duration: 500,
-        },
-        "-=300",
-      )
-      .add(
-        {
-          targets: learnwareCard3BorderElement.value,
-          strokeDashoffset: 0,
-          duration: 1000,
-        },
-        "-=500",
-      )
-      .add(
-        {
-          targets: learnwareCard3Element.value,
-          opacity: 1,
-          duration: 500,
-        },
-        "-=300",
+        "-=1800",
       );
   });
 });
@@ -292,7 +139,7 @@ const vOffset = {
 
     <scroll-animate class="h-[1500vh]" @progress="handleProgress">
       <div class="h-main-full flex flex-col justify-center items-center">
-        <svg class="w-full" viewBox="0 0 1600 900">
+        <svg class="w-full" viewBox="0 0 1600 910">
           <defs>
             <path id="path" transform="translate(0, 200)" d="M 0 0 S 400 0 800 300" />
 
@@ -412,10 +259,15 @@ const vOffset = {
             </g>
           </defs>
 
-          <use ref="task1Element" href="#task1" x="100" y="50" clip-path="url(#task-clip)" />
-          <use ref="task2Element" href="#task2" x="100" y="350" clip-path="url(#task-clip)" />
-          <use ref="task3Element" href="#task3" x="100" y="650" clip-path="url(#task-clip)" />
-
+          <use
+            v-for="i in 3"
+            ref="taskElements"
+            :href="`#task${i}`"
+            x="100"
+            :y="300 * i - 250"
+            clip-path="url(#task-clip)"
+            :key="i"
+          />
           <g ref="axisElement" style="transform: skew(-9deg, -1deg)">
             <path
               d="M 1100 600 h 350"
@@ -430,177 +282,99 @@ const vOffset = {
               marker-end="url(#arrow)"
             />
 
-            <circle ref="circle1Element" cx="1320" cy="515" r="0" class="fill-blue-600" />
-            <circle ref="circle2Element" cx="1285" cy="540" r="0" class="fill-green-800" />
-            <circle ref="circle3Element" cx="1325" cy="580" r="0" class="fill-red-700" />
+            <circle
+              v-for="i in 3"
+              ref="circleElements"
+              :cx="[1320, 1285, 1325][i - 1]"
+              :cy="[515, 540, 580][i - 1]"
+              r="0"
+              :class="['fill-blue-600', 'fill-green-800', 'fill-red-700'][i - 1]"
+              :key="i"
+            />
 
             <text x="1290" y="720" font-size="30" text-anchor="middle">Specification Space</text>
           </g>
 
           <circle
-            ref="circleNew1Element"
-            cx="1238"
-            cy="492"
+            v-for="i in 3"
+            ref="circleNewElements"
+            :cx="[1238, 1200, 1233][i - 1]"
+            :cy="[492, 518, 557][i - 1]"
             r="8"
-            class="fill-blue-600"
+            :class="['fill-blue-600', 'fill-green-800', 'fill-red-700'][i - 1]"
             opacity="0"
-          />
-          <circle
-            ref="circleNew2Element"
-            cx="1200"
-            cy="518"
-            r="8"
-            class="fill-green-800"
-            opacity="0"
-          />
-          <circle
-            ref="circleNew3Element"
-            cx="1233"
-            cy="557"
-            r="8"
-            class="fill-red-700"
-            opacity="0"
+            :key="i"
           />
 
           <path
+            v-for="i in 3"
             v-offset
-            id="curve1"
-            ref="curve1Element"
-            d="M 600 140 S1000 120 1220 480"
-            class="stroke-blue-600 stroke-[4] fill-none"
+            :id="`curve${i}`"
+            ref="curveElements"
+            :d="
+              [
+                'M 600 140 S1000 120 1220 480',
+                'M 600 440 S1000 120 1180 500',
+                'M 600 740 S1000 400 1220 540',
+              ][i - 1]
+            "
+            class="stroke-[4] fill-none"
+            :class="['stroke-blue-600', 'stroke-green-800', 'stroke-red-800'][i - 1]"
             stroke-linecap="round"
-          />
-          <path
-            v-offset
-            id="curve2"
-            ref="curve2Element"
-            d="M 600 440 S1000 120 1180 500"
-            class="stroke-green-800 stroke-[4] fill-none"
-            stroke-linecap="round"
-          />
-          <path
-            v-offset
-            id="curve3"
-            ref="curve3Element"
-            d="M 600 740 S1000 400 1220 540"
-            class="stroke-red-800 stroke-[4] fill-none"
-            stroke-linecap="round"
+            :key="i"
           />
 
           <text
-            ref="text1Element"
-            class="fill-blue-600"
+            v-for="i in 3"
+            ref="textElements"
+            :class="['fill-blue-600', 'fill-green-800', 'fill-red-700'][i - 1]"
             font-size="30"
             transform="translate(0, -20)"
             opacity="0"
+            :key="i"
           >
             <textPath
-              ref="textPath1Element"
-              href="#curve1"
+              ref="textPathElements"
+              :href="`#curve${i}`"
               startOffset="0%"
-              text-anchor="middle"
+              text-anchor="end"
               dominant-baseline="middle"
             >
-              RKME
-            </textPath>
-          </text>
-          <text
-            ref="text2Element"
-            class="fill-green-800"
-            font-size="30"
-            transform="translate(0, -20)"
-            opacity="0"
-          >
-            <textPath
-              ref="textPath2Element"
-              href="#curve2"
-              startOffset="0%"
-              text-anchor="middle"
-              dominant-baseline="middle"
-            >
-              RKME
-            </textPath>
-          </text>
-          <text
-            ref="text3Element"
-            class="fill-red-700"
-            font-size="30"
-            transform="translate(0, -20)"
-            opacity="0"
-          >
-            <textPath
-              ref="textPath3Element"
-              href="#curve3"
-              startOffset="0%"
-              text-anchor="middle"
-              dominant-baseline="middle"
-            >
-              RKME
+              RKME Specification
             </textPath>
           </text>
 
-          <g ref="learnwareCard1Element" opacity="0">
-            <use x="400" y="10" href="#learnware" />
-            <use href="#image" x="430" y="30" width="60" height="60" />
+          <g v-for="i in 3" ref="learnwareCardElements" opacity="0" :key="i">
+            <use x="400" :y="10 + 300 * (i - 1)" href="#learnware" />
+            <use
+              :href="['#image', '#table', '#table'][i - 1]"
+              x="430"
+              :y="30 + 300 * (i - 1)"
+              width="60"
+              height="60"
+            />
             <text
               x="475"
-              y="125"
+              :y="125 + 300 * (i - 1)"
               font-size="20"
               class="fill-white"
               text-anchor="middle"
               dominant-baseline="middle"
             >
-              Image
+              {{ ["Image", "Table", "Table"][i - 1] }}
             </text>
           </g>
-          <path
-            v-offset
-            ref="learnwareCard1BorderElement"
-            d="M 400 20 a 10 10 0 0 1 10 -10 h750 a 10 10 0 0 1 10 10 v 270 a 10 10 0 0 1 -10 10 h-750 a 10 10 0 0 1 -10 -10 z"
-            class="stroke-black stroke-[2] fill-none"
-          />
 
-          <g ref="learnwareCard2Element" opacity="0">
-            <use x="400" y="310" href="#learnware" />
-            <use href="#table" x="430" y="330" width="60" height="60" />
-            <text
-              x="475"
-              y="425"
-              font-size="20"
-              class="fill-white"
-              text-anchor="middle"
-              dominant-baseline="middle"
-            >
-              Table
-            </text>
-          </g>
           <path
+            v-for="i in 3"
             v-offset
-            ref="learnwareCard2BorderElement"
-            d="M 400 320 a 10 10 0 0 1 10 -10 h750 a 10 10 0 0 1 10 10 v 270 a 10 10 0 0 1 -10 10 h-750 a 10 10 0 0 1 -10 -10 z"
+            ref="learnwareCardBorderElements"
+            :d="`M 400 ${
+              300 * (i - 1) + 20
+            } a 10 10 0 0 1 10 -10 h750 a 10 10 0 0 1 10 10 v 270 a 10 10 0 0 1 -10 10 h-750 a 10 10 0 0 1 -10 -10 z`"
             class="stroke-black stroke-[2] fill-none"
-          />
-
-          <g ref="learnwareCard3Element" opacity="0">
-            <use x="400" y="610" href="#learnware" />
-            <use href="#table" x="430" y="630" width="60" height="60" />
-            <text
-              x="475"
-              y="725"
-              font-size="20"
-              class="fill-white"
-              text-anchor="middle"
-              dominant-baseline="middle"
-            >
-              Table
-            </text>
-          </g>
-          <path
-            v-offset
-            ref="learnwareCard3BorderElement"
-            d="M 400 620 a 10 10 0 0 1 10 -10 h750 a 10 10 0 0 1 10 10 v 270 a 10 10 0 0 1 -10 10 h-750 a 10 10 0 0 1 -10 -10 z"
-            class="stroke-black stroke-[2] fill-none"
-          />
+            :key="i"
+          ></path>
         </svg>
       </div>
     </scroll-animate>
