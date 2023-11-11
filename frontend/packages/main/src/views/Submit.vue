@@ -67,7 +67,15 @@ const libraryType = useField<LibraryType | "">({
     return t("Submit.SemanticSpecification.LibraryType.Error.NotEmpty");
   },
 });
-const scenarioList = useField<ScenarioList>({ defaultValue: [], defaultValid: true });
+const scenarioList = useField<ScenarioList>({
+  defaultValue: [],
+  validate: (value: ScenarioList): string => {
+    if (value.length > 0) {
+      return "";
+    }
+    return t("Submit.SemanticSpecification.ScenarioList.Error.NotEmpty");
+  },
+});
 const dataTypeDescription = useField<string>({
   defaultValue: JSON.stringify({
     Dimension: 7,

@@ -22,7 +22,8 @@ export type Scenario =
   | "Agriculture"
   | "Education"
   | "Entertainment"
-  | "Architecture";
+  | "Architecture"
+  | "Others";
 export type ScenarioList = Scenario[];
 export type Description = string;
 export type DataTypeDescription = {

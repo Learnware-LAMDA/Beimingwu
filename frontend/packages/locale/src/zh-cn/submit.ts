@@ -84,6 +84,11 @@ export default {
         Education: "教育",
         Entertainment: "娱乐",
         Architecture: "建筑",
+        Others: "其他",
+        OtherScenario: "其他应用场景",
+      },
+      Error: {
+        NotEmpty: "应用场景不能为空",
       },
     },
   },

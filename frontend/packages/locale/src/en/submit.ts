@@ -84,6 +84,11 @@ export default {
         Education: "Education",
         Entertainment: "Entertainment",
         Architecture: "Architecture",
+        Others: "Others",
+        OtherScenario: "Other Scenario",
+      },
+      Error: {
+        NotEmpty: "Scenario list must not be empty.",
       },
     },
   },
