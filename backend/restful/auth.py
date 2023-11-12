@@ -56,6 +56,16 @@ class RegisterApi(flask_restful.Resource):
         email = body["email"]
         confirm_email = body.get("confirm_email", True)
 
+        email_pattern_check = False
+        for email_pattern in context.config["register_email_patterns"]:
+            if email_pattern in email:
+                email_pattern_check = True
+                break
+            pass
+
+        if not email_pattern_check:
+            return {"code": 41, "msg": "Your email is not allowed to register."}, 200
+
         password_hash = flask_bcrypt.generate_password_hash(password).decode("utf-8")
 
         code, msg, user_id = database.register_user(username=username, password=password_hash, email=email)

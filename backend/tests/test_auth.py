@@ -16,6 +16,7 @@ class TestAuth(unittest.TestCase):
     def setUpClass() -> None:
         testops.cleanup_folder()
         unittest.TestCase.setUpClass()
+        testops.set_config("register_email_patterns", [".edu.", ".edu"])
         TestAuth.server_process = multiprocessing.Process(target=main.main)
         TestAuth.server_process.start()
         testops.wait_port_open(C.listen_port, 10)
@@ -26,17 +27,19 @@ class TestAuth(unittest.TestCase):
         unittest.TestCase.tearDownClass()
         TestAuth.server_process.kill()
         testops.cleanup_folder()
+        testops.reset_config()
 
     def test_01_login(self):
         # first we need register a user
         result = testops.url_request(
-            "auth/register", {"username": "test", "password": "test", "email": "test@localhost", "confirm_email": False}
+            "auth/register",
+            {"username": "test", "password": "test", "email": "test@localhost.edu", "confirm_email": False},
         )
 
         self.assertEqual(result["code"], 0)
 
         # then we need login
-        result = testops.url_request("auth/login", {"email": "test@localhost", "password": "test"})
+        result = testops.url_request("auth/login", {"email": "test@localhost.edu", "password": "test"})
 
         self.assertEqual(result["code"], 0)
 
@@ -56,7 +59,7 @@ class TestAuth(unittest.TestCase):
 
     def test_02_login_by_token(self):
         result = testops.url_request(
-            "auth/login", {"email": "test@localhost", "password": "test", "confirm_email": False}
+            "auth/login", {"email": "test@localhost.edu", "password": "test", "confirm_email": False}
         )
 
         token = result["data"]["token"]
@@ -68,12 +71,12 @@ class TestAuth(unittest.TestCase):
 
         testops.url_request("auth/logout", {}, headers=headers)
 
-        result = testops.url_request("auth/login_by_token", {"email": "test@localhost", "token": token})
+        result = testops.url_request("auth/login_by_token", {"email": "test@localhost.edu", "token": token})
 
         self.assertEqual(result["code"], 0)
         self.assertIsNotNone(result["data"]["token"])
 
-        testops.delete_user_by_email("test@localhost")
+        testops.delete_user_by_email("test@localhost.edu")
         pass
 
     def test_login_required(self):
@@ -85,7 +88,7 @@ class TestAuth(unittest.TestCase):
 
     def test_register_by_email(self):
         result = testops.url_request(
-            "auth/register", {"username": "test2", "password": "test", "email": "xiaochuan.zou@polixir.ai"}
+            "auth/register", {"username": "test2", "password": "test", "email": "xiaochuan.zou@polixir.edu.ai"}
         )
 
         self.assertEqual(result["code"], 0)
@@ -93,12 +96,12 @@ class TestAuth(unittest.TestCase):
         time.sleep(5)
 
         # then we need login
-        result = testops.url_request("auth/login", {"email": "xiaochuan.zou@polixir.ai", "password": "test"})
+        result = testops.url_request("auth/login", {"email": "xiaochuan.zou@polixir.edu.ai", "password": "test"})
 
         self.assertEqual(result["code"], 54)
 
         verify_code = utils.generate_email_verification_code(
-            "xiaochuan.zou@polixir.ai", secret_key=context.config["app_secret_key"]
+            "xiaochuan.zou@polixir.edu.ai", secret_key=context.config["app_secret_key"]
         )
         url = f"auth/email_confirm?code={verify_code}"
 
@@ -108,17 +111,17 @@ class TestAuth(unittest.TestCase):
         )
 
         self.assertEqual(result["code"], 0)
-        result = testops.url_request("auth/login", {"email": "xiaochuan.zou@polixir.ai", "password": "test"})
+        result = testops.url_request("auth/login", {"email": "xiaochuan.zou@polixir.edu.ai", "password": "test"})
 
         self.assertEqual(result["code"], 0)
 
         self.assertGreater(len(result["data"]["token"]), 0)
 
-        testops.delete_user_by_email("xiaochuan.zou@polixir.ai")
+        testops.delete_user_by_email("xiaochuan.zou@polixir.edu.ai")
         pass
 
     def test_reset_password(self):
-        email = "xiaochuan.zou@polixir.ai"
+        email = "xiaochuan.zou@polixir.edu.ai"
         result = testops.url_request(
             "auth/register", {"username": "test3", "password": "test", "email": email, "confirm_email": False}
         )
@@ -139,6 +142,14 @@ class TestAuth(unittest.TestCase):
         result = testops.url_request("auth/login", {"email": email, "password": password_hash})
         self.assertEqual(result["code"], 0)
         testops.delete_user_by_email(email)
+        pass
+
+    def test_register_not_edu(self):
+        result = testops.url_request(
+            "auth/register", {"username": "test2", "password": "test", "email": "xiaochuan.zou@polixir.ai"}
+        )
+
+        self.assertEqual(result["code"], 41)
         pass
 
 
