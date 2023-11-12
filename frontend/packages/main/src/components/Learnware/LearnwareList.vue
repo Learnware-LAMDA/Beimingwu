@@ -72,7 +72,7 @@ function handleClickDelete(id: string): void {
           :item="item"
           :filters="filters"
           :is-admin="isAdmin"
-          :to="`/learnwaredetail?id=${item.id}`"
+          :to="item.id ? `/learnwaredetail?id=${item.id}` : ''"
           @click:edit="(id) => handleClickEdit(id)"
           @click:delete="(id) => handleClickDelete(id)"
         />
