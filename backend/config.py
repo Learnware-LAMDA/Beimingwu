@@ -74,6 +74,7 @@ _DEFAULT_CONFIG = {
     "backup_path": BACKUP_PATH,
     "backup_max_count": 7,
     "remove_upload_file": False,
+    "register_email_patterns": [""],
     # Database config
     "database": {
         "type": "sqlalchemy",
