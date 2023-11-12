@@ -46,6 +46,7 @@ class TestLearnwareClient(unittest.TestCase):
     def tearDown(self) -> None:
         super().tearDown()
         self.server_process.kill()
+        self.server_process.join()
         testops.cleanup_folder()
         pass
 
