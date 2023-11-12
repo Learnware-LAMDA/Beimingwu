@@ -2,7 +2,6 @@
 import { ref, computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { downloadLearnware } from "../../request/engine";
 import JSZip from "jszip";
@@ -24,8 +23,6 @@ export interface Props {
 }
 
 const display = useDisplay();
-
-const router = useRouter();
 
 const store = useStore();
 
@@ -62,10 +59,6 @@ const realCols = computed(() => {
     return props.cols;
   }
 });
-
-function showLearnwareDetail(id: string): void {
-  router.push({ path: "/learnwaredetail", query: { id } });
-}
 
 function downloadAll(): void {
   downloading.value = true;
@@ -145,7 +138,7 @@ function getColorByScore(score: number): string {
           :item="item"
           :filters="filters"
           :show-download="false"
-          @click="() => showLearnwareDetail(item.id)"
+          :to="item.id ? `/learnwaredetail?id=${item.id}` : ''"
         />
       </TransitionGroup>
       <div v-if="items.length === 0" flat class="no-learnware">
