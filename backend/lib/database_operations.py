@@ -280,8 +280,12 @@ def get_learnware_list_by_user_id(user_id, limit, page):
 
 
 def get_verify_log(user_id, learnware_id):
+    sql = "SELECT verify_log FROM tb_user_learnware_relation WHERE learnware_id = :learnware_id"
+    if user_id is not None:
+        sql += " AND user_id = :user_id"
+        pass
     rows = context.database.execute(
-        "SELECT verify_log FROM tb_user_learnware_relation WHERE user_id = :user_id AND learnware_id = :learnware_id",
+        sql,
         {"user_id": user_id, "learnware_id": learnware_id},
     )
 
@@ -574,7 +578,7 @@ def check_user_admin(user_id):
     if len(result) == 0:
         return False
 
-    return result[0][0] == 1
+    return result[0][0] > 0
 
 
 def get_user_id_by_learnware(learnware_id):

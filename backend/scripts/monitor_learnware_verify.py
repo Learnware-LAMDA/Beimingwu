@@ -13,44 +13,49 @@ from learnware.market import BaseChecker
 import json
 import lib.restful_wrapper as restful_wrapper
 import tempfile
-import zipfile
 import lib.engine as engine_utils
-import yaml
-import shutil
 from typing import Tuple
 import learnware.utils
 from learnware.market import CondaChecker, EasyStatChecker, EasySemanticChecker
 from learnware.learnware import get_learnware_from_dirpath
+import traceback
 
 
 def verify_learnware_with_conda_checker(
     learnware_id: str, learnware_path: str, semantic_specification: dict
 ) -> Tuple[bool, str]:
     verify_sucess = True
-    command_output = ""
+    command_output = "Success"
     try:
         learnware = get_learnware_from_dirpath(
             id=learnware_id, semantic_spec=semantic_specification, learnware_dirpath=learnware_path, ignore_error=False
         )
     except Exception as e:
         verify_sucess = False
-        command_output = f"initiate learnware failed due to {str(e)}"
+        command_output = f"initiate learnware failed."
+        command_output += "\r\n" + traceback.format_exc()
         return verify_sucess, command_output
 
     try:
         semantic_checker = EasySemanticChecker()
-        if semantic_checker(learnware=learnware) == EasySemanticChecker.INVALID_LEARNWARE:
+        check_result, check_message = semantic_checker(learnware=learnware)
+        if check_result == EasySemanticChecker.INVALID_LEARNWARE:
             verify_sucess = False
             command_output = "semantic checker does not pass"
+            command_output += "\n" + check_message
+            pass
 
         stat_checker = CondaChecker(inner_checker=EasyStatChecker())
-        if verify_sucess and stat_checker(learnware=learnware) == EasyStatChecker.INVALID_LEARNWARE:
+        check_result, check_message = stat_checker(learnware=learnware)
+        if verify_sucess and check_result == EasyStatChecker.INVALID_LEARNWARE:
             verify_sucess = False
             command_output = "conda checker does not pass"
+            command_output += "\n" + check_message
 
     except Exception as e:
         verify_sucess = False
-        command_output = f"Statistical checker runtime error due to {str(e)}"
+        command_output = f"Statistical checker runtime error"
+        command_output += "\r\n" + traceback.format_exc()
 
     return verify_sucess, command_output
 
@@ -109,6 +114,8 @@ def worker_process_func(q: queue.Queue, env: dict):
                     )
                     learnware.utils.zip_learnware_folder(extract_path, learnware_processed_filename)
             else:
+                # it is in the learnware engine
+
                 learnware_filename = None
                 semantic_spec_filename = None
                 learnware_processed_filename = None
@@ -125,7 +132,6 @@ def worker_process_func(q: queue.Queue, env: dict):
                 os.remove(learnware_zippath)
                 learnware.utils.zip_learnware_folder(learnware_dirpath, learnware_zippath)
 
-                # it is in the learnware engine
                 verify_success, command_output = verify_learnware_with_conda_checker(
                     learnware_id, learnware_dirpath, semantic_specification
                 )
