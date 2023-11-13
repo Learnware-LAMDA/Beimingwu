@@ -15,10 +15,10 @@ hero:
       link: /zh-CN/overview/quick-start
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: 全面的学件支持
+    details: 北冥坞系统提供一站式服务，涵盖学件的上传、组织、查搜和复用，极大地简化了学件的使用和共享过程。
+  - title: 一键式部署服务
+    details: 提供了简便的一键式部署服务，使用户能够轻松部署推荐学件，并提供了丰富的工具和指南以支持学件的使用和微调。
+  - title: 高度可扩展的接口设计
+    details: 系统核心组件learnware包对学件范型的核心概念和流程进行了系统级实现，确保了未来新功能和方法的无缝集成。
 ---
