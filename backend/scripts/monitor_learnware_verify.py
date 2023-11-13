@@ -19,6 +19,7 @@ import learnware.utils
 from learnware.market import CondaChecker, EasyStatChecker, EasySemanticChecker
 from learnware.learnware import get_learnware_from_dirpath
 import traceback
+from lib import redis_utils
 
 
 def verify_learnware_with_conda_checker(
@@ -88,9 +89,9 @@ def worker_process_func(q: queue.Queue, env: dict):
             continue
 
         dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.PROCESSING)
+        learnware_info = context.engine.learnware_organizer.get_learnware_info_from_storage(learnware_id)
 
         try:
-            learnware_info = context.engine.learnware_organizer.get_learnware_info_from_storage(learnware_id)
             learnware_check_status = BaseChecker.NONUSABLE_LEARNWARE
 
             if learnware_info is None:
@@ -112,7 +113,18 @@ def worker_process_func(q: queue.Queue, env: dict):
                     verify_success, command_output = verify_learnware_with_conda_checker(
                         learnware_id, extract_path, semantic_specification
                     )
+                    # the learnware my be deleted
+                    if not dbops.check_learnware_exist(learnware_id=learnware_id):
+                        context.logger.info(f"learnware is deleted, no need to process: {learnware_id}")
+                        continue
+
                     learnware.utils.zip_learnware_folder(extract_path, learnware_processed_filename)
+                    pass
+                final_id, final_status = context.engine.add_learnware(
+                    learnware_processed_filename, semantic_specification, [], learnware_id=learnware_id
+                )
+                learnware_zippath = learnware_processed_filename
+
             else:
                 # it is in the learnware engine
 
@@ -135,17 +147,7 @@ def worker_process_func(q: queue.Queue, env: dict):
                 verify_success, command_output = verify_learnware_with_conda_checker(
                     learnware_id, learnware_dirpath, semantic_specification
                 )
-
-            # the learnware my be deleted
-            if not dbops.check_learnware_exist(learnware_id=learnware_id):
-                context.logger.info(f"learnware is deleted, no need to process: {learnware_id}")
-                continue
-
-            if verify_success:
-                verify_status = LearnwareVerifyStatus.SUCCESS
-                learnware_check_status = BaseChecker.USABLE_LEARWARE
-            else:
-                verify_status = LearnwareVerifyStatus.FAIL
+                pass
 
         except Exception as e:
             context.logger.exception(e)
@@ -153,16 +155,21 @@ def worker_process_func(q: queue.Queue, env: dict):
             command_output = "\n\n" + str(e)
             pass
 
-        try:
-            call_internal_service(
-                functools.partial(restful_wrapper.add_learnware_verified, learnware_id, learnware_check_status)
-            )
-        except Exception as e:
-            # Add engine database failed, need to retry
-            context.logger.exception(e)
-            verify_status = LearnwareVerifyStatus.WAITING
-            command_output += "\n\n" + str(e)
+        # the learnware my be deleted
+        if not dbops.check_learnware_exist(learnware_id=learnware_id):
+            context.logger.info(f"learnware is deleted, no need to process: {learnware_id}")
+            continue
+
+        if verify_success:
+            verify_status = LearnwareVerifyStatus.SUCCESS
+            learnware_check_status = BaseChecker.USABLE_LEARWARE
+        else:
+            verify_status = LearnwareVerifyStatus.FAIL
             pass
+
+        context.engine.update_learnware(
+            learnware_id, learnware_zippath, semantic_specification, [], learnware_check_status
+        )
 
         if verify_status == LearnwareVerifyStatus.SUCCESS:
             if learnware_filename is not None:
@@ -173,6 +180,7 @@ def worker_process_func(q: queue.Queue, env: dict):
             pass
 
         dbops.update_learnware_verify_result(learnware_id, verify_status, command_output)
+        redis_utils.publish_reload_learnware(learnware_id)
         context.logger.info(f"Finish to verify learnware: {learnware_id}")
 
 
@@ -180,6 +188,7 @@ def main(num_worker):
     context.init_database()
     context.init_logger()
     context.init_engine()
+    context.init_redis()
 
     if len(context.config["verify_proxy"]) > 0:
         context.logger.info("set proxy: " + context.config["verify_proxy"])

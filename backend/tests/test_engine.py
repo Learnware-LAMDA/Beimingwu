@@ -14,20 +14,26 @@ import tempfile
 
 
 class TestEngine(unittest.TestCase):
-    def setUpClass() -> None:
+    def setUp(
+        self,
+    ) -> None:
         testops.cleanup_folder()
         unittest.TestCase.setUpClass()
         TestEngine.server_process = multiprocessing.Process(target=main.main)
         TestEngine.server_process.start()
         testops.wait_port_open(C.listen_port, 10)
         context.init_database()
+        context.init_engine()
+        context.init_redis()
         testops.clear_db()
         testops.url_request(
             "auth/register", {"username": "test", "password": "test", "email": "test@localhost", "confirm_email": False}
         )
         TestEngine.learnware_id = testops.add_test_learnware("test@localhost", "test")
 
-    def tearDownClass() -> None:
+    def tearDown(
+        self,
+    ) -> None:
         unittest.TestCase.tearDownClass()
         headers = testops.login("test@localhost", "test")
         testops.delete_learnware(TestEngine.learnware_id, headers)
@@ -110,7 +116,6 @@ class TestEngine(unittest.TestCase):
         self.assertIn(TestEngine.learnware_id, [x["learnware_id"] for x in result["data"]["learnware_list_single"]])
         self.assertGreater(result["data"]["learnware_list_single"][0]["last_modify"], "2020-01-01 00:00:00")
         assert result["data"]["learnware_list_single"][0]["matching"] > 0
-        testops.add_learnware_to_engine(TestEngine.learnware_id, headers)
 
     def test_search_learnware_use_name(self):
         headers = self.login()
@@ -188,7 +193,6 @@ class TestEngine(unittest.TestCase):
         self.assertGreaterEqual(len(result["data"]["learnware_list_single"]), 1)
         self.assertIn(TestEngine.learnware_id, [x["learnware_id"] for x in result["data"]["learnware_list_single"]])
         self.assertGreater(result["data"]["learnware_list_single"][0]["last_modify"], "2020-01-01 00:00:00")
-        testops.add_learnware_to_engine(TestEngine.learnware_id, headers)
 
     def test_download_learnware(self):
         headers = self.login()
@@ -248,24 +252,6 @@ class TestEngine(unittest.TestCase):
         )
         self.assertGreater(result["data"]["learnware_info"]["last_modify"], "2020-01-01 00:00:00")
         pass
-
-    def test_get_learnware(self):
-        headers = self.login()
-
-        result = testops.url_request(
-            "engine/get_learnware", {"learnware_id": TestEngine.learnware_id}, headers=headers, method="get"
-        )
-        self.assertEqual(result["code"], 0)
-        assert result["data"]["learnware_dirpath"].endswith(TestEngine.learnware_id)
-        self.assertEqual(
-            result["data"]["semantic_specification"]["Name"],
-            testops.test_learnware_semantic_specification()["Name"],
-        )
-
-        result = testops.url_request("engine/get_learnware", {"learnware_id": "001"}, headers=headers, method="get")
-        self.assertEqual(result["code"], 0)
-        assert result["data"]["learnware_dirpath"] is None
-        assert result["data"]["semantic_specification"] is None
 
 
 if __name__ == "__main__":
