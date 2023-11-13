@@ -74,7 +74,7 @@ reuse_ensemble = AveragingReuser(
 ensemble_predict_y = reuse_ensemble.predict(user_data=test_x)
 ```
 
-更详细的使用方法和原理介绍请参考：[Learnware 包复用方法介绍](link)。
+更详细的使用方法和原理介绍请参考：[Learnware 包复用方法介绍](#)。
 
 ### 使用有标记数据复用学件
 
@@ -94,7 +94,7 @@ reuse_ensemble_pruning.fit(val_X=val_X, val_y=val_y)
 predict_y = reuse_job_selector.predict(user_data=test_x) 
 ```
 
-更详细的使用方法和原理介绍请参考：[Learnware 包复用方法介绍](link)。
+更详细的使用方法和原理介绍请参考：[Learnware 包复用方法介绍](#)。
 
 
 ## 异构学件复用方法

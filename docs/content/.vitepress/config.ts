@@ -28,6 +28,9 @@ export default defineConfig({
     },
   },
   vite: {
+    server: {
+      open: "/en/",
+    },
     resolve: {
       alias: [
         replaceComponent(/^.*\/VPNavBarMenuLink\.vue$/, "./components/NavBarMenuLink.vue"),
