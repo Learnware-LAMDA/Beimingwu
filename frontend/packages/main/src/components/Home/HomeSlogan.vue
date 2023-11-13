@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { useDisplay } from "vuetify";
 import BigTitle from "../Public/BigTitle.vue";
 import UserRequirement from "../Search/UserRequirement.vue";
 import ScrollAnimate from "../App/ScrollAnimate.vue";
@@ -13,6 +14,8 @@ import Logo from "../../../public/logo.svg?component";
 import anime from "animejs";
 
 const { t } = useI18n();
+
+const display = useDisplay();
 
 const t1 = anime.timeline({ autoplay: false });
 
@@ -78,8 +81,8 @@ onMounted(() => {
     setTimeout(() => {
       t1.add({
         targets: rkmeJsonRef.value,
-        left: ["100%", "10%"],
-        bottom: ["50%", "0%"],
+        left: ["100%", (): string => (display.mdAndUp.value ? "10%" : "45%")],
+        bottom: ["50%", (): string => (display.mdAndUp.value ? "0%" : "45%")],
         easing: "linear",
         duration: 500,
       })
@@ -142,7 +145,7 @@ onMounted(() => {
 
     <scroll-animate class="h-[600vh]" @progress="handleProgress">
       <template #default>
-        <div class="flex flex-col justify-center items-center h-main-full w-full">
+        <div class="flex flex-col justify-center items-center px-2 h-main-full w-full">
           <div class="flex flex-col relative h-[90vh] w-full max-w-7xl rounded-md overflow-hidden">
             <div ref="rkmeJsonRef" class="absolute z-10">
               <svg class="w-20" viewBox="-6 -1 37 42">
@@ -222,11 +225,11 @@ onMounted(() => {
               </div>
             </div>
 
-            <div class="bg-gray-200 flex-1 flex justify-start overflow-hidden">
-              <div class="min-w-[20rem] w-1/4 no-scroll">
+            <div class="bg-gray-200 flex-1 md:flex justify-start overflow-hidden">
+              <div class="no-scroll h-[40vh] md:min-w-[20rem] md:w-1/4">
                 <user-requirement
                   v-model="filters"
-                  class="w-[150%] h-[120vh] transform scale-[calc(200%/3)] origin-top-left"
+                  class="w-[150%] transform scale-[calc(200%/3)] origin-top-left h-[60vh] md:h-[120vh]"
                 />
               </div>
 
