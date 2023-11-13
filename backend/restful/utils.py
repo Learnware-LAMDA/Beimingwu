@@ -107,7 +107,7 @@ Subject: Please activate your account\r\n\
             { confirm_url }
 
         Cheers!
-        BeiMing Group
+        Beimingwu Group
 """
 
     thread = mp.Process(
@@ -138,7 +138,7 @@ Subject: Reset your password\r\n\
 
         Cheers!
 
-        BeiMing Group
+        Beimingwu Group
 """
 
     thread = mp.Process(
