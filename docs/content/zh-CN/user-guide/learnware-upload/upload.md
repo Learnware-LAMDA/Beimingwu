@@ -18,7 +18,7 @@
 
 需要注意的是，在第 2 步「选择标签」的过程中：
 - 如果数据类型为「表格」，则需要填写模型输入数据的每一维特征语义，使上传的学件可用于异构特征空间的任务；
-- 如果任务类型为「分类」、「回归」或者「特征提取」，则需要填写模型输出的每一维语义，使上传的学件可用于异构输出空间的任务。
+- 如果任务类型为「分类」或「回归」，则需要填写模型输出的每一维语义，使上传的学件可用于异构输出空间的任务。
 
 如果维度过多，可考虑使用大语言模型。通过分析特征工程的代码，生成各维度的语义。
 
@@ -48,7 +48,7 @@ input_description = {
     },
 }
 
-# Prepare output description when task_type in ["Classification", "Regression", "Feature Extraction"]
+# Prepare output description when task_type in ["Classification", "Regression"]
 output_description = {
     "Dimension": 3,
     "Description": {
@@ -86,10 +86,14 @@ semantic_spec = client.create_semantic_specification(
 zip_path = "your learnware zip"
 
 # Check your learnware before upload
-client.check_learnware(learnware_zip_path=zip_path, semantic_specification=semantic_spec)
+client.check_learnware(
+    learnware_zip_path=zip_path, semantic_specification=semantic_spec
+)
 
 # Upload your learnware
-learnware_id = client.upload_learnware(learnware_zip_path=zip_path, semantic_specification=semantic_spec)
+learnware_id = client.upload_learnware(
+    learnware_zip_path=zip_path, semantic_specification=semantic_spec
+)
 ```
 
 学件上传成功后，可以在「个人信息 - 我的学件」处看到上传的学件。
