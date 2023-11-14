@@ -22,10 +22,13 @@ class TestLearnwareClient(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         testops.cleanup_folder()
-        self.server_process = multiprocessing.Process(target=main.main)
+        mp_context = multiprocessing.get_context('spawn')
+        self.server_process = mp_context.Process(target=main.main)
         self.server_process.start()
         testops.wait_port_open(context.config.listen_port, 10)
         context.init_database()
+        context.init_engine()
+        context.init_redis()
         testops.clear_db()
         testops.url_request(
             "auth/register", {"username": "test", "password": "test", "email": "test@localhost", "confirm_email": False}
@@ -103,7 +106,8 @@ class TestLearnwareClient(unittest.TestCase):
         )
 
         testops.add_learnware_to_engine(learnware_id, client.headers)
-
+        # wait engine to load learnware
+        time.sleep(1)
         specification = Specification()
         specification.update_semantic_spec(testops.test_learnware_semantic_specification_table())
         learnware_list = client.search_learnware(specification)

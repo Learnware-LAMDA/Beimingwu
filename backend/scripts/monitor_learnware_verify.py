@@ -11,7 +11,6 @@ import lib.command_executor as command_executor
 from database.base import LearnwareVerifyStatus
 from learnware.market import BaseChecker
 import json
-import lib.restful_wrapper as restful_wrapper
 import tempfile
 import lib.engine as engine_utils
 from typing import Tuple
