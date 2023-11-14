@@ -1,6 +1,6 @@
 # 快速上手
 
-欢迎来到北冥坞：学件基座系统！下列内容将帮助您快速体验系统，包含学件查搜和部署。
+欢迎来到北冥坞：学件基座系统！下列内容将帮您快速体验系统，包含学件查搜与部署。
 
 
 ## 学件查搜
@@ -14,10 +14,11 @@
 通过统计信息进行查搜时，您需要提交任务的统计信息。我们提供的工具将在保护您数据隐私的情况下在本地为您生成任务的近似统计信息。通过下列代码，您可以轻松生成任务的近似统计信息。
 
 ```python
-from learnware.specification import generate_rkme_spec
+from learnware.specification import generate_stat_spec
 
-rkme = generate_rkme_spec(X)
-rkme.save('rkme.json')
+data_type = "table" # 数据类型范围: ["table", "image", "text"]
+spec = generate_stat_spec(type=data_type, X=test_x)
+spec.save("stat.json")
 ```
 
 通过上传统计信息的json文件，系统会匹配统计信息接近的学件。您可以通过学件卡片左下角的下载按钮进行学件zip包的下载。
@@ -31,10 +32,17 @@ rkme.save('rkme.json')
 
 ## 学件部署
 
-下载学件后，您本地的环境可能并不适配下载的学件，但是通过我们提供的工具，您可以一键部署学件。比如下列代码将为学件自动构建conda环境，保证学件可以在您的设备上正常使用。
+下载学件后，您本地的环境可能并不适配下载的学件，但您可通过我们提供的 `learnware` 包快速部署。例如下述代码将为学件自动构建相应的 `conda` 环境，使学件可以在您的设备上正常使用。
 
 ```python
 from learnware.client import LearnwareClient
-leanrware=client.load_learnware(learnware_zip_path, runnable_option="normal")
-y_pre=learnware.predict(X)
+
+# 自动构建 conda 环境来加载学件
+client = LearnwareClient()
+leanrware = client.load_learnware(
+    learnware_path=learnware_zip_path, runnable_option="conda_env"
+)
+
+# 使用学件对数据进行预测
+pred_y = learnware.predict(test_x)
 ```

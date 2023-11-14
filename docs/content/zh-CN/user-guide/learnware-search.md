@@ -1,6 +1,6 @@
 # 如何查搜学件？
 
-在北冥系统中，学件既可以通过网页端查搜，也可以使用 `learnware` Python 包进行查搜。
+在北冥坞系统中，学件既可以通过网页端查搜，也可以使用 `learnware` Python 包进行查搜。
 
 接下来，我们将分别对这两种方式进行介绍。
 
@@ -19,16 +19,11 @@
 进行统计规约查搜时，各种数据类型对应的统计规约可以通过如下命令生成：
 
 ```python
-from learnware.specification import generate_rkme_image_spec, generate_rkme_spec, generate_rkme_text_spec
+from learnware.specification import generate_stat_spec
 
-# table data
-rkme_table = generate_rkme_spec(table_feature)
-
-# image data
-rkme_image = generate_rkme_image_spec(image_feature)
-
-# text data
-rkme_text = generate_rkme_text_spec(text_feature)
+data_type = "table" # 数据类型范围: ["table", "text", "image"]
+spec = generate_stat_spec(type=data_type, X=train_x)
+spec.save("stat.json")
 ```
 
 查搜完成后，系统将显示单学件的查搜结果，在部分情况下，系统还会显示多学件组合的查搜结果。您可以根据需求下载相应的学件（组）。
@@ -114,8 +109,11 @@ learnware_list = client.search_learnware(specification, page_size=None)
 ```python
 for temp_learnware in learnware_list:
     learnware_id = temp_learnware["learnware_id"]
-    learnware = client.load_learnware(learnware_id=learnware_id, runnable_option="conda_env")
-	# you can use the learnware to make prediction now
+
+    # you can use the learnware to make prediction now
+    learnware = client.load_learnware(
+        learnware_id=learnware_id, runnable_option="conda_env"
+    )
 ```
 
 更详细的部署指南可查看：[学件部署](/zh-CN/user-guide/learnware-deploy)。

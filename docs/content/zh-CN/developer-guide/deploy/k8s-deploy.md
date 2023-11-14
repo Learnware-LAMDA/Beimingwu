@@ -2,7 +2,7 @@
 
 ## 部署依赖组件
 ### 部署默认存储类
-北冥系统会使用集群默认的存储类来创建所需要的存储。关于 Kubernetes 默认存储类的概念可以参考 [Kubernetes 默认存储类](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/)。比如，如果您使用 rook-cephfs 作为您的默认存储类，可以执行以下命令来设置：
+北冥坞系统会使用集群默认的存储类来创建所需要的存储。关于 Kubernetes 默认存储类的概念可以参考 [Kubernetes 默认存储类](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/)。比如，如果您使用 rook-cephfs 作为您的默认存储类，可以执行以下命令来设置：
 ```shell
 kubectl patch storageclass rook-cephfs -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ```

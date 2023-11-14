@@ -1,6 +1,6 @@
 # 如何上传学件？
 
-在北冥系统中，学件既可以从网页端上传，也可以使用 `learnware` Python 包进行上传。
+在北冥坞系统中，学件既可以从网页端上传，也可以使用 `learnware` Python 包进行上传。
 
 接下来，我们将分别对这两种方式进行介绍。
 
@@ -27,7 +27,7 @@
 
 除网页端外，learnware 包也提供学件上传的接口，首先需要登录：
 ```py
-from learnware.client import LearnwareClient
+from learnware.client import LearnwareClient, SemanticSpecificationKey
 
 # Login to Beiming system
 client = LearnwareClient()
@@ -70,13 +70,13 @@ semantic_spec = client.create_semantic_specification(
     output_description=output_description,
 )
 ```
-需注意，填写语义规约时有一些限制：
-- data\_type 必须在 `client.list_semantic_specification_values(key="Data")` 之中；
-- task\_type 必须在 `client.list_semantic_specification_values(key="Task")` 之中；
-- library\_type 必须在 `client.list_semantic_specification_values(key="Library")` 之中；
-- scenarios 必须为 `client.list_semantic_specification_values(key="Scenario")` 的子集；
+请确保语义规约的输入在 `client.list_semantic_specification_values(key)` 给出的范围内：
+- data\_type 必须在 `key=SemanticSpecificationKey.DATA_TYPE` 对应的结果中；
+- task\_type 必须在 `key=SemanticSpecificationKey.TASK_TYPE` 对应的结果中；
+- library\_type 必须在 `key=SemanticSpecificationKey.LIBRARY_TYPE` 对应的结果中；
+- scenarios 必须为 `key=SemanticSpecificationKey.SENARIOES` 对应结果的子集；
 - 当 data\_type 为 `"Table"` 时，需要填写「输入描述」；
-- 当 task\_type 在 `["Classification", "Regression", "Feature Extraction"]` 中时，需要填写「输出描述」。
+- 当 task\_type 在 `["Classification", "Regression"]` 中时，需要填写「输出描述」。
 
 最后，填写语义规约和学件 zip 包路径，即可实现学件上传。
 

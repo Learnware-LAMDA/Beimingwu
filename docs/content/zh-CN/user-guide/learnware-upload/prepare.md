@@ -1,6 +1,6 @@
 # 如何准备一个学件？
 
-在北冥系统中，每个学件都是一个 `zip` 包，其中至少需要包含以下四个文件：
+在北冥坞系统中，每个学件都是一个 `zip` 包，其中至少需要包含以下四个文件：
 - `learnware.yaml`：学件配置文件；
 - `__init__.py`：提供使用模型的方法；
 - `stat.json`：学件的统计规约，其文件名可自定义并记录在 learnware.yaml 中；
@@ -56,9 +56,10 @@ from .package_name import module_name
 以下是相应的代码示例：
 
 ```py
-import learnware.specification as specification
+from learnware.specification import generate_stat_spec
 
-spec = specification.utils.generate_rkme_spec(train_x)
+data_type = "table" # 数据类型范围: ["table", "image", "text"]
+spec = generate_stat_spec(type=data_type, X=train_x)
 spec.save("stat.json")
 ```
 值得注意的是，上述代码仅在本地计算机上运行，不会与任何云服务器进行交互，也不会泄露任何本地私有数据。
@@ -77,7 +78,7 @@ stat_specifications:
     kwargs: {}
 ```
 
-需注意，使用上述 `generate_rkme_spec` 方法生成的规约即为 `RKMEStatSpecification`，因此 `class_name` 按默认值填即可。
+需注意，生成规约时的数据类型 `["table", "image", "text"]` 所对应的规约 `class_name` 分别为 `[RKMETableSpecification, RKMEImageSpecification, RKMETextSpecification]`。
 
 ## 模型运行依赖 `environment.yaml`
 
