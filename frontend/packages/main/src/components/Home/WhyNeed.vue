@@ -36,9 +36,9 @@ const reasons = computed(() => [
 </script>
 
 <template>
-  <div class="mx-auto pb-20 md:pb-30 md:px-10 max-w-[1200px] w-full">
+  <div class="md:pb-30 mx-auto w-full max-w-[1200px] pb-20 md:px-10">
     <div class="px-5 md:px-0">
-      <div class="text-3xl my-5 <md:text-4xl <md:my-5 lg:text-4xl lg:my-7 xl:text-5xl xl:my-10">
+      <div class="my-5 text-3xl lg:my-7 lg:text-4xl xl:my-10 xl:text-5xl">
         {{ t("Home.Why.Title") }}
       </div>
       <p class="text-gray-500">
@@ -50,7 +50,7 @@ const reasons = computed(() => [
         <v-hover v-slot="{ isHovering, props }">
           <v-card
             flat
-            class="relative fill-height p-4 transition-all duration-300 ease-in-out transform"
+            class="fill-height relative transform p-4 transition-all duration-300 ease-in-out"
             :class="{
               'elevation-20': isHovering && !smallerThanMd,
               'bg-primary': isHovering,
@@ -62,11 +62,11 @@ const reasons = computed(() => [
               <v-icon :size="iconSize">{{ reason.icon }}</v-icon>
             </v-card-title>
             <v-card-title
-              class="mb-4 text-lg font-600 text-center md:text-xl lg:text-xl xl:text-2xl"
+              class="font-600 mb-4 text-center text-lg md:text-xl lg:text-xl xl:text-2xl"
             >
               {{ reason.title }}
             </v-card-title>
-            <v-card-text class="text-sm md:text-sm lg:text-md xl:text-md !leading-5">
+            <v-card-text class="lg:text-md xl:text-md text-sm !leading-5 md:text-sm">
               {{ reason.description }}
             </v-card-text>
           </v-card>

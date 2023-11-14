@@ -97,16 +97,16 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-col sm:border-r-1">
+  <div class="sm:border-r-1 flex flex-col">
     <div class="filter">
       <slot name="prepend" />
-      <div class="my-3 text-h6">
+      <div class="text-h6 my-3">
         <v-icon class="!mt-0 mr-3" icon="mdi-tag-text" color="black" size="small"></v-icon>
         {{ t("Search.ChooseSemanticRequirement") }}
       </div>
 
       <div v-if="isAdmin">
-        <div class="mt-7 mb-3 text-h6 !text-base">
+        <div class="text-h6 mb-3 mt-7 !text-base">
           {{ t("Search.SearchById") }}
         </div>
         <v-text-field
@@ -119,7 +119,7 @@ watch(
       </div>
 
       <div>
-        <div class="mt-7 mb-3 text-h6 !text-base">
+        <div class="text-h6 mb-3 mt-7 !text-base">
           {{ t("Search.SearchByName") }}
         </div>
         <v-text-field
@@ -151,9 +151,9 @@ watch(
       <slot name="append" />
     </div>
 
-    <div class="p-4 pt-0 border-t-1 border-gray-300">
+    <div class="border-t-1 border-gray-300 p-4 pt-0">
       <template v-if="isHeterogeneous">
-        <div class="mt-3 mb-5 w-full text-h6 transition-all truncate">
+        <div class="text-h6 mb-5 mt-3 w-full truncate transition-all">
           <v-icon class="mr-3" icon="mdi-vector-difference" color="black" size="small"></v-icon>
           {{ t("Search.UploadHeterogeneousRequirement") }}
         </div>
@@ -208,7 +208,7 @@ watch(
 
               <v-window-item value="taskType">
                 <div class="flex justify-between">
-                  <div class="mt-4 text-h4 font-semibold">
+                  <div class="text-h4 mt-4 font-semibold">
                     {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
                   </div>
                   <v-btn
@@ -233,7 +233,7 @@ watch(
               </v-window-item>
             </v-window>
 
-            <div class="flex justify-end mt-4">
+            <div class="mt-4 flex justify-end">
               <v-btn color="primary" rounded variant="flat" @click="heterDialog = false">
                 {{ t("Public.Finish") }}
               </v-btn>
@@ -242,7 +242,7 @@ watch(
         </v-dialog>
       </template>
 
-      <div class="mt-3 mb-5 w-full text-h6 transition-all truncate">
+      <div class="text-h6 mb-5 mt-3 w-full truncate transition-all">
         <v-icon class="mr-3" icon="mdi-upload" color="black" size="small"></v-icon>
         {{ t("Search.UploadStatisticalRequirement") }}
       </div>
@@ -258,7 +258,7 @@ watch(
 
 <style scoped lang="scss">
 .filter {
-  @apply p-2 w-full md:h-full md:overflow-y-auto sm:px-5;
+  @apply w-full p-2 sm:px-5 md:h-full md:overflow-y-auto;
 
   * {
     @apply mt-2;

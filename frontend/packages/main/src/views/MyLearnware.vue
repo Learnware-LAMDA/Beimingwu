@@ -286,7 +286,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .learnware-container {
-  @apply flex flex-col w-full justify-start items-center;
+  @apply flex w-full flex-col items-center justify-start;
 }
 .fixed {
   height: calc(100% - var(--v-layout-top));

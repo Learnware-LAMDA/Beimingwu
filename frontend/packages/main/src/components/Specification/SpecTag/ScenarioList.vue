@@ -186,14 +186,14 @@ function deleteSelect(value: Scenario): void {
 <style scoped lang="scss">
 .scenario-container {
   .my-title {
-    @apply mt-7 mb-5;
+    @apply mb-5 mt-7;
   }
 
   .list {
-    @apply grid sm:gap-2 gap-1 bg-transparent;
+    @apply grid gap-1 bg-transparent sm:gap-2;
 
     .item {
-      @apply flex items-center p-3 pl-4 bg-gray-400 text-white rounded-[2em] cursor-pointer;
+      @apply flex cursor-pointer items-center rounded-[2em] bg-gray-400 p-3 pl-4 text-white;
     }
 
     .active {
@@ -210,7 +210,7 @@ function deleteSelect(value: Scenario): void {
   }
 
   .text {
-    @apply lg:text-base sm:text-sm text-xs;
+    @apply text-xs sm:text-sm lg:text-base;
   }
 }
 </style>

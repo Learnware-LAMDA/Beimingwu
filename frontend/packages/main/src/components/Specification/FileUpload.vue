@@ -52,7 +52,7 @@ const files = computed({
 <template>
   <div
     v-ripple
-    class="relative rounded-lg border-gray-500 border-2 border-dashed flex flex-column justify-center items-center hover:bg-gray-200 cursor-pointer"
+    class="flex-column relative flex cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-500 hover:bg-gray-200"
     :class="{ 'border-dashed': dragging }"
     :style="{ height: Number(height) / 4 + 'rem' }"
     @dragover.prevent
@@ -63,11 +63,11 @@ const files = computed({
   >
     <div
       v-if="dragging"
-      class="absolute inset-0 bg-gray-500 opacity-25 rounded-lg pointer-events-none"
+      class="pointer-events-none absolute inset-0 rounded-lg bg-gray-500 opacity-25"
     ></div>
 
     <div
-      class="flex justify-center items-center max-w-full md:text-xl text-base pointer-events-none"
+      class="pointer-events-none flex max-w-full items-center justify-center text-base md:text-xl"
     >
       <p v-if="files.length === 0">
         <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>

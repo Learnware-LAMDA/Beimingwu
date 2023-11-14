@@ -426,10 +426,10 @@ onActivated(() => {
       </template>
     </confirm-dialog>
 
-    <v-scroll-y-transition class="fixed left-0 right-0 z-index-10000">
+    <v-scroll-y-transition class="z-index-10000 fixed left-0 right-0">
       <v-card-actions v-if="showError">
         <v-alert
-          class="w-full max-w-[900px] mx-auto"
+          class="mx-auto w-full max-w-[900px]"
           closable
           :text="errorMsg"
           type="error"
@@ -491,10 +491,10 @@ onActivated(() => {
 
 <style scoped lang="scss">
 .main-container {
-  @apply mx-auto w-full h-full max-w-[1500px] overflow-hidden;
+  @apply mx-auto h-full w-full max-w-[1500px] overflow-hidden;
 
   .search {
-    @apply mt-3 w-full max-w-[1500px] border z-50;
+    @apply z-50 mt-3 w-full max-w-[1500px] border;
 
     .search-row {
       @apply grid grid-cols-2;

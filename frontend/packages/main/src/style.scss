@@ -86,12 +86,12 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100 rounded;
+  @apply rounded bg-gray-100;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-400 rounded;
+  @apply rounded bg-gray-400;
 }
 
 /* Handle on hover */

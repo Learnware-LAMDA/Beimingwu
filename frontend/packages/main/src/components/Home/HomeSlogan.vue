@@ -124,12 +124,12 @@ onMounted(() => {
 
 <template>
   <div class="relative bg-gradient-to-b from-sky-700 via-blue-500 to-blue-100">
-    <div class="py-20 text-white text-center">
+    <div class="py-20 text-center text-white">
       <big-title>
         <h1>{{ t("Home.Cover.Beiming") }}</h1>
       </big-title>
 
-      <div class="mt-6 px-10 mx-auto max-w-7xl sm:px-20 md:px-40 lg:px-60">
+      <div class="mx-auto mt-6 max-w-7xl px-10 sm:px-20 md:px-40 lg:px-60">
         {{ t("Home.Cover.Introduction") }}
       </div>
 
@@ -145,8 +145,8 @@ onMounted(() => {
 
     <scroll-animate class="h-[600vh]" @progress="handleProgress">
       <template #default>
-        <div class="flex flex-col justify-center items-center px-2 h-main-full w-full">
-          <div class="flex flex-col relative h-[90vh] w-full max-w-7xl rounded-md overflow-hidden">
+        <div class="h-main-full flex w-full flex-col items-center justify-center px-2">
+          <div class="relative flex h-[90vh] w-full max-w-7xl flex-col overflow-hidden rounded-md">
             <div ref="rkmeJsonRef" class="absolute z-10">
               <svg class="w-20" viewBox="-6 -1 37 42">
                 <path
@@ -157,11 +157,11 @@ onMounted(() => {
                 <text x="13" y="38" font-size="7" text-anchor="middle" fill="black">RKME.json</text>
               </svg>
             </div>
-            <div class="flex justify-between items-center h-6 bg-gray-900">
+            <div class="flex h-6 items-center justify-between bg-gray-900">
               <div class="flex">
                 <div class="ml-2" />
-                <div class="my-2 ml-1.5 w-2 h-2 bg-gray-800 rounded-full" v-for="i in 3" :key="i" />
-                <svg class="mt-1 ml-2 h-5" viewBox="-1 -1 72 11">
+                <div class="my-2 ml-1.5 h-2 w-2 rounded-full bg-gray-800" v-for="i in 3" :key="i" />
+                <svg class="ml-2 mt-1 h-5" viewBox="-1 -1 72 11">
                   <defs>
                     <g id="cross">
                       <path
@@ -189,16 +189,16 @@ onMounted(() => {
                   </text>
                   <use href="#cross" x="60" y="4" />
                 </svg>
-                <svg class="mt-1 mr-2 w-1.5" viewBox="0 0 10 10">
+                <svg class="mr-2 mt-1 w-1.5" viewBox="0 0 10 10">
                   <path d="M 0 5 10 5 M5 0 5 10" stroke="white" stroke-width="1" />
                 </svg>
               </div>
-              <svg class="w-1 m-1 mr-2" viewBox="0 0 10 10">
+              <svg class="m-1 mr-2 w-1" viewBox="0 0 10 10">
                 <path d="M 1,3 5,9 9,3" stroke="white" stroke-width="1" fill="none" />
               </svg>
             </div>
 
-            <div class="flex items-center h-6 bg-gray-700">
+            <div class="flex h-6 items-center bg-gray-700">
               <div class="text-[0.4rem]">
                 <v-icon class="ml-1 p-2">mdi-arrow-left</v-icon>
                 <v-icon class="p-2">mdi-arrow-right</v-icon>
@@ -206,9 +206,9 @@ onMounted(() => {
                 <v-icon class="p-2">mdi-home-outline</v-icon>
               </div>
               <div
-                class="flex flex-col justify-center flex-1 h-3.5 px-1.5 bg-gray-600 rounded-full text-left text-[0.3rem]"
+                class="flex h-3.5 flex-1 flex-col justify-center rounded-full bg-gray-600 px-1.5 text-left text-[0.3rem]"
               >
-                <div class="flex items-center h-full">
+                <div class="flex h-full items-center">
                   <v-icon>mdi-lock</v-icon>
                   <span class="mx-1 text-[0.4rem]"> beiming.cloud </span>
                 </div>
@@ -219,26 +219,26 @@ onMounted(() => {
               </div>
             </div>
 
-            <div class="flex justify-between items-center bg-white border-b border-gray-300">
+            <div class="flex items-center justify-between border-b border-gray-300 bg-white">
               <div class="p-2">
                 <logo class="w-20" />
               </div>
             </div>
 
-            <div class="bg-gray-200 flex-1 md:flex justify-start overflow-hidden">
-              <div class="no-scroll h-[40vh] md:min-w-[20rem] md:w-1/4">
+            <div class="flex-1 justify-start overflow-hidden bg-gray-200 md:flex">
+              <div class="no-scroll h-[40vh] md:w-1/4 md:min-w-[20rem]">
                 <user-requirement
                   v-model="filters"
-                  class="w-[150%] transform scale-[calc(200%/3)] origin-top-left h-[60vh] md:h-[120vh]"
+                  class="h-[60vh] w-[150%] origin-top-left scale-[calc(200%/3)] transform md:h-[120vh]"
                 />
               </div>
 
               <div class="flex-1">
                 <div
-                  class="w-[150%] transform scale-[calc(200%/3)] origin-top-left"
+                  class="w-[150%] origin-top-left scale-[calc(200%/3)] transform"
                   disabled="true"
                 >
-                  <v-card v-if="showMultiRecommended" flat class="sm:m-2 mt-4 bg-transparent">
+                  <v-card v-if="showMultiRecommended" flat class="mt-4 bg-transparent sm:m-2">
                     <v-card-title v-if="!multiRecommendedTips">
                       {{ t("Search.RecommendedMultipleLearnware") }}
                     </v-card-title>
@@ -262,7 +262,7 @@ onMounted(() => {
                       :loading="loading"
                     />
                   </v-card>
-                  <v-card flat class="sm:m-2 mt-4 bg-transparent">
+                  <v-card flat class="mt-4 bg-transparent sm:m-2">
                     <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">
                       {{ t("Search.RecommendedSingleLearnware") }}
                     </v-card-title>

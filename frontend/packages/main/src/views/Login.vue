@@ -118,7 +118,7 @@ function onResetPassword(): void {
 <template>
   <div class="flex h-full bg-gray-100">
     <div
-      class="hidden w-full h-full md:block"
+      class="hidden h-full w-full md:block"
       :style="{
         background: `url(${collaborationImg})`,
         backgroundSize: 'contain',
@@ -127,10 +127,10 @@ function onResetPassword(): void {
       }"
     ></div>
     <div
-      class="flex flex-row justify-center items-center w-full fill-height p-2 md:text-md sm:text-sm text-xs"
+      class="fill-height md:text-md flex w-full flex-row items-center justify-center p-2 text-xs sm:text-sm"
     >
       <v-card flat class="mx-auto w-full" max-width="500">
-        <div class="sm:p-7 p-2">
+        <div class="p-2 sm:p-7">
           <v-scroll-y-transition>
             <v-card-actions v-if="showError">
               <v-alert
@@ -148,7 +148,7 @@ function onResetPassword(): void {
             </v-card-actions>
           </v-scroll-y-transition>
           <v-card-title>
-            <h1 class="text-h5 !text-1.3em !<sm:text-1.6em !<sm:my-6 m-2">
+            <h1 class="text-h5 sm:text-1.3em m-2 my-6 sm:my-2">
               {{ t("Login.Login") }}
             </h1>
           </v-card-title>
@@ -192,7 +192,7 @@ function onResetPassword(): void {
       </v-card>
       <success-dialog v-model="showResetPasswordDialog">
         <template #msg>
-          <h2 class="text-lg mt-6 mb-8">
+          <h2 class="mb-8 mt-6 text-lg">
             {{ t("Login.ResetPasswordSent") }}
           </h2>
         </template>

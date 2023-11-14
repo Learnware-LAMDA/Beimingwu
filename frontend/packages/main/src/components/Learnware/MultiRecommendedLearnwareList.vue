@@ -101,7 +101,7 @@ function getColorByScore(score: number): string {
 <template>
   <div
     v-if="!loading"
-    class="m-2 p-2 rounded-lg hover:border-purple-500"
+    class="m-2 rounded-lg p-2 hover:border-purple-500"
     :class="items.length > 0 ? ['border'] : []"
   >
     <div v-if="items.length > 0" class="flex justify-between">
@@ -112,7 +112,7 @@ function getColorByScore(score: number): string {
       <v-btn
         variant="flat"
         size="x-large"
-        class="!px-4 text-body-2 !text-[1em] border"
+        class="text-body-2 border !px-4 !text-[1em]"
         @click.stop="() => downloadAll()"
       >
         <span v-if="!downloading">
@@ -149,7 +149,7 @@ function getColorByScore(score: number): string {
   </div>
   <div
     v-else
-    class="grid p-2 gap-3"
+    class="grid gap-3 p-2"
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
   >
     <v-skeleton-loader
@@ -163,45 +163,45 @@ function getColorByScore(score: number): string {
 
 <style scoped lang="scss">
 .learnware-list-container {
-  @apply relative m-2 grid xl:grid-cols-2 lg:grid-cols-2 gap-3 bg-transparent;
+  @apply relative m-2 grid gap-3 bg-transparent lg:grid-cols-2 xl:grid-cols-2;
 
   .card {
     @apply border;
 
     .first-row {
-      @apply flex justify-between items-center;
+      @apply flex items-center justify-between;
 
       .title {
-        @apply xl:text-xl lg:text-lg text-base;
+        @apply text-base lg:text-lg xl:text-xl;
       }
 
       .actions {
-        @apply justify-end mt-1;
+        @apply mt-1 justify-end;
       }
     }
 
     .card-text {
-      @apply flex flex-wrap items-center pt-0 pb-2 text-gray-700;
+      @apply flex flex-wrap items-center pb-2 pt-0 text-gray-700;
 
       * {
         @apply mr-2 mt-1;
       }
 
       .label {
-        @apply px-2 border-gray-700 bg-gray-200 text-xs text-black rounded;
+        @apply rounded border-gray-700 bg-gray-200 px-2 text-xs text-black;
       }
 
       .scenario {
-        @apply px-2 border-gray-700 bg-gray-200 text-xs text-black rounded-[1em];
+        @apply rounded-[1em] border-gray-700 bg-gray-200 px-2 text-xs text-black;
       }
 
       .label.active {
-        @apply bg-gray-100 border-0;
+        @apply border-0 bg-gray-100;
         color: rgb(var(--v-theme-primary));
       }
 
       .scenario.active {
-        @apply bg-gray-100 text-orange-600 border-0;
+        @apply border-0 bg-gray-100 text-orange-600;
       }
 
       .description {
@@ -216,11 +216,11 @@ function getColorByScore(score: number): string {
 
   .score {
     @apply my-2;
-    @apply lg:text-[1.3rem] text-[0.8rem];
+    @apply text-[0.8rem] lg:text-[1.3rem];
   }
 
   .no-learnware {
-    @apply py-5 w-full text-center text-2xl;
+    @apply w-full py-5 text-center text-2xl;
 
     .oops-img {
       @apply mx-auto;

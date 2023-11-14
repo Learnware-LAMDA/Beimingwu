@@ -87,14 +87,14 @@ function handleClickDelete(id: string): void {
 
 <style scoped lang="scss">
 .learnware-list-container {
-  @apply relative sm:p-2 p-1 grid xl:grid-cols-2 lg:grid-cols-2 sm:gap-3;
+  @apply relative grid p-1 sm:gap-3 sm:p-2 lg:grid-cols-2 xl:grid-cols-2;
 
   .score {
-    @apply lg:text-base text-[0.8rem];
+    @apply text-[0.8rem] lg:text-base;
   }
 
   .no-learnware {
-    @apply py-5 w-full text-center text-2xl;
+    @apply w-full py-5 text-center text-2xl;
 
     .oops-img {
       @apply mx-auto;

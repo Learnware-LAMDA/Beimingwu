@@ -77,8 +77,8 @@ onActivated(() => {
 </script>
 
 <template>
-  <v-container class="h-full <sm:p-0">
-    <v-card class="relative max-w-[600px] w-full m-auto" flat>
+  <v-container class="h-full p-0 sm:p-2">
+    <v-card class="relative m-auto w-full max-w-[600px]" flat>
       <v-card-title>
         <div class="text-h4">
           {{ t("ClientToken.Title") }}

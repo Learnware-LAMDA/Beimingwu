@@ -100,7 +100,7 @@ function closeErrorAlert(): void {
 <template>
   <div class="flex h-full bg-gray-100">
     <div
-      class="hidden w-full h-full md:block"
+      class="hidden h-full w-full md:block"
       :style="{
         background: `url(${collaborationImg})`,
         backgroundSize: 'contain',
@@ -109,9 +109,9 @@ function closeErrorAlert(): void {
       }"
     ></div>
     <div
-      class="flex flex-row justify-center items-center w-full fill-height p-2 md:text-md sm:text-sm text-xs"
+      class="fill-height md:text-md flex w-full flex-row items-center justify-center p-2 text-xs sm:text-sm"
     >
-      <v-card flat class="mx-auto w-full sm:p-7 p-2" max-width="500">
+      <v-card flat class="mx-auto w-full p-2 sm:p-7" max-width="500">
         <v-scroll-y-transition>
           <v-card-actions v-if="showError">
             <v-alert
@@ -129,7 +129,7 @@ function closeErrorAlert(): void {
           </v-card-actions>
         </v-scroll-y-transition>
         <v-card-title>
-          <h1 class="text-h5 sm:!text-[1.3em] !text-[1.6em] my-6 sm:my-2 m-2">
+          <h1 class="text-h5 m-2 my-6 !text-[1.6em] sm:my-2 sm:!text-[1.3em]">
             {{ t("ChangePassword.ChangePassword") }}
           </h1>
         </v-card-title>

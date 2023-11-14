@@ -22,7 +22,7 @@ defineExpose({
 <template>
   <v-dialog v-model="dialog" class="mx-auto w-full max-w-[600px]">
     <v-card class="mx-2">
-      <v-card-title class="flex m-2">
+      <v-card-title class="m-2 flex">
         <v-icon icon="mdi-alert" color="red"></v-icon>
         <slot name="title" />
       </v-card-title>

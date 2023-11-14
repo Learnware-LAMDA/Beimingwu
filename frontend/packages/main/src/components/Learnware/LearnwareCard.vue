@@ -156,19 +156,19 @@ function handleClickDelete(id: string): void {
     <v-card-text class="card-text">
       <div class="description">{{ item.description }}</div>
     </v-card-text>
-    <v-card-text class="flex justify-between items-end !py-2">
+    <v-card-text class="flex items-end justify-between !py-2">
       <div>
-        <div v-if="item.matchScore && item.matchScore >= 0" class="xl:text-lg lg:text-lg text-base">
+        <div v-if="item.matchScore && item.matchScore >= 0" class="text-base lg:text-lg xl:text-lg">
           {{ t("Search.SpecificationScore") }}:
           <span :style="`color: ${getColorByScore(item.matchScore)}`">{{ item.matchScore }}</span>
         </div>
-        <span class="text-gray-500 text-xs">
+        <span class="text-xs text-gray-500">
           {{ t("Search.Updated") }} {{ dayjs(item.lastModify).fromNow() }}
         </span>
       </div>
 
       <div class="flex items-center">
-        <div class="actions -mr-3 -mb-2">
+        <div class="actions -mb-2 -mr-3">
           <v-btn
             v-if="showDownload"
             variant="flat"
@@ -201,26 +201,26 @@ function handleClickDelete(id: string): void {
   @apply border-b sm:border sm:hover:border sm:hover:border-purple-500;
 
   .first-row {
-    @apply flex justify-between items-start;
+    @apply flex items-start justify-between;
 
     .my-title {
-      @apply xl:text-xl lg:text-lg text-base;
+      @apply text-base lg:text-lg xl:text-xl;
     }
   }
 
   .card-text {
-    @apply flex flex-wrap items-center pt-0 pb-2 text-gray-700;
+    @apply flex flex-wrap items-center pb-2 pt-0 text-gray-700;
 
     * {
       @apply mr-2 mt-1;
     }
 
     .label {
-      @apply px-2 border-gray-700 bg-gray-400 text-xs text-white rounded;
+      @apply rounded border-gray-700 bg-gray-400 px-2 text-xs text-white;
     }
 
     .scenario {
-      @apply px-2 border-gray-700 bg-gray-400 text-xs text-white rounded-[1em];
+      @apply rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white;
     }
 
     .label.active {

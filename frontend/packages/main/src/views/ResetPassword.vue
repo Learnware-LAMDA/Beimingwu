@@ -43,15 +43,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-card flat class="mx-auto w-full sm:p-7 p-2" max-width="500">
+  <v-card flat class="mx-auto w-full p-2 sm:p-7" max-width="500">
     <v-card-item>
-      <div class="items-center justify-center flex-1 d-flex">
+      <div class="d-flex flex-1 items-center justify-center">
         <v-icon :color="color">{{ icon }}</v-icon>
         <span class="ml-2"> {{ msg }} </span>
       </div>
     </v-card-item>
     <v-card-actions>
-      <div class="items-center justify-center flex-1 d-flex">
+      <div class="d-flex flex-1 items-center justify-center">
         <v-btn variant="outlined" @click="router.push({ name: 'Login' })"> Continue </v-btn>
       </div>
     </v-card-actions>

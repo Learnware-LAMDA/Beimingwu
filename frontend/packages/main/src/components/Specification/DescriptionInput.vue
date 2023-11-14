@@ -102,7 +102,7 @@ watch(
 
 <template>
   <div class="grid grid-cols-1 gap-0 md:grid-cols-2 md:gap-3">
-    <div class="flex flex-col max-h-[600px]">
+    <div class="flex max-h-[600px] flex-col">
       <v-virtual-scroll v-if="modelValue.Dimension > 7" :items="descriptionArray" class="flex-1">
         <template #default="{ index: idx }">
           <v-hover>
@@ -189,7 +189,7 @@ watch(
           <template #prepend>
             <div
               v-if="dragging"
-              class="absolute left-0 top-0 right-0 bottom-0 flex flex-col justify-center items-center bg-gray-200 z-10 opacity-80 rounded border-2 border-dashed border-gray-500 pointer-events-none text-lg"
+              class="pointer-events-none absolute bottom-0 left-0 right-0 top-0 z-10 flex flex-col items-center justify-center rounded border-2 border-dashed border-gray-500 bg-gray-200 text-lg opacity-80"
             >
               {{ t("Public.DropYourJSONFileHere") }}
             </div>

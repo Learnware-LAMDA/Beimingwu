@@ -386,8 +386,8 @@ onActivated(init);
 </script>
 
 <template>
-  <v-container class="h-full <sm:p-0">
-    <v-card class="relative max-w-[1000px] w-full m-auto" :flat="display.name.value === 'xs'">
+  <v-container class="sm:p-none h-full p-0">
+    <v-card class="relative m-auto w-full max-w-[1000px]" :flat="display.name.value === 'xs'">
       <v-scroll-y-transition>
         <v-card-actions v-if="success">
           <v-alert
@@ -404,7 +404,7 @@ onActivated(init);
         </v-card-actions>
       </v-scroll-y-transition>
       <v-stepper-title
-        class="mt-2 mb-5 w-full"
+        class="mb-5 mt-2 w-full"
         :step-title="t('Submit.Step')"
         :steps="steps"
         :current-step="currentStep"
@@ -413,8 +413,8 @@ onActivated(init);
 
       <v-divider class="border-black"></v-divider>
 
-      <div class="w-full mx-auto sm:px-2 pt-2 sm:pb-2">
-        <v-card-title class="md:!text-2xl text-1.2rem <sm:pb-0">
+      <div class="mx-auto w-full pt-2 sm:px-2 sm:pb-2">
+        <v-card-title class="text-1.2rem sm:pb-none pb-0 md:text-2xl">
           <span>{{ steps[currentStep].title }}</span>
         </v-card-title>
 
@@ -468,7 +468,7 @@ onActivated(init);
           </v-window-item>
 
           <v-window-item :value="3">
-            <div class="p-4 m-auto">
+            <div class="m-auto p-4">
               <file-upload
                 v-model="files.value"
                 :error-messages="files.errorMessages"
@@ -476,7 +476,7 @@ onActivated(init);
                 class="text-xl"
               ></file-upload>
             </div>
-            <v-card-text class="py-2 text-lg <sm:text-sm">
+            <v-card-text class="py-2 text-sm sm:text-lg">
               <a
                 class="underline"
                 href="http://36.111.128.21:30006/workflow/submit.html"
@@ -486,7 +486,7 @@ onActivated(init);
               </a>
               {{ t("Submit.File.ForInstructionsOnHowToCreateTheRequiredZipFile") }}
             </v-card-text>
-            <v-card-text class="pt-2 text-lg <sm:text-sm">
+            <v-card-text class="pt-2 text-sm sm:text-lg">
               <a class="underline" href="./static/learnware-template.zip" target="_blank">
                 {{ t("Submit.File.ClickHere") }}
               </a>

@@ -153,7 +153,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
 </script>
 
 <template>
-  <div class="relative max-w-[1200px] mx-auto p-4 sm:p-6 min-h-full sm:min-h-0 bg-white">
+  <div class="relative mx-auto min-h-full max-w-[1200px] bg-white p-4 sm:min-h-0 sm:p-6">
     <v-skeleton-loader
       v-if="loading"
       class=""
@@ -178,7 +178,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
       <v-scroll-y-transition class="fixed left-0 right-0 z-10" style="top: var(--v-layout-top)">
         <v-card-actions v-if="showError">
           <v-alert
-            class="w-full max-w-[900px] mx-auto"
+            class="mx-auto w-full max-w-[900px]"
             closable
             :text="errorMsg"
             type="error"
@@ -187,7 +187,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
         </v-card-actions>
       </v-scroll-y-transition>
 
-      <div class="sm:flex justify-between">
+      <div class="justify-between sm:flex">
         <div>
           <div class="text-h3 text-3xl lg:text-5xl">
             {{ learnware.name }}
@@ -225,7 +225,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
 
       <div v-if="learnware" class="min-h-full w-full" flat>
         <div class="learnware-container text-lg">
-          <v-expansion-panels v-if="learnware.dataType === 'Table'" class="mt-2 border rounded-lg">
+          <v-expansion-panels v-if="learnware.dataType === 'Table'" class="mt-2 rounded-lg border">
             <v-expansion-panel elevation="0" class="rounded-lg">
               <v-expansion-panel-title class="text-lg">
                 <div>
@@ -237,7 +237,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                 </div>
               </v-expansion-panel-title>
               <v-expansion-panel-text>
-                <div class="flex font-bold py-3 border-y">
+                <div class="flex border-y py-3 font-bold">
                   <div class="w-20">
                     {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
                   </div>
@@ -247,7 +247,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                 </div>
                 <div v-if="learnware.input.Dimension < 8">
                   <div v-for="[key, val] in Object.entries(learnware.input.Description)" :key="key">
-                    <div class="flex py-2 px-1 border-b">
+                    <div class="flex border-b px-1 py-2">
                       <div class="w-20">{{ key }}</div>
                       <div class="w-full">{{ val }}</div>
                     </div>
@@ -259,7 +259,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                   :height="300"
                 >
                   <template #default="{ item }">
-                    <div class="flex py-2 px-1 border-b">
+                    <div class="flex border-b px-1 py-2">
                       <div class="w-20">{{ Number(item[0]) }}</div>
                       <div class="w-full">{{ item[1] }}</div>
                     </div>
@@ -278,7 +278,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
 
           <v-expansion-panels
             v-if="['Classification', 'Regression'].includes(learnware.taskType)"
-            class="mr-2 border rounded-lg"
+            class="mr-2 rounded-lg border"
           >
             <v-expansion-panel elevation="0" class="rounded-lg">
               <v-expansion-panel-title class="text-lg">
@@ -299,7 +299,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                   "
                   class="mt-2"
                 >
-                  <div class="flex font-bold py-3 border-y">
+                  <div class="flex border-y py-3 font-bold">
                     <div class="w-20">
                       {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
                     </div>
@@ -312,7 +312,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                       v-for="[key, val] in Object.entries(learnware.output.Description)"
                       :key="key"
                     >
-                      <div class="flex py-2 px-1 border-b">
+                      <div class="flex border-b px-1 py-2">
                         <div class="w-20">{{ key }}</div>
                         <div class="w-full">{{ val }}</div>
                       </div>
@@ -324,7 +324,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                     :height="300"
                   >
                     <template #default="{ item }">
-                      <div class="flex py-2 px-1 border-b">
+                      <div class="flex border-b px-1 py-2">
                         <div class="w-20">{{ Number(item[0]) }}</div>
                         <div class="w-full">{{ item[1] }}</div>
                       </div>
@@ -352,7 +352,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
           </div>
           <div>
             <b>{{ t("Submit.SemanticSpecification.Scenario.Scenario") }}:</b>
-            <span v-for="(scenario, i) in learnware.scenarioList" :key="i" class="ml-1 active">
+            <span v-for="(scenario, i) in learnware.scenarioList" :key="i" class="active ml-1">
               {{ t(`Submit.SemanticSpecification.Scenario.Type.${scenario}`) }}
             </span>
           </div>
@@ -375,7 +375,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
           </div>
         </div>
       </div>
-      <v-overlay v-model="downloading" class="flex justify-center items-center">
+      <v-overlay v-model="downloading" class="flex items-center justify-center">
         <v-progress-circular size="80" width="8" indeterminate />
       </v-overlay>
     </div>
