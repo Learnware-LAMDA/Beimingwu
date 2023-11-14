@@ -121,31 +121,38 @@ predict_y = augment_reuser.predict(user_data=test_x)
 
 ## 异构学件复用方法
 
-单个异构学件复用时一共包含三个流程：输入空间对齐、使用学件预测、输出空间对齐，我们提供了`FeatureAlignLearnware`类帮助用户复用单个异构学件。在异构学件的复用过程中，学件的统计规约和用户任务的统计规约`user_spec`用于输入空间的对齐，少量有标记数据`val_x,val_y`用于输出空间的对齐（基于`FeatureAugmentReuser`类）。
+我们提供了 `HeteroMapAlignLearnware` 类帮助用户将异构学件与用户任务进行对齐，一共包含两步：输入空间对齐、输出空间对齐。
 
+在异构学件的对齐过程中，学件的统计规约和用户任务的统计规约 `user_spec` 将用于输入空间的对齐，少量有标记数据 `(val_x, val_y)` 将用于输出空间的对齐，具体代码如下：
 ```python
 from learnware.reuse import HeteroMapAlignLearnware
 
-hetero_learnware = HeteroMapAlignLearnware(leanrware, mode="regression")
+# mode="regression": 用户任务类型为回归
+# mode="classification"：用户任务类型为分类
+hetero_learnware = HeteroMapAlignLearnware(learnware=leanrware, mode="regression")
 hetero_learnware.align(user_spec, val_x, val_y)
+
+# 使用对齐后的异构学件进行预测
 predict_y = hetero_learnware.predict(user_data=test_x)
 ```
 
-当用户想同时复用多个异构学件时，我们可以将`FeatureAlignLearnware`和同构的复用方法`Averaging`， `EnsemblePruning` 相结合：
+如果想要复用多个异构学件，可以将 `HeteroMapAlignLearnware` 和上文介绍的同构复用方法 `Averaging`、`EnsemblePruning` 相结合：
 
 ```python
 hetero_learnware_list = []
-	for learnware in mixture_learnware_list:
-        hetero_learnware = HeteroMapAlignLearnware(learnware, mode="regression")
-        hetero_learnware.align(user_spec, val_x, val_y)
-        hetero_learnware_list.append(hetero_learnware)
+for learnware in learnware_list:
+    hetero_learnware = HeteroMapAlignLearnware(learnware, mode="regression")
+    hetero_learnware.align(user_spec, val_x, val_y)
+    hetero_learnware_list.append(hetero_learnware)
             
-# Use averaging ensemble reuser to reuse the searched learnwares to make prediction
+# 使用 AveragingReuser 复用多个异构学件
 reuse_ensemble = AveragingReuser(learnware_list=hetero_learnware_list, mode="mean")
 ensemble_predict_y = reuse_ensemble.predict(user_data=test_x)
 
-# Use ensemble pruning reuser to reuse the searched learnwares to make prediction
-reuse_ensemble = EnsemblePruningReuser(learnware_list=hetero_learnware_list, mode="regression")
+# 使用 EnsemblePruningReuser 复用多个异构学件
+reuse_ensemble = EnsemblePruningReuser(
+    learnware_list=hetero_learnware_list, mode="regression"
+)
 reuse_ensemble.fit(val_x, val_y)
 ensemble_pruning_predict_y = reuse_ensemble.predict(user_data=test_x)
 ```
