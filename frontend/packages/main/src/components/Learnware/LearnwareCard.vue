@@ -174,7 +174,7 @@ function handleClickDelete(id: string): void {
             variant="flat"
             icon="mdi-download"
             :size="greaterThanXs ? undefined : 'small'"
-            @click.stop.prevent="() => downloadLearnwareSync(item.id)"
+            @click.stop.prevent="() => item.id && downloadLearnwareSync(item.id)"
           ></v-btn>
           <v-btn
             v-if="isAdmin"

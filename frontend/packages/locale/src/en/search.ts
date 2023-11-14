@@ -15,7 +15,7 @@ export default {
   RecommendedMultipleLearnware: "Recommended multiple learnware",
   RecommendedMultipleLearnwareTips:
     "The packaged learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to greater performance.",
-  RecommendedSingleLearnware: "推荐单个学件",
+  RecommendedSingleLearnware: "Recommended single learnware",
   RecommendedSingleLearnwareTips:
     "The listed learnwares are recommended as each of them matches your task requirements in terms of statistical specifications.",
   TotalSpecificationScore: "Total specification score",
