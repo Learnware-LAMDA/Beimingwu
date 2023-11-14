@@ -100,15 +100,6 @@ class SearchLearnware(flask_restful.Resource):
             pass
 
         print(msg)
-        try:
-            print("=" * 60)
-            if ret not in [None, False]:
-                lis = ret[1]
-                for x in lis:
-                    print(x.get_specification().get_semantic_spec()["Name"]["Values"])
-            print("=" * 60)
-        except Exception as err:
-            print(err)
 
         if not status:
             return {"code": 41, "msg": msg}, 200

@@ -43,7 +43,7 @@ def check_user_exist_exclude(by, value, exclude, conn):
 
 
 def get_user_info(by, value):
-    rows = context.database.execute(f"SELECT * FROM tb_user WHERE {by} = :{by}", {by: value})
+    rows = context.database.execute(f"SELECT * FROM tb_user WHERE {by} = :{by}", {by: value}, read_only=True)
     if len(rows) == 0:
         return None
     else:
@@ -242,7 +242,7 @@ def get_learnware_list(by, value, limit=None, page=None, is_verified=None):
 
 def get_learnware_list_by_user_id(user_id, limit, page):
     cnt = context.database.execute(
-        "SELECT COUNT(1) FROM tb_user_learnware_relation WHERE user_id = :user_id", {"user_id": user_id}
+        "SELECT COUNT(1) FROM tb_user_learnware_relation WHERE user_id = :user_id", {"user_id": user_id}, read_only=True
     )[0][0]
 
     query = """
@@ -287,6 +287,7 @@ def get_verify_log(user_id, learnware_id):
     rows = context.database.execute(
         sql,
         {"user_id": user_id, "learnware_id": learnware_id},
+        read_only=True,
     )
 
     if len(rows) == 0:
@@ -328,7 +329,8 @@ def get_learnware_owners(learnware_ids):
             " JOIN tb_user_learnware_relation tb2 ON tb1.id=tb2.user_id WHERE learnware_id in {0}".format(
                 "(" + ",".join(["'" + learnware_id + "'" for learnware_id in learnware_ids]) + ")"
             )
-        )
+        ),
+        read_only=True,
     )
 
     rmap = {r[0]: r[1] for r in rows}
@@ -457,6 +459,7 @@ def get_learnware_timestamps(learnware_ids):
             "(" + ",".join(["'" + learnware_id + "'" for learnware_id in learnware_ids]) + ")"
         ),
         # {"learnware_ids": learnware_ids},
+        read_only=True,
     )
     result = {r[0]: r[1] for r in result}
 
@@ -506,6 +509,7 @@ def get_learnware_verify_status(learnware_id):
     result = context.database.execute(
         "SELECT verify_status FROM tb_user_learnware_relation WHERE learnware_id = :learnware_id",
         {"learnware_id": learnware_id},
+        read_only=True,
     )
     if len(result) == 0:
         raise RuntimeError(f"learnware_id {learnware_id} not found")
@@ -521,7 +525,9 @@ def create_user_token(user_id, token):
 
 
 def get_user_tokens(user_id) -> List[str]:
-    result = context.database.execute("SELECT token FROM tb_user_token WHERE user_id = :user_id", {"user_id": user_id})
+    result = context.database.execute(
+        "SELECT token FROM tb_user_token WHERE user_id = :user_id", {"user_id": user_id}, read_only=True
+    )
     if len(result) == 0:
         return []
 
@@ -598,7 +604,9 @@ def get_learnware_count_queued_or_processing():
 
 
 def check_user_admin(user_id):
-    result = context.database.execute("SELECT role FROM tb_user WHERE id = :user_id", {"user_id": user_id})
+    result = context.database.execute(
+        "SELECT role FROM tb_user WHERE id = :user_id", {"user_id": user_id}, read_only=True
+    )
 
     if len(result) == 0:
         return False
