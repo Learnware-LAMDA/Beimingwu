@@ -1,8 +1,8 @@
 export default {
   Cover: {
-    Beiming: "Beiming: A Learnware Dock System",
+    Beiming: "Beimingwu: A Learnware Dock System",
     Introduction:
-      "Beiming is based on the learnware paradigm, which systematically covers the complete process of learnware from submission to deployment, helping users effectively identify and reuse helpful learnwares without building machine learning models from scratch.",
+      "Based on the learnware paradigm, Beimingwu systematically covers the entire learnware process from submission to deployment, helping users identify and reuse learnwares without starting from scratch.",
     Try: "Try It Out",
     Submit: "Be A Developer",
   },
@@ -12,31 +12,31 @@ export default {
       "A learnware is a well-performed trained machine learning model with a specification which enables it to be adequately identified to reuse according to the requirement of future users who know nothing about the learnware in advance.",
   },
   Why: {
-    Title: "Why do we need learnware?",
+    Title: "Why is a learnware dock system necessary?",
     Description:
-      "There are complaints about current machine learning techniques such as the requirement of a huge amount of training data and proficient training skills, the difficulty of continual learning, the risk of catastrophic forgetting, the leaking of data privacy/proprietary, etc.",
+      "There are complaints about current machine learning techniques such as the requirement of a huge amount of training data and proficient training skills, the difficulty of continual learning, the risk of catastrophic forgetting, the leaking of data privacy/proprietary, etc. The learnware dock system provides a unified solution to the aforementioned issues.",
     LackOfTrainingDataSkills: "Lack of training data/skills",
     LackOfTrainingDataSkillsDescription:
-      "Strong machine learning models can be attained even for ordinary users with little training skills or small data, because the users can adapte or refine well-performed learnwares rather than building a model from scratch by themselves.",
+      "Strong machine learning models can be attained even for ordinary users with little training skills or limited data, because the users can acquire well-performed learnwares from the learnware dock system and further adapt or refine them, instead of starting from scratch.",
     ContinualLearning: "Continual learning",
     ContinualLearningDescription:
-      "The learnware market naturally realizes continual and lifelong learning, because with the constant submissions of well-performed learnwares trained from diverse tasks, the knowledge held in the learnware market is being continually enriched.",
+      "The learnware dock system naturally realizes continual and lifelong learning, because with the constant submissions of well-performed learnwares trained from diverse tasks, the knowledge held in the learnware dock system is being continually enriched.",
     CatastrophicForgetting: "Catastrophic forgetting",
     CatastrophicForgettingDescription:
-      "A learnware will always be accommodated in the learnware market once it is accepted, unless every aspect of its function can be replaced by other learnwares. Thus, the old knowledge in the learnware market is always held. Nothing to be forgotten.",
+      "A learnware will always be accommodated in the learnware dock system once it is accepted, unless every aspect of its function can be replaced by other learnwares. Thus, the old knowledge in the learnware dock system is always held. Nothing to be forgotten.",
     DataPrivacyProprietary: "Data privacy/proprietary",
     DataPrivacyProprietaryDescription:
       "The developers only submit their models without sharing their own data, and thus, the data privacy/proprietary can be well preserved. Although one could not deny the possibility of reverse engineering the models, the risk would be too small compared with many other privacy-preserving solutions.",
   },
   How: {
-    Title: "How does learnware work?",
+    Title: "How does the learnware dock system work?",
     Description:
-      "There are three important entities: developers, users, and the market. The developers are usually machine learning experts who produce and want to share/sell their well-performed trained machine learning models. The users need machine learning services but usually have only limited data and lack machine learning knowledge and skills. The learnware market accepts/buys well-performed trained models from developers, accommodates them in the market, and provides/sells services to users via identifying and reusing learnwares to help users tackle their present tasks.",
+      "The learnware dock system is the core entity within the learnware paradigm, which encompasses three key entities: developers, users, and the learnware dock system. The developers are usually machine learning experts who produce and want to share/sell their well-performed trained machine learning models. The users need machine learning services but usually have only limited data and lack machine learning knowledge and skills. The learnware dock system accepts well-performed trained models from developers, accommodates them in the system, and provides services to users via identifying and reusing learnwares to help users tackle their present tasks.",
   },
   SpecificationWorld: {
     Title: "Specification world",
     Description:
-      "Note that the specification islands, corresponding to models from different feature/label spaces, can be merged if their connections are discovered and established.",
+      "Models from different feature/label spaces constitute multiple specification islands, and all the specification islands together constitute the specification world in the learnware dock system. In this world, if connections between different islands can be discovered and established, the corresponding specification islands can be merged.",
   },
   Footer: {
     About: "About",
