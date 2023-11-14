@@ -22,7 +22,7 @@ class TestLearnwareClient(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         testops.cleanup_folder()
-        mp_context = multiprocessing.get_context('spawn')
+        mp_context = multiprocessing.get_context("spawn")
         self.server_process = mp_context.Process(target=main.main)
         self.server_process.start()
         testops.wait_port_open(context.config.listen_port, 10)
