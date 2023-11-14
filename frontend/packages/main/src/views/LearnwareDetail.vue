@@ -360,10 +360,18 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
             <b>{{ t("LearnwareDetail.VerifyStatus.VerifyStatus") }}: </b>
             {{
               learnware.verifyStatus && t(`LearnwareDetail.VerifyStatus.${learnware.verifyStatus}`)
-            }},
-            <button class="text-blue-500 underline" @click="onLearnwareVerifyLog(learnware.id)">
-              {{ t("LearnwareDetail.Logs") }}
-            </button>
+            }}
+          </div>
+          <div>
+            <template v-if="editable">
+              <b>{{ t("LearnwareDetail.Logs") }}: </b>
+              <span
+                class="cursor-pointer text-blue-500 underline"
+                @click="onLearnwareVerifyLog(learnware.id)"
+              >
+                {{ t("LearnwareDetail.ViewLogs") }}
+              </span>
+            </template>
           </div>
           <div>
             <b> {{ t("LearnwareDetail.LastModified") }}: </b>

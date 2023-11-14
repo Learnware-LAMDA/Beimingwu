@@ -9,5 +9,6 @@ export default {
     QUEUE: "QUEUE",
   },
   Logs: "Logs",
+  ViewLogs: "View Logs",
   LastModified: "Last Modified",
 };
