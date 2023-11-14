@@ -1,6 +1,6 @@
 import unittest
 from scripts import main
-import multiprocessing
+import multiprocessing as mp
 import context
 from context import config as C
 import requests
@@ -19,7 +19,8 @@ class TestEngine(unittest.TestCase):
     ) -> None:
         testops.cleanup_folder()
         unittest.TestCase.setUpClass()
-        TestEngine.server_process = multiprocessing.Process(target=main.main)
+        mp_context = mp.get_context('spawn')
+        TestEngine.server_process = mp_context.Process(target=main.main)
         TestEngine.server_process.start()
         testops.wait_port_open(C.listen_port, 10)
         context.init_database()
@@ -38,6 +39,7 @@ class TestEngine(unittest.TestCase):
         headers = testops.login("test@localhost", "test")
         testops.delete_learnware(TestEngine.learnware_id, headers)
         TestEngine.server_process.kill()
+        TestEngine.server_process.join()
         testops.cleanup_folder()
         pass
 
