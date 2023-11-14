@@ -61,20 +61,6 @@ def verify_learnware_with_conda_checker(
     return verify_sucess, command_output
 
 
-def call_internal_service(func):
-    os.environ.pop("http_proxy", "")
-    original_proxy = os.environ.pop("https_proxy", "")
-
-    try:
-        return func()
-    finally:
-        # restore proxy
-        os.environ["http_proxy"] = original_proxy
-        os.environ["https_proxy"] = original_proxy
-        pass
-    pass
-
-
 def worker_process_func(q: queue.Queue, env: dict):
     if env is not None:
         os.environ.update(env)
