@@ -75,6 +75,10 @@ function submit(): Promise<void> {
         case 21: {
           throw new Error("System error");
         }
+        case 41: {
+          email.errorMessages = "Your email is not allowed to register";
+          return;
+        }
         case 51: {
           userName.errorMessages = res.msg;
           return;
@@ -199,11 +203,6 @@ onUnmounted(() => {
             ></v-text-field>
           </v-form>
         </v-card-text>
-        <v-scale-transition>
-          <v-card-actions v-if="showError">
-            <v-alert v-model="showError" closable :text="errorMsg" type="error" />
-          </v-card-actions>
-        </v-scale-transition>
         <v-card-actions>
           <v-btn block class="bg-primary py-5" color="white" :disabled="!valid" @click="submit">
             {{ t("Register.Register") }}
