@@ -17,6 +17,8 @@ class TestAdmin(unittest.TestCase):
         TestAdmin.server_process.start()
         testops.wait_port_open(C.listen_port, 10)
         context.init_database()
+        context.init_engine()
+        context.init_redis()
         testops.clear_db()
         TestAdmin.user_id = testops.url_request(
             "auth/register", {"username": "test", "password": "test", "email": "test@localhost", "confirm_email": False}
