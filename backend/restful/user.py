@@ -273,9 +273,10 @@ class VerifyLog(flask_restful.Resource):
 
         # check if user is admin
         if database.check_user_admin(user_id):
-            user_id = database.get_user_id_by_learnware(learnware_id)
-
-        result = database.get_verify_log(user_id, learnware_id)
+            result = database.get_verify_log(None, learnware_id)
+        else:
+            result = database.get_verify_log(user_id, learnware_id)
+            pass
 
         return {"code": 0, "data": result}, 200
 

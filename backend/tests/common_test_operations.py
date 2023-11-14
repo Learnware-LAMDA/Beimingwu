@@ -249,3 +249,18 @@ def cleanup_folder():
 
     if os.path.exists(learnware_data_path):
         shutil.rmtree(learnware_data_path)
+
+
+def reset_config():
+    with open("config.json", "w") as fout:
+        json.dump({}, fout, indent=4)
+        pass
+    pass
+
+
+def set_config(key, value):
+    config = {key: value}
+    with open("config.json", "w") as fout:
+        json.dump(config, fout, indent=4)
+        pass
+    pass

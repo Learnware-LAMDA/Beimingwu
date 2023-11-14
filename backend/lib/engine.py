@@ -17,6 +17,7 @@ from learnware.learnware.utils import get_stat_spec_from_config
 from learnware.config import C as learnware_config
 from . import common_utils
 import uuid
+import shutil
 
 
 def cache(seconds: int, maxsize: int = 128, typed: bool = False):
@@ -300,3 +301,49 @@ def get_learnware_count_detail(check_status=None):
             print(f"load {learnware_id} failed due to {err}!")
 
     return count_detail
+
+
+def update_learnware_yaml_file(learnware_path, learnware_id, semantic_spec):
+    yaml_file = learnware_config.learnware_folder_config["yaml_file"]
+    yaml_file_path = os.path.join(learnware_path, yaml_file)
+    with open(yaml_file_path, "r") as f:
+        learnware_info = yaml.safe_load(f)
+        pass
+
+    with open(os.path.join(learnware_path, "semantic_specification.json"), "w") as fout:
+        json.dump(semantic_spec, fout, indent=4)
+        pass
+    learnware_info["id"] = learnware_id
+    learnware_info["semantic_specification"] = {"file_name": "semantic_specification.json"}
+    with open(yaml_file_path, "w") as f:
+        yaml.dump(learnware_info, f)
+        pass
+    pass
+
+
+def repack_learnware_folder(input_zip_path: str, output_path: str, learnware_id: str, semantic_specification: dict):
+    """
+    Repack learnware: add semantic_specification.json and remove top folder
+    """
+
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+
+    context.logger.info(f"Extracting learnware to {output_path}")
+    with zipfile.ZipFile(input_zip_path, "r") as zip_ref:
+        top_folder = common_utils.get_top_folder_in_zip(zip_ref)
+
+        if len(top_folder) > 0:
+            with tempfile.TemporaryDirectory() as tempdir:
+                zip_ref.extractall(tempdir)
+                content_path = os.path.join(tempdir, top_folder)
+                for file in os.listdir(content_path):
+                    shutil.move(os.path.join(content_path, file), os.path.join(output_path, file))
+                    pass
+                pass
+        else:
+            zip_ref.extractall(output_path)
+            pass
+
+    update_learnware_yaml_file(output_path, learnware_id, semantic_specification)
+    pass

@@ -20,7 +20,7 @@ const links = computed(() => [
   {
     icon: "mdi-email",
     name: t("Home.Footer.ContactUs"),
-    path: "mailto:bm-support@lamda.nju.edu.cn",
+    path: "mailto:bmwu-support@lamda.nju.edu.cn",
     tooltips: t("Home.Footer.RightClickToCopy"),
   },
 ]);

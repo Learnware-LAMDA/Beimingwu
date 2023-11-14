@@ -66,6 +66,9 @@ def decode_email_verification_code(code: str, secret_key) -> Union[str, None]:
 
 
 def send_email_worker(sender_email, password, receiver_email, message, smtp_server, port, proxy_host, proxy_port):
+    if len(smtp_server) == 0:
+        return
+
     if len(proxy_host) > 0 and proxy_port > 0:
         socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, proxy_host, proxy_port)
         original_socket = socket.socket
@@ -104,7 +107,7 @@ Subject: Please activate your account\r\n\
             { confirm_url }
 
         Cheers!
-        BeiMing Group
+        Beimingwu Group
 """
 
     thread = mp.Process(
@@ -135,7 +138,7 @@ Subject: Reset your password\r\n\
 
         Cheers!
 
-        BeiMing Group
+        Beimingwu Group
 """
 
     thread = mp.Process(

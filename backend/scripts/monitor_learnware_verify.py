@@ -13,62 +13,51 @@ from learnware.market import BaseChecker
 import json
 import lib.restful_wrapper as restful_wrapper
 import tempfile
-import zipfile
-import lib.engine as engine_ops
-import yaml
-import shutil
+import lib.engine as engine_utils
 from typing import Tuple
 import learnware.utils
 from learnware.market import CondaChecker, EasyStatChecker, EasySemanticChecker
 from learnware.learnware import get_learnware_from_dirpath
+import traceback
 
 
 def verify_learnware_with_conda_checker(
     learnware_id: str, learnware_path: str, semantic_specification: dict
 ) -> Tuple[bool, str]:
     verify_sucess = True
-    command_output = ""
+    command_output = "Success"
     try:
         learnware = get_learnware_from_dirpath(
             id=learnware_id, semantic_spec=semantic_specification, learnware_dirpath=learnware_path, ignore_error=False
         )
     except Exception as e:
         verify_sucess = False
-        command_output = f"initiate learnware failed due to {str(e)}"
+        command_output = f"initiate learnware failed."
+        command_output += "\r\n" + traceback.format_exc()
         return verify_sucess, command_output
 
     try:
         semantic_checker = EasySemanticChecker()
-        if semantic_checker(learnware=learnware) == EasySemanticChecker.INVALID_LEARNWARE:
+        check_result, check_message = semantic_checker(learnware=learnware)
+        if check_result == EasySemanticChecker.INVALID_LEARNWARE:
             verify_sucess = False
             command_output = "semantic checker does not pass"
+            command_output += "\n" + check_message
+            pass
 
         stat_checker = CondaChecker(inner_checker=EasyStatChecker())
-        if verify_sucess and stat_checker(learnware=learnware) == EasyStatChecker.INVALID_LEARNWARE:
+        check_result, check_message = stat_checker(learnware=learnware)
+        if verify_sucess and check_result == EasyStatChecker.INVALID_LEARNWARE:
             verify_sucess = False
             command_output = "conda checker does not pass"
+            command_output += "\n" + check_message
 
     except Exception as e:
         verify_sucess = False
-        command_output = f"Statistical checker runtime error due to {str(e)}"
+        command_output = f"Statistical checker runtime error"
+        command_output += "\r\n" + traceback.format_exc()
 
     return verify_sucess, command_output
-
-
-def update_learnware_yaml_file(learnware_path, learnware_id, semantic_spec_filename):
-    yaml_file = engine_ops.learnware_config.learnware_folder_config["yaml_file"]
-    yaml_file_path = os.path.join(learnware_path, yaml_file)
-    with open(yaml_file_path, "r") as f:
-        learnware_info = yaml.safe_load(f)
-        pass
-
-    shutil.copyfile(semantic_spec_filename, os.path.join(learnware_path, "semantic_specification.json"))
-    learnware_info["id"] = learnware_id
-    learnware_info["semantic_specification"] = {"file_name": "semantic_specification.json"}
-    with open(yaml_file_path, "w") as f:
-        yaml.dump(learnware_info, f)
-        pass
-    pass
 
 
 def call_internal_service(func):
@@ -101,12 +90,10 @@ def worker_process_func(q: queue.Queue, env: dict):
         dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.PROCESSING)
 
         try:
-            learnware_dirpath, semantic_specification = call_internal_service(
-                functools.partial(restful_wrapper.get_learnware, learnware_id)
-            )
+            learnware_info = context.engine.learnware_organizer.get_learnware_info_from_storage(learnware_id)
             learnware_check_status = BaseChecker.NONUSABLE_LEARNWARE
 
-            if learnware_dirpath is None:
+            if learnware_info is None:
                 # it is in the upload folder, not learnware engine
                 learnware_filename = context.get_learnware_verify_file_path(learnware_id)
                 semantic_spec_filename = learnware_filename[:-4] + ".json"
@@ -118,26 +105,33 @@ def worker_process_func(q: queue.Queue, env: dict):
 
                 with tempfile.TemporaryDirectory(dir=context.config["temp_path"]) as tmpdir:
                     extract_path = tmpdir
-                    if not os.path.exists(extract_path):
-                        os.makedirs(extract_path)
-
-                    context.logger.info(f"Extracting learnware to {extract_path}")
-                    with zipfile.ZipFile(learnware_filename, "r") as zip_ref:
-                        top_folder = common_utils.get_top_folder_in_zip(zip_ref)
-                        zip_ref.extractall(extract_path)
-
-                    extract_path = os.path.join(extract_path, top_folder)
-                    update_learnware_yaml_file(extract_path, learnware_id, semantic_spec_filename)
+                    engine_utils.repack_learnware_folder(
+                        learnware_filename, extract_path, learnware_id, semantic_specification
+                    )
 
                     verify_success, command_output = verify_learnware_with_conda_checker(
                         learnware_id, extract_path, semantic_specification
                     )
                     learnware.utils.zip_learnware_folder(extract_path, learnware_processed_filename)
             else:
+                # it is in the learnware engine
+
                 learnware_filename = None
                 semantic_spec_filename = None
                 learnware_processed_filename = None
-                # it is in the learnware engine
+                # we need repack the zip folder because the learnware may be updated
+
+                learnware_dirpath = learnware_info["folder_path"]
+                learnware_zippath = learnware_info["zip_path"]
+                semantic_specification = learnware_info["semantic_spec"]
+
+                common_utils.delete_folder_content(learnware_dirpath)
+                engine_utils.repack_learnware_folder(
+                    learnware_zippath, learnware_dirpath, learnware_id, semantic_specification
+                )
+                os.remove(learnware_zippath)
+                learnware.utils.zip_learnware_folder(learnware_dirpath, learnware_zippath)
+
                 verify_success, command_output = verify_learnware_with_conda_checker(
                     learnware_id, learnware_dirpath, semantic_specification
                 )
@@ -185,6 +179,8 @@ def worker_process_func(q: queue.Queue, env: dict):
 def main(num_worker):
     context.init_database()
     context.init_logger()
+    context.init_engine()
+
     if len(context.config["verify_proxy"]) > 0:
         context.logger.info("set proxy: " + context.config["verify_proxy"])
         proxy_url = context.config["verify_proxy"]

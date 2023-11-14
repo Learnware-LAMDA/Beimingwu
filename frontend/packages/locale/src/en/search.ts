@@ -3,8 +3,8 @@ export default {
   ChooseSemanticRequirement: "Choose semantic requirement",
   SearchById: "Search by id",
   LearnwareId: "Learnware Id",
-  SearchByName: "Search by name",
-  LearnwareName: "Learnware Name",
+  SearchByName: "Search by description",
+  LearnwareName: "Learnware Description",
   UploadStatisticalRequirement: "Upload statistical requirement",
   SpecificationScore: "Specification score",
   Updated: "Updated",
@@ -14,10 +14,10 @@ export default {
   StartHeterogeneousSearch: "Start heterogeneous search",
   RecommendedMultipleLearnware: "Recommended multiple learnware",
   RecommendedMultipleLearnwareTips:
-    "The learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to great effectiveness.",
+    "The packaged learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to greater performance.",
   RecommendedSingleLearnware: "Recommended single learnware",
   RecommendedSingleLearnwareTips:
-    "The listed learnwares are not highly recommended as they may not precisely match your task requirements in terms of statistical specifications. However, they are still available for your use.",
+    "The listed learnwares are recommended as each of them matches your task requirements in terms of statistical specifications.",
   TotalSpecificationScore: "Total specification score",
   DownloadAll: "Download all",
   Downloading: "Downloading...",
