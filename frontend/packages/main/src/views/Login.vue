@@ -193,8 +193,7 @@ function onResetPassword(): void {
       <success-dialog v-model="showResetPasswordDialog">
         <template #msg>
           <h2 class="text-lg mt-6 mb-8">
-            We have sent an email to your email address. Please follow the link in the email to
-            reset your password.
+            {{ t("Login.ResetPasswordSent") }}
           </h2>
         </template>
 
