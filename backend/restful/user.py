@@ -208,44 +208,6 @@ class UpdateLearnwareApi(flask_restful.Resource):
         return {"code": 0, "msg": "success"}, 200
 
 
-class AddLearnwareVerifiedApi(flask_restful.Resource):
-    # todo: this api should be protected
-    def post(self):
-        body = request.get_json()
-        learnware_id = body["learnware_id"]
-        check_status = body["check_status"]
-
-        if context.engine.get_learnware_by_ids(learnware_id) is None:
-            learnware_file = context.get_learnware_verify_file_path(learnware_id)
-            learnware_file_processed = learnware_file[:-4] + "_processed.zip"
-            learnware_semantic_spec_path = learnware_file[:-4] + ".json"
-
-            with open(learnware_semantic_spec_path, "r") as f:
-                semantic_specification = json.load(f)
-
-            final_id, final_status = context.engine.add_learnware(
-                zip_path=learnware_file_processed,
-                semantic_spec=semantic_specification,
-                checker_names=[],
-                learnware_id=learnware_id,
-            )
-            if final_id is None:
-                return {"code": 51, "msg": "Learnware add failed!"}, 200
-
-        final_status = context.engine.update_learnware(
-            id=learnware_id,
-            checker_names=[],
-            check_status=check_status,
-        )
-
-        redis_utils.publish_reload_learnware(learnware_id)
-
-        if final_status == EasySemanticChecker.INVALID_LEARNWARE:
-            return {"code": 51, "msg": "Learnware check_status update failed!"}, 200
-
-        return {"code": 0, "msg": "success"}, 200
-
-
 class DeleteLearnwareApi(flask_restful.Resource):
     @flask_jwt_extended.jwt_required()
     def post(self):
@@ -377,7 +339,6 @@ api.add_resource(ChangePasswordApi, "/change_password")
 api.add_resource(ListLearnwareApi, "/list_learnware")
 api.add_resource(AddLearnwareApi, "/add_learnware")
 api.add_resource(UpdateLearnwareApi, "/update_learnware")
-api.add_resource(AddLearnwareVerifiedApi, "/add_learnware_verified")
 api.add_resource(DeleteLearnwareApi, "/delete_learnware")
 api.add_resource(VerifyLog, "/verify_log")
 api.add_resource(AddLearnwareUploaded, "/add_learnware_uploaded")

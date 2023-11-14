@@ -21,6 +21,8 @@ class TestUser(unittest.TestCase):
         TestUser.server_process.start()
         testops.wait_port_open(context.config.listen_port, 10)
         context.init_database()
+        context.init_engine()
+        context.init_redis()
         testops.clear_db()
         TestUser.username = "test"
         TestUser.email = "test@localhost"

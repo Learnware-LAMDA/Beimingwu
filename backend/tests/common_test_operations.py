@@ -10,6 +10,7 @@ from database.base import LearnwareVerifyStatus
 from learnware.market import BaseChecker
 import shutil
 import hashlib
+from lib import redis_utils
 
 
 def clear_db():
@@ -140,17 +141,15 @@ def add_learnware_to_engine(learnware_id, headers):
     print(f"add_learnware_to_engine: {learnware_id}")
     dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.SUCCESS)
     learnware_file = context.get_learnware_verify_file_path(learnware_id)
+    semantic_spec_file = learnware_file[:-4] + ".json"
+    with open(semantic_spec_file, "r") as fin:
+        semantic_specification = json.load(fin)
+        pass
+
+    context.engine.add_learnware(learnware_file, semantic_spec=semantic_specification, learnware_id=learnware_id)
     print(learnware_file)
-    shutil.copyfile(learnware_file, learnware_file[:-4] + "_processed.zip")
 
-    result = url_request(
-        "user/add_learnware_verified",
-        {"learnware_id": learnware_id, "check_status": BaseChecker.USABLE_LEARWARE},
-        headers=headers,
-    )
-
-    if result["code"] != 0:
-        raise Exception("add learnware verified failed: " + json.dumps(result))
+    redis_utils.publish_reload_learnware(learnware_id)
     pass
 
 
