@@ -132,7 +132,7 @@ onUnmounted(() => {
     <div
       class="flex flex-row justify-center items-center w-full fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100"
     >
-      <success-dialog v-if="success">
+      <success-dialog v-model="success">
         <template #msg>
           <div class="text-lg mt-6 mb-8">
             {{ t("Register.SentEmail") }}
