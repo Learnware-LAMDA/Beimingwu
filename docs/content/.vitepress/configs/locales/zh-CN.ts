@@ -13,18 +13,18 @@ const zhCN: LocaleSpecificConfig & {
     nav: [
       { text: "首页", link: "/zh-CN/", icon: "mdi-home" },
       {
-        text: "示例",
+        text: "指南",
         link: "/zh-CN/overview/system-overview",
         icon: "mdi-collage",
       },
-      { text: "系统", link: "https://www.lamda.nju.edu.cn/learnware", icon: "mdi-domain"},
+      { text: "系统", link: "https://www.lamda.nju.edu.cn/learnware", icon: "mdi-domain" },
     ],
 
     sidebar: [
       {
         text: "整体概览",
         items: [
-          { text: "北冥系统介绍", link: "/zh-CN/overview/system-overview" },
+          { text: "系统介绍", link: "/zh-CN/overview/system-overview" },
           { text: "快速上手", link: "/zh-CN/overview/quick-start" },
           { text: "环境安装", link: "/zh-CN/overview/installation" },
         ],
@@ -81,23 +81,21 @@ const zhCN: LocaleSpecificConfig & {
       },
       {
         text: "版本公告",
-        link: "/zh-CN/markdown-examples",
+        link: "/zh-CN/versions",
       },
       {
         text: "常见问题",
-        link: "/zh-CN/markdown-examples",
+        link: "/zh-CN/common-questions",
       },
       {
         text: "联系我们",
-        link: "/zh-CN/markdown-examples",
+        link: "/zh-CN/contact-us",
       },
     ],
 
     outline: { label: "大纲" },
 
-    socialLinks: [
-      { icon: "github", link: "https://github.com/vuejs/vitepress" },
-    ],
+    socialLinks: [{ icon: "github", link: "https://github.com/vuejs/vitepress" }],
   },
 };
 

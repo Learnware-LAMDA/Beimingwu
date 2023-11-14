@@ -1,6 +1,6 @@
 # 如何上传学件？
 
-在北冥系统中，学件既可以从网页端上传，也可以使用 `learnware` Python 包进行上传。
+在北冥坞系统中，学件既可以从网页端上传，也可以使用 `learnware` Python 包进行上传。
 
 接下来，我们将分别对这两种方式进行介绍。
 
@@ -18,7 +18,7 @@
 
 需要注意的是，在第 2 步「选择标签」的过程中：
 - 如果数据类型为「表格」，则需要填写模型输入数据的每一维特征语义，使上传的学件可用于异构特征空间的任务；
-- 如果任务类型为「分类」、「回归」或者「特征提取」，则需要填写模型输出的每一维语义，使上传的学件可用于异构输出空间的任务。
+- 如果任务类型为「分类」或「回归」，则需要填写模型输出的每一维语义，使上传的学件可用于异构输出空间的任务。
 
 如果维度过多，可考虑使用大语言模型。通过分析特征工程的代码，生成各维度的语义。
 
@@ -27,7 +27,7 @@
 
 除网页端外，learnware 包也提供学件上传的接口，首先需要登录：
 ```py
-from learnware.client import LearnwareClient
+from learnware.client import LearnwareClient, SemanticSpecificationKey
 
 # Login to Beiming system
 client = LearnwareClient()
@@ -48,7 +48,7 @@ input_description = {
     },
 }
 
-# Prepare output description when task_type in ["Classification", "Regression", "Feature Extraction"]
+# Prepare output description when task_type in ["Classification", "Regression"]
 output_description = {
     "Dimension": 3,
     "Description": {
@@ -70,13 +70,13 @@ semantic_spec = client.create_semantic_specification(
     output_description=output_description,
 )
 ```
-需注意，填写语义规约时有一些限制：
-- data\_type 必须在 `client.list_semantic_specification_values(key="Data")` 之中；
-- task\_type 必须在 `client.list_semantic_specification_values(key="Task")` 之中；
-- library\_type 必须在 `client.list_semantic_specification_values(key="Library")` 之中；
-- scenarios 必须为 `client.list_semantic_specification_values(key="Scenario")` 的子集；
+请确保语义规约的输入在 `client.list_semantic_specification_values(key)` 给出的范围内：
+- data\_type 必须在 `key=SemanticSpecificationKey.DATA_TYPE` 对应的结果中；
+- task\_type 必须在 `key=SemanticSpecificationKey.TASK_TYPE` 对应的结果中；
+- library\_type 必须在 `key=SemanticSpecificationKey.LIBRARY_TYPE` 对应的结果中；
+- scenarios 必须为 `key=SemanticSpecificationKey.SENARIOES` 对应结果的子集；
 - 当 data\_type 为 `"Table"` 时，需要填写「输入描述」；
-- 当 task\_type 在 `["Classification", "Regression", "Feature Extraction"]` 中时，需要填写「输出描述」。
+- 当 task\_type 在 `["Classification", "Regression"]` 中时，需要填写「输出描述」。
 
 最后，填写语义规约和学件 zip 包路径，即可实现学件上传。
 
@@ -86,10 +86,14 @@ semantic_spec = client.create_semantic_specification(
 zip_path = "your learnware zip"
 
 # Check your learnware before upload
-client.check_learnware(learnware_zip_path=zip_path, semantic_specification=semantic_spec)
+client.check_learnware(
+    learnware_zip_path=zip_path, semantic_specification=semantic_spec
+)
 
 # Upload your learnware
-learnware_id = client.upload_learnware(learnware_zip_path=zip_path, semantic_specification=semantic_spec)
+learnware_id = client.upload_learnware(
+    learnware_zip_path=zip_path, semantic_specification=semantic_spec
+)
 ```
 
 学件上传成功后，可以在「个人信息 - 我的学件」处看到上传的学件。
