@@ -5,7 +5,6 @@ export default {
   Password: "密码",
   ConfirmPassword: "确认密码",
   SentEmail: "我们向您的邮箱发送了一封确认邮件，请点击邮件中的链接完成注册。",
-  EmailNotAllowed: "目前限制教育邮箱注册，非教育网邮箱请联系 bmwu-support@lamda.nju.edu.cn 加入白名单。",
   Resend: "重新发送",
   Close: "关闭",
   Error: {
@@ -14,5 +13,7 @@ export default {
     PasswordAtLeast8Chars: "密码至少需要 8 个字符",
     PasswordNotEmpty: "密码不能为空",
     PasswordNotMatch: "两次输入的密码不一致",
+    EmailNotAllowed:
+      "目前限制教育邮箱注册，非教育网邮箱请联系 bmwu-support{'@'}lamda.nju.edu.cn 加入白名单。",
   },
 };

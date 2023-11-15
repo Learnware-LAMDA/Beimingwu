@@ -79,7 +79,7 @@ function submit(): Promise<void> {
         }
         case 41: {
           showErrorDialog.value = true;
-          errorMsg.value = t("Register.EmailNotAllowed");
+          errorMsg.value = t("Register.Error.EmailNotAllowed");
           return;
         }
         case 51: {

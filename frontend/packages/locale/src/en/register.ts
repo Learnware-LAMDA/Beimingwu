@@ -6,8 +6,6 @@ export default {
   ConfirmPassword: "Confirm Password",
   SentEmail:
     "We have sent an email with a confirmation link to your email address. Please follow the link in the email.",
-  EmailNotAllowed:
-    "Currently, only education email is allowed. Please contact bmwu-support@lamda.nju.edu.cn to join the whitelist.",
   Resend: "Resend",
   Close: "Close",
   Error: {
@@ -16,5 +14,7 @@ export default {
     PasswordAtLeast8Chars: "Password needs to be at least 8 characters.",
     PasswordNotEmpty: "Password must not be empty.",
     PasswordNotMatch: "The two passwords you entered do not match.",
+    EmailNotAllowed:
+      "Currently, only education email is allowed. Please contact bmwu-support{'@'}lamda.nju.edu.cn to join the whitelist.",
   },
 };
