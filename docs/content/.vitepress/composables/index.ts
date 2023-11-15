@@ -8,8 +8,11 @@ export function useLangs({ removeCurrent = true, correspondingLink = false } = {
     link:
       site.value.locales[localeIndex.value]?.link ||
       (localeIndex.value === "root" ? "/" : `/${localeIndex.value}/`),
-    changeLang: (site.value.locales[localeIndex.value] as unknown as { changeLang: string })
-      .changeLang,
+    changeLang: (
+      (site.value.locales[localeIndex.value] || { changeLang: "" }) as unknown as {
+        changeLang: string;
+      }
+    ).changeLang,
   }));
 
   const localeLinks = computed(() =>
