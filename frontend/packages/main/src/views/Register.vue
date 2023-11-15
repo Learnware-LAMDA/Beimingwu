@@ -93,6 +93,7 @@ function submit(): Promise<void> {
       }
     })
     .catch((err) => {
+      console.error(err);
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
