@@ -79,7 +79,7 @@ function submit(): Promise<void> {
         }
         case 41: {
           showErrorDialog.value = true;
-          errorMsg.value = t("Register.EmailNotAllowed");
+          errorMsg.value = t("Register.Error.EmailNotAllowed");
           return;
         }
         case 51: {
@@ -93,6 +93,7 @@ function submit(): Promise<void> {
       }
     })
     .catch((err) => {
+      console.error(err);
       showError.value = true;
       errorMsg.value = err.message;
       clearTimeout(errorTimer.value);
