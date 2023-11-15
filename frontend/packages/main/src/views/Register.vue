@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { useField } from "@beiming-system/hooks";
 import { useI18n } from "vue-i18n";
 import SuccessDialog from "../components/Dialogs/SuccessDialog.vue";
+import ErrorDialog from "../components/Dialogs/ErrorDialog.vue";
 import { register } from "../request/auth";
 import { hex_md5 } from "../utils";
 import collaborationImg from "../assets/images/public/collaboration.svg?url";
@@ -51,6 +52,7 @@ const showPassword2 = ref(false);
 const showError = ref(false);
 const errorMsg = ref("");
 const success = ref(false);
+const showErrorDialog = ref(false);
 
 const errorTimer = ref<number>();
 const { ok, remain, start: startTimer, stop: stopTimer } = useTimeout(60 * 1000);
@@ -140,7 +142,7 @@ onUnmounted(() => {
         </template>
         <template #buttons>
           <v-btn
-            class="text-none mr-3"
+            class="mr-3"
             color="primary"
             rounded
             variant="flat"
@@ -161,6 +163,25 @@ onUnmounted(() => {
           </v-btn>
         </template>
       </success-dialog>
+
+      <error-dialog v-model="showErrorDialog">
+        <template #msg>
+          <div class="mb-8 mt-6 text-lg break-all">
+            {{ t("Register.EmailNotAllowed") }}
+          </div>
+        </template>
+        <template #buttons>
+          <v-btn
+            color="primary"
+            rounded
+            variant="outlined"
+            width="90"
+            @click="() => (showErrorDialog = false)"
+          >
+            {{ t("Register.Close") }}
+          </v-btn>
+        </template>
+      </error-dialog>
 
       <v-card flat class="mx-auto w-full p-2 sm:p-6" max-width="500">
         <v-scroll-y-transition>
