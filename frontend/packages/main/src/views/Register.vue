@@ -78,7 +78,8 @@ function submit(): Promise<void> {
           throw new Error(t("Error.UnknownError") + ": " + res.msg);
         }
         case 41: {
-          email.errorMessages = "Your email is not allowed to register";
+          showErrorDialog.value = true;
+          errorMsg.value = t("Register.EmailNotAllowed");
           return;
         }
         case 51: {
@@ -166,8 +167,8 @@ onUnmounted(() => {
 
       <error-dialog v-model="showErrorDialog">
         <template #msg>
-          <div class="mb-8 mt-6 text-lg break-all">
-            {{ t("Register.EmailNotAllowed") }}
+          <div class="mb-8 mt-6 break-all text-lg">
+            {{ errorMsg }}
           </div>
         </template>
         <template #buttons>
