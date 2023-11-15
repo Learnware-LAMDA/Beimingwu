@@ -92,6 +92,23 @@ stat_specifications:
     ```bash
     conda env export | findstr /v "^prefix: " > environment.yaml
     ```
+
+  需要注意的是， 上传学件的 `zip` 包中 `environment.yaml` 文件需要是 `UTF-8` 格式编码。在使用上述命令导出后请检查 `environment.yaml` 文件的编码格式，由于 `conda` 版本和系统差异等原因，您可能得到的并不是 `UTF-8` 格式编码文件（例如得到 `UTF-16LE` 格式编码），此时需要手动将文件转换为 `UTF-8` 编码格式，大多数文本编辑器都支持编码格式转换。以下进行编码转换的 `Python` 代码也供参考：
+
+  ```python
+  import codecs
+  
+  # 读取 conda env export 命令的输出文件，这里假设文件名为 environment.yaml，导出格式为 UTF-16LE
+  with codecs.open('environment.yaml', 'r', encoding='utf-16le') as file:
+      content = file.read()
+  
+  # 将内容转换为 UTF-8 编码
+  output_content = content.encode('utf-8')
+  
+  # 写入 UTF-8 编码的文件
+  with open('environment.yaml', 'wb') as file:
+      file.write(output_content)
+
 - 除上述方式外，也可以提供 `pip` 支持的 `requirements.txt` 文件。该文件需要列出运行 `__init__.py` 文件所需导入的包及其具体版本，这些版本信息可通过执行 `pip show <package_name>` 或 `conda list <package_name>` 命令来获取。以下是一个示例文件：
     ```txt
     learnware==0.1.0.999

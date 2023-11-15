@@ -97,6 +97,23 @@ conda env export | grep -v "^prefix: " > environment.yaml
 conda env export | findstr /v "^prefix: " > environment.yaml
 ```
 
+Note that the `environment.yaml` file in the `zip` package needs to be encoded in `UTF-8` format. Please check the encoding format of the `environment.yaml` file after using the above command. Due to the `conda` version and system differences, you may not get a `UTF-8` encoded file (e.g. get a `UTF-16LE` encoded file). You'll need to manually convert the file to `UTF-8`, which is supported by most text editors. The following `Python` code for encoding conversion is also for reference:
+
+```python
+import codecs
+
+# read the output file from the 'conda env export' command, assuming the file name is environment.yaml and the export format is UTF-16LE
+with codecs.open('environment.yaml', 'r', encoding='utf-16le') as file:
+    content = file.read()
+
+# convert the content to UTF-8 encoding
+output_content = content.encode('utf-8')
+
+# write to UTF-8 encoded file
+with open('environment.yaml', 'wb') as file:
+    file.write(output_content)
+```
+
 Alternatively, you can provide a `requirements.txt` file that supports `pip`. This file should list the packages required for running the `__init__.py` file and their specific versions. You can obtain these version details by executing the `pip show <package_name>` or `conda list <package_name>` command. Here is an example file:
 
 ```txt
