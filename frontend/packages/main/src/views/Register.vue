@@ -73,7 +73,7 @@ function submit(): Promise<void> {
           return;
         }
         case 21: {
-          throw new Error("System error");
+          throw new Error(t("Error.UnknownError") + ": " + res.msg);
         }
         case 41: {
           email.errorMessages = "Your email is not allowed to register";
@@ -163,6 +163,12 @@ onUnmounted(() => {
       </success-dialog>
 
       <v-card flat class="mx-auto w-full p-2 sm:p-6" max-width="500">
+        <v-scroll-y-transition>
+          <v-alert v-if="showError" type="error">
+            {{ errorMsg }}
+          </v-alert>
+        </v-scroll-y-transition>
+
         <v-card-title>
           <h1 class="text-h5 sm:text-1.3em m-2 my-6 sm:my-2">
             {{ t("Register.Register") }}
