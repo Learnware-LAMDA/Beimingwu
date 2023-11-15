@@ -1,18 +1,18 @@
-# 北冥坞系统前端开发指南
+# Frontend Dev Guide
 
-## 技术栈
+## Technology Stack
 
-项目基于 Vue3 + TypeScript + Vite + Vuetify 开发，使用 pnpm-workspace 多包管理。
+The project is developed based on Vue3 + TypeScript + Vite + Vuetify, using pnpm-workspace for multi-package management.
 
-- 构建工具：[Vite](https://vitejs.dev/)
-- 前端框架：[Vue3](https://v3.vuejs.org/)
-- UI框架：[Vuetify](https://vuetifyjs.com/)
-- 路由：[Vue Router](https://next.router.vuejs.org/)
-- 状态管理：[Vuex](https://next.vuex.vuejs.org/)
+- Build Tool: [Vite](https://vitejs.dev/)
+- Frontend Framework: [Vue3](https://v3.vuejs.org/)
+- UI Framework: [Vuetify](https://vuetifyjs.com/)
+- Router: [Vue Router](https://next.router.vuejs.org/)
+- State Management: [Vuex](https://next.vuex.vuejs.org/)
 
-## 目录结构
+## Directory Structure
 
-项目的目录结构如下：
+The project's directory structure is as follows:
 
 <details open>
   <summary>/</summary>
@@ -104,17 +104,17 @@
   </ul>
 </details>
 
-其中有以下几个包：
+It includes the following packages:
 
-- `admin`：管理员系统
-- `main`：主系统
-- `hooks`：自定义 hooks
-- `locale`：国际化
-- `types`：类型定义
+- `admin`: Admin system
+- `main`: Main system
+- `hooks`: Custom hooks
+- `locale`: Internationalization
+- `types`: Type definitions
 
-## 配置环境
+## Configuration
 
-安装必要的依赖
+Install the necessary dependencies
 
 ```bash
 cd frontend
@@ -122,19 +122,19 @@ npm i -g pnpm
 pnpm i
 ```
 
-## 开发主系统
+## Develop the Main System
 
 ```bash
 pnpm dev:main
 ```
 
-## 开发管理员系统
+## Develop the Admin System
 
 ```bash
 pnpm dev:admin
 ```
 
-## 构建
+## Build
 
 ```bash
 pnpm build

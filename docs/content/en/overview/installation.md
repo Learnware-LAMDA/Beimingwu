@@ -1,13 +1,13 @@
-# 环境安装
+# Environment Installation
 
-为了使用户能够轻松、高效地与北冥坞系统交互，我们在 `learnware` Python 包中提供了一系列简单且易用的接口。仅需几行代码，大家就能实现「学件规约生成」、「学件上传」、「学件查搜」以及「学件部署」等功能。
+In order to enable users to interact with the Beimingwu system easily and efficiently, we provide a series of simple and user-friendly interfaces in the `learnware` Python package. With just a few lines of code, everyone can implement functions such as "learnware specification generation," "learnware submission," "learnware search," and "learnware deployment."
 
-`learnware` 包目前托管在 [PyPI 平台](https://pypi.org/project/learnware/)，其具体安装方式如下：
+The `learnware` package is currently hosted on the [PyPI platform](https://pypi.org/project/learnware/), and its specific installation method is as follows:
 ```bash
 pip install learnware
 ```
 
-`learnware` 包的源代码同时发布在 [Gitee](https://gitee.com/Learnware-LAMDA/Learnware) 和 [Github](https://github.com/Learnware-LAMDA/Learnware) 平台上，用户也可以从任一平台下载源代码进行安装。以 Github 平台为例：
+The source code for the `learnware` package is also available on both [Gitee](https://gitee.com/Learnware-LAMDA/Learnware) and [Github](https://github.com/Learnware-LAMDA/Learnware) platforms. Users can download the source code from either platform for installation. Using the Github platform as an example:
 ```bash
 git clone https://github.com/Learnware-LAMDA/Learnware.git
 cd Learnware

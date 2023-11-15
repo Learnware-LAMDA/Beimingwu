@@ -1,15 +1,18 @@
-# 在单机上部署北冥坞系统
+# Deploying Beiming System on a Single Machine
 
-## 安装 Docker Compose
-到 [Docker官网](https://docs.docker.com/compose/install/#installing-compose)，根据官方文档的指引安装 `docker compose`。
+## Install Docker Compose
+Visit the [Docker official website](https://docs.docker.com/compose/install/#installing-compose) and follow the official documentation to install `Docker Compose`.
 
-## 使用 Docker Compose 部署
+## Deploy Using Docker Compose
 
-下载 [后端代码](https://github.com/Learnware-LAMDA/Beiming-System.git)，进入 `deploy/docker_compose` 目录，执行：
+Download the [backend code](https://github.com/Learnware-LAMDA/Beiming-System.git) and navigate to the `deploy/docker_compose` directory, then execute:
+
 ```shell
 docker-compose -p learnware up -d
 ```
-若要卸载，可执行：
+
+To uninstall, you can execute:
+
 ```shell
 docker-compose -p learnware down
 ```

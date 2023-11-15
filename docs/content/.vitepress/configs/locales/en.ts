@@ -80,7 +80,7 @@ const en: LocaleSpecificConfig & {
         ],
       },
       {
-        text: "Version Release Notes",
+        text: "Version Announcement",
         link: "/en/versions",
       },
       {

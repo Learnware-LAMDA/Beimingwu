@@ -1,84 +1,69 @@
-# 北冥坞：学件基座系统
+# Beimingwu: Learnware Dock System
 
-北冥坞基于学件范式，首次系统性地实现了学件从上传到部署的完整流程，帮助用户有效查搜和复用学件，而无需从零开始构建机器学习模型。
+Beimingwu is based on the Learnware paradigm, which systematically implements the entire process of Learnware from upload to deployment, helping users effectively search and reuse Learnware without the need to build machine learning models from scratch.
 
-<!-- ## 学件范式
+## What is Learnware?
 
-目前机器学习在很多领域取得了巨大的成功，但是也暴露出诸多问题：
-- 训练一个好模型的条件苛刻（大量高质量有标记数据，高算力机器，专家经验）；
-- 面对不断变化的环境，模型难以适应且可能出现灾难性遗忘；
-- 数据隐私阻碍了不同用户间经验的分享；
-- 模型通常是为特定任务设计的，难以复用到其他任务上；
-- ......
+Learnware consists of high-performance machine learning models and specifications that describe the models, i.e., "Learnware = Model + Specification."
 
-虽然目前上述每一个问题都有相应的研究，但由于问题间是相互耦合的，在解决其中一个问题时，可能会导致其他问题变得更加严重。
+Learnware specifications consist of "Semantic Specifications" and "Statistical Specifications":
+- Semantic Specifications describe the type and functionality of the model through text.
+- Statistical Specifications characterize the statistical information contained in the model using various machine learning techniques.
 
-学件范式期望通过一个整体框架同时解决上述诸多问题。学件范型期望系统的组织和复用模型来完成甚至超出其原始目的的任务，并使用户无需从零开始构建他们的机器学习模型。 -->
+Specifications of Learnware describe the model's capabilities, enabling the model to be identified and reused fully by future users who know nothing about the Learnware in advance to meet their needs.
 
-## 学件是什么？
+## Why Do We Need the Learnware Dock System?
 
-学件由性能优良的机器学习模型和描述模型的**规约**构成，即「学件 = 模型 + 规约」。
+Machine learning has achieved great success in many fields but still faces various challenges, such as the need for extensive training data and advanced training techniques, the difficulty of continuous learning, the risk of catastrophic forgetting, and the leakage of data privacy/ownership.
 
-学件的规约由「语义规约」和「统计规约」两部分组成：
-- 语义规约通过文本对模型的类型及功能进行描述；
-- 统计规约则通过各类机器学习技术，刻画模型所蕴含的统计信息。
+Although there is research addressing each of these issues individually, they are interconnected, and solving one problem may exacerbate others.
 
-学件的规约刻画了模型的能力，使得模型能够在未来用户事先对学件一无所知的情况下被充分识别并复用，以满足用户需求。
+The Learnware Dock System aims to address many of these challenges through a unified framework:
+- **Lack of Training Data/Skills**: Even for ordinary users with limited data and machine learning knowledge, they can obtain powerful machine learning models from the Learnware Dock System. Users can acquire high-performance Learnware and further customize or improve them without starting from scratch.
+- **Continuous Learning**: As high-performance Learnware is continually submitted for various tasks, the knowledge in the Learnware Dock System will naturally accumulate, achieving continuous and lifelong learning.
+- **Catastrophic Forgetting**: Once Learnware is accepted, it will always be retained in the Learnware Dock System unless it can be replaced by other Learnware in all aspects. Therefore, old knowledge in the Learnware Dock System is always preserved and never forgotten.
+- **Data Privacy/Ownership**: Developers only submit models without sharing private data, thus protecting data privacy and ownership. Although the possibility of reverse engineering the model cannot be completely eliminated, the risk of privacy leakage in the Learnware Dock System is minimal compared to many other privacy protection schemes.
 
-## 为什么需要学件基座系统？
+## How Does the Learnware Dock System Work?
 
-机器学习在很多领域取得了巨大成功，但依然面临着诸多问题，例如需要大量的训练数据和高超的训练技巧、持续学习的困难、灾难性遗忘的风险以及数据隐私/所有权的泄漏等。
+The Learnware Dock System is the core entity in the Learnware paradigm. In the Learnware paradigm, there are three essential entities:
+- **Developers**: Typically machine learning experts who produce and wish to share/sell their high-performance machine learning models.
+- **Users**: In need of machine learning services but often have limited data and lack machine learning knowledge and skills.
+- **Learnware Dock System**: Receives high-performance machine learning models from developers, incorporates them into the system, and provides services to users by identifying and reusing Learnware to help users solve current tasks.
 
-虽然上述每一个问题都有相应的研究，但由于问题之间是相互耦合的，在解决其中一个问题时，可能会导致其他问题变得更加严重。
+As shown in the diagram below, the system workflow consists of two stages:
 
-学件基座系统期望通过一个整体框架，同时解决上述诸多问题：
-- **缺乏训练数据/技能**：即使对于缺乏训练技能或数据量较小的普通用户，也可以获得强大的机器学习模型，因为用户可以从学件基座系统中获取性能优良的学件，并进一步调整或改进，而不是自己从头开始构建模型。
-- **持续学习**：随着在各种不同任务上训练得到的、性能优良的学件被不断提交，学件基座系统中的知识将不断丰富，进而自然地实现持续和终身学习。
-- **灾难性遗忘**：一旦学件被接收，它将永远被容纳在学件基座系统中，除非其各方面功能都可以被其他学件所替代。因此，学件基座系统中的旧知识总是会被保留，而不会被遗忘。
-- **数据隐私/所有权**：开发者只提交模型而不共享私有数据，因此数据隐私/所有权可以得到很好的保护。尽管无法完全排除对模型进行逆向工程的可能性，但与许多其它隐私保护方案相比，学件基座系统泄露隐私的风险非常小。
-
-
-## 学件基座系统是如何工作的？
-
-学件基座系统是学件范式的核心实体。在学件范式中，共有三个重要实体：
-- **开发者**：通常是机器学习专家，生产并希望分享/出售他们性能优良的机器学习模型。
-- **用户**：需要机器学习服务，但通常只拥有有限的数据，并且缺乏机器学习知识和技能。
-- **学件基座系统**：从开发者那里接收性能优良的机器学习模型，将它们纳入系统，并通过识别和复用学件向用户提供服务，以帮助用户解决当前的任务。
-
-如下图所示，系统工作流程分为以下两个阶段：
-
-- **提交阶段**：开发者自发地提交各式各样的学件到**学件基座系统**，而系统会对这些学件进行质量检查和进一步的组织。
-- **部署阶段**：当用户提交任务需求后，**学件基座系统**会根据学件规约推荐对用户任务有帮助的学件并指导用户进行部署和复用。
+- **Submitting Stage**: Developers voluntarily submit various Learnware to the Learnware Dock System, and the system conducts quality checks and further organization of these Learnware.
+- **Deploying Stage**: When users submit task requirements, the Learnware Dock System automatically selects whether to recommend a single Learnware or a combination of multiple Learnware and provides efficient deployment methods. Whether it's a single Learnware or a combination of multiple Learnware, the system offers convenient Learnware reuse interfaces.
 
 ![Fig_design](.../../../../public/learnware_workflow.svg)
 
-### 规约世界
+### World of Specifications
 
-规约是学件基座系统的核心组件，串联了系统中关于学件的全部流程，包括学件上传、组织、查搜、部署与复用。
+Specifications are the core components of the Learnware Dock System, linking all processes related to Learnware, including uploading, organizing, searching, deploying, and reusing Learnware.
 
-来自不同特征/标记空间的学件，构成众多的规约岛屿，所有规约岛屿共同构成学件基座系统中的**规约世界**。在规约世界中，如果能够发现并建立不同岛屿之间的联系，那么相对应的规约岛屿将可以进行合并。
+Learnware from different feature/markup spaces form numerous islands of specifications, and all these islands together constitute the "World of Specifications" in the Learnware Dock System. In the World of Specifications, if connections between different islands can be discovered and established, the corresponding islands of specifications can be merged.
 
 ![Fig_world](../../public/specification_world.jpg)
 
-学件基座系统在查搜时，首先通过用户需求中的语义规约定位到具体的规约岛屿，再通过用户需求中的统计规约对规约岛上的学件进行精确识别。
+When searching in the Learnware Dock System, the system first identifies specific islands of specifications based on semantic specifications in user requirements, and then it accurately recognizes Learnware on the specification islands through statistical specifications in user requirements.
 
-不同的规约岛屿合并，则意味着相应的学件可以被用于不同特征/标记空间的任务上，即可以复用至超出其原始目的的任务中。
+Merging different specification islands means that the corresponding Learnware can be used in tasks with different feature/markup spaces, i.e., they can be reused in tasks beyond their original purposes.
 
+## What Features Does the Beimingwu System Have?
 
-## 北冥坞系统有哪些特性？
+Beimingwu systematically implements the core process of the Learnware paradigm for the first time:
 
-北冥坞首次系统性地实现了学件范式中的核心流程：
+- **Submitting Stage**: The system includes multiple detection mechanisms to ensure the quality of uploaded Learnware. Additionally, the system trains a heterogeneous engine based on existing Learnware specifications in the market to merge different specification islands and assign new specifications to Learnware. With more Learnware submissions, the heterogeneous engine will continue to update, achieving continuous iteration of Learnware specifications and building a more precise World of Specifications.
+- **Deploying Stage**: After users upload task requirements, the system automatically selects whether to recommend single Learnware or multiple Learnware combinations and provides efficient deployment methods. Whether it's a single Learnware or a combination of multiple Learnware, the system offers convenient Learnware reuse interfaces.
 
-- **提交阶段**：系统内置了多重检测机制，以确保上传学件的质量。另外，系统会根据市场已有的学件规约，训练一个异构引擎，用于合并不同的规约岛屿，以及为学件赋予新规约。随着更多学件的上传，异构引擎将持续更新，实现学件规约的持续迭代，构建更精准的规约世界。
-- **部署阶段**：用户上传任务需求后，系统会自动选择是推荐单学件还是多学件组合，并提供高效的部署方式。无论是单个学件还是多学件组合，系统均提供了便捷的学件复用接口。
+In addition, the Beimingwu system also has the following features:
 
-此外，北冥坞系统还具备以下特性：
+- **Learnware Specification Generation**: The Beimingwu system provides specification generation interfaces in the `learnware` Python package, supporting various data types (tables, images, and text) for efficient local generation.
+- **Learnware Quality Inspection**: The Beimingwu system includes multiple detection mechanisms to ensure the quality of each Learnware in the system.
+- **Diverse Learnware Search**: The Beimingwu system supports both semantic specifications and statistical specifications searches, covering data types such as tables, images, and text. In addition, for table-based tasks, the system also supports the search for heterogeneous table Learnware.
+- **Local Learnware Deployment**: The Beimingwu system provides interfaces for Learnware deployment and Learnware reuse in the `learnware` Python package, facilitating users' convenient and secure Learnware deployment.
+- **Data Privacy Protection**: Learnware Dock System operations, including Learnware upload, search, and deployment, do not require users to upload local data. All relevant statistical specifications are generated locally by users, ensuring data privacy.
+- **Fully Open Source**: The Beimingwu system's source code is completely open-source, including the `learnware` Python package and front-end/back-end code. The `learnware` package is highly extensible, making it easy to integrate new specification designs, Learnware system designs, and Learnware reuse methods in the future.
 
-- **学件规约生成**：北冥坞系统在 `learnware` Python 包中提供规约生成接口，支持多种数据类型（表格、图像和文本），可以在本地高效生成。
-- **学件质量检测**：北冥坞系统内置了多重检测机制，以确保系统中每个学件的质量。
-- **学件多样查搜**：北冥坞系统同时支持语义规约和统计规约的查搜，覆盖的数据类型包括表格、图像、文本。另外，对于表格型任务，系统额外支持异构表格学件的查搜。
-- **学件本地部署**：北冥坞系统在 `learnware` Python 包中同时提供学件部署与学件复用的接口，帮助用户便捷、安全的部署与复用学件。
-- **数据隐私保护**：北冥坞系统所涉及的学件上传、查搜、部署均无需用户上传本地数据，所有涉及的统计规约均由用户本地生成，确保用户数据隐私。
-- **系统完全开源**：北冥坞系统所有的源码全部开源，包括 `learnware` Python 包与前后端代码。其中 `leanrware` 包高度可扩展，未来新的规约设计、学件系统设计、学件复用方法的出现都能轻松集成进来。
-
-北冥坞系统是学件范式的首个系统级实现，相关技术仍有很大的改进空间。我们诚邀各位体验并为系统的持续改进提出宝贵意见。
+Beimingwu is the first system-level implementation of the Learnware paradigm, and there is still significant room for improvement in related technologies. We invite you to experience it and provide valuable feedback for the continuous improvement of the system.

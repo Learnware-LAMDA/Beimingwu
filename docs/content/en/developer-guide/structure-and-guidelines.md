@@ -1,1 +1,1 @@
-# 项目结构与开发规范
+# Project Structure and Guidelines

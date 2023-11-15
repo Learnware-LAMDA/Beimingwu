@@ -1,22 +1,22 @@
-# 如何准备一个学件？
+# How to Prepare a Learnware?
 
-在北冥坞系统中，每个学件都是一个 `zip` 包，其中至少需要包含以下四个文件：
-- `learnware.yaml`：学件配置文件；
-- `__init__.py`：提供使用模型的方法；
-- `stat.json`：学件的统计规约，其文件名可自定义并记录在 learnware.yaml 中；
-- `environment.yaml` 或 `requirements.txt`：指明模型的运行环境。
+In the Beimingwu system, each learnware is a `zip` package, which should contain at least the following four files:
 
-创建上述四个文件时，需要使用 `learnware` Python 包，其具体安装方式可查看：[环境安装](/zh-CN/overview/installation)。
+- `learnware.yaml`: Learnware configuration file.
+- `__init__.py`: Provides methods for using the model.
+- `stat.json`: The statistic specification of the learnware. Its filename can be customized and recorded in learnware.yaml.
+- `environment.yaml` or `requirements.txt`: Specifies the runtime environment for the model.
 
-为方便大家构建学件，我们提供了[学件模板](http://www.lamda.nju.edu.cn/learnware/static/learnware-template.zip)，大家可在其基础上构建自己的学件。
+When creating these four files, you need to use the `learnware` Python package. You can find specific installation instructions here: [Installation Guide](/en/overview/installation).
 
-接下来，我们将详细介绍上述四个文件的具体内容。
+To facilitate the construction of learnware, we provide a [learnware template](http://www.lamda.nju.edu.cn/learnware/static/learnware-template.zip) that you can use as a basis for building your own learnware.
 
+Next, we will provide detailed explanations for the content of these four files.
 
-## 模型调用文件 `__init__.py`
+## Model Invocation File `__init__.py`
 
+To ensure that the uploaded learnware can be used by subsequent users, you need to provide interfaces for model fitting, prediction, and fine-tuning in `__init__.py`. Among these interfaces, only the `predict` interface is mandatory, while the others depend on the functionality of your model. Here is a template format for the `__init__.py` file:
 
-为了使上传的学件可以被后续用户使用，需在 \_\_init\_\_.py 中提供模型拟合 (fit)、预测 (predict)、微调 (fine-tuning) 的接口。三个接口中仅 predict 为必须提供的接口，其余接口根据模型本身功能而定。此处给出 \_\_init\_\_.py 文件的模板格式：
 ```py
 import os
 import pickle
@@ -41,32 +41,33 @@ class MyModel(BaseModel):
         pass
 ```
 
-需要注意 MyModel 类要继承 learnware.model 中的 BaseModel，且类的名字（e.g., MyModel）需要在后续的 learnware.yaml 文件中标明。
+Please note that the `MyModel` class should inherit from `BaseModel` in the `learnware.model` module, and the class name (e.g., MyModel) should be specified in the learnware.yaml file later. Also, if you need to import other modules from the zip package in `__init__.py`, use relative imports. For example:
 
-另外，如果 \_\_init\_\_.py 文件中需要导入 zip 包内其它的模块，请采用相对导入的方式。例如：
 ```py
 from .package_name import *
 from .package_name import module_name
 ```
 
-## 学件统计规约 `stat.json`
+## Learnware Statistic Specification `stat.json`
 
-学件由模型和规约组成，因此在准备好模型后，我们需要为它生成统计规约。具体来说，使用先前安装的 `learnware` 包，将模型的训练数据 `train_x`（支持的类型包括：numpy.ndarray、pandas.DataFrame 以及 torch.Tensor）作为输入，即可生成模型的统计规约。
+A learnware consists of a model and a specification. Therefore, after preparing the model, you need to generate a statistic specification for it. Specifically, using the previously installed `learnware` package, you can use the training data `train_x` (supported types include numpy.ndarray, pandas.DataFrame, and torch.Tensor) as input to generate the statistic specification of the model.
 
-以下是相应的代码示例：
+Here is an example of the code:
 
 ```py
 from learnware.specification import generate_stat_spec
 
-data_type = "table" # 数据类型范围: ["table", "image", "text"]
+data_type = "table" # Data types: ["table", "image", "text"]
 spec = generate_stat_spec(type=data_type, X=train_x)
 spec.save("stat.json")
 ```
-值得注意的是，上述代码仅在本地计算机上运行，不会与任何云服务器进行交互，也不会泄露任何本地私有数据。
 
-## 学件配置文件 `learnware.yaml`
+It's worth noting that the above code only runs on your local computer and does not interact with any cloud servers or leak any local private data.
 
-该文件用于指明模型调用文件 \_\_init\_\_.py 中的类名 (`MyModel`)、生成统计规约所调用的模块 (`learnware.specification`) 以及统计规约的类别 (`RKMEStatSpecification`) 与具体的文件名 (`stat.json`)：
+## Learnware Configuration File `learnware.yaml`
+
+This file is used to specify the class name (`MyModel`) in the model invocation file `__init__.py`, the module called for generating the statistic specification (`learnware.specification`), the category of the statistic specification (`RKMEStatSpecification`), and the specific filename (`stat.json`):
+
 ```yaml
 model:
   class_name: MyModel
@@ -78,44 +79,52 @@ stat_specifications:
     kwargs: {}
 ```
 
-需注意，生成规约时的数据类型 `["table", "image", "text"]` 所对应的规约 `class_name` 分别为 `[RKMETableSpecification, RKMEImageSpecification, RKMETextSpecification]`。
+Please note that the statistic specification class name for different data types `["table", "image", "text"]` is `[RKMETableSpecification, RKMEImageSpecification, RKMETextSpecification]`, respectively.
 
-## 模型运行依赖 `environment.yaml`
+## Model Runtime Dependencies `environment.yaml`
 
-为了使上传的学件可以被后续其它用户使用，上传学件的 `zip` 包中需指明模型的运行依赖：
-- 此处推荐大家提供 `conda` 支持的 `environment.yaml` 文件，该文件可通过下述命令由 `conda` 虚拟环境直接导出：
-    - Linux 和 macOS 系统：
-    ```bash
-    conda env export | grep -v "^prefix: " > environment.yaml
-    ```
-    - Windows 系统：
-    ```bash
-    conda env export | findstr /v "^prefix: " > environment.yaml
-    ```
-- 除上述方式外，也可以提供 `pip` 支持的 `requirements.txt` 文件。该文件需要列出运行 `__init__.py` 文件所需导入的包及其具体版本，这些版本信息可通过执行 `pip show <package_name>` 或 `conda list <package_name>` 命令来获取。以下是一个示例文件：
-    ```txt
-    learnware==0.1.0.999
-    numpy==1.23.5
-    scikit-learn==1.2.2
-    ```
-    手动列举可能会有些麻烦，也可以使用 `pipreqs` 包直接扫描整个项目，自动导出使用的包及其具体版本（但很可能会有些偏差，需要再自行检查）：
-    ```bash
-    pip install pipreqs
-    pipreqs ./  # 需在项目根目录执行
-    ```
+To ensure that your uploaded learnware can be used by other users, the `zip` package of the uploaded learnware should specify the model's runtime dependencies. It is recommended to provide an `environment.yaml` file that supports `conda`. You can export this file directly from the `conda` virtual environment using the following command:
 
-无论使用哪一种方式，请尽量去除不需要的依赖，使依赖项尽可能的少。
+- For Linux and macOS systems:
 
-## 学件本地验证
+```bash
+conda env export | grep -v "^prefix: " > environment.yaml
+```
 
-上述文件填写完毕后，即可进行学件上传。一旦学件成功上传，系统后台会自动将该学件加入验证队列，以检验学件是否符合规范（包括学件格式以及模型是否可运行的检查）。这个验证过程可能需要一些时间，具体取决于学件的复杂程度以及系统后台的工作负载。完成验证后，结果将在网页端显示。
+- For Windows systems:
 
-由于后台验证学件的过程相对耗时，为了提高学件通过验证的几率，我们建议您在上传之前，先使用以下代码在本地对学件进行验证：
+```bash
+conda env export | findstr /v "^prefix: " > environment.yaml
+```
+
+Alternatively, you can provide a `requirements.txt` file that supports `pip`. This file should list the packages required for running the `__init__.py` file and their specific versions. You can obtain these version details by executing the `pip show <package_name>` or `conda list <package_name>` command. Here is an example file:
+
+```txt
+learnware==0.1.0.999
+numpy==1.23.5
+scikit-learn==1.2.2
+```
+
+Manually listing these dependencies can be cumbersome, so you can also use the `pipreqs` package to automatically scan your entire project and export the packages used along with their specific versions (though some manual verification may be required):
+
+```bash
+pip install pipreqs
+pipreqs ./  # Run this command in the project's root directory
+```
+
+Regardless of which method you use, try to remove unnecessary dependencies to minimize the number of required dependencies.
+
+## Local Validation of Learnware
+
+After filling in the above files, you can proceed to upload your learnware. Once the learnware is successfully uploaded, the system backend will automatically add it to the validation queue to check whether the learnware complies with the specifications, including the format of the learnware and whether the model can be run. This validation process may take some time, depending on the complexity of the learnware and the workload of the system backend. The validation results will be displayed on the website.
+
+Since the backend validation of learnware can be time-consuming, we recommend that you validate your learnware locally before uploading it by using the following code:
+
 ```py
 from learnware.client import LearnwareClient
 
-zip_path = "learnware.zip"  # 待验证的学件 zip 包
+zip_path = "learnware.zip"  # Path to the learnware zip package to be validated
 LearnwareClient.check_learnware(zip_path)
 ```
 
-在本地成功通过验证后，再将学件上传至系统，以提高学件验证效率。
+After successfully passing the local validation, you can proceed to upload the learnware to the system to improve the efficiency of the validation process.

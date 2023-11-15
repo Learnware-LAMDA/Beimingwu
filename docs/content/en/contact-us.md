@@ -1,5 +1,5 @@
-# 联系我们
+# Contact Us
 
-如果您在使用北冥坞系统时遇到任何问题或有任何建议，请通过以下方式联系我们： 
+If you encounter any problems or have any suggestions while using the Beimingwu system, please contact us through the following way:
 
-- 电子邮箱: bmwu-support@lamda.nju.edu.cn
+- Email: bmwu-support@lamda.nju.edu.cn

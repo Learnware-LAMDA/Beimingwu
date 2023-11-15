@@ -1,6 +1,6 @@
-# 系统文档开发
+# Docs Dev Guide
 
-## 目录结构
+## Directory Structure
 
 <details open>
   <summary>/</summary>
@@ -158,9 +158,9 @@
   </ul>
 </details>
 
-## 环境搭建
+## Environment Setup
 
-1. 安装 `nvm`
+1. Install `nvm`
 
 ```bash
 # use curl:
@@ -169,36 +169,36 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
 ```
 
-2. 安装 `node`
+2. Install `node`
 
 ```bash
 nvm install node
 ```
 
-3. 安装 `pnpm`
+3. Install `pnpm`
 
 ```bash
 npm install -g pnpm
 ```
 
-4. 安装依赖
-   确保你在项目的根目录 `Beiming-System/docs/` 下。
+4. Install Dependencies
+   Make sure you are in the project's root directory `Beiming-System/docs/`.
 
 ```bash
 pnpm install
 ```
 
-## 开发
+## Development
 
-### 运行开发服务器
+### Run Development Server
 
-运行以下命令来启动开发服务器。
+Run the following command to start the development server.
 
 ```bash
 pnpm dev
 ```
 
-如果一切顺利，你应该看到以下输出：
+If everything goes well, you should see the following output:
 
 ```bash
 > vitepress dev docs
@@ -210,30 +210,30 @@ pnpm dev
   ➜  press h to show help
 ```
 
-之后，更改 `content` 目录下的 markdown 文件，浏览器将自动重新加载以显示更改。
+Afterward, make changes to markdown files under the `content` directory, and the browser will automatically reload to display the changes.
 
-### 添加静态文件
+### Adding Static Files
 
-如果你想添加静态文件，比如图片，你可以把它们放在 `Beiming-System/docs/content/public/` 目录下。然后你可以在 markdown 文件中这样访问它们：
+If you want to add static files like images, you can place them in the `Beiming-System/docs/content/public/` directory. Then, you can access them in markdown files like this:
 
 ```markdown
 ![image](/image.png)
 ```
 
-### 设置导航栏和侧边栏
+### Setting Up Navigation and Sidebar
 
-你应该按语言设置。例如，如果你想为 `en` 语言设置导航栏和侧边栏，你应该编辑 `Beiming-System/docs/content/.vitepress/config/locales/en.ts` 文件。
+You should set this up by language. For example, if you want to set up navigation and sidebar for the `en` language, you should edit the `Beiming-System/docs/content/.vitepress/config/locales/en.ts` file.
 
-### 其他配置
+### Other Configuration
 
-你可以在 [VitePress 文档](https://vitepress.dev) 中找到更多配置。
+You can find more configuration options in the [VitePress documentation](https://vitepress.dev).
 
-## 部署
+## Deployment
 
-运行以下命令来构建静态文件。
+Run the following command to build static files.
 
 ```bash
 pnpm build
 ```
 
-静态文件将生成在 `Beiming-System/docs/content/.vitepress/dist/` 目录下。你可以将它们部署到任何静态文件服务器。
+Static files will be generated in the `Beiming-System/docs/content/.vitepress/dist/` directory. You can deploy them to any static file server.

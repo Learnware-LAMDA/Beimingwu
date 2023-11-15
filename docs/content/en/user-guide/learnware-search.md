@@ -1,57 +1,53 @@
-# 如何查搜学件？
+# How to Search for Learnware?
 
-在北冥坞系统中，学件既可以通过网页端查搜，也可以使用 `learnware` Python 包进行查搜。
+In the Beimingwu system, you can search for learnware through both the web interface and by using the `learnware` Python package.
 
-接下来，我们将分别对这两种方式进行介绍。
+Next, we will introduce these two methods separately.
 
+## Searching through the Web Interface
 
-## 通过网页端查搜
+### Regular Search
 
-### 常规查搜
+Click on the "Search" button in the website's navigation bar at "[Search](https://www.lamda.nju.edu.cn/learnware/#/search)," and you can initiate a learnware search.
 
-点击网站导航栏处的「[查搜](https://www.lamda.nju.edu.cn/learnware/#/search)」按钮，即可开始学件查搜。
+The system supports learnware searches through semantic specifications or statistical specifications, and you can also combine these two search methods.
 
-系统支持通过语义规约进行学件查搜，也可以通过上传统计规约进行查搜，还可以将两种查搜方式结合到一起。
+- Semantic Specification Search: You can search by learnware name or select tags when using this method.
+- Statistical Specification Search: You can search by uploading a `json` file corresponding to the statistical specification of table, image, or text data.
 
-- 语义规约查搜：支持通过学件名称搜索和通过标签搜索；查搜时输入名称或者选择标签；
-- 统计规约查搜：支持通过表格、图像、文本数据的统计规约进行查搜；查搜时上传统计规约对应的 `json` 文件。
-
-进行统计规约查搜时，各种数据类型对应的统计规约可以通过如下命令生成：
+To perform a statistical specification search, you can generate the specification for various data types using the following command:
 
 ```python
 from learnware.specification import generate_stat_spec
 
-data_type = "table" # 数据类型范围: ["table", "text", "image"]
+data type = "table" # Data type options: ["table", "text", "image"]
 spec = generate_stat_spec(type=data_type, X=train_x)
 spec.save("stat.json")
 ```
 
-查搜完成后，系统将显示单学件的查搜结果，在部分情况下，系统还会显示多学件组合的查搜结果。您可以根据需求下载相应的学件（组）。
+After completing the search, the system will display the results for individual learnware searches, and in some cases, it may also show results for multiple learnware combinations. You can download the corresponding learnware (or group) based on your needs.
 
+### Heterogeneous Table Search
 
+For statistical specifications of table data, regular searches can only be performed within learnware with the same feature space dimensions. When there are no matching learnware with the same dimension in the learnware market, a regular search will return an empty list. In such cases, the page will prompt you to enable heterogeneous table search.
 
-### 异构表格查搜
-
-对于表格数据的统计规约，常规查搜仅能在特征空间维度相同的学件中进行查搜，当学件市场中没有维度相匹配的学件时，常规查搜将返回空列表。此时页面将弹出提示，提醒您可以开启异构查搜。
-
-当您选择开启异构表格查搜后，系统需要您额外提供每一个维度的语义信息，这一过程可以通过手动填写或者直接上传维度语义信息的 `json` 文件，语义信息的 `json` 文件格式如下：
+When you choose to enable heterogeneous table search, the system will require you to provide semantic information for each dimension. This can be done either by manual input or by uploading a `json` file with dimension semantics information. The `json` file format for semantic information is as follows:
 
 ```json
 {
     "Dimension": 2,
     "Description": {
-        "0": "This is a description of 0-th feature", 
-        "1": "This is a description of 1-th feature"
+        "0": "This is a description of the 0-th feature", 
+        "1": "This is a description of the 1-th feature"
     }
 }
 ```
 
-值得注意的是，推荐的特征空间不同的模型无法在您的任务上直接进行预测，请参考「[学件部署](/zh-CN/user-guide/learnware-deploy)」页面的指南进行异构表格学件的部署。
+It is worth noting that recommended models with different feature spaces cannot directly predict tasks for your specific needs. Please refer to the "Learnware Deployment" page for guidance on deploying heterogeneous table learnware.
 
+## Searching through the learnware Package
 
-## 通过 learnware 包查搜
-
-网页端外，`learnware` 包也提供学件查搜的接口，首先需要登录：
+In addition to the web interface, the `learnware` package also provides an interface for searching for learnware. First, you need to log in as follows:
 
 ```python
 from learnware.client import LearnwareClient
@@ -61,15 +57,13 @@ client = LearnwareClient()
 client.login(email="your email", token="your token")
 ```
 
-其中 email 为系统的注册邮箱，token 为访问学件 API 的令牌，可在网页端「个人信息 - 客户端令牌」处生成。 
+Where "email" is your registered email for the system, and "token" is the token for accessing the learnware API, which can be generated on the web interface under "Personal Information - Client Token."
 
+### Regular Search
 
+Similar to the web interface search, the `learnware` package supports semantic specification search, statistical specification search, and a combination of semantic and statistical specification searches.
 
-### 常规查搜
-
-与网页端查搜相对应，learnware 包也支持语义规约查搜、统计规约查搜、语义规约 + 统计规约的混合查搜。
-
-您可以通过语义规约在学件市场中查搜学件，所有符合语义规约的学件都将通过API返回。例如，下列代码将得到市场中所有任务类型为分类的学件：
+You can search for learnware in the learnware market through semantic specifications, and all learnware that meet the semantic specifications will be returned via the API. For example, the following code retrieves all learnware in the market with a task type of "Classification":
 
 ```python
 user_semantic = {
@@ -81,7 +75,7 @@ specification.update_semantic_spec(user_semantic)
 learnware_list = client.search_learnware(specification, page_size=None)
 ```
 
-您也可以通过统计规约在学件市场中查搜学件，所有分布相似的学件都将通过 API 返回。通过上述提到的 `generate_rkme_image_spec`、`generate_rkme_spec`、`generate_rkme_text_spec` 函数，您可以便捷地得到您当前任务对应的统计规约 `rkme_spec`，随后通过下列代码即可得到市场中同一类型数据下满足您任务统计规约的学件：
+You can also search for learnware in the learnware market that satisfies your task's statistical specifications by using the `generate_rkme_image_spec`, `generate_rkme_spec`, and `generate_rkme_text_spec` functions mentioned earlier to obtain your current task's statistical specification `rkme_spec`. Then, use the following code to retrieve learnware in the same data type (e.g., table) that satisfy your task's statistical specifications:
 
 ```python
 specification = Specification()
@@ -89,7 +83,7 @@ specification.update_stat_spec(rkme_spec)
 learnware_list = client.search_learnware(specification, page_size=None)
 ```
 
-通过将统计规约和语义规约结合起来，您可以进行更加细致的查搜，比如下列代码将在表格型数据中查搜满足您语义规约的学件：
+By combining both semantic and statistical specifications, you can perform more detailed searches. For example, the following code searches for learnware in tabular data that meet both semantic and statistical specifications:
 
 ```python
 user_semantic = {
@@ -104,42 +98,16 @@ specification.update_stat_spec(rkme_table)
 learnware_list = client.search_learnware(specification, page_size=None)
 ```
 
-当学件查搜完成后，您可以通过下列代码完成学件的下载及环境的配置：
+Once the learnware search is complete, you can use the following code to download the learnware and configure the environment:
 
 ```python
 for temp_learnware in learnware_list:
     learnware_id = temp_learnware["learnware_id"]
 
-    # you can use the learnware to make prediction now
+    # you can use the learnware to make predictions now
     learnware = client.load_learnware(
         learnware_id=learnware_id, runnable_option="conda_env"
     )
 ```
 
-更详细的部署指南可查看：[学件部署](/zh-CN/user-guide/learnware-deploy)。
-
-
-### 异构表格查搜
-
-当您提供表格型数据的统计规约，并且在语义规约中包含了每一维特征语义维度的描述时，系统将自行开启异构表格查搜，而不仅仅是在维度相匹配的数据类型为表格的学件中进行查搜。以下代码将进行通过 API 进行异构表格查搜：
-
-```python
-input_description = {
-    "Dimension": 2,
-    "Description": {
-        "0": "leaf width",
-        "1": "leaf length",
-    },
-}
-user_semantic = {
-    "Task": {"Values": ["Classification"], "Type": "Class"},
-    "Scenario": {"Values": ["Business"], "Type": "Tag"},
-    "input": input_description,
-}
-rkme_table = generate_rkme_spec(table_feature)
-
-specification = Specification()
-specification.update_semantic_spec(user_semantic)
-specification.update_stat_spec(rkme_table)
-learnware_list = client.search_learnware(specification, page_size=None)
-```
+For more detailed deployment guidance, you can refer to the "Learnware Deployment" page.
