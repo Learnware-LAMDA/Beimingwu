@@ -38,4 +38,5 @@ export default defineConfig({
     },
   },
   themeConfig: { search },
+  ignoreDeadLinks: true,
 });
