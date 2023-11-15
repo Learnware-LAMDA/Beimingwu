@@ -296,9 +296,9 @@ onMounted(() => init());
 <template>
   <div class="mx-auto w-full lg:flex">
     <v-scroll-y-transition>
-      <div v-if="showError" class="fixed w-full z-10">
+      <div v-if="showError" class="fixed z-10 w-full">
         <v-alert
-          class="max-w-[900px] mx-auto z-10"
+          class="z-10 mx-auto max-w-[900px]"
           closable
           :text="errorMsg"
           type="error"
@@ -339,7 +339,7 @@ onMounted(() => init());
     </div>
 
     <div ref="anchorRef" class="flex-1">
-      <v-card v-if="showMultiRecommended" flat class="sm:m-2 mt-4 bg-transparent">
+      <v-card v-if="showMultiRecommended" flat class="mt-4 bg-transparent sm:m-2">
         <v-card-title v-if="!multiRecommendedTips">
           {{ t("Search.RecommendedMultipleLearnware") }}
         </v-card-title>
@@ -364,7 +364,7 @@ onMounted(() => init());
           @page-change="pageChange"
         />
       </v-card>
-      <v-card flat class="sm:m-2 mt-4 bg-transparent">
+      <v-card flat class="mt-4 bg-transparent sm:m-2">
         <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">
           {{ t("Search.RecommendedSingleLearnware") }}
         </v-card-title>

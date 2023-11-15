@@ -100,7 +100,7 @@ function handleClickDelete(id: string): void {
 
     <div
       v-else
-      class="grid p-2 gap-3"
+      class="grid gap-3 p-2"
       :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
     >
       <v-skeleton-loader
@@ -115,13 +115,13 @@ function handleClickDelete(id: string): void {
       ></v-skeleton-loader>
     </div>
 
-    <div v-if="showPagination" class="my-5 flex justify-center items-center">
+    <div v-if="showPagination" class="my-5 flex items-center justify-center">
       <div v-if="pageNum <= 7">
         <v-btn icon="mdi-arrow-left" color="primary" @click="formerPage"></v-btn>
         <v-btn
           v-for="i in pageNum"
           :key="i"
-          class="mx-1 !px-2 !min-w-0"
+          class="mx-1 !min-w-0 !px-2"
           :color="i === page ? 'primary' : 'default'"
           variant="flat"
           @click="() => jumpPage(i)"
@@ -134,24 +134,24 @@ function handleClickDelete(id: string): void {
         <v-btn icon="mdi-arrow-left" color="primary" @click="formerPage"></v-btn>
         <v-btn
           v-if="greaterThanXs && page > 2"
-          class="mx-2 !px-2 !min-w-0"
+          class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="jumpPage(1)"
           >1</v-btn
         >
         <v-btn
           v-if="greaterThanXs && page === 4"
-          class="mx-2 !px-2 !min-w-0"
+          class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="jumpPage(2)"
           >2</v-btn
         >
-        <v-btn v-if="greaterThanXs && page > 4" class="mx-2 !px-2 !min-w-0" variant="text"
+        <v-btn v-if="greaterThanXs && page > 4" class="mx-2 !min-w-0 !px-2" variant="text"
           >...</v-btn
         >
         <v-btn
           v-if="greaterThanXs && page > pageNum - 1"
-          class="mx-2 !px-2 !min-w-0"
+          class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="() => jumpPage(page - 4)"
         >
@@ -159,7 +159,7 @@ function handleClickDelete(id: string): void {
         </v-btn>
         <v-btn
           v-if="greaterThanXs && page > pageNum - 2"
-          class="mx-2 !px-2 !min-w-0"
+          class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="() => jumpPage(page - 3)"
         >
@@ -167,7 +167,7 @@ function handleClickDelete(id: string): void {
         </v-btn>
         <v-btn
           v-if="greaterThanXs && page > pageNum - 3"
-          class="mx-2 !px-2 !min-w-0"
+          class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="() => jumpPage(page - 2)"
         >
@@ -175,16 +175,16 @@ function handleClickDelete(id: string): void {
         </v-btn>
         <v-btn
           v-if="page > 1"
-          class="mx-2 !px-2 !min-w-0"
+          class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="() => jumpPage(page - 1)"
         >
           {{ page - 1 }}
         </v-btn>
-        <v-btn class="mx-2 !px-2 !min-w-0" color="primary">{{ page }}</v-btn>
+        <v-btn class="mx-2 !min-w-0 !px-2" color="primary">{{ page }}</v-btn>
         <v-btn
           v-if="page < pageNum"
-          class="mx-2 !px-2 !min-w-0"
+          class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="() => jumpPage(page + 1)"
         >
@@ -192,7 +192,7 @@ function handleClickDelete(id: string): void {
         </v-btn>
         <v-btn
           v-if="greaterThanXs && page < 4"
-          class="mx-2 !px-2 !min-w-0"
+          class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="() => jumpPage(page + 2)"
         >
@@ -200,7 +200,7 @@ function handleClickDelete(id: string): void {
         </v-btn>
         <v-btn
           v-if="greaterThanXs && page < 3"
-          class="mx-2 !px-2 !min-w-0"
+          class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="() => jumpPage(page + 3)"
         >
@@ -208,18 +208,18 @@ function handleClickDelete(id: string): void {
         </v-btn>
         <v-btn
           v-if="greaterThanXs && page < 2"
-          class="mx-2 !px-2 !min-w-0"
+          class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="() => jumpPage(page + 4)"
         >
           {{ page + 4 }}
         </v-btn>
-        <v-btn v-if="greaterThanXs && page < pageNum - 3" class="mx-2 !px-2 !min-w-0" variant="text"
+        <v-btn v-if="greaterThanXs && page < pageNum - 3" class="mx-2 !min-w-0 !px-2" variant="text"
           >...</v-btn
         >
         <v-btn
           v-if="greaterThanXs && page === pageNum - 3"
-          class="mx-2 !px-2 !min-w-0"
+          class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="() => jumpPage(pageNum - 1)"
         >
@@ -227,7 +227,7 @@ function handleClickDelete(id: string): void {
         </v-btn>
         <v-btn
           v-if="greaterThanXs && page < pageNum - 1"
-          class="mx-2 !px-2 !min-w-0"
+          class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="() => jumpPage(pageNum)"
         >

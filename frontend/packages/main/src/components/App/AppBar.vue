@@ -50,7 +50,7 @@ const filteredRoutes = computed<Route[]>(
 </script>
 
 <template>
-  <v-app-bar flat class="bg-white !border-b">
+  <v-app-bar flat class="!border-b bg-white">
     <div class="prepend">
       <v-app-bar-nav-icon
         v-if="['xs', 'sm'].includes(display.name.value)"
@@ -72,7 +72,7 @@ const filteredRoutes = computed<Route[]>(
           <v-menu v-if="route.children" open-on-hover>
             <template #activator="{ props: menuProps }">
               <v-btn
-                class="mr-2 !h-full text-body-2 rounded"
+                class="text-body-2 mr-2 !h-full rounded"
                 :variant="route.meta.variant"
                 :class="route.meta.class"
                 v-bind="menuProps"
@@ -103,7 +103,7 @@ const filteredRoutes = computed<Route[]>(
           </v-menu>
           <v-btn
             v-else
-            class="mr-2 !h-full text-body-2 rounded"
+            class="text-body-2 mr-2 !h-full rounded"
             :variant="route.meta.variant"
             :class="route.meta.class"
           >
@@ -118,9 +118,9 @@ const filteredRoutes = computed<Route[]>(
 
 <style scoped lang="scss">
 .prepend {
-  @apply flex items-center h-full p-[1.1rem];
+  @apply flex h-full items-center p-[1.1rem];
   .logo {
-    @apply cursor-pointer h-full;
+    @apply h-full cursor-pointer;
     .logo-img {
       @apply h-full;
     }

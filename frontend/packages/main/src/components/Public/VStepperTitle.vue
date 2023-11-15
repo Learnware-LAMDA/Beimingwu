@@ -28,7 +28,7 @@ const activeStep = (index: number): void => {
 </script>
 
 <template>
-  <div class="w-full mx-auto p-2">
+  <div class="mx-auto w-full p-2">
     <div class="stepper-box">
       <div class="steps-wrapper">
         <div
@@ -45,7 +45,7 @@ const activeStep = (index: number): void => {
             </div>
           </div>
           <div class="step-title">
-            <h4 class="md:text-lg text-sm">{{ `${stepTitle} ${index + 1}` }}</h4>
+            <h4 class="text-sm md:text-lg">{{ `${stepTitle} ${index + 1}` }}</h4>
             <h5 class="md:texg-sm text-xs">{{ step.subtitle }}</h5>
           </div>
         </div>
@@ -59,16 +59,16 @@ const activeStep = (index: number): void => {
   @apply relative;
 
   .steps-wrapper {
-    @apply flex justify-between items-center md:mx-5;
+    @apply flex items-center justify-between md:mx-5;
 
     .step {
-      @apply flex flex-col items-center mx-2 cursor-pointer;
+      @apply mx-2 flex cursor-pointer flex-col items-center;
 
       .icon {
-        @apply md:p-3 p-1 bg-white;
+        @apply bg-white p-1 md:p-3;
 
         .circle {
-          @apply p-3 flex justify-center items-center rounded-full;
+          @apply flex items-center justify-center rounded-full p-3;
         }
       }
 
@@ -79,7 +79,7 @@ const activeStep = (index: number): void => {
   }
 
   .divider-line {
-    @apply absolute w-4/5 left-[10%] md:border-2 border -z-10;
+    @apply absolute left-[10%] -z-10 w-4/5 border md:border-2;
   }
 }
 </style>

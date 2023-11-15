@@ -13,6 +13,7 @@ import LearnwareDetail from "./learnwareDetail";
 import MyLearnware from "./myLearnware";
 import AllUser from "./allUser";
 import Summary from "./summary";
+import Error from "./error";
 
 export default {
   Page,
@@ -30,4 +31,5 @@ export default {
   MyLearnware,
   AllUser,
   Summary,
+  Error,
 };

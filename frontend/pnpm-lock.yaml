@@ -86,7 +86,7 @@ importers:
         version: 4.1.0(vite@4.5.0)(vue@3.2.47)
       '@vue/eslint-config-prettier':
         specifier: ^7.1.0
-        version: 7.1.0(eslint@8.43.0)(prettier@2.8.8)
+        version: 7.1.0(eslint@8.43.0)(prettier@3.1.0)
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.31)
@@ -106,8 +106,11 @@ importers:
         specifier: ^8.4.31
         version: 8.4.31
       prettier:
-        specifier: ^2.8.8
-        version: 2.8.8
+        specifier: ^3.1.0
+        version: registry.npmjs.org/prettier@3.1.0
+      prettier-plugin-tailwindcss:
+        specifier: ^0.5.7
+        version: registry.npmjs.org/prettier-plugin-tailwindcss@0.5.7(prettier@3.1.0)
       sass:
         specifier: ^1.60.0
         version: 1.60.0
@@ -146,7 +149,7 @@ importers:
         version: 4.4.0
       vue-chartjs:
         specifier: 5.2.0
-        version: 5.2.0(chart.js@4.4.0)(vue@3.3.5)
+        version: 5.2.0(chart.js@4.4.0)(vue@3.3.8)
 
   packages/hooks:
     dependencies:
@@ -685,7 +688,7 @@ packages:
   /@vue/devtools-api@6.5.0:
     resolution: {integrity: sha512-o9KfBeaBmCKl10usN4crU53fYtC1r7jJwdGKjPT24t348rHxgfpZ0xL3Xm/gLUYnc0oTp8LAmrxOeLyu6tbk2Q==}
 
-  /@vue/eslint-config-prettier@7.1.0(eslint@8.43.0)(prettier@2.8.8):
+  /@vue/eslint-config-prettier@7.1.0(eslint@8.43.0)(prettier@3.1.0):
     resolution: {integrity: sha512-Pv/lVr0bAzSIHLd9iz0KnvAr4GKyCEl+h52bc4e5yWuDVtLgFwycF7nrbWTAQAS+FU6q1geVd07lc6EWfJiWKQ==}
     peerDependencies:
       eslint: '>= 7.28.0'
@@ -693,8 +696,8 @@ packages:
     dependencies:
       eslint: 8.43.0
       eslint-config-prettier: 8.10.0(eslint@8.43.0)
-      eslint-plugin-prettier: 4.2.1(eslint-config-prettier@8.10.0)(eslint@8.43.0)(prettier@2.8.8)
-      prettier: 2.8.8
+      eslint-plugin-prettier: 4.2.1(eslint-config-prettier@8.10.0)(eslint@8.43.0)(prettier@3.1.0)
+      prettier: registry.npmjs.org/prettier@3.1.0
     dev: true
 
   /@vue/language-core@1.8.19(typescript@5.2.2):
@@ -1543,7 +1546,7 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-prettier@4.2.1(eslint-config-prettier@8.10.0)(eslint@8.43.0)(prettier@2.8.8):
+  /eslint-plugin-prettier@4.2.1(eslint-config-prettier@8.10.0)(eslint@8.43.0)(prettier@3.1.0):
     resolution: {integrity: sha512-f/0rXLXUt0oFYs8ra4w49wYZBG5GKZpAYsJSm6rnYL5uVDjd+zowwMwVZHnAjf4edNrKpCDYfXDgmRE/Ak7QyQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -1556,7 +1559,7 @@ packages:
     dependencies:
       eslint: 8.43.0
       eslint-config-prettier: 8.10.0(eslint@8.43.0)
-      prettier: 2.8.8
+      prettier: registry.npmjs.org/prettier@3.1.0
       prettier-linter-helpers: 1.0.0
     dev: true
 
@@ -2607,12 +2610,6 @@ packages:
       fast-diff: 1.3.0
     dev: true
 
-  /prettier@2.8.8:
-    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
-    engines: {node: '>=10.13.0'}
-    hasBin: true
-    dev: true
-
   /process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
     dev: false
@@ -3315,14 +3312,14 @@ packages:
       vue: 3.2.47
     dev: false
 
-  /vue-chartjs@5.2.0(chart.js@4.4.0)(vue@3.3.5):
+  /vue-chartjs@5.2.0(chart.js@4.4.0)(vue@3.3.8):
     resolution: {integrity: sha512-d3zpKmGZr2OWHQ1xmxBcAn5ShTG917+/UCLaSpaCDDqT0U7DBsvFzTs69ZnHCgKoXT55GZDW8YEj9Av+dlONLA==}
     peerDependencies:
       chart.js: ^4.1.1
       vue: ^3.0.0-0 || ^2.7.0
     dependencies:
       chart.js: 4.4.0
-      vue: registry.npmjs.org/vue@3.3.5(typescript@5.2.2)
+      vue: registry.npmjs.org/vue@3.3.8(typescript@5.2.2)
     dev: false
 
   /vue-demi@0.14.6(vue@3.2.47):
@@ -3543,20 +3540,20 @@ packages:
     engines: {node: '>=6.9.0'}
     dev: false
 
-  registry.npmjs.org/@babel/parser@7.23.0:
-    resolution: {integrity: sha512-vvPKKdMemU85V9WE/l5wZEmImpCtLqbnTvqDS2U1fJ96KrxoW7KrXhNsNCblQlg8Ck4b85yxdTyelsMUgFUXiw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@babel/parser/-/parser-7.23.0.tgz}
+  registry.npmjs.org/@babel/parser@7.23.3:
+    resolution: {integrity: sha512-uVsWNvlVsIninV2prNz/3lHCb+5CJ+e+IUBfbjToAHODtfGYLfCFuY4AU7TskI+dAKk+njsPiBjq1gKTvZOBaw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@babel/parser/-/parser-7.23.3.tgz}
     name: '@babel/parser'
-    version: 7.23.0
+    version: 7.23.3
     engines: {node: '>=6.0.0'}
     hasBin: true
     dependencies:
-      '@babel/types': registry.npmjs.org/@babel/types@7.23.0
+      '@babel/types': registry.npmjs.org/@babel/types@7.23.3
     dev: false
 
-  registry.npmjs.org/@babel/types@7.23.0:
-    resolution: {integrity: sha512-0oIyUfKoI3mSqMvsxBdclDwxXKXAUA8v/apZbc+iSyARYou1o8ZGDxbUYyLFoW2arqS2jDGqJuZvv1d/io1axg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@babel/types/-/types-7.23.0.tgz}
+  registry.npmjs.org/@babel/types@7.23.3:
+    resolution: {integrity: sha512-OZnvoH2l8PK5eUvEcUyCt/sXgr/h+UWpVuBbOljwcrAgUl6lpchoQ++PHGyQy1AtYnVA6CEq3y5xeEI10brpXw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@babel/types/-/types-7.23.3.tgz}
     name: '@babel/types'
-    version: 7.23.0
+    version: 7.23.3
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/helper-string-parser': registry.npmjs.org/@babel/helper-string-parser@7.22.5
@@ -3818,108 +3815,108 @@ packages:
     version: 3.1.11
     dev: true
 
-  registry.npmjs.org/@vue/compiler-core@3.3.5:
-    resolution: {integrity: sha512-S8Ma+eICI40Y4UotR+iKR729Bma+wERn/xLc+Jz203s5WIW1Sx3qoiONqXGg3Q4vBMa+QHDncULya19ZSJuhog==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/compiler-core/-/compiler-core-3.3.5.tgz}
+  registry.npmjs.org/@vue/compiler-core@3.3.8:
+    resolution: {integrity: sha512-hN/NNBUECw8SusQvDSqqcVv6gWq8L6iAktUR0UF3vGu2OhzRqcOiAno0FmBJWwxhYEXRlQJT5XnoKsVq1WZx4g==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/compiler-core/-/compiler-core-3.3.8.tgz}
     name: '@vue/compiler-core'
-    version: 3.3.5
+    version: 3.3.8
     dependencies:
-      '@babel/parser': registry.npmjs.org/@babel/parser@7.23.0
-      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.5
+      '@babel/parser': registry.npmjs.org/@babel/parser@7.23.3
+      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.8
       estree-walker: registry.npmjs.org/estree-walker@2.0.2
       source-map-js: registry.npmjs.org/source-map-js@1.0.2
     dev: false
 
-  registry.npmjs.org/@vue/compiler-dom@3.3.5:
-    resolution: {integrity: sha512-dxt6QntN9T/NtnV6Pz+/nmcoo3ULnsYCnRpvEyY73wbk1tzzx7dnwngUN1cXkyGNu9c3UE7llhq/5T54lKwyhQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/compiler-dom/-/compiler-dom-3.3.5.tgz}
+  registry.npmjs.org/@vue/compiler-dom@3.3.8:
+    resolution: {integrity: sha512-+PPtv+p/nWDd0AvJu3w8HS0RIm/C6VGBIRe24b9hSyNWOAPEUosFZ5diwawwP8ip5sJ8n0Pe87TNNNHnvjs0FQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/compiler-dom/-/compiler-dom-3.3.8.tgz}
     name: '@vue/compiler-dom'
-    version: 3.3.5
+    version: 3.3.8
     dependencies:
-      '@vue/compiler-core': registry.npmjs.org/@vue/compiler-core@3.3.5
-      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.5
+      '@vue/compiler-core': registry.npmjs.org/@vue/compiler-core@3.3.8
+      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.8
     dev: false
 
-  registry.npmjs.org/@vue/compiler-sfc@3.3.5:
-    resolution: {integrity: sha512-M6ys4iReSbrF4NTcMCnJiBioCpzXjfkfXwkdziknRyps+pG0DkwpDfQT7zQ0q91/rCR/Ejz64b5H6C4HBhX41w==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/compiler-sfc/-/compiler-sfc-3.3.5.tgz}
+  registry.npmjs.org/@vue/compiler-sfc@3.3.8:
+    resolution: {integrity: sha512-WMzbUrlTjfYF8joyT84HfwwXo+8WPALuPxhy+BZ6R4Aafls+jDBnSz8PDz60uFhuqFbl3HxRfxvDzrUf3THwpA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/compiler-sfc/-/compiler-sfc-3.3.8.tgz}
     name: '@vue/compiler-sfc'
-    version: 3.3.5
+    version: 3.3.8
     dependencies:
-      '@babel/parser': registry.npmjs.org/@babel/parser@7.23.0
-      '@vue/compiler-core': registry.npmjs.org/@vue/compiler-core@3.3.5
-      '@vue/compiler-dom': registry.npmjs.org/@vue/compiler-dom@3.3.5
-      '@vue/compiler-ssr': registry.npmjs.org/@vue/compiler-ssr@3.3.5
-      '@vue/reactivity-transform': registry.npmjs.org/@vue/reactivity-transform@3.3.5
-      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.5
+      '@babel/parser': registry.npmjs.org/@babel/parser@7.23.3
+      '@vue/compiler-core': registry.npmjs.org/@vue/compiler-core@3.3.8
+      '@vue/compiler-dom': registry.npmjs.org/@vue/compiler-dom@3.3.8
+      '@vue/compiler-ssr': registry.npmjs.org/@vue/compiler-ssr@3.3.8
+      '@vue/reactivity-transform': registry.npmjs.org/@vue/reactivity-transform@3.3.8
+      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.8
       estree-walker: registry.npmjs.org/estree-walker@2.0.2
       magic-string: registry.npmjs.org/magic-string@0.30.5
       postcss: registry.npmjs.org/postcss@8.4.31
       source-map-js: registry.npmjs.org/source-map-js@1.0.2
     dev: false
 
-  registry.npmjs.org/@vue/compiler-ssr@3.3.5:
-    resolution: {integrity: sha512-v7p2XuEpOcgjd6c49NqOnq3UTJOv5Uo9tirOyGnEadwxTov2O1J3/TUt4SgAAnwA+9gcUyH5c3lIOFsBe+UIyw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/compiler-ssr/-/compiler-ssr-3.3.5.tgz}
+  registry.npmjs.org/@vue/compiler-ssr@3.3.8:
+    resolution: {integrity: sha512-hXCqQL/15kMVDBuoBYpUnSYT8doDNwsjvm3jTefnXr+ytn294ySnT8NlsFHmTgKNjwpuFy7XVV8yTeLtNl/P6w==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/compiler-ssr/-/compiler-ssr-3.3.8.tgz}
     name: '@vue/compiler-ssr'
-    version: 3.3.5
+    version: 3.3.8
     dependencies:
-      '@vue/compiler-dom': registry.npmjs.org/@vue/compiler-dom@3.3.5
-      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.5
+      '@vue/compiler-dom': registry.npmjs.org/@vue/compiler-dom@3.3.8
+      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.8
     dev: false
 
-  registry.npmjs.org/@vue/reactivity-transform@3.3.5:
-    resolution: {integrity: sha512-OhpBD1H32pIapRzqy31hWwTFLf9STP+0uk5bVOQWXACTa2Rt/RPhvX4zixbPgMGo6iP+S+tFpZzUdcG8AASn8A==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/reactivity-transform/-/reactivity-transform-3.3.5.tgz}
+  registry.npmjs.org/@vue/reactivity-transform@3.3.8:
+    resolution: {integrity: sha512-49CvBzmZNtcHua0XJ7GdGifM8GOXoUMOX4dD40Y5DxI3R8OUhMlvf2nvgUAcPxaXiV5MQQ1Nwy09ADpnLQUqRw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/reactivity-transform/-/reactivity-transform-3.3.8.tgz}
     name: '@vue/reactivity-transform'
-    version: 3.3.5
+    version: 3.3.8
     dependencies:
-      '@babel/parser': registry.npmjs.org/@babel/parser@7.23.0
-      '@vue/compiler-core': registry.npmjs.org/@vue/compiler-core@3.3.5
-      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.5
+      '@babel/parser': registry.npmjs.org/@babel/parser@7.23.3
+      '@vue/compiler-core': registry.npmjs.org/@vue/compiler-core@3.3.8
+      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.8
       estree-walker: registry.npmjs.org/estree-walker@2.0.2
       magic-string: registry.npmjs.org/magic-string@0.30.5
     dev: false
 
-  registry.npmjs.org/@vue/reactivity@3.3.5:
-    resolution: {integrity: sha512-P7OBfPjsbV5lDCwZQDtWFqPh3uAP3Q6bRqYVgsYr6ki7jiaiHGSLmeaevUi+Nkev8nhublUpApnWevNiACN3sw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/reactivity/-/reactivity-3.3.5.tgz}
+  registry.npmjs.org/@vue/reactivity@3.3.8:
+    resolution: {integrity: sha512-ctLWitmFBu6mtddPyOKpHg8+5ahouoTCRtmAHZAXmolDtuZXfjL2T3OJ6DL6ezBPQB1SmMnpzjiWjCiMYmpIuw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/reactivity/-/reactivity-3.3.8.tgz}
     name: '@vue/reactivity'
-    version: 3.3.5
+    version: 3.3.8
     dependencies:
-      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.5
+      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.8
     dev: false
 
-  registry.npmjs.org/@vue/runtime-core@3.3.5:
-    resolution: {integrity: sha512-kxAW3fTzwzZQqiHV1SndTtLMlNfJ/bsvcYku6NDuPzTeG6sMOAIXvuz6N5NUox+P7sNCInESbSOrPMMvtWx3vA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/runtime-core/-/runtime-core-3.3.5.tgz}
+  registry.npmjs.org/@vue/runtime-core@3.3.8:
+    resolution: {integrity: sha512-qurzOlb6q26KWQ/8IShHkMDOuJkQnQcTIp1sdP4I9MbCf9FJeGVRXJFr2mF+6bXh/3Zjr9TDgURXrsCr9bfjUw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/runtime-core/-/runtime-core-3.3.8.tgz}
     name: '@vue/runtime-core'
-    version: 3.3.5
+    version: 3.3.8
     dependencies:
-      '@vue/reactivity': registry.npmjs.org/@vue/reactivity@3.3.5
-      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.5
+      '@vue/reactivity': registry.npmjs.org/@vue/reactivity@3.3.8
+      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.8
     dev: false
 
-  registry.npmjs.org/@vue/runtime-dom@3.3.5:
-    resolution: {integrity: sha512-seYSeHmBNlTrR0eFyQFocEBtzljNlKzC2JfdebfBqoEmikyNYzLWTouv71DignLFXEXZKWNTqCIs4d7dk5Q3Ng==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/runtime-dom/-/runtime-dom-3.3.5.tgz}
+  registry.npmjs.org/@vue/runtime-dom@3.3.8:
+    resolution: {integrity: sha512-Noy5yM5UIf9UeFoowBVgghyGGPIDPy1Qlqt0yVsUdAVbqI8eeMSsTqBtauaEoT2UFXUk5S64aWVNJN4MJ2vRdA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/runtime-dom/-/runtime-dom-3.3.8.tgz}
     name: '@vue/runtime-dom'
-    version: 3.3.5
+    version: 3.3.8
     dependencies:
-      '@vue/runtime-core': registry.npmjs.org/@vue/runtime-core@3.3.5
-      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.5
+      '@vue/runtime-core': registry.npmjs.org/@vue/runtime-core@3.3.8
+      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.8
       csstype: registry.npmjs.org/csstype@3.1.2
     dev: false
 
-  registry.npmjs.org/@vue/server-renderer@3.3.5(vue@3.3.5):
-    resolution: {integrity: sha512-7VIZkohYn8GAnNT9chrm0vDpHJ6mWPL+TmUBKtDWcWxYcq33YJP/VHCPQN5TazkxXCtv3c1KfXAMZowX4giLoQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/server-renderer/-/server-renderer-3.3.5.tgz}
-    id: registry.npmjs.org/@vue/server-renderer/3.3.5
+  registry.npmjs.org/@vue/server-renderer@3.3.8(vue@3.3.8):
+    resolution: {integrity: sha512-zVCUw7RFskvPuNlPn/8xISbrf0zTWsTSdYTsUTN1ERGGZGVnRxM2QZ3x1OR32+vwkkCm0IW6HmJ49IsPm7ilLg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/server-renderer/-/server-renderer-3.3.8.tgz}
+    id: registry.npmjs.org/@vue/server-renderer/3.3.8
     name: '@vue/server-renderer'
-    version: 3.3.5
+    version: 3.3.8
     peerDependencies:
-      vue: 3.3.5
+      vue: 3.3.8
     dependencies:
-      '@vue/compiler-ssr': registry.npmjs.org/@vue/compiler-ssr@3.3.5
-      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.5
-      vue: registry.npmjs.org/vue@3.3.5(typescript@5.2.2)
+      '@vue/compiler-ssr': registry.npmjs.org/@vue/compiler-ssr@3.3.8
+      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.8
+      vue: registry.npmjs.org/vue@3.3.8(typescript@5.2.2)
     dev: false
 
-  registry.npmjs.org/@vue/shared@3.3.5:
-    resolution: {integrity: sha512-oNJN1rCtkqm1cIxU1BuZVEVRWIp4DhaxXucEzzZ/iDKHP71ZxhkBPNK+URySiECH6aiOZzC60PS2bd6JFznvNA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/shared/-/shared-3.3.5.tgz}
+  registry.npmjs.org/@vue/shared@3.3.8:
+    resolution: {integrity: sha512-8PGwybFwM4x8pcfgqEQFy70NaQxASvOC5DJwLQfpArw1UDfUXrJkdxD3BhVTMS+0Lef/TU7YO0Jvr0jJY8T+mw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@vue/shared/-/shared-3.3.8.tgz}
     name: '@vue/shared'
-    version: 3.3.5
+    version: 3.3.8
     dev: false
 
   registry.npmjs.org/animejs@3.2.1:
@@ -3967,10 +3964,10 @@ packages:
       '@jridgewell/sourcemap-codec': registry.npmjs.org/@jridgewell/sourcemap-codec@1.4.15
     dev: false
 
-  registry.npmjs.org/nanoid@3.3.6:
-    resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/nanoid/-/nanoid-3.3.6.tgz}
+  registry.npmjs.org/nanoid@3.3.7:
+    resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/nanoid/-/nanoid-3.3.7.tgz}
     name: nanoid
-    version: 3.3.6
+    version: 3.3.7
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
     dev: false
@@ -3987,10 +3984,76 @@ packages:
     version: 8.4.31
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
-      nanoid: registry.npmjs.org/nanoid@3.3.6
+      nanoid: registry.npmjs.org/nanoid@3.3.7
       picocolors: registry.npmjs.org/picocolors@1.0.0
       source-map-js: registry.npmjs.org/source-map-js@1.0.2
     dev: false
+
+  registry.npmjs.org/prettier-plugin-tailwindcss@0.5.7(prettier@3.1.0):
+    resolution: {integrity: sha512-4v6uESAgwCni6YF6DwJlRaDjg9Z+al5zM4JfngcazMy4WEf/XkPS5TEQjbD+DZ5iNuG6RrKQLa/HuX2SYzC3kQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/prettier-plugin-tailwindcss/-/prettier-plugin-tailwindcss-0.5.7.tgz}
+    id: registry.npmjs.org/prettier-plugin-tailwindcss/0.5.7
+    name: prettier-plugin-tailwindcss
+    version: 0.5.7
+    engines: {node: '>=14.21.3'}
+    peerDependencies:
+      '@ianvs/prettier-plugin-sort-imports': '*'
+      '@prettier/plugin-pug': '*'
+      '@shopify/prettier-plugin-liquid': '*'
+      '@shufo/prettier-plugin-blade': '*'
+      '@trivago/prettier-plugin-sort-imports': '*'
+      prettier: ^3.0
+      prettier-plugin-astro: '*'
+      prettier-plugin-css-order: '*'
+      prettier-plugin-import-sort: '*'
+      prettier-plugin-jsdoc: '*'
+      prettier-plugin-marko: '*'
+      prettier-plugin-organize-attributes: '*'
+      prettier-plugin-organize-imports: '*'
+      prettier-plugin-style-order: '*'
+      prettier-plugin-svelte: '*'
+      prettier-plugin-twig-melody: '*'
+    peerDependenciesMeta:
+      '@ianvs/prettier-plugin-sort-imports':
+        optional: true
+      '@prettier/plugin-pug':
+        optional: true
+      '@shopify/prettier-plugin-liquid':
+        optional: true
+      '@shufo/prettier-plugin-blade':
+        optional: true
+      '@trivago/prettier-plugin-sort-imports':
+        optional: true
+      prettier-plugin-astro:
+        optional: true
+      prettier-plugin-css-order:
+        optional: true
+      prettier-plugin-import-sort:
+        optional: true
+      prettier-plugin-jsdoc:
+        optional: true
+      prettier-plugin-marko:
+        optional: true
+      prettier-plugin-organize-attributes:
+        optional: true
+      prettier-plugin-organize-imports:
+        optional: true
+      prettier-plugin-style-order:
+        optional: true
+      prettier-plugin-svelte:
+        optional: true
+      prettier-plugin-twig-melody:
+        optional: true
+    dependencies:
+      prettier: registry.npmjs.org/prettier@3.1.0
+    dev: true
+
+  registry.npmjs.org/prettier@3.1.0:
+    resolution: {integrity: sha512-TQLvXjq5IAibjh8EpBIkNKxO749UEWABoiIZehEPiY4GNpVdhaFKqSTu+QrlU6D2dPAfubRmtJTi4K4YkQ5eXw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/prettier/-/prettier-3.1.0.tgz}
+    name: prettier
+    version: 3.1.0
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
 
   registry.npmjs.org/source-map-js@1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/source-map-js/-/source-map-js-1.0.2.tgz}
@@ -4006,21 +4069,21 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
-  registry.npmjs.org/vue@3.3.5(typescript@5.2.2):
-    resolution: {integrity: sha512-xYpLEGb25yYU1ul9ZhCcavNZ4YW6PS7YTDdDAd0yc/3w69Tra2BwY4EpKguKddfD56QApXQ17XHq+fJJwEP+UQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/vue/-/vue-3.3.5.tgz}
-    id: registry.npmjs.org/vue/3.3.5
+  registry.npmjs.org/vue@3.3.8(typescript@5.2.2):
+    resolution: {integrity: sha512-5VSX/3DabBikOXMsxzlW8JyfeLKlG9mzqnWgLQLty88vdZL7ZJgrdgBOmrArwxiLtmS+lNNpPcBYqrhE6TQW5w==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/vue/-/vue-3.3.8.tgz}
+    id: registry.npmjs.org/vue/3.3.8
     name: vue
-    version: 3.3.5
+    version: 3.3.8
     peerDependencies:
       typescript: '*'
     peerDependenciesMeta:
       typescript:
         optional: true
     dependencies:
-      '@vue/compiler-dom': registry.npmjs.org/@vue/compiler-dom@3.3.5
-      '@vue/compiler-sfc': registry.npmjs.org/@vue/compiler-sfc@3.3.5
-      '@vue/runtime-dom': registry.npmjs.org/@vue/runtime-dom@3.3.5
-      '@vue/server-renderer': registry.npmjs.org/@vue/server-renderer@3.3.5(vue@3.3.5)
-      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.5
+      '@vue/compiler-dom': registry.npmjs.org/@vue/compiler-dom@3.3.8
+      '@vue/compiler-sfc': registry.npmjs.org/@vue/compiler-sfc@3.3.8
+      '@vue/runtime-dom': registry.npmjs.org/@vue/runtime-dom@3.3.8
+      '@vue/server-renderer': registry.npmjs.org/@vue/server-renderer@3.3.8(vue@3.3.8)
+      '@vue/shared': registry.npmjs.org/@vue/shared@3.3.8
       typescript: 5.2.2
     dev: false

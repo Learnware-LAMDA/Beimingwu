@@ -81,7 +81,7 @@ function clickBtn(btn: Btn): void {
 <style scoped lang="scss">
 .grid-container {
   .my-title {
-    @apply mt-7 mb-5;
+    @apply mb-5 mt-7;
   }
 
   .btn-container {
@@ -91,7 +91,7 @@ function clickBtn(btn: Btn): void {
       @apply pr-3;
 
       .icon {
-        @apply w-full h-full;
+        @apply h-full w-full;
         fill: rgb(var(--v-theme-on-primary));
       }
     }

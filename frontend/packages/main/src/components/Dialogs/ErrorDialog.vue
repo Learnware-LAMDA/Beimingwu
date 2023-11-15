@@ -19,15 +19,25 @@ const dialog = computed({
     <v-sheet elevation="12" max-width="600" rounded="lg" width="100%" class="mx-auto p-4">
       <slot name="title">
         <svg class="m-auto h-[120px] w-[120px]" viewBox="0 0 200 200">
-          <circle style="fill: rgb(var(--v-theme-success))" cx="100" cy="100" r="80" />
+          <circle style="fill: rgb(var(--v-theme-error))" cx="100" cy="100" r="80" />
           <path
-            d="M50 100 L90 134 L152 64"
+            d="M60 60 L140 140"
+            stroke="white"
+            stroke-width="16"
+            stroke-dasharray="113"
+            fill="none"
+            :class="{ 'path-offset': dialog }"
+          />
+          <path
+            d="M140 60 L60 140"
             stroke="white"
             stroke-width="16"
             fill="none"
-            stroke-dasharray="146"
+            stroke-dasharray="113"
+            stroke-dashoffset="113"
+            :style="{ animationDelay: '200ms' }"
             :class="{ 'path-offset': dialog }"
-          ></path>
+          />
         </svg>
       </slot>
 
@@ -43,7 +53,7 @@ const dialog = computed({
 <style scoped lang="scss">
 @keyframes pathOffset {
   0% {
-    stroke-dashoffset: 146;
+    stroke-dashoffset: 113;
   }
   100% {
     stroke-dashoffset: 0;
@@ -51,6 +61,6 @@ const dialog = computed({
 }
 
 .path-offset {
-  animation: pathOffset 600ms ease-in-out forwards;
+  animation: pathOffset 200ms ease-in-out forwards;
 }
 </style>

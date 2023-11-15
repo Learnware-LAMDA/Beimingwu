@@ -138,7 +138,7 @@ function handleClickSetRole(id: number, role: number): void {
   @apply relative p-1;
 
   .item:nth-child(1) {
-    @apply border-t sm:block hidden;
+    @apply hidden border-t sm:block;
 
     .columns {
       @apply font-bold;
@@ -150,21 +150,21 @@ function handleClickSetRole(id: number, role: number): void {
   }
 
   .item {
-    @apply px-3 py-3 sm:py-0 border border-t-0;
+    @apply border border-t-0 px-3 py-3 sm:py-0;
 
     .row {
       @apply flex items-center;
 
       .columns {
-        @apply grid sm:grid-cols-[3fr,3fr,1fr,1fr,1fr] w-full;
+        @apply grid w-full sm:grid-cols-[3fr,3fr,1fr,1fr,1fr];
 
         .my-title {
-          @apply xl:text-base lg:text-lg text-sm sm:flex sm:flex-col sm:items-start sm:justify-center;
+          @apply text-sm sm:flex sm:flex-col sm:items-start sm:justify-center lg:text-lg xl:text-base;
           .link {
             @apply underline;
           }
           .small-title {
-            @apply sm:hidden font-bold;
+            @apply font-bold sm:hidden;
           }
         }
       }
@@ -176,7 +176,7 @@ function handleClickSetRole(id: number, role: number): void {
   }
 
   .no-user {
-    @apply flex flex-col justify-center items-center w-full bottom-0 text-2xl;
+    @apply bottom-0 flex w-full flex-col items-center justify-center text-2xl;
 
     .oops-img {
       @apply mx-auto;

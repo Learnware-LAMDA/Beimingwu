@@ -127,9 +127,9 @@ const vOffset = {
 </script>
 
 <template>
-  <div class="mx-auto py-20 md:py-30 md:px-10 max-w-[1200px] w-full">
+  <div class="md:py-30 mx-auto w-full max-w-[1200px] py-20 md:px-10">
     <div class="px-5 md:px-0">
-      <div class="text-3xl my-5 <md:text-4xl <md:my-5 lg:text-4xl lg:my-7 xl:text-5xl xl:my-10">
+      <div class="my-5 text-3xl lg:my-7 lg:text-4xl xl:my-10 xl:text-5xl">
         {{ t("Home.What.Title") }}
       </div>
       <p class="text-gray-500">
@@ -138,7 +138,7 @@ const vOffset = {
     </div>
 
     <scroll-animate class="h-[1500vh]" @progress="handleProgress">
-      <div class="h-main-full flex flex-col justify-center items-center">
+      <div class="h-main-full flex flex-col items-center justify-center">
         <svg class="w-full" viewBox="0 0 1600 910">
           <defs>
             <path id="path" transform="translate(0, 200)" d="M 0 0 S 400 0 800 300" />
@@ -271,13 +271,13 @@ const vOffset = {
           <g ref="axisElement" style="transform: skew(-9deg, -1deg)">
             <path
               d="M 1100 600 h 350"
-              class="stroke-gray-800 stroke-[6] fill-none"
+              class="fill-none stroke-gray-800 stroke-[6]"
               stroke-linecap="round"
               marker-end="url(#arrow)"
             />
             <path
               d="M 1150 670 v -350"
-              class="stroke-gray-800 stroke-[6] fill-none"
+              class="fill-none stroke-gray-800 stroke-[6]"
               stroke-linecap="round"
               marker-end="url(#arrow)"
             />
@@ -318,7 +318,7 @@ const vOffset = {
                 'M 600 740 S1000 400 1220 540',
               ][i - 1]
             "
-            class="stroke-[4] fill-none"
+            class="fill-none stroke-[4]"
             :class="['stroke-blue-600', 'stroke-green-800', 'stroke-red-800'][i - 1]"
             stroke-linecap="round"
             :key="i"
@@ -372,7 +372,7 @@ const vOffset = {
             :d="`M 400 ${
               300 * (i - 1) + 20
             } a 10 10 0 0 1 10 -10 h750 a 10 10 0 0 1 10 10 v 270 a 10 10 0 0 1 -10 10 h-750 a 10 10 0 0 1 -10 -10 z`"
-            class="stroke-black stroke-[2] fill-none"
+            class="fill-none stroke-black stroke-[2]"
             :key="i"
           ></path>
         </svg>

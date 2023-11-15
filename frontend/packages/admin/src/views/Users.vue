@@ -6,7 +6,7 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { fetchex, saveContentToFile } from "../utils";
 import { BACKEND_URL } from "@main/request";
-import SuccessDialog from "@admin/components/Dialogs/SuccessDialog.vue";
+import SuccessDialog from "@main/components/Dialogs/SuccessDialog.vue";
 import ConfirmDialog from "@main/components/Dialogs/ConfirmDialog.vue";
 import PageUserList from "@admin/components/User/PageUserList.vue";
 import type { User, Filter } from "@beiming-system/types/user";
@@ -26,7 +26,7 @@ const resetDialog = ref<InstanceType<typeof ConfirmDialog>>();
 const resetId = ref<string>("");
 const resetName = ref<string>("");
 
-const newPasswordDialog = ref<InstanceType<typeof SuccessDialog>>();
+const newPasswordDialog = ref<boolean>(false);
 const newPassword = ref("");
 
 const setRoleDialog = ref<InstanceType<typeof ConfirmDialog>>();
@@ -141,7 +141,7 @@ function resetPassword(id: number): Promise<void> {
       },
     )
     .then((res) => {
-      newPasswordDialog.value && newPasswordDialog.value.show();
+      newPasswordDialog.value = true;
       newPassword.value = res.data.password;
     })
     .catch((err) => {
@@ -381,13 +381,23 @@ onActivated(() => {
       </template>
     </confirm-dialog>
 
-    <success-dialog ref="newPasswordDialog" @close="() => {}">
-      <template #title>
-        Password of &nbsp; <b>{{ resetName }}</b> &nbsp; has been reset.
+    <success-dialog v-model="newPasswordDialog">
+      <template #msg>
+        <v-card-text class="text-lg">
+          Password of user <b>{{ resetName }}</b> has been reset to {{ newPassword }}. Please save
+          the new password.
+        </v-card-text>
       </template>
-      <template #text>
-        Password of user <b>{{ resetName }}</b> has been reset to {{ newPassword }}. Please save the
-        new password.
+      <template #buttons>
+        <v-btn
+          class="text-none mr-3"
+          color="primary"
+          rounded
+          variant="outlined"
+          @click="newPasswordDialog = false"
+        >
+          OK
+        </v-btn>
       </template>
     </success-dialog>
 
@@ -416,10 +426,10 @@ onActivated(() => {
       </template>
     </confirm-dialog>
 
-    <v-scroll-y-transition class="fixed left-0 right-0 z-index-10000">
+    <v-scroll-y-transition class="z-index-10000 fixed left-0 right-0">
       <v-card-actions v-if="showError">
         <v-alert
-          class="w-full max-w-[900px] mx-auto"
+          class="mx-auto w-full max-w-[900px]"
           closable
           :text="errorMsg"
           type="error"
@@ -481,10 +491,10 @@ onActivated(() => {
 
 <style scoped lang="scss">
 .main-container {
-  @apply mx-auto w-full h-full max-w-[1500px] overflow-hidden;
+  @apply mx-auto h-full w-full max-w-[1500px] overflow-hidden;
 
   .search {
-    @apply mt-3 w-full max-w-[1500px] border z-50;
+    @apply z-50 mt-3 w-full max-w-[1500px] border;
 
     .search-row {
       @apply grid grid-cols-2;

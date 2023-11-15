@@ -5,6 +5,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useField } from "@beiming-system/hooks";
 import { login, sendResetPasswordEmail } from "../request/auth";
+import SuccessDialog from "../components/Dialogs/SuccessDialog.vue";
 import { hex_md5 } from "../utils";
 import collaborationImg from "../assets/images/public/collaboration.svg?url";
 
@@ -117,7 +118,7 @@ function onResetPassword(): void {
 <template>
   <div class="flex h-full bg-gray-100">
     <div
-      class="hidden w-full h-full md:block"
+      class="hidden h-full w-full md:block"
       :style="{
         background: `url(${collaborationImg})`,
         backgroundSize: 'contain',
@@ -126,10 +127,10 @@ function onResetPassword(): void {
       }"
     ></div>
     <div
-      class="flex flex-row justify-center items-center w-full fill-height p-2 md:text-md sm:text-sm text-xs"
+      class="fill-height md:text-md flex w-full flex-row items-center justify-center p-2 text-xs sm:text-sm"
     >
       <v-card flat class="mx-auto w-full" max-width="500">
-        <div class="sm:p-7 p-2">
+        <div class="p-2 sm:p-7">
           <v-scroll-y-transition>
             <v-card-actions v-if="showError">
               <v-alert
@@ -147,7 +148,7 @@ function onResetPassword(): void {
             </v-card-actions>
           </v-scroll-y-transition>
           <v-card-title>
-            <h1 class="text-h5 !text-1.3em !<sm:text-1.6em !<sm:my-6 m-2">
+            <h1 class="text-h5 sm:text-1.3em m-2 my-6 sm:my-2">
               {{ t("Login.Login") }}
             </h1>
           </v-card-title>
@@ -189,46 +190,26 @@ function onResetPassword(): void {
           </v-card-actions>
         </div>
       </v-card>
-      <v-dialog v-model="showResetPasswordDialog">
-        <v-sheet
-          elevation="12"
-          max-width="600"
-          rounded="lg"
-          width="100%"
-          class="pa-4 text-center mx-auto"
-        >
-          <svg class="m-auto w-120px h-120px" viewBox="0 0 200 200">
-            <circle style="fill: rgb(var(--v-theme-success))" cx="100" cy="100" r="80" />
-            <path
-              d="M50 100 L90 134 L152 64"
-              stroke="white"
-              stroke-width="16"
-              fill="none"
-              stroke-dasharray="146"
-              stroke-dashoffset="0"
-              class="transition-all duration-800"
-            ></path>
-          </svg>
-
-          <h2 class="text-h5 mt-6 mb-8">
-            We have sent an email to your email address. Please follow the link in the email to
-            reset your password.
+      <success-dialog v-model="showResetPasswordDialog">
+        <template #msg>
+          <h2 class="mb-8 mt-6 text-lg">
+            {{ t("Login.ResetPasswordSent") }}
           </h2>
+        </template>
 
-          <div class="text-end">
-            <v-btn
-              class="text-none"
-              color="primary"
-              rounded
-              variant="outlined"
-              width="90"
-              @click="router.go(0)"
-            >
-              Close
-            </v-btn>
-          </div>
-        </v-sheet>
-      </v-dialog>
+        <template #buttons>
+          <v-btn
+            class="text-none"
+            color="primary"
+            rounded
+            variant="outlined"
+            width="90"
+            @click="() => (showResetPasswordDialog = false)"
+          >
+            Close
+          </v-btn>
+        </template>
+      </success-dialog>
     </div>
   </div>
 </template>

@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { useField } from "@beiming-system/hooks";
 import { useI18n } from "vue-i18n";
 import SuccessDialog from "../components/Dialogs/SuccessDialog.vue";
+import ErrorDialog from "../components/Dialogs/ErrorDialog.vue";
 import { register } from "../request/auth";
 import { hex_md5 } from "../utils";
 import collaborationImg from "../assets/images/public/collaboration.svg?url";
@@ -51,6 +52,7 @@ const showPassword2 = ref(false);
 const showError = ref(false);
 const errorMsg = ref("");
 const success = ref(false);
+const showErrorDialog = ref(false);
 
 const errorTimer = ref<number>();
 const { ok, remain, start: startTimer, stop: stopTimer } = useTimeout(60 * 1000);
@@ -73,7 +75,7 @@ function submit(): Promise<void> {
           return;
         }
         case 21: {
-          throw new Error("System error");
+          throw new Error(t("Error.UnknownError") + ": " + res.msg);
         }
         case 41: {
           email.errorMessages = "Your email is not allowed to register";
@@ -121,7 +123,7 @@ onUnmounted(() => {
 <template>
   <div class="flex h-full bg-gray-100">
     <div
-      class="hidden w-full h-full md:block"
+      class="hidden h-full w-full md:block"
       :style="{
         background: `url(${collaborationImg})`,
         backgroundSize: 'contain',
@@ -130,17 +132,17 @@ onUnmounted(() => {
       }"
     />
     <div
-      class="flex flex-row justify-center items-center w-full fill-height p-2 md:text-md sm:text-sm text-xs bg-gray-100"
+      class="fill-height md:text-md flex w-full flex-row items-center justify-center bg-gray-100 p-2 text-xs sm:text-sm"
     >
-      <success-dialog v-if="success">
+      <success-dialog v-model="success">
         <template #msg>
-          <div class="text-lg mt-6 mb-8">
+          <div class="mb-8 mt-6 text-lg">
             {{ t("Register.SentEmail") }}
           </div>
         </template>
         <template #buttons>
           <v-btn
-            class="text-none mr-3"
+            class="mr-3"
             color="primary"
             rounded
             variant="flat"
@@ -162,9 +164,34 @@ onUnmounted(() => {
         </template>
       </success-dialog>
 
-      <v-card flat class="mx-auto w-full sm:p-6 p-2" max-width="500">
+      <error-dialog v-model="showErrorDialog">
+        <template #msg>
+          <div class="mb-8 mt-6 text-lg break-all">
+            {{ t("Register.EmailNotAllowed") }}
+          </div>
+        </template>
+        <template #buttons>
+          <v-btn
+            color="primary"
+            rounded
+            variant="outlined"
+            width="90"
+            @click="() => (showErrorDialog = false)"
+          >
+            {{ t("Register.Close") }}
+          </v-btn>
+        </template>
+      </error-dialog>
+
+      <v-card flat class="mx-auto w-full p-2 sm:p-6" max-width="500">
+        <v-scroll-y-transition>
+          <v-alert v-if="showError" type="error">
+            {{ errorMsg }}
+          </v-alert>
+        </v-scroll-y-transition>
+
         <v-card-title>
-          <h1 class="text-h5 !text-1.3em !<sm:text-1.6em !<sm:my-6 m-2 mb-5">
+          <h1 class="text-h5 sm:text-1.3em m-2 my-6 sm:my-2">
             {{ t("Register.Register") }}
           </h1>
         </v-card-title>
