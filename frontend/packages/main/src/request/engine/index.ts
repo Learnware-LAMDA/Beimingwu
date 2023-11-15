@@ -7,6 +7,8 @@ import type {
   ScenarioList,
   Files,
   SemanticSpecification,
+  DataTypeDescription,
+  TaskTypeDescription,
 } from "@beiming-system/types/learnware";
 import type {
   LearnwareDetailInfoWithUserId,
@@ -46,8 +48,9 @@ function searchLearnware({
   libraryType,
   scenarioList,
   files,
+  input,
+  output,
   isVerified,
-  isHeterogeneous,
   page,
   limit,
 }: {
@@ -58,8 +61,9 @@ function searchLearnware({
   libraryType: LibraryType | "";
   scenarioList: ScenarioList;
   files: Files;
+  input?: DataTypeDescription;
+  output?: TaskTypeDescription;
   isVerified: boolean;
-  isHeterogeneous: boolean;
   page: number;
   limit: number;
 }): Promise<{
@@ -81,6 +85,10 @@ function searchLearnware({
       semanticSpec.Scenario.Values =
         (scenarioList && scenarioList.map((scenario) => scenario)) || [];
       semanticSpec.Description.Values = "";
+      if (input && output) {
+        semanticSpec.Input = input;
+        semanticSpec.Output = output;
+      }
 
       const fd = new FormData();
       if (id) {
@@ -88,7 +96,6 @@ function searchLearnware({
       }
       fd.append("semantic_specification", JSON.stringify(semanticSpec));
       fd.append("statistical_specification", (files.length > 0 && files[0]) || "");
-      fd.append("is_heterogeneous", String(isHeterogeneous));
       fd.append("is_verified", String(isVerified));
       fd.append("limit", String(limit));
       fd.append("page", String(page));

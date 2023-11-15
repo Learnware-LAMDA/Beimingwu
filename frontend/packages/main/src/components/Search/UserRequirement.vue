@@ -45,7 +45,7 @@ const scenarioList = ref(tryScenarioList);
 
 const files = ref([]);
 
-const heterDialog = ref(false);
+const heterDialog = ref(true);
 const heterTab = ref<"dataType" | "taskType">("dataType");
 const dataTypeDescription = ref({
   Dimension: 7,
