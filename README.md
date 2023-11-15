@@ -1,5 +1,5 @@
-# BM-System
-BM System: A realization of learnware paradigm based on RKME specification
+# Beimingwu System
+Beimingwu: An Implementation of Learnware Dock System
 
 ## 1 hooks 配置
 
