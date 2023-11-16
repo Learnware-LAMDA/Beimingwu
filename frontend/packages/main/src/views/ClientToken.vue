@@ -171,10 +171,10 @@ onActivated(() => {
       @confirm="() => handleDelete(tokenToDelete)"
     >
       <template #title>
-        {{ t("ClientToken.DeleteTitle") }}
+        <span class="ml-2">{{ t("ClientToken.DeleteToken") }}</span>
       </template>
-      <template #content>
-        {{ t("ClientToken.DeleteContent") }}
+      <template #text>
+        {{ t("ClientToken.YourTokenWillBeDeleted", { token: tokenToDelete }) }}
       </template>
     </confirm-dialog>
   </v-card>
