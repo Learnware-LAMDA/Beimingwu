@@ -22,7 +22,7 @@ export interface Props {
 
 const display = useDisplay();
 
-const emit = defineEmits(["click:edit", "click:delete", "pageChange"]);
+const emit = defineEmits(["click:download", "click:edit", "click:delete", "pageChange"]);
 
 const props = withDefaults(defineProps<Props>(), {
   filters: () => ({
@@ -74,6 +74,10 @@ function formerPage(): void {
   }
 }
 
+function handleClickDownload(id: string): void {
+  emit("click:download", id);
+}
+
 function handleClickEdit(id: string): void {
   emit("click:edit", id);
 }
@@ -94,6 +98,7 @@ function handleClickDelete(id: string): void {
       :sm="sm"
       :xs="xs"
       :is-admin="isAdmin"
+      @click:download="(id) => handleClickDownload(id)"
       @click:edit="(id) => handleClickEdit(id)"
       @click:delete="(id) => handleClickDelete(id)"
     />

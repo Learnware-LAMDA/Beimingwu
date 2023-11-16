@@ -20,4 +20,6 @@ export default {
   TotalSpecificationScore: "规约匹配总分数",
   DownloadAll: "下载全部",
   Downloading: "下载中...",
+  ClickHere: "点击这里",
+  ToLearnHowToDeployTheLearnware: "查看如何部署学件",
 };

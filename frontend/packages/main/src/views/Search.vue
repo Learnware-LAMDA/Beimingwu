@@ -2,6 +2,7 @@
 import { ref, computed, watch, onMounted } from "vue";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
 import { searchLearnware } from "../request/engine";
 import { deleteLearnware } from "../request/admin";
@@ -10,7 +11,7 @@ import UserRequirement from "../components/Search/UserRequirement.vue";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import MultiRecommendedLearnwareList from "../components/Learnware/MultiRecommendedLearnwareList.vue";
 import type { Filter, LearnwareCardInfo } from "@beiming-system/types/learnware";
-import { promiseReadFile } from "../utils";
+import { downloadLearnwareSync, promiseReadFile } from "../utils";
 
 export interface SearchProps {
   isAdmin?: boolean;
@@ -26,6 +27,8 @@ const route = useRoute();
 const router = useRouter();
 
 const { t } = useI18n();
+
+const store = useStore();
 
 const filters = ref<Filter>({
   id: "",
@@ -51,6 +54,8 @@ const isVerified = ref(route.query.is_verified ? route.query.is_verified === "tr
 const showError = ref(false);
 const errorMsg = ref("");
 const errorTimer = ref();
+
+const showDeployTips = ref(false);
 
 const dialog = ref<InstanceType<typeof ConfirmDialog>>();
 const deleteId = ref("");
@@ -181,6 +186,17 @@ function handleConfirmDeleteLearnware(id: string): void {
     });
 }
 
+function handleClickDownload(id: string): void {
+  if (id) {
+    downloadLearnwareSync(id);
+
+    if (!store.getters.getShownTips) {
+      store.dispatch("showTips");
+      showDeployTips.value = true;
+    }
+  }
+}
+
 function handleClickEdit(id: string): void {
   router.push({
     path: "/submit",
@@ -305,6 +321,23 @@ onMounted(() => init());
           @click:close="showError = false"
         />
       </div>
+
+      <div v-if="showDeployTips" class="fixed z-10 w-full">
+        <v-alert
+          class="mx-auto max-w-[900px]"
+          closable
+          type="info"
+          @click:close="showDeployTips = false"
+        >
+          <a
+            class="underline"
+            href="https://docs.beiming.cloud/zh-CN/user-guide/learnware-deploy.html"
+            target="_blank"
+          >
+            {{ t("Search.ClickHere") }} </a
+          >{{ t("Search.ToLearnHowToDeployTheLearnware") }}
+        </v-alert>
+      </div>
     </v-scroll-y-transition>
 
     <div class="w-full lg:max-w-[460px]">
@@ -391,6 +424,7 @@ onMounted(() => init());
           :is-admin="isAdmin"
           :show-pagination="singleRecommendedLearnwarePageNum > 1"
           @page-change="pageChange"
+          @click:download="(id) => handleClickDownload(id)"
           @click:edit="(id) => handleClickEdit(id)"
           @click:delete="(id) => handleClickDelete(id)"
         />

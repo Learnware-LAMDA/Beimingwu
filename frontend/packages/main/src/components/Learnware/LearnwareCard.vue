@@ -5,7 +5,6 @@ import { useI18n } from "vue-i18n";
 import TextBtn from "../../assets/images/specification/dataType/text.svg?component";
 import ImageBtn from "../../assets/images/specification/dataType/image.svg?component";
 import TableBtn from "../../assets/images/specification/dataType/table.svg?component";
-import { downloadLearnwareSync } from "../../utils";
 import dayjs from "dayjs";
 import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
 
@@ -32,7 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
   isAdmin: false,
 });
 
-const emit = defineEmits(["click:edit", "click:delete"]);
+const emit = defineEmits(["click:download", "click:edit", "click:delete"]);
 
 const display = useDisplay();
 
@@ -56,6 +55,12 @@ function getColorByScore(score: number): string {
   if (score > 80) return "#4CAF50";
   if (score > 50) return "#FF9800";
   return "#F44336";
+}
+
+function handleClickDownload(id: string): void {
+  if (id) {
+    emit("click:download", id);
+  }
 }
 
 function handleClickEdit(id: string): void {
@@ -174,7 +179,7 @@ function handleClickDelete(id: string): void {
             variant="flat"
             icon="mdi-download"
             :size="greaterThanXs ? undefined : 'small'"
-            @click.stop.prevent="() => item.id && downloadLearnwareSync(item.id)"
+            @click.stop.prevent="() => handleClickDownload(item.id)"
           ></v-btn>
           <v-btn
             v-if="isAdmin"

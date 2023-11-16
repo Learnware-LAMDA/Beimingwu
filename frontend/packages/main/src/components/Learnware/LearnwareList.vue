@@ -6,7 +6,7 @@ import LearnwareCard from "./LearnwareCard.vue";
 import oopsImg from "../../assets/images/public/oops.svg?url";
 import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
 
-const emit = defineEmits(["click:edit", "click:delete"]);
+const emit = defineEmits(["click:download", "click:edit", "click:delete"]);
 
 const display = useDisplay();
 
@@ -51,6 +51,10 @@ const realCols = computed(() => {
   }
 });
 
+function handleClickDownload(id: string): void {
+  emit("click:download", id);
+}
+
 function handleClickEdit(id: string): void {
   emit("click:edit", id);
 }
@@ -73,6 +77,7 @@ function handleClickDelete(id: string): void {
           :filters="filters"
           :is-admin="isAdmin"
           :to="item.id ? `/learnwaredetail?id=${item.id}` : ''"
+          @click:download="(id) => handleClickDownload(id)"
           @click:edit="(id) => handleClickEdit(id)"
           @click:delete="(id) => handleClickDelete(id)"
         />
