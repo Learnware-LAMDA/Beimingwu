@@ -161,22 +161,37 @@ function deleteSelect(value: Scenario): void {
 </script>
 
 <template>
-  <div class="scenario-container" flat>
+  <div
+    class="scenario-container"
+    flat
+  >
     <div class="my-title text-h6 !text-base">
       {{ t("Submit.SemanticSpecification.Scenario.Scenario") }}
     </div>
 
-    <v-divider v-if="!allSelected"></v-divider>
+    <v-divider v-if="!allSelected" />
 
-    <div class="list" :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }">
-      <template v-for="item in items" :key="item.text">
+    <div
+      class="list"
+      :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
+    >
+      <template
+        v-for="item in items"
+        :key="item.text"
+      >
         <div
           :class="selections.includes(item) ? ['active'] : []"
           class="item text"
           @click="() => click(item.value)"
         >
-          <v-icon class="mr-4" :icon="item.icon"></v-icon>
-          <div class="text" v-text="item.text"></div>
+          <v-icon
+            class="mr-4"
+            :icon="item.icon"
+          />
+          <div
+            class="text"
+            v-text="item.text"
+          />
         </div>
       </template>
     </div>

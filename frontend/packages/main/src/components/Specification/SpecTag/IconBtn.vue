@@ -24,7 +24,10 @@ defineProps({
     flat
     @click="($event) => emit('click', $event)"
   >
-    <v-responsive class="responsive" :aspect-ratio="1 / 1">
+    <v-responsive
+      class="responsive"
+      :aspect-ratio="1 / 1"
+    >
       <slot />
     </v-responsive>
     <div class="my-title">

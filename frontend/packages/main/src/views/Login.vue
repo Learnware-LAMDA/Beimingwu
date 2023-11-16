@@ -125,11 +125,15 @@ function onResetPassword(): void {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
       }"
-    ></div>
+    />
     <div
       class="fill-height md:text-md flex w-full flex-row items-center justify-center p-2 text-xs sm:text-sm"
     >
-      <v-card flat class="mx-auto w-full" max-width="500">
+      <v-card
+        flat
+        class="mx-auto w-full"
+        max-width="500"
+      >
         <div class="p-2 sm:p-7">
           <v-scroll-y-transition>
             <v-card-actions v-if="showError">
@@ -144,7 +148,11 @@ function onResetPassword(): void {
           </v-scroll-y-transition>
           <v-scroll-y-transition>
             <v-card-actions v-if="success">
-              <v-alert closable :text="t('Login.Success')" type="success" />
+              <v-alert
+                closable
+                :text="t('Login.Success')"
+                type="success"
+              />
             </v-card-actions>
           </v-scroll-y-transition>
           <v-card-title>
@@ -161,7 +169,7 @@ function onResetPassword(): void {
                 type="text"
                 name="login"
                 autocomplete="username"
-              ></v-text-field>
+              />
               <v-text-field
                 v-model="password.value"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -170,21 +178,36 @@ function onResetPassword(): void {
                 :error-messages="password.errorMessages"
                 @click:append="showPassword = !showPassword"
                 @keyup.enter="submit"
-              ></v-text-field>
+              />
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-btn block class="bg-primary py-5" color="white" :disabled="!valid" @click="submit">
+            <v-btn
+              block
+              class="bg-primary py-5"
+              color="white"
+              :disabled="!valid"
+              @click="submit"
+            >
               {{ t("Login.Login") }}
             </v-btn>
           </v-card-actions>
           <v-card-actions>
             {{ t("Login.NoAccount") }}
-            <v-spacer class="flex-1"></v-spacer>
-            <v-btn variant="text" color="primary" @click="router.push('/register')">
+            <v-spacer class="flex-1" />
+            <v-btn
+              variant="text"
+              color="primary"
+              @click="router.push('/register')"
+            >
               {{ t("Login.RegisterFirst") }}
             </v-btn>
-            <v-btn v-if="showResetPassword" variant="text" color="primary" @click="onResetPassword">
+            <v-btn
+              v-if="showResetPassword"
+              variant="text"
+              color="primary"
+              @click="onResetPassword"
+            >
               {{ t("Login.ResetPassword") }}
             </v-btn>
           </v-card-actions>

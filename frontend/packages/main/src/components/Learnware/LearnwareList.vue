@@ -71,7 +71,10 @@ function handleClickDelete(id: string): void {
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
   >
     <TransitionGroup name="fade">
-      <template v-for="(item, _i) in items" :key="_i">
+      <template
+        v-for="(item, _i) in items"
+        :key="_i"
+      >
         <learnware-card
           :item="item"
           :filters="filters"
@@ -83,8 +86,16 @@ function handleClickDelete(id: string): void {
         />
       </template>
     </TransitionGroup>
-    <div v-if="items.length === 0" flat class="no-learnware">
-      <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
+    <div
+      v-if="items.length === 0"
+      flat
+      class="no-learnware"
+    >
+      <v-img
+        class="oops-img"
+        width="100"
+        :src="oopsImg"
+      />
       {{ t("Learnware.OopsThereNoLearnware") }}
     </div>
   </div>

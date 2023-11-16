@@ -78,13 +78,22 @@ watch(
 
 <template>
   <v-app>
-    <app-bar v-model="drawerOpen" :routes="routes"></app-bar>
+    <app-bar
+      v-model="drawerOpen"
+      :routes="routes"
+    />
 
-    <nav-drawer v-model="drawerOpen" :routes="routes"></nav-drawer>
+    <nav-drawer
+      v-model="drawerOpen"
+      :routes="routes"
+    />
 
     <v-main class="bg-gray-100 bg-opacity-50">
       <router-view v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
+        <transition
+          name="fade"
+          mode="out-in"
+        >
           <keep-alive :include="keepAliveIncludes">
             <component :is="Component" />
           </keep-alive>
@@ -92,10 +101,17 @@ watch(
       </router-view>
     </v-main>
 
-    <v-snackbar v-model="showGlobalError" :timeout="2000">
+    <v-snackbar
+      v-model="showGlobalError"
+      :timeout="2000"
+    >
       {{ store.getters.getGlobalErrorMsg }}
       <template #actions>
-        <v-btn color="blue" variant="text" @click="store.commit('setShowGlobalError', false)">
+        <v-btn
+          color="blue"
+          variant="text"
+          @click="store.commit('setShowGlobalError', false)"
+        >
           Close
         </v-btn>
       </template>

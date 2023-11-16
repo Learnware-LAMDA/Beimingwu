@@ -370,10 +370,12 @@ onActivated(() => {
 
 <template>
   <div class="main-container">
-    <confirm-dialog ref="resetDialog" @confirm="() => resetPassword(Number(resetId))">
+    <confirm-dialog
+      ref="resetDialog"
+      @confirm="() => resetPassword(Number(resetId))"
+    >
       <template #title>
-        Confirm to reset password of &nbsp; <b>{{ resetName }}</b
-        >?
+        Confirm to reset password of &nbsp; <b>{{ resetName }}</b>?
       </template>
       <template #text>
         Password of user <b>{{ resetName }}</b> will be reset <i>permanently</i>. Do you really want
@@ -401,10 +403,12 @@ onActivated(() => {
       </template>
     </success-dialog>
 
-    <confirm-dialog ref="deleteDialog" @confirm="() => deleteUser(Number(deleteId))">
+    <confirm-dialog
+      ref="deleteDialog"
+      @confirm="() => deleteUser(Number(deleteId))"
+    >
       <template #title>
-        Confirm to delete &nbsp; <b>{{ deleteName }}</b
-        >?
+        Confirm to delete &nbsp; <b>{{ deleteName }}</b>?
       </template>
       <template #text>
         User <b>{{ deleteName }}</b> will be deleted in the user list <i>permanently</i>. Do you
@@ -417,8 +421,7 @@ onActivated(() => {
       @confirm="() => setRole(Number(setRoleId), Number(setRoleRole))"
     >
       <template #title>
-        Confirm to set role of &nbsp; <b>{{ setRoleName }}</b
-        >?
+        Confirm to set role of &nbsp; <b>{{ setRoleName }}</b>?
       </template>
       <template #text>
         User <b>{{ setRoleName }}</b> will be set as
@@ -437,13 +440,16 @@ onActivated(() => {
         />
       </v-card-actions>
     </v-scroll-y-transition>
-    <v-card flat class="search">
+    <v-card
+      flat
+      class="search"
+    >
       <div class="search-row">
         <v-card-title>
           <span class="hidden sm:inline">
             {{ t("AllUser.SearchByUsername") }}
           </span>
-          <v-spacer class="flex-1"></v-spacer>
+          <v-spacer class="flex-1" />
           <v-text-field
             v-model="userName"
             :label="t('AllUser.Username')"
@@ -451,13 +457,13 @@ onActivated(() => {
             hide-details
             append-inner-icon="mdi-close"
             @click:append-inner="userName = ''"
-          ></v-text-field>
+          />
         </v-card-title>
         <v-card-title>
           <span class="hidden sm:inline">
             {{ t("AllUser.SearchByEmail") }}
           </span>
-          <v-spacer class="flex-1"></v-spacer>
+          <v-spacer class="flex-1" />
           <v-text-field
             v-model="email"
             :label="t('AllUser.Email')"
@@ -465,7 +471,7 @@ onActivated(() => {
             hide-details
             append-inner-icon="mdi-close"
             @click:append-inner="email = ''"
-          ></v-text-field>
+          />
         </v-card-title>
       </div>
     </v-card>

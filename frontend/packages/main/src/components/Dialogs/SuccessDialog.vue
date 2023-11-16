@@ -16,10 +16,24 @@ const dialog = computed({
 
 <template>
   <v-dialog v-model="dialog">
-    <v-sheet elevation="12" max-width="600" rounded="lg" width="100%" class="mx-auto p-4">
+    <v-sheet
+      elevation="12"
+      max-width="600"
+      rounded="lg"
+      width="100%"
+      class="mx-auto p-4"
+    >
       <slot name="title">
-        <svg class="m-auto h-[120px] w-[120px]" viewBox="0 0 200 200">
-          <circle style="fill: rgb(var(--v-theme-success))" cx="100" cy="100" r="80" />
+        <svg
+          class="m-auto h-[120px] w-[120px]"
+          viewBox="0 0 200 200"
+        >
+          <circle
+            style="fill: rgb(var(--v-theme-success))"
+            cx="100"
+            cy="100"
+            r="80"
+          />
           <path
             d="M50 100 L90 134 L152 64"
             stroke="white"
@@ -27,7 +41,7 @@ const dialog = computed({
             fill="none"
             stroke-dasharray="146"
             :class="{ 'path-offset': dialog }"
-          ></path>
+          />
         </svg>
       </slot>
 

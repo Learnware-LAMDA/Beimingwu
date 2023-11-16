@@ -27,7 +27,10 @@ const links = computed(() => [
 </script>
 
 <template>
-  <v-footer color="grey-lighten-3" class="flex flex-col items-center justify-center">
+  <v-footer
+    color="grey-lighten-3"
+    class="flex flex-col items-center justify-center"
+  >
     <div>
       <v-btn
         v-for="link in links"
@@ -38,20 +41,36 @@ const links = computed(() => [
         variant="text"
         rounded="xl"
       >
-        <v-icon class="mr-1">{{ link.icon }}</v-icon>
+        <v-icon class="mr-1">
+          {{ link.icon }}
+        </v-icon>
         {{ link.name }}
-        <v-tooltip v-if="link.tooltips" activator="parent" location="top">
+        <v-tooltip
+          v-if="link.tooltips"
+          activator="parent"
+          location="top"
+        >
           {{ link.tooltips }}
         </v-tooltip>
       </v-btn>
     </div>
-    <div class="mt-4 text-center" cols="12">
+    <div
+      class="mt-4 text-center"
+      cols="12"
+    >
       &copy; {{ new Date().getFullYear() }} <strong>LAMDA</strong>
       {{ t("Home.Footer.AllRightsReserved") }}
     </div>
     <!--ICP-->
-    <div class="mt-4 text-center" cols="12">
-      <a :href="`http://www.beian.miit.gov.cn/`" target="_blank" rel="noopener noreferrer">
+    <div
+      class="mt-4 text-center"
+      cols="12"
+    >
+      <a
+        :href="`http://www.beian.miit.gov.cn/`"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         苏ICP备2021003372号-7
       </a>
     </div>

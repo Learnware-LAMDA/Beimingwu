@@ -78,14 +78,17 @@ onActivated(() => {
 
 <template>
   <v-container class="h-full p-0 sm:p-2">
-    <v-card class="relative m-auto w-full max-w-[600px]" flat>
+    <v-card
+      class="relative m-auto w-full max-w-[600px]"
+      flat
+    >
       <v-card-title>
         <div class="text-h4">
           {{ t("ClientToken.Title") }}
         </div>
       </v-card-title>
-      <v-card-subtitle></v-card-subtitle>
-      <v-divider class="border-black"></v-divider>
+      <v-card-subtitle />
+      <v-divider class="border-black" />
       <v-card-text>
         <div>
           {{ t("ClientToken.Description") }}
@@ -100,11 +103,18 @@ onActivated(() => {
         <div>
           {{ token }}
         </div>
-        <v-spacer class="flex-1"></v-spacer>
-        <v-btn variant="flat" icon="mdi-delete" @click="() => onDeleteClick(token)"></v-btn>
+        <v-spacer class="flex-1" />
+        <v-btn
+          variant="flat"
+          icon="mdi-delete"
+          @click="() => onDeleteClick(token)"
+        />
       </v-card-text>
       <v-card-actions>
-        <v-btn variant="outlined" @click="onGenerateClick">
+        <v-btn
+          variant="outlined"
+          @click="onGenerateClick"
+        >
           {{ t("ClientToken.Generate") }}
         </v-btn>
       </v-card-actions>

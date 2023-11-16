@@ -15,8 +15,15 @@ const { t } = useI18n();
         {{ t("Home.How.Description") }}
       </p>
     </div>
-    <v-responsive class="mt-10 border sm:shadow-md" :aspect-ratio="96 / 55">
-      <v-img cover width="100%" :src="process" />
+    <v-responsive
+      class="mt-10 border sm:shadow-md"
+      :aspect-ratio="96 / 55"
+    >
+      <v-img
+        cover
+        width="100%"
+        :src="process"
+      />
     </v-responsive>
   </div>
 </template>

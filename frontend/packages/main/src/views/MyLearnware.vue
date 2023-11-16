@@ -193,8 +193,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="contentRef" class="learnware-container">
-    <confirm-dialog ref="dialog" @confirm="handleConfirm">
+  <div
+    ref="contentRef"
+    class="learnware-container"
+  >
+    <confirm-dialog
+      ref="dialog"
+      @confirm="handleConfirm"
+    >
       <template #title>
         <div class="ml-1 flex-1 overflow-hidden text-ellipsis">
           {{ t("MyLearnware.ConfirmToDelete") }}
@@ -207,27 +213,45 @@ onMounted(() => {
     </confirm-dialog>
     <v-scroll-y-transition>
       <v-card-actions v-if="showError">
-        <v-alert closable :text="errorMsg" type="error" @click:close="showError = false" />
+        <v-alert
+          closable
+          :text="errorMsg"
+          type="error"
+          @click:close="showError = false"
+        />
       </v-card-actions>
     </v-scroll-y-transition>
 
     <div class="w-full max-w-[950px]">
       <div :class="direction === 'vertical' ? 'flex' : ''">
-        <v-tabs v-model="verifiedFilter" :direction="direction" color="primary">
+        <v-tabs
+          v-model="verifiedFilter"
+          :direction="direction"
+          color="primary"
+        >
           <v-tab value="All">
-            <v-icon start> mdi-shield-account-outline </v-icon>
+            <v-icon start>
+              mdi-shield-account-outline
+            </v-icon>
             {{ t("MyLearnware.All") }}
           </v-tab>
           <v-tab value="Verified">
-            <v-icon start> mdi-shield-check </v-icon>
+            <v-icon start>
+              mdi-shield-check
+            </v-icon>
             {{ t("MyLearnware.Verified") }}
           </v-tab>
           <v-tab value="Unverified">
-            <v-icon start> mdi-shield-off-outline </v-icon>
+            <v-icon start>
+              mdi-shield-off-outline
+            </v-icon>
             {{ t("MyLearnware.Unverified") }}
           </v-tab>
         </v-tabs>
-        <v-window v-model="verifiedFilter" class="w-full">
+        <v-window
+          v-model="verifiedFilter"
+          class="w-full"
+        >
           <v-window-item value="All">
             <div class="w-full">
               <page-learnware-list

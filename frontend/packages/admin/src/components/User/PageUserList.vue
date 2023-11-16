@@ -118,12 +118,19 @@ function handleClickSetRole(id: string, role: number): void {
         :key="i"
         class="w-full"
         type="table-tfoot"
-      ></v-skeleton-loader>
+      />
     </div>
 
-    <div v-if="showPagination" class="my-5 flex items-center justify-center">
+    <div
+      v-if="showPagination"
+      class="my-5 flex items-center justify-center"
+    >
       <div v-if="pageNum <= 7">
-        <v-btn icon="mdi-arrow-left" color="primary" @click="formerPage"></v-btn>
+        <v-btn
+          icon="mdi-arrow-left"
+          color="primary"
+          @click="formerPage"
+        />
         <v-btn
           v-for="i in pageNum"
           :key="i"
@@ -131,102 +138,142 @@ function handleClickSetRole(id: string, role: number): void {
           :color="i === page ? 'primary' : 'default'"
           variant="flat"
           @click="() => jumpPage(i)"
-          >{{ i }}</v-btn
         >
-        <v-btn icon="mdi-arrow-right" color="primary" @click="nextPage"></v-btn>
+          {{ i }}
+        </v-btn>
+        <v-btn
+          icon="mdi-arrow-right"
+          color="primary"
+          @click="nextPage"
+        />
       </div>
       <div v-else>
-        <v-btn icon="mdi-arrow-left" color="primary" @click="formerPage"></v-btn>
+        <v-btn
+          icon="mdi-arrow-left"
+          color="primary"
+          @click="formerPage"
+        />
         <v-btn
           v-if="greaterThanXs && page > 2"
           class="mx-2 min-w-0 px-2"
           variant="text"
           @click="jumpPage(1)"
-          >1</v-btn
         >
+          1
+        </v-btn>
         <v-btn
           v-if="greaterThanXs && page === 4"
           class="mx-2 min-w-0 px-2"
           variant="text"
           @click="jumpPage(2)"
-          >2</v-btn
         >
-        <v-btn v-if="greaterThanXs && page > 4" class="mx-2 min-w-0 px-2" variant="text">...</v-btn>
+          2
+        </v-btn>
+        <v-btn
+          v-if="greaterThanXs && page > 4"
+          class="mx-2 min-w-0 px-2"
+          variant="text"
+        >
+          ...
+        </v-btn>
         <v-btn
           v-if="greaterThanXs && page > pageNum - 1"
           class="mx-2 min-w-0 px-2"
           variant="text"
           @click="() => jumpPage(page - 4)"
-          >{{ page - 4 }}</v-btn
         >
+          {{ page - 4 }}
+        </v-btn>
         <v-btn
           v-if="greaterThanXs && page > pageNum - 2"
           class="mx-2 min-w-0 px-2"
           variant="text"
           @click="() => jumpPage(page - 3)"
-          >{{ page - 3 }}</v-btn
         >
+          {{ page - 3 }}
+        </v-btn>
         <v-btn
           v-if="greaterThanXs && page > pageNum - 3"
           class="mx-2 min-w-0 px-2"
           variant="text"
           @click="() => jumpPage(page - 2)"
-          >{{ page - 2 }}</v-btn
         >
+          {{ page - 2 }}
+        </v-btn>
         <v-btn
           v-if="page > 1"
           class="mx-2 min-w-0 px-2"
           variant="text"
           @click="() => jumpPage(page - 1)"
-          >{{ page - 1 }}</v-btn
         >
-        <v-btn class="mx-2 min-w-0 px-2" color="primary">{{ page }}</v-btn>
+          {{ page - 1 }}
+        </v-btn>
+        <v-btn
+          class="mx-2 min-w-0 px-2"
+          color="primary"
+        >
+          {{ page }}
+        </v-btn>
         <v-btn
           v-if="page < pageNum"
           class="mx-2 min-w-0 px-2"
           variant="text"
           @click="() => jumpPage(page + 1)"
-          >{{ page + 1 }}</v-btn
         >
+          {{ page + 1 }}
+        </v-btn>
         <v-btn
           v-if="greaterThanXs && page < 4"
           class="mx-2 min-w-0 px-2"
           variant="text"
           @click="() => jumpPage(page + 2)"
-          >{{ page + 2 }}</v-btn
         >
+          {{ page + 2 }}
+        </v-btn>
         <v-btn
           v-if="greaterThanXs && page < 3"
           class="mx-2 min-w-0 px-2"
           variant="text"
           @click="() => jumpPage(page + 3)"
-          >{{ page + 3 }}</v-btn
         >
+          {{ page + 3 }}
+        </v-btn>
         <v-btn
           v-if="greaterThanXs && page < 2"
           class="mx-2 min-w-0 px-2"
           variant="text"
           @click="() => jumpPage(page + 4)"
-          >{{ page + 4 }}</v-btn
         >
-        <v-btn v-if="greaterThanXs && page < pageNum - 3" class="mx-2 min-w-0 px-2" variant="text"
-          >...</v-btn
+          {{ page + 4 }}
+        </v-btn>
+        <v-btn
+          v-if="greaterThanXs && page < pageNum - 3"
+          class="mx-2 min-w-0 px-2"
+          variant="text"
         >
+          ...
+        </v-btn>
         <v-btn
           v-if="greaterThanXs && page === pageNum - 3"
           class="mx-2 min-w-0 px-2"
           variant="text"
           @click="() => jumpPage(pageNum - 1)"
-          >{{ pageNum - 1 }}</v-btn
         >
+          {{ pageNum - 1 }}
+        </v-btn>
         <v-btn
           v-if="greaterThanXs && page < pageNum - 1"
           class="mx-2 min-w-0 px-2"
           variant="text"
           @click="() => jumpPage(pageNum)"
-          >{{ pageNum }}</v-btn
         >
-        <v-btn icon="mdi-arrow-right" color="primary" @click="nextPage"></v-btn>
+          {{ pageNum }}
+        </v-btn>
+        <v-btn
+          icon="mdi-arrow-right"
+          color="primary"
+          @click="nextPage"
+        />
       </div>
     </div>
   </div>

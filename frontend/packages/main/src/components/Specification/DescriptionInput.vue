@@ -103,7 +103,11 @@ watch(
 <template>
   <div class="grid grid-cols-1 gap-0 md:grid-cols-2 md:gap-3">
     <div class="flex max-h-[600px] flex-col">
-      <v-virtual-scroll v-if="modelValue.Dimension > 7" :items="descriptionArray" class="flex-1">
+      <v-virtual-scroll
+        v-if="modelValue.Dimension > 7"
+        :items="descriptionArray"
+        class="flex-1"
+      >
         <template #default="{ index: idx }">
           <v-hover>
             <template #default="{ isHovering, props: hoverProps }">
@@ -114,7 +118,10 @@ watch(
                   class="mb-1"
                   hide-details
                 >
-                  <template v-if="isHovering" #append-inner>
+                  <template
+                    v-if="isHovering"
+                    #append-inner
+                  >
                     <v-icon
                       class="mr-1"
                       icon="mdi-plus"
@@ -134,7 +141,10 @@ watch(
         </template>
       </v-virtual-scroll>
       <template v-else>
-        <v-hover v-for="(_description, idx) in descriptionArray" :key="idx">
+        <v-hover
+          v-for="(_description, idx) in descriptionArray"
+          :key="idx"
+        >
           <template #default="{ isHovering, props: hoverProps }">
             <div v-bind="hoverProps">
               <v-text-field
@@ -143,7 +153,10 @@ watch(
                 class="mb-1"
                 hide-details
               >
-                <template v-if="isHovering" #append-inner>
+                <template
+                  v-if="isHovering"
+                  #append-inner
+                >
                   <v-icon
                     class="mr-1"
                     icon="mdi-plus"
@@ -166,7 +179,12 @@ watch(
           class="mt-1"
           @click="descriptionArray = [...descriptionArray, null]"
         >
-          <v-icon size="large" color="#555">mdi-plus</v-icon>
+          <v-icon
+            size="large"
+            color="#555"
+          >
+            mdi-plus
+          </v-icon>
         </v-btn>
       </div>
     </div>

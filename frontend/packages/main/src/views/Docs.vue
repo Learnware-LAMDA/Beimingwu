@@ -12,5 +12,5 @@ location.href = `https://docs.beiming.cloud${
 </script>
 
 <template>
-  <div></div>
+  <div />
 </template>

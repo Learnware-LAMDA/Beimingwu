@@ -64,7 +64,11 @@ function handleClickSetRole(id: number, role: number): void {
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
   >
     <TransitionGroup name="fade">
-      <div v-if="items && items.length > 0" flat class="item">
+      <div
+        v-if="items && items.length > 0"
+        flat
+        class="item"
+      >
         <div class="row">
           <div class="columns">
             <div class="my-title">
@@ -84,12 +88,23 @@ function handleClickSetRole(id: number, role: number): void {
             </div>
           </div>
           <v-card-actions class="actions">
-            <v-btn class="opacity-0" icon="mdi-lock-reset" disabled=""></v-btn>
-            <v-btn icon="mdi-file-export" @click="handleClickExport"></v-btn>
+            <v-btn
+              class="opacity-0"
+              icon="mdi-lock-reset"
+              disabled=""
+            />
+            <v-btn
+              icon="mdi-file-export"
+              @click="handleClickExport"
+            />
           </v-card-actions>
         </div>
       </div>
-      <div v-for="(item, i) in items" :key="i" class="item">
+      <div
+        v-for="(item, i) in items"
+        :key="i"
+        class="item"
+      >
         <div class="row">
           <div class="columns">
             <div class="my-title">
@@ -100,7 +115,9 @@ function handleClickSetRole(id: number, role: number): void {
                 </router-link>
               </span>
             </div>
-            <div class="my-title"><span class="small-title">Email: </span>{{ item.email }}</div>
+            <div class="my-title">
+              <span class="small-title">Email: </span>{{ item.email }}
+            </div>
             <div class="my-title">
               <span class="small-title">Verified: </span>{{ item.verified_learnware_count }}
             </div>
@@ -113,22 +130,36 @@ function handleClickSetRole(id: number, role: number): void {
                 class="my-title"
                 :model-value="item.role >= 1"
                 :disabled="!enableSetRole || item.email === 'admin@localhost'"
-                @click.prevent="handleClickSetRole(item.id, item.role == 1 ? 0 : 1)"
                 density="dense"
                 hide-details
-              ></v-checkbox>
+                @click.prevent="handleClickSetRole(item.id, item.role == 1 ? 0 : 1)"
+              />
             </div>
           </div>
           <v-card-actions class="actions">
-            <v-btn icon="mdi-lock-reset" @click.stop="() => handleClickReset(item.id)"></v-btn>
-            <v-btn icon="mdi-delete" @click.stop="() => handleClickDelete(item.id)"></v-btn>
+            <v-btn
+              icon="mdi-lock-reset"
+              @click.stop="() => handleClickReset(item.id)"
+            />
+            <v-btn
+              icon="mdi-delete"
+              @click.stop="() => handleClickDelete(item.id)"
+            />
           </v-card-actions>
         </div>
       </div>
     </TransitionGroup>
-    <div v-if="items.length === 0" flat class="no-user">
+    <div
+      v-if="items.length === 0"
+      flat
+      class="no-user"
+    >
       {{ t("AllUser.OopsNoUser") }}
-      <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
+      <v-img
+        class="oops-img"
+        width="100"
+        :src="oopsImg"
+      />
     </div>
   </div>
 </template>

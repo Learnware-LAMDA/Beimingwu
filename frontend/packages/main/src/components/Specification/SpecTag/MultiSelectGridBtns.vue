@@ -65,7 +65,9 @@ watch(
 
 <template>
   <div class="grid-container">
-    <div class="my-title text-h6 !text-base">{{ title }}</div>
+    <div class="my-title text-h6 !text-base">
+      {{ title }}
+    </div>
     <div
       class="btn-container"
       :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"

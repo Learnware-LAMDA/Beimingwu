@@ -73,14 +73,35 @@ function handleClickDelete(id: string): void {
 </script>
 
 <template>
-  <v-card flat :density="greaterThanXs ? 'comfortable' : 'compact'" class="card !py-2">
-    <v-card-title class="my-title !flex" :class="item.username ? '' : 'items-center'">
-      <v-avatar :size="greaterThanSm ? 'default' : 'small'" class="mr-2 !rounded-[0]">
-        <component :is="avatar" :class="item.username ? 'w-full' : 'w-4/5'" class="opacity-70" />
+  <v-card
+    flat
+    :density="greaterThanXs ? 'comfortable' : 'compact'"
+    class="card !py-2"
+  >
+    <v-card-title
+      class="my-title !flex"
+      :class="item.username ? '' : 'items-center'"
+    >
+      <v-avatar
+        :size="greaterThanSm ? 'default' : 'small'"
+        class="mr-2 !rounded-[0]"
+      >
+        <component
+          :is="avatar"
+          :class="item.username ? 'w-full' : 'w-4/5'"
+          class="opacity-70"
+        />
       </v-avatar>
       <div class="flex-1 overflow-hidden">
-        <div class="w-full truncate">{{ item.name }}</div>
-        <div v-if="item.username" class="text-sm text-gray-600">{{ item.username }}</div>
+        <div class="w-full truncate">
+          {{ item.name }}
+        </div>
+        <div
+          v-if="item.username"
+          class="text-sm text-gray-600"
+        >
+          {{ item.username }}
+        </div>
       </div>
     </v-card-title>
 
@@ -159,11 +180,16 @@ function handleClickDelete(id: string): void {
       </div>
     </v-card-text>
     <v-card-text class="card-text">
-      <div class="description">{{ item.description }}</div>
+      <div class="description">
+        {{ item.description }}
+      </div>
     </v-card-text>
     <v-card-text class="flex items-end justify-between !py-2">
       <div>
-        <div v-if="item.matchScore && item.matchScore >= 0" class="text-base lg:text-lg xl:text-lg">
+        <div
+          v-if="item.matchScore && item.matchScore >= 0"
+          class="text-base lg:text-lg xl:text-lg"
+        >
           {{ t("Search.SpecificationScore") }}:
           <span :style="`color: ${getColorByScore(item.matchScore)}`">{{ item.matchScore }}</span>
         </div>
@@ -180,21 +206,21 @@ function handleClickDelete(id: string): void {
             icon="mdi-download"
             :size="greaterThanXs ? undefined : 'small'"
             @click.stop.prevent="() => handleClickDownload(item.id)"
-          ></v-btn>
+          />
           <v-btn
             v-if="isAdmin"
             variant="flat"
             icon="mdi-pencil"
             :size="greaterThanXs ? undefined : 'small'"
             @click.stop.prevent="() => handleClickEdit(item.id)"
-          ></v-btn>
+          />
           <v-btn
             v-if="isAdmin"
             variant="flat"
             icon="mdi-delete"
             :size="greaterThanXs ? undefined : 'small'"
             @click.stop.prevent="handleClickDelete(item.id)"
-          ></v-btn>
+          />
         </div>
       </div>
     </v-card-text>

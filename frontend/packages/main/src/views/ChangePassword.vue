@@ -107,11 +107,15 @@ function closeErrorAlert(): void {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
       }"
-    ></div>
+    />
     <div
       class="fill-height md:text-md flex w-full flex-row items-center justify-center p-2 text-xs sm:text-sm"
     >
-      <v-card flat class="mx-auto w-full p-2 sm:p-7" max-width="500">
+      <v-card
+        flat
+        class="mx-auto w-full p-2 sm:p-7"
+        max-width="500"
+      >
         <v-scroll-y-transition>
           <v-card-actions v-if="showError">
             <v-alert
@@ -125,7 +129,11 @@ function closeErrorAlert(): void {
         </v-scroll-y-transition>
         <v-scroll-y-transition>
           <v-card-actions v-if="success">
-            <v-alert closable :text="t('ChangePassword.Success')" type="success" />
+            <v-alert
+              closable
+              :text="t('ChangePassword.Success')"
+              type="success"
+            />
           </v-card-actions>
         </v-scroll-y-transition>
         <v-card-title>
@@ -142,8 +150,7 @@ function closeErrorAlert(): void {
               :label="t('ChangePassword.OldPassword')"
               :error-messages="oldPassword.errorMessages"
               @click:append="showOldPassword = !showOldPassword"
-            >
-            </v-text-field>
+            />
             <v-text-field
               v-model="newPassword.value"
               :append-icon="showNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -151,8 +158,7 @@ function closeErrorAlert(): void {
               :label="t('ChangePassword.NewPassword')"
               :error-messages="newPassword.errorMessages"
               @click:append="showNewPassword = !showNewPassword"
-            >
-            </v-text-field>
+            />
             <v-text-field
               v-model="newPassword2.value"
               :append-icon="showNewPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -160,12 +166,17 @@ function closeErrorAlert(): void {
               :label="t('ChangePassword.ConfirmNewPassword')"
               :error-messages="newPassword2.errorMessages"
               @click:append="showNewPassword2 = !showNewPassword2"
-            >
-            </v-text-field>
+            />
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn block class="bg-primary py-5" color="white" :disabled="!valid" @click="change">
+          <v-btn
+            block
+            class="bg-primary py-5"
+            color="white"
+            :disabled="!valid"
+            @click="change"
+          >
             {{ t("ChangePassword.Change") }}
           </v-btn>
         </v-card-actions>

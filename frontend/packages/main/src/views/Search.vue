@@ -312,7 +312,10 @@ onMounted(() => init());
 <template>
   <div class="mx-auto w-full lg:flex">
     <v-scroll-y-transition>
-      <div v-if="showError" class="fixed z-10 w-full">
+      <div
+        v-if="showError"
+        class="fixed z-10 w-full"
+      >
         <v-alert
           class="z-10 mx-auto max-w-[900px]"
           closable
@@ -322,7 +325,10 @@ onMounted(() => init());
         />
       </div>
 
-      <div v-if="showDeployTips" class="fixed z-10 w-full">
+      <div
+        v-if="showDeployTips"
+        class="fixed z-10 w-full"
+      >
         <v-alert
           class="mx-auto max-w-[900px]"
           closable
@@ -334,8 +340,7 @@ onMounted(() => init());
             href="https://docs.beiming.cloud/zh-CN/user-guide/learnware-deploy.html"
             target="_blank"
           >
-            {{ t("Search.ClickHere") }} </a
-          >{{ t("Search.ToLearnHowToDeployTheLearnware") }}
+            {{ t("Search.ClickHere") }} </a>{{ t("Search.ToLearnHowToDeployTheLearnware") }}
         </v-alert>
       </div>
     </v-scroll-y-transition>
@@ -371,12 +376,22 @@ onMounted(() => init());
       </user-requirement>
     </div>
 
-    <div ref="anchorRef" class="flex-1">
-      <v-card v-if="showMultiRecommended" flat class="mt-4 bg-transparent sm:m-2">
+    <div
+      ref="anchorRef"
+      class="flex-1"
+    >
+      <v-card
+        v-if="showMultiRecommended"
+        flat
+        class="mt-4 bg-transparent sm:m-2"
+      >
         <v-card-title v-if="!multiRecommendedTips">
           {{ t("Search.RecommendedMultipleLearnware") }}
         </v-card-title>
-        <v-card-text v-if="multiRecommendedTips" class="!p-2">
+        <v-card-text
+          v-if="multiRecommendedTips"
+          class="!p-2"
+        >
           <v-alert
             v-model="multiRecommendedTips"
             :title="t('Search.RecommendedMultipleLearnware')"
@@ -385,7 +400,10 @@ onMounted(() => init());
             color="success"
           >
             <template #prepend>
-              <v-icon icon="mdi-hexagon-multiple" size="x-large"></v-icon>
+              <v-icon
+                icon="mdi-hexagon-multiple"
+                size="x-large"
+              />
             </template>
           </v-alert>
         </v-card-text>
@@ -397,11 +415,17 @@ onMounted(() => init());
           @page-change="pageChange"
         />
       </v-card>
-      <v-card flat class="mt-4 bg-transparent sm:m-2">
+      <v-card
+        flat
+        class="mt-4 bg-transparent sm:m-2"
+      >
         <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">
           {{ t("Search.RecommendedSingleLearnware") }}
         </v-card-title>
-        <v-card-text v-if="showMultiRecommended && singleRecommendedTips" class="!p-2">
+        <v-card-text
+          v-if="showMultiRecommended && singleRecommendedTips"
+          class="!p-2"
+        >
           <v-alert
             v-model="singleRecommendedTips"
             :title="t('Search.RecommendedSingleLearnware')"
@@ -410,7 +434,10 @@ onMounted(() => init());
             color="info"
           >
             <template #prepend>
-              <v-icon icon="mdi-hexagon" size="x-large"></v-icon>
+              <v-icon
+                icon="mdi-hexagon"
+                size="x-large"
+              />
             </template>
           </v-alert>
         </v-card-text>
@@ -430,14 +457,25 @@ onMounted(() => init());
         />
       </v-card>
 
-      <div v-if="showHeterogeneousSearchSwitch && !isHeterogeneous" class="text-center">
-        <v-btn class="px-8" variant="outlined" color="red" @click="() => (isHeterogeneous = true)">
+      <div
+        v-if="showHeterogeneousSearchSwitch && !isHeterogeneous"
+        class="text-center"
+      >
+        <v-btn
+          class="px-8"
+          variant="outlined"
+          color="red"
+          @click="() => (isHeterogeneous = true)"
+        >
           {{ t("Search.HeterogeneousSearch") }}
         </v-btn>
       </div>
     </div>
 
-    <confirm-dialog ref="dialog" @confirm="() => handleConfirmDeleteLearnware(deleteId)">
+    <confirm-dialog
+      ref="dialog"
+      @confirm="() => handleConfirmDeleteLearnware(deleteId)"
+    >
       <template #title>
         <div class="ml-1 flex-1 overflow-hidden text-ellipsis">
           {{ t("MyLearnware.ConfirmToDelete") }}

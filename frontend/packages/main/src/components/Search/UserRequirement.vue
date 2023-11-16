@@ -101,7 +101,12 @@ watch(
     <div class="filter">
       <slot name="prepend" />
       <div class="text-h6 my-3">
-        <v-icon class="!mt-0 mr-3" icon="mdi-tag-text" color="black" size="small"></v-icon>
+        <v-icon
+          class="!mt-0 mr-3"
+          icon="mdi-tag-text"
+          color="black"
+          size="small"
+        />
         {{ t("Search.ChooseSemanticRequirement") }}
       </div>
 
@@ -115,7 +120,7 @@ watch(
           hide-details
           append-inner-icon="mdi-close"
           @click:append-inner="id = ''"
-        ></v-text-field>
+        />
       </div>
 
       <div>
@@ -128,18 +133,30 @@ watch(
           hide-details
           append-inner-icon="mdi-close"
           @click:append-inner="search = ''"
-        ></v-text-field>
+        />
       </div>
 
-      <data-type-btns v-model="dataType" :cols="3" :md="2" :sm="2" :xs="2"></data-type-btns>
-      <task-type-btns v-model="taskType" :cols="2" :md="2" :sm="2" :xs="2"></task-type-btns>
+      <data-type-btns
+        v-model="dataType"
+        :cols="3"
+        :md="2"
+        :sm="2"
+        :xs="2"
+      />
+      <task-type-btns
+        v-model="taskType"
+        :cols="2"
+        :md="2"
+        :sm="2"
+        :xs="2"
+      />
       <library-type-btns
         v-model="libraryType"
         :cols="2"
         :md="2"
         :sm="2"
         :xs="2"
-      ></library-type-btns>
+      />
       <scenario-list-btns
         v-model="scenarioList"
         :cols="2"
@@ -154,14 +171,29 @@ watch(
     <div class="border-t-1 border-gray-300 p-4 pt-0">
       <template v-if="isHeterogeneous">
         <div class="text-h6 mb-5 mt-3 w-full truncate transition-all">
-          <v-icon class="mr-3" icon="mdi-vector-difference" color="black" size="small"></v-icon>
+          <v-icon
+            class="mr-3"
+            icon="mdi-vector-difference"
+            color="black"
+            size="small"
+          />
           {{ t("Search.UploadHeterogeneousRequirement") }}
         </div>
 
-        <v-dialog v-model="heterDialog" width="1024">
-          <template v-slot:activator="{ props }">
-            <v-card v-bind="props" flat class="border-gray-500 bg-transparent">
-              <v-btn block variant="outlined">
+        <v-dialog
+          v-model="heterDialog"
+          width="1024"
+        >
+          <template #activator="{ props }">
+            <v-card
+              v-bind="props"
+              flat
+              class="border-gray-500 bg-transparent"
+            >
+              <v-btn
+                block
+                variant="outlined"
+              >
                 {{ t("Search.StartHeterogeneousSearch") }}
               </v-btn>
             </v-card>
@@ -169,13 +201,20 @@ watch(
 
           <v-card class="p-4 md:p-8 md:pt-4">
             <div>
-              <v-tabs v-model="heterTab" align-tabs="center">
-                <v-tab value="dataType">{{
-                  t("Submit.SemanticSpecification.DataType.DescriptionInput.Name")
-                }}</v-tab>
-                <v-tab value="taskType">{{
-                  t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name")
-                }}</v-tab>
+              <v-tabs
+                v-model="heterTab"
+                align-tabs="center"
+              >
+                <v-tab value="dataType">
+                  {{
+                    t("Submit.SemanticSpecification.DataType.DescriptionInput.Name")
+                  }}
+                </v-tab>
+                <v-tab value="taskType">
+                  {{
+                    t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name")
+                  }}
+                </v-tab>
               </v-tabs>
             </div>
 
@@ -202,8 +241,7 @@ watch(
                   v-model="tempDataTypeDescription"
                   :name="t('Submit.SemanticSpecification.DataType.DescriptionInput.Name')"
                   class="mt-4"
-                >
-                </description-input>
+                />
               </v-window-item>
 
               <v-window-item value="taskType">
@@ -228,13 +266,17 @@ watch(
                   v-model="tempTaskTypeDescription"
                   :name="t('Submit.SemanticSpecification.TaskType.DescriptionOutput.Name')"
                   class="mt-4"
-                >
-                </description-input>
+                />
               </v-window-item>
             </v-window>
 
             <div class="mt-4 flex justify-end">
-              <v-btn color="primary" rounded variant="flat" @click="heterDialog = false">
+              <v-btn
+                color="primary"
+                rounded
+                variant="flat"
+                @click="heterDialog = false"
+              >
                 {{ t("Public.Finish") }}
               </v-btn>
             </div>
@@ -243,7 +285,12 @@ watch(
       </template>
 
       <div class="text-h6 mb-5 mt-3 w-full truncate transition-all">
-        <v-icon class="mr-3" icon="mdi-upload" color="black" size="small"></v-icon>
+        <v-icon
+          class="mr-3"
+          icon="mdi-upload"
+          color="black"
+          size="small"
+        />
         {{ t("Search.UploadStatisticalRequirement") }}
       </div>
 
