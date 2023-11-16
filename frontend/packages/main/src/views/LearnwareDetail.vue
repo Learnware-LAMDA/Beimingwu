@@ -43,7 +43,7 @@ const loading = ref(false);
 
 const editable = ref(false);
 
-const deleteDialog = ref<InstanceType<typeof ConfirmDialog>>();
+const showDeleteDialog = ref(false);
 const deleteId = ref("");
 const deleteName = ref("");
 
@@ -113,7 +113,7 @@ onMounted(() => {
 });
 
 function handleClickDelete(id: string): void {
-  deleteDialog.value?.confirm();
+  showDeleteDialog.value = true;
   deleteId.value = id;
   deleteName.value = learnware.value.name;
 }
@@ -165,7 +165,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
 
     <div v-else>
       <confirm-dialog
-        ref="deleteDialog"
+        v-model="showDeleteDialog"
         @confirm="handleDelete"
       >
         <template #title>

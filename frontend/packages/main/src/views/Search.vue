@@ -57,7 +57,7 @@ const errorTimer = ref();
 
 const showDeployTips = ref(false);
 
-const dialog = ref<InstanceType<typeof ConfirmDialog>>();
+const showDialog = ref(false);
 const deleteId = ref("");
 const deleteName = ref("");
 
@@ -208,13 +208,11 @@ function handleClickEdit(id: string): void {
 }
 
 function handleClickDelete(id: string): void {
-  if (dialog.value) {
-    dialog.value.confirm();
-    deleteId.value = id;
-    deleteName.value = (
-      singleRecommendedLearnwareItems.value.find((item) => item.id === id) as { name: string }
-    ).name;
-  }
+  showDialog.value = true;
+  deleteId.value = id;
+  deleteName.value = (
+    singleRecommendedLearnwareItems.value.find((item) => item.id === id) as { name: string }
+  ).name;
 }
 
 watch(
@@ -474,7 +472,7 @@ onMounted(() => init());
     </div>
 
     <confirm-dialog
-      ref="dialog"
+      v-model="showDialog"
       @confirm="() => handleConfirmDeleteLearnware(deleteId)"
     >
       <template #title>

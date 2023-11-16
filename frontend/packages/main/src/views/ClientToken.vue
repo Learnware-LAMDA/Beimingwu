@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onActivated } from "vue";
 import { useI18n } from "vue-i18n";
+import ConfirmDialog from "../components/Dialogs/ConfirmDialog.vue";
 import { createToken, listToken, deleteToken } from "../request/user";
 
 const { t } = useI18n();
@@ -12,6 +13,9 @@ const showError = ref(false);
 const errorMsg = ref("");
 
 const showSuccess = ref(false);
+
+const showDeleteDialog = ref(false);
+const tokenToDelete = ref("");
 
 function fetchList(): Promise<void> {
   loading.value = true;
@@ -67,7 +71,12 @@ function handleClickCopy(token: string): void {
   showSuccess.value = true;
 }
 
-function handleClickDelete(token: string): Promise<void> {
+function handleClickDelete(token: string): void {
+  tokenToDelete.value = token;
+  showDeleteDialog.value = true;
+}
+
+function handleDelete(token: string): Promise<void> {
   loading.value = true;
   return deleteToken({ token })
     .then((res) => {
@@ -102,24 +111,22 @@ onActivated(() => {
     flat
     :loading="loading"
   >
-    <v-card-title>
-      <div class="text-h4">
+    <v-card-title class="flex items-center py-4">
+      <v-icon> mdi-key </v-icon>
+      <div class="text-h4 ml-3">
         {{ t("ClientToken.Title") }}
       </div>
     </v-card-title>
-
-    <v-divider />
 
     <v-card-text>
       {{ t("ClientToken.Description") }}
     </v-card-text>
 
     <v-card-text v-if="tokens.length > 0">
-      <div class="border border-black">
+      <div class="border">
         <div
           v-for="(token, index) in tokens"
           :key="index"
-          class="border-black"
           :class="{
             'border-b': index !== tokens.length - 1,
           }"
@@ -158,5 +165,17 @@ onActivated(() => {
     >
       {{ t("ClientToken.CopySuccess") }}
     </v-snackbar>
+
+    <confirm-dialog
+      v-model="showDeleteDialog"
+      @confirm="() => handleDelete(tokenToDelete)"
+    >
+      <template #title>
+        {{ t("ClientToken.DeleteTitle") }}
+      </template>
+      <template #content>
+        {{ t("ClientToken.DeleteContent") }}
+      </template>
+    </confirm-dialog>
   </v-card>
 </template>

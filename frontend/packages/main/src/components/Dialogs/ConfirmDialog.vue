@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed } from "vue";
 
-const emits = defineEmits(["confirm"]);
+const props = defineProps<{ modelValue: boolean }>();
+const emits = defineEmits(["confirm", "update:modelValue"]);
 
-const dialog = ref(false);
-
-function confirm(): void {
-  dialog.value = true;
-}
+const dialog = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emits("update:modelValue", value);
+  },
+});
 
 function emitConfirm(): void {
   emits("confirm");
   dialog.value = false;
 }
-
-defineExpose({
-  confirm,
-});
 </script>
 
 <template>

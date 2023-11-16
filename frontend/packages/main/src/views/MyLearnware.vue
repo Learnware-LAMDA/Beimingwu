@@ -20,7 +20,7 @@ const display = useDisplay();
 
 const { t } = useI18n();
 
-const dialog = ref<InstanceType<typeof ConfirmDialog>>();
+const showDialog = ref(false);
 const deleteId = ref("");
 const deleteName = ref("");
 
@@ -80,7 +80,7 @@ function handleClickEdit(id: string): void {
 }
 
 function handleClickDelete(id: string): void {
-  dialog.value && dialog.value.confirm();
+  showDialog.value = true;
   deleteId.value = id;
   deleteName.value = learnwareItems.value.find((item) => item.id === id)?.name as string;
 }
@@ -198,7 +198,7 @@ onMounted(() => {
     class="learnware-container"
   >
     <confirm-dialog
-      ref="dialog"
+      v-model="showDialog"
       @confirm="handleConfirm"
     >
       <template #title>

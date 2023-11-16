@@ -18,18 +18,18 @@ const router = useRouter();
 
 const { t } = useI18n();
 
-const deleteDialog = ref<InstanceType<typeof ConfirmDialog>>();
+const showDeleteDialog = ref(false);
 const deleteId = ref("");
 const deleteName = ref("");
 
-const resetDialog = ref<InstanceType<typeof ConfirmDialog>>();
+const showResetDialog = ref(false);
 const resetId = ref<string>("");
 const resetName = ref<string>("");
 
 const newPasswordDialog = ref<boolean>(false);
 const newPassword = ref("");
 
-const setRoleDialog = ref<InstanceType<typeof ConfirmDialog>>();
+const showSetRoleDialog = ref<boolean>(false);
 const setRoleId = ref<number>(-1);
 const setRoleRole = ref<number>(0);
 const setRoleName = ref<string>("");
@@ -209,29 +209,25 @@ function pageChange(newPage: number): void {
 }
 
 function handleClickReset(id: number): void {
-  resetDialog.value && resetDialog.value.confirm();
+  showResetDialog.value = true;
   resetId.value = String(id);
   const userName = userItems.value.find((item) => item.id === id)?.username;
   userName && (resetName.value = userName);
 }
 
 function handleClickDelete(id: number): void {
-  if (deleteDialog.value) {
-    deleteDialog.value.confirm();
-    deleteId.value = String(id);
-    const userName = userItems.value.find((item) => item.id === id)?.username;
-    userName && (deleteName.value = userName);
-  }
+  showDeleteDialog.value = true;
+  deleteId.value = String(id);
+  const userName = userItems.value.find((item) => item.id === id)?.username;
+  userName && (deleteName.value = userName);
 }
 
 function handleClickSetRole(id: number, role: number): void {
-  if (setRoleDialog.value) {
-    setRoleDialog.value.confirm();
-    setRoleId.value = Number(id);
-    setRoleRole.value = Number(role);
-    const userName = userItems.value.find((item) => item.id === id)?.username;
-    userName && (setRoleName.value = userName);
-  }
+  showSetRoleDialog.value = true;
+  setRoleId.value = Number(id);
+  setRoleRole.value = Number(role);
+  const userName = userItems.value.find((item) => item.id === id)?.username;
+  userName && (setRoleName.value = userName);
 }
 
 function setRole(id: number, role: number): Promise<void> {
@@ -371,7 +367,7 @@ onActivated(() => {
 <template>
   <div class="main-container">
     <confirm-dialog
-      ref="resetDialog"
+      v-model="showResetDialog"
       @confirm="() => resetPassword(Number(resetId))"
     >
       <template #title>
@@ -405,7 +401,7 @@ onActivated(() => {
     </success-dialog>
 
     <confirm-dialog
-      ref="deleteDialog"
+      v-model="showDeleteDialog"
       @confirm="() => deleteUser(Number(deleteId))"
     >
       <template #title>
@@ -419,7 +415,7 @@ onActivated(() => {
     </confirm-dialog>
 
     <confirm-dialog
-      ref="setRoleDialog"
+      v-model="showSetRoleDialog"
       @confirm="() => setRole(Number(setRoleId), Number(setRoleRole))"
     >
       <template #title>
