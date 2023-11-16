@@ -198,7 +198,7 @@ Run the following command to start the development server.
 pnpm dev
 ```
 
-If everything goes well, you should see the following output:
+If everything goes well, you will see the following output:
 
 ```bash
 > vitepress dev docs
@@ -222,7 +222,7 @@ If you want to add static files like images, you can place them in the `Beiming-
 
 ### Setting Up Navigation and Sidebar
 
-You should set this up by language. For example, if you want to set up navigation and sidebar for the `en` language, you should edit the `Beiming-System/docs/content/.vitepress/config/locales/en.ts` file.
+You should set up this according to the language. For example, if you want to set up navigation and sidebar for the `en` language, you should edit the `Beiming-System/docs/content/.vitepress/config/locales/en.ts` file.
 
 ### Other Configuration
 

@@ -78,7 +78,7 @@ stat_specifications:
     kwargs: {}
 ```
 
-需注意，生成规约时的数据类型 `["table", "image", "text"]` 所对应的规约 `class_name` 分别为 `[RKMETableSpecification, RKMEImageSpecification, RKMETextSpecification]`。
+需注意，生成规约时的数据类型 `["table", "image", "text"]` 所对应的规约类型 `RKMEStatSpecification` 分别为 `[RKMETableSpecification, RKMEImageSpecification, RKMETextSpecification]`。
 
 ## 模型运行依赖 `environment.yaml`
 

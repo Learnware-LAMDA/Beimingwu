@@ -2,9 +2,9 @@ Material Two Translation:
 
 # How to Upload Learnware?
 
-In the Beimingwu system, you can upload learnware both from the web interface and by using the `learnware` Python package.
+In the Beimingwu system, you can upload a learnware both from the web interface and by using the `learnware` Python package.
 
-Next, we will introduce both of these methods separately.
+Next, we will introduce two methods separately.
 
 ## Uploading through the Web Interface
 
@@ -16,9 +16,9 @@ The entire process is divided into the following 4 steps:
 3. Provide a description for the learnware.
 4. Upload the prepared learnware zip package.
 
-The first 3 steps can be completed following the instructions on the website's pages, and the details for the 4th step can be found here: [How to Prepare Learnware](/zh-CN/user-guide/learnware-upload/prepare).
+The first three steps can be completed following the instructions on the website's pages, and the details for the fourth step can be found here: [How to Prepare Learnware](/zh-CN/user-guide/learnware-upload/prepare).
 
-It's important to note that during the 2nd step, "Select Tags":
+It's important to note that during the second step, "Select Tags":
 - If the data type is "Table," you need to specify the semantics of each dimension of the model's input data to make the uploaded learnware suitable for tasks with heterogeneous feature spaces.
 - If the task type is "Classification" or "Regression," you need to specify the semantics of each dimension of the model's output to make the uploaded learnware suitable for tasks with heterogeneous output spaces.
 
@@ -38,7 +38,7 @@ client.login(email="your email", token="your token")
 
 Where "email" is your registered email address in the system, and "token" is the token for accessing the learnware API, which can be generated in the web interface under "Personal Information - Client Token."
 
-Next, you need to prepare semantic specifications, taking the example of a "Table Data" for a "Classification Task":
+Next, you need to prepare semantic specifications, here is an example of a "Table Data" for a "Classification Task":
 
 ```python
 # Prepare input description when data_type="Table"
@@ -77,10 +77,10 @@ semantic_spec = client.create_semantic_specification(
 ```
 
 Please ensure that the input for semantic specification falls within the range given by `client.list_semantic_specification_values(key)`:
-- "data_type" must be within the results corresponding to `key=SemanticSpecificationKey.DATA_TYPE`.
-- "task_type" must be within the results corresponding to `key=SemanticSpecificationKey.TASK_TYPE`.
-- "library_type" must be within the results corresponding to `key=SemanticSpecificationKey.LIBRARY_TYPE`.
-- "scenarios" must be a subset of the results corresponding to `key=SemanticSpecificationKey.SENARIOS`.
+- "data_type" must be within `key=SemanticSpecificationKey.DATA_TYPE`.
+- "task_type" must be within `key=SemanticSpecificationKey.TASK_TYPE`.
+- "library_type" must be within `key=SemanticSpecificationKey.LIBRARY_TYPE`.
+- "scenarios" must be a subset of `key=SemanticSpecificationKey.SENARIOS`.
 - When "data_type" is "Table," you need to provide "Input Description."
 - When "task_type" is in `["Classification", "Regression"]`, you need to provide "Output Description."
 
@@ -105,4 +105,4 @@ learnware_id = client.upload_learnware(
 
 Once your learnware is successfully uploaded, you can find it under "Personal Information - My Learnware."
 
-After uploading, the backend will perform a check on the learnware. You can check the validation status by clicking on the learnware. Once the check passes, the "Unverified" label will disappear, and your uploaded learnware will appear in the learnware marketplace.
+After uploading, the backend will perform a check on the learnware. You can check the validation status by clicking on the learnware. Once the check passes, the "Unverified" label will disappear, and your uploaded learnware will appear in the learnware.

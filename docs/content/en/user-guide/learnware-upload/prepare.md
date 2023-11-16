@@ -2,10 +2,10 @@
 
 In the Beimingwu system, each learnware is a `zip` package, which should contain at least the following four files:
 
-- `learnware.yaml`: Learnware configuration file.
-- `__init__.py`: Provides methods for using the model.
-- `stat.json`: The statistic specification of the learnware. Its filename can be customized and recorded in learnware.yaml.
-- `environment.yaml` or `requirements.txt`: Specifies the runtime environment for the model.
+- `learnware.yaml`: learnware configuration file.
+- `__init__.py`: methods for using the model.
+- `stat.json`: the statistic specification of the learnware. Its filename can be customized and recorded in learnware.yaml.
+- `environment.yaml` or `requirements.txt`: specifies the environment for the model.
 
 When creating these four files, you need to use the `learnware` Python package. You can find specific installation instructions here: [Installation Guide](/en/overview/installation).
 
@@ -79,7 +79,7 @@ stat_specifications:
     kwargs: {}
 ```
 
-Please note that the statistic specification class name for different data types `["table", "image", "text"]` is `[RKMETableSpecification, RKMEImageSpecification, RKMETextSpecification]`, respectively.
+Please note that the statistic specification class name `RKMEStatSpecification` for different data types `["table", "image", "text"]` is `[RKMETableSpecification, RKMEImageSpecification, RKMETextSpecification]`, respectively.
 
 ## Model Runtime Dependencies `environment.yaml`
 
@@ -134,7 +134,7 @@ Regardless of which method you use, try to remove unnecessary dependencies to mi
 
 ## Local Validation of Learnware
 
-After filling in the above files, you can proceed to upload your learnware. Once the learnware is successfully uploaded, the system backend will automatically add it to the validation queue to check whether the learnware complies with the specifications, including the format of the learnware and whether the model can be run. This validation process may take some time, depending on the complexity of the learnware and the workload of the system backend. The validation results will be displayed on the website.
+After filling in the above files, you can proceed to upload your learnware. Once the learnware is successfully uploaded, the system backend will automatically add it to the validation queue to check whether the learnware meets the requirements, including the format of the learnware and whether the model can be run. This validation process may take some time, depending on the complexity of the learnware and the workload of the system backend. The validation results will be displayed on the website.
 
 Since the backend validation of learnware can be time-consuming, we recommend that you validate your learnware locally before uploading it by using the following code:
 

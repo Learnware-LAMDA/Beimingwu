@@ -2,7 +2,7 @@
 
 ### Q1: How does the Beimingwu system protect user data privacy?
 
-A1: In the Beimingwu system, the submission, searching, and deployment of learnware do not require users to upload local data. All involved statistic specifications are generated locally by the user and do not expose original data, ensuring your data privacy.
+A1: In the Beimingwu system, the submission, searching, and deployment of learnwares do not require users to upload local data. The statistic specifications are generated locally by the user and do not expose original data, ensuring data privacy.
 
 
 ### Q2: How does the Beimingwu system ensure the safety of deploying learnware?
@@ -17,7 +17,7 @@ A3: We support various data types, including tables, images, and texts.
 
 ### Q4: How to initiate heterogeneous table search?
 
-A4: When regular searches return an empty list, the system will suggest heterogeneous search. You will need to provide additional semantic information for each dimension feature, which can be manually entered or uploaded as a `json` file containing feature semantic information, then proceed with the search.
+A4: When the regular search returns an empty list, the system will suggest heterogeneous search. You will need to provide additional semantic information for each feature, which can be manually entered or uploaded by a `json` file containing feature semantic information, then proceed the search.
 
 
 ### Q5: Why doesn't the learnware show up in the system after submission?

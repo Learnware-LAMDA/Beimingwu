@@ -1,6 +1,6 @@
 # How to Deploy and Reuse Learnware?
 
-In the Beiming system, users can deploy and reuse learnware using the `learnware` Python package.
+In the Beiming system, users can deploy and reuse learnwares using the `learnware` Python package.
 
 ## Loading Learnware and Environments
 
@@ -44,7 +44,7 @@ learnware_list = client.load_learnware(
 
 ## Homogeneous Learnware Reuse Methods
 
-In addition to running learnware directly, users can further make predictions on unlabeled data using learnware reuse methods provided by the system.
+In addition to using learnware directly, users can further make predictions on unlabeled data using learnware reuse methods provided by the system.
 
 There are two main categories of reuse methods: (1) direct reuse and (2) reuse based on a small amount of labeled data.
 
@@ -82,7 +82,7 @@ For more detailed usage and explanations, please refer to the [Learnware Package
 
 ### Reusing Learnware with Labeled Data
 
-When users have a small amount of labeled data, the system provides two methods: `EnsemblePruning` and `FeatureAugmentReuser` to help reuse learnware.
+When users have a small amount of labeled data, the system provides two methods: `EnsemblePruning` and `FeatureAugmentReuser` to help reuse learnwares.
 
 - `EnsemblePruning` selectively integrates learnwares to choose the ones that are most suitable for the user's task:
 
@@ -102,7 +102,7 @@ predict_y = reuse_job_selector.predict(user_data=test_x)
 
 For more detailed usage and explanations, please refer to the [Learnware Package Reuse Methods Introduction](#).
 
-- `FeatureAugmentReuser` helps users reuse learnware by augmenting features. The output of the original learnware is concatenated with the user's task features, and a simple model is trained on the labeled data (logistic regression for classification tasks and ridge regression for regression tasks):
+- `FeatureAugmentReuser` helps users reuse learnwares by augmenting features. The output of the original learnware is concatenated with the user's task features, and a simple model is trained on the labeled data (logistic regression for classification tasks and ridge regression for regression tasks):
 
 ```python
 from learnware.reuse import FeatureAugmentReuser
@@ -136,7 +136,7 @@ hetero_learnware.align(user_spec, val_x, val_y)
 predict_y = hetero_learnware.predict(user_data=test_x)
 ```
 
-If you want to reuse multiple heterogeneous learnwares, you can combine `HeteroMapAlignLearnware` with the homogeneous reuse methods `Averaging` and `EnsemblePruning` as mentioned earlier:
+If you want to reuse multiple heterogeneous learnwares, you can combine `HeteroMapAlignLearnware` with the homogeneous reuse methods `Averaging` and `EnsemblePruning` as mentioned before:
 
 ```python
 hetero_learnware_list = []

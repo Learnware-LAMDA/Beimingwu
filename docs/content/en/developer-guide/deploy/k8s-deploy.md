@@ -53,7 +53,7 @@ cd Beiming-System/deploy/kubernetes
 ```
 
 ### Configure Files
-Set the configuration files for the backend, `config.json`:
+Set the configuration files for the backend `config.json`:
 
 ```json
 {
@@ -85,7 +85,7 @@ Set the configuration files for the backend, `config.json`:
 }
 ```
 
-Set the configuration file for learnware packages, `config_learnware.json`:
+Set the configuration file for learnware packages `config_learnware.json`:
 
 ```json
 {
