@@ -116,7 +116,8 @@ function getColorByScore(score: number): string {
         <span
           class="ml-2"
           :style="`color: ${getColorByScore(matchScore)}`"
-        >{{ matchScore }}</span>
+          >{{ matchScore }}</span
+        >
       </v-card-title>
       <v-btn
         variant="flat"

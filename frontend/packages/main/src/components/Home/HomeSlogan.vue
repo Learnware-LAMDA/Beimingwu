@@ -178,7 +178,9 @@ onMounted(() => {
                   font-size="7"
                   text-anchor="middle"
                   fill="black"
-                >RKME.json</text>
+                >
+                  RKME.json
+                </text>
               </svg>
             </div>
             <div class="flex h-6 items-center justify-between bg-gray-900">
@@ -255,18 +257,10 @@ onMounted(() => {
 
             <div class="flex h-6 items-center bg-gray-700">
               <div class="text-[0.4rem]">
-                <v-icon class="ml-1 p-2">
-                  mdi-arrow-left
-                </v-icon>
-                <v-icon class="p-2">
-                  mdi-arrow-right
-                </v-icon>
-                <v-icon class="p-2">
-                  mdi-reload
-                </v-icon>
-                <v-icon class="p-2">
-                  mdi-home-outline
-                </v-icon>
+                <v-icon class="ml-1 p-2"> mdi-arrow-left </v-icon>
+                <v-icon class="p-2"> mdi-arrow-right </v-icon>
+                <v-icon class="p-2"> mdi-reload </v-icon>
+                <v-icon class="p-2"> mdi-home-outline </v-icon>
               </div>
               <div
                 class="flex h-3.5 flex-1 flex-col justify-center rounded-full bg-gray-600 px-1.5 text-left text-[0.3rem]"
@@ -277,12 +271,8 @@ onMounted(() => {
                 </div>
               </div>
               <div class="text-[0.4rem]">
-                <v-icon class="p-2">
-                  mdi-magnify
-                </v-icon>
-                <v-icon class="p-2">
-                  mdi-dots-horizontal
-                </v-icon>
+                <v-icon class="p-2"> mdi-magnify </v-icon>
+                <v-icon class="p-2"> mdi-dots-horizontal </v-icon>
               </div>
             </div>
 

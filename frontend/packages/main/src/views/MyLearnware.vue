@@ -230,21 +230,15 @@ onMounted(() => {
           color="primary"
         >
           <v-tab value="All">
-            <v-icon start>
-              mdi-shield-account-outline
-            </v-icon>
+            <v-icon start> mdi-shield-account-outline </v-icon>
             {{ t("MyLearnware.All") }}
           </v-tab>
           <v-tab value="Verified">
-            <v-icon start>
-              mdi-shield-check
-            </v-icon>
+            <v-icon start> mdi-shield-check </v-icon>
             {{ t("MyLearnware.Verified") }}
           </v-tab>
           <v-tab value="Unverified">
-            <v-icon start>
-              mdi-shield-off-outline
-            </v-icon>
+            <v-icon start> mdi-shield-off-outline </v-icon>
             {{ t("MyLearnware.Unverified") }}
           </v-tab>
         </v-tabs>

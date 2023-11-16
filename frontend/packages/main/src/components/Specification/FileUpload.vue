@@ -87,9 +87,8 @@ const files = computed({
         <span
           v-if="files[0].size > 0"
           class="ml-2 text-sm"
-        >{{
-          computeFileSize(files[0].size)
-        }}</span>
+          >{{ computeFileSize(files[0].size) }}</span
+        >
       </div>
       <v-btn
         v-if="files.length > 0"

@@ -249,7 +249,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                   <b>{{ t("Submit.SemanticSpecification.DataType.DataType") }}:</b>
                   {{
                     learnware.dataType &&
-                      t(`Submit.SemanticSpecification.DataType.Type.${learnware.dataType}`)
+                    t(`Submit.SemanticSpecification.DataType.Type.${learnware.dataType}`)
                   }}
                 </div>
               </v-expansion-panel-title>
@@ -300,7 +300,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
             <b>{{ t("Submit.SemanticSpecification.DataType.DataType") }}:</b>
             {{
               learnware.dataType &&
-                t(`Submit.SemanticSpecification.DataType.Type.${learnware.dataType}`)
+              t(`Submit.SemanticSpecification.DataType.Type.${learnware.dataType}`)
             }}
           </div>
 
@@ -317,7 +317,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
                   <b>{{ t("Submit.SemanticSpecification.TaskType.TaskType") }}:</b>
                   {{
                     learnware.taskType &&
-                      t(`Submit.SemanticSpecification.TaskType.Type.${learnware.taskType}`)
+                    t(`Submit.SemanticSpecification.TaskType.Type.${learnware.taskType}`)
                   }}
                 </div>
               </v-expansion-panel-title>
@@ -378,7 +378,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
             <b>{{ t("Submit.SemanticSpecification.TaskType.TaskType") }}:</b>
             {{
               learnware.taskType &&
-                t(`Submit.SemanticSpecification.TaskType.Type.${learnware.taskType}`)
+              t(`Submit.SemanticSpecification.TaskType.Type.${learnware.taskType}`)
             }}
           </div>
 
@@ -386,7 +386,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
             <b>{{ t("Submit.SemanticSpecification.LibraryType.LibraryType") }}:</b>
             {{
               learnware.libraryType &&
-                t(`Submit.SemanticSpecification.LibraryType.Type.${learnware.libraryType}`)
+              t(`Submit.SemanticSpecification.LibraryType.Type.${learnware.libraryType}`)
             }}
           </div>
           <div>

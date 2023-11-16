@@ -115,9 +115,7 @@ function handleClickSetRole(id: number, role: number): void {
                 </router-link>
               </span>
             </div>
-            <div class="my-title">
-              <span class="small-title">Email: </span>{{ item.email }}
-            </div>
+            <div class="my-title"><span class="small-title">Email: </span>{{ item.email }}</div>
             <div class="my-title">
               <span class="small-title">Verified: </span>{{ item.verified_learnware_count }}
             </div>

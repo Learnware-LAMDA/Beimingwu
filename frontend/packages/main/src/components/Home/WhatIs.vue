@@ -372,7 +372,9 @@ const vOffset = {
               y="720"
               font-size="30"
               text-anchor="middle"
-            >Specification Space</text>
+            >
+              Specification Space
+            </text>
           </g>
 
           <circle

@@ -206,14 +206,10 @@ watch(
                 align-tabs="center"
               >
                 <v-tab value="dataType">
-                  {{
-                    t("Submit.SemanticSpecification.DataType.DescriptionInput.Name")
-                  }}
+                  {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
                 </v-tab>
                 <v-tab value="taskType">
-                  {{
-                    t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name")
-                  }}
+                  {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
                 </v-tab>
               </v-tabs>
             </div>

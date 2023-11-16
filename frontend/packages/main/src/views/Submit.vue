@@ -458,9 +458,9 @@ onActivated(init);
                 v-model:task-type-description="taskTypeDescription.value"
                 :error-messages="
                   dataType.errorMessages ||
-                    taskType.errorMessages ||
-                    libraryType.errorMessages ||
-                    scenarioList.errorMessages
+                  taskType.errorMessages ||
+                  libraryType.errorMessages ||
+                  scenarioList.errorMessages
                 "
               />
             </v-card-text>

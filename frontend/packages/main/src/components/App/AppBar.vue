@@ -66,7 +66,7 @@ const filteredRoutes = computed<Route[]>(
         <img
           class="logo-img"
           :src="learnwareLogo"
-        >
+        />
       </div>
     </div>
 
