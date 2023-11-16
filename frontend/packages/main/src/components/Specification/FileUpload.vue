@@ -75,7 +75,9 @@ const files = computed({
       </p>
       <div v-else class="w-full truncate">
         <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ files[0].name }}
-        <span class="ml-2 text-sm">{{ computeFileSize(files[0].size) }}</span>
+        <span v-if="files[0].size > 0" class="ml-2 text-sm">{{
+          computeFileSize(files[0].size)
+        }}</span>
       </div>
       <v-btn
         v-if="files.length > 0"
