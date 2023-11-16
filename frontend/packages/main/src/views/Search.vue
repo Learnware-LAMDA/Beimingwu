@@ -405,12 +405,13 @@ onMounted(() => init());
 
     <confirm-dialog ref="dialog" @confirm="() => handleConfirmDeleteLearnware(deleteId)">
       <template #title>
-        Confirm to delete &nbsp; <b>{{ deleteName }}</b
-        >?
+        <div class="ml-1 flex-1 overflow-hidden text-ellipsis">
+          {{ t("MyLearnware.ConfirmToDelete") }}
+        </div>
       </template>
       <template #text>
-        The learnware <b>{{ deleteName }}</b> will be deleted in the learnware market
-        <i>permanently</i>. Do you really want to delete?
+        {{ t("AllLearnware.Learnware") }} <b>{{ deleteName }}</b>
+        {{ t("MyLearnware.DeleteContinue") }}
       </template>
     </confirm-dialog>
   </div>

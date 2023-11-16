@@ -196,8 +196,9 @@ onMounted(() => {
   <div ref="contentRef" class="learnware-container">
     <confirm-dialog ref="dialog" @confirm="handleConfirm">
       <template #title>
-        {{ t("MyLearnware.ConfirmToDelete") }} &nbsp; <b>{{ deleteName }}</b
-        >{{ t("MyLearnware.?") }}
+        <div class="ml-1 flex-1 overflow-hidden text-ellipsis">
+          {{ t("MyLearnware.ConfirmToDelete") }}
+        </div>
       </template>
       <template #text>
         {{ t("MyLearnware.YourLearnware") }} <b>{{ deleteName }}</b>

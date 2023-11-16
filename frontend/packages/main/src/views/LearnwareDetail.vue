@@ -166,8 +166,9 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
     <div v-else>
       <confirm-dialog ref="deleteDialog" @confirm="handleDelete">
         <template #title>
-          {{ t("MyLearnware.ConfirmToDelete") }} &nbsp; <b>{{ deleteName }}</b
-          >{{ t("MyLearnware.?") }}
+          <div class="ml-1 flex-1 overflow-hidden text-ellipsis">
+            {{ t("MyLearnware.ConfirmToDelete") }}
+          </div>
         </template>
         <template #text>
           {{ t("MyLearnware.YourLearnware") }} <b>{{ deleteName }}</b>
