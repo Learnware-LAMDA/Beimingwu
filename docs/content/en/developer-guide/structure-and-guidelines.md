@@ -1,192 +1,190 @@
 # Project Structure and Guidelines
 
-北冥坞系统采用了 `Monorepo` 的代码管理方式，[代码仓库](https://github.com/Learnware-LAMDA/Beiming-System)中一共包含四个子项目：
-- **前端**：提供了用户与系统交互的界面和功能，包括主系统和管理员系统。
-- **后端**：负责处理系统的运行逻辑和数据操作，确保系统的稳定性和高性能。
-- **系统文档**：维护系统的文档，包括用户指南、开发指南等，确保系统的易用性。
-- **系统部署**：负责管理系统的部署配置，包括前后端的部署文件。
+The Beimingwu system adopts a `Monorepo` code management approach, and the [code repository](https://github.com/Learnware-LAMDA/Beiming-System) contains four sub-projects:
+- **Frontend**: Provides the interface and functionality for user interaction with the Dock System, including the main system and administrator system.
+- **Backend**: Responsible for handling Dock System's operation logic and data operations, ensuring system stability and high performance.
+- **Docs**: Maintains system documentation, including user guides, development guides, etc., ensuring system usability.
+- **Deploy**: Manages the system deployment configuration, including frontend and backend deployment files.
 
-下面将介绍整个项目的具体结构与开发规范。
+The following sections detail the specific structure and development standards of the entire project.
 
-## 项目结构
+## Project Structure
 
-整个项目分为前端、后端、系统部署、系统文档四个子项目，项目间各自独立。
+The project is divided into four sub-projects: frontend, backend, deploy, and docs, each independent of the others.
 
-### 前端项目结构
+### Frontend Project Structure
 ```shell
-├── frontend # 前端项目
-    ├── README.md # 前端说明
-    ├── package.json
+├── frontend # Frontend project
+    ├── README.md # Frontend documentation
     ├── packages 
-    │   ├── admin # 管理端模块
+    │   ├── admin # Admin module
     │   │   ├── README.md
     │   │   ├── index.html
     │   │   ├── package.json
     │   │   ├── postcss.config.js
-    │   │   ├── public # 图片
-    │   │   ├── src # 代码
-    │   ├── hooks # commit 检查
-    │   ├── locale # 语言切换相关
+    │   │   ├── public # Images
+    │   │   ├── src # Code
+    │   ├── hooks # Commit checks
+    │   ├── locale # Language switching 
     │   │   ├── package.json
     │   │   ├── src
-    │   │   │   ├── en # 英文文字
+    │   │   │   ├── en # English text
     │   │   │   ├── index.ts
-    │   │   │   └── zh-cn # 中文文字
+    │   │   │   └── zh-cn # Chinese text
     │   │   ├── tsconfig.json
     │   │   └── tsup.config.ts
-    │   ├── main # 前端模块
+    │   ├── main # Frontend module
     │   │   ├── index.html
     │   │   ├── package.json
     │   │   ├── postcss.config.js
-    │   │   ├── public # 图片
-    │   │   ├── src # 代码
-    │   │   └── vite.config.ts # 项目配置
-    │   └── types # 前端通用类型
+    │   │   ├── public # Images
+    │   │   ├── src # Code
+    │   │   └── vite.config.ts # Project configuration
+    │   └── types # Common frontend types
 ```
 
-
-### 后端项目结构
+### Backend Project Structure
 
 ```shell
-├── backend # 后端项目
-    ├── README.md # 后端说明文档
-    ├── config.py # 后端配置
-    ├── context.py # 后端全局变量
-    ├── database # 数据库目录
+├── backend # Backend project
+    ├── README.md # Backend documentation
+    ├── config.py # Backend configuration
+    ├── context.py # Backend global variables
+    ├── database # Database directory
     │   ├── __init__.py
-    │   ├── base.py  # 数据库基类
-    │   └── sqlalchemy.py # 基于sqlalchemy的数据库实现
-    ├── lib # 各类工具
-    │   ├── command_executor.py # 命令行相关
-    │   ├── common_utils.py # 通用
-    │   ├── data_utils.py # 数据相关
-    │   ├── database_operations.py #数据库相关操作
-    │   ├── engine.py # 学件引擎相关工具
-    │   └── redis_utils.py # redis相关
+    │   ├── base.py  # Database base class
+    │   └── sqlalchemy.py # Database implementation based on sqlalchemy
+    ├── lib # Various tools
+    │   ├── command_executor.py # Command line
+    │   ├── common_utils.py # General
+    │   ├── data_utils.py # Data
+    │   ├── database_operations.py # Database operations
+    │   ├── engine.py # Learnware engine tools
+    │   └── redis_utils.py # Redis
     ├── requirements.txt # 
-    ├── restful # web接口
-    │   ├── admin.py # 管理员相关接口
-    │   ├── auth.py # 用户认证
-    │   ├── common_functions.py # 通用函数
-    │   ├── engine.py # 引擎接口
-    │   ├── user.py # 用户操作接口
-    │   └── utils.py # 工具函数，如发邮件等
-    ├── scripts # 各类脚本
-    │   ├── backup_data.py # 备份数据
-    │   ├── main.py # web入口
-    │   └── monitor_learnware_verify.py # 学件检查脚本
-    ├── tests # 测试相关代码
-        ├── common_test_operations.py # 通用测试函数
-        ├── data  # 测试相关数据
-        ├── stress_test # 压力测试
-        ├── test_admin.py # 管理员接口测试
-        ├── test_auth.py # 用户认证测试
-        ├── test_backup_data.py # 备份数据测试
-        ├── test_command_executor.py # 测试命令执行
-        ├── test_engine.py # 测试引擎接口
-        ├── test_learnware_client.py # 测试学件客户端
-        ├── test_monitor_learnware_verify.py # 测试学件检查脚本
-        ├── test_user.py # 测试用户相关接口
-        └── test_verify_learnware.py # 测试单个学件检查
+    ├── restful # Web APIs
+    │   ├── admin.py # Admin APIs
+    │   ├── auth.py # User authentication
+    │   ├── common_functions.py # General functions
+    │   ├── engine.py # Engine APIs
+    │   ├── user.py # User operation APIs
+    │   └── utils.py # Utility functions, such as sending emails
+    ├── scripts # Various scripts
+    │   ├── backup_data.py # Data backup
+    │   ├── main.py # Web entry
+    │   └── monitor_learnware_verify.py # Learnware verification
+    ├── tests # Test cases
+        ├── common_test_operations.py # General test functions
+        ├── data  # Data for test
+        ├── stress_test # Stress test
+        ├── test_admin.py # Test for Admin APIs
+        ├── test_auth.py # Test for user authentication
+        ├── test_backup_data.py # Test for data backup
+        ├── test_command_executor.py # Test for command execution
+        ├── test_engine.py # Test for engine APIs
+        ├── test_learnware_client.py # Test for Learnware client
+        ├── test_monitor_learnware_verify.py # Test for monitor_learnware_verify.py
+        ├── test_user.py # Test for user APIs
+        └── test_verify_learnware.py # Test for single learnware verification
 ```
 
-### 系统部署项目结构
+### System Deployment Project Structure
 
 ```shell
-├── deploy # 系统部署项目
-    ├── docker-compose # docker部署相关文件
+├── deploy # System deployment project
+    ├── docker-compose # Docker deployment files
     │   └── docker-compose.yaml
-    ├── hooks # git commit检查
-    │   ├── commit-msg # commit message检查
-    │   └── pre-commit # 代码检查
-    ├── kubernetes # kubernetes部署相关
-    │   ├── admin-frontend.yaml # 管理端相关配置
-    │   ├── backend.yaml # 后端部署相关配置
-    │   └── frontend.yaml # 前端部署相关配置
-    └── static # 静态文件
-        └── learnware-template # 学件模版
+    ├── hooks # Git commit checks
+    │   ├── commit-msg # Commit message check
+    │   └── pre-commit # Code check
+    ├── kubernetes # Kubernetes deployment 
+    │   ├── admin-frontend.yaml # Admin configuration
+    │   ├── backend.yaml # Backend deployment configuration
+    │   └── frontend.yaml # Frontend deployment configuration
+    └── static # Static files
+        └── learnware-template # Learnware template
 ```
 
-### 系统文档项目结构
+### System Documentation Project Structure
 
 ```shell
-├── docs # 系统文档项目
-    ├── README.md # 文档服务说明
+├── docs # System documentation project
+    ├── README.md # Documentation service description
     ├── content 
-    │   ├── developer-guide # 开发者指南
-    │   ├── en # 英文文档
-    │   ├── public # 图片
-    │   ├── tsconfig.json # 项目配置
-    │   └── zh-CN # 中文文档
+    │   ├── developer-guide # Developer's guide
+    │   ├── en # English documentation
+    │   ├── public # Images
+    │   ├── tsconfig.json # Project configuration
+    │   └── zh-CN # Chinese documentation
 ```
 
-## 开发规范
+## Development Standards
 
-由于我们采用了 `Monorepo` 的代码管理方式，因此规范 `commit` 格式与项目开发规范非常重要。下文将主要介绍 `hooks` 配置、代码提交规范以及前后端开发规范。
+As we use a `Monorepo` code management approach, standardizing `commit` formats and project development standards is very important. The following text will mainly introduce `hooks` configuration, code submission standards, and frontend and backend development standards.
 
-### `hooks` 配置
+### `hooks` Configuration
 
-项目配置了 `hooks`, 具体如下:
-- `commit-msg`: 限制 commit 格式；
-- `pre-commit`: 在 commit 前自动进行代码格式化。
+The project is configured with `hooks`, as follows:
+- `commit-msg`: Restricts commit format;
+- `pre-commit`: Automatically formats code before commit.
 
-为使 `hooks` 生效, 需在项目根目录执行下述命令:
+To make `hooks` effective, execute the following command in the project root directory:
 ```shell
 git config core.hooksPath deploy/hooks
 ```
-若为 Linux 系统, 则需要额外赋予相关权限:
+For Linux systems, additional permissions are required:
 ```shell
 chmod +x deploy/hooks/*
 ```
 
-### 代码提交规范
+### Code Submission Standards
 
-北冥坞项目的 `commit` 格式为: `<type>`(`<scope>`): `<subject>`
-- `<type>` 必须为下述选项之一:
-    - feat: 新增 feature
-    - fix: 修复 bug
-    - docs: 修改了文档，比如README、CHANGELOG等
-    - style: 修改了格式，包括注释、代码格式、逗号等，不影响代码运行
-    - refactor: 代码重构，没有加新功能或修复 bug
-    - perf: 优化相关，比如提升性能、体验
-    - test: 测试用例，包括单元测试、集成测试等
-    - chore: 改变构建流程、或者增加依赖库、工具等
-    - revert: 回滚到上一个版本
-- `<scope>` 有以下几个选项: frontend, backend, docs, deploy
-    - 如果涉及多个范围, 则使用逗号连接, 或者直接填写 *
-- `<subject>` 必须填, 均为英文小写字母
+The `commit` format for the Beimingwu project is: `<type>`(`<scope>`): `<subject>`
+- `<type>` must be one of the following:
+    - feat: Add new feature
+    - fix: Fix a bug
+    - docs: Modify documents, such as README, CHANGELOG, etc.
+    - style: Modify format, including comments, code format, commas, etc., without affecting code execution
+    - refactor: Code refactoring, no new features or bug fixes
+    - perf: Code optimization, such as performance, experience enhancement
+    - test: Test cases, including unit tests, integration tests, etc.
+    - chore: Changes to the build process, or adding dependencies, tools, etc.
+    - revert: Revert to a previous version
+- `<scope>` has the following options: frontend, backend, docs, deploy
+    - If multiple scopes are involved, use commas to connect, or simply use *
+- `<subject>` must be filled in, all in lowercase English
 
-举例, 以下都合法:
+For example, the following are all valid:
 ```shell
 feat(backend): add the modify learnware api
 fix(frontend,backend): fix email verification
 docs(*): update README
 ```
 
-### 后端开发规范
+### Backend Development Standards
 
-开发后端子项目时，需要遵循一定的规范，主要涉及 web 接口、数据库、异常处理以及测试。
+When developing the backend sub-project, certain standards need to be followed, mainly involving web interfaces, databases, exception handling, and testing.
 
-#### web 接口规范
+#### Web Interface Standards
 
-web 接口统一采用 `flask-restx` 框架进行开发，每个接口需定义 `parser`，这样可以自动生成 `swagger` 说明。
+Web interfaces are uniformly developed using the `flask-restx` framework. Each interface needs to define a `parser`, allowing automatic generation of `swagger` documentation.
 
-url 接口统一放在文件末尾使用 `add_resource` 进行添加。
+URL interfaces are uniformly added at the end of the file using `add_resource`.
 
-接口默认返回 `json` 字符串。返回的 `http code` 为 200，`json` 字符串须包含 `code` 与 `msg` 关键字。`code` 为业务代码，一般 0 代表成功，`msg` 为消息。如果还有额外信息可以放入 `data` 字段。
+Interfaces by default return `json` strings. The returned `http code` is 200, and the `json` string must contain `code` and `msg` keywords. `code` is a business code, generally 0 represents success, and `msg` is the message. If there is additional information, it can be placed in the `data` field.
 
-#### 数据库规范
+#### Database Standards
 
-数据库采用 `SQLAlchemy` 库进行开发。数据库表定义采用 `sqlalchemy.ext.declarative` 进行定义。存取数据采用 `raw sql` 进行处理。`sql` 语句必须同时符合 `sqlite` 和 `postgres` 标准。
+The database is developed using the `SQLAlchemy` library. Database tables are defined using `sqlalchemy.ext.declarative`. Data storage and retrieval are handled using `raw sql`. The `sql` statements must comply with both `sqlite` and `postgres` standards.
 
-#### 异常处理规范
+#### Exception Handling Standards
 
-后端捕捉的异常需用 `logger.exception` 方法进行输出。
+Exceptions caught by the backend should be logged using the `logger.exception` method.
 
-对于业务异常，需要进行捕捉，并在返回的 `json` 中设置对应的 `code` 与 `msg`。对于系统异常，统一返回 `http code 500`。
+Business exceptions should be caught and handled by setting the appropriate `code` and `msg` in the returned `json`. For system exceptions, uniformly return `http code 500`.
 
-#### 测试规范
+#### Testing Standards
 
-对于每一个 web 接口需要有对应的单元测试用例。在测试用例中启动模拟后端进行模拟调用然后检查返回值。
+Each web interface requires corresponding unit test cases. In the test cases, start a simulated backend for mock calls and then check the return value.
 
-通用的测试逻辑（比如清空数据库，注册一个用户等）放在 `common_test_operations.py` 里面。
+General testing logic (such as clearing the database, registering a user, etc.) is placed in `common_test_operations.py`.
