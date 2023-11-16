@@ -135,7 +135,7 @@ input_description = {
 user_semantic = {
     "Task": {"Values": ["Classification"], "Type": "Class"},
     "Scenario": {"Values": ["Business"], "Type": "Tag"},
-    "input": input_description,
+    "Input": input_description,
 }
 data_type = "table"
 rkme_table = generate_stat_spec(type=data_type, X=train_x)
