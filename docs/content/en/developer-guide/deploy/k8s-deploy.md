@@ -1,8 +1,8 @@
-# Deploying Beiming System on Kubernetes
+# Deploying Beimingwu System on Kubernetes
 
 ## Deploy Dependencies
 ### Deploy Default Storage Class
-Beiming System will use the cluster's default storage class to create the required storage. You can refer to the concept of [Kubernetes Default Storage Class](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/) for more information. For example, if you are using rook-cephfs as your default storage class, you can execute the following command to set it:
+Beimingwu System will use the cluster's default storage class to create the required storage. You can refer to the concept of [Kubernetes Default Storage Class](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/) for more information. For example, if you are using rook-cephfs as your default storage class, you can execute the following command to set it:
 
 ```shell
 kubectl patch storageclass rook-cephfs -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'

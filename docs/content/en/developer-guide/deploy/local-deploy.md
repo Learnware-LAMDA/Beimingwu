@@ -1,4 +1,4 @@
-# Deploying Beiming System on a Single Machine
+# Deploying Beimingwu System on a Single Machine
 
 ## Install Docker Compose
 Visit the [Docker official website](https://docs.docker.com/compose/install/#installing-compose) and follow the official documentation to install `Docker Compose`.
