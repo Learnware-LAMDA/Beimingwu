@@ -11,6 +11,8 @@ const loading = ref(false);
 const showError = ref(false);
 const errorMsg = ref("");
 
+const showSuccess = ref(false);
+
 function fetchList(): Promise<void> {
   loading.value = true;
   showError.value = false;
@@ -58,6 +60,11 @@ function handleClickGenerate(): Promise<void> {
     .finally(() => {
       loading.value = false;
     });
+}
+
+function handleClickCopy(token: string): void {
+  navigator.clipboard.writeText(token);
+  showSuccess.value = true;
 }
 
 function handleClickDelete(token: string): Promise<void> {
@@ -108,7 +115,7 @@ onActivated(() => {
     </v-card-text>
 
     <v-card-text v-if="tokens.length > 0">
-      <div class="rounded-md border border-black">
+      <div class="border border-black">
         <div
           v-for="(token, index) in tokens"
           :key="index"
@@ -120,6 +127,11 @@ onActivated(() => {
           <div class="flex items-center px-2">
             {{ token }}
             <v-spacer class="flex-1" />
+            <v-btn
+              variant="flat"
+              icon="mdi-content-copy"
+              @click="() => handleClickCopy(token)"
+            />
             <v-btn
               variant="flat"
               icon="mdi-delete"
@@ -138,5 +150,13 @@ onActivated(() => {
         {{ t("ClientToken.Generate") }}
       </v-btn>
     </v-card-actions>
+
+    <v-snackbar
+      v-model="showSuccess"
+      :timeout="3000"
+      color="success"
+    >
+      {{ t("ClientToken.CopySuccess") }}
+    </v-snackbar>
   </v-card>
 </template>
