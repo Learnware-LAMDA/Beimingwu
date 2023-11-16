@@ -37,7 +37,12 @@ def init_database(admin_password: str = None):
 def init_engine():
     global config, engine, engine_config
     if config.engine["type"] == "easy":
-        engine = instantiate_learnware_market(market_id="default", name="easy")
+        engine = instantiate_learnware_market(market_id="default", name="eazy", rebuild=False)
+        engine_config = leanrware_conf
+    elif config.engine["type"] == "hetero":
+        engine = instantiate_learnware_market(
+            market_id="default", name="hetero", rebuild=False, organizer_kwargs={"auto_update": False}
+        )
         engine_config = leanrware_conf
     else:
         raise ValueError(f"Learnware engine type {config.engine['type']} is not supproted.")

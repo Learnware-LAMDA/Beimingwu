@@ -19,7 +19,7 @@ class TestEngine(unittest.TestCase):
     ) -> None:
         testops.cleanup_folder()
         unittest.TestCase.setUpClass()
-        mp_context = mp.get_context('spawn')
+        mp_context = mp.get_context("spawn")
         TestEngine.server_process = mp_context.Process(target=main.main)
         TestEngine.server_process.start()
         testops.wait_port_open(C.listen_port, 10)

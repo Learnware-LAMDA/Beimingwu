@@ -82,7 +82,7 @@ _DEFAULT_CONFIG = {
     },
     # Engine config
     "engine": {
-        "type": "easy",
+        "type": "hetero",
         "market_path": MARKET_PATH,
         "property_path": PROPERTY_PATH,
         "load_mode": "database",

@@ -17,7 +17,7 @@ class TestAuth(unittest.TestCase):
         testops.cleanup_folder()
         unittest.TestCase.setUpClass()
         testops.set_config("register_email_patterns", [".edu.", ".edu"])
-        mp_context = multiprocessing.get_context('spawn')
+        mp_context = multiprocessing.get_context("spawn")
         TestAuth.server_process = mp_context.Process(target=main.main)
         TestAuth.server_process.start()
         testops.wait_port_open(C.listen_port, 10)
