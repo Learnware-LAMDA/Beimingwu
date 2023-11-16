@@ -2,7 +2,9 @@
 import { ref, onMounted, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
 import ScrollAnimate from "../App/ScrollAnimate.vue";
-import process from "../../assets/images/home/process.svg?component";
+import task1 from "../../assets/images/home/task1.svg?component";
+import task2 from "../../assets/images/home/task2.svg?component";
+import task3 from "../../assets/images/home/task3.svg?component";
 import anime from "animejs";
 
 const { t } = useI18n();
@@ -146,17 +148,10 @@ const vOffset = {
             <clipPath id="task-clip">
               <rect x="0" y="0" width="500" height="200" />
             </clipPath>
-
-            <process id="process" />
-            <g id="task1">
-              <use href="#process" y="-120" />
-            </g>
-            <g id="task2">
-              <use href="#process" y="-370" />
-            </g>
-            <g id="task3">
-              <use href="#process" y="-680" />
-            </g>
+            
+            <task1 id="task1" />
+            <task2 id="task2" />
+            <task3 id="task3" />
 
             <marker
               id="arrow"
