@@ -56,7 +56,7 @@ export interface SemanticSpecification {
     Values: Description;
   };
   Input: DataTypeDescription;
-  Output: DataTypeDescription;
+  Output: TaskTypeDescription;
 }
 
 export interface LearnwareInfo {
@@ -107,4 +107,6 @@ export interface Filter {
   libraryType: LibraryType | "";
   scenarioList: ScenarioList;
   files: Files;
+  dataTypeDescription?: DataTypeDescription;
+  taskTypeDescription?: TaskTypeDescription;
 }

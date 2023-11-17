@@ -2,7 +2,7 @@
 import { ref, onMounted, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
 import ScrollAnimate from "../App/ScrollAnimate.vue";
-import process from "../../assets/images/home/process.svg?component";
+import process from "../../assets/images/home/two-stage.svg?component";
 import anime from "animejs";
 
 const { t } = useI18n();
@@ -164,22 +164,13 @@ const vOffset = {
 
             <process id="process" />
             <g id="task1">
-              <use
-                href="#process"
-                y="-120"
-              />
+              <use href="#process" x="-160" y="-90" />
             </g>
             <g id="task2">
-              <use
-                href="#process"
-                y="-370"
-              />
+              <use href="#process" x="-160" y="-345" />
             </g>
             <g id="task3">
-              <use
-                href="#process"
-                y="-680"
-              />
+              <use href="#process" x="-160" y="-600" />
             </g>
 
             <marker

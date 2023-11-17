@@ -39,6 +39,8 @@ const filters = ref<Filter>({
   libraryType: "",
   scenarioList: [],
   files: [],
+  dataTypeDescription: { Dimension: 0, Description: {} },
+  taskTypeDescription: { Dimension: 0, Description: {} },
 });
 
 const multiRecommendedLearnwareItems = ref<LearnwareCardInfo[]>([]);
@@ -77,6 +79,7 @@ const showHeterogeneousSearchSwitch = computed(
   () =>
     singleRecommendedLearnwareItems.value?.length === 0 &&
     multiRecommendedLearnwareItems.value?.length === 0 &&
+    ["Classification", "Regression"].includes(filters.value.taskType) &&
     rkmeTypeTable.value,
 );
 
@@ -102,7 +105,8 @@ function fetchByFilterAndPage(
     scenarioList: filters.scenarioList,
     files: filters.files,
     isVerified,
-    isHeterogeneous,
+    input: isHeterogeneous ? filters.dataTypeDescription : undefined,
+    output: isHeterogeneous ? filters.taskTypeDescription : undefined,
     page,
     limit: singleRecommendedLearnwarePageSize.value,
   })
@@ -273,7 +277,7 @@ watchDebounced(
         .then((res: ArrayBuffer) => new TextDecoder("ascii").decode(res))
         .then((res) => JSON.parse(res))
         .then((res) => {
-          if (res.type === "RKMETableSpecification") {
+          if (!res.type || res.type === "RKMETableSpecification") {
             rkmeTypeTable.value = true;
           }
         })

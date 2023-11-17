@@ -1,7 +1,7 @@
 # 北冥坞系统后端开发指南
 
 ## 后端架构图
-![](../../public/architecture.png)
+![](../../public/architecture_zh.svg)
 ## 功能开发
 ### 技术栈
 Flask + SqlAlchemy + Redis
@@ -16,7 +16,7 @@ Flask + SqlAlchemy + Redis
 
 登陆相关接口：`restful/auth.py`
 
-学件市场相关接口：`restful/engine.py`
+系统引擎相关接口：`restful/engine.py`
 
 管理员相关接口：`restful/admin.py`
 
@@ -25,7 +25,7 @@ Flask + SqlAlchemy + Redis
 
 登陆相关测试用例：`tests/test_auth.py`
 
-学件市场相关测试用例：`tests/test_engine.py`
+系统引擎相关测试用例：`tests/test_engine.py`
 
 管理员相关测试用例：`tests/test_admin.py`
 

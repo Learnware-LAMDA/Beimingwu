@@ -1,6 +1,6 @@
-# Beiming System Docs
+# Docs Dev Guide
 
-## File Structure
+## Directory Structure
 
 <details open>
   <summary>/</summary>
@@ -158,7 +158,7 @@
   </ul>
 </details>
 
-## Setup
+## Environment Setup
 
 1. Install `nvm`
 
@@ -181,8 +181,8 @@ nvm install node
 npm install -g pnpm
 ```
 
-4. Install dependencies
-   Make sure you are in the root directory `Beiming-System/docs/` of this project.
+4. Install Dependencies
+   Make sure you are in the project's root directory `Beiming-System/docs/`.
 
 ```bash
 pnpm install
@@ -190,51 +190,50 @@ pnpm install
 
 ## Development
 
-### Run a development server
+### Run Development Server
 
-Run the following command to start a development server.
+Run the following command to start the development server.
 
 ```bash
 pnpm dev
 ```
 
-If everything goes well, you should see the following output:
+If everything goes well, you will see the following output:
 
 ```bash
 > vitepress dev docs
 
   vitepress v1.0.0-rc.21
 
-  ➜  Local:   http://127.0.0.1:5173/
+  ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
   ➜  press h to show help
 ```
 
-After that, change a markdown file in the `content` directory, and the browser will automatically reload to show the changes.
+Afterward, make changes to markdown files under the `content` directory, and the browser will automatically reload to display the changes.
 
-### Add static files
+### Adding Static Files
 
-If you want to add static files, such as images, you can put them in the `Beiming-System/docs/content/public/` directory. Then you can access them in the markdown file like this:
+If you want to add static files like images, you can place them in the `Beiming-System/docs/content/public/` directory. Then, you can access them in markdown files like this:
 
 ```markdown
 ![image](/image.png)
 ```
 
-### Setup the navbar and the sidebar
+### Setting Up Navigation and Sidebar
 
-You should setup language by language. For example, if you want to setup the navbar and the sidebar for the `en` language, you should edit the
-`Beiming-System/docs/content/.vitepress/config/locales/en.ts` file.
+You should set up this according to the language. For example, if you want to set up navigation and sidebar for the `en` language, you should edit the `Beiming-System/docs/content/.vitepress/config/locales/en.ts` file.
 
-### Other configurations
+### Other Configuration
 
-You can find more configurations in the [VitePress documentation](https://vitepress.dev).
+You can find more configuration options in the [VitePress documentation](https://vitepress.dev).
 
 ## Deployment
 
-Run the following command to build the static files.
+Run the following command to build static files.
 
 ```bash
 pnpm build
 ```
 
-The static files will be generated in the `Beiming-System/docs/content/.vitepress/dist/` directory. You can deploy them to any static file server.
+Static files will be generated in the `Beiming-System/docs/content/.vitepress/dist/` directory. You can deploy them to any static file server.

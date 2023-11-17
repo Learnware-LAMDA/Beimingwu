@@ -1,13 +1,13 @@
-# Beiming System Frontend Development Guide
+# Frontend Dev Guide
 
 ## Technology Stack
 
-The project is developed using Vue3 + TypeScript + Vite + Vuetify and utilizes pnpm-workspace for managing multiple packages.
+The project is developed based on Vue3 + TypeScript + Vite + Vuetify, using pnpm-workspace for multi-package management.
 
 - Build Tool: [Vite](https://vitejs.dev/)
 - Frontend Framework: [Vue3](https://v3.vuejs.org/)
 - UI Framework: [Vuetify](https://vuetifyjs.com/)
-- Routing: [Vue Router](https://next.router.vuejs.org/)
+- Router: [Vue Router](https://next.router.vuejs.org/)
 - State Management: [Vuex](https://next.vuex.vuejs.org/)
 
 ## Directory Structure
@@ -112,9 +112,9 @@ It includes the following packages:
 - `locale`: Internationalization
 - `types`: Type definitions
 
-## Setting Up the Environment
+## Configuration
 
-Install the necessary dependencies:
+Install the necessary dependencies
 
 ```bash
 cd frontend
