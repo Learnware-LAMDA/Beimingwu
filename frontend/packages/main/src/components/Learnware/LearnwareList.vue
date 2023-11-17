@@ -6,7 +6,7 @@ import LearnwareCard from "./LearnwareCard.vue";
 import oopsImg from "../../assets/images/public/oops.svg?url";
 import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
 
-const emit = defineEmits(["click:edit", "click:delete"]);
+const emit = defineEmits(["click:download", "click:edit", "click:delete"]);
 
 const display = useDisplay();
 
@@ -51,6 +51,10 @@ const realCols = computed(() => {
   }
 });
 
+function handleClickDownload(id: string): void {
+  emit("click:download", id);
+}
+
 function handleClickEdit(id: string): void {
   emit("click:edit", id);
 }
@@ -67,19 +71,31 @@ function handleClickDelete(id: string): void {
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
   >
     <TransitionGroup name="fade">
-      <template v-for="(item, _i) in items" :key="_i">
+      <template
+        v-for="(item, _i) in items"
+        :key="_i"
+      >
         <learnware-card
           :item="item"
           :filters="filters"
           :is-admin="isAdmin"
           :to="item.id ? `/learnwaredetail?id=${item.id}` : ''"
+          @click:download="(id) => handleClickDownload(id)"
           @click:edit="(id) => handleClickEdit(id)"
           @click:delete="(id) => handleClickDelete(id)"
         />
       </template>
     </TransitionGroup>
-    <div v-if="items.length === 0" flat class="no-learnware">
-      <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
+    <div
+      v-if="items.length === 0"
+      flat
+      class="no-learnware"
+    >
+      <v-img
+        class="oops-img"
+        width="100"
+        :src="oopsImg"
+      />
       {{ t("Learnware.OopsThereNoLearnware") }}
     </div>
   </div>

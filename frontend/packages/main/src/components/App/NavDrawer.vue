@@ -71,7 +71,10 @@ const filteredRoutes = computed(() => {
             v-if="route.meta.icon && route.meta.icon.startsWith('mdi-')"
             :icon="route.meta.icon"
           />
-          <span v-if="route.meta.icon && !route.meta.icon.startsWith('mdi-')" class="v-icon">
+          <span
+            v-if="route.meta.icon && !route.meta.icon.startsWith('mdi-')"
+            class="v-icon"
+          >
             {{ route.meta.icon }}
           </span>
         </template>

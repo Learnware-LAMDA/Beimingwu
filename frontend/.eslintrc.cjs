@@ -8,8 +8,10 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:vue/vue3-essential",
+    "plugin:vue/vue3-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:vuetify/base",
+    "prettier",
   ],
   overrides: [],
   parser: "vue-eslint-parser",
@@ -22,9 +24,10 @@ module.exports = {
     extraFileExtensions: [".vue"],
   },
   ignorePatterns: ["node_modules", "dist", "public", ".eslintrc.cjs", "encrypt.ts"],
-  plugins: ["@typescript-eslint", "vue"],
+  plugins: ["@typescript-eslint", "vue", "prettier"],
   rules: {
     "vue/multi-word-component-names": "off",
     "@typescript-eslint/explicit-function-return-type": "error",
+    "prettier/prettier": "error",
   },
 };

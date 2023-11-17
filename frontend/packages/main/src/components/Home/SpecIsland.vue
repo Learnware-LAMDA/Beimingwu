@@ -65,8 +65,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <scroll-animate class="h-[300vh]" @progress="handleProgress">
-    <div ref="reference" class="md:pb-30 mx-auto grid w-full max-w-[1200px] pb-20 md:grid-cols-2">
+  <scroll-animate
+    class="h-[300vh]"
+    @progress="handleProgress"
+  >
+    <div
+      ref="reference"
+      class="md:pb-30 mx-auto grid w-full max-w-[1200px] pb-20 md:grid-cols-2"
+    >
       <div class="flex flex-col justify-center px-5 md:px-0 md:pl-10">
         <div class="my-5 text-3xl lg:my-7 lg:text-4xl xl:my-10 xl:text-5xl">
           {{ t("Home.SpecificationWorld.Title") }}
@@ -75,8 +81,15 @@ onMounted(() => {
           {{ t("Home.SpecificationWorld.Description") }}
         </p>
       </div>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-        <g ref="hand1Element" id="hand1" class="hand">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 64 64"
+      >
+        <g
+          id="hand1"
+          ref="hand1Element"
+          class="hand"
+        >
           <path
             fill="#308014"
             d="M16,20v12h4c0,2.21,1.79,4,4,4s4-1.79,4-4h4v-4c-2.21,0-4-1.79-4-4c0-2.21,1.79-4,4-4v-4H20 C17.791,16,16,17.791,16,20z"
@@ -112,7 +125,11 @@ onMounted(() => {
             />
           </g>
         </g>
-        <g ref="hand2Element" id="hand2" class="hand">
+        <g
+          id="hand2"
+          ref="hand2Element"
+          class="hand"
+        >
           <path
             fill="#fdd835"
             d="M28,24c0,2.21,1.79,4,4,4v4h4c0-2.21,1.79-4,4-4s4,1.79,4,4h4V20c0-2.209-1.791-4-4-4H32v4 C29.79,20,28,21.79,28,24z"
@@ -152,7 +169,11 @@ onMounted(() => {
             />
           </g>
         </g>
-        <g ref="hand3Element" id="hand3" class="hand">
+        <g
+          id="hand3"
+          ref="hand3Element"
+          class="hand"
+        >
           <path
             fill="#fc4d00"
             d="M16,32v12c0,2.209,1.791,4,4,4h12v-4c2.21,0,4-1.79,4-4c0-2.21-1.79-4-4-4v-4h-4c0,2.21-1.79,4-4,4 s-4-1.79-4-4H16z"
@@ -190,7 +211,11 @@ onMounted(() => {
             d="M25,39.5V54h1V39.5c0-0.828-0.672-1.5-1.5-1.5c-0.175,0-0.344,0.03-0.5,0.086 C24.583,38.292,25,38.847,25,39.5z"
           />
         </g>
-        <g ref="hand4Element" id="hand4" class="hand">
+        <g
+          id="hand4"
+          ref="hand4Element"
+          class="hand"
+        >
           <path
             fill="#4b4fa6"
             d="M36,40c0,2.21-1.79,4-4,4v4h12c2.209,0,4-1.791,4-4V32h-4c0-2.21-1.79-4-4-4s-4,1.79-4,4h-4v4 C34.21,36,36,37.79,36,40z"

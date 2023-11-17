@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
-import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import LearnwareList from "./LearnwareList.vue";
 import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
 
@@ -22,7 +21,7 @@ export interface Props {
 
 const display = useDisplay();
 
-const emit = defineEmits(["click:edit", "click:delete", "pageChange"]);
+const emit = defineEmits(["click:download", "click:edit", "click:delete", "pageChange"]);
 
 const props = withDefaults(defineProps<Props>(), {
   filters: () => ({
@@ -74,6 +73,10 @@ function formerPage(): void {
   }
 }
 
+function handleClickDownload(id: string): void {
+  emit("click:download", id);
+}
+
 function handleClickEdit(id: string): void {
   emit("click:edit", id);
 }
@@ -94,6 +97,7 @@ function handleClickDelete(id: string): void {
       :sm="sm"
       :xs="xs"
       :is-admin="isAdmin"
+      @click:download="(id) => handleClickDownload(id)"
       @click:edit="(id) => handleClickEdit(id)"
       @click:delete="(id) => handleClickDelete(id)"
     />
@@ -112,12 +116,19 @@ function handleClickDelete(id: string): void {
             ? 'article, table-tfoot'
             : 'article'
         "
-      ></v-skeleton-loader>
+      />
     </div>
 
-    <div v-if="showPagination" class="my-5 flex items-center justify-center">
+    <div
+      v-if="showPagination"
+      class="my-5 flex items-center justify-center"
+    >
       <div v-if="pageNum <= 7">
-        <v-btn icon="mdi-arrow-left" color="primary" @click="formerPage"></v-btn>
+        <v-btn
+          icon="mdi-arrow-left"
+          color="primary"
+          @click="formerPage"
+        />
         <v-btn
           v-for="i in pageNum"
           :key="i"
@@ -128,27 +139,41 @@ function handleClickDelete(id: string): void {
         >
           {{ i }}
         </v-btn>
-        <v-btn icon="mdi-arrow-right" color="primary" @click="nextPage"></v-btn>
+        <v-btn
+          icon="mdi-arrow-right"
+          color="primary"
+          @click="nextPage"
+        />
       </div>
       <div v-else>
-        <v-btn icon="mdi-arrow-left" color="primary" @click="formerPage"></v-btn>
+        <v-btn
+          icon="mdi-arrow-left"
+          color="primary"
+          @click="formerPage"
+        />
         <v-btn
           v-if="greaterThanXs && page > 2"
           class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="jumpPage(1)"
-          >1</v-btn
         >
+          1
+        </v-btn>
         <v-btn
           v-if="greaterThanXs && page === 4"
           class="mx-2 !min-w-0 !px-2"
           variant="text"
           @click="jumpPage(2)"
-          >2</v-btn
         >
-        <v-btn v-if="greaterThanXs && page > 4" class="mx-2 !min-w-0 !px-2" variant="text"
-          >...</v-btn
+          2
+        </v-btn>
+        <v-btn
+          v-if="greaterThanXs && page > 4"
+          class="mx-2 !min-w-0 !px-2"
+          variant="text"
         >
+          ...
+        </v-btn>
         <v-btn
           v-if="greaterThanXs && page > pageNum - 1"
           class="mx-2 !min-w-0 !px-2"
@@ -181,7 +206,12 @@ function handleClickDelete(id: string): void {
         >
           {{ page - 1 }}
         </v-btn>
-        <v-btn class="mx-2 !min-w-0 !px-2" color="primary">{{ page }}</v-btn>
+        <v-btn
+          class="mx-2 !min-w-0 !px-2"
+          color="primary"
+        >
+          {{ page }}
+        </v-btn>
         <v-btn
           v-if="page < pageNum"
           class="mx-2 !min-w-0 !px-2"
@@ -214,9 +244,13 @@ function handleClickDelete(id: string): void {
         >
           {{ page + 4 }}
         </v-btn>
-        <v-btn v-if="greaterThanXs && page < pageNum - 3" class="mx-2 !min-w-0 !px-2" variant="text"
-          >...</v-btn
+        <v-btn
+          v-if="greaterThanXs && page < pageNum - 3"
+          class="mx-2 !min-w-0 !px-2"
+          variant="text"
         >
+          ...
+        </v-btn>
         <v-btn
           v-if="greaterThanXs && page === pageNum - 3"
           class="mx-2 !min-w-0 !px-2"
@@ -233,7 +267,11 @@ function handleClickDelete(id: string): void {
         >
           {{ pageNum }}
         </v-btn>
-        <v-btn icon="mdi-arrow-right" color="primary" @click="nextPage"></v-btn>
+        <v-btn
+          icon="mdi-arrow-right"
+          color="primary"
+          @click="nextPage"
+        />
       </div>
     </div>
   </div>

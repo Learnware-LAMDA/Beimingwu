@@ -19,7 +19,11 @@ const dialog = ref(true);
 </script>
 
 <template>
-  <v-dialog v-model="dialog" persistent class="dialog">
+  <v-dialog
+    v-model="dialog"
+    persistent
+    class="dialog"
+  >
     <v-card class="p-2">
       <v-card-title class="main">
         <slot name="title" />
@@ -30,7 +34,7 @@ const dialog = ref(true);
         rounded
         height="5"
         class="mb-4"
-      ></v-progress-linear>
+      />
     </v-card>
   </v-dialog>
 </template>

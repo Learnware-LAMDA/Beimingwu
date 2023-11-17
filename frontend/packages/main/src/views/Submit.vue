@@ -387,7 +387,10 @@ onActivated(init);
 
 <template>
   <v-container class="sm:p-none h-full p-0">
-    <v-card class="relative m-auto w-full max-w-[1000px]" :flat="display.name.value === 'xs'">
+    <v-card
+      class="relative m-auto w-full max-w-[1000px]"
+      :flat="display.name.value === 'xs'"
+    >
       <v-scroll-y-transition>
         <v-card-actions v-if="success">
           <v-alert
@@ -400,7 +403,12 @@ onActivated(init);
       </v-scroll-y-transition>
       <v-scroll-y-transition>
         <v-card-actions v-if="showError">
-          <v-alert closable :text="errorMsg" type="error" @click:close="showError = false" />
+          <v-alert
+            closable
+            :text="errorMsg"
+            type="error"
+            @click:close="showError = false"
+          />
         </v-card-actions>
       </v-scroll-y-transition>
       <v-stepper-title
@@ -411,14 +419,17 @@ onActivated(init);
         @active-step="activeStep"
       />
 
-      <v-divider class="border-black"></v-divider>
+      <v-divider class="border-black" />
 
       <div class="mx-auto w-full pt-2 sm:px-2 sm:pb-2">
         <v-card-title class="text-1.2rem sm:pb-none pb-0 md:text-2xl">
           <span>{{ steps[currentStep].title }}</span>
         </v-card-title>
 
-        <v-window v-model="currentStep" :touch="{ left: () => {}, right: () => {} }">
+        <v-window
+          v-model="currentStep"
+          :touch="{ left: () => {}, right: () => {} }"
+        >
           <v-window-item :value="0">
             <v-card-text>
               <v-text-field
@@ -429,7 +440,7 @@ onActivated(init);
                 :error-messages="name.errorMessages"
                 counter="30"
                 @click:append-inner="name.value = ''"
-              ></v-text-field>
+              />
               <span class="text-caption text-grey-darken-1">
                 {{ t("Submit.Name.Description") }}
               </span>
@@ -463,7 +474,7 @@ onActivated(init);
                 :placeholder="t('Submit.Description.Placeholder')"
                 :error-messages="description.errorMessages"
                 counter="200"
-              ></v-textarea>
+              />
             </div>
           </v-window-item>
 
@@ -474,7 +485,7 @@ onActivated(init);
                 :error-messages="files.errorMessages"
                 :tips="t('Submit.File.DragFileHere', { file: 'zip' })"
                 class="text-xl"
-              ></file-upload>
+              />
             </div>
             <v-card-text class="py-2 text-sm sm:text-lg">
               <a
@@ -487,7 +498,11 @@ onActivated(init);
               {{ t("Submit.File.ForInstructionsOnHowToCreateTheRequiredZipFile") }}
             </v-card-text>
             <v-card-text class="pt-2 text-sm sm:text-lg">
-              <a class="underline" href="./static/learnware-template.zip" target="_blank">
+              <a
+                class="underline"
+                href="./static/learnware-template.zip"
+                target="_blank"
+              >
                 {{ t("Submit.File.ClickHere") }}
               </a>
               {{ t("Submit.File.ToDownloadTemplate") }}
@@ -495,13 +510,17 @@ onActivated(init);
           </v-window-item>
         </v-window>
 
-        <v-divider></v-divider>
+        <v-divider />
 
         <v-card-actions>
-          <v-btn v-if="currentStep > 0" variant="outlined" @click="PrevStep">
+          <v-btn
+            v-if="currentStep > 0"
+            variant="outlined"
+            @click="PrevStep"
+          >
             {{ t("Submit.Navigation.PreviousStep") }}
           </v-btn>
-          <v-spacer class="flex-1"></v-spacer>
+          <v-spacer class="flex-1" />
           <v-btn
             v-if="currentStep < steps.length - 1"
             color="primary"
@@ -523,7 +542,10 @@ onActivated(init);
         </v-card-actions>
       </div>
     </v-card>
-    <submiting-dialog v-if="submiting" :progress="uploadProgress">
+    <submiting-dialog
+      v-if="submiting"
+      :progress="uploadProgress"
+    >
       <template #title>
         <span>{{ t("Submit.Submiting") }}</span>
       </template>

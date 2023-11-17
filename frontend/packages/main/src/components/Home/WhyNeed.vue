@@ -46,7 +46,10 @@ const reasons = computed(() => [
       </p>
     </div>
     <div class="mt-8 grid gap-2 sm:grid-cols-2 sm:gap-5">
-      <div v-for="reason in reasons" :key="reason.title">
+      <div
+        v-for="reason in reasons"
+        :key="reason.title"
+      >
         <v-hover v-slot="{ isHovering, props }">
           <v-card
             flat
@@ -59,7 +62,9 @@ const reasons = computed(() => [
             v-bind="props"
           >
             <v-card-title class="my-2 text-center">
-              <v-icon :size="iconSize">{{ reason.icon }}</v-icon>
+              <v-icon :size="iconSize">
+                {{ reason.icon }}
+              </v-icon>
             </v-card-title>
             <v-card-title
               class="font-600 mb-4 text-center text-lg md:text-xl lg:text-xl xl:text-2xl"

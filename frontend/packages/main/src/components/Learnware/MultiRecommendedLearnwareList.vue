@@ -5,7 +5,6 @@ import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
 import { downloadLearnware } from "../../request/engine";
 import JSZip from "jszip";
-import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import LearnwareCard from "./LearnwareCard.vue";
 import oopsImg from "../../assets/images/public/oops.svg?url";
 import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
@@ -104,10 +103,20 @@ function getColorByScore(score: number): string {
     class="m-2 rounded-lg p-2 hover:border-purple-500"
     :class="items.length > 0 ? ['border'] : []"
   >
-    <div v-if="items.length > 0" class="flex justify-between">
-      <v-card-title v-if="matchScore" class="score">
+    <div
+      v-if="items.length > 0"
+      class="flex justify-between"
+    >
+      <v-card-title
+        v-if="matchScore"
+        class="score"
+      >
         {{ t("Search.TotalSpecificationScore") }}
-        <span class="ml-2" :style="`color: ${getColorByScore(matchScore)}`">{{ matchScore }}</span>
+        <span
+          class="ml-2"
+          :style="`color: ${getColorByScore(matchScore)}`"
+          >{{ matchScore }}</span
+        >
       </v-card-title>
       <v-btn
         variant="flat"
@@ -116,11 +125,17 @@ function getColorByScore(score: number): string {
         @click.stop="() => downloadAll()"
       >
         <span v-if="!downloading">
-          <v-icon icon="mdi-download"></v-icon>
+          <v-icon icon="mdi-download" />
           {{ t("Search.DownloadAll") }}
         </span>
-        <span v-else class="flex items-center">
-          <v-progress-circular class="mr-3" indeterminate></v-progress-circular>
+        <span
+          v-else
+          class="flex items-center"
+        >
+          <v-progress-circular
+            class="mr-3"
+            indeterminate
+          />
           {{ t("Search.Downloading") }}
         </span>
       </v-btn>
@@ -141,8 +156,16 @@ function getColorByScore(score: number): string {
           :to="item.id ? `/learnwaredetail?id=${item.id}` : ''"
         />
       </TransitionGroup>
-      <div v-if="items.length === 0" flat class="no-learnware">
-        <v-img class="oops-img" width="100" :src="oopsImg"></v-img>
+      <div
+        v-if="items.length === 0"
+        flat
+        class="no-learnware"
+      >
+        <v-img
+          class="oops-img"
+          width="100"
+          :src="oopsImg"
+        />
         {{ t("Learnware.OopsThereNoLearnware") }}
       </div>
     </v-card>
@@ -157,7 +180,7 @@ function getColorByScore(score: number): string {
       :key="index"
       class="w-full"
       type="article"
-    ></v-skeleton-loader>
+    />
   </div>
 </template>
 

@@ -137,14 +137,29 @@ const vOffset = {
       </p>
     </div>
 
-    <scroll-animate class="h-[1500vh]" @progress="handleProgress">
+    <scroll-animate
+      class="h-[1500vh]"
+      @progress="handleProgress"
+    >
       <div class="h-main-full flex flex-col items-center justify-center">
-        <svg class="w-full" viewBox="0 0 1600 910">
+        <svg
+          class="w-full"
+          viewBox="0 0 1600 910"
+        >
           <defs>
-            <path id="path" transform="translate(0, 200)" d="M 0 0 S 400 0 800 300" />
+            <path
+              id="path"
+              transform="translate(0, 200)"
+              d="M 0 0 S 400 0 800 300"
+            />
 
             <clipPath id="task-clip">
-              <rect x="0" y="0" width="500" height="200" />
+              <rect
+                x="0"
+                y="0"
+                width="500"
+                height="200"
+              />
             </clipPath>
 
             <process id="process" />
@@ -168,12 +183,24 @@ const vOffset = {
               orient="auto"
               markerUnits="strokeWidth"
             >
-              <path d="M 0 0 L 6 2 L 0 4 L 1 2 z" class="fill-gray-800" />
+              <path
+                d="M 0 0 L 6 2 L 0 4 L 1 2 z"
+                class="fill-gray-800"
+              />
             </marker>
 
-            <pattern id="star" viewBox="0,0,2 2">
-              <path d="M 0 0 L 2 0 L 2 2 L 0 2 z" class="fill-gray-800" />
-              <path d="M 0 0 L 2 2 M 2 0 L 0 2" class="stroke-gray-800 stroke-[1]" />
+            <pattern
+              id="star"
+              viewBox="0,0,2 2"
+            >
+              <path
+                d="M 0 0 L 2 0 L 2 2 L 0 2 z"
+                class="fill-gray-800"
+              />
+              <path
+                d="M 0 0 L 2 2 M 2 0 L 0 2"
+                class="stroke-gray-800 stroke-[1]"
+              />
             </pattern>
 
             <svg
@@ -205,9 +232,25 @@ const vOffset = {
               transform="scale(0.6)"
             />
 
-            <g id="learnware" opacity="1">
-              <rect x="0" y="0" width="770" height="290" rx="10" fill="white" />
-              <text x="110" y="25" font-size="30" text-anchor="start" dominant-baseline="hanging">
+            <g
+              id="learnware"
+              opacity="1"
+            >
+              <rect
+                x="0"
+                y="0"
+                width="770"
+                height="290"
+                rx="10"
+                fill="white"
+              />
+              <text
+                x="110"
+                y="25"
+                font-size="30"
+                text-anchor="start"
+                dominant-baseline="hanging"
+              >
                 Learnware
               </text>
               <text
@@ -220,8 +263,22 @@ const vOffset = {
               >
                 Developer
               </text>
-              <rect x="30" y="100" width="90" height="30" rx="3" class="fill-gray-400" />
-              <rect x="140" y="100" width="150" height="30" rx="3" class="fill-gray-400" />
+              <rect
+                x="30"
+                y="100"
+                width="90"
+                height="30"
+                rx="3"
+                class="fill-gray-400"
+              />
+              <rect
+                x="140"
+                y="100"
+                width="150"
+                height="30"
+                rx="3"
+                class="fill-gray-400"
+              />
               <text
                 x="215"
                 y="115"
@@ -255,20 +312,29 @@ const vOffset = {
                 Updated Just Now
               </text>
 
-              <use href="#download" x="720" y="240" width="30" height="30" />
+              <use
+                href="#download"
+                x="720"
+                y="240"
+                width="30"
+                height="30"
+              />
             </g>
           </defs>
 
           <use
             v-for="i in 3"
             ref="taskElements"
+            :key="i"
             :href="`#task${i}`"
             x="100"
             :y="300 * i - 250"
             clip-path="url(#task-clip)"
-            :key="i"
           />
-          <g ref="axisElement" style="transform: skew(-9deg, -1deg)">
+          <g
+            ref="axisElement"
+            style="transform: skew(-9deg, -1deg)"
+          >
             <path
               d="M 1100 600 h 350"
               class="fill-none stroke-gray-800 stroke-[6]"
@@ -285,32 +351,40 @@ const vOffset = {
             <circle
               v-for="i in 3"
               ref="circleElements"
+              :key="i"
               :cx="[1320, 1285, 1325][i - 1]"
               :cy="[515, 540, 580][i - 1]"
               r="0"
               :class="['fill-blue-600', 'fill-green-800', 'fill-red-700'][i - 1]"
-              :key="i"
             />
 
-            <text x="1290" y="720" font-size="30" text-anchor="middle">Specification Space</text>
+            <text
+              x="1290"
+              y="720"
+              font-size="30"
+              text-anchor="middle"
+            >
+              Specification Space
+            </text>
           </g>
 
           <circle
             v-for="i in 3"
             ref="circleNewElements"
+            :key="i"
             :cx="[1238, 1200, 1233][i - 1]"
             :cy="[492, 518, 557][i - 1]"
             r="8"
             :class="['fill-blue-600', 'fill-green-800', 'fill-red-700'][i - 1]"
             opacity="0"
-            :key="i"
           />
 
           <path
             v-for="i in 3"
-            v-offset
             :id="`curve${i}`"
             ref="curveElements"
+            :key="i"
+            v-offset
             :d="
               [
                 'M 600 140 S1000 120 1220 480',
@@ -321,17 +395,16 @@ const vOffset = {
             class="fill-none stroke-[4]"
             :class="['stroke-blue-600', 'stroke-green-800', 'stroke-red-800'][i - 1]"
             stroke-linecap="round"
-            :key="i"
           />
 
           <text
             v-for="i in 3"
             ref="textElements"
+            :key="i"
             :class="['fill-blue-600', 'fill-green-800', 'fill-red-700'][i - 1]"
             font-size="30"
             transform="translate(0, -20)"
             opacity="0"
-            :key="i"
           >
             <textPath
               ref="textPathElements"
@@ -344,8 +417,17 @@ const vOffset = {
             </textPath>
           </text>
 
-          <g v-for="i in 3" ref="learnwareCardElements" opacity="0" :key="i">
-            <use x="400" :y="10 + 300 * (i - 1)" href="#learnware" />
+          <g
+            v-for="i in 3"
+            ref="learnwareCardElements"
+            :key="i"
+            opacity="0"
+          >
+            <use
+              x="400"
+              :y="10 + 300 * (i - 1)"
+              href="#learnware"
+            />
             <use
               :href="['#image', '#table', '#table'][i - 1]"
               x="430"
@@ -367,14 +449,14 @@ const vOffset = {
 
           <path
             v-for="i in 3"
-            v-offset
             ref="learnwareCardBorderElements"
+            :key="i"
+            v-offset
             :d="`M 400 ${
               300 * (i - 1) + 20
             } a 10 10 0 0 1 10 -10 h750 a 10 10 0 0 1 10 10 v 270 a 10 10 0 0 1 -10 10 h-750 a 10 10 0 0 1 -10 -10 z`"
             class="fill-none stroke-black stroke-[2]"
-            :key="i"
-          ></path>
+          />
         </svg>
       </div>
     </scroll-animate>

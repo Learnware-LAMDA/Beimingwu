@@ -64,18 +64,31 @@ const files = computed({
     <div
       v-if="dragging"
       class="pointer-events-none absolute inset-0 rounded-lg bg-gray-500 opacity-25"
-    ></div>
+    />
 
     <div
       class="pointer-events-none flex max-w-full items-center justify-center text-base md:text-xl"
     >
       <p v-if="files.length === 0">
-        <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>
+        <v-icon
+          class="mr-1"
+          icon="mdi-paperclip"
+        />
         {{ tips }}
       </p>
-      <div v-else class="w-full truncate">
-        <v-icon class="mr-1" icon="mdi-paperclip"></v-icon>{{ files[0].name }}
-        <span class="ml-2 text-sm">{{ computeFileSize(files[0].size) }}</span>
+      <div
+        v-else
+        class="w-full truncate"
+      >
+        <v-icon
+          class="mr-1"
+          icon="mdi-paperclip"
+        />{{ files[0].name }}
+        <span
+          v-if="files[0].size > 0"
+          class="ml-2 text-sm"
+          >{{ computeFileSize(files[0].size) }}</span
+        >
       </div>
       <v-btn
         v-if="files.length > 0"
@@ -84,13 +97,22 @@ const files = computed({
         icon="mdi-close"
         color="transparent"
         @click.stop="() => (files = [])"
-      ></v-btn>
+      />
     </div>
 
-    <v-file-input v-show="false" ref="fileInput" v-model="files" label="select a file">
-    </v-file-input>
+    <v-file-input
+      v-show="false"
+      ref="fileInput"
+      v-model="files"
+      label="select a file"
+    />
   </div>
   <v-scroll-y-transition>
-    <v-card-text v-if="errorMessages" class="text-error">{{ errorMessages }}</v-card-text>
+    <v-card-text
+      v-if="errorMessages"
+      class="text-error"
+    >
+      {{ errorMessages }}
+    </v-card-text>
   </v-scroll-y-transition>
 </template>

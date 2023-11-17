@@ -50,26 +50,41 @@ const filteredRoutes = computed<Route[]>(
 </script>
 
 <template>
-  <v-app-bar flat class="!border-b bg-white">
+  <v-app-bar
+    flat
+    class="!border-b bg-white"
+  >
     <div class="prepend">
       <v-app-bar-nav-icon
         v-if="['xs', 'sm'].includes(display.name.value)"
         @click="() => emit('update:modelValue', !modelValue)"
-      ></v-app-bar-nav-icon>
-      <div class="logo" @click="() => router.push('/')">
-        <img class="logo-img" :src="learnwareLogo" />
+      />
+      <div
+        class="logo"
+        @click="() => router.push('/')"
+      >
+        <img
+          class="logo-img"
+          :src="learnwareLogo"
+        />
       </div>
     </div>
 
     <template #append>
-      <v-toolbar-items v-if="!['xs', 'sm'].includes(display.name.value)" class="my-3">
+      <v-toolbar-items
+        v-if="!['xs', 'sm'].includes(display.name.value)"
+        class="my-3"
+      >
         <router-link
-          class="text-black"
           v-for="route in filteredRoutes"
           :key="route.name"
+          class="text-black"
           :to="route.children ? '' : route.path"
         >
-          <v-menu v-if="route.children" open-on-hover>
+          <v-menu
+            v-if="route.children"
+            open-on-hover
+          >
             <template #activator="{ props: menuProps }">
               <v-btn
                 class="text-body-2 mr-2 !h-full rounded"
@@ -77,7 +92,10 @@ const filteredRoutes = computed<Route[]>(
                 :class="route.meta.class"
                 v-bind="menuProps"
               >
-                <v-icon class="mr-1" :icon="route.meta.icon"></v-icon>
+                <v-icon
+                  class="mr-1"
+                  :icon="route.meta.icon"
+                />
                 {{ route.meta.title }}
                 <v-icon>mdi-chevron-down</v-icon>
               </v-btn>
@@ -93,7 +111,7 @@ const filteredRoutes = computed<Route[]>(
                   v-if="child.meta.icon && child.meta.icon.startsWith('mdi-')"
                   class="mr-1"
                   :icon="child.meta.icon"
-                ></v-icon>
+                />
                 <span v-if="child.meta.icon && !child.meta.icon.startsWith('mdi-')">{{
                   child.meta.icon
                 }}</span>
@@ -107,7 +125,10 @@ const filteredRoutes = computed<Route[]>(
             :variant="route.meta.variant"
             :class="route.meta.class"
           >
-            <v-icon class="mr-1" :icon="route.meta.icon"></v-icon>
+            <v-icon
+              class="mr-1"
+              :icon="route.meta.icon"
+            />
             {{ route.meta.title }}
           </v-btn>
         </router-link>

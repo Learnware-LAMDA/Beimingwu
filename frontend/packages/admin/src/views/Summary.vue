@@ -186,17 +186,21 @@ onMounted(() => {
 
 <template>
   <div class="m-auto md:max-w-6xl">
-    <v-snackbar v-model="showError" :timeout="2000" color="error">
+    <v-snackbar
+      v-model="showError"
+      :timeout="2000"
+      color="error"
+    >
       {{ errorMsg }}
     </v-snackbar>
 
     <div class="grid md:m-2 md:grid-cols-2 md:gap-2">
       <v-card
         v-for="item in numberItems"
+        :key="item.title"
         flat
         class="border-b md:border"
         :to="item.to"
-        :key="item.title"
       >
         <v-card-title>
           <v-icon>{{ item.icon }}</v-icon>
@@ -209,7 +213,10 @@ onMounted(() => {
     </div>
 
     <div class="md:m-2">
-      <v-card flat class="md:border">
+      <v-card
+        flat
+        class="md:border"
+      >
         <v-card-title>
           <v-icon>mdi-chart-pie</v-icon>
           {{ t("Summary.Chart") }}

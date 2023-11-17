@@ -21,4 +21,6 @@ export default {
   TotalSpecificationScore: "Total specification score",
   DownloadAll: "Download all",
   Downloading: "Downloading...",
+  ClickHere: "Click here",
+  ToLearnHowToDeployTheLearnware: "to show how to deploy the learnware",
 };

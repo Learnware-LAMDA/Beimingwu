@@ -185,9 +185,16 @@ onUnmounted(() => {
         </template>
       </error-dialog>
 
-      <v-card flat class="mx-auto w-full p-2 sm:p-6" max-width="500">
+      <v-card
+        flat
+        class="mx-auto w-full p-2 sm:p-6"
+        max-width="500"
+      >
         <v-scroll-y-transition>
-          <v-alert v-if="showError" type="error">
+          <v-alert
+            v-if="showError"
+            type="error"
+          >
             {{ errorMsg }}
           </v-alert>
         </v-scroll-y-transition>
@@ -204,7 +211,7 @@ onUnmounted(() => {
               :label="t('Register.Username')"
               :counter="20"
               :error-messages="userName.errorMessages"
-            ></v-text-field>
+            />
             <v-text-field
               v-model="email.value"
               :label="t('Register.Email')"
@@ -212,7 +219,7 @@ onUnmounted(() => {
               type="text"
               name="login"
               autocomplete="username"
-            ></v-text-field>
+            />
             <v-text-field
               v-model="password.value"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -220,7 +227,7 @@ onUnmounted(() => {
               :label="t('Register.Password')"
               :error-messages="password.errorMessages"
               @click:append="showPassword = !showPassword"
-            ></v-text-field>
+            />
             <v-text-field
               v-model="password2.value"
               :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -229,11 +236,17 @@ onUnmounted(() => {
               :error-messages="password2.errorMessages"
               @click:append="showPassword2 = !showPassword2"
               @keyup.enter="submit"
-            ></v-text-field>
+            />
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn block class="bg-primary py-5" color="white" :disabled="!valid" @click="submit">
+          <v-btn
+            block
+            class="bg-primary py-5"
+            color="white"
+            :disabled="!valid"
+            @click="submit"
+          >
             {{ t("Register.Register") }}
           </v-btn>
         </v-card-actions>

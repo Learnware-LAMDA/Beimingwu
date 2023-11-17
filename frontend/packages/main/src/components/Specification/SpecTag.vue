@@ -66,15 +66,28 @@ const taskTypeDescription = computed({
 
 <template>
   <div class="spec-tag">
-    <v-scroll-y-transition class="z-index-10 fixed left-0 right-0" style="top: var(--v-layout-top)">
+    <v-scroll-y-transition
+      class="z-index-10 fixed left-0 right-0"
+      style="top: var(--v-layout-top)"
+    >
       <v-card-actions v-if="errorMessages">
-        <v-alert class="mx-auto w-full max-w-[900px]" closable :text="errorMessages" type="error" />
+        <v-alert
+          class="mx-auto w-full max-w-[900px]"
+          closable
+          :text="errorMessages"
+          type="error"
+        />
       </v-card-actions>
     </v-scroll-y-transition>
     <data-type-btns v-model="dataType" />
 
     <template v-if="dataType === 'Table'">
-      <v-alert class="mt-3" type="info" color="primary" closable>
+      <v-alert
+        class="mt-3"
+        type="info"
+        color="primary"
+        closable
+      >
         <span class="hidden sm:inline">{{
           t("Submit.SemanticSpecification.DataType.DescriptionInput.FeatureTips")
         }}</span>
@@ -92,7 +105,12 @@ const taskTypeDescription = computed({
     <task-type-btns v-model="taskType" />
 
     <template v-if="taskType === 'Classification' || taskType === 'Regression'">
-      <v-alert class="mt-3" type="info" color="primary" closable>
+      <v-alert
+        class="mt-3"
+        type="info"
+        color="primary"
+        closable
+      >
         <span class="hidden sm:inline">{{
           t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTips")
         }}</span>

@@ -14,7 +14,18 @@ export default defineConfig({
       "@beiming-system/locale": resolve("../locale/src/index"),
     },
   },
-  plugins: [vue(), svgLoader(), eslintPlugin(), checker({ typescript: true, vueTsc: true })],
+  plugins: [
+    vue(),
+    svgLoader(),
+    eslintPlugin({
+      cache: false,
+      emitWarning: true,
+      emitError: true,
+      include: ["src/**/*.vue", "src/**/*.ts"],
+      exclude: ["node_modules", "dist"],
+    }),
+    checker({ typescript: true, vueTsc: true }),
+  ],
   base: "./",
   server: {
     proxy: {

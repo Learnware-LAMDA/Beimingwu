@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
+import { watchDebounced } from "@vueuse/core";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
 import { searchLearnware } from "../request/engine";
 import { deleteLearnware } from "../request/admin";
@@ -10,7 +12,7 @@ import UserRequirement from "../components/Search/UserRequirement.vue";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import MultiRecommendedLearnwareList from "../components/Learnware/MultiRecommendedLearnwareList.vue";
 import type { Filter, LearnwareCardInfo } from "@beiming-system/types/learnware";
-import { promiseReadFile } from "../utils";
+import { downloadLearnwareSync, promiseReadFile } from "../utils";
 
 export interface SearchProps {
   isAdmin?: boolean;
@@ -26,6 +28,8 @@ const route = useRoute();
 const router = useRouter();
 
 const { t } = useI18n();
+
+const store = useStore();
 
 const filters = ref<Filter>({
   id: "",
@@ -54,7 +58,9 @@ const showError = ref(false);
 const errorMsg = ref("");
 const errorTimer = ref();
 
-const dialog = ref<InstanceType<typeof ConfirmDialog>>();
+const showDeployTips = ref(false);
+
+const showDialog = ref(false);
 const deleteId = ref("");
 const deleteName = ref("");
 
@@ -185,6 +191,17 @@ function handleConfirmDeleteLearnware(id: string): void {
     });
 }
 
+function handleClickDownload(id: string): void {
+  if (id) {
+    downloadLearnwareSync(id);
+
+    if (!store.getters.getShownTips) {
+      store.dispatch("showTips");
+      showDeployTips.value = true;
+    }
+  }
+}
+
 function handleClickEdit(id: string): void {
   router.push({
     path: "/submit",
@@ -196,16 +213,14 @@ function handleClickEdit(id: string): void {
 }
 
 function handleClickDelete(id: string): void {
-  if (dialog.value) {
-    dialog.value.confirm();
-    deleteId.value = id;
-    deleteName.value = (
-      singleRecommendedLearnwareItems.value.find((item) => item.id === id) as { name: string }
-    ).name;
-  }
+  showDialog.value = true;
+  deleteId.value = id;
+  deleteName.value = (
+    singleRecommendedLearnwareItems.value.find((item) => item.id === id) as { name: string }
+  ).name;
 }
 
-watch(
+watchDebounced(
   () => singleRecommendedLearnwarePage.value,
   () => {
     if (display.smAndDown.value) {
@@ -222,17 +237,18 @@ watch(
       window.scrollTo(0, 0);
     }
   },
+  { debounce: 300 },
 );
 
-watch(
+watchDebounced(
   () => filters.value,
   () => {
     singleRecommendedLearnwarePage.value = 1;
   },
-  { deep: true },
+  { deep: true, debounce: 300 },
 );
 
-watch(
+watchDebounced(
   () => [
     filters.value,
     singleRecommendedLearnwarePage.value,
@@ -249,10 +265,10 @@ watch(
 
     fetchByFilterAndPage(newFilters, newPage - 1, newIsVerified, newIsHeterogeneous);
   },
-  { deep: true },
+  { deep: true, debounce: 300 },
 );
 
-watch(
+watchDebounced(
   () => filters.value.files,
   (newVal) => {
     rkmeTypeTable.value = false;
@@ -270,7 +286,7 @@ watch(
         });
     }
   },
-  { deep: true },
+  { deep: true, debounce: 300 },
 );
 
 watch(
@@ -300,7 +316,10 @@ onMounted(() => init());
 <template>
   <div class="mx-auto w-full lg:flex">
     <v-scroll-y-transition>
-      <div v-if="showError" class="fixed z-10 w-full">
+      <div
+        v-if="showError"
+        class="fixed z-10 w-full"
+      >
         <v-alert
           class="z-10 mx-auto max-w-[900px]"
           closable
@@ -308,6 +327,26 @@ onMounted(() => init());
           type="error"
           @click:close="showError = false"
         />
+      </div>
+
+      <div
+        v-if="showDeployTips"
+        class="fixed z-10 w-full"
+      >
+        <v-alert
+          class="mx-auto max-w-[900px]"
+          closable
+          type="info"
+          @click:close="showDeployTips = false"
+        >
+          <a
+            class="underline"
+            href="https://docs.beiming.cloud/zh-CN/user-guide/learnware-deploy.html"
+            target="_blank"
+          >
+            {{ t("Search.ClickHere") }} </a
+          >{{ t("Search.ToLearnHowToDeployTheLearnware") }}
+        </v-alert>
       </div>
     </v-scroll-y-transition>
 
@@ -342,12 +381,22 @@ onMounted(() => init());
       </user-requirement>
     </div>
 
-    <div ref="anchorRef" class="flex-1">
-      <v-card v-if="showMultiRecommended" flat class="mt-4 bg-transparent sm:m-2">
+    <div
+      ref="anchorRef"
+      class="flex-1"
+    >
+      <v-card
+        v-if="showMultiRecommended"
+        flat
+        class="mt-4 bg-transparent sm:m-2"
+      >
         <v-card-title v-if="!multiRecommendedTips">
           {{ t("Search.RecommendedMultipleLearnware") }}
         </v-card-title>
-        <v-card-text v-if="multiRecommendedTips" class="!p-2">
+        <v-card-text
+          v-if="multiRecommendedTips"
+          class="!p-2"
+        >
           <v-alert
             v-model="multiRecommendedTips"
             :title="t('Search.RecommendedMultipleLearnware')"
@@ -356,7 +405,10 @@ onMounted(() => init());
             color="success"
           >
             <template #prepend>
-              <v-icon icon="mdi-hexagon-multiple" size="x-large"></v-icon>
+              <v-icon
+                icon="mdi-hexagon-multiple"
+                size="x-large"
+              />
             </template>
           </v-alert>
         </v-card-text>
@@ -368,11 +420,17 @@ onMounted(() => init());
           @page-change="pageChange"
         />
       </v-card>
-      <v-card flat class="mt-4 bg-transparent sm:m-2">
+      <v-card
+        flat
+        class="mt-4 bg-transparent sm:m-2"
+      >
         <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">
           {{ t("Search.RecommendedSingleLearnware") }}
         </v-card-title>
-        <v-card-text v-if="showMultiRecommended && singleRecommendedTips" class="!p-2">
+        <v-card-text
+          v-if="showMultiRecommended && singleRecommendedTips"
+          class="!p-2"
+        >
           <v-alert
             v-model="singleRecommendedTips"
             :title="t('Search.RecommendedSingleLearnware')"
@@ -381,7 +439,10 @@ onMounted(() => init());
             color="info"
           >
             <template #prepend>
-              <v-icon icon="mdi-hexagon" size="x-large"></v-icon>
+              <v-icon
+                icon="mdi-hexagon"
+                size="x-large"
+              />
             </template>
           </v-alert>
         </v-card-text>
@@ -395,26 +456,39 @@ onMounted(() => init());
           :is-admin="isAdmin"
           :show-pagination="singleRecommendedLearnwarePageNum > 1"
           @page-change="pageChange"
+          @click:download="(id) => handleClickDownload(id)"
           @click:edit="(id) => handleClickEdit(id)"
           @click:delete="(id) => handleClickDelete(id)"
         />
       </v-card>
 
-      <div v-if="showHeterogeneousSearchSwitch && !isHeterogeneous" class="text-center">
-        <v-btn class="px-8" variant="outlined" color="red" @click="() => (isHeterogeneous = true)">
+      <div
+        v-if="showHeterogeneousSearchSwitch && !isHeterogeneous"
+        class="text-center"
+      >
+        <v-btn
+          class="px-8"
+          variant="outlined"
+          color="red"
+          @click="() => (isHeterogeneous = true)"
+        >
           {{ t("Search.HeterogeneousSearch") }}
         </v-btn>
       </div>
     </div>
 
-    <confirm-dialog ref="dialog" @confirm="() => handleConfirmDeleteLearnware(deleteId)">
+    <confirm-dialog
+      v-model="showDialog"
+      @confirm="() => handleConfirmDeleteLearnware(deleteId)"
+    >
       <template #title>
-        Confirm to delete &nbsp; <b>{{ deleteName }}</b
-        >?
+        <div class="ml-1 flex-1 overflow-hidden text-ellipsis">
+          {{ t("MyLearnware.ConfirmToDelete") }}
+        </div>
       </template>
       <template #text>
-        The learnware <b>{{ deleteName }}</b> will be deleted in the learnware market
-        <i>permanently</i>. Do you really want to delete?
+        {{ t("AllLearnware.Learnware") }} <b>{{ deleteName }}</b>
+        {{ t("MyLearnware.DeleteContinue") }}
       </template>
     </confirm-dialog>
   </div>

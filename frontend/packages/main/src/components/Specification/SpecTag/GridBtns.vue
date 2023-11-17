@@ -59,7 +59,9 @@ function clickBtn(btn: Btn): void {
 
 <template>
   <div class="grid-container">
-    <div class="my-title text-h6 !text-base">{{ title }}</div>
+    <div class="my-title text-h6 !text-base">
+      {{ title }}
+    </div>
     <div
       class="btn-container"
       :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
@@ -72,7 +74,10 @@ function clickBtn(btn: Btn): void {
         :active="btn.value === value"
         @click="() => clickBtn(btn)"
       >
-        <component :is="btn.icon" class="icon" />
+        <component
+          :is="btn.icon"
+          class="icon"
+        />
       </icon-btn>
     </div>
   </div>

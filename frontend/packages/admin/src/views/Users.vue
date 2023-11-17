@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onActivated, watch } from "vue";
+import { ref, computed, onActivated } from "vue";
+import { watchDebounced } from "@vueuse/core";
 import { useDisplay } from "vuetify";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -18,18 +19,18 @@ const router = useRouter();
 
 const { t } = useI18n();
 
-const deleteDialog = ref<InstanceType<typeof ConfirmDialog>>();
+const showDeleteDialog = ref(false);
 const deleteId = ref("");
 const deleteName = ref("");
 
-const resetDialog = ref<InstanceType<typeof ConfirmDialog>>();
+const showResetDialog = ref(false);
 const resetId = ref<string>("");
 const resetName = ref<string>("");
 
 const newPasswordDialog = ref<boolean>(false);
 const newPassword = ref("");
 
-const setRoleDialog = ref<InstanceType<typeof ConfirmDialog>>();
+const showSetRoleDialog = ref<boolean>(false);
 const setRoleId = ref<number>(-1);
 const setRoleRole = ref<number>(0);
 const setRoleName = ref<string>("");
@@ -209,29 +210,25 @@ function pageChange(newPage: number): void {
 }
 
 function handleClickReset(id: number): void {
-  resetDialog.value && resetDialog.value.confirm();
+  showResetDialog.value = true;
   resetId.value = String(id);
   const userName = userItems.value.find((item) => item.id === id)?.username;
   userName && (resetName.value = userName);
 }
 
 function handleClickDelete(id: number): void {
-  if (deleteDialog.value) {
-    deleteDialog.value.confirm();
-    deleteId.value = String(id);
-    const userName = userItems.value.find((item) => item.id === id)?.username;
-    userName && (deleteName.value = userName);
-  }
+  showDeleteDialog.value = true;
+  deleteId.value = String(id);
+  const userName = userItems.value.find((item) => item.id === id)?.username;
+  userName && (deleteName.value = userName);
 }
 
 function handleClickSetRole(id: number, role: number): void {
-  if (setRoleDialog.value) {
-    setRoleDialog.value.confirm();
-    setRoleId.value = Number(id);
-    setRoleRole.value = Number(role);
-    const userName = userItems.value.find((item) => item.id === id)?.username;
-    userName && (setRoleName.value = userName);
-  }
+  showSetRoleDialog.value = true;
+  setRoleId.value = Number(id);
+  setRoleRole.value = Number(role);
+  const userName = userItems.value.find((item) => item.id === id)?.username;
+  userName && (setRoleName.value = userName);
 }
 
 function setRole(id: number, role: number): Promise<void> {
@@ -345,13 +342,13 @@ async function handleClickExport(): Promise<void> {
   saveContentToFile(csvContent, "text/csv;charset=utf-8", "user_list.csv");
 }
 
-watch(
+watchDebounced(
   () => filters.value,
   () => (page.value = 1),
-  { deep: true },
+  { deep: true, debounce: 300 },
 );
 
-watch(
+watchDebounced(
   () => [filters.value, page.value],
   (newVal) => {
     const [newFilters, newPage] = newVal as [Filter, number];
@@ -360,7 +357,7 @@ watch(
 
     window.scrollTo(0, 0);
   },
-  { deep: true },
+  { deep: true, debounce: 300 },
 );
 
 onActivated(() => {
@@ -370,7 +367,10 @@ onActivated(() => {
 
 <template>
   <div class="main-container">
-    <confirm-dialog ref="resetDialog" @confirm="() => resetPassword(Number(resetId))">
+    <confirm-dialog
+      v-model="showResetDialog"
+      @confirm="() => resetPassword(Number(resetId))"
+    >
       <template #title>
         Confirm to reset password of &nbsp; <b>{{ resetName }}</b
         >?
@@ -401,7 +401,10 @@ onActivated(() => {
       </template>
     </success-dialog>
 
-    <confirm-dialog ref="deleteDialog" @confirm="() => deleteUser(Number(deleteId))">
+    <confirm-dialog
+      v-model="showDeleteDialog"
+      @confirm="() => deleteUser(Number(deleteId))"
+    >
       <template #title>
         Confirm to delete &nbsp; <b>{{ deleteName }}</b
         >?
@@ -413,7 +416,7 @@ onActivated(() => {
     </confirm-dialog>
 
     <confirm-dialog
-      ref="setRoleDialog"
+      v-model="showSetRoleDialog"
       @confirm="() => setRole(Number(setRoleId), Number(setRoleRole))"
     >
       <template #title>
@@ -437,13 +440,16 @@ onActivated(() => {
         />
       </v-card-actions>
     </v-scroll-y-transition>
-    <v-card flat class="search">
+    <v-card
+      flat
+      class="search"
+    >
       <div class="search-row">
         <v-card-title>
           <span class="hidden sm:inline">
             {{ t("AllUser.SearchByUsername") }}
           </span>
-          <v-spacer class="flex-1"></v-spacer>
+          <v-spacer class="flex-1" />
           <v-text-field
             v-model="userName"
             :label="t('AllUser.Username')"
@@ -451,13 +457,13 @@ onActivated(() => {
             hide-details
             append-inner-icon="mdi-close"
             @click:append-inner="userName = ''"
-          ></v-text-field>
+          />
         </v-card-title>
         <v-card-title>
           <span class="hidden sm:inline">
             {{ t("AllUser.SearchByEmail") }}
           </span>
-          <v-spacer class="flex-1"></v-spacer>
+          <v-spacer class="flex-1" />
           <v-text-field
             v-model="email"
             :label="t('AllUser.Email')"
@@ -465,7 +471,7 @@ onActivated(() => {
             hide-details
             append-inner-icon="mdi-close"
             @click:append-inner="email = ''"
-          ></v-text-field>
+          />
         </v-card-title>
       </div>
     </v-card>

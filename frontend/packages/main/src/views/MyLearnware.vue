@@ -20,7 +20,7 @@ const display = useDisplay();
 
 const { t } = useI18n();
 
-const dialog = ref<InstanceType<typeof ConfirmDialog>>();
+const showDialog = ref(false);
 const deleteId = ref("");
 const deleteName = ref("");
 
@@ -80,7 +80,7 @@ function handleClickEdit(id: string): void {
 }
 
 function handleClickDelete(id: string): void {
-  dialog.value && dialog.value.confirm();
+  showDialog.value = true;
   deleteId.value = id;
   deleteName.value = learnwareItems.value.find((item) => item.id === id)?.name as string;
 }
@@ -193,11 +193,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="contentRef" class="learnware-container">
-    <confirm-dialog ref="dialog" @confirm="handleConfirm">
+  <div
+    ref="contentRef"
+    class="learnware-container"
+  >
+    <confirm-dialog
+      v-model="showDialog"
+      @confirm="handleConfirm"
+    >
       <template #title>
-        {{ t("MyLearnware.ConfirmToDelete") }} &nbsp; <b>{{ deleteName }}</b
-        >{{ t("MyLearnware.?") }}
+        <div class="ml-1 flex-1 overflow-hidden text-ellipsis">
+          {{ t("MyLearnware.ConfirmToDelete") }}
+        </div>
       </template>
       <template #text>
         {{ t("MyLearnware.YourLearnware") }} <b>{{ deleteName }}</b>
@@ -206,13 +213,22 @@ onMounted(() => {
     </confirm-dialog>
     <v-scroll-y-transition>
       <v-card-actions v-if="showError">
-        <v-alert closable :text="errorMsg" type="error" @click:close="showError = false" />
+        <v-alert
+          closable
+          :text="errorMsg"
+          type="error"
+          @click:close="showError = false"
+        />
       </v-card-actions>
     </v-scroll-y-transition>
 
     <div class="w-full max-w-[950px]">
       <div :class="direction === 'vertical' ? 'flex' : ''">
-        <v-tabs v-model="verifiedFilter" :direction="direction" color="primary">
+        <v-tabs
+          v-model="verifiedFilter"
+          :direction="direction"
+          color="primary"
+        >
           <v-tab value="All">
             <v-icon start> mdi-shield-account-outline </v-icon>
             {{ t("MyLearnware.All") }}
@@ -226,7 +242,10 @@ onMounted(() => {
             {{ t("MyLearnware.Unverified") }}
           </v-tab>
         </v-tabs>
-        <v-window v-model="verifiedFilter" class="w-full">
+        <v-window
+          v-model="verifiedFilter"
+          class="w-full"
+        >
           <v-window-item value="All">
             <div class="w-full">
               <page-learnware-list
