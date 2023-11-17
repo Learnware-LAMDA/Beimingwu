@@ -242,12 +242,15 @@ def cleanup_folder():
     root_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     backend_data_path = os.path.join(root_path, "backend_data")
     learnware_data_path = os.path.join(os.path.expanduser("~"), ".learnware")
+    subpaths = ["learnware_pool", "database"]
 
     if os.path.exists(backend_data_path):
         shutil.rmtree(backend_data_path)
 
-    if os.path.exists(learnware_data_path):
-        shutil.rmtree(learnware_data_path)
+    for subpath in subpaths:
+        fullpath = os.path.join(learnware_data_path, subpath)
+        if os.path.exists(fullpath):
+            shutil.rmtree(fullpath)
 
 
 def reset_config():
