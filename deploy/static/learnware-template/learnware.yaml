@@ -3,6 +3,6 @@ model:
   kwargs: {}
 stat_specifications:
   - module_path: learnware.specification
-    class_name: RKMEStatSpecification
+    class_name: RKMETableSpecification
     file_name: stat.json
     kwargs: {}
