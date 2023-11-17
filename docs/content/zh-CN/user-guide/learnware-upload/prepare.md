@@ -66,19 +66,19 @@ spec.save("stat.json")
 
 ## 学件配置文件 `learnware.yaml`
 
-该文件用于指明模型调用文件 \_\_init\_\_.py 中的类名 (`MyModel`)、生成统计规约所调用的模块 (`learnware.specification`) 以及统计规约的类别 (`RKMEStatSpecification`) 与具体的文件名 (`stat.json`)：
+该文件用于指明模型调用文件 \_\_init\_\_.py 中的类名 (`MyModel`)、生成统计规约所调用的模块 (`learnware.specification`) 以及统计规约的类别 (`RKMETableSpecification`) 与具体的文件名 (`stat.json`)：
 ```yaml
 model:
   class_name: MyModel
   kwargs: {}
 stat_specifications:
   - module_path: learnware.specification
-    class_name: RKMEStatSpecification
+    class_name: RKMETableSpecification
     file_name: stat.json
     kwargs: {}
 ```
 
-需注意，生成规约时的数据类型 `["table", "image", "text"]` 所对应的规约类型 `RKMEStatSpecification` 分别为 `[RKMETableSpecification, RKMEImageSpecification, RKMETextSpecification]`。
+需注意，生成规约时的数据类型 `["table", "image", "text"]` 所对应的规约类型分别为 `[RKMETableSpecification, RKMEImageSpecification, RKMETextSpecification]`。
 
 ## 模型运行依赖 `environment.yaml`
 

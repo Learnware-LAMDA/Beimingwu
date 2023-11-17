@@ -1,8 +1,8 @@
 # Project Structure and Guidelines
 
 The Beimingwu system adopts a `Monorepo` code management approach, and the [code repository](https://github.com/Learnware-LAMDA/Beiming-System) contains four sub-projects:
-- **Frontend**: Provides the interface and functionality for user interaction with the Dock System, including the main system and administrator system.
-- **Backend**: Responsible for handling Dock System's operation logic and data operations, ensuring system stability and high performance.
+- **Frontend**: Provides the interface and functionality for user interaction with the learnware dock system, including the main system and administrator system.
+- **Backend**: Responsible for handling dock system's operation logic and data operations, ensuring system stability and high performance.
 - **Docs**: Maintains system documentation, including user guides, development guides, etc., ensuring system usability.
 - **Deploy**: Manages the system deployment configuration, including frontend and backend deployment files.
 
@@ -111,11 +111,10 @@ The project is divided into four sub-projects: frontend, backend, deploy, and do
 ├── docs # System documentation project
     ├── README.md # Documentation service description
     ├── content 
-    │   ├── developer-guide # Developer's guide
+    │   ├── public # Images
     │   ├── en # English documentation
-    │   ├── public # Images
-    │   ├── tsconfig.json # Project configuration
-    │   └── zh-CN # Chinese documentation
+    │   ├── zh-CN # Chinese documentation
+    │   └── tsconfig.json # Project configuration
 ```
 
 ## Development Standards
@@ -171,7 +170,7 @@ Web interfaces are uniformly developed using the `flask-restx` framework. Each i
 
 URL interfaces are uniformly added at the end of the file using `add_resource`.
 
-Interfaces by default return `json` strings. The returned `http code` is 200, and the `json` string must contain `code` and `msg` keywords. `code` is a business code, generally 0 represents success, and `msg` is the message. If there is additional information, it can be placed in the `data` field.
+Interfaces by default return JSON strings. The returned `http code` is 200, and the JSON string must contain `code` and `msg` keywords. `code` is a business code, generally 0 represents success, and `msg` is the message. If there is additional information, it can be placed in the `data` field.
 
 #### Database Standards
 
@@ -181,7 +180,7 @@ The database is developed using the `SQLAlchemy` library. Database tables are de
 
 Exceptions caught by the backend should be logged using the `logger.exception` method.
 
-Business exceptions should be caught and handled by setting the appropriate `code` and `msg` in the returned `json`. For system exceptions, uniformly return `http code 500`.
+Business exceptions should be caught and handled by setting the appropriate `code` and `msg` in the returned JSON. For system exceptions, uniformly return `http code 500`.
 
 #### Testing Standards
 

@@ -4,12 +4,12 @@ In the Beimingwu system, each learnware is a `zip` package, which should contain
 
 - `learnware.yaml`: learnware configuration file.
 - `__init__.py`: methods for using the model.
-- `stat.json`: the statistic specification of the learnware. Its filename can be customized and recorded in learnware.yaml.
+- `stat.json`: the statistical specification of the learnware. Its filename can be customized and recorded in learnware.yaml.
 - `environment.yaml` or `requirements.txt`: specifies the environment for the model.
 
 When creating these four files, you need to use the `learnware` Python package. You can find specific installation instructions here: [Installation Guide](/en/overview/installation).
 
-To facilitate the construction of learnware, we provide a [learnware template](http://www.lamda.nju.edu.cn/learnware/static/learnware-template.zip) that you can use as a basis for building your own learnware.
+To facilitate the construction of a learnware, we provide a [learnware template](http://www.lamda.nju.edu.cn/learnware/static/learnware-template.zip) that you can use as a basis for building your own learnware.
 
 Next, we will provide detailed explanations for the content of these four files.
 
@@ -48,9 +48,9 @@ from .package_name import *
 from .package_name import module_name
 ```
 
-## Learnware Statistic Specification `stat.json`
+## Learnware Statistical Specification `stat.json`
 
-A learnware consists of a model and a specification. Therefore, after preparing the model, you need to generate a statistic specification for it. Specifically, using the previously installed `learnware` package, you can use the training data `train_x` (supported types include numpy.ndarray, pandas.DataFrame, and torch.Tensor) as input to generate the statistic specification of the model.
+A learnware consists of a model and a specification. Therefore, after preparing the model, you need to generate a statistical specification for it. Specifically, using the previously installed `learnware` package, you can use the training data `train_x` (supported types include numpy.ndarray, pandas.DataFrame, and torch.Tensor) as input to generate the statistical specification of the model.
 
 Here is an example of the code:
 
@@ -66,7 +66,7 @@ It's worth noting that the above code only runs on your local computer and does 
 
 ## Learnware Configuration File `learnware.yaml`
 
-This file is used to specify the class name (`MyModel`) in the model invocation file `__init__.py`, the module called for generating the statistic specification (`learnware.specification`), the category of the statistic specification (`RKMEStatSpecification`), and the specific filename (`stat.json`):
+This file is used to specify the class name (`MyModel`) in the model invocation file `__init__.py`, the module called for generating the statistical specification (`learnware.specification`), the category of the statistical specification (`RKMETableSpecification`), and the specific filename (`stat.json`):
 
 ```yaml
 model:
@@ -74,12 +74,12 @@ model:
   kwargs: {}
 stat_specifications:
   - module_path: learnware.specification
-    class_name: RKMEStatSpecification
+    class_name: RKMETableSpecification
     file_name: stat.json
     kwargs: {}
 ```
 
-Please note that the statistic specification class name `RKMEStatSpecification` for different data types `["table", "image", "text"]` is `[RKMETableSpecification, RKMEImageSpecification, RKMETextSpecification]`, respectively.
+Please note that the statistical specification class name for different data types `["table", "image", "text"]` is `[RKMETableSpecification, RKMEImageSpecification, RKMETextSpecification]`, respectively.
 
 ## Model Runtime Dependencies `environment.yaml`
 
@@ -136,7 +136,7 @@ Regardless of which method you use, try to remove unnecessary dependencies to mi
 
 After filling in the above files, you can proceed to upload your learnware. Once the learnware is successfully uploaded, the system backend will automatically add it to the validation queue to check whether the learnware meets the requirements, including the format of the learnware and whether the model can be run. This validation process may take some time, depending on the complexity of the learnware and the workload of the system backend. The validation results will be displayed on the website.
 
-Since the backend validation of learnware can be time-consuming, we recommend that you validate your learnware locally before uploading it by using the following code:
+Since the backend validation of learnwares can be time-consuming, we recommend that you validate your learnware locally before uploading it by using the following code:
 
 ```py
 from learnware.client import LearnwareClient

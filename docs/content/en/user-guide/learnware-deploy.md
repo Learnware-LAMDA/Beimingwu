@@ -13,7 +13,7 @@ client = LearnwareClient()
 
 ### Loading Learnware by Learnware ID
 
-Assuming the user knows the `id` of the learnware they want to load, they can use the following code to load the corresponding learnware and its environment:
+Assuming the user knows the ID of the learnware they want to load, they can use the following code to load the corresponding learnware and its environment:
 
 ```python
 learnware_id = "00000082"
@@ -24,7 +24,7 @@ learnware_list = client.load_learnware(
 
 The `runnable_option` parameter has four options, each corresponding to one of the following ways to load learnware environments:
 
-- `None`: Load only learnware specifications and basic information; the learnware cannot run at this stage.
+- `None`: Load only learnware specifications and basic information; the learnware cannot run at this state.
 - `"normal"`: Do not install a separate environment; run the learnware using the current `learnware` package's Python environment.
 - `"conda_env"`: Install a separate `conda` virtual environment for each learnware (automatically deleted after execution); run each learnware independently within its virtual environment.
 - `"docker"`: Install a `conda` virtual environment inside a Docker container (automatically destroyed after execution); run each learnware independently within the container (requires Docker privileges).
@@ -33,7 +33,7 @@ It's important to note that while the system makes every effort to ensure the se
 
 ### Loading Learnware from a ZIP File
 
-In addition to loading learnware by ID, users can also load learnware from a `zip` file downloaded from the web:
+In addition to loading learnware by ID, users can also load a learnware from a zip file downloaded from the web:
 
 ```python
 learnware_path = "learnware1.zip"
@@ -44,13 +44,13 @@ learnware_list = client.load_learnware(
 
 ## Homogeneous Learnware Reuse Methods
 
-In addition to using learnware directly, users can further make predictions on unlabeled data using learnware reuse methods provided by the system.
+In addition to using learnwares directly, users can further make predictions on unlabeled data using learnware reuse methods provided by the system.
 
 There are two main categories of reuse methods: (1) direct reuse and (2) reuse based on a small amount of labeled data.
 
 ### Direct Reuse of Learnware
 
-Two methods for direct reuse of learnware are provided: `JobSelector` and `Averaging`.
+Two methods for direct reuse of learnwares are provided: `JobSelector` and `Averaging`.
 
 - `JobSelector` selects different learnwares for different data by training a classifier. Here's how to use it:
 
@@ -60,7 +60,8 @@ from learnware.reuse import JobSelectorReuser
 # learnware_list is the list of loaded learnware
 reuse_job_selector = JobSelectorReuser(learnware_list=learnware_list)
 
-# test_x is the user's data for prediction, predict_y is the prediction result of the reused learnware
+# test_x is the user's data for prediction
+# predict_y is the prediction result of the reused learnware
 predict_y = reuse_job_selector.predict(user_data=test_x)
 ```
 
@@ -69,9 +70,12 @@ predict_y = reuse_job_selector.predict(user_data=test_x)
 ```python
 from learnware.reuse import AveragingReuser
 
-# mode="mean": Suitable for regression tasks, averages the learnware outputs.
-# mode="vote_by_label": Suitable for classification tasks, uses majority voting for learnware output labels.
-# mode="vote_by_prob": Suitable for classification tasks, uses majority voting for learnware output label probabilities.
+
+# Regression tasks:
+#   - mode="mean": average the learnware outputs.
+# Classification tasks:
+#   - mode="vote_by_label": majority vote for learnware output labels.
+#   - mode="vote_by_prob": majority vote for learnware output label probabilities.
 reuse_ensemble = AveragingReuser(
     learnware_list=learnware_list, mode="vote_by_label"
 )
@@ -122,7 +126,7 @@ predict_y = augment_reuser.predict(user_data=test_x)
 
 The system provides the `HeteroMapAlignLearnware` class to help align heterogeneous learnware with the user's task, including two steps: input space alignment and output space alignment.
 
-During the alignment process of heterogeneous learnware, the statistical specifications of the learnware and the user's task (`user_spec`) are used for input space alignment, and a small amount of labeled data (`(val_x, val_y)`) is used for output space alignment. Here's the code:
+During the alignment process of heterogeneous learnware, the statistical specifications of the learnware and the user's task `(user_spec)` are used for input space alignment, and a small amount of labeled data `(val_x, val_y)` is used for output space alignment. Here's the code:
 
 ```python
 from learnware.reuse import HeteroMapAlignLearnware
@@ -146,9 +150,7 @@ for learnware in learnware_list:
     hetero_learnware_list.append(hetero_learnware)
             
 # Reuse multiple heterogeneous learnwares using AveragingReuser
-reuse_ensemble = A
-
-veragingReuser(learnware_list=hetero_learnware_list, mode="mean")
+reuse_ensemble = AveragingReuser(learnware_list=hetero_learnware_list, mode="mean")
 ensemble_predict_y = reuse_ensemble.predict(user_data=test_x)
 
 # Reuse multiple heterogeneous learnwares using EnsemblePruningReuser

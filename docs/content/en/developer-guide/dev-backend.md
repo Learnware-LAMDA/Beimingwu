@@ -1,7 +1,7 @@
 # Backend Dev Guide
 
 ## Backend Architecture
-![Architecture](../../public/architecture.png)
+![Architecture](../../public/architecture_en.svg)
 
 ## Feature Development
 ### Technology Stack
@@ -17,7 +17,7 @@ User APIs: `restful/user.py`
 
 Login APIs: `restful/auth.py`
 
-Learnware Market APIs: `restful/engine.py`
+System Engine APIs: `restful/engine.py`
 
 Admin APIs: `restful/admin.py`
 
@@ -26,7 +26,7 @@ User test cases: `tests/test_user.py`
 
 Login test cases: `tests/test_auth.py`
 
-Learnware Market test cases: `tests/test_engine.py`
+System Engine test cases: `tests/test_engine.py`
 
 Admin test cases: `tests/test_admin.py`
 

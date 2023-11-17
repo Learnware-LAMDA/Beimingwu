@@ -1,12 +1,12 @@
 # Quick Start
 
-Welcome to Beimingwu: Learnware Dock System! The following content will help you quickly experience the system, including Learnware Search and Deployment.
+Welcome to Beimingwu learnware dock system! The following content will help you quickly experience the system, including learnware search and deployment.
 
 ## Learnware Search
 
-In Beimingwu, Learnware can be searched using both semantic information and statistical information.
+In Beimingwu, learnwares can be searched using both semantic information and statistical information.
 
-When searching with semantic information, you can fill in the information about your target Learnware, and the system will search in the name and description of learnware. You can also filter by tags.
+When searching with semantic information, you can fill in the information about your target learnware, and the system will search in the names and descriptions of learnwares. You can also filter by tags.
 
 ![image-20231112143044054](../../public/semantic_search.png)
 
@@ -20,7 +20,7 @@ spec = generate_stat_spec(type=data_type, X=test_x)
 spec.save("stat.json")
 ```
 
-By uploading the JSON file containing statistical information, the system will match learnware with similar statistical information. You can download the learnware zip by clicking on the download button in the lower left corner of the Learnware card.
+By uploading the JSON file containing statistical information, the system will match learnware with similar statistical information. You can download the learnware zip by clicking on the download button in the lower left corner of the learnware card.
 
 ![image-20231112144212142](../../public/stat_search_single.png)
 
@@ -35,12 +35,12 @@ After downloading learnware(s), your local environment may not be compatible wit
 ```python
 from learnware.client import LearnwareClient
 
-# Automatically build a conda environment to load Learnware
+# Automatically build a conda environment to load the learnware
 client = LearnwareClient()
 learnware = client.load_learnware(
     learnware_path=learnware_zip_path, runnable_option="conda_env"
 )
 
-# Use Learnware to make predictions on data
+# Use the learnware to make predictions on data
 pred_y = learnware.predict(test_x)
 ```

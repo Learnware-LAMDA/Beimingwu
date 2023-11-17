@@ -1,6 +1,6 @@
 # Environment Installation
 
-In order to enable users to interact with the Beimingwu system easily and efficiently, we provide a series of simple and user-friendly interfaces in the `learnware` Python package. With just a few lines of code, everyone can implement functions such as "learnware specification generation," "learnware submission," "learnware search," and "learnware deployment".
+In order to enable users to interact with the Beimingwu system easily and efficiently, we provide a series of simple and user-friendly interfaces in the `learnware` Python package. With just a few lines of code, everyone can implement functions such as "learnware specification generation," "learnware upload," "learnware search," and "learnware deployment".
 
 The `learnware` package is currently avabilable on the [PyPI](https://pypi.org/project/learnware/), and its specific installation method is as follows:
 ```bash
