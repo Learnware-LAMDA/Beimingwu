@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onActivated, watch } from "vue";
+import { ref, computed, onActivated } from "vue";
+import { watchDebounced } from "@vueuse/core";
 import { useDisplay } from "vuetify";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -341,13 +342,13 @@ async function handleClickExport(): Promise<void> {
   saveContentToFile(csvContent, "text/csv;charset=utf-8", "user_list.csv");
 }
 
-watch(
+watchDebounced(
   () => filters.value,
   () => (page.value = 1),
-  { deep: true },
+  { deep: true, debounce: 300 },
 );
 
-watch(
+watchDebounced(
   () => [filters.value, page.value],
   (newVal) => {
     const [newFilters, newPage] = newVal as [Filter, number];
@@ -356,7 +357,7 @@ watch(
 
     window.scrollTo(0, 0);
   },
-  { deep: true },
+  { deep: true, debounce: 300 },
 );
 
 onActivated(() => {

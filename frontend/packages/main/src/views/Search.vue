@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
+import { watchDebounced } from "@vueuse/core";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -215,7 +216,7 @@ function handleClickDelete(id: string): void {
   ).name;
 }
 
-watch(
+watchDebounced(
   () => singleRecommendedLearnwarePage.value,
   () => {
     if (display.smAndDown.value) {
@@ -232,17 +233,18 @@ watch(
       window.scrollTo(0, 0);
     }
   },
+  { debounce: 300 },
 );
 
-watch(
+watchDebounced(
   () => filters.value,
   () => {
     singleRecommendedLearnwarePage.value = 1;
   },
-  { deep: true },
+  { deep: true, debounce: 300 },
 );
 
-watch(
+watchDebounced(
   () => [
     filters.value,
     singleRecommendedLearnwarePage.value,
@@ -259,10 +261,10 @@ watch(
 
     fetchByFilterAndPage(newFilters, newPage - 1, newIsVerified, newIsHeterogeneous);
   },
-  { deep: true },
+  { deep: true, debounce: 300 },
 );
 
-watch(
+watchDebounced(
   () => filters.value.files,
   (newVal) => {
     rkmeTypeTable.value = false;
@@ -280,7 +282,7 @@ watch(
         });
     }
   },
-  { deep: true },
+  { deep: true, debounce: 300 },
 );
 
 watch(
