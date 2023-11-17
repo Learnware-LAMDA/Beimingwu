@@ -22,7 +22,6 @@ export default defineConfig({
       },
     ],
   ],
-  title: "Beiming",
   description: "A VitePress Site",
   locales,
   markdown: {

@@ -1,5 +1,6 @@
 ---
 layout: home
+title: 主页
 
 hero:
   name: "北冥坞：学件基座系统"

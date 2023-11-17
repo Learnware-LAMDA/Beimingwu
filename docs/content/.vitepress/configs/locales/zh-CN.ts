@@ -7,6 +7,7 @@ const zhCN: LocaleSpecificConfig & {
 } = {
   label: "中文",
   lang: "zh-CN",
+  title: "北冥坞文档",
   changeLang: "语言",
   themeConfig: {
     logo: "/logo.svg",
