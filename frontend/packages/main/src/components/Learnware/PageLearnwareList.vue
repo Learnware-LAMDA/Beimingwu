@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
-import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import LearnwareList from "./LearnwareList.vue";
 import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
 

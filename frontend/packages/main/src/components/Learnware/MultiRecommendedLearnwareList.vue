@@ -5,7 +5,6 @@ import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
 import { downloadLearnware } from "../../request/engine";
 import JSZip from "jszip";
-import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import LearnwareCard from "./LearnwareCard.vue";
 import oopsImg from "../../assets/images/public/oops.svg?url";
 import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";

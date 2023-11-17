@@ -6,7 +6,6 @@ import { getLearnwareDetailById } from "../request/engine";
 import { getProfile } from "../request/user";
 import { deleteLearnware } from "../request/user";
 import { downloadLearnwareSync } from "../utils";
-import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import ConfirmDialog from "../components/Dialogs/ConfirmDialog.vue";
 import { verifyLog } from "../request/user";
 import dayjs from "dayjs";
