@@ -113,11 +113,10 @@
 ├── docs # 系统文档项目
     ├── README.md # 文档服务说明
     ├── content 
-    │   ├── developer-guide # 开发者指南
+    │   ├── public # 图片
     │   ├── en # 英文文档
-    │   ├── public # 图片
-    │   ├── tsconfig.json # 项目配置
-    │   └── zh-CN # 中文文档
+    │   ├── zh-CN # 中文文档
+    │   └── tsconfig.json # 项目配置
 ```
 
 ## 开发规范
