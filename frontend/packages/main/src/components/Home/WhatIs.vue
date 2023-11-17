@@ -164,13 +164,25 @@ const vOffset = {
 
             <process id="process" />
             <g id="task1">
-              <use href="#process" x="-160" y="-90" />
+              <use
+                href="#process"
+                x="-160"
+                y="-90"
+              />
             </g>
             <g id="task2">
-              <use href="#process" x="-160" y="-345" />
+              <use
+                href="#process"
+                x="-160"
+                y="-345"
+              />
             </g>
             <g id="task3">
-              <use href="#process" x="-160" y="-600" />
+              <use
+                href="#process"
+                x="-160"
+                y="-600"
+              />
             </g>
 
             <marker
