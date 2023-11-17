@@ -20,7 +20,7 @@ features:
   - title: Learnware Quality Detection
     details: The Beimingwu system incorporates multiple detection mechanisms to ensure the quality of each learnware in the system.
   - title: Diverse Learnware Search
-    details: The Beimingwu system supports semantic & statistic searches on various data types, enables heterogeneous tabular learnware search.
+    details: The Beimingwu system supports semantic & statistical searches on various data types, enables heterogeneous tabular learnware search.
   - title: Local Learnware Deployment
     details: The Beimingwu system provides tools for learnware deployment, helping users to deploy and reuse learnwares conveniently and securely.
   - title: Data Privacy Protection

@@ -1,6 +1,4 @@
-Material Two Translation:
-
-# How to Upload Learnware?
+# How to Upload a Learnwares?
 
 In the Beimingwu system, you can upload a learnware both from the web interface and by using the `learnware` Python package.
 
@@ -26,7 +24,7 @@ If there are many dimensions, consider using a large language model to analyze t
 
 ## Uploading using the learnware Package
 
-Apart from the web interface, the learnware package also provides an interface for uploading learnware. First, you need to log in:
+Apart from the web interface, the `learnware` package also provides an interface for uploading learnwares. First, you need to log in:
 
 ```python
 from learnware.client import LearnwareClient, SemanticSpecificationKey

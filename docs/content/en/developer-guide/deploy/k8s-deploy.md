@@ -1,4 +1,4 @@
-# Deploying Beimingwu System on Kubernetes
+# Deploying Beimingwu on Kubernetes
 
 ## Deploy Dependencies
 ### Deploy Default Storage Class
