@@ -12,6 +12,16 @@ function replaceComponent(source: string | RegExp, target: string) {
 }
 
 export default defineConfig({
+  head: [
+    [
+      "link",
+      {
+        rel: "icon",
+        type: "image/x-icon",
+        href: "/favicon.ico",
+      },
+    ],
+  ],
   title: "Beiming",
   description: "A VitePress Site",
   locales,
