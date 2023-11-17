@@ -6,6 +6,7 @@ import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
 import { deleteLearnware, getLearnwareList } from "../request/user";
 import { listLearnware } from "../request/admin";
+import { downloadLearnwareSync } from "../utils";
 import PageLearnwareList from "../components/Learnware/PageLearnwareList.vue";
 import ConfirmDialog from "../components/Dialogs/ConfirmDialog.vue";
 import type { LearnwareCardInfo } from "@beiming-system/types/learnware";
@@ -77,6 +78,10 @@ function handleClickEdit(id: string): void {
       id,
     },
   });
+}
+
+function handleClickDownload(id: string): void {
+  downloadLearnwareSync(id);
 }
 
 function handleClickDelete(id: string): void {
@@ -258,6 +263,7 @@ onMounted(() => {
                 :cols="1"
                 :is-admin="true"
                 @page-change="pageChange"
+                @click:download="(id: string) => handleClickDownload(id)"
                 @click:edit="(id: string) => handleClickEdit(id)"
                 @click:delete="(id: string) => handleClickDelete(id)"
               />
