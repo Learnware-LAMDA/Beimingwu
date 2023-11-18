@@ -125,6 +125,15 @@ export default {
     PreviousStep: "上一步",
     Finish: "完成",
   },
+  Example: {
+    Examples: "示例",
+    ExamplesDescription: "我们提供了一些示例供您参考。",
+    HomogeneousExamples: "同构示例",
+    HeterogeneousExamples: "异构示例",
+    Table: "表格",
+    Image: "图像",
+    Text: "文本",
+  },
   Submiting: "正在上传，请等待...",
   Success: "提交成功",
 };

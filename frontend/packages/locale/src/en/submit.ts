@@ -126,6 +126,15 @@ export default {
     PreviousStep: "Previous Step",
     Finish: "Finish",
   },
+  Example: {
+    Examples: "Examples",
+    ExamplesDescription: "We provide some examples for you to refer to.",
+    HomogeneousExamples: "Homogeneous Examples",
+    HeterogeneousExamples: "Heterogeneous Examples",
+    Table: "Table",
+    Image: "Image",
+    Text: "Text",
+  },
   Submiting: "Submiting, please wait...",
   Success: "Submit successfully",
 };

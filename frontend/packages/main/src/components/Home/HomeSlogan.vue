@@ -286,6 +286,7 @@ onMounted(() => {
               <div class="no-scroll h-[40vh] md:w-1/4 md:min-w-[20rem]">
                 <user-requirement
                   v-model="filters"
+                  :show-example="false"
                   class="h-[60vh] w-[150%] origin-top-left scale-[calc(200%/3)] transform md:h-[120vh]"
                 />
               </div>
