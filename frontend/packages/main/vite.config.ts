@@ -34,6 +34,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
+      "/static": {
+        target: "https://www.lamda.nju.edu.cn/learnware/static",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/static/, ""),
+      },
     },
     port: 5173,
   },
