@@ -7,6 +7,7 @@ const en: LocaleSpecificConfig & {
 } = {
   label: "English",
   lang: "en",
+  title: "Beimingwu Docs",
   changeLang: "Language",
   themeConfig: {
     logo: "/logo.svg",
