@@ -6,7 +6,7 @@ from learnware.model import BaseModel
 
 class MyModel(BaseModel):
     def __init__(self):
-        super(MyModel, self).__init__(input_shape=(37,), output_shape=(1,))
+        super(MyModel, self).__init__(input_shape=(3,), output_shape=(1,))
         dir_path = os.path.dirname(os.path.abspath(__file__))
         model_path = os.path.join(dir_path, "model.pkl")
         with open(model_path, "rb") as f:
