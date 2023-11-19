@@ -83,6 +83,10 @@ const homoExamples = computed(() => [
     name: t("Search.Example.Table"),
     onClick: (): Promise<void> => {
       emits("update:isHeterogeneous", false);
+      dataType.value = "Table";
+      taskType.value = "";
+      libraryType.value = "";
+      scenarioList.value = [];
       return downloadAndLoadRKME("./static/table_homo.json", "table_homo.json");
     },
     onClickDownload: (): Promise<void> => {
@@ -98,6 +102,10 @@ const homoExamples = computed(() => [
     name: t("Search.Example.Image"),
     onClick: (): Promise<void> => {
       emits("update:isHeterogeneous", false);
+      dataType.value = "Image";
+      taskType.value = "";
+      libraryType.value = "";
+      scenarioList.value = [];
       return downloadAndLoadRKME("./static/image.json", "image.json");
     },
     onClickDownload: (): Promise<void> => {
@@ -113,6 +121,10 @@ const homoExamples = computed(() => [
     name: t("Search.Example.Text"),
     onClick: (): Promise<void> => {
       emits("update:isHeterogeneous", false);
+      dataType.value = "Text";
+      taskType.value = "";
+      libraryType.value = "";
+      scenarioList.value = [];
       return downloadAndLoadRKME("./static/text.json", "text.json");
     },
     onClickDownload: (): Promise<void> => {
@@ -129,6 +141,10 @@ const heterExamples = computed(() => [
     icon: TableBtn,
     name: t("Search.Example.Table"),
     onClick: (): Promise<any> => {
+      dataType.value = "Table";
+      taskType.value = "";
+      libraryType.value = "";
+      scenarioList.value = [];
       return downloadAndLoadRKME("./static/table_hetero.json", "table_hetero.json")
         .then(() => fetch("./static/table_hetero_input.json"))
         .then((res) => res.text())
