@@ -1,7 +1,8 @@
-import { ref, Ref } from "vue";
+import { ref, computed, type Ref, type WritableComputedRef } from "vue";
 
 export function useTimeout(delay: number): {
   ok: Ref<boolean>;
+  notOk: WritableComputedRef<boolean>;
   remain: Ref<number>;
   start: () => void;
   stop: () => void;
@@ -10,6 +11,13 @@ export function useTimeout(delay: number): {
   const remain = ref<number>(delay);
   const timeout = ref<number>(0);
   const timer = ref<number>(0);
+
+  const notOk = computed({
+    get: () => !ok.value,
+    set: (v) => {
+      ok.value = !v;
+    },
+  });
 
   function start(): void {
     ok.value = false;
@@ -35,6 +43,7 @@ export function useTimeout(delay: number): {
 
   return {
     ok,
+    notOk,
     remain,
     start,
     stop,
