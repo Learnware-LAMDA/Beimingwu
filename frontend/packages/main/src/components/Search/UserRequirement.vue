@@ -497,7 +497,7 @@ watch(
       <file-upload
         v-model="files"
         :height="28"
-        :tips="t('Submit.File.DragFileHere', { file: 'json' })"
+        :tips="t('Submit.File.DragFileHere', { file: 'JSON' })"
       />
     </div>
   </div>
