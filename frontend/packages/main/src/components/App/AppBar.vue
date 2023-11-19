@@ -25,7 +25,7 @@ function routeFilter(route: Route): boolean {
     if (route.meta.hideWhenLoggedIn && store.getters.getLoggedIn) {
       return false;
     }
-    if (!route.meta.requiredLogin) {
+    if (!route.meta.requiredLogin || route.meta.showWhenNotLoggedIn) {
       return true;
     }
     return store.getters.getLoggedIn;

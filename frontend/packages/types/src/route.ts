@@ -5,6 +5,7 @@ export interface Route {
     showInNavBar: boolean;
     hideWhenLoggedIn: boolean;
     requiredLogin: boolean;
+    showWhenNotLoggedIn?: boolean;
     icon: string;
     title: string;
     variant: string;
