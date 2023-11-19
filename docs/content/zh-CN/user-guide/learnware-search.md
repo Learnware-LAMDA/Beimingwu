@@ -113,7 +113,7 @@ for temp_learnware in learnware_list:
 
     # you can use the learnware to make prediction now
     learnware = client.load_learnware(
-        learnware_id=learnware_id, runnable_option="conda_env"
+        learnware_id=learnware_id, runnable_option="conda"
     )
 ```
 

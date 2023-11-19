@@ -40,7 +40,7 @@ from learnware.client import LearnwareClient
 # 自动构建 conda 环境来加载学件
 client = LearnwareClient()
 leanrware = client.load_learnware(
-    learnware_path=learnware_zip_path, runnable_option="conda_env"
+    learnware_path=learnware_zip_path, runnable_option="conda"
 )
 
 # 使用学件对数据进行预测
