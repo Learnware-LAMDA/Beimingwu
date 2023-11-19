@@ -41,7 +41,11 @@ class MyModel(BaseModel):
         pass
 ```
 
-Please note that the `MyModel` class should inherit from `BaseModel` in the `learnware.model` module, and the class name (e.g., MyModel) should be specified in the learnware.yaml file later. Also, if you need to import other modules from the zip package in `__init__.py`, use relative imports. For example:
+Please note that the `MyModel` class should inherit from `BaseModel` in the `learnware.model` module, and the class name (e.g., MyModel) should be specified in the learnware.yaml file later. 
+
+Here `input_shape` and `output_shape` denote the dimensions of the model's input and output. For text data, `input_shape` can be simply set to (1, ). In classification tasks, `output_shape` should be (1, ) if the model directly outputs prediction labels, and (class_num, ) if the model outputs logits.
+
+Also, if you need to import other modules from the zip package in `__init__.py`, use relative imports. For example:
 
 ```py
 from .package_name import *
