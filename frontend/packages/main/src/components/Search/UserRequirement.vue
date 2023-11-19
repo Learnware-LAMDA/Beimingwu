@@ -11,7 +11,6 @@ import ScenarioListBtns from "../Specification/SpecTag/ScenarioList.vue";
 import DescriptionInput from "../Specification/DescriptionInput.vue";
 import { saveContentToFile } from "../../utils";
 import type { DataType, TaskType, LibraryType, Filter } from "@beiming-system/types/learnware";
-import { useTimeout } from "@beiming-system/hooks";
 import TextBtn from "../../assets/images/specification/dataType/text.svg?component";
 import ImageBtn from "../../assets/images/specification/dataType/image.svg?component";
 import TableBtn from "../../assets/images/specification/dataType/table.svg?component";
@@ -75,9 +74,9 @@ const taskTypeDescription = ref({
 const tempDataTypeDescription = ref(dataTypeDescription.value);
 const tempTaskTypeDescription = ref(taskTypeDescription.value);
 
-const exampleDialog = ref<boolean>(store.getters.getShowExampleDialog);
+const exampleDialog = ref<boolean>(false);
 const exampleLoading = ref(false);
-const { notOk: showExampleTips, start: startShowExampleTips } = useTimeout(2000);
+// const showExampleTips = ref(true);
 const homoExamples = computed(() => [
   {
     icon: TableBtn,
@@ -199,9 +198,6 @@ watch(
   () => exampleDialog.value,
   (val) => {
     store.commit("setShowExampleDialog", val);
-    if (!val) {
-      startShowExampleTips();
-    }
   },
 );
 
@@ -413,17 +409,12 @@ watch(
           class="mx-auto w-full max-w-2xl"
         >
           <template #activator="{ props: dialogProps }">
-            <v-tooltip v-model="showExampleTips">
-              <template #activator="{ props: tooltipProps }">
-                <v-btn
-                  v-bind="{ ...dialogProps, ...tooltipProps }"
-                  variant="flat"
-                  color="transparent"
-                  icon="mdi-file-question"
-                />
-              </template>
-              <span>{{ t("Search.Example.ClickHereForExamples") }}</span>
-            </v-tooltip>
+            <v-btn
+              v-bind="dialogProps"
+              variant="flat"
+              color="transparent"
+              icon="mdi-file-question"
+            />
           </template>
 
           <v-card
