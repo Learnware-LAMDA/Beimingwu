@@ -18,7 +18,7 @@ const en: LocaleSpecificConfig & {
         link: "/en/overview/system-overview",
         icon: "mdi-collage",
       },
-      { text: "System", link: "https://www.lamda.nju.edu.cn/learnware", icon: "mdi-domain" },
+      { text: "System", link: "https://www.bmwu.cloud", icon: "mdi-domain" },
     ],
 
     sidebar: [

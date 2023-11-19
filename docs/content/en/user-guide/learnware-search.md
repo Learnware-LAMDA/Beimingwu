@@ -8,7 +8,7 @@ Next, we will introduce these two methods separately.
 
 ### Regular Search
 
-Click on the "Search" button in the website's navigation bar at "[Search](https://www.lamda.nju.edu.cn/learnware/#/search)," and you can start learnware search.
+Click on the "Search" button in the website's navigation bar at "[Search](https://www.bmwu.cloud/#/search)," and you can start learnware search.
 
 The system supports learnware search through semantic specifications or statistical specifications, and you can also combine these two search methods.
 

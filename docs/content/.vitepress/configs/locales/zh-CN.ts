@@ -18,7 +18,7 @@ const zhCN: LocaleSpecificConfig & {
         link: "/zh-CN/overview/system-overview",
         icon: "mdi-collage",
       },
-      { text: "系统", link: "https://www.lamda.nju.edu.cn/learnware", icon: "mdi-domain" },
+      { text: "系统", link: "https://www.bmwu.cloud", icon: "mdi-domain" },
     ],
 
     sidebar: [

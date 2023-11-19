@@ -6,7 +6,7 @@ Next, we will introduce two methods separately.
 
 ## Uploading through the Web Interface
 
-Click the "Submit" button on the website's navigation bar at [Submit](https://www.lamda.nju.edu.cn/learnware/#/submit) to begin the process of uploading learnware.
+Click the "Submit" button on the website's navigation bar at [Submit](https://www.bmwu.cloud/#/submit) to begin the process of uploading learnware.
 
 The entire process is divided into the following 4 steps:
 1. Fill in the name of the learnware.
