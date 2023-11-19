@@ -8,7 +8,7 @@ const tips = {
   },
   getters: {
     getShowExampleTips(state: State): boolean {
-      return state.exampleTipsCount <= 3;
+      return state.exampleTipsCount < 3;
     },
   },
   mutations: {
