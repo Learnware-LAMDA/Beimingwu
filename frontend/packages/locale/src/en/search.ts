@@ -34,5 +34,8 @@ export default {
     Table: "Table",
     Image: "Image",
     Text: "Text",
+    Next: "Next",
+    Previous: "Previous",
+    Done: "Done",
   },
 };

@@ -213,6 +213,9 @@ watch(
 
 const driverObj = driver({
   showButtons: ["close", "next", "previous"],
+  nextBtnText: t("Search.Example.Next"),
+  prevBtnText: t("Search.Example.Previous"),
+  doneBtnText: t("Search.Example.Done"),
 });
 
 onMounted(() => {

@@ -33,5 +33,8 @@ export default {
     Table: "表格",
     Image: "图像",
     Text: "文本",
+    Next: "下一步",
+    Previous: "上一步",
+    Done: "完成",
   },
 };
