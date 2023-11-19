@@ -6,7 +6,7 @@
 
 ## 通过网页端上传
 
-点击网站导航栏处的「[提交](https://www.lamda.nju.edu.cn/learnware/#/submit)」按钮，即可开始学件上传。
+点击网站导航栏处的「[提交](https://www.bmwu.cloud/#/submit)」按钮，即可开始学件上传。
 
 整个流程分为以下 4 步：
 1. 填写学件的名称
