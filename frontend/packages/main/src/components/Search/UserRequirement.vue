@@ -155,6 +155,13 @@ const heterExamples = computed(() => [
     },
   },
 ]);
+function handleClickShowExample(): void {
+  if (driverObj.isActive()) {
+    setTimeout(() => {
+      driverObj.moveNext();
+    }, 500);
+  }
+}
 function useExampleOnClick(onClick: () => Promise<void>): () => Promise<void> {
   return () => {
     exampleLoading.value = true;
@@ -201,20 +208,46 @@ watch(
   },
 );
 
-const driverObj = driver();
+const driverObj = driver({
+  showButtons: ["close", "next", "previous"],
+});
 
 onMounted(() => {
   nextTick(() => {
     if (props.showExample && store.getters.getShowExampleTips) {
       store.dispatch("showExampleTips");
-      driverObj.highlight({
-        element: "#example-btn",
-        popover: {
-          side: "bottom",
-          title: t("Search.Example.Examples"),
-          description: t("Search.Example.ClickHereForExamples"),
+      driverObj.setSteps([
+        {
+          element: "#example-btn",
+          popover: {
+            side: "bottom",
+            title: t("Search.Example.Examples"),
+            description: t("Search.Example.ClickHereForExamples"),
+            onNextClick(): void {
+              exampleDialog.value = true;
+
+              setTimeout(() => {
+                driverObj.moveNext();
+              }, 500);
+            },
+          },
         },
-      });
+        {
+          element: "#example-card-0",
+          popover: {
+            side: "bottom",
+            title: t("Search.Example.Examples"),
+            description: t("Search.Example.ClickHereForHomogeneousTableExample"),
+            onNextClick(): void {
+              exampleDialog.value = false;
+              useExampleOnClick(homoExamples.value[0].onClick)();
+              driverObj.moveNext();
+            },
+          },
+        },
+      ]);
+
+      driverObj.drive();
     }
   });
 });
@@ -426,7 +459,7 @@ onMounted(() => {
               variant="flat"
               color="transparent"
               icon="mdi-list-box"
-              @click="() => driverObj.isActive() && driverObj.destroy()"
+              @click="handleClickShowExample"
             />
           </template>
 
