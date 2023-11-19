@@ -43,6 +43,8 @@ class MyModel(BaseModel):
 
 需要注意 MyModel 类要继承 learnware.model 中的 BaseModel，且类的名字（e.g., MyModel）需要在后续的 learnware.yaml 文件中标明。
 
+此处 `input_shape` 、`output_shape` 分别代表模型的输入和输出维度。特别地，当学件处理的数据类型为文本数据时，对于 `input_shape` 的具体值不作要求，可简单填写为 (1, )。对于分类任务，如果模型直接输出预测标记，则 `output_shape` 应填写为 (1, )；若模型输出为类别的后验概率，则 `output_shape` 应填写为类别数目，即 (class_num, ) 的形式。
+
 另外，如果 \_\_init\_\_.py 文件中需要导入 zip 包内其它的模块，请采用相对导入的方式。例如：
 ```py
 from .package_name import *
