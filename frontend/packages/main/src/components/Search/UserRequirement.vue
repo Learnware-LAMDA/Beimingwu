@@ -205,7 +205,7 @@ const driverObj = driver();
 
 onMounted(() => {
   nextTick(() => {
-    if (props.showExample && !store.getters.getShowExampleTips) {
+    if (props.showExample && store.getters.getShowExampleTips) {
       store.dispatch("showExampleTips");
       driverObj.highlight({
         element: "#example-btn",
