@@ -22,14 +22,13 @@ learnware_list = client.load_learnware(
 )
 ```
 
-The `runnable_option` parameter has four options, each corresponding to one of the following ways to load learnware environments:
+The `runnable_option` parameter has three options (default `None`), each for a specific learnware environment loading method:
 
-- `None`: Load only learnware specifications and basic information; the learnware cannot run at this state.
-- `"normal"`: Do not install a separate environment; run the learnware using the current `learnware` package's Python environment.
-- `"conda_env"`: Install a separate `conda` virtual environment for each learnware (automatically deleted after execution); run each learnware independently within its virtual environment.
+- `None`: Load only learnware specifications and basic information; run the learnware using the current `learnware` package's Python environment.
+- `"conda"`: Install a separate `conda` virtual environment for each learnware (automatically deleted after execution); run each learnware independently within its virtual environment.
 - `"docker"`: Install a `conda` virtual environment inside a Docker container (automatically destroyed after execution); run each learnware independently within the container (requires Docker privileges).
 
-It's important to note that while the system makes every effort to ensure the security of each learnware, the `"normal"` and `"conda_env"` modes are **not secure** if there are any malicious learnwares. If the user cannot guarantee the security of the learnware they want to load, it's recommended to use the `"docker"` mode to load the learnware.
+It's important to note that while the system makes every effort to ensure the security of each learnware, the `None` and `"conda"` modes are **not secure** if there are any malicious learnwares. If the user cannot guarantee the security of the learnware they want to load, it's recommended to use the `"docker"` mode to load the learnware.
 
 ### Loading Learnware from a ZIP File
 

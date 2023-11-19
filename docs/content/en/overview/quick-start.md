@@ -38,7 +38,7 @@ from learnware.client import LearnwareClient
 # Automatically build a conda environment to load the learnware
 client = LearnwareClient()
 learnware = client.load_learnware(
-    learnware_path=learnware_zip_path, runnable_option="conda_env"
+    learnware_path=learnware_zip_path, runnable_option="conda"
 )
 
 # Use the learnware to make predictions on data
