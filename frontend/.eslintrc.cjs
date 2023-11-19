@@ -27,6 +27,7 @@ module.exports = {
   plugins: ["@typescript-eslint", "vue", "prettier"],
   rules: {
     "vue/multi-word-component-names": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-function-return-type": "error",
     "prettier/prettier": "error",
   },

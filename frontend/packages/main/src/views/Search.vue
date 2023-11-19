@@ -79,7 +79,6 @@ const showHeterogeneousSearchSwitch = computed(
   () =>
     singleRecommendedLearnwareItems.value?.length === 0 &&
     multiRecommendedLearnwareItems.value?.length === 0 &&
-    ["Classification", "Regression"].includes(filters.value.taskType) &&
     rkmeTypeTable.value,
 );
 
@@ -353,10 +352,10 @@ onMounted(() => init());
     <div class="w-full lg:max-w-[460px]">
       <user-requirement
         v-model="filters"
+        v-model:is-heterogeneous="isHeterogeneous"
         class="bottom-0 w-full lg:fixed lg:max-w-[460px]"
         style="top: var(--v-layout-top)"
         :is-admin="isAdmin"
-        :is-heterogeneous="isHeterogeneous"
       >
         <template #prepend>
           <v-btn

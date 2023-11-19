@@ -2,6 +2,7 @@
 import { ref, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { useStore } from "vuex";
 import DataTypeBtns from "../Specification/SpecTag/DataType.vue";
 import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
@@ -10,20 +11,27 @@ import ScenarioListBtns from "../Specification/SpecTag/ScenarioList.vue";
 import DescriptionInput from "../Specification/DescriptionInput.vue";
 import { saveContentToFile } from "../../utils";
 import type { DataType, TaskType, LibraryType, Filter } from "@beiming-system/types/learnware";
+import TextBtn from "../../assets/images/specification/dataType/text.svg?component";
+import ImageBtn from "../../assets/images/specification/dataType/image.svg?component";
+import TableBtn from "../../assets/images/specification/dataType/table.svg?component";
 
 export interface Props {
   modelValue: Filter;
   isAdmin?: boolean;
   isHeterogeneous?: boolean;
+  showExample?: boolean;
 }
 
 const { t } = useI18n();
 
-const emits = defineEmits(["update:modelValue"]);
+const store = useStore();
+
+const emits = defineEmits(["update:modelValue", "update:isHeterogeneous"]);
 
 withDefaults(defineProps<Props>(), {
   isAdmin: false,
   isHeterogeneous: false,
+  showExample: true,
 });
 
 const route = useRoute();
@@ -43,7 +51,7 @@ try {
 }
 const scenarioList = ref(tryScenarioList);
 
-const files = ref([]);
+const files = ref<File[]>([]);
 
 const heterDialog = ref(true);
 const heterTab = ref<"dataType" | "taskType">("dataType");
@@ -66,6 +74,103 @@ const taskTypeDescription = ref({
 const tempDataTypeDescription = ref(dataTypeDescription.value);
 const tempTaskTypeDescription = ref(taskTypeDescription.value);
 
+const exampleDialog = ref<boolean>(store.getters.getShowExampleDialog);
+const exampleLoading = ref(false);
+const homoExamples = computed(() => [
+  {
+    icon: TableBtn,
+    name: t("Search.Example.Table"),
+    onClick: (): Promise<void> => {
+      emits("update:isHeterogeneous", false);
+      return downloadAndLoadRKME("./static/table_homo.json", "table_homo.json");
+    },
+    onClickDownload: (): Promise<void> => {
+      return fetch("./static/table_homo.json")
+        .then((res) => res.text())
+        .then((text) => {
+          saveContentToFile(text, "application/json", "table_homo.json");
+        });
+    },
+  },
+  {
+    icon: ImageBtn,
+    name: t("Search.Example.Image"),
+    onClick: (): Promise<void> => {
+      emits("update:isHeterogeneous", false);
+      return downloadAndLoadRKME("./static/image.json", "image.json");
+    },
+    onClickDownload: (): Promise<void> => {
+      return fetch("./static/image.json")
+        .then((res) => res.text())
+        .then((text) => {
+          saveContentToFile(text, "application/json", "image.json");
+        });
+    },
+  },
+  {
+    icon: TextBtn,
+    name: t("Search.Example.Text"),
+    onClick: (): Promise<void> => {
+      emits("update:isHeterogeneous", false);
+      return downloadAndLoadRKME("./static/text.json", "text.json");
+    },
+    onClickDownload: (): Promise<void> => {
+      return fetch("./static/text.json")
+        .then((res) => res.text())
+        .then((text) => {
+          saveContentToFile(text, "application/json", "text.json");
+        });
+    },
+  },
+]);
+const heterExamples = computed(() => [
+  {
+    icon: TableBtn,
+    name: t("Search.Example.Table"),
+    onClick: (): Promise<any> => {
+      return downloadAndLoadRKME("./static/table_hetero.json", "table_hetero.json")
+        .then(() => fetch("./static/table_hetero_input.json"))
+        .then((res) => res.text())
+        .then((text) => {
+          dataTypeDescription.value = JSON.parse(text);
+          tempDataTypeDescription.value = JSON.parse(text);
+          heterDialog.value = false;
+          emits("update:isHeterogeneous", true);
+        });
+    },
+    onClickDownload: (): Promise<void> => {
+      return fetch("./static/table_hetero.json")
+        .then((res) => res.text())
+        .then((text) => {
+          saveContentToFile(text, "application/json", "table_hetero.json");
+        })
+        .then(() => {
+          return fetch("./static/table_hetero_input.json");
+        })
+        .then((res) => res.text())
+        .then((text) => {
+          saveContentToFile(text, "application/json", "table_hetero_input.json");
+        });
+    },
+  },
+]);
+function useExampleOnClick(onClick: () => Promise<void>): () => Promise<void> {
+  return () => {
+    exampleLoading.value = true;
+    return onClick().finally(() => {
+      exampleLoading.value = false;
+    });
+  };
+}
+function downloadAndLoadRKME(url: string, name: string): Promise<void> {
+  return fetch(url)
+    .then((res) => res.text())
+    .then((text) => {
+      const file = new File([text], name, { type: "application/json" });
+      files.value = [file];
+    });
+}
+
 const requirement = computed(() => ({
   id: id.value,
   name: search.value,
@@ -85,6 +190,13 @@ watch(
       dataTypeDescription.value = tempDataTypeDescription.value;
       taskTypeDescription.value = tempTaskTypeDescription.value;
     }
+  },
+);
+
+watch(
+  () => exampleDialog.value,
+  (val) => {
+    store.commit("setShowExampleDialog", val);
   },
 );
 
@@ -280,7 +392,7 @@ watch(
         </v-dialog>
       </template>
 
-      <div class="text-h6 mb-5 mt-3 w-full truncate transition-all">
+      <div class="text-h6 mb-5 mt-3 flex w-full items-center truncate transition-all">
         <v-icon
           class="mr-3"
           icon="mdi-upload"
@@ -288,6 +400,98 @@ watch(
           size="small"
         />
         {{ t("Search.UploadStatisticalRequirement") }}
+        <v-spacer class="flex-1" />
+
+        <v-dialog
+          v-if="showExample"
+          v-model="exampleDialog"
+          class="mx-auto w-full max-w-2xl"
+        >
+          <template #activator="{ props: dialogProps }">
+            <v-icon
+              v-bind="dialogProps"
+              size="small"
+              icon="mdi-file-question"
+            />
+          </template>
+
+          <v-card
+            flat
+            class="p-6"
+            :loading="exampleLoading"
+          >
+            <div class="text-4xl">
+              {{ t("Search.Example.Examples") }}
+            </div>
+            <div class="my-1 text-gray-500">
+              {{ t("Search.Example.ExamplesDescription") }}
+            </div>
+
+            <div class="text-h6 my-2">
+              {{ t("Search.Example.HomogeneousExamples") }}
+            </div>
+            <div>
+              <v-card
+                v-for="example in homoExamples"
+                :key="example.name"
+                flat
+                class="my-2 flex items-center rounded-md border px-4 py-2"
+                @click="
+                  () => useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
+                "
+              >
+                <div class="flex items-center">
+                  <component
+                    :is="example.icon"
+                    class="w-8"
+                  />
+                  <div class="ml-2 text-center text-lg">{{ example.name }}</div>
+                </div>
+                <v-spacer class="flex-1"></v-spacer>
+                <div>
+                  <v-btn
+                    variant="flat"
+                    icon="mdi-download"
+                    color="transparent"
+                    @click.stop="() => useExampleOnClick(example.onClickDownload)()"
+                  />
+                </div>
+              </v-card>
+            </div>
+
+            <div class="text-h6 my-2">
+              {{ t("Search.Example.HeterogeneousExamples") }}
+            </div>
+            <div>
+              <v-card
+                v-for="example in heterExamples"
+                :key="example.name"
+                flat
+                class="my-2 flex items-center rounded-md border px-4 py-2"
+                @click="
+                  () => useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
+                "
+              >
+                <div class="flex items-center">
+                  <component
+                    :is="example.icon"
+                    class="w-8"
+                  />
+                  <div class="ml-2 text-center text-lg">{{ example.name }}</div>
+                </div>
+                <v-spacer class="flex-1"></v-spacer>
+                <div>
+                  <v-btn
+                    variant="flat"
+                    icon="mdi-download"
+                    color="transparent"
+                    @click.stop="() => useExampleOnClick(example.onClickDownload)()"
+                  />
+                </div>
+              </v-card>
+            </div>
+          </v-card>
+        </v-dialog>
       </div>
 
       <file-upload
