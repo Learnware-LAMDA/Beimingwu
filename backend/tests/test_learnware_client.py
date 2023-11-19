@@ -134,7 +134,7 @@ class TestLearnwareClient(unittest.TestCase):
         testops.add_learnware_to_engine(learnware_id, client.headers)
 
         client.download_learnware(learnware_id, f"{learnware_id}.zip")
-        learnware = client.load_learnware(f"{learnware_id}.zip", runnable_option="conda_env")
+        learnware = client.load_learnware(f"{learnware_id}.zip", runnable_option="conda")
         os.remove(f"{learnware_id}.zip")
 
         learnware.instantiate_model()
