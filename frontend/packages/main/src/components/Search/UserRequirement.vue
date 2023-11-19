@@ -301,17 +301,25 @@ watch(
           v-model="heterDialog"
           width="1024"
         >
-          <template #activator="{ props }">
+          <template #activator="{ props: dialogProps }">
             <v-card
-              v-bind="props"
+              v-bind="dialogProps"
               flat
               class="border-gray-500 bg-transparent"
             >
               <v-btn
                 block
-                variant="outlined"
+                color="primary"
               >
                 {{ t("Search.StartHeterogeneousSearch") }}
+              </v-btn>
+              <v-btn
+                block
+                variant="outlined"
+                class="mt-2"
+                @click="() => emits('update:isHeterogeneous', false)"
+              >
+                {{ t("Search.TurnOffHeterogeneousSearch") }}
               </v-btn>
             </v-card>
           </template>
