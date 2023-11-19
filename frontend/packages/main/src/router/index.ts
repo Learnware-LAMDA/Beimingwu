@@ -21,6 +21,8 @@ const Router = createRouter({
       component: (): Promise<Component> => import("../views/Search.vue"),
       meta: {
         showInNavBar: true,
+        requiredLogin: true,
+        showWhenNotLoggedIn: true,
         keepAlive: true,
         icon: "mdi-magnify",
       },
