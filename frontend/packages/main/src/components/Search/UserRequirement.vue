@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useStore } from "vuex";
+import { driver } from "driver.js";
 import DataTypeBtns from "../Specification/SpecTag/DataType.vue";
 import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
@@ -28,7 +29,7 @@ const store = useStore();
 
 const emits = defineEmits(["update:modelValue", "update:isHeterogeneous"]);
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   isAdmin: false,
   isHeterogeneous: false,
   showExample: true,
@@ -76,7 +77,6 @@ const tempTaskTypeDescription = ref(taskTypeDescription.value);
 
 const exampleDialog = ref<boolean>(false);
 const exampleLoading = ref(false);
-// const showExampleTips = ref(true);
 const homoExamples = computed(() => [
   {
     icon: TableBtn,
@@ -195,18 +195,29 @@ watch(
 );
 
 watch(
-  () => exampleDialog.value,
-  (val) => {
-    store.commit("setShowExampleDialog", val);
-  },
-);
-
-watch(
   () => requirement.value,
   () => {
     emits("update:modelValue", requirement.value);
   },
 );
+
+const driverObj = driver();
+
+onMounted(() => {
+  nextTick(() => {
+    if (props.showExample && !store.getters.getShownExampleTips) {
+      store.dispatch("showExampleTips");
+      driverObj.highlight({
+        element: "#example-btn",
+        popover: {
+          side: "bottom",
+          title: t("Search.Example.Examples"),
+          description: t("Search.Example.ClickHereForExamples"),
+        },
+      });
+    }
+  });
+});
 </script>
 
 <template>
@@ -411,13 +422,16 @@ watch(
           <template #activator="{ props: dialogProps }">
             <v-btn
               v-bind="dialogProps"
+              id="example-btn"
               variant="flat"
               color="transparent"
               icon="mdi-file-question"
+              @click="() => driverObj.isActive() && driverObj.destroy()"
             />
           </template>
 
           <v-card
+            id="example-dialog"
             flat
             class="p-6"
             :loading="exampleLoading"
