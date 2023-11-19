@@ -164,6 +164,9 @@ function handleClickShowExample(): void {
 }
 function useExampleOnClick(onClick: () => Promise<void>): () => Promise<void> {
   return () => {
+    if (driverObj.isActive()) {
+      driverObj.moveNext();
+    }
     exampleLoading.value = true;
     return onClick().finally(() => {
       exampleLoading.value = false;
