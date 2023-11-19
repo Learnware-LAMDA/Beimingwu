@@ -37,6 +37,11 @@ const modelValue = computed({
 
 const libraryTypeBtns = computed(() => [
   {
+    title: t("Submit.SemanticSpecification.LibraryType.Type.Scikit-learn"),
+    icon: ScikitLearnBtn,
+    value: "Scikit-learn",
+  },
+  {
     title: t("Submit.SemanticSpecification.LibraryType.Type.PyTorch"),
     icon: PyTorchBtn,
     value: "PyTorch",
@@ -45,11 +50,6 @@ const libraryTypeBtns = computed(() => [
     title: t("Submit.SemanticSpecification.LibraryType.Type.TensorFlow"),
     icon: TensorFlowBtn,
     value: "TensorFlow",
-  },
-  {
-    title: t("Submit.SemanticSpecification.LibraryType.Type.Scikit-learn"),
-    icon: ScikitLearnBtn,
-    value: "Scikit-learn",
   },
   {
     title: t("Submit.SemanticSpecification.LibraryType.Type.Others"),
