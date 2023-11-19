@@ -76,6 +76,7 @@ const tempDataTypeDescription = ref(dataTypeDescription.value);
 const tempTaskTypeDescription = ref(taskTypeDescription.value);
 
 const exampleDialog = ref<boolean>(false);
+const exampleDialogPersistent = ref<boolean>(true);
 const exampleLoading = ref(false);
 const homoExamples = computed(() => [
   {
@@ -232,6 +233,9 @@ const driverObj = driver({
   nextBtnText: t("Search.Example.Next"),
   prevBtnText: t("Search.Example.Previous"),
   doneBtnText: t("Search.Example.Done"),
+  onDestroyed: () => {
+    exampleDialogPersistent.value = false;
+  },
 });
 
 onMounted(() => {
@@ -264,6 +268,10 @@ onMounted(() => {
               exampleDialog.value = false;
               useExampleOnClick(homoExamples.value[0].onClick)();
               driverObj.moveNext();
+            },
+            onPrevClick(): void {
+              exampleDialog.value = false;
+              driverObj.movePrevious();
             },
           },
         },
@@ -472,6 +480,7 @@ onMounted(() => {
         <v-dialog
           v-if="showExample"
           v-model="exampleDialog"
+          :persistent="exampleDialogPersistent"
           class="mx-auto w-full max-w-2xl"
         >
           <template #activator="{ props: dialogProps }">
@@ -491,8 +500,15 @@ onMounted(() => {
             class="p-6"
             :loading="exampleLoading"
           >
-            <div class="text-4xl">
-              {{ t("Search.Example.Examples") }}
+            <div class="flex items-start justify-between">
+              <span class="text-4xl">
+                {{ t("Search.Example.Examples") }}
+              </span>
+              <v-btn
+                variant="flat"
+                icon="mdi-close"
+                @click="exampleDialog = false"
+              />
             </div>
             <div class="my-1 text-gray-500">
               {{ t("Search.Example.ExamplesDescription") }}
