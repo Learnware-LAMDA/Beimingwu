@@ -340,7 +340,7 @@ onMounted(() => init());
         >
           <a
             class="underline"
-            href="https://docs.beiming.cloud/zh-CN/user-guide/learnware-deploy.html"
+            href="https://docs.bmwu.cloud/zh-CN/user-guide/learnware-deploy.html"
             target="_blank"
           >
             {{ t("Search.ClickHere") }} </a

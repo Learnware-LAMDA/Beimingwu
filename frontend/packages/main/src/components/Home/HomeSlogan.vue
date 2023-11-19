@@ -223,7 +223,7 @@ onMounted(() => {
                     font-size="4"
                     fill="white"
                   >
-                    Beiming
+                    Beimingwu
                   </text>
                   <use
                     href="#cross"
@@ -267,7 +267,7 @@ onMounted(() => {
               >
                 <div class="flex h-full items-center">
                   <v-icon>mdi-lock</v-icon>
-                  <span class="mx-1 text-[0.4rem]"> beiming.cloud </span>
+                  <span class="mx-1 text-[0.4rem]"> bmwu.cloud </span>
                 </div>
               </div>
               <div class="text-[0.4rem]">

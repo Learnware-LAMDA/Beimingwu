@@ -14,7 +14,7 @@ const links = computed(() => [
   {
     icon: "mdi-github",
     name: t("Home.Footer.Github"),
-    path: "https://github.com/lamda-nju",
+    path: "https://github.com/Learnware-LAMDA",
     tooltips: "",
   },
   {
@@ -71,7 +71,7 @@ const links = computed(() => [
         target="_blank"
         rel="noopener noreferrer"
       >
-        苏ICP备2021003372号-7
+        苏ICP备2021003372号-9
       </a>
     </div>
   </v-footer>

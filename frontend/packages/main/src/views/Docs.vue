@@ -6,7 +6,7 @@ const router = useRouter();
 const { locale } = useI18n();
 
 router.go(-1);
-location.href = `https://docs.beiming.cloud${
+location.href = `https://docs.bmwu.cloud${
   locale.value.toLocaleLowerCase() === "zh-cn" ? "/zh-CN/" : ""
 }`;
 </script>
