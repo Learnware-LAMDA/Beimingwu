@@ -30,8 +30,12 @@ export default {
     HomogeneousExamples: "Homogeneous Examples",
     HeterogeneousExamples: "Heterogeneous Examples",
     ClickHereForExamples: "Click here for examples",
+    ClickHereForHomogeneousTableExample: "Click here for homogeneous table example",
     Table: "Table",
     Image: "Image",
     Text: "Text",
+    Next: "Next",
+    Previous: "Previous",
+    Done: "Done",
   },
 };

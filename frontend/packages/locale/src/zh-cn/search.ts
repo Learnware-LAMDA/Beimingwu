@@ -29,8 +29,12 @@ export default {
     HomogeneousExamples: "同构示例",
     HeterogeneousExamples: "异构示例",
     ClickHereForExamples: "点击这里查看示例",
+    ClickHereForHomogeneousTableExample: "点击这里查看同构表格示例",
     Table: "表格",
     Image: "图像",
     Text: "文本",
+    Next: "下一步",
+    Previous: "上一步",
+    Done: "完成",
   },
 };

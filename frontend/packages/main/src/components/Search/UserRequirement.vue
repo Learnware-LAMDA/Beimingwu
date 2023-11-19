@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useStore } from "vuex";
+import { driver } from "driver.js";
 import DataTypeBtns from "../Specification/SpecTag/DataType.vue";
 import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
@@ -11,7 +12,6 @@ import ScenarioListBtns from "../Specification/SpecTag/ScenarioList.vue";
 import DescriptionInput from "../Specification/DescriptionInput.vue";
 import { saveContentToFile } from "../../utils";
 import type { DataType, TaskType, LibraryType, Filter } from "@beiming-system/types/learnware";
-import { useTimeout } from "@beiming-system/hooks";
 import TextBtn from "../../assets/images/specification/dataType/text.svg?component";
 import ImageBtn from "../../assets/images/specification/dataType/image.svg?component";
 import TableBtn from "../../assets/images/specification/dataType/table.svg?component";
@@ -29,7 +29,7 @@ const store = useStore();
 
 const emits = defineEmits(["update:modelValue", "update:isHeterogeneous"]);
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   isAdmin: false,
   isHeterogeneous: false,
   showExample: true,
@@ -75,15 +75,19 @@ const taskTypeDescription = ref({
 const tempDataTypeDescription = ref(dataTypeDescription.value);
 const tempTaskTypeDescription = ref(taskTypeDescription.value);
 
-const exampleDialog = ref<boolean>(store.getters.getShowExampleDialog);
+const exampleDialog = ref<boolean>(false);
+const exampleDialogPersistent = ref<boolean>(true);
 const exampleLoading = ref(false);
-const { notOk: showExampleTips, start: startShowExampleTips } = useTimeout(2000);
 const homoExamples = computed(() => [
   {
     icon: TableBtn,
     name: t("Search.Example.Table"),
     onClick: (): Promise<void> => {
       emits("update:isHeterogeneous", false);
+      dataType.value = "Table";
+      taskType.value = "";
+      libraryType.value = "";
+      scenarioList.value = [];
       return downloadAndLoadRKME("./static/table_homo.json", "table_homo.json");
     },
     onClickDownload: (): Promise<void> => {
@@ -99,6 +103,10 @@ const homoExamples = computed(() => [
     name: t("Search.Example.Image"),
     onClick: (): Promise<void> => {
       emits("update:isHeterogeneous", false);
+      dataType.value = "Image";
+      taskType.value = "";
+      libraryType.value = "";
+      scenarioList.value = [];
       return downloadAndLoadRKME("./static/image.json", "image.json");
     },
     onClickDownload: (): Promise<void> => {
@@ -114,6 +122,10 @@ const homoExamples = computed(() => [
     name: t("Search.Example.Text"),
     onClick: (): Promise<void> => {
       emits("update:isHeterogeneous", false);
+      dataType.value = "Text";
+      taskType.value = "";
+      libraryType.value = "";
+      scenarioList.value = [];
       return downloadAndLoadRKME("./static/text.json", "text.json");
     },
     onClickDownload: (): Promise<void> => {
@@ -130,6 +142,10 @@ const heterExamples = computed(() => [
     icon: TableBtn,
     name: t("Search.Example.Table"),
     onClick: (): Promise<any> => {
+      dataType.value = "Table";
+      taskType.value = "";
+      libraryType.value = "";
+      scenarioList.value = [];
       return downloadAndLoadRKME("./static/table_hetero.json", "table_hetero.json")
         .then(() => fetch("./static/table_hetero_input.json"))
         .then((res) => res.text())
@@ -156,8 +172,18 @@ const heterExamples = computed(() => [
     },
   },
 ]);
+function handleClickShowExample(): void {
+  if (driverObj.isActive()) {
+    setTimeout(() => {
+      driverObj.moveNext();
+    }, 500);
+  }
+}
 function useExampleOnClick(onClick: () => Promise<void>): () => Promise<void> {
   return () => {
+    if (driverObj.isActive()) {
+      driverObj.moveNext();
+    }
     exampleLoading.value = true;
     return onClick().finally(() => {
       exampleLoading.value = false;
@@ -196,21 +222,65 @@ watch(
 );
 
 watch(
-  () => exampleDialog.value,
-  (val) => {
-    store.commit("setShowExampleDialog", val);
-    if (!val) {
-      startShowExampleTips();
-    }
-  },
-);
-
-watch(
   () => requirement.value,
   () => {
     emits("update:modelValue", requirement.value);
   },
 );
+
+const driverObj = driver({
+  showButtons: ["close", "next", "previous"],
+  nextBtnText: t("Search.Example.Next"),
+  prevBtnText: t("Search.Example.Previous"),
+  doneBtnText: t("Search.Example.Done"),
+  onDestroyed: () => {
+    exampleDialogPersistent.value = false;
+  },
+});
+
+onMounted(() => {
+  nextTick(() => {
+    if (props.showExample && store.getters.getShowExampleTips) {
+      store.dispatch("showExampleTips");
+      driverObj.setSteps([
+        {
+          element: "#example-btn",
+          popover: {
+            side: "bottom",
+            title: t("Search.Example.Examples"),
+            description: t("Search.Example.ClickHereForExamples"),
+            onNextClick(): void {
+              exampleDialog.value = true;
+
+              setTimeout(() => {
+                driverObj.moveNext();
+              }, 500);
+            },
+          },
+        },
+        {
+          element: "#example-card-0",
+          popover: {
+            side: "bottom",
+            title: t("Search.Example.Examples"),
+            description: t("Search.Example.ClickHereForHomogeneousTableExample"),
+            onNextClick(): void {
+              exampleDialog.value = false;
+              useExampleOnClick(homoExamples.value[0].onClick)();
+              driverObj.moveNext();
+            },
+            onPrevClick(): void {
+              exampleDialog.value = false;
+              driverObj.movePrevious();
+            },
+          },
+        },
+      ]);
+
+      driverObj.drive();
+    }
+  });
+});
 </script>
 
 <template>
@@ -301,9 +371,9 @@ watch(
           v-model="heterDialog"
           width="1024"
         >
-          <template #activator="{ props }">
+          <template #activator="{ props: dialogProps }">
             <v-card
-              v-bind="props"
+              v-bind="dialogProps"
               flat
               class="border-gray-500 bg-transparent"
             >
@@ -410,29 +480,35 @@ watch(
         <v-dialog
           v-if="showExample"
           v-model="exampleDialog"
+          :persistent="exampleDialogPersistent"
           class="mx-auto w-full max-w-2xl"
         >
           <template #activator="{ props: dialogProps }">
-            <v-tooltip v-model="showExampleTips">
-              <template #activator="{ props: tooltipProps }">
-                <v-btn
-                  v-bind="{ ...dialogProps, ...tooltipProps }"
-                  variant="flat"
-                  color="transparent"
-                  icon="mdi-file-question"
-                />
-              </template>
-              <span>{{ t("Search.Example.ClickHereForExamples") }}</span>
-            </v-tooltip>
+            <v-btn
+              v-bind="dialogProps"
+              id="example-btn"
+              variant="flat"
+              color="transparent"
+              icon="mdi-list-box"
+              @click="handleClickShowExample"
+            />
           </template>
 
           <v-card
+            id="example-dialog"
             flat
             class="p-6"
             :loading="exampleLoading"
           >
-            <div class="text-4xl">
-              {{ t("Search.Example.Examples") }}
+            <div class="flex items-start justify-between">
+              <span class="text-4xl">
+                {{ t("Search.Example.Examples") }}
+              </span>
+              <v-btn
+                variant="flat"
+                icon="mdi-close"
+                @click="exampleDialog = false"
+              />
             </div>
             <div class="my-1 text-gray-500">
               {{ t("Search.Example.ExamplesDescription") }}
@@ -441,12 +517,15 @@ watch(
             <div class="text-h6 my-2">
               {{ t("Search.Example.HomogeneousExamples") }}
             </div>
-            <div>
+            <div
+              v-for="(example, i) in homoExamples"
+              :key="example.name"
+              class="flex items-center"
+            >
               <v-card
-                v-for="example in homoExamples"
-                :key="example.name"
+                :id="`example-card-${i}`"
                 flat
-                class="my-2 flex items-center rounded-md border px-4 py-2"
+                class="my-2 flex flex-1 items-center rounded-md border p-4"
                 @click="
                   () => useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
                 "
@@ -458,27 +537,28 @@ watch(
                   />
                   <div class="ml-2 text-center text-lg">{{ example.name }}</div>
                 </div>
-                <v-spacer class="flex-1"></v-spacer>
-                <div>
-                  <v-btn
-                    variant="flat"
-                    icon="mdi-download"
-                    color="transparent"
-                    @click.stop="() => useExampleOnClick(example.onClickDownload)()"
-                  />
-                </div>
               </v-card>
+              <div>
+                <v-btn
+                  variant="flat"
+                  icon="mdi-download"
+                  color="transparent"
+                  @click.stop="() => useExampleOnClick(example.onClickDownload)()"
+                />
+              </div>
             </div>
 
             <div class="text-h6 my-2">
               {{ t("Search.Example.HeterogeneousExamples") }}
             </div>
-            <div>
+            <div
+              v-for="example in heterExamples"
+              :key="example.name"
+              class="flex items-center"
+            >
               <v-card
-                v-for="example in heterExamples"
-                :key="example.name"
                 flat
-                class="my-2 flex items-center rounded-md border px-4 py-2"
+                class="my-2 flex flex-1 items-center rounded-md border p-4"
                 @click="
                   () => useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
                 "
@@ -490,16 +570,15 @@ watch(
                   />
                   <div class="ml-2 text-center text-lg">{{ example.name }}</div>
                 </div>
-                <v-spacer class="flex-1"></v-spacer>
-                <div>
-                  <v-btn
-                    variant="flat"
-                    icon="mdi-download"
-                    color="transparent"
-                    @click.stop="() => useExampleOnClick(example.onClickDownload)()"
-                  />
-                </div>
               </v-card>
+              <div>
+                <v-btn
+                  variant="flat"
+                  icon="mdi-download"
+                  color="transparent"
+                  @click.stop="() => useExampleOnClick(example.onClickDownload)()"
+                />
+              </div>
             </div>
           </v-card>
         </v-dialog>
