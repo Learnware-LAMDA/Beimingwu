@@ -22,4 +22,14 @@ export default {
   Downloading: "下载中...",
   ClickHere: "点击这里",
   ToLearnHowToDeployTheLearnware: "查看如何部署学件",
+  Example: {
+    Examples: "示例",
+    ExamplesDescription:
+      "北冥坞系统支持多种数据类型的学件查搜，涵盖了同构和异构表格、图像和文本。下述为我们提供的几个例子，以帮助您理解学件查搜的方式。",
+    HomogeneousExamples: "同构示例",
+    HeterogeneousExamples: "异构示例",
+    Table: "表格",
+    Image: "图像",
+    Text: "文本",
+  },
 };

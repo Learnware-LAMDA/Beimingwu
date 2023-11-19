@@ -23,4 +23,14 @@ export default {
   Downloading: "Downloading...",
   ClickHere: "Click here",
   ToLearnHowToDeployTheLearnware: "to show how to deploy the learnware",
+  Example: {
+    Examples: "Examples",
+    ExamplesDescription:
+      "Beimingwu supports learnware search across various data types, including homogeneous tables, images, texts, and even heterogeneous tables. Here are some examples to illustrate the learnware search method.",
+    HomogeneousExamples: "Homogeneous Examples",
+    HeterogeneousExamples: "Heterogeneous Examples",
+    Table: "Table",
+    Image: "Image",
+    Text: "Text",
+  },
 };

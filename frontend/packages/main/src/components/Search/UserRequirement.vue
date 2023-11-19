@@ -79,7 +79,7 @@ const exampleLoading = ref(false);
 const homoExamples = computed(() => [
   {
     icon: TableBtn,
-    name: t("Submit.Example.Table"),
+    name: t("Search.Example.Table"),
     onClick: (): Promise<void> => {
       emits("update:isHeterogeneous", false);
       return downloadAndLoadRKME("./static/table_homo.json", "table_homo.json");
@@ -94,7 +94,7 @@ const homoExamples = computed(() => [
   },
   {
     icon: ImageBtn,
-    name: t("Submit.Example.Image"),
+    name: t("Search.Example.Image"),
     onClick: (): Promise<void> => {
       emits("update:isHeterogeneous", false);
       return downloadAndLoadRKME("./static/image.json", "image.json");
@@ -109,7 +109,7 @@ const homoExamples = computed(() => [
   },
   {
     icon: TextBtn,
-    name: t("Submit.Example.Text"),
+    name: t("Search.Example.Text"),
     onClick: (): Promise<void> => {
       emits("update:isHeterogeneous", false);
       return downloadAndLoadRKME("./static/text.json", "text.json");
@@ -126,7 +126,7 @@ const homoExamples = computed(() => [
 const heterExamples = computed(() => [
   {
     icon: TableBtn,
-    name: t("Submit.Example.Table"),
+    name: t("Search.Example.Table"),
     onClick: (): Promise<any> => {
       return downloadAndLoadRKME("./static/table_hetero.json", "table_hetero.json")
         .then(() => fetch("./static/table_hetero_input.json"))
@@ -421,14 +421,14 @@ watch(
             :loading="exampleLoading"
           >
             <div class="text-4xl">
-              {{ t("Submit.Example.Examples") }}
+              {{ t("Search.Example.Examples") }}
             </div>
             <div class="my-1 text-gray-500">
-              {{ t("Submit.Example.ExamplesDescription") }}
+              {{ t("Search.Example.ExamplesDescription") }}
             </div>
 
             <div class="text-h6 my-2">
-              {{ t("Submit.Example.HomogeneousExamples") }}
+              {{ t("Search.Example.HomogeneousExamples") }}
             </div>
             <div>
               <v-card
@@ -460,7 +460,7 @@ watch(
             </div>
 
             <div class="text-h6 my-2">
-              {{ t("Submit.Example.HeterogeneousExamples") }}
+              {{ t("Search.Example.HeterogeneousExamples") }}
             </div>
             <div>
               <v-card
