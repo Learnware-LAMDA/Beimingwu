@@ -1,24 +1,24 @@
 interface State {
-  shownExampleTips: boolean;
+  exampleTipsCount: number;
 }
 
 const tips = {
   state: {
-    shownExampleTips: false,
+    exampleTipsCount: 0,
   },
   getters: {
-    getShownExampleTips(state: State): boolean {
-      return state.shownExampleTips;
+    getShowExampleTips(state: State): boolean {
+      return state.exampleTipsCount <= 3;
     },
   },
   mutations: {
-    setShowExampleTips(state: State, shownExampleTips: boolean): void {
-      state.shownExampleTips = shownExampleTips;
+    incrementExampleTips(state: State): void {
+      state.exampleTipsCount += 1;
     },
   },
   actions: {
-    showExampleTips({ commit }: { commit: (name: string, value: boolean) => void }): void {
-      commit("setShowExampleTips", true);
+    showExampleTips({ commit }: { commit: (name: string) => void }): void {
+      commit("incrementExampleTips");
     },
   },
 };
