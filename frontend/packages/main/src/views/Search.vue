@@ -359,15 +359,6 @@ onMounted(() => init());
       >
         <template #prepend>
           <v-btn
-            v-if="isHeterogeneous"
-            block
-            variant="outlined"
-            color="red"
-            @click="() => (isHeterogeneous = false)"
-          >
-            {{ t("Search.TurnOffHeterogeneousSearch") }}
-          </v-btn>
-          <v-btn
             v-if="isAdmin"
             block
             class="mr-2"
@@ -468,7 +459,7 @@ onMounted(() => init());
         <v-btn
           class="px-8"
           variant="outlined"
-          color="red"
+          color="primary"
           @click="() => (isHeterogeneous = true)"
         >
           {{ t("Search.HeterogeneousSearch") }}

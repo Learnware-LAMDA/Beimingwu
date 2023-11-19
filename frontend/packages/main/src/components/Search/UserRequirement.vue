@@ -379,9 +379,17 @@ onMounted(() => {
             >
               <v-btn
                 block
-                variant="outlined"
+                color="primary"
               >
                 {{ t("Search.StartHeterogeneousSearch") }}
+              </v-btn>
+              <v-btn
+                block
+                variant="outlined"
+                class="mt-2"
+                @click="() => emits('update:isHeterogeneous', false)"
+              >
+                {{ t("Search.TurnOffHeterogeneousSearch") }}
               </v-btn>
             </v-card>
           </template>
