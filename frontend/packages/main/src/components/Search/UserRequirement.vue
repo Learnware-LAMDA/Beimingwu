@@ -308,9 +308,9 @@ onMounted(() => {
           v-model="heterDialog"
           width="1024"
         >
-          <template #activator="{ props }">
+          <template #activator="{ props: dialogProps }">
             <v-card
-              v-bind="props"
+              v-bind="dialogProps"
               flat
               class="border-gray-500 bg-transparent"
             >
@@ -425,7 +425,7 @@ onMounted(() => {
               id="example-btn"
               variant="flat"
               color="transparent"
-              icon="mdi-file-question"
+              icon="mdi-list-box"
               @click="() => driverObj.isActive() && driverObj.destroy()"
             />
           </template>
@@ -446,12 +446,15 @@ onMounted(() => {
             <div class="text-h6 my-2">
               {{ t("Search.Example.HomogeneousExamples") }}
             </div>
-            <div>
+            <div
+              v-for="(example, i) in homoExamples"
+              :key="example.name"
+              class="flex items-center"
+            >
               <v-card
-                v-for="example in homoExamples"
-                :key="example.name"
+                :id="`example-card-${i}`"
                 flat
-                class="my-2 flex items-center rounded-md border px-4 py-2"
+                class="my-2 flex flex-1 items-center rounded-md border p-4"
                 @click="
                   () => useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
                 "
@@ -463,27 +466,28 @@ onMounted(() => {
                   />
                   <div class="ml-2 text-center text-lg">{{ example.name }}</div>
                 </div>
-                <v-spacer class="flex-1"></v-spacer>
-                <div>
-                  <v-btn
-                    variant="flat"
-                    icon="mdi-download"
-                    color="transparent"
-                    @click.stop="() => useExampleOnClick(example.onClickDownload)()"
-                  />
-                </div>
               </v-card>
+              <div>
+                <v-btn
+                  variant="flat"
+                  icon="mdi-download"
+                  color="transparent"
+                  @click.stop="() => useExampleOnClick(example.onClickDownload)()"
+                />
+              </div>
             </div>
 
             <div class="text-h6 my-2">
               {{ t("Search.Example.HeterogeneousExamples") }}
             </div>
-            <div>
+            <div
+              v-for="example in heterExamples"
+              :key="example.name"
+              class="flex items-center"
+            >
               <v-card
-                v-for="example in heterExamples"
-                :key="example.name"
                 flat
-                class="my-2 flex items-center rounded-md border px-4 py-2"
+                class="my-2 flex flex-1 items-center rounded-md border p-4"
                 @click="
                   () => useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
                 "
@@ -495,16 +499,15 @@ onMounted(() => {
                   />
                   <div class="ml-2 text-center text-lg">{{ example.name }}</div>
                 </div>
-                <v-spacer class="flex-1"></v-spacer>
-                <div>
-                  <v-btn
-                    variant="flat"
-                    icon="mdi-download"
-                    color="transparent"
-                    @click.stop="() => useExampleOnClick(example.onClickDownload)()"
-                  />
-                </div>
               </v-card>
+              <div>
+                <v-btn
+                  variant="flat"
+                  icon="mdi-download"
+                  color="transparent"
+                  @click.stop="() => useExampleOnClick(example.onClickDownload)()"
+                />
+              </div>
             </div>
           </v-card>
         </v-dialog>
