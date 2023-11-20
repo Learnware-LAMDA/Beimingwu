@@ -128,9 +128,6 @@ function fetchByFilterAndPage(
             heteroNotWorking.value = true;
             return;
           }
-          console.log(isHetero);
-          console.log(res.data.is_hetero);
-          console.log(heteroNotWorking.value);
 
           multiRecommendedLearnwareItems.value = res.data.learnware_list_multi.map((item) => ({
             id: item.learnware_id,
