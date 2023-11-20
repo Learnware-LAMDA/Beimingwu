@@ -83,12 +83,13 @@ const homoExamples = computed(() => [
     icon: TableBtn,
     name: t("Search.Example.Table"),
     onClick: (): Promise<void> => {
-      emits("update:isHeterogeneous", false);
-      dataType.value = "Table";
-      taskType.value = "";
-      libraryType.value = "";
-      scenarioList.value = [];
-      return downloadAndLoadRKME("./static/table_homo.json", "table_homo.json");
+      return downloadAndLoadRKME("./static/table_homo.json", "table_homo.json").then(() => {
+        emits("update:isHeterogeneous", false);
+        dataType.value = "Table";
+        taskType.value = "";
+        libraryType.value = "";
+        scenarioList.value = [];
+      });
     },
     onClickDownload: (): Promise<void> => {
       return fetch("./static/table_homo.json")
@@ -102,12 +103,13 @@ const homoExamples = computed(() => [
     icon: ImageBtn,
     name: t("Search.Example.Image"),
     onClick: (): Promise<void> => {
-      emits("update:isHeterogeneous", false);
-      dataType.value = "Image";
-      taskType.value = "";
-      libraryType.value = "";
-      scenarioList.value = [];
-      return downloadAndLoadRKME("./static/image.json", "image.json");
+      return downloadAndLoadRKME("./static/image.json", "image.json").then(() => {
+        emits("update:isHeterogeneous", false);
+        dataType.value = "Image";
+        taskType.value = "";
+        libraryType.value = "";
+        scenarioList.value = [];
+      });
     },
     onClickDownload: (): Promise<void> => {
       return fetch("./static/image.json")
@@ -121,12 +123,13 @@ const homoExamples = computed(() => [
     icon: TextBtn,
     name: t("Search.Example.Text"),
     onClick: (): Promise<void> => {
-      emits("update:isHeterogeneous", false);
-      dataType.value = "Text";
-      taskType.value = "";
-      libraryType.value = "";
-      scenarioList.value = [];
-      return downloadAndLoadRKME("./static/text.json", "text.json");
+      return downloadAndLoadRKME("./static/text.json", "text.json").then(() => {
+        emits("update:isHeterogeneous", false);
+        dataType.value = "Text";
+        taskType.value = "";
+        libraryType.value = "";
+        scenarioList.value = [];
+      });
     },
     onClickDownload: (): Promise<void> => {
       return fetch("./static/text.json")
@@ -142,14 +145,14 @@ const heterExamples = computed(() => [
     icon: TableBtn,
     name: t("Search.Example.Table"),
     onClick: (): Promise<any> => {
-      dataType.value = "Table";
-      taskType.value = "";
-      libraryType.value = "";
-      scenarioList.value = [];
       return downloadAndLoadRKME("./static/table_hetero.json", "table_hetero.json")
         .then(() => fetch("./static/table_hetero_input.json"))
         .then((res) => res.text())
         .then((text) => {
+          dataType.value = "Table";
+          taskType.value = "";
+          libraryType.value = "";
+          scenarioList.value = [];
           dataTypeDescription.value = JSON.parse(text);
           tempDataTypeDescription.value = JSON.parse(text);
           heterDialog.value = false;
