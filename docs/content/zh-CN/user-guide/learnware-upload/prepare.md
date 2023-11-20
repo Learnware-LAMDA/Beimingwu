@@ -8,7 +8,7 @@
 
 创建上述四个文件时，需要使用 `learnware` Python 包，其具体安装方式可查看：[环境安装](/zh-CN/overview/installation)。
 
-为方便大家构建学件，我们提供了[学件模板](http://www.lamda.nju.edu.cn/learnware/static/learnware-template.zip)，大家可在其基础上构建自己的学件。
+为方便大家构建学件，我们提供了[学件模板](http://www.bmwu.cloud/static/learnware-template.zip)，大家可在其基础上构建自己的学件。
 
 接下来，我们将详细介绍上述四个文件的具体内容。
 

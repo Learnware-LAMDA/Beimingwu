@@ -9,7 +9,7 @@ In the Beimingwu system, each learnware is a `zip` package, which should contain
 
 When creating these four files, you need to use the `learnware` Python package. You can find specific installation instructions here: [Installation Guide](/en/overview/installation).
 
-To facilitate the construction of a learnware, we provide a [learnware template](http://www.lamda.nju.edu.cn/learnware/static/learnware-template.zip) that you can use as a basis for building your own learnware.
+To facilitate the construction of a learnware, we provide a [learnware template](https://www.bmwu.cloud/static/learnware-template.zip) that you can use as a basis for building your own learnware.
 
 Next, we will provide detailed explanations for the content of these four files.
 
