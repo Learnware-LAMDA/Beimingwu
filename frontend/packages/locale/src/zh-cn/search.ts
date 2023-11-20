@@ -11,7 +11,7 @@ export default {
   HeterogeneousSearch: "异构查搜",
   TurnOffHeterogeneousSearch: "关闭异构查搜",
   UploadHeterogeneousRequirement: "上传异构需求",
-  StartHeterogeneousSearch: "开始异构查搜",
+  StartHeterogeneousSearch: "开启异构查搜",
   ChangeHeterogeneousRequirement: "更改异构需求",
   HeterogeneousNotWorkingTips: "异构查搜功能当前不可用，请关闭异构查搜或",
   HeterogeneousNotWorkingTips2: "查看如何进行异构查搜",
