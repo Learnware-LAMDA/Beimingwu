@@ -29,32 +29,32 @@ const filters = ref<Filter>({
   files: [],
 });
 const multiRecommendedTips = ref(true);
-const multiRecommendedLearnwareItems = ref<LearnwareCardInfo[]>(
+const multiRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
   Array.from({ length: 2 }, () => ({
     id: "",
-    name: "Learnware",
+    name: t("Home.Cover.LearnwareName"),
     dataType: "Table",
     taskType: "Classification",
     libraryType: "Scikit-learn",
     scenarioList: [],
     files: [],
-    description: "This is a learnware.",
+    description: t("Home.Cover.LearnwareDescription"),
     lastModify: new Date().toISOString(),
     tags: [],
   })),
 );
 const multiRecommendedMatchScore = ref(0);
 const singleRecommendedTips = ref(true);
-const singleRecommendedLearnwareItems = ref<LearnwareCardInfo[]>(
+const singleRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
   Array.from({ length: 20 }, () => ({
     id: "",
-    name: "Learnware",
+    name: t("Home.Cover.LearnwareName"),
     dataType: "Table",
     taskType: "Classification",
     libraryType: "Scikit-learn",
     scenarioList: [],
     files: [],
-    description: "This is a learnware.",
+    description: t("Home.Cover.LearnwareDescription"),
     lastModify: new Date().toISOString(),
     tags: [],
   })),
@@ -105,18 +105,24 @@ onMounted(() => {
         .add({
           targets: easeLoading,
           value: [1, 0],
-          duration: 800,
+          duration: 100,
           easing: "linear",
         })
         .add(
           {
             targets: easeShowMultiRecommended,
             value: [0, 1],
-            duration: 800,
+            duration: 100,
             easing: "linear",
           },
-          "-=800",
-        );
+          "-=100",
+        )
+        .add({
+          targets: easeShowMultiRecommended,
+          value: [1, 1],
+          duration: 800,
+          easing: "linear",
+        });
     });
   });
 });
@@ -153,7 +159,7 @@ onMounted(() => {
     </div>
 
     <scroll-animate
-      class="h-[600vh]"
+      class="h-[300vh]"
       @progress="handleProgress"
     >
       <template #default>
@@ -283,11 +289,11 @@ onMounted(() => {
             </div>
 
             <div class="flex-1 justify-start overflow-hidden bg-gray-200 md:flex">
-              <div class="no-scroll h-[40vh] md:w-1/4 md:min-w-[20rem]">
+              <div class="no-scroll h-[40%] md:h-full md:w-1/4 md:min-w-[20rem]">
                 <user-requirement
                   v-model="filters"
                   :show-example="false"
-                  class="h-[60vh] w-[150%] origin-top-left scale-[calc(200%/3)] transform md:h-[120vh]"
+                  class="h-[60%] w-[150%] origin-top-left scale-[calc(200%/3)] transform md:h-[150%]"
                 />
               </div>
 
