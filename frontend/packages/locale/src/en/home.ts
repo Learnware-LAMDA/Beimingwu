@@ -5,11 +5,19 @@ export default {
       "Based on the learnware paradigm, Beimingwu systematically covers the entire learnware process from submission to deployment, helping users identify and reuse learnwares without starting from scratch.",
     Try: "Try It Out",
     Submit: "Be A Developer",
+    LearnwareName: "Learnware",
+    LearnwareDescription: "This is a learnware.",
   },
   What: {
     Title: "What is Learnware?",
     Description:
       "A learnware is a well-performed trained machine learning model with a specification which enables it to be adequately identified to reuse according to the requirement of future users who know nothing about the learnware in advance.",
+    RKMESpecification: "RKME specification",
+    SpecificationSpace: "Specification space",
+    Learnware: "Learnware",
+    LearnwareDescription: "This is a learnware.",
+    Developer: "Developer",
+    Updated: "Updated",
   },
   Why: {
     Title: "Why is a learnware dock system necessary?",

@@ -5,7 +5,7 @@ import ScrollAnimate from "../App/ScrollAnimate.vue";
 import process from "../../assets/images/home/two-stage.svg?component";
 import anime from "animejs";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const progress = ref(0);
 
 const t1 = anime.timeline({
@@ -263,7 +263,7 @@ const vOffset = {
                 text-anchor="start"
                 dominant-baseline="hanging"
               >
-                Learnware
+                {{ t("Home.What.Learnware") }}
               </text>
               <text
                 x="110"
@@ -273,7 +273,7 @@ const vOffset = {
                 dominant-baseline="hanging"
                 class="fill-gray-700"
               >
-                Developer
+                {{ t("Home.What.LearnwareDescription") }}
               </text>
               <rect
                 x="30"
@@ -286,20 +286,20 @@ const vOffset = {
               <rect
                 x="140"
                 y="100"
-                width="150"
+                :width="locale === 'en' ? 150 : 90"
                 height="30"
                 rx="3"
                 class="fill-gray-400"
               />
               <text
-                x="215"
-                y="115"
+                :x="locale === 'en' ? 215 : 185"
+                :y="115"
                 font-size="20"
                 class="fill-white"
                 text-anchor="middle"
                 dominant-baseline="middle"
               >
-                Classification
+                {{ t("Submit.SemanticSpecification.TaskType.Type.Classification") }}
               </text>
 
               <text
@@ -310,7 +310,7 @@ const vOffset = {
                 text-anchor="start"
                 dominant-baseline="middle"
               >
-                This is the description of a Learnware.
+                {{ t("Home.What.LearnwareDescription") }}
               </text>
 
               <text
@@ -321,7 +321,8 @@ const vOffset = {
                 text-anchor="start"
                 dominant-baseline="middle"
               >
-                Updated Just Now
+                {{ t("Home.What.Updated") }}
+                {{ new Date().toLocaleDateString() }}
               </text>
 
               <use
@@ -376,7 +377,7 @@ const vOffset = {
               font-size="30"
               text-anchor="middle"
             >
-              Specification Space
+              {{ t("Home.What.SpecificationSpace") }}
             </text>
           </g>
 
@@ -425,7 +426,7 @@ const vOffset = {
               text-anchor="end"
               dominant-baseline="middle"
             >
-              RKME Specification
+              {{ t("Home.What.RKMESpecification") }}
             </textPath>
           </text>
 
@@ -455,7 +456,13 @@ const vOffset = {
               text-anchor="middle"
               dominant-baseline="middle"
             >
-              {{ ["Image", "Table", "Table"][i - 1] }}
+              {{
+                t(
+                  `Submit.SemanticSpecification.DataType.Type.${
+                    ["Image", "Table", "Table"][i - 1]
+                  }`,
+                )
+              }}
             </text>
           </g>
 

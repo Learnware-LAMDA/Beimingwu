@@ -5,11 +5,19 @@ export default {
       "北冥坞基于学件范式，首次系统性地实现了学件从上传到部署的完整流程，帮助用户有效查搜和复用学件，而无需从零开始构建机器学习模型。",
     Try: "学件查搜",
     Submit: "学件上传",
+    LearnwareName: "学件",
+    LearnwareDescription: "这是一个学件。",
   },
   What: {
     Title: "学件是什么？",
     Description:
       "学件由性能优良的机器学习模型和描述模型的规约组成。规约刻画了模型的能力，使得模型能够在未来用户事先对学件一无所知的情况下被充分识别并复用，以满足用户需求。",
+    RKMESpecification: "RKME规约",
+    SpecificationSpace: "规约空间",
+    Learnware: "学件",
+    LearnwareDescription: "这是一个学件。",
+    Developer: "开发者",
+    Updated: "更新于",
   },
   Why: {
     Title: "为什么需要学件基座系统？",

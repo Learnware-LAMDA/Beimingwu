@@ -32,29 +32,29 @@ const multiRecommendedTips = ref(true);
 const multiRecommendedLearnwareItems = ref<LearnwareCardInfo[]>(
   Array.from({ length: 2 }, () => ({
     id: "",
-    name: "Learnware",
+    name: t("Home.Cover.LearnwareName"),
     dataType: "Table",
     taskType: "Classification",
     libraryType: "Scikit-learn",
     scenarioList: [],
     files: [],
-    description: "This is a learnware.",
+    description: t("Home.Cover.LearnwareDescription"),
     lastModify: new Date().toISOString(),
     tags: [],
   })),
 );
 const multiRecommendedMatchScore = ref(0);
 const singleRecommendedTips = ref(true);
-const singleRecommendedLearnwareItems = ref<LearnwareCardInfo[]>(
+const singleRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
   Array.from({ length: 20 }, () => ({
     id: "",
-    name: "Learnware",
+    name: t("Home.Cover.LearnwareName"),
     dataType: "Table",
     taskType: "Classification",
     libraryType: "Scikit-learn",
     scenarioList: [],
     files: [],
-    description: "This is a learnware.",
+    description: t("Home.Cover.LearnwareDescription"),
     lastModify: new Date().toISOString(),
     tags: [],
   })),
@@ -105,18 +105,24 @@ onMounted(() => {
         .add({
           targets: easeLoading,
           value: [1, 0],
-          duration: 800,
+          duration: 100,
           easing: "linear",
         })
         .add(
           {
             targets: easeShowMultiRecommended,
             value: [0, 1],
-            duration: 800,
+            duration: 100,
             easing: "linear",
           },
-          "-=800",
-        );
+          "-=100",
+        )
+        .add({
+          targets: easeShowMultiRecommended,
+          value: [1, 1],
+          duration: 800,
+          easing: "linear",
+        });
     });
   });
 });
