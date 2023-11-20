@@ -54,8 +54,8 @@ const scenarioList = ref(tryScenarioList);
 
 const files = ref<File[]>([]);
 
-const heterDialog = ref(true);
-const heterTab = ref<"dataType" | "taskType">("dataType");
+const heteroDialog = ref(true);
+const heteroTab = ref<"dataType" | "taskType">("dataType");
 const dataTypeDescription = ref({
   Dimension: 7,
   Description: {
@@ -137,7 +137,7 @@ const homoExamples = computed(() => [
     },
   },
 ]);
-const heterExamples = computed(() => [
+const heteroExamples = computed(() => [
   {
     icon: TableBtn,
     name: t("Search.Example.Table"),
@@ -152,7 +152,7 @@ const heterExamples = computed(() => [
         .then((text) => {
           dataTypeDescription.value = JSON.parse(text);
           tempDataTypeDescription.value = JSON.parse(text);
-          heterDialog.value = false;
+          heteroDialog.value = false;
           emits("update:isHeterogeneous", true);
         });
     },
@@ -212,7 +212,7 @@ const requirement = computed(() => ({
 }));
 
 watch(
-  () => heterDialog.value,
+  () => heteroDialog.value,
   (val) => {
     if (!val) {
       dataTypeDescription.value = tempDataTypeDescription.value;
@@ -368,7 +368,7 @@ onMounted(() => {
         </div>
 
         <v-dialog
-          v-model="heterDialog"
+          v-model="heteroDialog"
           width="1024"
         >
           <template #activator="{ props: dialogProps }">
@@ -397,7 +397,7 @@ onMounted(() => {
           <v-card class="p-4 md:p-8 md:pt-4">
             <div>
               <v-tabs
-                v-model="heterTab"
+                v-model="heteroTab"
                 align-tabs="center"
               >
                 <v-tab value="dataType">
@@ -409,7 +409,7 @@ onMounted(() => {
               </v-tabs>
             </div>
 
-            <v-window v-model="heterTab">
+            <v-window v-model="heteroTab">
               <v-window-item value="dataType">
                 <div class="flex justify-between">
                   <div class="text-h4 font-semibold">
@@ -466,7 +466,7 @@ onMounted(() => {
                 color="primary"
                 rounded
                 variant="flat"
-                @click="heterDialog = false"
+                @click="heteroDialog = false"
               >
                 {{ t("Public.Finish") }}
               </v-btn>
@@ -560,7 +560,7 @@ onMounted(() => {
               {{ t("Search.Example.HeterogeneousExamples") }}
             </div>
             <div
-              v-for="example in heterExamples"
+              v-for="example in heteroExamples"
               :key="example.name"
               class="flex items-center"
             >
