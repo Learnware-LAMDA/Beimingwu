@@ -26,9 +26,9 @@ export default {
         Name: "Feature",
         Description: "Description",
         FeatureTips:
-          "Fill in the description for each feature on the left or paste a JSON object on the right. Clarifying the description for each feature will help your learnware to be available for tasks with hetergenous feature space.",
+          "Fill in the description for each feature on the left or paste a JSON object on the right. Clarifying the description for each feature will help your learnware to be available for tasks with heterogenous feature space.",
         FeatureTipsSmall:
-          "Fill in the description for each feature or paste a JSON object. Clarifying the description for each feature will help your learnware to be available for tasks with hetergenous feature space.",
+          "Fill in the description for each feature or paste a JSON object. Clarifying the description for each feature will help your learnware to be available for tasks with heterogenous feature space.",
       },
     },
     TaskType: {
@@ -49,9 +49,9 @@ export default {
         Name: "Label",
         Description: "Description",
         LabelTips:
-          "Fill in the description for each label on the left or paste a JSON object on the right. Clarifying the description for each label will help your learnware to be available for tasks with hetergenous label space.",
+          "Fill in the description for each label on the left or paste a JSON object on the right. Clarifying the description for each label will help your learnware to be available for tasks with heterogenous label space.",
         LabelTipsSmall:
-          "Fill in the description for each label or paste a JSON object. Clarifying the description for each label will help your learnware to be available for tasks with hetergenous label space.",
+          "Fill in the description for each label or paste a JSON object. Clarifying the description for each label will help your learnware to be available for tasks with heterogenous label space.",
       },
     },
     LibraryType: {

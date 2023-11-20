@@ -11,7 +11,11 @@ export default {
   HeterogeneousSearch: "Heterogeneous Search",
   TurnOffHeterogeneousSearch: "Turn off heterogeneous search",
   UploadHeterogeneousRequirement: "Upload heterogeneous requirement",
-  StartHeterogeneousSearch: "Start heterogeneous search",
+  StartHeterogeneousSearch: "Enable heterogeneous search",
+  ChangeHeterogeneousRequirement: "Change heterogeneous requirement",
+  HeterogeneousNotWorkingTips:
+    "Heterogeneous search is currently not available. Please turn off heterogeneous search or",
+  HeterogeneousNotWorkingTips2: "learn how to perform heterogeneous search",
   RecommendedMultipleLearnware: "Recommended multiple learnware",
   RecommendedMultipleLearnwareTips:
     "The packaged learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to greater performance.",

@@ -27,7 +27,7 @@ const display = useDisplay();
 const route = useRoute();
 const router = useRouter();
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const store = useStore();
 
@@ -49,7 +49,7 @@ const singleRecommendedLearnwarePage = ref(1);
 const singleRecommendedLearnwarePageNum = ref(1);
 const singleRecommendedLearnwarePageSize = ref(Math.ceil(display.height.value / 900) * 10);
 const singleRecommendedLearnwareItems = ref<LearnwareCardInfo[]>([]);
-const isHeterogeneous = ref<boolean>(false);
+
 const rkmeTypeTable = ref<boolean>(false);
 const loading = ref(false);
 const isVerified = ref(route.query.is_verified ? route.query.is_verified === "true" : true);
@@ -75,12 +75,19 @@ const showMultiRecommended = computed(
 const multiRecommendedTips = ref(true);
 const singleRecommendedTips = ref(true);
 
-const showHeterogeneousSearchSwitch = computed(
-  () =>
-    singleRecommendedLearnwareItems.value?.length === 0 &&
-    multiRecommendedLearnwareItems.value?.length === 0 &&
-    rkmeTypeTable.value,
+const isHetero = ref<boolean>(false);
+const allowHetero = computed(
+  () => ["", "Table"].includes(filters.value.dataType) && rkmeTypeTable.value,
 );
+const heteroDialog = ref<boolean>(false);
+const remindHetero = computed(
+  () =>
+    allowHetero.value &&
+    !isHetero.value &&
+    multiRecommendedLearnwareItems.value.length === 0 &&
+    singleRecommendedLearnwareItems.value.length === 0,
+);
+const heteroNotWorking = ref<boolean>(false);
 
 function pageChange(newPage: number): void {
   singleRecommendedLearnwarePage.value = newPage;
@@ -90,10 +97,15 @@ function fetchByFilterAndPage(
   filters: Filter,
   page: number,
   isVerified: boolean = false,
-  isHeterogeneous: boolean = false,
+  isHetero: boolean = false,
 ): void {
   showError.value = false;
   loading.value = true;
+
+  heteroNotWorking.value = false;
+  multiRecommendedLearnwareItems.value = [];
+  singleRecommendedLearnwareItems.value = [];
+  singleRecommendedLearnwarePageNum.value = 1;
 
   searchLearnware({
     id: filters.id,
@@ -104,14 +116,19 @@ function fetchByFilterAndPage(
     scenarioList: filters.scenarioList,
     files: filters.files,
     isVerified,
-    input: isHeterogeneous ? filters.dataTypeDescription : undefined,
-    output: isHeterogeneous ? filters.taskTypeDescription : undefined,
+    input: isHetero ? filters.dataTypeDescription : undefined,
+    output: isHetero ? filters.taskTypeDescription : undefined,
     page,
     limit: singleRecommendedLearnwarePageSize.value,
   })
     .then((res) => {
       switch (res.code) {
         case 0: {
+          if (isHetero && !res.data.is_hetero) {
+            heteroNotWorking.value = true;
+            return;
+          }
+
           multiRecommendedLearnwareItems.value = res.data.learnware_list_multi.map((item) => ({
             id: item.learnware_id,
             username: item.username,
@@ -172,6 +189,7 @@ function handleConfirmDeleteLearnware(id: string): void {
             filters.value,
             singleRecommendedLearnwarePage.value - 1,
             isVerified.value,
+            isHetero.value,
           );
           return;
         }
@@ -248,21 +266,16 @@ watchDebounced(
 );
 
 watchDebounced(
-  () => [
-    filters.value,
-    singleRecommendedLearnwarePage.value,
-    isVerified.value,
-    isHeterogeneous.value,
-  ],
+  () => [filters.value, singleRecommendedLearnwarePage.value, isVerified.value, isHetero.value],
   (newVal) => {
-    const [newFilters, newPage, newIsVerified, newIsHeterogeneous] = newVal as [
+    const [newFilters, newPage, newIsVerified, newIsHetero] = newVal as [
       Filter,
       number,
       boolean,
       boolean,
     ];
 
-    fetchByFilterAndPage(newFilters, newPage - 1, newIsVerified, newIsHeterogeneous);
+    fetchByFilterAndPage(newFilters, newPage - 1, newIsVerified, newIsHetero);
   },
   { deep: true, debounce: 300 },
 );
@@ -270,22 +283,25 @@ watchDebounced(
 watchDebounced(
   () => filters.value.files,
   (newVal) => {
-    rkmeTypeTable.value = false;
     if (newVal.length > 0) {
-      promiseReadFile(newVal[0])
+      return promiseReadFile(newVal[0])
         .then((res: ArrayBuffer) => new TextDecoder("ascii").decode(res))
         .then((res) => JSON.parse(res))
         .then((res) => {
           if (!res.type || res.type === "RKMETableSpecification") {
             rkmeTypeTable.value = true;
+          } else {
+            rkmeTypeTable.value = false;
           }
         })
         .catch((err) => {
           console.error(err);
         });
+    } else {
+      rkmeTypeTable.value = false;
     }
   },
-  { deep: true, debounce: 300 },
+  { debounce: 300 },
 );
 
 watch(
@@ -300,12 +316,21 @@ watch(
   },
 );
 
+watch(
+  () => allowHetero.value,
+  (newVal) => {
+    if (!newVal) {
+      isHetero.value = false;
+    }
+  },
+);
+
 function init(): void {
   fetchByFilterAndPage(
     filters.value,
     singleRecommendedLearnwarePage.value - 1,
     isVerified.value,
-    isHeterogeneous.value,
+    isHetero.value,
   );
 }
 
@@ -352,7 +377,9 @@ onMounted(() => init());
     <div class="w-full lg:max-w-[460px]">
       <user-requirement
         v-model="filters"
-        v-model:is-heterogeneous="isHeterogeneous"
+        v-model:allow-hetero="allowHetero"
+        v-model:is-hetero="isHetero"
+        v-model:hetero-dialog="heteroDialog"
         class="bottom-0 w-full lg:fixed lg:max-w-[460px]"
         style="top: var(--v-layout-top)"
         :is-admin="isAdmin"
@@ -375,12 +402,36 @@ onMounted(() => init());
       ref="anchorRef"
       class="flex-1"
     >
+      <div v-if="heteroNotWorking">
+        <v-alert
+          type="info"
+          class="mx-auto max-w-[600px]"
+        >
+          {{ t("Search.HeterogeneousNotWorkingTips") }}
+          <a
+            class="underline"
+            :href="
+              locale === 'zh-cn'
+                ? 'https://docs.bmwu.cloud/zh-CN/user-guide/learnware-search.html#%E5%BC%82%E6%9E%84%E8%A1%A8%E6%A0%BC%E6%9F%A5%E6%90%9C'
+                : 'https://docs.bmwu.cloud/en/user-guide/learnware-search.html#heterogeneous-table-search'
+            "
+            target="_blank"
+          >
+            {{ t("Search.HeterogeneousNotWorkingTips2") }}
+          </a>
+        </v-alert>
+      </div>
+
       <v-card
         v-if="showMultiRecommended"
         flat
         class="mt-4 bg-transparent sm:m-2"
       >
-        <v-card-title v-if="!multiRecommendedTips">
+        <v-card-title
+          v-if="!multiRecommendedTips"
+          class="text-h5"
+        >
+          <v-icon>mdi-hexagon-multiple</v-icon>
           {{ t("Search.RecommendedMultipleLearnware") }}
         </v-card-title>
         <v-card-text
@@ -414,7 +465,11 @@ onMounted(() => init());
         flat
         class="mt-4 bg-transparent sm:m-2"
       >
-        <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">
+        <v-card-title
+          v-if="showMultiRecommended && !singleRecommendedTips"
+          class="text-h5"
+        >
+          <v-icon>mdi-hexagon</v-icon>
           {{ t("Search.RecommendedSingleLearnware") }}
         </v-card-title>
         <v-card-text
@@ -453,16 +508,16 @@ onMounted(() => init());
       </v-card>
 
       <div
-        v-if="showHeterogeneousSearchSwitch && !isHeterogeneous"
+        v-if="remindHetero"
         class="text-center"
       >
         <v-btn
           class="px-8"
-          variant="outlined"
+          variant="flat"
           color="primary"
-          @click="() => (isHeterogeneous = true)"
+          @click="() => (heteroDialog = true)"
         >
-          {{ t("Search.HeterogeneousSearch") }}
+          {{ t("Search.StartHeterogeneousSearch") }}
         </v-btn>
       </div>
     </div>

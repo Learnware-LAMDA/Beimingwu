@@ -91,7 +91,6 @@ function handleClickSetRole(id: number, role: number): void {
             <v-btn
               class="opacity-0"
               icon="mdi-lock-reset"
-              disabled=""
             />
             <v-btn
               icon="mdi-file-export"
@@ -128,7 +127,7 @@ function handleClickSetRole(id: number, role: number): void {
                 class="my-title"
                 :model-value="item.role >= 1"
                 :disabled="!enableSetRole || item.email === 'admin@localhost'"
-                density="dense"
+                density="compact"
                 hide-details
                 @click.prevent="handleClickSetRole(item.id, item.role == 1 ? 0 : 1)"
               />
