@@ -138,7 +138,7 @@ const vOffset = {
     </div>
 
     <scroll-animate
-      class="h-[1500vh]"
+      class="h-[700vh]"
       @progress="handleProgress"
     >
       <div class="h-main-full flex flex-col items-center justify-center">
