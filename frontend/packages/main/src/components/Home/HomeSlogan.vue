@@ -29,7 +29,7 @@ const filters = ref<Filter>({
   files: [],
 });
 const multiRecommendedTips = ref(true);
-const multiRecommendedLearnwareItems = ref<LearnwareCardInfo[]>(
+const multiRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
   Array.from({ length: 2 }, () => ({
     id: "",
     name: t("Home.Cover.LearnwareName"),
