@@ -34,7 +34,7 @@ const links = computed(() => [
     <div>
       <v-btn
         v-for="link in links"
-        :key="link"
+        :key="link.name"
         :href="link.path"
         target="_blank"
         class="mx-2"
