@@ -8,7 +8,7 @@ export interface Route {
     showWhenNotLoggedIn?: boolean;
     icon: string;
     title: string;
-    variant: string;
+    variant?: "flat" | "text" | "elevated" | "tonal" | "outlined" | "plain";
     class: string;
   };
   children?: Route[];
