@@ -427,7 +427,11 @@ onMounted(() => init());
         flat
         class="mt-4 bg-transparent sm:m-2"
       >
-        <v-card-title v-if="!multiRecommendedTips">
+        <v-card-title
+          v-if="!multiRecommendedTips"
+          class="text-h5"
+        >
+          <v-icon>mdi-hexagon-multiple</v-icon>
           {{ t("Search.RecommendedMultipleLearnware") }}
         </v-card-title>
         <v-card-text
@@ -461,7 +465,11 @@ onMounted(() => init());
         flat
         class="mt-4 bg-transparent sm:m-2"
       >
-        <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">
+        <v-card-title
+          v-if="showMultiRecommended && !singleRecommendedTips"
+          class="text-h5"
+        >
+          <v-icon>mdi-hexagon</v-icon>
           {{ t("Search.RecommendedSingleLearnware") }}
         </v-card-title>
         <v-card-text
