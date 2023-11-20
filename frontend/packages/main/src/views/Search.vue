@@ -283,19 +283,22 @@ watchDebounced(
 watchDebounced(
   () => filters.value.files,
   (newVal) => {
-    rkmeTypeTable.value = false;
     if (newVal.length > 0) {
-      promiseReadFile(newVal[0])
+      return promiseReadFile(newVal[0])
         .then((res: ArrayBuffer) => new TextDecoder("ascii").decode(res))
         .then((res) => JSON.parse(res))
         .then((res) => {
           if (!res.type || res.type === "RKMETableSpecification") {
             rkmeTypeTable.value = true;
+          } else {
+            rkmeTypeTable.value = false;
           }
         })
         .catch((err) => {
           console.error(err);
         });
+    } else {
+      rkmeTypeTable.value = false;
     }
   },
   { debounce: 300 },
