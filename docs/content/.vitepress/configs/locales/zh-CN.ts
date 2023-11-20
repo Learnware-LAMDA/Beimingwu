@@ -10,7 +10,7 @@ const zhCN: LocaleSpecificConfig & {
   title: "北冥坞文档",
   changeLang: "语言",
   themeConfig: {
-    logo: "/logo.svg",
+    logo: "/logo-no-text.svg",
     nav: [
       { text: "首页", link: "/zh-CN/", icon: "mdi-home" },
       {

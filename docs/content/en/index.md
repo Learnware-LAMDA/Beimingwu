@@ -6,7 +6,7 @@ hero:
   name: "Beimingwu:"
   text: "A Learnware Dock System"
   tagline: The first systematic implementation of the learnware paradigm, enabling effective learnware search and reuse without building machine learning models from scratch.
-  image: /image.jpg
+  image: /logo-no-text.svg
   actions:
     - theme: brand
       text: System Overview

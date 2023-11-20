@@ -6,7 +6,7 @@ hero:
   name: "北冥坞：学件基座系统"
   # text: "系统文档"
   tagline: 学件范式的首次系统性实现，帮助用户有效查搜和复用学件，而无需从零开始构建机器学习模型。
-  image: /image.jpg
+  image: /logo-no-text.svg
   actions:
     - theme: brand
       text: 系统介绍
