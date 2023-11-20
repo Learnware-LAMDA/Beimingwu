@@ -2,6 +2,7 @@ import context
 from context import config as C
 
 from learnware import market, specification
+from learnware.market.heterogeneous import utils as learnware_utils
 from flask import jsonify, g
 from datetime import datetime, timedelta
 from collections import defaultdict
@@ -111,6 +112,7 @@ def search_learnware(semantic_str, statistical_str, user_id, check_status=None):
 
     try:
         context.logger.info(f"stat_info in user: {user_info.stat_info}")
+        is_hetero = learnware_utils.is_hetero(stat_specs=user_info.stat_info, semantic_spec=user_info.semantic_spec)
         matching, single_learnware_list, multi_score, multi_learnware = context.engine.search_learnware(
             user_info, check_status=check_status
         )
@@ -120,7 +122,7 @@ def search_learnware(semantic_str, statistical_str, user_id, check_status=None):
         return False, "Engine search learnware error.", None
 
     # Return learnware
-    return True, "", (matching, single_learnware_list, multi_score, multi_learnware)
+    return True, "", (matching, single_learnware_list, multi_score, multi_learnware, is_hetero)
 
 
 def search_learnware_by_semantic(semantic_str, user_id, check_status=None):
