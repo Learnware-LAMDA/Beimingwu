@@ -289,11 +289,11 @@ onMounted(() => {
             </div>
 
             <div class="flex-1 justify-start overflow-hidden bg-gray-200 md:flex">
-              <div class="no-scroll h-[40vh] md:w-1/4 md:min-w-[20rem]">
+              <div class="no-scroll h-[40%] md:h-full md:w-1/4 md:min-w-[20rem]">
                 <user-requirement
                   v-model="filters"
                   :show-example="false"
-                  class="h-[60vh] w-[150%] origin-top-left scale-[calc(200%/3)] transform md:h-[120vh]"
+                  class="h-[60%] w-[150%] origin-top-left scale-[calc(200%/3)] transform md:h-[150%]"
                 />
               </div>
 
