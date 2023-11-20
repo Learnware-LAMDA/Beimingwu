@@ -10,7 +10,7 @@ const en: LocaleSpecificConfig & {
   title: "Beimingwu Docs",
   changeLang: "Language",
   themeConfig: {
-    logo: "/logo.svg",
+    logo: "/logo-no-text.svg",
     nav: [
       { text: "Home", link: "/en/", icon: "mdi-home" },
       {
