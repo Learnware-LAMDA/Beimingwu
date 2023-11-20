@@ -19,7 +19,9 @@ import TableBtn from "../../assets/images/specification/dataType/table.svg?compo
 export interface Props {
   modelValue: Filter;
   isAdmin?: boolean;
-  isHeterogeneous?: boolean;
+  allowHetero?: boolean;
+  isHetero?: boolean;
+  heteroDialog?: boolean;
   showExample?: boolean;
 }
 
@@ -27,11 +29,13 @@ const { t } = useI18n();
 
 const store = useStore();
 
-const emits = defineEmits(["update:modelValue", "update:isHeterogeneous"]);
+const emits = defineEmits(["update:modelValue", "update:isHetero", "update:heteroDialog"]);
 
 const props = withDefaults(defineProps<Props>(), {
   isAdmin: false,
-  isHeterogeneous: false,
+  allowHetero: false,
+  isHetero: false,
+  heteroDialog: false,
   showExample: true,
 });
 
@@ -54,7 +58,12 @@ const scenarioList = ref(tryScenarioList);
 
 const files = ref<File[]>([]);
 
-const heteroDialog = ref(true);
+const heteroDialog = computed({
+  get: () => props.heteroDialog,
+  set: (val) => {
+    emits("update:heteroDialog", val);
+  },
+});
 const heteroTab = ref<"dataType" | "taskType">("dataType");
 const dataTypeDescription = ref({
   Dimension: 7,
@@ -83,7 +92,7 @@ const homoExamples = computed(() => [
     icon: TableBtn,
     name: t("Search.Example.Table"),
     onClick: (): Promise<void> => {
-      emits("update:isHeterogeneous", false);
+      emits("update:isHetero", false);
       dataType.value = "Table";
       taskType.value = "";
       libraryType.value = "";
@@ -102,7 +111,7 @@ const homoExamples = computed(() => [
     icon: ImageBtn,
     name: t("Search.Example.Image"),
     onClick: (): Promise<void> => {
-      emits("update:isHeterogeneous", false);
+      emits("update:isHetero", false);
       dataType.value = "Image";
       taskType.value = "";
       libraryType.value = "";
@@ -121,7 +130,7 @@ const homoExamples = computed(() => [
     icon: TextBtn,
     name: t("Search.Example.Text"),
     onClick: (): Promise<void> => {
-      emits("update:isHeterogeneous", false);
+      emits("update:isHetero", false);
       dataType.value = "Text";
       taskType.value = "";
       libraryType.value = "";
@@ -153,7 +162,7 @@ const heteroExamples = computed(() => [
           dataTypeDescription.value = JSON.parse(text);
           tempDataTypeDescription.value = JSON.parse(text);
           heteroDialog.value = false;
-          emits("update:isHeterogeneous", true);
+          emits("update:isHetero", true);
         });
     },
     onClickDownload: (): Promise<void> => {
@@ -215,6 +224,7 @@ watch(
   () => heteroDialog.value,
   (val) => {
     if (!val) {
+      emits("update:isHetero", true);
       dataTypeDescription.value = tempDataTypeDescription.value;
       taskTypeDescription.value = tempTaskTypeDescription.value;
     }
@@ -356,7 +366,7 @@ onMounted(() => {
     </div>
 
     <div class="border-t-1 border-gray-300 p-4 pt-0">
-      <template v-if="isHeterogeneous">
+      <template v-if="allowHetero">
         <div class="text-h6 mb-5 mt-3 w-full truncate transition-all">
           <v-icon
             class="mr-3"
@@ -367,33 +377,42 @@ onMounted(() => {
           {{ t("Search.UploadHeterogeneousRequirement") }}
         </div>
 
+        <v-card
+          flat
+          class="border-gray-500 bg-transparent"
+        >
+          <v-btn
+            block
+            color="primary"
+            variant="flat"
+            @click="
+              () => {
+                heteroDialog = true;
+              }
+            "
+          >
+            {{
+              isHetero
+                ? t("Search.ChangeHeterogeneousRequirement")
+                : t("Search.StartHeterogeneousSearch")
+            }}
+          </v-btn>
+          <v-btn
+            v-if="isHetero"
+            block
+            variant="outlined"
+            class="mt-2"
+            @click="() => emits('update:isHetero', false)"
+          >
+            {{ t("Search.TurnOffHeterogeneousSearch") }}
+          </v-btn>
+        </v-card>
+
         <v-dialog
+          v-if="true"
           v-model="heteroDialog"
           width="1024"
         >
-          <template #activator="{ props: dialogProps }">
-            <v-card
-              v-bind="dialogProps"
-              flat
-              class="border-gray-500 bg-transparent"
-            >
-              <v-btn
-                block
-                color="primary"
-              >
-                {{ t("Search.StartHeterogeneousSearch") }}
-              </v-btn>
-              <v-btn
-                block
-                variant="outlined"
-                class="mt-2"
-                @click="() => emits('update:isHeterogeneous', false)"
-              >
-                {{ t("Search.TurnOffHeterogeneousSearch") }}
-              </v-btn>
-            </v-card>
-          </template>
-
           <v-card class="p-4 md:p-8 md:pt-4">
             <div>
               <v-tabs

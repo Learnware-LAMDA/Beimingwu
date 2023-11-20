@@ -73,6 +73,7 @@ function searchLearnware({
     learnware_list_single: LearnwareSearchInfo[];
     learnware_list_multi: LearnwareSearchInfo[];
     total_pages: number;
+    is_hetero: boolean;
   };
 }> {
   return getSemanticSpecification()
