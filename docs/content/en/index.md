@@ -18,14 +18,20 @@ hero:
 features:
   - title: Learnware Specification Generation
     details: The Beimingwu system provides specification generation tools, supporting multiple data types and allowing efficient local generation.
+    icon: { src: "/icons/learnware-specification-generation.svg" }
   - title: Learnware Quality Detection
     details: The Beimingwu system incorporates multiple detection mechanisms to ensure the quality of each learnware in the system.
+    icon: { src: "/icons/learnware-quality-detector.svg" }
   - title: Diverse Learnware Search
     details: The Beimingwu system supports semantic & statistical search on various data types, enabling heterogeneous tabular learnware search.
+    icon: { src: "/icons/diverse-learnware-search.svg" }
   - title: Local Learnware Deployment
     details: The Beimingwu system provides tools for learnware deployment, helping users to deploy and reuse learnwares conveniently and securely.
+    icon: { src: "/icons/local-learnware-deployment.svg" }
   - title: Data Privacy Protection
     details: The Beimingwu system ensures data privacy as the uploading, searching, and deployment of learnware doesn't require uploading local data.
+    icon: { src: "/icons/data-privacy-protection.svg" }
   - title: Fully Open Source System
     details: The Beimingwu system is open source and the learnware package is highly extensible and easy to integrate with new features.
+    icon: { src: "/icons/fully-open-source-system.svg" }
 ---
