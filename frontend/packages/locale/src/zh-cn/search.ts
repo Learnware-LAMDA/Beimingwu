@@ -28,7 +28,7 @@ export default {
   Example: {
     Examples: "示例",
     ExamplesDescription:
-      "北冥坞系统支持多种数据类型的学件查搜，涵盖了同构和异构表格、图像和文本。下述为我们提供的几个例子，以帮助您理解学件查搜的方式。",
+      "北冥坞系统初步支持基于统计规约的学件查搜，涵盖同构和异构表格、图像和文本。希望下述几个统计规约示例能帮助您理解学件查搜的方式。",
     HomogeneousExamples: "同构示例",
     HeterogeneousExamples: "异构示例",
     ClickHereForExamples: "点击这里查看示例",

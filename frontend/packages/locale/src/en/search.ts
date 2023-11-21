@@ -30,7 +30,7 @@ export default {
   Example: {
     Examples: "Examples",
     ExamplesDescription:
-      "Beimingwu supports learnware search across various data types, including homogeneous tables, images, texts, and even heterogeneous tables. Here are some examples to illustrate the learnware search method.",
+      "Beimingwu provides preliminary support for learnware search via statistical specifications, covering homogeneous and heterogeneous tables, images and texts. Below are some statistical specifications to help you understand.",
     HomogeneousExamples: "Homogeneous Examples",
     HeterogeneousExamples: "Heterogeneous Examples",
     ClickHereForExamples: "Click here for examples",
