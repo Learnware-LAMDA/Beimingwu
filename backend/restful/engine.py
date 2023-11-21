@@ -47,6 +47,7 @@ class SearchLearnware(flask_restful.Resource):
         semantic_str = request.form.get("semantic_specification")
         is_verified = request.form.get("is_verified", "true")
         learnware_id = request.form.get("learnware_id", None)
+        is_hetero = False
 
         if semantic_str is None:
             return {"code": 21, "msg": f"Request parameters error."}, 200
@@ -98,6 +99,9 @@ class SearchLearnware(flask_restful.Resource):
                 status, msg, ret = adv_engine.search_learnware(
                     semantic_str, statistical_str, user_id, check_status=check_status
                 )
+                if ret is not None:
+                    is_hetero = ret[-1]
+                    ret = ret[:-1]
                 pass
 
         print(msg)
@@ -163,6 +167,7 @@ class SearchLearnware(flask_restful.Resource):
                 "data": {
                     "learnware_list_multi": mul_list,
                     "learnware_list_single": sin_list,
+                    "is_hetero": is_hetero,
                 },
             }
             self.set_learnware_info(result["data"]["learnware_list_single"])
@@ -183,6 +188,7 @@ class SearchLearnware(flask_restful.Resource):
             "data": {
                 "learnware_list_multi": [],
                 "learnware_list_single": [],
+                "is_hetero": is_hetero,
                 "page": page,
                 "limit": limit,
                 "total_pages": (n + limit - 1) // limit,
