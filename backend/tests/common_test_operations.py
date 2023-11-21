@@ -138,7 +138,6 @@ def test_learnware_semantic_specification_table():
 
 
 def add_learnware_to_engine(learnware_id, headers):
-    print(f"add_learnware_to_engine: {learnware_id}")
     dbops.update_learnware_verify_status(learnware_id, LearnwareVerifyStatus.SUCCESS)
     learnware_file = context.get_learnware_verify_file_path(learnware_id)
     semantic_spec_file = learnware_file[:-4] + ".json"
@@ -150,6 +149,9 @@ def add_learnware_to_engine(learnware_id, headers):
     print(learnware_file)
 
     redis_utils.publish_reload_learnware(learnware_id)
+
+    os.remove(learnware_file)
+    os.remove(semantic_spec_file)
     pass
 
 

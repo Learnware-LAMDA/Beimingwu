@@ -159,12 +159,17 @@ class UpdateLearnwareApi(flask_restful.Resource):
     def post(self):
         semantic_specification_str = request.form.get("semantic_specification")
         learnware_id = request.form.get("learnware_id")
+        user_id = flask_jwt_extended.get_jwt_identity()
 
-        verify_status = database.get_learnware_verify_status(learnware_id)
+        learnware_info = database.get_learnware_by_learnware_id(learnware_id)
+
+        if user_id != learnware_info["user_id"] and not database.check_user_admin(user_id):
+            return {"code": 31, "msg": "Permission denied."}, 200
+
+        verify_status = learnware_info["verify_status"]
         if verify_status == LearnwareVerifyStatus.PROCESSING.value:
             return {"code": 51, "msg": "Learnware is verifying."}, 200
 
-        print(semantic_specification_str)
         semantic_specification, err_msg = engine_helper.parse_semantic_specification(semantic_specification_str)
         if semantic_specification is None:
             return {"code": 41, "msg": err_msg}, 200
@@ -174,6 +179,8 @@ class UpdateLearnwareApi(flask_restful.Resource):
             learnware_file = request.files.get("learnware_file")
         learnware_path = context.get_learnware_verify_file_path(learnware_id)
         learnware_semantic_spec_path = learnware_path[:-4] + ".json"
+
+        learnware_in_engine = not os.path.exists(learnware_path)
 
         if learnware_file is None:
             if EasySemanticChecker.check_semantic_spec(semantic_specification) == EasySemanticChecker.INVALID_LEARNWARE:
@@ -185,12 +192,11 @@ class UpdateLearnwareApi(flask_restful.Resource):
             check_result, msg = engine_helper.check_learnware_file(semantic_specification, learnware_path)
             if not check_result:
                 return {"code": 51, "msg": msg}, 200
+            pass
 
-        with open(learnware_semantic_spec_path, "w") as f:
-            json.dump(semantic_specification, f)
         database.update_learnware_timestamp(learnware_id)
 
-        if verify_status != LearnwareVerifyStatus.PROCESSING.value:
+        if learnware_in_engine:
             print(f"update learnware: {learnware_id}")
 
             if context.engine.get_learnware_by_ids(learnware_id) is not None:
@@ -202,9 +208,15 @@ class UpdateLearnwareApi(flask_restful.Resource):
                     check_status=EasySemanticChecker.NONUSABLE_LEARNWARE,
                 )
 
-            database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
+            redis_utils.publish_reload_learnware(learnware_id)
+        else:
+            with open(learnware_semantic_spec_path, "w") as f:
+                json.dump(semantic_specification, f)
+                pass
+            pass
 
-        redis_utils.publish_reload_learnware(learnware_id)
+        database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
+
         return {"code": 0, "msg": "success"}, 200
 
 

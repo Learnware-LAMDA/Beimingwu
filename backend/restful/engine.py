@@ -64,7 +64,9 @@ class SearchLearnware(flask_restful.Resource):
 
         # Acquire check_status
         if is_verified == "false":
-            # TODO: requires administrator rights
+            if user_id is None or not dbops.check_user_admin(user_id):
+                return {"code": 61, "msg": "cannot search unverified learnware."}, 200
+
             check_status = BaseChecker.NONUSABLE_LEARNWARE
         else:
             check_status = BaseChecker.USABLE_LEARWARE
@@ -234,10 +236,10 @@ class DownloadLearnware(flask_restful.Resource):
         if learnware_info["verify_status"] != LearnwareVerifyStatus.SUCCESS.value:
             # it is an unverified learnware
             if user_id is None:
-                return {"code": 51, "msg": "cannot download unverified learnware."}, 200
+                return {"code": 61, "msg": "cannot download unverified learnware."}, 200
             elif user_id != learnware_info["user_id"]:
                 if not dbops.check_user_admin(user_id):
-                    return {"code": 52, "msg": "cannot download unverified learnware."}, 200
+                    return {"code": 62, "msg": "cannot download unverified learnware."}, 200
                 pass
             pass
 
@@ -291,11 +293,32 @@ class LearnwareInfo(flask_restful.Resource):
 
 
 class DownloadMultiLearnware(flask_restful.Resource):
+    @flask_jwt_extended.jwt_required(optional=True)
     def get(self):
         learnware_ids = request.args.getlist("learnware_ids")
 
         if learnware_ids is None or not isinstance(learnware_ids, list):
             return {"code": 21, "msg": "Request parameters error."}, 200
+
+        user_id = flask_jwt_extended.get_jwt_identity()
+        if user_id is not None:
+            user_is_admin = dbops.check_user_admin(user_id)
+        else:
+            user_is_admin = False
+            pass
+
+        for learnware_id in learnware_ids:
+            learnware_info = dbops.get_learnware_by_learnware_id(learnware_id)
+            if learnware_info["verify_status"] != LearnwareVerifyStatus.SUCCESS.value:
+                # it is an unverified learnware
+                if user_id is None:
+                    return {"code": 61, "msg": "cannot download unverified learnware."}, 200
+                elif user_id != learnware_info["user_id"]:
+                    if not user_is_admin:
+                        return {"code": 62, "msg": "cannot download unverified learnware."}, 200
+                    pass
+                pass
+            pass
 
         try:
             learnware_paths = [
