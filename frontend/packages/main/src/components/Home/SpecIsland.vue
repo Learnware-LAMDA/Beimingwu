@@ -1,39 +1,29 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick, onBeforeUnmount } from "vue";
+import { ref } from "vue";
+import { useIntersectionObserver } from "@vueuse/core";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
-let observer: IntersectionObserver;
 const active = ref(false);
 const reference = ref<HTMLElement>();
 
-onMounted(() => {
-  nextTick(() => {
-    observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.intersectionRatio > 0.6) {
-            active.value = true;
-          }
-          if (entry.intersectionRatio < 0.1) {
-            active.value = false;
-          }
-        });
-      },
-      {
-        root: null,
-        rootMargin: "0px",
-        threshold: [0.1, 0.6],
-      },
-    );
-    reference.value && observer.observe(reference.value);
-  });
-});
-
-onBeforeUnmount(() => {
-  observer && observer.disconnect();
-});
+useIntersectionObserver(
+  reference,
+  ([entry]) => {
+    if (entry.intersectionRatio > 0.7) {
+      active.value = true;
+    }
+    if (entry.intersectionRatio < 0.1) {
+      active.value = false;
+    }
+  },
+  {
+    root: null,
+    rootMargin: "0px",
+    threshold: [0.1, 0.7],
+  },
+);
 </script>
 
 <template>
