@@ -29,9 +29,11 @@ After completing the search, the system will display the results for single lear
 
 ### Heterogeneous Table Search
 
-For tabular data, regular search can only be conducted within learnwares with the same feature space dimensions. When there are no learnwares with matching dimensions in the learnware dock system, regular search will return an empty list. When you submit a statistical specification for tabular data and select task types among "classification" and "regression", a message will appear on the page reminding you that you can enable heterogeneous search.
+For tabular data, regular search can only be conducted within learnwares with the same dimension of the feature space. When there are no learnwares with matching dimension in the learnware dock system, regular search will return an empty result. When you submit a statistical specification for tabular data, a message will appear on the page reminding you that you can enable heterogeneous search.
 
-When you choose to enable heterogeneous table search, the system will require you to provide semantic information for each dimension. This can be done either by manual input or by uploading a JSON file describing semantics information of each feature. The JSON file is as follows:
+#### How to Enable Heterogeneous Search?
+
+When you choose to enable heterogeneous table search, the system will require you to provide semantic information for each dimension. This can be done either by manually filling in or directly uploading a JSON file describing semantics information of each feature. The format of the JSON file is as follows:
 
 ```json
 {
@@ -43,7 +45,9 @@ When you choose to enable heterogeneous table search, the system will require yo
 }
 ```
 
-It is worth noting that recommended models with different feature spaces cannot directly predict your task. Please refer to the "[Learnware Deployment](/zh-CN/user-guide/learnware-deploy)" page for guidance on deploying heterogeneous table learnwares.
+Please ensure that the "Dimension", the range of indices in "Description", and the dimensions of the statistical specification are consistent. Otherwise, the heterogeneous function cannot be properly enabled. 
+
+It is worth noting that recommended models with different feature spaces cannot directly predict on your task. Please refer to the "[Learnware Deployment](/en/user-guide/learnware-deploy)" page for guidance about deploying heterogeneous table learnwares.
 
 ## Searching through the learnware Package
 
