@@ -30,6 +30,10 @@ class TestEngine(unittest.TestCase):
         testops.url_request(
             "auth/register", {"username": "test", "password": "test", "email": "test@localhost", "confirm_email": False}
         )
+        testops.url_request(
+            "auth/register",
+            {"username": "test2", "password": "test", "email": "test2@localhost", "confirm_email": False},
+        )
         TestEngine.learnware_id = testops.add_test_learnware("test@localhost", "test")
 
     def tearDown(
@@ -43,8 +47,8 @@ class TestEngine(unittest.TestCase):
         testops.cleanup_folder()
         pass
 
-    def login(self):
-        return testops.login("test@localhost", "test")
+    def login(self, email="test@localhost"):
+        return testops.login(email, "test")
 
     def test_semantic_specification(self):
         headers = self.login()
@@ -237,6 +241,23 @@ class TestEngine(unittest.TestCase):
         self.assertEqual(os.path.getsize(downloaded_filename), os.path.getsize(learnware_filename))
 
         os.remove(downloaded_filename)
+        pass
+
+    def test_download_learnware_unverified_not_owner(self):
+        learnware_id = testops.add_test_learnware_unverified("test@localhost", "test", "test_learnware.zip")
+        headers = self.login(email="test2@localhost")
+        result = testops.url_request(
+            "engine/download_learnware",
+            {"learnware_id": learnware_id},
+            headers=headers,
+            method="get",
+            return_response=True,
+        )
+
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json()["code"], 52)
+
+        testops.delete_learnware(learnware_id, headers=self.login())
         pass
 
     def test_learnware_info(self):

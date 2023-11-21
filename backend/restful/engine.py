@@ -221,11 +221,25 @@ class SearchLearnware(flask_restful.Resource):
 
 
 class DownloadLearnware(flask_restful.Resource):
+    @flask_jwt_extended.jwt_required(optional=True)
     def get(self):
+        user_id = flask_jwt_extended.get_jwt_identity()
         learnware_id = request.args.get("learnware_id")
 
         if learnware_id is None:
             return {"code": 21, "msg": "Request parameters error."}, 200
+
+        learnware_info = dbops.get_learnware_by_learnware_id(learnware_id)
+
+        if learnware_info["verify_status"] != LearnwareVerifyStatus.SUCCESS.value:
+            # it is an unverified learnware
+            if user_id is None:
+                return {"code": 51, "msg": "cannot download unverified learnware."}, 200
+            elif user_id != learnware_info["user_id"]:
+                if not dbops.check_user_admin(user_id):
+                    return {"code": 52, "msg": "cannot download unverified learnware."}, 200
+                pass
+            pass
 
         try:
             learnware_zip_path = context.engine.get_learnware_zip_path_by_ids(learnware_id)
@@ -234,6 +248,7 @@ class DownloadLearnware(flask_restful.Resource):
 
         if learnware_zip_path is None:
             learnware_zip_path = context.get_learnware_verify_file_path(learnware_id)
+            pass
 
         zip_directory = os.path.dirname(learnware_zip_path)
         zip_filename = os.path.basename(learnware_zip_path)
