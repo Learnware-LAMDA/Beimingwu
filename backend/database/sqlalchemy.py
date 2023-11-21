@@ -38,9 +38,7 @@ class UserLearnwareRelation(DeclarativeBase):
     user_id = Column(Integer, nullable=False)
     learnware_id = Column(Text, nullable=False)
     last_modify = Column(DateTime, nullable=False)
-    verify_status = Column(
-        String(10), nullable=False, server_default=text(LearnwareVerifyStatus.WAITING.value), index=True
-    )
+    verify_status = Column(String(10), nullable=False, server_default=LearnwareVerifyStatus.WAITING.value, index=True)
     verify_log = Column(Text, nullable=True)
 
     __table_args__ = (PrimaryKeyConstraint(user_id, learnware_id), {})
