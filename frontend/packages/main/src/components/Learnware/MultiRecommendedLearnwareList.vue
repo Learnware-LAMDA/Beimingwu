@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useDisplay } from "vuetify";
-import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
-import { downloadLearnware } from "../../request/engine";
-import JSZip from "jszip";
+import { downloadMultipleLearnwaresSync } from "../../utils/download";
 import LearnwareCard from "./LearnwareCard.vue";
 import oopsImg from "../../assets/images/public/oops.svg?url";
 import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
@@ -22,8 +20,6 @@ export interface Props {
 }
 
 const display = useDisplay();
-
-const store = useStore();
 
 const { t } = useI18n();
 
@@ -60,34 +56,7 @@ const realCols = computed(() => {
 });
 
 function downloadAll(): void {
-  downloading.value = true;
-
-  const zip = new JSZip();
-  Promise.all(
-    props.items.map((item) =>
-      downloadLearnware({ id: item.id })
-        .then((res) => res.arrayBuffer())
-        .then((arrayBuffer) => {
-          zip.file(`${item.name}.zip`, arrayBuffer);
-        }),
-    ),
-  )
-    .then(() => zip.generateAsync({ type: "blob" }))
-    .then((blob) => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "learnwares.zip";
-      a.click();
-    })
-    .catch((err) => {
-      console.error(err);
-      store.commit("setShowGlobalError", true);
-      store.commit("setGlobalErrorMsg", err.message);
-    })
-    .finally(() => {
-      downloading.value = false;
-    });
+  downloadMultipleLearnwaresSync(props.items.map((item) => item.id));
 }
 
 function getColorByScore(score: number): string {

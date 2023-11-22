@@ -5,4 +5,11 @@ function downloadLearnwareSync(id: string): void {
   window.open(url);
 }
 
-export { downloadLearnwareSync };
+function downloadMultipleLearnwaresSync(ids: string[]): void {
+  const url = `${BACKEND_URL}/engine/download_multi_learnware?${ids
+    .map((id) => `learnware_ids=${id}`)
+    .join("&")}`;
+  window.open(url);
+}
+
+export { downloadLearnwareSync, downloadMultipleLearnwaresSync };
