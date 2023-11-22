@@ -372,8 +372,9 @@ onMounted(() => init());
             href="https://docs.bmwu.cloud/zh-CN/user-guide/learnware-deploy.html"
             target="_blank"
           >
-            {{ t("Search.ClickHere") }} </a
-          >{{ t("Search.ToLearnHowToDeployTheLearnware") }}
+            {{ t("Search.ClickHere") }}
+          </a>
+          {{ t("Search.ToLearnHowToDeployTheLearnware") }}
         </v-alert>
       </div>
     </v-scroll-y-transition>
