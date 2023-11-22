@@ -484,7 +484,7 @@ onMounted(() => {
 
               <v-window-item value="taskType">
                 <div class="flex justify-between">
-                  <div class="text-h4 mt-4 font-semibold">
+                  <div class="text-h4 mt-4 text-2xl font-semibold md:text-3xl xl:text-4xl">
                     {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
                   </div>
                   <v-btn
