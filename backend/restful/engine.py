@@ -1,5 +1,6 @@
 import io
 import zipfile
+import tempfile
 from flask import Blueprint, Response, jsonify, request
 from flask import send_from_directory, send_file, make_response, g
 import context
@@ -331,16 +332,17 @@ class DownloadMultiLearnware(flask_restful.Resource):
         if None in learnware_paths:
             return {"code": 41, "msg": "Learnware not found."}, 200
 
-        zip_filename = f"Multi_{int(time.time())}_" + generate_random_str(16) + ".zip"
-        zip_filename = os.path.join(C.upload_path, zip_filename)
-        with zipfile.ZipFile(zip_filename, "w") as zip_file:
-            for learnware_path in learnware_paths:
-                filename = os.path.basename(learnware_path)
-                zip_file.write(learnware_path, arcname=filename)
+        with tempfile.TemporaryDirectory(prefix="multi_learnware_") as tempdir:
+            zip_filename = "multiple_learnwares.zip"
+            zip_filename = os.path.join(tempdir, zip_filename)
+            with zipfile.ZipFile(zip_filename, "w") as zip_file:
+                for learnware_path in learnware_paths:
+                    filename = os.path.basename(learnware_path)
+                    zip_file.write(learnware_path, arcname=filename)
 
-        res = send_file(zip_filename, as_attachment=True)
-        os.remove(zip_filename)
-        return res
+            res = send_file(zip_filename, as_attachment=True)
+            os.remove(zip_filename)
+            return res
 
 
 api.add_resource(SematicSpecification, "/semantic_specification")
