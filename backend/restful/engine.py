@@ -297,7 +297,7 @@ class DownloadMultiLearnware(flask_restful.Resource):
     def get(self):
         learnware_ids = request.args.getlist("learnware_ids")
 
-        if learnware_ids is None or not isinstance(learnware_ids, list):
+        if learnware_ids is None or not isinstance(learnware_ids, list) or len(learnware_ids) > 10:
             return {"code": 21, "msg": "Request parameters error."}, 200
 
         user_id = flask_jwt_extended.get_jwt_identity()
