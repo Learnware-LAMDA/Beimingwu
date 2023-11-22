@@ -37,7 +37,7 @@ const links = computed(() => [
         :key="link.name"
         :href="link.path"
         target="_blank"
-        class="mx-2"
+        class="sm:mx-2"
         variant="text"
         rounded="xl"
       >
