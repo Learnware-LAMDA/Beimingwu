@@ -17,7 +17,7 @@ Assuming the user knows the ID of the learnware they want to load, they can use 
 
 ```python
 learnware_id = "00000082"
-learnware_list = client.load_learnware(
+learnware = client.load_learnware(
     learnware_id=learnware_id, runnable_option="docker"
 )
 ```

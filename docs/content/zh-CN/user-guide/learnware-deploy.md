@@ -17,7 +17,7 @@ client = LearnwareClient()
 
 ```python
 learnware_id = "00000082"
-learnware_list = client.load_learnware(
+learnware = client.load_learnware(
     learnware_id=learnware_id, runnable_option="docker"
 )
 ```
