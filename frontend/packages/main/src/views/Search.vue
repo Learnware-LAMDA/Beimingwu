@@ -3,7 +3,6 @@ import { ref, computed, onMounted, watch } from "vue";
 import { watchDebounced } from "@vueuse/core";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
-import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
 import { searchLearnware } from "../request/engine";
 import { deleteLearnware } from "../request/admin";
@@ -28,8 +27,6 @@ const route = useRoute();
 const router = useRouter();
 
 const { t, locale } = useI18n();
-
-const store = useStore();
 
 const filters = ref<Filter>({
   id: "",
@@ -58,7 +55,8 @@ const showError = ref(false);
 const errorMsg = ref("");
 const errorTimer = ref();
 
-const showDeployTips = ref(false);
+const isShowDeployTips = ref(false);
+const isShownDeployTips = ref(false);
 
 const showDialog = ref(false);
 const deleteId = ref("");
@@ -82,6 +80,7 @@ const allowHetero = computed(
 const heteroDialog = ref<boolean>(false);
 const remindHetero = computed(
   () =>
+    !loading.value &&
     allowHetero.value &&
     !isHetero.value &&
     multiRecommendedLearnwareItems.value.length === 0 &&
@@ -212,10 +211,14 @@ function handleClickDownload(id: string): void {
   if (id) {
     downloadLearnwareSync(id);
 
-    if (!store.getters.getShownTips) {
-      store.dispatch("showTips");
-      showDeployTips.value = true;
-    }
+    showDeployTips();
+  }
+}
+
+function showDeployTips(): void {
+  if (!isShownDeployTips.value) {
+    isShownDeployTips.value = true;
+    isShowDeployTips.value = true;
   }
 }
 
@@ -354,7 +357,7 @@ onMounted(() => init());
       </div>
 
       <div
-        v-if="showDeployTips"
+        v-if="isShowDeployTips"
         class="fixed z-10 w-full"
       >
         <v-alert
@@ -362,15 +365,16 @@ onMounted(() => init());
           :density="display.mdAndUp.value ? 'default' : 'compact'"
           closable
           type="info"
-          @click:close="showDeployTips = false"
+          @click:close="isShowDeployTips = false"
         >
           <a
             class="underline"
             href="https://docs.bmwu.cloud/zh-CN/user-guide/learnware-deploy.html"
             target="_blank"
           >
-            {{ t("Search.ClickHere") }} </a
-          >{{ t("Search.ToLearnHowToDeployTheLearnware") }}
+            {{ t("Search.ClickHere") }}
+          </a>
+          {{ t("Search.ToLearnHowToDeployTheLearnware") }}
         </v-alert>
       </div>
     </v-scroll-y-transition>
@@ -468,6 +472,7 @@ onMounted(() => init());
           :filters="filters"
           :loading="loading"
           @page-change="pageChange"
+          @download="() => showDeployTips()"
         />
       </v-card>
       <v-card
