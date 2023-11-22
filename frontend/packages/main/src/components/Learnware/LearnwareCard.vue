@@ -194,7 +194,7 @@ function handleClickDelete(id: string): void {
           <span :style="`color: ${getColorByScore(item.matchScore)}`">{{ item.matchScore }}</span>
         </div>
         <span class="text-xs text-gray-500">
-          {{ t("Search.Updated") }} {{ dayjs(item.lastModify).fromNow() }}
+          {{ t("Search.Updated") }} {{ dayjs(item.lastModify.replace(" UTC", "")).fromNow() }}
         </span>
       </div>
 
