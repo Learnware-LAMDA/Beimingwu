@@ -101,7 +101,7 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-1 gap-0 md:grid-cols-2 md:gap-3">
+  <div class="grid grid-cols-1 gap-0 overflow-auto md:grid-cols-2 md:gap-3">
     <div class="flex max-h-[600px] flex-col">
       <v-virtual-scroll
         v-if="modelValue.Dimension > 7"

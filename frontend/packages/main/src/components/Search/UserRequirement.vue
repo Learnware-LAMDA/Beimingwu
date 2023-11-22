@@ -452,15 +452,19 @@ onMounted(() => {
               </v-tabs>
             </div>
 
-            <v-window v-model="heteroTab">
+            <v-window
+              v-model="heteroTab"
+              class="overflow-y-auto md:overflow-y-hidden"
+            >
               <v-window-item value="dataType">
                 <div class="flex justify-between">
-                  <div class="text-h4 font-semibold">
+                  <div class="text-h4 mt-2 text-2xl font-semibold md:text-3xl xl:text-4xl">
                     {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
                   </div>
                   <v-btn
                     icon="mdi-download"
                     variant="flat"
+                    :size="display.smAndUp.value ? 'default' : 'small'"
                     @click="
                       () =>
                         saveContentToFile(
