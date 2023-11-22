@@ -15,7 +15,9 @@ Next, we will provide detailed explanations for the content of these four files.
 
 ## Model Invocation File `__init__.py`
 
-To ensure that the uploaded learnware can be used by subsequent users, you need to provide interfaces for model fitting, prediction, and fine-tuning in `__init__.py`. Among these interfaces, only the `predict` interface is mandatory, while the others depend on the functionality of your model. Here is a template format for the `__init__.py` file:
+To ensure that the uploaded learnware can be used by subsequent users, you need to provide interfaces for model fitting `fit(X, y)`, prediction `predict(X)`, and fine-tuning `finetune(X, y)` in `__init__.py`. Among these interfaces, only the `predict(X)` interface is mandatory, while the others depend on the functionality of your model. 
+
+Below is a reference template for the `__init__.py` file. Please make sure that the input parameter format (the number of parameters and parameter names) for each interface in your model invocation file matches the template below.
 
 ```py
 import os
@@ -41,11 +43,24 @@ class MyModel(BaseModel):
         pass
 ```
 
-Please note that the `MyModel` class should inherit from `BaseModel` in the `learnware.model` module, and the class name (e.g., MyModel) should be specified in the learnware.yaml file later. 
+Please ensure that the `MyModel` class inherits from `BaseModel` in the `learnware.model` module, and specify the class name (e.g., MyModel) in the learnware.yaml file later. 
 
-Here `input_shape` and `output_shape` denote the dimensions of the model's input and output. For text data, `input_shape` can be simply set to (1, ). In classification tasks, `output_shape` should be (1, ) if the model directly outputs prediction labels, and (class_num, ) if the model outputs logits.
+### Input and Output Dimensions
 
-Also, if you need to import other modules from the zip package, please use relative imports in `__init__.py` and other relevant Python files. For instance:
+`input_shape` and `output_shape` represent the input and output dimensions of the model, respectively. You can refer to the following guidelines when filling them out:
+- When the data type being processed is text data, there are no specific requirements for the value of `input_shape`, and it can be filled in as `None`.
+- When the `output_shape` corresponds to tasks with variable outputs (such as object detection, text segmentation, etc.), there are no specific requirements for the value of `output_shape`, and it can be filled in as `None`.
+- For classification tasks, `output_shape` should be (1, ) if the model directly outputs predicted labels, and (class_num, ) if the model outputs logits.
+
+### File Path
+
+If you need to load certain files within the zip package in the `__init__.py` file (and any other Python files that may be involved), please follow the method shown in the template above about obtaining the `model_path`:
+- First, obtain the root directory path of the entire package by getting `dir_path`.
+- Then, based on the specific file's relative location within the package, obtain the specific file's path, `model_path`.
+
+### Module Imports
+
+Please note that module imports between Python files within the zip package should be done using **relative imports**. For instance:
 
 ```py
 from .package_name import *
@@ -67,6 +82,8 @@ spec.save("stat.json")
 ```
 
 It's worth noting that the above code only runs on your local computer and does not interact with any cloud servers or leak any local private data.
+
+Additionally, if the model's training data is too large, causing the above code to fail, you can consider sampling the training data to ensure it's of a suitable size before proceeding with reduction generation.
 
 ## Learnware Configuration File `learnware.yaml`
 

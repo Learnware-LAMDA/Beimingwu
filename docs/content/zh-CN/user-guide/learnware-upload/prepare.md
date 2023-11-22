@@ -16,7 +16,9 @@
 ## 模型调用文件 `__init__.py`
 
 
-为了使上传的学件可以被后续用户使用，需在 \_\_init\_\_.py 中提供模型拟合 (fit)、预测 (predict)、微调 (fine-tuning) 的接口。三个接口中仅 predict 为必须提供的接口，其余接口根据模型本身功能而定。此处给出 \_\_init\_\_.py 文件的模板格式：
+为了使上传的学件可以被后续用户使用，需在 \_\_init\_\_.py 中提供模型拟合 `fit(X, y)`、预测 `predict(X)`、微调 `finetune(X, y)` 的接口。三个接口中仅 `predict(X)` 为必须提供的接口，其余接口根据模型本身功能而定。
+
+以下是 `__init__.py` 文件的参考模板，请确保您上传的模型调用文件中各个接口输入参数的格式（参数个数、参数名）与下述模板保持一致：
 ```py
 import os
 import pickle
@@ -41,11 +43,24 @@ class MyModel(BaseModel):
         pass
 ```
 
-需要注意 MyModel 类要继承 learnware.model 中的 BaseModel，且类的名字（e.g., MyModel）需要在后续的 learnware.yaml 文件中标明。
+需要注意 MyModel 类要继承 `learnware.model` 中的 BaseModel，且类的名字（e.g., MyModel）需要在后续的 learnware.yaml 文件中标明。
 
-此处 `input_shape` 、`output_shape` 分别代表模型的输入和输出维度。特别地，当学件处理的数据类型为文本数据时，对于 `input_shape` 的具体值不作要求，可简单填写为 (1, )。对于分类任务，如果模型直接输出预测标记，则 `output_shape` 应填写为 (1, )；若模型输出为类别的后验概率，则 `output_shape` 应填写为类别数目，即 (class_num, ) 的形式。
+### 输入输出维度
 
-另外，如果在 `__init__.py` 文件（以及其它可能涉及的 Python 文件）中需要导入 zip 包内其它的模块，请采用相对导入的方式。例如：
+`input_shape` 、`output_shape` 分别代表模型的输入和输出维度，填写时可参考下述规范：
+- 当学件处理的数据类型为文本数据时，对 `input_shape` 的具体值不作要求，可填写为 `None`；
+- 当学件对应任务的 `output_shape` 不固定时（例如目标检测、文本分割等任务），对 `output_shape` 的具体值不作要求，可填写为 `None`；
+- 对于分类任务，如果模型直接输出预测标记，则 `output_shape` 应填写为 (1, )；若模型输出为类别的后验概率，则 `output_shape` 应填写为类别数目，即 (class_num, ) 的形式。
+
+### 文件路径
+
+如果在 `__init__.py` 文件（以及其它可能涉及的 Python 文件）中需要导入 zip 包内某些文件时（例如模型文件 `model.pkl`），请采用上述示例代码中获取 `model_path` 的方式：
+- 先获取整个学件包的根目录路径 `dir_path`；
+- 再根据具体文件在包内的相对位置，获取具体文件的路径 `model_path`。
+
+### 模块引用
+
+请注意，zip 包内 Python 文件之间的模块引用应采用**相对引用**的方式。例如：
 ```py
 from .package_name import *
 from .package_name import module_name
@@ -65,6 +80,8 @@ spec = generate_stat_spec(type=data_type, X=train_x)
 spec.save("stat.json")
 ```
 值得注意的是，上述代码仅在本地计算机上运行，不会与任何云服务器进行交互，也不会泄露任何本地私有数据。
+
+另外，如果由于模型的训练数据过大而导致上述代码执行失败，您可以考虑先对训练数据进行采样，以确保其大小适中，然后再进行规约生成。
 
 ## 学件配置文件 `learnware.yaml`
 
