@@ -76,29 +76,29 @@ function handleClickDelete(id: string): void {
   <v-card
     flat
     :density="greaterThanXs ? 'comfortable' : 'compact'"
-    class="card !py-2"
+    class="card py-2"
   >
     <v-card-title
-      class="my-title !flex"
+      class="my-title flex"
       :class="item.username ? '' : 'items-center'"
     >
       <v-avatar
         :size="greaterThanSm ? 'default' : 'small'"
-        class="mr-2 !rounded-[0]"
+        class="mr-2 rounded-[0]"
       >
         <component
           :is="avatar"
-          :class="item.username ? 'w-full' : 'w-4/5'"
+          :class="item.username ? 'w-10' : 'w-4/5'"
           class="opacity-70"
         />
       </v-avatar>
       <div class="flex-1 overflow-hidden">
-        <div class="w-full truncate">
+        <div class="w-full truncate text-base md:text-xl">
           {{ item.name }}
         </div>
         <div
           v-if="item.username"
-          class="text-sm text-gray-600"
+          class="text-xs text-gray-600 md:text-sm"
         >
           {{ item.username }}
         </div>
@@ -184,7 +184,7 @@ function handleClickDelete(id: string): void {
         {{ item.description }}
       </div>
     </v-card-text>
-    <v-card-text class="flex items-end justify-between !py-2">
+    <v-card-text class="flex items-end justify-between py-2">
       <div>
         <div
           v-if="item.matchScore && item.matchScore >= 0"

@@ -81,8 +81,8 @@ onMounted(() => {
     setTimeout(() => {
       t1.add({
         targets: rkmeJsonRef.value,
-        left: ["100%", (): string => (display.mdAndUp.value ? "10%" : "45%")],
-        bottom: ["50%", (): string => (display.mdAndUp.value ? "0%" : "45%")],
+        left: ["100%", (): string => (display.smAndUp.value ? "10%" : "45%")],
+        bottom: ["40%", (): string => (display.smAndUp.value ? "0%" : "50%")],
         easing: "linear",
         duration: 500,
       })
@@ -293,7 +293,7 @@ onMounted(() => {
                 <user-requirement
                   v-model="filters"
                   :show-example="false"
-                  class="h-[60%] w-[150%] origin-top-left scale-[calc(200%/3)] transform md:h-[150%]"
+                  class="h-[200%] w-[200%] origin-top-left scale-50 transform md:h-[150%] md:w-[150%] md:scale-[calc(200%/3)]"
                 />
               </div>
 

@@ -150,6 +150,7 @@ function onResetPassword(): void {
             <v-card-actions v-if="success">
               <v-alert
                 closable
+                class="text-sm md:text-base"
                 :text="t('Login.Success')"
                 type="success"
               />

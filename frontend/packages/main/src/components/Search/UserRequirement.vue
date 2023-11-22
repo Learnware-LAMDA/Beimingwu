@@ -3,6 +3,7 @@ import { ref, computed, watch, onMounted, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useStore } from "vuex";
+import { useDisplay } from "vuetify";
 import { driver } from "driver.js";
 import DataTypeBtns from "../Specification/SpecTag/DataType.vue";
 import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
@@ -28,6 +29,8 @@ export interface Props {
 const { t } = useI18n();
 
 const store = useStore();
+
+const display = useDisplay();
 
 const emits = defineEmits(["update:modelValue", "update:isHetero", "update:heteroDialog"]);
 
@@ -85,103 +88,121 @@ const tempDataTypeDescription = ref(dataTypeDescription.value);
 const tempTaskTypeDescription = ref(taskTypeDescription.value);
 
 const exampleDialog = ref<boolean>(false);
-const exampleDialogPersistent = ref<boolean>(true);
+const exampleDialogPersistent = ref<boolean>(store.getters.getShowExampleTips);
 const exampleLoading = ref(false);
-const homoExamples = computed(() => [
+const exampleGroups = computed(() => [
   {
-    icon: TableBtn,
-    name: t("Search.Example.Table"),
-    onClick: (): Promise<void> => {
-      return downloadAndLoadRKME("./static/table_homo.json", "table_homo.json").then(() => {
-        emits("update:isHetero", false);
-        dataType.value = "Table";
-        taskType.value = "";
-        libraryType.value = "";
-        scenarioList.value = [];
-      });
-    },
-    onClickDownload: (): Promise<void> => {
-      return fetch("./static/table_homo.json")
-        .then((res) => res.text())
-        .then((text) => {
-          saveContentToFile(text, "application/json", "table_homo.json");
-        });
-    },
+    name: t("Search.Example.TableExamplesHomogeneous"),
+    examples: [
+      {
+        icon: TableBtn,
+        name: t("Search.Example.TableExampleHomogeneous1"),
+        onClick: (): Promise<void> => {
+          return downloadAndLoadRKME("./static/table_homo.json", "table_homo.json").then(() => {
+            emits("update:isHetero", false);
+            dataType.value = "Table";
+            taskType.value = "";
+            libraryType.value = "";
+            scenarioList.value = [];
+          });
+        },
+        onClickDownload: (): Promise<void> => {
+          return fetch("./static/table_homo.json")
+            .then((res) => res.text())
+            .then((text) => {
+              saveContentToFile(text, "application/json", "table_homo.json");
+            });
+        },
+      },
+    ],
   },
   {
-    icon: ImageBtn,
-    name: t("Search.Example.Image"),
-    onClick: (): Promise<void> => {
-      return downloadAndLoadRKME("./static/image.json", "image.json").then(() => {
-        emits("update:isHetero", false);
-        dataType.value = "Image";
-        taskType.value = "";
-        libraryType.value = "";
-        scenarioList.value = [];
-      });
-    },
-    onClickDownload: (): Promise<void> => {
-      return fetch("./static/image.json")
-        .then((res) => res.text())
-        .then((text) => {
-          saveContentToFile(text, "application/json", "image.json");
-        });
-    },
+    name: t("Search.Example.TableExamplesHeterogeneous"),
+    examples: [
+      {
+        icon: TableBtn,
+        name: t("Search.Example.TableExampleHeterogeneous1"),
+        onClick: (): Promise<any> => {
+          return downloadAndLoadRKME("./static/table_hetero.json", "table_hetero.json")
+            .then(() => fetch("./static/table_hetero_input.json"))
+            .then((res) => res.text())
+            .then((text) => {
+              dataType.value = "Table";
+              taskType.value = "";
+              libraryType.value = "";
+              scenarioList.value = [];
+              dataTypeDescription.value = JSON.parse(text);
+              tempDataTypeDescription.value = JSON.parse(text);
+              heteroDialog.value = false;
+              emits("update:isHetero", true);
+            });
+        },
+        onClickDownload: (): Promise<void> => {
+          return fetch("./static/table_hetero.json")
+            .then((res) => res.text())
+            .then((text) => {
+              saveContentToFile(text, "application/json", "table_hetero.json");
+            })
+            .then(() => {
+              return fetch("./static/table_hetero_input.json");
+            })
+            .then((res) => res.text())
+            .then((text) => {
+              saveContentToFile(text, "application/json", "table_hetero_input.json");
+            });
+        },
+      },
+    ],
   },
   {
-    icon: TextBtn,
-    name: t("Search.Example.Text"),
-    onClick: (): Promise<void> => {
-      return downloadAndLoadRKME("./static/text.json", "text.json").then(() => {
-        emits("update:isHetero", false);
-        dataType.value = "Text";
-        taskType.value = "";
-        libraryType.value = "";
-        scenarioList.value = [];
-      });
-    },
-    onClickDownload: (): Promise<void> => {
-      return fetch("./static/text.json")
-        .then((res) => res.text())
-        .then((text) => {
-          saveContentToFile(text, "application/json", "text.json");
-        });
-    },
+    name: t("Search.Example.ImageExamples"),
+    examples: [
+      {
+        icon: ImageBtn,
+        name: t("Search.Example.ImageExample1"),
+        onClick: (): Promise<void> => {
+          return downloadAndLoadRKME("./static/image.json", "image.json").then(() => {
+            emits("update:isHetero", false);
+            dataType.value = "Image";
+            taskType.value = "";
+            libraryType.value = "";
+            scenarioList.value = [];
+          });
+        },
+        onClickDownload: (): Promise<void> => {
+          return fetch("./static/image.json")
+            .then((res) => res.text())
+            .then((text) => {
+              saveContentToFile(text, "application/json", "image.json");
+            });
+        },
+      },
+    ],
   },
-]);
-const heteroExamples = computed(() => [
   {
-    icon: TableBtn,
-    name: t("Search.Example.Table"),
-    onClick: (): Promise<any> => {
-      return downloadAndLoadRKME("./static/table_hetero.json", "table_hetero.json")
-        .then(() => fetch("./static/table_hetero_input.json"))
-        .then((res) => res.text())
-        .then((text) => {
-          dataType.value = "Table";
-          taskType.value = "";
-          libraryType.value = "";
-          scenarioList.value = [];
-          dataTypeDescription.value = JSON.parse(text);
-          tempDataTypeDescription.value = JSON.parse(text);
-          heteroDialog.value = false;
-          emits("update:isHetero", true);
-        });
-    },
-    onClickDownload: (): Promise<void> => {
-      return fetch("./static/table_hetero.json")
-        .then((res) => res.text())
-        .then((text) => {
-          saveContentToFile(text, "application/json", "table_hetero.json");
-        })
-        .then(() => {
-          return fetch("./static/table_hetero_input.json");
-        })
-        .then((res) => res.text())
-        .then((text) => {
-          saveContentToFile(text, "application/json", "table_hetero_input.json");
-        });
-    },
+    name: t("Search.Example.TextExamples"),
+    examples: [
+      {
+        icon: TextBtn,
+        name: t("Search.Example.TextExample1"),
+        onClick: (): Promise<void> => {
+          return downloadAndLoadRKME("./static/text.json", "text.json").then(() => {
+            emits("update:isHetero", false);
+            dataType.value = "Text";
+            taskType.value = "";
+            libraryType.value = "";
+            scenarioList.value = [];
+          });
+        },
+        onClickDownload: (): Promise<void> => {
+          return fetch("./static/text.json")
+            .then((res) => res.text())
+            .then((text) => {
+              saveContentToFile(text, "application/json", "text.json");
+            });
+        },
+      },
+    ],
   },
 ]);
 function handleClickShowExample(): void {
@@ -272,14 +293,14 @@ onMounted(() => {
           },
         },
         {
-          element: "#example-card-0",
+          element: "#example-card-0-0",
           popover: {
             side: "bottom",
             title: t("Search.Example.Examples"),
             description: t("Search.Example.ClickHereForHomogeneousTableExample"),
             onNextClick(): void {
               exampleDialog.value = false;
-              useExampleOnClick(homoExamples.value[0].onClick)();
+              useExampleOnClick(exampleGroups.value[0].examples[0].onClick)();
               driverObj.moveNext();
             },
             onPrevClick(): void {
@@ -300,7 +321,7 @@ onMounted(() => {
   <div class="sm:border-r-1 flex flex-col">
     <div class="filter">
       <slot name="prepend" />
-      <div class="text-h6 my-3">
+      <div class="text-h6 mb-1 mt-2 md:my-2">
         <v-icon
           class="!mt-0 mr-3"
           icon="mdi-tag-text"
@@ -324,7 +345,7 @@ onMounted(() => {
       </div>
 
       <div>
-        <div class="text-h6 mb-3 mt-7 !text-base">
+        <div class="text-h6 mb-3 mt-4 !text-base">
           {{ t("Search.SearchByName") }}
         </div>
         <v-text-field
@@ -527,89 +548,66 @@ onMounted(() => {
           <v-card
             id="example-dialog"
             flat
-            class="p-6"
+            class="p-4 md:p-6"
             :loading="exampleLoading"
           >
             <div class="flex items-start justify-between">
-              <span class="text-4xl">
+              <span class="text-xl md:text-4xl">
                 {{ t("Search.Example.Examples") }}
               </span>
               <v-btn
                 variant="flat"
                 icon="mdi-close"
+                :size="display.smAndUp.value ? 'default' : 'x-small'"
                 @click="exampleDialog = false"
               />
             </div>
-            <div class="my-1 text-gray-500">
+            <div class="my-1 text-xs text-gray-500 md:text-lg">
               {{ t("Search.Example.ExamplesDescription") }}
             </div>
 
-            <div class="text-h6 my-2">
-              {{ t("Search.Example.HomogeneousExamples") }}
-            </div>
-            <div
-              v-for="(example, i) in homoExamples"
-              :key="example.name"
-              class="flex items-center"
+            <template
+              v-for="(group, i) in exampleGroups"
+              :key="i"
             >
-              <v-card
-                :id="`example-card-${i}`"
-                flat
-                class="my-2 flex flex-1 items-center rounded-md border p-4"
-                @click="
-                  () => useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
-                "
-              >
-                <div class="flex items-center">
-                  <component
-                    :is="example.icon"
-                    class="w-8"
-                  />
-                  <div class="ml-2 text-center text-lg">{{ example.name }}</div>
-                </div>
-              </v-card>
-              <div>
-                <v-btn
-                  variant="flat"
-                  icon="mdi-download"
-                  color="transparent"
-                  @click.stop="() => useExampleOnClick(example.onClickDownload)()"
-                />
+              <div class="text-h6 mt-2 text-sm md:my-2 md:text-xl">
+                {{ group.name }}
               </div>
-            </div>
-
-            <div class="text-h6 my-2">
-              {{ t("Search.Example.HeterogeneousExamples") }}
-            </div>
-            <div
-              v-for="example in heteroExamples"
-              :key="example.name"
-              class="flex items-center"
-            >
-              <v-card
-                flat
-                class="my-2 flex flex-1 items-center rounded-md border p-4"
-                @click="
-                  () => useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
-                "
+              <div
+                v-for="(example, j) in group.examples"
+                :key="example.name"
+                class="flex items-center"
               >
-                <div class="flex items-center">
-                  <component
-                    :is="example.icon"
-                    class="w-8"
+                <v-card
+                  :id="`example-card-${i}-${j}`"
+                  flat
+                  class="my-1 flex flex-1 items-center rounded-md border p-3 md:my-2 md:p-4"
+                  @click="
+                    () =>
+                      useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
+                  "
+                >
+                  <div class="flex items-center">
+                    <component
+                      :is="example.icon"
+                      class="w-4 md:w-8"
+                    />
+                    <div class="ml-2 text-center text-xs md:ml-3 md:text-lg">
+                      {{ example.name }}
+                    </div>
+                  </div>
+                </v-card>
+                <div>
+                  <v-btn
+                    variant="flat"
+                    icon="mdi-download"
+                    color="transparent"
+                    :size="display.smAndUp.value ? 'default' : 'x-small'"
+                    @click.stop="() => useExampleOnClick(example.onClickDownload)()"
                   />
-                  <div class="ml-2 text-center text-lg">{{ example.name }}</div>
                 </div>
-              </v-card>
-              <div>
-                <v-btn
-                  variant="flat"
-                  icon="mdi-download"
-                  color="transparent"
-                  @click.stop="() => useExampleOnClick(example.onClickDownload)()"
-                />
               </div>
-            </div>
+            </template>
           </v-card>
         </v-dialog>
       </div>

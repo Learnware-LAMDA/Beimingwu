@@ -273,7 +273,7 @@ const vOffset = {
                 dominant-baseline="hanging"
                 class="fill-gray-700"
               >
-                {{ t("Home.What.LearnwareDescription") }}
+                {{ t("Home.What.Developer") }}
               </text>
               <rect
                 x="30"

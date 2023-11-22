@@ -86,7 +86,7 @@ function clickBtn(btn: Btn): void {
 <style scoped lang="scss">
 .grid-container {
   .my-title {
-    @apply mb-5 mt-7;
+    @apply my-3 md:mb-5 md:mt-7;
   }
 
   .btn-container {
