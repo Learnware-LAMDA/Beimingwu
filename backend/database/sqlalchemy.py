@@ -98,6 +98,9 @@ class DatabaseHelper(object):
     def dump_database(self, url: str, filename: str):
         raise NotImplementedError()
 
+    def restore_database(self, url: str, filename: str):
+        raise NotImplementedError()
+
     pass
 
 
@@ -146,6 +149,22 @@ class PostgresHelper(DatabaseHelper):
             pass
         cmd = cmd + f" {url_struct.database} > {filename}"
         command_executor.execute_shell(cmd, check=True)
+        pass
+
+    def restore_database(self, url: str, filename: str):
+        url_struct = sqlalchemy.engine.url.make_url(url)
+        os.environ["PGPASSWORD"] = url_struct.password
+
+        cmd = f"psql -U {url_struct.username} -h {url_struct.host}"
+        if url_struct.port is not None:
+            cmd = cmd + f" -p {url_struct.port}"
+            pass
+        cmd1 = cmd + f" -d postgres -c 'DROP DATABASE if exists {url_struct.database};'"
+        cmd2 = cmd + f" -d postgres -c 'CREATE DATABASE {url_struct.database};'"
+        command_executor.execute_shell(cmd1, check=True)
+        command_executor.execute_shell(cmd2, check=True)
+        cmd3 = cmd + f" -d {url_struct.database} < {filename}"
+        command_executor.execute_shell(cmd3, check=True)
         pass
 
 
