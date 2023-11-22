@@ -73,7 +73,7 @@ const scenarioList = useField<ScenarioList>({
     if (value.length > 0) {
       return "";
     }
-    return t("Submit.SemanticSpecification.ScenarioList.Error.NotEmpty");
+    return t("Submit.SemanticSpecification.Scenario.Error.NotEmpty");
   },
 });
 const dataTypeDescription = useField<string>({
