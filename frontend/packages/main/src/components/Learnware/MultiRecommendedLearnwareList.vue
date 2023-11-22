@@ -19,6 +19,8 @@ export interface Props {
   loading?: boolean;
 }
 
+const emit = defineEmits(["download"]);
+
 const display = useDisplay();
 
 const { t } = useI18n();
@@ -56,6 +58,7 @@ const realCols = computed(() => {
 });
 
 function downloadAll(): void {
+  emit("download");
   downloadMultipleLearnwaresSync(props.items.map((item) => item.id));
 }
 

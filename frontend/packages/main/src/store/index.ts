@@ -4,7 +4,6 @@ import auth from "./auth";
 import error from "./error";
 import user from "./user";
 import i18n from "./i18n";
-import deployTips from "./deployTips";
 import exampleTips from "./exampleTips";
 
 export default new Vuex.Store({
@@ -13,7 +12,6 @@ export default new Vuex.Store({
     error,
     user,
     i18n,
-    deployTips,
     exampleTips,
   },
   plugins: [new VuexPersistence().plugin],
