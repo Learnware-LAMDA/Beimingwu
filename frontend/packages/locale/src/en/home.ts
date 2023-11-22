@@ -44,7 +44,7 @@ export default {
   SpecificationWorld: {
     Title: "Specification world",
     Description:
-      "Models from different feature/label spaces constitute multiple specification islands, and all the specification islands together constitute the specification world in the learnware dock system. In this world, if connections between different islands can be discovered and established, the corresponding specification islands can be merged.",
+      "The specifications of models from different feature/label spaces constitute various specification islands, and all specification islands together constitute the specification world in the learnware dock system. In this world, if connections between different islands can be discovered and established, the corresponding specification islands can be merged.",
   },
   Footer: {
     About: "About",

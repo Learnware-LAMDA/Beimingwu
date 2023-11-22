@@ -16,10 +16,10 @@ export default {
   HeterogeneousNotWorkingTips:
     "Heterogeneous search is currently not available. Please turn off heterogeneous search or",
   HeterogeneousNotWorkingTips2: "learn how to perform heterogeneous search",
-  RecommendedMultipleLearnware: "Recommended multiple learnware",
+  RecommendedMultipleLearnware: "Multiple learnware recommendation",
   RecommendedMultipleLearnwareTips:
     "The packaged learnwares listed below are highly recommended as they have the highest statistical specification similarity to your tasks. Combining these learnwares can lead to greater performance.",
-  RecommendedSingleLearnware: "Recommended single learnware",
+  RecommendedSingleLearnware: "Single learnware recommendation",
   RecommendedSingleLearnwareTips:
     "The listed learnwares are recommended as each of them matches your task requirements in terms of statistical specifications.",
   TotalSpecificationScore: "Total specification score",
