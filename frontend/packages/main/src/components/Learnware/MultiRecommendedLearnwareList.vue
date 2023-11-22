@@ -100,7 +100,7 @@ function getColorByScore(score: number): string {
 <template>
   <div
     v-if="!loading"
-    class="m-2 rounded-lg p-2 hover:border-purple-500"
+    class="m-2 rounded-md p-2 hover:border-purple-500 md:rounded-lg"
     :class="items.length > 0 ? ['border'] : []"
   >
     <div
@@ -109,19 +109,19 @@ function getColorByScore(score: number): string {
     >
       <v-card-title
         v-if="matchScore"
-        class="score"
+        class="score text-base md:text-lg xl:text-xl"
       >
         {{ t("Search.TotalSpecificationScore") }}
         <span
-          class="ml-2"
+          class="ml-1 lg:ml-2"
           :style="`color: ${getColorByScore(matchScore)}`"
           >{{ matchScore }}</span
         >
       </v-card-title>
       <v-btn
         variant="flat"
-        size="x-large"
-        class="text-body-2 border !px-4 !text-[1em]"
+        :size="display.mdAndUp ? 'x-large' : 'large'"
+        class="text-body-2 border px-4"
         @click.stop="() => downloadAll()"
       >
         <span v-if="!downloading">
@@ -186,7 +186,7 @@ function getColorByScore(score: number): string {
 
 <style scoped lang="scss">
 .learnware-list-container {
-  @apply relative m-2 grid gap-3 bg-transparent lg:grid-cols-2 xl:grid-cols-2;
+  @apply relative mt-2 grid gap-2 bg-transparent md:gap-2 lg:grid-cols-2 xl:grid-cols-2;
 
   .card {
     @apply border;
@@ -239,7 +239,7 @@ function getColorByScore(score: number): string {
 
   .score {
     @apply my-2;
-    @apply text-[0.8rem] lg:text-[1.3rem];
+    @apply text-sm lg:text-[1.3rem];
   }
 
   .no-learnware {

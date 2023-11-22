@@ -3,6 +3,7 @@ import { ref, computed, watch, onMounted, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useStore } from "vuex";
+import { useDisplay } from "vuetify";
 import { driver } from "driver.js";
 import DataTypeBtns from "../Specification/SpecTag/DataType.vue";
 import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
@@ -28,6 +29,8 @@ export interface Props {
 const { t } = useI18n();
 
 const store = useStore();
+
+const display = useDisplay();
 
 const emits = defineEmits(["update:modelValue", "update:isHetero", "update:heteroDialog"]);
 
@@ -318,7 +321,7 @@ onMounted(() => {
   <div class="sm:border-r-1 flex flex-col">
     <div class="filter">
       <slot name="prepend" />
-      <div class="text-h6 my-3">
+      <div class="text-h6 mb-1 mt-2 md:my-2">
         <v-icon
           class="!mt-0 mr-3"
           icon="mdi-tag-text"
@@ -342,7 +345,7 @@ onMounted(() => {
       </div>
 
       <div>
-        <div class="text-h6 mb-3 mt-7 !text-base">
+        <div class="text-h6 mb-3 mt-4 !text-base">
           {{ t("Search.SearchByName") }}
         </div>
         <v-text-field
@@ -545,20 +548,21 @@ onMounted(() => {
           <v-card
             id="example-dialog"
             flat
-            class="p-6"
+            class="p-4 md:p-6"
             :loading="exampleLoading"
           >
             <div class="flex items-start justify-between">
-              <span class="text-4xl">
+              <span class="text-xl md:text-4xl">
                 {{ t("Search.Example.Examples") }}
               </span>
               <v-btn
                 variant="flat"
                 icon="mdi-close"
+                :size="display.smAndUp.value ? 'default' : 'x-small'"
                 @click="exampleDialog = false"
               />
             </div>
-            <div class="my-1 text-gray-500">
+            <div class="my-1 text-xs text-gray-500 md:text-lg">
               {{ t("Search.Example.ExamplesDescription") }}
             </div>
 
@@ -566,7 +570,7 @@ onMounted(() => {
               v-for="(group, i) in exampleGroups"
               :key="i"
             >
-              <div class="text-h6 my-2">
+              <div class="text-h6 mt-2 text-sm md:my-2 md:text-xl">
                 {{ group.name }}
               </div>
               <div
@@ -577,7 +581,7 @@ onMounted(() => {
                 <v-card
                   :id="`example-card-${i}-${j}`"
                   flat
-                  class="my-2 flex flex-1 items-center rounded-md border p-4"
+                  class="my-1 flex flex-1 items-center rounded-md border p-3 md:my-2 md:p-4"
                   @click="
                     () =>
                       useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
@@ -586,9 +590,11 @@ onMounted(() => {
                   <div class="flex items-center">
                     <component
                       :is="example.icon"
-                      class="w-8"
+                      class="w-4 md:w-8"
                     />
-                    <div class="ml-3 text-center text-lg">{{ example.name }}</div>
+                    <div class="ml-2 text-center text-xs md:ml-3 md:text-lg">
+                      {{ example.name }}
+                    </div>
                   </div>
                 </v-card>
                 <div>
@@ -596,6 +602,7 @@ onMounted(() => {
                     variant="flat"
                     icon="mdi-download"
                     color="transparent"
+                    :size="display.smAndUp.value ? 'default' : 'x-small'"
                     @click.stop="() => useExampleOnClick(example.onClickDownload)()"
                   />
                 </div>

@@ -358,7 +358,8 @@ onMounted(() => init());
         class="fixed z-10 w-full"
       >
         <v-alert
-          class="mx-auto max-w-[900px]"
+          class="mx-auto max-w-[900px] text-sm md:text-base"
+          :density="display.mdAndUp.value ? 'default' : 'compact'"
           closable
           type="info"
           @click:close="showDeployTips = false"
@@ -425,31 +426,39 @@ onMounted(() => init());
       <v-card
         v-if="showMultiRecommended"
         flat
-        class="mt-4 bg-transparent sm:m-2"
+        class="mt-4 bg-transparent sm:mt-2"
       >
         <v-card-title
           v-if="!multiRecommendedTips"
-          class="text-h5"
+          class="text-h5 text-base md:text-xl"
         >
           <v-icon>mdi-hexagon-multiple</v-icon>
           {{ t("Search.RecommendedMultipleLearnware") }}
         </v-card-title>
         <v-card-text
           v-if="multiRecommendedTips"
-          class="!p-2"
+          class="px-2 py-0"
         >
           <v-alert
             v-model="multiRecommendedTips"
-            :title="t('Search.RecommendedMultipleLearnware')"
-            :text="t('Search.RecommendedMultipleLearnwareTips')"
             closable
             color="success"
           >
             <template #prepend>
               <v-icon
                 icon="mdi-hexagon-multiple"
-                size="x-large"
+                :size="display.smAndUp.value ? 'x-large' : 'small'"
               />
+            </template>
+            <template #title>
+              <span class="text-base md:text-xl">
+                {{ t("Search.RecommendedMultipleLearnware") }}</span
+              >
+            </template>
+            <template #text>
+              <span class="text-xs md:text-base">
+                {{ t("Search.RecommendedMultipleLearnwareTips") }}
+              </span>
             </template>
           </v-alert>
         </v-card-text>
@@ -463,31 +472,39 @@ onMounted(() => init());
       </v-card>
       <v-card
         flat
-        class="mt-4 bg-transparent sm:m-2"
+        class="mt-4 bg-transparent sm:m-0"
       >
         <v-card-title
           v-if="showMultiRecommended && !singleRecommendedTips"
-          class="text-h5"
+          class="text-h5 text-base md:text-xl"
         >
           <v-icon>mdi-hexagon</v-icon>
           {{ t("Search.RecommendedSingleLearnware") }}
         </v-card-title>
         <v-card-text
           v-if="showMultiRecommended && singleRecommendedTips"
-          class="!p-2"
+          class="px-2 py-0"
         >
           <v-alert
             v-model="singleRecommendedTips"
-            :title="t('Search.RecommendedSingleLearnware')"
-            :text="t('Search.RecommendedSingleLearnwareTips')"
             closable
             color="info"
           >
             <template #prepend>
               <v-icon
                 icon="mdi-hexagon"
-                size="x-large"
+                :size="display.smAndUp.value ? 'x-large' : 'default'"
               />
+            </template>
+            <template #title>
+              <span class="text-base md:text-xl">
+                {{ t("Search.RecommendedSingleLearnware") }}
+              </span>
+            </template>
+            <template #text>
+              <span class="text-xs md:text-base">
+                {{ t("Search.RecommendedSingleLearnwareTips") }}
+              </span>
             </template>
           </v-alert>
         </v-card-text>

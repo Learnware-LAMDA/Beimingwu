@@ -103,7 +103,7 @@ function handleClickDelete(id: string): void {
 
 <style scoped lang="scss">
 .learnware-list-container {
-  @apply relative grid p-1 sm:gap-3 sm:p-2 lg:grid-cols-2 xl:grid-cols-2;
+  @apply relative grid p-1 sm:gap-2 sm:p-2 lg:grid-cols-2 xl:grid-cols-2;
 
   .score {
     @apply text-[0.8rem] lg:text-base;
