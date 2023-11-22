@@ -15,10 +15,10 @@ export default {
   ChangeHeterogeneousRequirement: "更改异构需求",
   HeterogeneousNotWorkingTips: "异构查搜功能当前不可用，请关闭异构查搜或",
   HeterogeneousNotWorkingTips2: "查看如何进行异构查搜",
-  RecommendedMultipleLearnware: "推荐多个学件",
+  RecommendedMultipleLearnware: "多学件推荐",
   RecommendedMultipleLearnwareTips:
     "以下学件集合被高度推荐，因为它们与您的任务具有最高的统计规约相似性。结合这些学件可以带来更好的性能。",
-  RecommendedSingleLearnware: "推荐单个学件",
+  RecommendedSingleLearnware: "单学件推荐",
   RecommendedSingleLearnwareTips: "以下学件被推荐，因为它们在统计规约方面与您的任务需求相匹配。",
   TotalSpecificationScore: "规约匹配总分数",
   DownloadAll: "下载全部",

@@ -1,6 +1,6 @@
 export default {
   Title: "Client Token",
-  Description: "Tokens you have generated that can be used to access the learnware api.",
+  Description: "You have generated tokens that can be used to access the Beimingwu system api:",
   Generate: "Generate",
   DeleteToken: "Delete Token",
   YourTokenWillBeDeleted:
