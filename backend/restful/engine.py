@@ -233,15 +233,16 @@ class DownloadLearnware(flask_restful.Resource):
 
         learnware_info = dbops.get_learnware_by_learnware_id(learnware_id)
 
-        if learnware_info["verify_status"] != LearnwareVerifyStatus.SUCCESS.value:
-            # it is an unverified learnware
-            if user_id is None:
-                return {"code": 61, "msg": "cannot download unverified learnware."}, 200
-            elif user_id != learnware_info["user_id"]:
-                if not dbops.check_user_admin(user_id):
-                    return {"code": 62, "msg": "cannot download unverified learnware."}, 200
-                pass
-            pass
+        # TODO: unverified learnwares requires administrator rights
+        # if learnware_info["verify_status"] != LearnwareVerifyStatus.SUCCESS.value:
+        #     # it is an unverified learnware
+        #     if user_id is None:
+        #         return {"code": 61, "msg": "cannot download unverified learnware."}, 200
+        #     elif user_id != learnware_info["user_id"]:
+        #         if not dbops.check_user_admin(user_id):
+        #             return {"code": 62, "msg": "cannot download unverified learnware."}, 200
+        #         pass
+        #     pass
 
         try:
             learnware_zip_path = context.engine.get_learnware_zip_path_by_ids(learnware_id)

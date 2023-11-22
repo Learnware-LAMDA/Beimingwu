@@ -244,22 +244,22 @@ class TestEngine(unittest.TestCase):
         os.remove(downloaded_filename)
         pass
 
-    def test_download_learnware_unverified_not_owner(self):
-        learnware_id = testops.add_test_learnware_unverified("test@localhost", "test", "test_learnware.zip")
-        headers = self.login(email="test2@localhost")
-        result = testops.url_request(
-            "engine/download_learnware",
-            {"learnware_id": learnware_id},
-            headers=headers,
-            method="get",
-            return_response=True,
-        )
+    # def test_download_learnware_unverified_not_owner(self):
+    #     learnware_id = testops.add_test_learnware_unverified("test@localhost", "test", "test_learnware.zip")
+    #     headers = self.login(email="test2@localhost")
+    #     result = testops.url_request(
+    #         "engine/download_learnware",
+    #         {"learnware_id": learnware_id},
+    #         headers=headers,
+    #         method="get",
+    #         return_response=True,
+    #     )
 
-        self.assertEqual(result.status_code, 200)
-        self.assertEqual(result.json()["code"], 62)
+    #     self.assertEqual(result.status_code, 200)
+    #     self.assertEqual(result.json()["code"], 62)
 
-        testops.delete_learnware(learnware_id, headers=self.login())
-        pass
+    #     testops.delete_learnware(learnware_id, headers=self.login())
+    #     pass
 
     def test_learnware_info(self):
         headers = self.login()
