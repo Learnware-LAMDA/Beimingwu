@@ -4,7 +4,7 @@ In the Beiming system, users can deploy and reuse learnwares using the `learnwar
 
 ## Loading Learnware and Environments
 
-Users can load learnware using the `LearnwareClient` class from the `learnware` Python package. First, define a `LearnwareClient`:
+Users can load learnwares using the `LearnwareClient` class from the `learnware` Python package. First, instantiate a `LearnwareClient`:
 
 ```python
 from learnware.client import LearnwareClient
@@ -17,8 +17,16 @@ Assuming the user knows the ID of the learnware they want to load, they can use 
 
 ```python
 learnware_id = "00000082"
-learnware_list = client.load_learnware(
+learnware = client.load_learnware(
     learnware_id=learnware_id, runnable_option="docker"
+)
+```
+
+When the user wants to load multiple learnwares according to the id list `learnware_ids`, this can be accomplished with the following code:
+```python
+learnware_ids = ["00000082", "00000120"]
+learnware_list = client.load_learnware(
+    learnware_id=learnware_ids, runnable_option="docker"
 )
 ```
 
@@ -35,10 +43,28 @@ It's important to note that while the system makes every effort to ensure the se
 In addition to loading learnware by ID, users can also load a learnware from a zip file downloaded from the web:
 
 ```python
-learnware_path = "learnware1.zip"
-learnware_list = client.load_learnware(
+learnware_path = "learnware.zip"
+learnware = client.load_learnware(
     learnware_path=learnware_path, runnable_option="docker"
 )
+```
+
+When the user wants to load multiple learnwares according to the zip path list `learnware_paths`, this can be achieved with the following code:
+```python
+learnware_paths = ["learnware1.zip", "learnware2.zip"]
+learnware_list = client.load_learnware(
+    learnware_path=learnware_paths, runnable_option="docker"
+)
+```
+
+### Utilizing Learnware for Prediction
+
+After loading the learnware as described above, you can directly call the `predict(X)` interface of the learnware to perform predictions. The specific code is as follows:
+```python
+# test_x is the user's data for prediction
+# predict_y is the prediction result of the learnware
+learnware = client.load_learnware(learnware_id=learnware_id)
+predict_y = learnware.predict(test_x)
 ```
 
 ## Homogeneous Learnware Reuse Methods

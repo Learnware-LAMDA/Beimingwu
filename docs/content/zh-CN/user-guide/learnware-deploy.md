@@ -4,7 +4,7 @@
 
 ## 学件和环境的载入
 
-用户可以使用 `learnware` Python 包中的 `LearnwareClient` 载入学件，首先定义 `LearnwareClient`:
+用户可以使用 `learnware` Python 包中的 `LearnwareClient` 载入学件，首先需要实例化：
 
 ```python
 from learnware.client import LearnwareClient
@@ -17,8 +17,16 @@ client = LearnwareClient()
 
 ```python
 learnware_id = "00000082"
-learnware_list = client.load_learnware(
+learnware = client.load_learnware(
     learnware_id=learnware_id, runnable_option="docker"
+)
+```
+
+当用户需要根据 `id` 批量载入学件时，可以通过如下代码实现：
+```python
+learnware_ids = ["00000082", "00000120"]
+learnware_list = client.load_learnware(
+    learnware_id=learnware_ids, runnable_option="docker"
 )
 ```
 
@@ -36,11 +44,29 @@ learnware_list = client.load_learnware(
 除了根据学件 `id` 载入学件，用户还可以使用从网页端下载的 `zip` 文件载入学件：
 
 ```python
-learnware_path = "learnware1.zip"
-learnware_list = client.load_learnware(
+learnware_path = "learnware.zip"
+learnware = client.load_learnware(
     learnware_path=learnware_path, runnable_option="docker"
 )
 ```
+
+当用户需要批量载入 `zip` 格式的学件时，可以通过如下代码实现：
+```python
+learnware_paths = ["learnware1.zip", "learnware2.zip"]
+learnware_list = client.load_learnware(
+    learnware_path=learnware_paths, runnable_option="docker"
+)
+```
+
+### 调用学件
+
+按上述方式加载学件后，可直接调用学件的 `predict(X)` 接口进行预测，具体代码如下：
+```python
+# test_x 是用户任务的待预测数据, predict_y 是学件的预测结果
+learnware = client.load_learnware(learnware_id=learnware_id)
+predict_y = learnware.predict(test_x)
+```
+
 
 ## 同构学件复用方法
 
@@ -60,7 +86,7 @@ from learnware.reuse import JobSelectorReuser
 # learnware_list 是已载入的学件 list
 reuse_job_selector = JobSelectorReuser(learnware_list=learnware_list)
 
-# test_x 是用户任务的待预测数据，predict_y 是复用学件的预测结果
+# test_x 是用户任务的待预测数据, predict_y 是复用学件的预测结果
 predict_y = reuse_job_selector.predict(user_data=test_x)
 ```
 
@@ -69,9 +95,9 @@ predict_y = reuse_job_selector.predict(user_data=test_x)
 ```python
 from learnware.reuse import AveragingReuser
 
-# mode="mean": 适用于回归任务，对学件输出进行平均
-# mode="vote_by_label"：适用于分类任务，对学件输出的标签采用大多数投票的方式集成
-# mode="vote_by_prob"：适用于分类任务，对学件输出的标签概率采用大多数投票的方式集成
+# mode="mean": 适用于回归任务, 对学件输出进行平均
+# mode="vote_by_label"：适用于分类任务, 对学件输出的标签采用大多数投票的方式集成
+# mode="vote_by_prob"：适用于分类任务, 对学件输出的标签概率采用大多数投票的方式集成
 reuse_ensemble = AveragingReuser(
     learnware_list=learnware_list, mode="vote_by_label"
 )
@@ -127,7 +153,7 @@ predict_y = augment_reuser.predict(user_data=test_x)
 from learnware.reuse import HeteroMapAlignLearnware
 
 # mode="regression": 用户任务类型为回归
-# mode="classification"：用户任务类型为分类
+# mode="classification": 用户任务类型为分类
 hetero_learnware = HeteroMapAlignLearnware(learnware=leanrware, mode="regression")
 hetero_learnware.align(user_spec, val_x, val_y)
 
