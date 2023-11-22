@@ -80,6 +80,7 @@ const allowHetero = computed(
 const heteroDialog = ref<boolean>(false);
 const remindHetero = computed(
   () =>
+    !loading.value &&
     allowHetero.value &&
     !isHetero.value &&
     multiRecommendedLearnwareItems.value.length === 0 &&
