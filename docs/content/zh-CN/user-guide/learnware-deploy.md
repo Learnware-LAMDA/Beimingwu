@@ -28,6 +28,14 @@ learnware = client.load_learnware(
 - `"conda"`：为每个学件安装独立的 `conda` 虚拟环境（运行结束后自动删除），在虚拟环境内独立运行每个学件；
 - `"docker"`：在 `docker` 容器内安装 `conda` 虚拟环境（运行结束后自动销毁），在容器内独立运行每个学件（用户需要有 `docker` 权限）。
 
+当用户需要根据 `id` 批量载入学件时，可以通过如下代码实现：
+```python
+learnware_ids = ["00000082","00000120"]
+learnware_list = client.load_learnware(
+    learnware_id=learnware_ids, runnable_option="docker"
+)
+```
+
 需要注意的是，尽管系统已尽最大努力确保每个学件的安全，但如果仍有包含恶意代码的漏网之鱼，则 `None` 和 `"conda"` 两种模式是**不安全**的。如果用户不能确保需要加载的学件的安全性，请使用 `"docker"` 模式载入学件。
 
 
@@ -41,6 +49,15 @@ learnware_list = client.load_learnware(
     learnware_path=learnware_path, runnable_option="docker"
 )
 ```
+
+当用户需要批量载入 `zip` 格式的学件时，可以通过如下代码实现：
+```python
+learnware_paths = ["learnware1.zip", "learnware2.zip"]
+learnware_list = client.load_learnware(
+    learnware_path=learnware_paths, runnable_option="docker"
+)
+```
+
 
 ## 同构学件复用方法
 

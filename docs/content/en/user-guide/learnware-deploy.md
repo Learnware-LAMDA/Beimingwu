@@ -22,6 +22,14 @@ learnware = client.load_learnware(
 )
 ```
 
+When the user wants to load multiple learnwares according to the id list `learnware_ids`, this can be achieved by
+```python
+learnware_ids = ["00000082","00000120"]
+learnware_list = client.load_learnware(
+    learnware_id=learnware_ids, runnable_option="docker"
+)
+```
+
 The `runnable_option` parameter has three options (default `None`), each for a specific learnware environment loading method:
 
 - `None`: Load only learnware specifications and basic information; run the learnware using the current `learnware` package's Python environment.
@@ -38,6 +46,14 @@ In addition to loading learnware by ID, users can also load a learnware from a z
 learnware_path = "learnware1.zip"
 learnware_list = client.load_learnware(
     learnware_path=learnware_path, runnable_option="docker"
+)
+```
+
+When the user wants to load multiple learnwares according to the zip path list `learnware_paths` , this can be achieved by
+```python
+learnware_paths = ["learnware1.zip", "learnware2.zip"]
+learnware_list = client.load_learnware(
+    learnware_path=learnware_paths, runnable_option="docker"
 )
 ```
 
