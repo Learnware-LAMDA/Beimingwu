@@ -31,10 +31,8 @@ useIntersectionObserver(
     ref="reference"
     class="md:pb-30 mx-auto grid w-full max-w-[1200px] pb-20 md:grid-cols-2"
   >
-    <div class="flex flex-col justify-center px-5 md:px-0 md:pl-10">
-      <div
-        class="<md:text-4xl <md:my-5 md:my-5 md:text-3xl lg:my-7 lg:text-4xl xl:my-10 xl:text-5xl"
-      >
+    <div class="flex w-full flex-1 flex-col justify-center px-5 md:px-0 md:pl-10">
+      <div class="my-5 text-3xl lg:my-7 lg:text-4xl xl:my-10 xl:text-5xl">
         {{ t("Home.SpecificationWorld.Title") }}
       </div>
       <p class="text-gray-500">
@@ -42,6 +40,7 @@ useIntersectionObserver(
       </p>
     </div>
     <svg
+      class="w-full flex-1"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 64 64"
     >
