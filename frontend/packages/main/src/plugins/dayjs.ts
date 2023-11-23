@@ -1,7 +1,10 @@
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import relativeTime from "dayjs/plugin/relativeTime";
 import UpdateLocale from "dayjs/plugin/updateLocale";
 import zhCn from "dayjs/locale/zh-cn";
+
+dayjs.extend(utc);
 
 dayjs.extend(relativeTime);
 
