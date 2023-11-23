@@ -244,22 +244,22 @@ class TestEngine(unittest.TestCase):
         os.remove(downloaded_filename)
         pass
 
-    # def test_download_learnware_unverified_not_owner(self):
-    #     learnware_id = testops.add_test_learnware_unverified("test@localhost", "test", "test_learnware.zip")
-    #     headers = self.login(email="test2@localhost")
-    #     result = testops.url_request(
-    #         "engine/download_learnware",
-    #         {"learnware_id": learnware_id},
-    #         headers=headers,
-    #         method="get",
-    #         return_response=True,
-    #     )
+    def test_download_learnware_unverified_not_owner(self):
+        learnware_id = testops.add_test_learnware_unverified("test@localhost", "test", "test_learnware.zip")
+        headers = self.login(email="test2@localhost")
+        result = testops.url_request(
+            "engine/download_learnware",
+            {"learnware_id": learnware_id},
+            headers=headers,
+            method="get",
+            return_response=True,
+        )
 
-    #     self.assertEqual(result.status_code, 200)
-    #     self.assertEqual(result.json()["code"], 62)
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.json()["code"], 62)
 
-    #     testops.delete_learnware(learnware_id, headers=self.login())
-    #     pass
+        testops.delete_learnware(learnware_id, headers=self.login())
+        pass
 
     def test_learnware_info(self):
         headers = self.login()
@@ -275,6 +275,52 @@ class TestEngine(unittest.TestCase):
             testops.test_learnware_semantic_specification()["Name"],
         )
         self.assertGreater(result["data"]["learnware_info"]["last_modify"], "2020-01-01 00:00:00")
+        pass
+
+    def test_download_by_token(
+        self,
+    ):
+        learnware_id = testops.add_test_learnware("test@localhost", "test", "test_learnware.zip")
+        headers = self.login()
+        result = testops.url_request(
+            "engine/generate_download_token",
+            {"learnware_ids": [learnware_id]},
+        )
+        self.assertEqual(result["code"], 0)
+        token = result["data"]["token"]
+
+        result = testops.url_request(
+            "engine/download_by_token",
+            {"token": token},
+            headers=headers,
+            method="get",
+            return_response=True,
+        )
+
+        downloaded_filename = os.path.join("tests", "data", "download_learnware.zip")
+        with open(downloaded_filename, "wb") as f:
+            f.write(result.content)
+            pass
+
+        learnware_filename = os.path.join("tests", "data", "test_learnware.zip")
+        self.assertEqual(os.path.getsize(downloaded_filename), os.path.getsize(learnware_filename))
+
+        os.remove(downloaded_filename)
+        testops.delete_learnware(learnware_id, headers=headers)
+        pass
+
+    def test_download_by_token_unverified_not_owner(
+        self,
+    ):
+        learnware_id = testops.add_test_learnware_unverified("test@localhost", "test", "test_learnware.zip")
+        headers = self.login(email="test2@localhost")
+        result = testops.url_request(
+            "engine/generate_download_token",
+            {"learnware_ids": [learnware_id]},
+            headers=headers,
+        )
+
+        self.assertEqual(result["code"], 62)
         pass
 
 

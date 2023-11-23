@@ -180,7 +180,7 @@ class UpdateLearnwareApi(flask_restful.Resource):
         learnware_path = context.get_learnware_verify_file_path(learnware_id)
         learnware_semantic_spec_path = learnware_path[:-4] + ".json"
 
-        learnware_in_engine = not os.path.exists(learnware_path)
+        learnware_in_engine = context.engine.get_learnware_by_ids(learnware_id) is not None
 
         if learnware_file is None:
             if EasySemanticChecker.check_semantic_spec(semantic_specification) == EasySemanticChecker.INVALID_LEARNWARE:
@@ -197,16 +197,13 @@ class UpdateLearnwareApi(flask_restful.Resource):
         database.update_learnware_timestamp(learnware_id)
 
         if learnware_in_engine:
-            print(f"update learnware: {learnware_id}")
-
-            if context.engine.get_learnware_by_ids(learnware_id) is not None:
-                context.engine.update_learnware(
-                    id=learnware_id,
-                    zip_path=learnware_path,
-                    semantic_spec=semantic_specification,
-                    checker_names=[],
-                    check_status=EasySemanticChecker.NONUSABLE_LEARNWARE,
-                )
+            context.engine.update_learnware(
+                id=learnware_id,
+                zip_path=learnware_path,
+                semantic_spec=semantic_specification,
+                checker_names=[],
+                check_status=EasySemanticChecker.NONUSABLE_LEARNWARE,
+            )
 
             redis_utils.publish_reload_learnware(learnware_id)
         else:
@@ -344,6 +341,8 @@ class AddLearnwareUploaded(flask_restful.Resource):
         result, retcd = common_functions.add_learnware(learnware_path, semantic_specification, learnware_id)
 
         return result, retcd
+
+    pass
 
 
 api.add_resource(ProfileApi, "/profile")

@@ -2,7 +2,8 @@ import io
 import zipfile
 import tempfile
 from flask import Blueprint, Response, jsonify, request
-from flask import send_from_directory, send_file, make_response, g
+from flask import send_from_directory, send_file, make_response
+import uuid
 import context
 from context import config as C
 import os, json, time
@@ -16,6 +17,7 @@ import lib.database_operations as dbops
 import lib.data_utils as data_utils
 from learnware.market import BaseChecker
 from learnware.config import C as learnware_conf
+from lib import redis_utils
 
 
 engine_blueprint = Blueprint("Engine-API", __name__)
@@ -234,16 +236,15 @@ class DownloadLearnware(flask_restful.Resource):
 
         learnware_info = dbops.get_learnware_by_learnware_id(learnware_id)
 
-        # TODO: unverified learnwares requires administrator rights
-        # if learnware_info["verify_status"] != LearnwareVerifyStatus.SUCCESS.value:
-        #     # it is an unverified learnware
-        #     if user_id is None:
-        #         return {"code": 61, "msg": "cannot download unverified learnware."}, 200
-        #     elif user_id != learnware_info["user_id"]:
-        #         if not dbops.check_user_admin(user_id):
-        #             return {"code": 62, "msg": "cannot download unverified learnware."}, 200
-        #         pass
-        #     pass
+        if learnware_info["verify_status"] != LearnwareVerifyStatus.SUCCESS.value:
+            # it is an unverified learnware
+            if user_id is None:
+                return {"code": 61, "msg": "cannot download unverified learnware."}, 200
+            elif user_id != learnware_info["user_id"]:
+                if not dbops.check_user_admin(user_id):
+                    return {"code": 62, "msg": "cannot download unverified learnware."}, 200
+                pass
+            pass
 
         try:
             learnware_zip_path = context.engine.get_learnware_zip_path_by_ids(learnware_id)
@@ -267,6 +268,79 @@ class DownloadLearnware(flask_restful.Resource):
             ),
         )
         return response
+
+
+class GenerateDownloadToken(flask_restful.Resource):
+    parser = flask_restful.reqparse.RequestParser()
+    parser.add_argument("learnware_ids", type=list, location="json")
+
+    @flask_jwt_extended.jwt_required(optional=True)
+    @api.expect(parser)
+    def post(self):
+        user_id = flask_jwt_extended.get_jwt_identity()
+        body = request.get_json()
+        learnware_ids = body.get("learnware_ids")
+
+        if learnware_ids is None:
+            return {"code": 21, "msg": "Request parameters error."}, 200
+
+        for learnware_id in learnware_ids:
+            learnware_info = dbops.get_learnware_by_learnware_id(learnware_id)
+
+            if learnware_info["verify_status"] != LearnwareVerifyStatus.SUCCESS.value:
+                # it is an unverified learnware
+                if user_id is None:
+                    return {"code": 61, "msg": "cannot download unverified learnware."}, 200
+                elif user_id != learnware_info["user_id"]:
+                    if not dbops.check_user_admin(user_id):
+                        return {"code": 62, "msg": "cannot download unverified learnware."}, 200
+                    pass
+                pass
+            pass
+
+        token = uuid.uuid4().hex
+        redis_utils.add_learnware_download_token(learnware_ids, token)
+        return {"code": 0, "data": {"token": token}}, 200
+
+    pass
+
+
+class DownloadByToken(flask_restful.Resource):
+    parser = flask_restful.reqparse.RequestParser()
+    parser.add_argument("token", type=str, location="params")
+
+    def get(self):
+        token = request.args.get("token")
+        learnware_ids = redis_utils.get_learnware_id_from_download_token(token)
+        if learnware_ids is None:
+            return {"code": 21, "msg": "token not exist."}, 200
+
+        learnware_id = learnware_ids[0]
+        try:
+            learnware_zip_path = context.engine.get_learnware_zip_path_by_ids(learnware_id)
+        except:
+            return {"code": 42, "msg": "Engine download learnware error."}, 200
+
+        if learnware_zip_path is None:
+            learnware_zip_path = context.get_learnware_verify_file_path(learnware_id)
+            pass
+
+        zip_directory = os.path.dirname(learnware_zip_path)
+        zip_filename = os.path.basename(learnware_zip_path)
+        response = make_response(send_from_directory(zip_directory, zip_filename, as_attachment=True))
+
+        dbops.add_log(
+            name="download_learnware",
+            info=json.dumps(
+                {
+                    "learnware_id": learnware_id,
+                }
+            ),
+        )
+        return response
+        pass
+
+    pass
 
 
 class LearnwareInfo(flask_restful.Resource):
@@ -345,8 +419,44 @@ class DownloadMultiLearnware(flask_restful.Resource):
             return res
 
 
+class DownloadMultiLearnwareByToken(flask_restful.Resource):
+    parser = flask_restful.reqparse.RequestParser()
+    parser.add_argument("token", type=str, location="params")
+
+    @api.expect(parser)
+    def get(self):
+        token = request.args.get("token")
+        learnware_ids = redis_utils.get_learnware_id_from_download_token(token)
+        if learnware_ids is None:
+            return {"code": 21, "msg": "token not exist."}, 200
+
+        try:
+            learnware_paths = [
+                context.engine.get_learnware_zip_path_by_ids(learnware_id) for learnware_id in learnware_ids
+            ]
+        except:
+            return {"code": 42, "msg": "Engine download learnware error."}, 200
+
+        if None in learnware_paths:
+            return {"code": 41, "msg": "Learnware not found."}, 200
+
+        zip_filename = f"Multi_{int(time.time())}_" + generate_random_str(16) + ".zip"
+        zip_filename = os.path.join(C.upload_path, zip_filename)
+        with zipfile.ZipFile(zip_filename, "w") as zip_file:
+            for learnware_path in learnware_paths:
+                filename = os.path.basename(learnware_path)
+                zip_file.write(learnware_path, arcname=filename)
+
+        res = send_file(zip_filename, as_attachment=True)
+        os.remove(zip_filename)
+        return res
+
+
 api.add_resource(SematicSpecification, "/semantic_specification")
 api.add_resource(SearchLearnware, "/search_learnware")
 api.add_resource(DownloadLearnware, "/download_learnware")
 api.add_resource(LearnwareInfo, "/learnware_info")
 api.add_resource(DownloadMultiLearnware, "/download_multi_learnware")
+api.add_resource(DownloadMultiLearnwareByToken, "/download_multi_learnware_by_token")
+api.add_resource(GenerateDownloadToken, "/generate_download_token")
+api.add_resource(DownloadByToken, "/download_by_token")
