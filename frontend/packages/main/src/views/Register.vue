@@ -60,6 +60,8 @@ const { ok, remain, start: startTimer, stop: stopTimer } = useTimeout(60 * 1000)
 const valid = computed(() => userName.valid && email.valid && password.valid && password2.valid);
 
 function submit(): Promise<void> {
+  if (!valid.value) return Promise.resolve();
+
   return register({
     username: userName.value,
     email: email.value,
