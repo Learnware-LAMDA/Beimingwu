@@ -417,7 +417,9 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
           </div>
           <div>
             <b> {{ t("LearnwareDetail.LastModified") }}: </b>
-            {{ dayjs(learnware.lastModify).format("YYYY-MM-DD HH:mm:ss") }}
+            {{
+              dayjs.utc(learnware.lastModify.replace(" UTC", "")).tz().format("YYYY-MM-DD HH:mm:ss")
+            }}
           </div>
           <div>
             <b>{{ t("Submit.Description.Description") }}:</b>
