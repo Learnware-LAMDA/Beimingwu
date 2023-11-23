@@ -29,7 +29,7 @@ const display = useDisplay();
 
 const store = useStore();
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const name = useField<Name>({
   defaultValue: "",
@@ -484,13 +484,14 @@ onActivated(init);
                 v-model="files.value"
                 :error-messages="files.errorMessages"
                 :tips="t('Submit.File.DragFileHere', { file: 'zip' })"
-                class="text-xl"
               />
             </div>
             <v-card-text class="py-2 text-sm sm:text-lg">
               <a
                 class="underline"
-                href="http://36.111.128.21:30006/workflow/submit.html"
+                :href="`https://docs.bmwu.cloud/${
+                  locale === 'zh-cn' ? 'zh-CN' : 'en'
+                }/user-guide/learnware-upload/prepare.html`"
                 target="_blank"
               >
                 {{ t("Submit.File.ClickHere") }}
