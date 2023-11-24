@@ -102,9 +102,17 @@ stat_specifications:
 
 Please note that the statistical specification class name for different data types `["table", "image", "text"]` is `[RKMETableSpecification, RKMEImageSpecification, RKMETextSpecification]`, respectively.
 
-## Model Runtime Dependencies `environment.yaml`
+## Model Runtime Dependencies
 
-To ensure that your uploaded learnware can be used by other users, the `zip` package of the uploaded learnware should specify the model's runtime dependencies. It is recommended to provide an `environment.yaml` file that supports `conda`. You can export this file directly from the `conda` virtual environment using the following command:
+To ensure that your uploaded learnware can be used by other users, the `zip` package of the uploaded learnware should specify the model's runtime dependencies. The Beimingwu System supports the following two ways to specify runtime dependencies:
+- Provide an `environment.yaml` file supported by `conda`.
+- Provide a `requirements.txt` file supported by `pip`.
+
+You can choose either method, but please try to remove unnecessary dependencies to keep the dependency list as minimal as possible.
+
+### Using `environment.yaml` File
+
+You can export the `environment.yaml` file directly from the `conda` virtual environment using the following command:
 
 - For Linux and macOS systems:
 
@@ -136,10 +144,22 @@ with open('environment.yaml', 'wb') as file:
     file.write(output_content)
 ```
 
-Alternatively, you can provide a `requirements.txt` file that supports `pip`. This file should list the packages required for running the `__init__.py` file and their specific versions. You can obtain these version details by executing the `pip show <package_name>` or `conda list <package_name>` command. Here is an example file:
+Additionally, due to the complexity of users' local `conda` virtual environments, you can execute the following command before uploading to confirm that there are no dependency conflicts in the `environment.yaml` file:
+```bash
+conda env create --name test_env --file environment.yaml
+```
+
+The above command will create a virtual environment based on the `environment.yaml` file, and if successful, it indicates that there are no dependency conflicts. You can delete the created virtual environment using the following command:
+```bash
+conda env remove --name test_env
+```
+
+### Using `requirements.txt` File
+
+
+The `requirements.txt` file should list the packages required for running the `__init__.py` file and their specific versions. You can obtain these version details by executing the `pip show <package_name>` or `conda list <package_name>` command. Here is an example file:
 
 ```txt
-learnware==0.1.0.999
 numpy==1.23.5
 scikit-learn==1.2.2
 ```
@@ -151,7 +171,8 @@ pip install pipreqs
 pipreqs ./  # Run this command in the project's root directory
 ```
 
-Regardless of which method you use, try to remove unnecessary dependencies to minimize the number of required dependencies.
+Please note that if you use the `requirements.txt` file to specify runtime dependencies, the system will by default install these dependencies in a `conda` virtual environment running Python 3.8 during the learnware deployment.
+
 
 ## Local Validation of Learnware
 
