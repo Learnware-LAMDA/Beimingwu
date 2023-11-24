@@ -99,49 +99,68 @@ stat_specifications:
 
 需注意，生成规约时的数据类型 `["table", "image", "text"]` 所对应的规约类型分别为 `[RKMETableSpecification, RKMEImageSpecification, RKMETextSpecification]`。
 
-## 模型运行依赖 `environment.yaml`
+## 模型运行依赖
 
-为了使上传的学件可以被后续其它用户使用，上传学件的 `zip` 包中需指明模型的运行依赖：
-- 此处推荐大家提供 `conda` 支持的 `environment.yaml` 文件，该文件可通过下述命令由 `conda` 虚拟环境直接导出：
-    - Linux 和 macOS 系统：
-    ```bash
-    conda env export | grep -v "^prefix: " > environment.yaml
-    ```
-    - Windows 系统：
-    ```bash
-    conda env export | findstr /v "^prefix: " > environment.yaml
-    ```
+为了使上传的学件可以被后续其它用户使用，上传学件的 `zip` 包中需指明模型的运行依赖。北冥坞系统支持下述两种指定运行依赖的方式：
+- 提供 `conda` 支持的 `environment.yaml` 文件；
+- 提供 `pip` 支持的 `requirements.txt` 文件。
 
-  需要注意的是， 上传学件的 `zip` 包中 `environment.yaml` 文件需要是 `UTF-8` 格式编码。在使用上述命令导出后请检查 `environment.yaml` 文件的编码格式，由于 `conda` 版本和系统差异等原因，您可能得到的并不是 `UTF-8` 格式编码文件（例如得到 `UTF-16LE` 格式编码），此时需要手动将文件转换为 `UTF-8` 编码格式，大多数文本编辑器都支持编码格式转换。以下进行编码转换的 `Python` 代码也供参考：
+两种方式选其一即可，但无论使用哪一种方式，请尽量去除不需要的依赖，使依赖项尽可能的少。
 
-  ```python
-  import codecs
-  
-  # 读取 conda env export 命令的输出文件
-  # 这里假设文件名为 environment.yaml, 导出格式为 UTF-16LE
-  with codecs.open('environment.yaml', 'r', encoding='utf-16le') as file:
-      content = file.read()
-  
-  # 将内容转换为 UTF-8 编码
-  output_content = content.encode('utf-8')
-  
-  # 写入 UTF-8 编码的文件
-  with open('environment.yaml', 'wb') as file:
-      file.write(output_content)
+### 使用 `environment.yaml` 文件
 
-- 除上述方式外，也可以提供 `pip` 支持的 `requirements.txt` 文件。该文件需要列出运行 `__init__.py` 文件所需导入的包及其具体版本，这些版本信息可通过执行 `pip show <package_name>` 或 `conda list <package_name>` 命令来获取。以下是一个示例文件：
-    ```txt
-    learnware==0.1.0.999
-    numpy==1.23.5
-    scikit-learn==1.2.2
-    ```
-    手动列举可能会有些麻烦，也可以使用 `pipreqs` 包直接扫描整个项目，自动导出使用的包及其具体版本（但很可能会有些偏差，需要再自行检查）：
-    ```bash
-    pip install pipreqs
-    pipreqs ./  # 需在项目根目录执行
-    ```
+`environment.yaml` 文件可通过下述命令由 `conda` 虚拟环境直接导出：
+- Linux 和 macOS 系统：
+```bash
+conda env export | grep -v "^prefix: " > environment.yaml
+```
+- Windows 系统：
+```bash
+conda env export | findstr /v "^prefix: " > environment.yaml
+```
 
-无论使用哪一种方式，请尽量去除不需要的依赖，使依赖项尽可能的少。
+需要注意的是， 学件 `zip` 包中的 `environment.yaml` 文件需要使用 `UTF-8` 格式编码。在导出后，请检查 `environment.yaml` 文件的编码格式。由于 `conda` 版本和系统的差异，您可能会得到非 `UTF-8` 格式编码的文件（例如 `UTF-16LE` 格式），此时需要手动将文件转换为 `UTF-8` 编码格式。大多数文本编辑器都支持编码格式转换。您也可以参考下述编码转换的 `Python` 代码：
+
+```python
+import codecs
+
+# 读取 conda env export 命令的输出文件
+# 这里假设文件名为 environment.yaml, 导出格式为 UTF-16LE
+with codecs.open('environment.yaml', 'r', encoding='utf-16le') as file:
+    content = file.read()
+
+# 将内容转换为 UTF-8 编码
+output_content = content.encode('utf-8')
+
+# 写入 UTF-8 编码的文件
+with open('environment.yaml', 'wb') as file:
+    file.write(output_content)
+```
+
+另外，由于用户本地 `conda` 虚拟环境的复杂性，您可以在上传前执行以下命令，以确认您上传的 `environment.yaml` 文件中不存在内部依赖冲突：
+```bash
+conda env create --name test_env --file environment.yaml
+```
+
+上述命令将根据 `environment.yaml` 文件创建虚拟环境，若创建成功，则说明文件不存在依赖冲突。创建的虚拟环境可通过下述命令进行删除：
+```bash
+conda env remove --name test_env
+```
+
+### 使用 `requirements.txt` 文件
+
+`requirements.txt` 文件需要列出运行 `__init__.py` 文件所需安装的包以及它们的具体版本。这些版本信息可通过执行 `pip show <package_name>` 或 `conda list <package_name>` 命令来获取。以下是一个示例文件：
+```txt
+numpy==1.23.5
+scikit-learn==1.2.2
+```
+如果觉得手动列举比较麻烦，也可以使用 `pipreqs` 包直接扫描整个项目，自动导出使用的包及其具体版本（但很可能会有些偏差，需要再自行检查）：
+```bash
+pip install pipreqs
+pipreqs ./  # 需在项目根目录执行
+```
+请注意，如果您使用 `requirements.txt` 文件来指定运行依赖，系统在学件部署时将默认在 `Python 3.8` 的 `conda` 虚拟环境中安装这些依赖。
+
 
 ## 学件本地验证
 
