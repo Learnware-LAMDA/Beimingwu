@@ -1,15 +1,45 @@
-import { BACKEND_URL } from "../request";
+import { BACKEND_URL, checkedFetch } from "../request";
 
-function downloadLearnwareSync(id: string): void {
-  const url = `${BACKEND_URL}/engine/download_learnware?learnware_id=${id}`;
-  window.open(url);
+function downloadLearnwareSync(id: string): Promise<void> {
+  return checkedFetch(`${BACKEND_URL}/engine/generate_download_token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      learnware_ids: [id],
+    }),
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.code === 0) {
+        const url = `${BACKEND_URL}/engine/download_by_token?token=${res.data.token}`;
+        window.open(url);
+      } else {
+        throw new Error(res.msg);
+      }
+    });
 }
 
-function downloadMultipleLearnwaresSync(ids: string[]): void {
-  const url = `${BACKEND_URL}/engine/download_multi_learnware?${ids
-    .map((id) => `learnware_ids=${id}`)
-    .join("&")}`;
-  window.open(url);
+function downloadMultipleLearnwaresSync(ids: string[]): Promise<void> {
+  return checkedFetch(`${BACKEND_URL}/engine/generate_download_token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      learnware_ids: ids,
+    }),
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.code === 0) {
+        const url = `${BACKEND_URL}/engine/download_multi_learnware_by_token?token=${res.data.token}`;
+        window.open(url);
+      } else {
+        throw new Error(res.msg);
+      }
+    });
 }
 
 export { downloadLearnwareSync, downloadMultipleLearnwaresSync };

@@ -1,2 +1,3 @@
+import { checkedFetch } from "./utils";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "./api";
-export { BACKEND_URL };
+export { BACKEND_URL, checkedFetch };

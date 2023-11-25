@@ -149,6 +149,14 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
     window.open(_url, "_blank")?.focus(); // window.open + focus
   });
 }
+
+function handleDownload(id: string): void {
+  downloadLearnwareSync(id).catch((err) => {
+    console.error(err);
+    showError.value = true;
+    errorMsg.value = err.message;
+  });
+}
 </script>
 
 <template>
@@ -206,7 +214,7 @@ function onLearnwareVerifyLog(learnware_id: string): Promise<void> {
           <v-btn
             variant="flat"
             icon="mdi-download"
-            @click="() => downloadLearnwareSync(learnware.id)"
+            @click="() => handleDownload(learnware.id)"
           />
           <template v-if="editable">
             <v-btn
