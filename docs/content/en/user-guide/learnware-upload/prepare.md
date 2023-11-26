@@ -48,6 +48,7 @@ Please ensure that the `MyModel` class inherits from `BaseModel` in the `learnwa
 ### Input and Output Dimensions
 
 `input_shape` and `output_shape` represent the input and output dimensions of the model, respectively. You can refer to the following guidelines when filling them out:
+- `input_shape` specifies a single input sample's dimension, and `output_shape` refers to the model's output dimension for a single sample.
 - When the data type being processed is text data, there are no specific requirements for the value of `input_shape`, and it can be filled in as `None`.
 - When the `output_shape` corresponds to tasks with variable outputs (such as object detection, text segmentation, etc.), there are no specific requirements for the value of `output_shape`, and it can be filled in as `None`.
 - For classification tasks, `output_shape` should be (1, ) if the model directly outputs predicted labels, and (class_num, ) if the model outputs logits.
@@ -172,6 +173,8 @@ pipreqs ./  # Run this command in the project's root directory
 ```
 
 Please note that if you use the `requirements.txt` file to specify runtime dependencies, the system will by default install these dependencies in a `conda` virtual environment running Python 3.8 during the learnware deployment.
+
+Furthermore, for version-sensitive packages like `torch`, it's essential to specify package versions in the `requirements.txt` file to ensure successful deployment of the uploaded learnware on other machines.
 
 
 ## Local Validation of Learnware
