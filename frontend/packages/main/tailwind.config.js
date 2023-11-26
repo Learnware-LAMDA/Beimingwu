@@ -8,6 +8,7 @@ export default {
     "stroke-blue-600",
     "stroke-green-800",
     "stroke-red-800",
+    "bg-organge-600",
   ],
   theme: {
     extend: {},

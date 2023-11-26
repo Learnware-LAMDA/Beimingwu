@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
+import MultiSelectGridBtns from "./MultiSelectGridBtns.vue";
 import type { Scenario, ScenarioList } from "@beiming-system/types/learnware";
 
 export interface Props {
@@ -16,8 +16,6 @@ const { t } = useI18n();
 
 const emit = defineEmits(["update:modelValue"]);
 
-const display = useDisplay();
-
 const props = withDefaults(defineProps<Props>(), {
   cols: 4,
   md: 4,
@@ -25,207 +23,124 @@ const props = withDefaults(defineProps<Props>(), {
   xs: 1,
 });
 
-const realCols = computed(() => {
-  let { cols } = props;
-  if (props.md && display.md.value) {
-    cols = props.md;
-  } else if (props.sm && display.sm.value) {
-    cols = props.sm;
-  } else if (props.xs && display.xs.value) {
-    cols = props.xs;
-  }
-  return cols;
-});
-
 const items = computed<
   {
-    text: string;
+    title: string;
     icon: string;
     value: Scenario;
   }[]
 >(() => [
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Business"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Business"),
     icon: "mdi-briefcase",
     value: "Business",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Financial"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Financial"),
     icon: "mdi-currency-usd",
     value: "Financial",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Health"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Health"),
     icon: "mdi-heart",
     value: "Health",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Politics"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Politics"),
     icon: "mdi-account-group",
     value: "Politics",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Computer"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Computer"),
     icon: "mdi-desktop-classic",
     value: "Computer",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Internet"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Internet"),
     icon: "mdi-earth",
     value: "Internet",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Traffic"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Traffic"),
     icon: "mdi-car",
     value: "Traffic",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Nature"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Nature"),
     icon: "mdi-forest",
     value: "Nature",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Fashion"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Fashion"),
     icon: "mdi-tshirt-crew",
     value: "Fashion",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Industry"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Industry"),
     icon: "mdi-factory",
     value: "Industry",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Agriculture"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Agriculture"),
     icon: "mdi-sprout",
     value: "Agriculture",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Education"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Education"),
     icon: "mdi-school",
     value: "Education",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Entertainment"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Entertainment"),
     icon: "mdi-movie",
     value: "Entertainment",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Architecture"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Architecture"),
     icon: "mdi-home-city",
     value: "Architecture",
   },
   {
-    text: t("Submit.SemanticSpecification.Scenario.Type.Others"),
+    title: t("Submit.SemanticSpecification.Scenario.Type.Others"),
     icon: "mdi-dots-horizontal-circle",
     value: "Others",
   },
 ]);
 
-const allSelected = computed(
-  () => props.modelValue && props.modelValue.length === items.value.length,
-);
-
-const selections = computed(() => {
-  if (props.modelValue) {
-    return props.modelValue.map((s) => items.value.find((item) => item.value === s));
-  }
-  return [];
+const modelValue = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(val) {
+    emit("update:modelValue", val);
+  },
 });
-
-function click(value: Scenario): void {
-  if (props.modelValue && props.modelValue.includes(value)) {
-    deleteSelect(value);
-  } else {
-    addSelect(value);
-  }
-}
-
-function addSelect(value: Scenario): void {
-  if (props.modelValue) {
-    emit("update:modelValue", [...props.modelValue, value]);
-  } else {
-    emit("update:modelValue", [value]);
-  }
-}
-
-function deleteSelect(value: Scenario): void {
-  if (props.modelValue) {
-    emit(
-      "update:modelValue",
-      props.modelValue.filter((s) => s !== value),
-    );
-  } else {
-    emit("update:modelValue", []);
-  }
-}
 </script>
 
 <template>
-  <div
-    class="scenario-container"
-    flat
+  <multi-select-grid-btns
+    v-model="modelValue"
+    :btns="items"
+    :title="t('Submit.SemanticSpecification.Scenario.Scenario')"
+    :cols="cols"
+    :md="md"
+    :sm="sm"
+    :xs="xs"
   >
-    <div class="my-title text-h6 !text-base">
-      {{ t("Submit.SemanticSpecification.Scenario.Scenario") }}
-    </div>
-
-    <v-divider v-if="!allSelected" />
-
-    <div
-      class="list"
-      :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
-    >
-      <template
-        v-for="item in items"
-        :key="item.text"
+    <template #btn="{ title, icon, active, onClick }">
+      <div
+        :class="{ 'bg-orange-600': active }"
+        class="flex cursor-pointer items-center rounded-[2em] bg-gray-400 p-3 pl-4 text-xs text-white sm:text-sm lg:text-base"
+        @click="onClick"
       >
-        <div
-          :class="selections.includes(item) ? ['active'] : []"
-          class="item text"
-          @click="() => click(item.value)"
-        >
-          <v-icon
-            class="mr-4"
-            :icon="item.icon"
-          />
-          <div
-            class="text"
-            v-text="item.text"
-          />
+        <v-icon
+          class="mr-4"
+          :icon="icon"
+        />
+        <div class="text-xs sm:text-sm lg:text-base">
+          {{ title }}
         </div>
-      </template>
-    </div>
-  </div>
+      </div>
+    </template>
+  </multi-select-grid-btns>
 </template>
-
-<style scoped lang="scss">
-.scenario-container {
-  .my-title {
-    @apply mb-5 mt-7;
-  }
-
-  .list {
-    @apply grid gap-1 bg-transparent sm:gap-2;
-
-    .item {
-      @apply flex cursor-pointer items-center rounded-[2em] bg-gray-400 p-3 pl-4 text-white;
-    }
-
-    .active {
-      @apply bg-orange-600;
-    }
-
-    .v-list-item {
-      @apply overflow-visible;
-
-      * {
-        @apply overflow-visible;
-      }
-    }
-  }
-
-  .text {
-    @apply text-xs sm:text-sm lg:text-base;
-  }
-}
-</style>
