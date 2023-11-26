@@ -70,10 +70,9 @@ Similar to the web interface search, the `learnware` package supports semantic s
 You can search for learnwares in the learnware dock system through semantic specifications, and all learnwares that meet the semantic specifications will be returned via the API. For example, the following code retrieves all learnware in the system with a task type of "Classification":
 
 ```python
-user_semantic = {
-    "Task": {"Values": ["Classification"], "Type": "Class"},
-}
-
+user_semantic = client.create_semantic_specification(
+    task_type="Classification"
+)
 specification = Specification()
 specification.update_semantic_spec(user_semantic)
 learnware_list = client.search_learnware(specification, page_size=None)
@@ -90,10 +89,10 @@ learnware_list = client.search_learnware(specification, page_size=None)
 By combining both semantic and statistical specifications, you can perform more accurate searches. For example, the following code searches for learnware in tabular data that meet both semantic and statistical specifications:
 
 ```python
-user_semantic = {
-    "Task": {"Values": ["Classification"], "Type": "Class"},
-    "Scenario": {"Values": ["Business"], "Type": "Tag"},
-}
+user_semantic = client.create_semantic_specification(
+    task_type="Classification",
+    scenarios=["Business"],
+)
 data_type = "table"
 rkme_table = generate_stat_spec(type=data_type, X=train_x)
 
@@ -129,11 +128,11 @@ input_description = {
         "1": "leaf length",
     },
 }
-user_semantic = {
-    "Task": {"Values": ["Classification"], "Type": "Class"},
-    "Scenario": {"Values": ["Business"], "Type": "Tag"},
-    "Input": input_description,
-}
+user_semantic = client.create_semantic_specification(
+    task_type="Classification",
+    scenarios=["Business"],
+    input_description=input_description,
+)
 data_type = "table"
 rkme_table = generate_stat_spec(type=data_type, X=train_x)
 

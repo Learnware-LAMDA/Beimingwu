@@ -75,10 +75,9 @@ client.login(email="your email", token="your token")
 您可以通过语义规约在学件基座系统中查搜学件，所有符合语义规约的学件都将通过API返回。例如，下列代码将得到系统中所有任务类型为分类的学件：
 
 ```python
-user_semantic = {
-    "Task": {"Values": ["Classification"], "Type": "Class"},
-}
-
+user_semantic = client.create_semantic_specification(
+    task_type="Classification"
+)
 specification = Specification()
 specification.update_semantic_spec(user_semantic)
 learnware_list = client.search_learnware(specification, page_size=None)
@@ -95,10 +94,10 @@ learnware_list = client.search_learnware(specification, page_size=None)
 通过将统计规约和语义规约结合起来，您可以进行更加细致的查搜，比如下列代码将在表格型数据中查搜满足您语义规约的学件：
 
 ```python
-user_semantic = {
-    "Task": {"Values": ["Classification"], "Type": "Class"},
-    "Scenario": {"Values": ["Business"], "Type": "Tag"},
-}
+user_semantic = client.create_semantic_specification(
+    task_type="Classification",
+    scenarios=["Business"],
+)
 data_type = "table"
 rkme_table = generate_stat_spec(type=data_type, X=train_x)
 
@@ -135,11 +134,11 @@ input_description = {
         "1": "leaf length",
     },
 }
-user_semantic = {
-    "Task": {"Values": ["Classification"], "Type": "Class"},
-    "Scenario": {"Values": ["Business"], "Type": "Tag"},
-    "Input": input_description,
-}
+user_semantic = client.create_semantic_specification(
+    task_type="Classification",
+    scenarios=["Business"],
+    input_description=input_description,
+)
 data_type = "table"
 rkme_table = generate_stat_spec(type=data_type, X=train_x)
 
