@@ -113,7 +113,7 @@ def search_learnware(semantic_str, statistical_str, user_id, check_status=None):
     try:
         context.logger.info(f"stat_info in user: {user_info.stat_info}")
         is_hetero = learnware_utils.is_hetero(stat_specs=user_info.stat_info, semantic_spec=user_info.semantic_spec)
-        matching, single_learnware_list, multi_score, multi_learnware = context.engine.search_learnware(
+        search_result = context.engine.search_learnware(
             user_info, check_status=check_status
         )
     except Exception as err:
@@ -121,6 +121,13 @@ def search_learnware(semantic_str, statistical_str, user_id, check_status=None):
         traceback.print_exc()
         return False, "Engine search learnware error.", None
 
+    single_result = search_result.get_single_results()
+    multiple_result = search_result.get_multiple_results()
+    
+    matching = [single_item.score for single_item in single_result]
+    single_learnware_list = [single_item.learnware for single_item in single_result]
+    multi_score = None if len(multiple_result) == 0 else multiple_result[0].score
+    multi_learnware = [] if len(multiple_result) == 0 else multiple_result[0].learnwares
     # Return learnware
     return True, "", (matching, single_learnware_list, multi_score, multi_learnware, is_hetero)
 
@@ -139,14 +146,16 @@ def search_learnware_by_semantic(semantic_str, user_id, check_status=None):
         stat_info={},  # No statistical specification
     )
     try:
-        matching, single_learnware_list, multi_score, multi_learnware = context.engine.search_learnware(
+        search_result = context.engine.search_learnware(
             info, check_status=check_status
         )
     except Exception as err:
         return False, f"Engine search learnware error.", None
 
     # Return learnware
-    return True, "", (matching, single_learnware_list, multi_score, multi_learnware)
+    single_result = search_result.get_single_results()
+    single_learnware_list = [single_item.learnware for single_item in single_result]
+    return True, "", (None, single_learnware_list, 0.0, None)
 
 
 def parse_semantic_specification(semantic_str):
