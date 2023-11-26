@@ -48,6 +48,7 @@ class MyModel(BaseModel):
 ### 输入输出维度
 
 `input_shape` 、`output_shape` 分别代表模型的输入和输出维度，填写时可参考下述规范：
+- `input_shape` 是单个输入样本的维度，`output_shape` 是模型对于单个样本的输出维度；
 - 当学件处理的数据类型为文本数据时，对 `input_shape` 的具体值不作要求，可填写为 `None`；
 - 当学件对应任务的 `output_shape` 不固定时（例如目标检测、文本分割等任务），对 `output_shape` 的具体值不作要求，可填写为 `None`；
 - 对于分类任务，如果模型直接输出预测标记，则 `output_shape` 应填写为 (1, )；若模型输出为类别的后验概率，则 `output_shape` 应填写为类别数目，即 (class_num, ) 的形式。
@@ -160,6 +161,8 @@ pip install pipreqs
 pipreqs ./  # 需在项目根目录执行
 ```
 请注意，如果您使用 `requirements.txt` 文件来指定运行依赖，系统在学件部署时将默认在 `Python 3.8` 的 `conda` 虚拟环境中安装这些依赖。
+
+此外，对于一些对版本十分敏感的包（例如 `torch`），请务必在 `requirements.txt` 文件中指定包的版本，否则可能会导致上传的学件无法在其它机器上部署。
 
 
 ## 学件本地验证
