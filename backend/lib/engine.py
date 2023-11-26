@@ -154,9 +154,8 @@ def search_learnware_by_semantic(semantic_str, user_id, check_status=None):
 
     # Return learnware
     single_result = search_result.get_single_results()
-    matching = [single_item.score for single_item in single_result]
     single_learnware_list = [single_item.learnware for single_item in single_result]
-    return True, "", (matching, single_learnware_list, 0.0, None)
+    return True, "", (None, single_learnware_list, 0.0, None)
 
 
 def parse_semantic_specification(semantic_str):
