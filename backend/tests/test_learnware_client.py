@@ -7,6 +7,7 @@ import time
 import json
 from learnware.client import LearnwareClient, SemanticSpecificationKey
 from learnware.specification import Specification, RKMEStatSpecification
+from learnware.market import BaseUserInfo
 
 import tests.common_test_operations as testops
 import lib.database_operations as dbops
@@ -85,13 +86,13 @@ class TestLearnwareClient(unittest.TestCase):
 
         testops.add_learnware_to_engine(learnware_id, client.headers)
 
-        specification = Specification()
-        specification.update_semantic_spec(testops.test_learnware_semantic_specification_table())
+        user_info = BaseUserInfo()
         stat_spec = RKMEStatSpecification()
         stat_spec.load(os.path.join("tests", "data", "stat.json"))
-
-        specification.update_stat_spec(stat_spec)
-        learnware_list = client.search_learnware(specification)
+        
+        user_info.update_semantic_spec(testops.test_learnware_semantic_specification_table())
+        user_info.update_stat_info(stat_spec.type, stat_spec)
+        learnware_list = client.search_learnware(user_info)
 
         self.assertEqual(len(learnware_list), 1)
         self.assertEqual(learnware_list[0]["matching"], 1)
@@ -108,9 +109,10 @@ class TestLearnwareClient(unittest.TestCase):
         testops.add_learnware_to_engine(learnware_id, client.headers)
         # wait engine to load learnware
         time.sleep(1)
-        specification = Specification()
-        specification.update_semantic_spec(testops.test_learnware_semantic_specification_table())
-        learnware_list = client.search_learnware(specification)
+        user_info = BaseUserInfo()
+        user_info.update_semantic_spec(testops.test_learnware_semantic_specification_table())
+        
+        learnware_list = client.search_learnware(user_info)
 
         self.assertEqual(len(learnware_list), 1)
         client.delete_learnware(learnware_id)
