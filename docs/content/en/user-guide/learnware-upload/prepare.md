@@ -51,7 +51,7 @@ Please ensure that the `MyModel` class inherits from `BaseModel` in the `learnwa
 - `input_shape` specifies a single input sample's dimension, and `output_shape` refers to the model's output dimension for a single sample.
 - When the data type being processed is text data, there are no specific requirements for the value of `input_shape`, and it can be filled in as `None`.
 - When the `output_shape` corresponds to tasks with variable outputs (such as object detection, text segmentation, etc.), there are no specific requirements for the value of `output_shape`, and it can be filled in as `None`.
-- For classification tasks, `output_shape` should be (1, ) if the model directly outputs predicted labels, and (class_num, ) if the model outputs logits.
+- For classification tasks, `output_shape` should be (1, ) if the model directly outputs predicted labels, and the sample labels need to start from 0. If the model outputs logits, `output_shape` should be specified as the number of classes, i.e., (class_num, ).
 
 ### File Path
 
