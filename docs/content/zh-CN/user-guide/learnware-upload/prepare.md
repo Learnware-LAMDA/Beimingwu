@@ -51,7 +51,7 @@ class MyModel(BaseModel):
 - `input_shape` 是单个输入样本的维度，`output_shape` 是模型对于单个样本的输出维度；
 - 当学件处理的数据类型为文本数据时，对 `input_shape` 的具体值不作要求，可填写为 `None`；
 - 当学件对应任务的 `output_shape` 不固定时（例如目标检测、文本分割等任务），对 `output_shape` 的具体值不作要求，可填写为 `None`；
-- 对于分类任务，如果模型直接输出预测标记，则 `output_shape` 应填写为 (1, )；若模型输出为类别的后验概率，则 `output_shape` 应填写为类别数目，即 (class_num, ) 的形式。
+- 对于分类任务，如果模型直接输出预测标记，则 `output_shape` 应填写为 (1, )，且样本标记需要从 0 开始编号；若模型输出为类别的后验概率，则 `output_shape` 应填写为类别数目，即 (class_num, ) 的形式。
 
 ### 文件路径
 

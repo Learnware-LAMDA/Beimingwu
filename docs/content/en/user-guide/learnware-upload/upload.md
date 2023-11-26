@@ -18,7 +18,8 @@ The first three steps can be completed following the instructions on the website
 
 It's important to note that during the second step, "Select Tags":
 - If the data type is "Table," you need to specify the semantics of each dimension of the model's input data to make the uploaded learnware suitable for tasks with heterogeneous feature spaces.
-- If the task type is "Classification" or "Regression," you need to specify the semantics of each dimension of the model's output to make the uploaded learnware suitable for tasks with heterogeneous output spaces.
+- If the task type is "Classification", you need to provide the semantics of model output labels (prediction labels start from 0), making the uploaded learnware suitable for classification tasks with heterogeneous output spaces.
+- If the task type is "Regression", you need to specify the semantics of each dimension of the model output, making the uploaded learnware suitable for regression tasks with heterogeneous output spaces.
 
 If there are many dimensions, consider using a large language model to analyze the feature engineering code and generate semantics for each dimension.
 
@@ -55,9 +56,9 @@ input_description = {
 output_description = {
     "Dimension": 3,
     "Description": {
-        "0": "the probability of being a cat",
-        "1": "the probability of being a dog",
-        "2": "the probability of being a bird",
+        "0": "cat",
+        "1": "dog",
+        "2": "bird",
     },
 }
 
