@@ -270,14 +270,13 @@ function handleClickDelete(id: string): void {
     .scenario,
     .license {
       @apply rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white;
+      &.active {
+        @apply bg-orange-600;
+      }
     }
 
     .label.active {
       background: rgb(var(--v-theme-primary));
-    }
-
-    .scenario.active {
-      @apply bg-orange-600;
     }
 
     .description {
