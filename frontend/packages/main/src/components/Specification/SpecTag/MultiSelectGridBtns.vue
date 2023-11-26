@@ -4,7 +4,7 @@ import { useDisplay } from "vuetify";
 
 export interface Btn {
   title: string;
-  icon: string;
+  icon?: string;
   value: string;
 }
 
@@ -12,6 +12,7 @@ export interface Props {
   modelValue: string[];
   btns: Btn[];
   title: string;
+  single?: boolean;
   cols?: number;
   md?: number;
   sm?: number;
@@ -21,6 +22,7 @@ export interface Props {
 const display = useDisplay();
 
 const props = withDefaults(defineProps<Props>(), {
+  single: false,
   cols: 5,
   md: 5,
   sm: 5,
@@ -47,10 +49,14 @@ function clickBtn(btn: Btn): void {
   if (!modelValue.value) {
     modelValue.value = [];
   }
-  if (modelValue.value.includes(btn.value)) {
-    modelValue.value = modelValue.value.filter((item) => item !== btn.value);
+  if (props.single) {
+    modelValue.value = [btn.value];
   } else {
-    modelValue.value = [...modelValue.value, btn.value];
+    if (modelValue.value.includes(btn.value)) {
+      modelValue.value = modelValue.value.filter((item) => item !== btn.value);
+    } else {
+      modelValue.value = [...modelValue.value, btn.value];
+    }
   }
 }
 

@@ -85,6 +85,8 @@ function searchLearnware({
       semanticSpec.Library.Values = (libraryType && [libraryType]) || [];
       semanticSpec.Scenario.Values =
         (scenarioList && scenarioList.map((scenario) => scenario)) || [];
+      semanticSpec.Scenario.Values =
+        (scenarioList && scenarioList.map((scenario) => scenario)) || [];
       semanticSpec.Description.Values = "";
       if (input && output) {
         semanticSpec.Input = input;

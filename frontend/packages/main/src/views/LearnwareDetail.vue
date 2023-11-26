@@ -35,6 +35,7 @@ const learnware = ref<LearnwareDetailInfoWithDescription>({
   taskType: "",
   libraryType: "",
   scenarioList: [],
+  licenseList: [],
 });
 const learnwareId = ref("");
 const downloading = ref(false);
@@ -69,6 +70,7 @@ function getLearnwareDetail(id: string): Promise<void> {
               taskType: learnwareInfo.semantic_specification.Task.Values[0],
               libraryType: learnwareInfo.semantic_specification.Library.Values[0],
               scenarioList: learnwareInfo.semantic_specification.Scenario.Values,
+              licenseList: learnwareInfo.semantic_specification?.License?.Values ?? ["Apache-2.0"],
             };
             return learnwareInfo.user_id;
           }
@@ -404,6 +406,20 @@ function handleDownload(id: string): void {
               class="active ml-1"
             >
               {{ t(`Submit.SemanticSpecification.Scenario.Type.${scenario}`) }}
+            </span>
+          </div>
+          <div>
+            <b>{{ t("Submit.SemanticSpecification.License.License") }}:</b>
+            <span
+              v-for="(license, i) in learnware.licenseList"
+              :key="i"
+              class="active ml-1"
+            >
+              {{
+                license === "Others"
+                  ? t(`Submit.SemanticSpecification.License.Type.OtherLicense`)
+                  : license
+              }}
             </span>
           </div>
           <div>

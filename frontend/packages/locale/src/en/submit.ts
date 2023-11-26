@@ -91,6 +91,16 @@ export default {
         NotEmpty: "Scenario list must not be empty.",
       },
     },
+    License: {
+      License: "License",
+      Type: {
+        Others: "Others",
+        OtherLicense: "Other License",
+      },
+      Error: {
+        NotEmpty: "License must not be empty.",
+      },
+    },
   },
   Description: {
     Description: "Description",

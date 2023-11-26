@@ -141,6 +141,7 @@ function fetchByFilterAndPage(page: number): void {
             taskType: item.semantic_specification.Task.Values[0],
             libraryType: item.semantic_specification.Library.Values[0],
             scenarioList: item.semantic_specification.Scenario.Values,
+            licenseList: item.semantic_specification?.License?.Values ?? ["Apache-2.0"],
           }));
           pageNum.value = res.data.total_pages;
           return;

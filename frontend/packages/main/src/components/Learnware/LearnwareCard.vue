@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
     taskType: "",
     libraryType: "",
     scenarioList: [],
+    licenseList: [],
     files: [],
   }),
   showDownload: true,
@@ -178,6 +179,22 @@ function handleClickDelete(id: string): void {
           )
         }}
       </div>
+      <div
+        v-for="(license, i) in item.licenseList"
+        :key="i"
+        class="license"
+        :class="
+          filters && filters.licenseList && filters.licenseList.includes(license)
+            ? 'active'
+            : undefined
+        "
+      >
+        {{
+          license === "Others"
+            ? t("Submit.SemanticSpecification.License.Type.OtherLicense")
+            : license
+        }}
+      </div>
     </v-card-text>
     <v-card-text class="card-text">
       <div class="description">
@@ -250,7 +267,8 @@ function handleClickDelete(id: string): void {
       @apply rounded border-gray-700 bg-gray-400 px-2 text-xs text-white;
     }
 
-    .scenario {
+    .scenario,
+    .license {
       @apply rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white;
     }
 
