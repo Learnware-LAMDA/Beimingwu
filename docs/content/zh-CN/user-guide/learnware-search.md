@@ -75,20 +75,20 @@ client.login(email="your email", token="your token")
 您可以通过语义规约在学件基座系统中查搜学件，所有符合语义规约的学件都将通过API返回。例如，下列代码将得到系统中所有任务类型为分类的学件：
 
 ```python
+from learnware.market import BaseUserInfo
+
 user_semantic = client.create_semantic_specification(
     task_type="Classification"
 )
-specification = Specification()
-specification.update_semantic_spec(user_semantic)
-learnware_list = client.search_learnware(specification, page_size=None)
+user_info = BaseUserInfo(semantic_spec=user_semantic)
+learnware_list = client.search_learnware(user_info, page_size=None)
 ```
 
 您也可以通过统计规约在学件基座系统中查搜学件，所有分布相似的学件都将通过 API 返回。通过上述提到的 `generate_stat_spec` 函数，您可以便捷地得到您当前任务对应的统计规约 `stat_spec`，随后通过下列代码即可得到系统中同一类型数据下满足您任务统计规约的学件：
 
 ```python
-specification = Specification()
-specification.update_stat_spec(stat_spec)
-learnware_list = client.search_learnware(specification, page_size=None)
+user_info = BaseUserInfo(stat_info={stat_spec.type: stat_spec})
+learnware_list = client.search_learnware(user_info, page_size=None)
 ```
 
 通过将统计规约和语义规约结合起来，您可以进行更加细致的查搜，比如下列代码将在表格型数据中查搜满足您语义规约的学件：
@@ -98,13 +98,11 @@ user_semantic = client.create_semantic_specification(
     task_type="Classification",
     scenarios=["Business"],
 )
-data_type = "table"
-rkme_table = generate_stat_spec(type=data_type, X=train_x)
-
-specification = Specification()
-specification.update_semantic_spec(user_semantic)
-specification.update_stat_spec(rkme_table)
-learnware_list = client.search_learnware(specification, page_size=None)
+rkme_table = generate_stat_spec(type="table", X=train_x)
+user_info = BaseUserInfo(
+    semantic_spec=user_semantic, stat_info={rkme_table.type: rkme_table}
+)
+learnware_list = client.search_learnware(user_info, page_size=None)
 ```
 
 当学件查搜完成后，您可以通过下列代码完成学件的下载及环境的配置：
@@ -139,11 +137,9 @@ user_semantic = client.create_semantic_specification(
     scenarios=["Business"],
     input_description=input_description,
 )
-data_type = "table"
-rkme_table = generate_stat_spec(type=data_type, X=train_x)
-
-specification = Specification()
-specification.update_semantic_spec(user_semantic)
-specification.update_stat_spec(rkme_table)
-learnware_list = client.search_learnware(specification, page_size=None)
+rkme_table = generate_stat_spec(type="table", X=train_x)
+user_info = BaseUserInfo(
+    semantic_spec=user_semantic, stat_info={rkme_table.type: rkme_table}
+)
+learnware_list = client.search_learnware(user_info)
 ```

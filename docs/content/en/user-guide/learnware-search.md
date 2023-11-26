@@ -70,20 +70,20 @@ Similar to the web interface search, the `learnware` package supports semantic s
 You can search for learnwares in the learnware dock system through semantic specifications, and all learnwares that meet the semantic specifications will be returned via the API. For example, the following code retrieves all learnware in the system with a task type of "Classification":
 
 ```python
+from learnware.market import BaseUserInfo
+
 user_semantic = client.create_semantic_specification(
     task_type="Classification"
 )
-specification = Specification()
-specification.update_semantic_spec(user_semantic)
-learnware_list = client.search_learnware(specification, page_size=None)
+user_info = BaseUserInfo(semantic_spec=user_semantic)
+learnware_list = client.search_learnware(user_info, page_size=None)
 ```
 
 You can also search for learnwares in the learnware dock system through statistical specifications, and all learnwares with similar distribution will be returned through the API. By using the `generate_stat_spec` function mentioned above, you can easily obtain the statistical specification `stat_spec` corresponding to your current task. Then, you can use the following code to retrieve learnwares in the system that satisfies the statistical specification for the same type of data as your task:
 
 ```python
-specification = Specification()
-specification.update_stat_spec(stat_spec)
-learnware_list = client.search_learnware(specification, page_size=None)
+user_info = BaseUserInfo(stat_info={stat_spec.type: stat_spec})
+learnware_list = client.search_learnware(user_info, page_size=None)
 ```
 
 By combining both semantic and statistical specifications, you can perform more accurate searches. For example, the following code searches for learnware in tabular data that meet both semantic and statistical specifications:
@@ -93,13 +93,11 @@ user_semantic = client.create_semantic_specification(
     task_type="Classification",
     scenarios=["Business"],
 )
-data_type = "table"
-rkme_table = generate_stat_spec(type=data_type, X=train_x)
-
-specification = Specification()
-specification.update_semantic_spec(user_semantic)
-specification.update_stat_spec(rkme_table)
-learnware_list = client.search_learnware(specification, page_size=None)
+rkme_table = generate_stat_spec(type="table", X=train_x)
+user_info = BaseUserInfo(
+    semantic_spec=user_semantic, stat_info={rkme_table.type: rkme_table}
+)
+learnware_list = client.search_learnware(user_info, page_size=None)
 ```
 
 Once the learnware search is complete, you can use the following code to download the learnware and configure the environment:
@@ -133,11 +131,9 @@ user_semantic = client.create_semantic_specification(
     scenarios=["Business"],
     input_description=input_description,
 )
-data_type = "table"
-rkme_table = generate_stat_spec(type=data_type, X=train_x)
-
-specification = Specification()
-specification.update_semantic_spec(user_semantic)
-specification.update_stat_spec(rkme_table)
-learnware_list = client.search_learnware(specification, page_size=None)
+rkme_table = generate_stat_spec(type="table", X=train_x)
+user_info = BaseUserInfo(
+    semantic_spec=user_semantic, stat_info={rkme_table.type: rkme_table}
+)
+learnware_list = client.search_learnware(user_info)
 ```
