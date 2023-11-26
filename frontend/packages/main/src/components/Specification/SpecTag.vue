@@ -135,6 +135,9 @@ const taskTypeDescription = computed({
 
     <library-type-btns v-model="libraryType" />
     <scenario-list-btns v-model="scenarioList" />
-    <license-type-btns v-model="licenseList" />
+    <license-type-btns
+      v-model="licenseList"
+      :single="true"
+    />
   </div>
 </template>

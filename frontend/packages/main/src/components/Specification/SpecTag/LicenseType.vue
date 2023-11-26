@@ -6,6 +6,7 @@ import type { License, LicenseList } from "@beiming-system/types/learnware";
 
 export interface Props {
   modelValue: LicenseList;
+  single?: boolean;
   cols?: number;
   md?: number;
   sm?: number;
@@ -17,6 +18,7 @@ const { t } = useI18n();
 const emit = defineEmits(["update:modelValue"]);
 
 const props = withDefaults(defineProps<Props>(), {
+  single: false,
   cols: 4,
   md: 4,
   sm: 2,
@@ -65,6 +67,7 @@ const modelValue = computed({
 <template>
   <multi-select-grid-btns
     v-model="modelValue"
+    :single="single"
     :btns="items"
     :title="t('Submit.SemanticSpecification.License.License')"
     :cols="cols"
