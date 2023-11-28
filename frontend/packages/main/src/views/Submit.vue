@@ -355,6 +355,7 @@ function checkIsEditMode(): undefined | Promise<void> {
             taskType.value = semanticSpec.Task.Values[0];
             libraryType.value = semanticSpec.Library.Values[0];
             scenarioList.value = semanticSpec.Scenario.Values;
+            licenseList.value = semanticSpec.License.Values;
             if (semanticSpec.Input) {
               dataTypeDescription.value = JSON.stringify(semanticSpec.Input);
             } else {
