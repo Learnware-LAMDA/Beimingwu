@@ -70,7 +70,7 @@ function getLearnwareDetail(id: string): Promise<void> {
               taskType: learnwareInfo.semantic_specification.Task.Values[0],
               libraryType: learnwareInfo.semantic_specification.Library.Values[0],
               scenarioList: learnwareInfo.semantic_specification.Scenario.Values,
-              licenseList: learnwareInfo.semantic_specification?.License?.Values ?? ["Apache-2.0"],
+              licenseList: learnwareInfo.semantic_specification.License.Values,
             };
             return learnwareInfo.user_id;
           }

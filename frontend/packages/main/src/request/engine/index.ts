@@ -5,6 +5,7 @@ import type {
   TaskType,
   LibraryType,
   ScenarioList,
+  LicenseList,
   Files,
   SemanticSpecification,
   DataTypeDescription,
@@ -47,6 +48,7 @@ function searchLearnware({
   taskType,
   libraryType,
   scenarioList,
+  licenseList,
   files,
   input,
   output,
@@ -60,6 +62,7 @@ function searchLearnware({
   taskType: TaskType | "";
   libraryType: LibraryType | "";
   scenarioList: ScenarioList;
+  licenseList: LicenseList;
   files: Files;
   input?: DataTypeDescription;
   output?: TaskTypeDescription;
@@ -83,10 +86,8 @@ function searchLearnware({
       semanticSpec.Data.Values = (dataType && [dataType]) || [];
       semanticSpec.Task.Values = (taskType && [taskType]) || [];
       semanticSpec.Library.Values = (libraryType && [libraryType]) || [];
-      semanticSpec.Scenario.Values =
-        (scenarioList && scenarioList.map((scenario) => scenario)) || [];
-      semanticSpec.Scenario.Values =
-        (scenarioList && scenarioList.map((scenario) => scenario)) || [];
+      semanticSpec.Scenario.Values = scenarioList || [];
+      semanticSpec.License.Values = licenseList || [];
       semanticSpec.Description.Values = "";
       if (input && output) {
         semanticSpec.Input = input;

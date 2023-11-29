@@ -7,6 +7,7 @@ import type {
   TaskType,
   LibraryType,
   ScenarioList,
+  LicenseList,
   Files,
   Description,
 } from "@beiming-system/types/learnware";
@@ -108,6 +109,7 @@ function addLearnware({
   taskType,
   libraryType,
   scenarioList,
+  licenseList,
   dataTypeDescription,
   taskTypeDescription,
   description,
@@ -121,6 +123,7 @@ function addLearnware({
   taskType: TaskType;
   libraryType: LibraryType;
   scenarioList: ScenarioList;
+  licenseList: LicenseList;
   dataTypeDescription: string;
   taskTypeDescription: string;
   description: Description;
@@ -138,6 +141,7 @@ function addLearnware({
       semanticSpec.Task.Values = (taskType && [taskType]) || [];
       semanticSpec.Library.Values = (libraryType && [libraryType]) || [];
       semanticSpec.Scenario.Values = scenarioList;
+      semanticSpec.License.Values = licenseList;
       semanticSpec.Description.Values = description;
       semanticSpec.Input = JSON.parse(dataTypeDescription);
       semanticSpec.Output = JSON.parse(taskTypeDescription);

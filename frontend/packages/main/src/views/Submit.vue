@@ -251,6 +251,7 @@ function submit(): Promise<void> {
     taskType: taskType.value as TaskType,
     libraryType: libraryType.value as LibraryType,
     scenarioList: scenarioList.value,
+    licenseList: licenseList.value,
     dataTypeDescription: dataTypeDescription.value,
     taskTypeDescription: taskTypeDescription.value,
     description: description.value,
