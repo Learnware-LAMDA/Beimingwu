@@ -87,15 +87,32 @@ const dataTypeDescription = useField<string>({
     },
   }),
 });
-const taskTypeDescription = useField<string>({
+const taskTypeDescriptionClassification = useField<string>({
   defaultValue: JSON.stringify({
     Dimension: 3,
     Description: {
-      0: "the probability of being a cat",
-      1: "the probability of being a dog",
-      2: "the probability of being a bird",
+      0: "cat",
+      1: "dog",
+      2: "bird",
     },
   }),
+});
+const taskTypeDescriptionRegression = useField<string>({
+  defaultValue: JSON.stringify({
+    Dimension: 1,
+    Description: {
+      0: "store sales for the day",
+    },
+  }),
+});
+const taskTypeDescription = computed(() => {
+  if (taskType.value === "Classification") {
+    return taskTypeDescriptionClassification.value;
+  } else if (taskType.value === "Regression") {
+    return taskTypeDescriptionRegression.value;
+  } else {
+    return "";
+  }
 });
 const description = useField<Description>({
   defaultValue: "",
@@ -350,15 +367,17 @@ function checkIsEditMode(): undefined | Promise<void> {
               });
             }
             if (semanticSpec.Output) {
-              taskTypeDescription.value = JSON.stringify(semanticSpec.Output);
+              taskTypeDescriptionClassification.value = taskTypeDescriptionRegression.value =
+                JSON.stringify(semanticSpec.Output);
             } else {
-              taskTypeDescription.value = JSON.stringify({
-                Dimension: 2,
-                Description: {
-                  0: "You have not provided a description of the output data",
-                  1: "Please read the tips and provide a description of the output data",
-                },
-              });
+              taskTypeDescriptionClassification.value = taskTypeDescriptionRegression.value =
+                JSON.stringify({
+                  Dimension: 2,
+                  Description: {
+                    0: "You have not provided a description of the output data",
+                    1: "Please read the tips and provide a description of the output data",
+                  },
+                });
             }
             files.value = [new File([], t("Submit.File.YourOldLearnware"))];
             return;
@@ -455,7 +474,10 @@ onActivated(init);
                 v-model:library-type="libraryType.value"
                 v-model:scenario-list="scenarioList.value"
                 v-model:data-type-description="dataTypeDescription.value"
-                v-model:task-type-description="taskTypeDescription.value"
+                v-model:task-type-description-classification="
+                  taskTypeDescriptionClassification.value
+                "
+                v-model:task-type-description-regression="taskTypeDescriptionRegression.value"
                 :error-messages="
                   dataType.errorMessages ||
                   taskType.errorMessages ||

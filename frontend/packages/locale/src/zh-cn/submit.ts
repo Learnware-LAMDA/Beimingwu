@@ -48,9 +48,13 @@ export default {
       DescriptionOutput: {
         Name: "输出",
         Description: "描述",
-        LabelTips:
+        LabelTipsClassification:
+          "请在左侧为每个分类标记填写描述，或在右侧粘贴 JSON 对象。描述清楚每一维输出有助于您的学件应用异构输出空间的任务。",
+        LabelTipsSmallClassification:
+          "请为标记填写描述或粘贴 JSON 对象。描述清楚每一维输出有助于您的学件应用异构输出空间的任务。",
+        LabelTipsRegression:
           "请在左侧为每个输出维度填写描述，或在右侧粘贴 JSON 对象。描述清楚每一维输出有助于您的学件应用异构输出空间的任务。",
-        LabelTipsSmall:
+        LabelTipsSmallRegression:
           "请为每个输出维度填写描述或粘贴 JSON 对象。描述清楚每一维输出有助于您的学件应用异构输出空间的任务。",
       },
     },

@@ -19,7 +19,8 @@ export interface Props {
   libraryType: LibraryType | "";
   scenarioList: ScenarioList;
   dataTypeDescription: string;
-  taskTypeDescription: string;
+  taskTypeDescriptionClassification: string;
+  taskTypeDescriptionRegression: string;
   errorMessages?: string;
 }
 
@@ -31,7 +32,8 @@ const emits = defineEmits([
   "update:libraryType",
   "update:scenarioList",
   "update:dataTypeDescription",
-  "update:taskTypeDescription",
+  "update:taskTypeDescriptionClassification",
+  "update:taskTypeDescriptionRegression",
 ]);
 
 const props = withDefaults(defineProps<Props>(), {
@@ -58,9 +60,13 @@ const dataTypeDescription = computed({
   get: () => JSON.parse(props.dataTypeDescription),
   set: (val) => emits("update:dataTypeDescription", JSON.stringify(val)),
 });
-const taskTypeDescription = computed({
-  get: () => JSON.parse(props.taskTypeDescription),
-  set: (val) => emits("update:taskTypeDescription", JSON.stringify(val)),
+const taskTypeDescriptionClassification = computed({
+  get: () => JSON.parse(props.taskTypeDescriptionClassification),
+  set: (val) => emits("update:taskTypeDescriptionClassification", JSON.stringify(val)),
+});
+const taskTypeDescriptionRegression = computed({
+  get: () => JSON.parse(props.taskTypeDescriptionRegression),
+  set: (val) => emits("update:taskTypeDescriptionRegression", JSON.stringify(val)),
 });
 </script>
 
@@ -104,7 +110,7 @@ const taskTypeDescription = computed({
 
     <task-type-btns v-model="taskType" />
 
-    <template v-if="taskType === 'Classification' || taskType === 'Regression'">
+    <template v-if="taskType === 'Classification'">
       <v-alert
         class="mt-3"
         type="info"
@@ -112,14 +118,35 @@ const taskTypeDescription = computed({
         closable
       >
         <span class="hidden sm:inline">{{
-          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTips")
+          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTipsClassification")
         }}</span>
         <span class="sm:hidden">{{
-          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTipsSmall")
+          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTipsSmallClassification")
         }}</span>
       </v-alert>
       <description-input
-        v-model="taskTypeDescription"
+        v-model="taskTypeDescriptionClassification"
+        :name="t('Submit.SemanticSpecification.TaskType.DescriptionOutput.Name')"
+        class="mt-3"
+      />
+    </template>
+
+    <template v-if="taskType === 'Regression'">
+      <v-alert
+        class="mt-3"
+        type="info"
+        color="primary"
+        closable
+      >
+        <span class="hidden sm:inline">{{
+          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTipsRegression")
+        }}</span>
+        <span class="sm:hidden">{{
+          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTipsSmallRegression")
+        }}</span>
+      </v-alert>
+      <description-input
+        v-model="taskTypeDescriptionRegression"
         :name="t('Submit.SemanticSpecification.TaskType.DescriptionOutput.Name')"
         class="mt-3"
       />
