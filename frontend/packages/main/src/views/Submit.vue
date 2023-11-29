@@ -371,7 +371,7 @@ function checkIsEditMode(): undefined | Promise<void> {
                 },
               });
             }
-            if (semanticSpec.Output) {
+            if (semanticSpec.Output.Dimension && semanticSpec.Output.Description) {
               taskTypeDescriptionClassification.value = taskTypeDescriptionRegression.value =
                 JSON.stringify(semanticSpec.Output);
             } else {
