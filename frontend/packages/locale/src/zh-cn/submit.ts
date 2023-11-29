@@ -91,6 +91,16 @@ export default {
         NotEmpty: "应用场景不能为空",
       },
     },
+    License: {
+      License: "开源协议",
+      Type: {
+        Others: "其他",
+        OtherLicense: "其他开源协议",
+      },
+      Error: {
+        NotEmpty: "开源协议不能为空",
+      },
+    },
   },
   Description: {
     Description: "描述",

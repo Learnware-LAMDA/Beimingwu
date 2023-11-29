@@ -14,6 +14,7 @@ import type {
   TaskType,
   LibraryType,
   ScenarioList,
+  LicenseList,
   Description,
 } from "@beiming-system/types/learnware";
 import { useField } from "@beiming-system/hooks";
@@ -74,6 +75,15 @@ const scenarioList = useField<ScenarioList>({
       return "";
     }
     return t("Submit.SemanticSpecification.Scenario.Error.NotEmpty");
+  },
+});
+const licenseList = useField<LicenseList>({
+  defaultValue: [],
+  validate: (value: LicenseList): string => {
+    if (value.length > 0) {
+      return "";
+    }
+    return t("Submit.SemanticSpecification.License.Error.NotEmpty");
   },
 });
 const dataTypeDescription = useField<string>({
@@ -168,6 +178,7 @@ const valid = computed(
     taskType.valid &&
     libraryType.valid &&
     scenarioList.valid &&
+    licenseList.valid &&
     description.valid &&
     files.valid,
 );
@@ -177,7 +188,13 @@ const allowChangePage = computed(() => {
       return name.valid;
     }
     case 1: {
-      return dataType.valid && taskType.valid && libraryType.valid && scenarioList.valid;
+      return (
+        dataType.valid &&
+        taskType.valid &&
+        libraryType.valid &&
+        scenarioList.valid &&
+        licenseList.valid
+      );
     }
     case 2: {
       return description.valid;
@@ -234,6 +251,7 @@ function submit(): Promise<void> {
     taskType: taskType.value as TaskType,
     libraryType: libraryType.value as LibraryType,
     scenarioList: scenarioList.value,
+    licenseList: licenseList.value,
     dataTypeDescription: dataTypeDescription.value,
     taskTypeDescription: taskTypeDescription.value,
     description: description.value,
@@ -338,6 +356,7 @@ function checkIsEditMode(): undefined | Promise<void> {
             taskType.value = semanticSpec.Task.Values[0];
             libraryType.value = semanticSpec.Library.Values[0];
             scenarioList.value = semanticSpec.Scenario.Values;
+            licenseList.value = semanticSpec.License.Values;
             if (semanticSpec.Input) {
               dataTypeDescription.value = JSON.stringify(semanticSpec.Input);
             } else {
@@ -454,13 +473,15 @@ onActivated(init);
                 v-model:task-type="taskType.value"
                 v-model:library-type="libraryType.value"
                 v-model:scenario-list="scenarioList.value"
+                v-model:license-list="licenseList.value"
                 v-model:data-type-description="dataTypeDescription.value"
                 v-model:task-type-description="taskTypeDescription.value"
                 :error-messages="
                   dataType.errorMessages ||
                   taskType.errorMessages ||
                   libraryType.errorMessages ||
-                  scenarioList.errorMessages
+                  scenarioList.errorMessages ||
+                  licenseList.errorMessages
                 "
               />
             </v-card-text>

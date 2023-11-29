@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
-import IconBtn from "./IconBtn.vue";
-import type { FunctionalComponent, SVGAttributes } from "vue";
 
 export interface Btn {
-  title: string;
-  icon: FunctionalComponent<SVGAttributes>;
+  title: any;
+  icon: any;
   value: string;
 }
 
@@ -58,48 +56,23 @@ function clickBtn(btn: Btn): void {
 </script>
 
 <template>
-  <div class="grid-container">
-    <div class="my-title text-h6 !text-base">
+  <div>
+    <div class="text-h6 my-3 !text-base md:mb-5 md:mt-7">
       {{ title }}
     </div>
     <div
-      class="btn-container"
+      class="grid gap-2"
       :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
     >
-      <icon-btn
-        v-for="(btn, i) in btns"
-        :key="i"
-        class="btn"
-        :title="btn.title"
-        :active="btn.value === value"
-        @click="() => clickBtn(btn)"
-      >
-        <component
-          :is="btn.icon"
-          class="icon"
+      <template v-for="btn in btns">
+        <slot
+          name="btn"
+          :title="btn.title"
+          :icon="btn.icon"
+          :active="btn.value === value"
+          :on-click="() => clickBtn(btn)"
         />
-      </icon-btn>
+      </template>
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.grid-container {
-  .my-title {
-    @apply my-3 md:mb-5 md:mt-7;
-  }
-
-  .btn-container {
-    @apply grid gap-2;
-
-    .btn {
-      @apply pr-3;
-
-      .icon {
-        @apply h-full w-full;
-        fill: rgb(var(--v-theme-on-primary));
-      }
-    }
-  }
-}
-</style>

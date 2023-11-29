@@ -26,6 +26,7 @@ const filters = ref<Filter>({
   taskType: "",
   libraryType: "",
   scenarioList: [],
+  licenseList: [],
   files: [],
 });
 const multiRecommendedTips = ref(true);
@@ -37,6 +38,7 @@ const multiRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
     taskType: "Classification",
     libraryType: "Scikit-learn",
     scenarioList: [],
+    licenseList: [],
     files: [],
     description: t("Home.Cover.LearnwareDescription"),
     lastModify: new Date().toISOString(),
@@ -53,6 +55,7 @@ const singleRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
     taskType: "Classification",
     libraryType: "Scikit-learn",
     scenarioList: [],
+    licenseList: [],
     files: [],
     description: t("Home.Cover.LearnwareDescription"),
     lastModify: new Date().toISOString(),

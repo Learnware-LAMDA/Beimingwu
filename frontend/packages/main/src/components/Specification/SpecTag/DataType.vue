@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import GridBtns from "./GridBtns.vue";
+import IconBtn from "./IconBtn.vue";
 import TextBtn from "../../../assets/images/specification/dataType/text.svg?component";
 import ImageBtn from "../../../assets/images/specification/dataType/image.svg?component";
 import TableBtn from "../../../assets/images/specification/dataType/table.svg?component";
@@ -62,5 +63,19 @@ const dataTypeBtns = computed(() => [
     :md="md"
     :sm="sm"
     :xs="xs"
-  />
+  >
+    <template #btn="{ title, icon, active, onClick }">
+      <icon-btn
+        class="pr-3"
+        :title="title"
+        :active="active"
+        @click="onClick"
+      >
+        <component
+          :is="icon"
+          class="h-full w-full fill-white"
+        />
+      </icon-btn>
+    </template>
+  </grid-btns>
 </template>

@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useDisplay } from "vuetify";
-import IconBtn from "./IconBtn.vue";
 
 export interface Btn {
   title: string;
-  icon: string;
+  icon?: string;
+  value: string;
 }
 
 export interface Props {
-  value: string[];
+  modelValue: string[];
   btns: Btn[];
   title: string;
+  single?: boolean;
   cols?: number;
   md?: number;
   sm?: number;
@@ -21,15 +22,16 @@ export interface Props {
 const display = useDisplay();
 
 const props = withDefaults(defineProps<Props>(), {
+  single: false,
   cols: 5,
   md: 5,
   sm: 5,
   xs: 3,
 });
 
-const emit = defineEmits(["update:value"]);
+const emit = defineEmits(["update:modelValue"]);
 
-const value = ref(props.value);
+const modelValue = ref(props.modelValue);
 
 const realCols = computed(() => {
   let { cols } = props;
@@ -44,54 +46,47 @@ const realCols = computed(() => {
 });
 
 function clickBtn(btn: Btn): void {
-  if (!value.value) {
-    value.value = [];
+  if (!modelValue.value) {
+    modelValue.value = [];
   }
-  if (value.value.includes(btn.title)) {
-    value.value.splice(value.value.indexOf(btn.title), 1);
+  if (props.single) {
+    modelValue.value = [btn.value];
   } else {
-    value.value.push(btn.title);
+    if (modelValue.value.includes(btn.value)) {
+      modelValue.value = modelValue.value.filter((item) => item !== btn.value);
+    } else {
+      modelValue.value = [...modelValue.value, btn.value];
+    }
   }
 }
 
 watch(
-  () => value.value,
+  () => modelValue.value,
   (newValue) => {
-    emit("update:value", newValue);
+    emit("update:modelValue", newValue);
   },
   { deep: true },
 );
 </script>
 
 <template>
-  <div class="grid-container">
-    <div class="my-title text-h6 !text-base">
+  <div>
+    <div class="text-h6 my-3 !text-base md:mb-5 md:mt-7">
       {{ title }}
     </div>
     <div
-      class="btn-container"
+      class="grid gap-2"
       :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
     >
-      <icon-btn
-        v-for="(btn, i) in btns"
-        :key="i"
-        :icon-component="btn.icon"
-        :title="btn.title"
-        :active="value && value.includes(btn.title)"
-        @click="() => clickBtn(btn)"
-      />
+      <template v-for="btn in btns">
+        <slot
+          name="btn"
+          :title="btn.title"
+          :icon="btn.icon"
+          :active="modelValue.includes(btn.value)"
+          :on-click="() => clickBtn(btn)"
+        />
+      </template>
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.grid-container {
-  .my-title {
-    @apply mb-5 mt-7;
-  }
-
-  .btn-container {
-    @apply grid gap-2;
-  }
-}
-</style>

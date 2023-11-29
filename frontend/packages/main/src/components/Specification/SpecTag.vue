@@ -5,12 +5,14 @@ import DataTypeBtns from "../Specification/SpecTag/DataType.vue";
 import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
 import ScenarioListBtns from "../Specification/SpecTag/ScenarioList.vue";
+import LicenseTypeBtns from "../Specification/SpecTag/LicenseType.vue";
 import DescriptionInput from "./DescriptionInput.vue";
 import type {
   DataType,
   TaskType,
   LibraryType,
   ScenarioList,
+  LicenseList,
 } from "@beiming-system/types/learnware";
 
 export interface Props {
@@ -18,6 +20,7 @@ export interface Props {
   taskType: TaskType | "";
   libraryType: LibraryType | "";
   scenarioList: ScenarioList;
+  licenseList: LicenseList;
   dataTypeDescription: string;
   taskTypeDescription: string;
   errorMessages?: string;
@@ -30,6 +33,7 @@ const emits = defineEmits([
   "update:taskType",
   "update:libraryType",
   "update:scenarioList",
+  "update:licenseList",
   "update:dataTypeDescription",
   "update:taskTypeDescription",
 ]);
@@ -53,6 +57,10 @@ const libraryType = computed({
 const scenarioList = computed({
   get: () => props.scenarioList,
   set: (val) => emits("update:scenarioList", val),
+});
+const licenseList = computed({
+  get: () => props.licenseList,
+  set: (val) => emits("update:licenseList", val),
 });
 const dataTypeDescription = computed({
   get: () => JSON.parse(props.dataTypeDescription),
@@ -127,5 +135,9 @@ const taskTypeDescription = computed({
 
     <library-type-btns v-model="libraryType" />
     <scenario-list-btns v-model="scenarioList" />
+    <license-type-btns
+      v-model="licenseList"
+      :single="true"
+    />
   </div>
 </template>

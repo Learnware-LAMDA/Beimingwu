@@ -10,9 +10,17 @@ import TaskTypeBtns from "../Specification/SpecTag/TaskType.vue";
 import LibraryTypeBtns from "../Specification/SpecTag/LibraryType.vue";
 import FileUpload from "../Specification/FileUpload.vue";
 import ScenarioListBtns from "../Specification/SpecTag/ScenarioList.vue";
+import LicenseTypeBtns from "../Specification/SpecTag/LicenseType.vue";
 import DescriptionInput from "../Specification/DescriptionInput.vue";
 import { saveContentToFile } from "../../utils";
-import type { DataType, TaskType, LibraryType, Filter } from "@beiming-system/types/learnware";
+import type {
+  DataType,
+  TaskType,
+  LibraryType,
+  ScenarioList,
+  LicenseList,
+  Filter,
+} from "@beiming-system/types/learnware";
 import TextBtn from "../../assets/images/specification/dataType/text.svg?component";
 import ImageBtn from "../../assets/images/specification/dataType/image.svg?component";
 import TableBtn from "../../assets/images/specification/dataType/table.svg?component";
@@ -57,7 +65,8 @@ try {
 } catch {
   tryScenarioList = [];
 }
-const scenarioList = ref(tryScenarioList);
+const scenarioList = ref<ScenarioList>(tryScenarioList);
+const licenseList = ref<LicenseList>([]);
 
 const files = ref<File[]>([]);
 
@@ -104,6 +113,7 @@ const exampleGroups = computed(() => [
             taskType.value = "";
             libraryType.value = "";
             scenarioList.value = [];
+            licenseList.value = [];
           });
         },
         onClickDownload: (): Promise<void> => {
@@ -131,6 +141,7 @@ const exampleGroups = computed(() => [
               taskType.value = "";
               libraryType.value = "";
               scenarioList.value = [];
+              licenseList.value = [];
               dataTypeDescription.value = JSON.parse(text);
               tempDataTypeDescription.value = JSON.parse(text);
               heteroDialog.value = false;
@@ -167,6 +178,7 @@ const exampleGroups = computed(() => [
             taskType.value = "";
             libraryType.value = "";
             scenarioList.value = [];
+            licenseList.value = [];
           });
         },
         onClickDownload: (): Promise<void> => {
@@ -192,6 +204,7 @@ const exampleGroups = computed(() => [
             taskType.value = "";
             libraryType.value = "";
             scenarioList.value = [];
+            licenseList.value = [];
           });
         },
         onClickDownload: (): Promise<void> => {
@@ -239,6 +252,7 @@ const requirement = computed(() => ({
   taskType: taskType.value,
   libraryType: libraryType.value,
   scenarioList: scenarioList.value,
+  licenseList: licenseList.value,
   files: files.value,
   dataTypeDescription: dataTypeDescription.value,
   taskTypeDescription: taskTypeDescription.value,
@@ -380,6 +394,14 @@ onMounted(() => {
       />
       <scenario-list-btns
         v-model="scenarioList"
+        :cols="2"
+        :md="2"
+        :sm="2"
+        :xs="2"
+        class="bg-transparent !text-base"
+      />
+      <license-type-btns
+        v-model="licenseList"
         :cols="2"
         :md="2"
         :sm="2"

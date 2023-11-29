@@ -33,6 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
     taskType: "",
     libraryType: "",
     scenarioList: [],
+    licenseList: [],
     files: [],
   }),
   showActions: false,

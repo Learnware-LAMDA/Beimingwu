@@ -25,6 +25,22 @@ export type Scenario =
   | "Architecture"
   | "Others";
 export type ScenarioList = Scenario[];
+export type License =
+  | "MIT"
+  | "Apache-2.0"
+  | "BSD-2-Clause"
+  | "BSD-3-Clause"
+  | "GPL-2.0"
+  | "GPL-3.0"
+  | "LGPL-2.1"
+  | "LGPL-3.0"
+  | "AGPL-3.0"
+  | "ECL-2.0"
+  | "AFL-3.0"
+  | "CC-BY-4.0"
+  | "CC-BY-SA-4.0"
+  | "Others";
+export type LicenseList = License[];
 export type Description = string;
 export type DataTypeDescription = {
   Dimension: number;
@@ -52,6 +68,9 @@ export interface SemanticSpecification {
   Scenario: {
     Values: ScenarioList;
   };
+  License: {
+    Values: LicenseList;
+  };
   Description: {
     Values: Description;
   };
@@ -67,6 +86,7 @@ export interface LearnwareInfo {
   taskType: TaskType | "";
   libraryType: LibraryType | "";
   scenarioList: ScenarioList;
+  licenseList: LicenseList;
 }
 
 export interface LearnwareDetailInfo extends LearnwareInfo {
@@ -106,6 +126,7 @@ export interface Filter {
   taskType: TaskType | "";
   libraryType: LibraryType | "";
   scenarioList: ScenarioList;
+  licenseList: LicenseList;
   files: Files;
   dataTypeDescription?: DataTypeDescription;
   taskTypeDescription?: TaskTypeDescription;

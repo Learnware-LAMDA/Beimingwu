@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import IconBtn from "./IconBtn.vue";
 import GridBtns from "./GridBtns.vue";
 import ClassificationBtn from "../../../assets/images/specification/taskType/classification.svg?component";
 import DetectionBtn from "../../../assets/images/specification/taskType/detection.svg?component";
@@ -80,5 +81,19 @@ const taskTypeBtns = computed(() => [
     :md="md"
     :sm="sm"
     :xs="xs"
-  />
+  >
+    <template #btn="{ title, icon, active, onClick }">
+      <icon-btn
+        class="pr-3"
+        :title="title"
+        :active="active"
+        @click="onClick"
+      >
+        <component
+          :is="icon"
+          class="h-full w-full fill-white"
+        />
+      </icon-btn>
+    </template>
+  </grid-btns>
 </template>
