@@ -49,9 +49,9 @@ export default {
         Name: "Label",
         Description: "Description",
         LabelTipsClassification:
-          "Please fill in the description for each label on the left or paste a JSON object on the right. Clarifying the description for each label will help your learnware to be available for tasks with heterogenous label space.",
+          "Please fill in the description for each class label (numbered from 0) on the left or paste a JSON object on the right. Clarifying the description for each label will help your learnware to be available for tasks with heterogenous output space.",
         LabelTipsSmallClassification:
-          "Please fill in the description for each label or paste a JSON object. Clarifying the description for each label will help your learnware to be available for tasks with heterogenous label space.",
+          "Please fill in the description for each class label (numbered from 0) or paste a JSON object. Clarifying the description for each label will help your learnware to be available for tasks with heterogenous output space.",
         LabelTipsRegression:
           "Please fill in the description for each output dimension on the left or paste a JSON object on the right. Clarifying the description for each output dimension will help your learnware to be available for tasks with heterogenous output space.",
         LabelTipsSmallRegression:
