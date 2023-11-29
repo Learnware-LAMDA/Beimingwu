@@ -288,6 +288,8 @@ function submit(): Promise<void> {
 
           setTimeout(() => {
             success.value = false;
+            reset();
+
             router.push("/submit");
           }, 1000);
           return;
@@ -416,6 +418,30 @@ function checkIsEditMode(): undefined | Promise<void> {
         errorMsg.value = err.message;
       });
   }
+}
+
+function reset(): void {
+  name.value = "";
+  dataType.value = "";
+  taskType.value = "";
+  libraryType.value = "";
+  scenarioList.value = [];
+  dataTypeDescription.value = "";
+  taskTypeDescription.value = "";
+  description.value = "";
+  files.value = [];
+
+  currentStep.value = 0;
+  submiting.value = false;
+  success.value = false;
+  showError.value = false;
+  errorMsg.value = "";
+  uploadProgress.value = 0;
+
+  clearTimeout(errorTimer.value);
+  errorTimer.value = undefined;
+
+  store.commit("setIsEditing", false);
 }
 
 function init(): void {
