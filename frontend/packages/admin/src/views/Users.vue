@@ -429,7 +429,7 @@ onActivated(() => {
       </template>
     </confirm-dialog>
 
-    <v-scroll-y-transition class="z-index-10000 fixed left-0 right-0">
+    <v-scroll-y-transition class="fixed left-0 right-0 z-50">
       <v-card-actions v-if="showError">
         <v-alert
           class="mx-auto w-full max-w-[900px]"
