@@ -111,7 +111,12 @@ const taskTypeDescription = computed(() => {
   } else if (taskType.value === "Regression") {
     return taskTypeDescriptionRegression.value;
   } else {
-    return "";
+    return JSON.stringify({
+      Dimension: 1,
+      Description: {
+        0: "",
+      },
+    });
   }
 });
 const description = useField<Description>({
