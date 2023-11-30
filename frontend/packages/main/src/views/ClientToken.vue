@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onActivated } from "vue";
+import { ref, onActivated, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import ConfirmDialog from "../components/Dialogs/ConfirmDialog.vue";
 import { createToken, listToken, deleteToken } from "../request/user";
@@ -99,6 +99,10 @@ function handleDelete(token: string): Promise<void> {
       loading.value = false;
     });
 }
+
+onMounted(() => {
+  fetchList();
+});
 
 onActivated(() => {
   fetchList();
