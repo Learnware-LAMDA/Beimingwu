@@ -204,7 +204,7 @@ function handleDownload(id: string): void {
       </v-scroll-y-transition>
 
       <div class="justify-between sm:flex">
-        <div>
+        <div class="flex-1 overflow-hidden break-all">
           <div class="text-h3 text-3xl lg:text-5xl">
             {{ learnware.name }}
           </div>
