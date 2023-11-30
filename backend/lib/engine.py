@@ -113,9 +113,7 @@ def search_learnware(semantic_str, statistical_str, user_id, check_status=None):
     try:
         context.logger.info(f"stat_info in user: {user_info.stat_info}")
         is_hetero = learnware_utils.is_hetero(stat_specs=user_info.stat_info, semantic_spec=user_info.semantic_spec)
-        search_result = context.engine.search_learnware(
-            user_info, check_status=check_status
-        )
+        search_result = context.engine.search_learnware(user_info, check_status=check_status)
     except Exception as err:
         print(err)
         traceback.print_exc()
@@ -123,7 +121,7 @@ def search_learnware(semantic_str, statistical_str, user_id, check_status=None):
 
     single_result = search_result.get_single_results()
     multiple_result = search_result.get_multiple_results()
-    
+
     matching = [single_item.score for single_item in single_result]
     single_learnware_list = [single_item.learnware for single_item in single_result]
     multi_score = None if len(multiple_result) == 0 else multiple_result[0].score
@@ -146,9 +144,7 @@ def search_learnware_by_semantic(semantic_str, user_id, check_status=None):
         stat_info={},  # No statistical specification
     )
     try:
-        search_result = context.engine.search_learnware(
-            info, check_status=check_status
-        )
+        search_result = context.engine.search_learnware(info, check_status=check_status)
     except Exception as err:
         return False, f"Engine search learnware error.", None
 
@@ -239,7 +235,7 @@ def check_learnware_file(semantic_specification, learnware_file):
     try:
         # Check semantic_specification
         if (
-            market.EasySemanticChecker.check_semantic_spec(semantic_specification)
+            market.EasySemanticChecker.check_semantic_spec(semantic_specification)[0]
             == market.EasySemanticChecker.INVALID_LEARNWARE
         ):
             return False, f"Semantic specification check failed!"
