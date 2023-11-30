@@ -183,7 +183,10 @@ class UpdateLearnwareApi(flask_restful.Resource):
         learnware_in_engine = context.engine.get_learnware_by_ids(learnware_id) is not None
 
         if learnware_file is None:
-            if EasySemanticChecker.check_semantic_spec(semantic_specification) == EasySemanticChecker.INVALID_LEARNWARE:
+            if (
+                EasySemanticChecker.check_semantic_spec(semantic_specification)[0]
+                == EasySemanticChecker.INVALID_LEARNWARE
+            ):
                 return {"code": 41, "msg": "Semantic specification check failed!"}, 200
             learnware_path = None
         else:
