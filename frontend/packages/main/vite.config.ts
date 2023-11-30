@@ -30,12 +30,12 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://www.lamda.nju.edu.cn/learnware/api/",
+        target: "https://bmwu.cloud/api/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
       "/static": {
-        target: "https://www.lamda.nju.edu.cn/learnware/static",
+        target: "https://bmwu.cloud/static",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/static/, ""),
       },
