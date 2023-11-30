@@ -54,7 +54,7 @@ const en: LocaleSpecificConfig & {
         ],
       },
       {
-        text: "Developer Guide",
+        text: "System Dev Guide",
         collapsed: false,
         items: [
           {
