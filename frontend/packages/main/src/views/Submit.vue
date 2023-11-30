@@ -427,7 +427,8 @@ function reset(): void {
   libraryType.value = "";
   scenarioList.value = [];
   dataTypeDescription.value = "";
-  taskTypeDescription.value = "";
+  taskTypeDescriptionClassification.value = "";
+  taskTypeDescriptionRegression.value = "";
   description.value = "";
   files.value = [];
 
