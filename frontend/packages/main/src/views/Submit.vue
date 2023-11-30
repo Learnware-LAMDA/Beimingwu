@@ -288,9 +288,15 @@ function submit(): Promise<void> {
 
           setTimeout(() => {
             success.value = false;
-            reset();
+            // set editing mode to remount submit page
+            store.commit("setIsEditing", true);
 
-            router.push("/submit");
+            router.push({
+              path: "/learnwaredetail",
+              query: {
+                id: res.data.learnware_id,
+              },
+            });
           }, 1000);
           return;
         }
@@ -418,31 +424,6 @@ function checkIsEditMode(): undefined | Promise<void> {
         errorMsg.value = err.message;
       });
   }
-}
-
-function reset(): void {
-  name.value = "";
-  dataType.value = "";
-  taskType.value = "";
-  libraryType.value = "";
-  scenarioList.value = [];
-  dataTypeDescription.value = "";
-  taskTypeDescriptionClassification.value = "";
-  taskTypeDescriptionRegression.value = "";
-  description.value = "";
-  files.value = [];
-
-  currentStep.value = 0;
-  submiting.value = false;
-  success.value = false;
-  showError.value = false;
-  errorMsg.value = "";
-  uploadProgress.value = 0;
-
-  clearTimeout(errorTimer.value);
-  errorTimer.value = undefined;
-
-  store.commit("setIsEditing", false);
 }
 
 function init(): void {

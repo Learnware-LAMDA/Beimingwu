@@ -130,7 +130,7 @@ function addLearnware({
   files: Files;
   learnwareId: string;
   onProgress: (progress: number) => void;
-}): Promise<{ code: number; msg: string }> {
+}): Promise<{ code: number; data: { learnware_id: string }; msg: string }> {
   const { progressedFetch } = useProgressedFetch(onProgress);
 
   return getSemanticSpecification()
