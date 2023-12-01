@@ -37,7 +37,7 @@ const Router = createRouter({
         showInNavBar: false,
         requiredLogin: true,
         keepAlive: true,
-        icon: "mdi-file-eye",
+        icon: "mdi-upload",
       },
     },
     {
