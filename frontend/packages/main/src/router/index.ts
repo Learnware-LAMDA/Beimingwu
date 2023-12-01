@@ -133,7 +133,7 @@ const Router = createRouter({
       name: "Language",
       meta: {
         showInNavBar: true,
-        icon: "mdi-earth",
+        icon: "mdi-translate",
       },
       children: [
         {
