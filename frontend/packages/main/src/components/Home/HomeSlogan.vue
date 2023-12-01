@@ -31,36 +31,40 @@ const filters = ref<Filter>({
 });
 const multiRecommendedTips = ref(true);
 const multiRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
-  Array.from({ length: 2 }, () => ({
-    id: "",
-    name: t("Home.Cover.LearnwareName"),
-    dataType: "Table",
-    taskType: "Classification",
-    libraryType: "Scikit-learn",
-    scenarioList: [],
-    licenseList: [],
-    files: [],
-    description: t("Home.Cover.LearnwareDescription"),
-    lastModify: new Date().toISOString(),
-    tags: [],
-  })),
+  Array.from(
+    { length: 2 },
+    (): LearnwareCardInfo => ({
+      id: "",
+      name: t("Home.Cover.LearnwareName"),
+      username: t("Home.Cover.Developer"),
+      dataType: "Table",
+      taskType: "Classification",
+      libraryType: "Scikit-learn",
+      scenarioList: [],
+      licenseList: [],
+      description: t("Home.Cover.LearnwareDescription"),
+      lastModify: new Date().toISOString(),
+    }),
+  ),
 );
 const multiRecommendedMatchScore = ref(0);
 const singleRecommendedTips = ref(true);
 const singleRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
-  Array.from({ length: 20 }, () => ({
-    id: "",
-    name: t("Home.Cover.LearnwareName"),
-    dataType: "Table",
-    taskType: "Classification",
-    libraryType: "Scikit-learn",
-    scenarioList: [],
-    licenseList: [],
-    files: [],
-    description: t("Home.Cover.LearnwareDescription"),
-    lastModify: new Date().toISOString(),
-    tags: [],
-  })),
+  Array.from(
+    { length: 20 },
+    (): LearnwareCardInfo => ({
+      id: "",
+      name: t("Home.Cover.LearnwareName"),
+      username: t("Home.Cover.Developer"),
+      dataType: "Table",
+      taskType: "Classification",
+      libraryType: "Scikit-learn",
+      scenarioList: [],
+      licenseList: [],
+      description: t("Home.Cover.LearnwareDescription"),
+      lastModify: new Date().toISOString(),
+    }),
+  ),
 );
 const singleRecommendedLearnwarePage = ref(1);
 const singleRecommendedLearnwarePageNum = ref(1);

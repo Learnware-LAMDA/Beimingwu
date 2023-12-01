@@ -7,13 +7,14 @@ export default {
     Description: "This is the name of your learnware you will submit",
     Error: {
       AtLeast5Chars: "Learnware name needs to be at least 5 characters.",
+      AtMost30Chars: "Learnware name cannot be longer than 30 characters.",
     },
   },
   SemanticSpecification: {
     Tag: "Tag",
     Title: "Choose the tags (semantic specification)",
     DataType: {
-      DataType: "Data Type",
+      DataType: "Data type",
       Error: {
         NotEmpty: "Data type must not be empty.",
       },
@@ -32,7 +33,7 @@ export default {
       },
     },
     TaskType: {
-      TaskType: "Task Type",
+      TaskType: "Task type",
       Error: {
         NotEmpty: "Task type must not be empty.",
       },
@@ -59,7 +60,7 @@ export default {
       },
     },
     LibraryType: {
-      LibraryType: "Library Type",
+      LibraryType: "Library type",
       Error: {
         NotEmpty: "Library type must not be empty.",
       },
@@ -112,6 +113,7 @@ export default {
     Placeholder: "Please type the description of your learnware",
     Error: {
       AtLeast10Chars: "Description needs to be at least 10 characters.",
+      AtMost200Chars: "Description cannot be longer than 200 characters.",
     },
   },
   File: {

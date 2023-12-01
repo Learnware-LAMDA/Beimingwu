@@ -37,7 +37,7 @@ const Router = createRouter({
         showInNavBar: false,
         requiredLogin: true,
         keepAlive: true,
-        icon: "mdi-file-eye",
+        icon: "mdi-upload",
       },
     },
     {
@@ -109,7 +109,7 @@ const Router = createRouter({
       name: "Language",
       meta: {
         showInNavBar: true,
-        icon: "mdi-earth",
+        icon: "mdi-translate",
       },
       children: [
         {

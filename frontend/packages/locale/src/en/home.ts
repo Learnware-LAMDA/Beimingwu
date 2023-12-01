@@ -7,6 +7,7 @@ export default {
     Submit: "Be A Developer",
     LearnwareName: "Learnware",
     LearnwareDescription: "This is a learnware.",
+    Developer: "Developer",
   },
   What: {
     Title: "What is Learnware?",

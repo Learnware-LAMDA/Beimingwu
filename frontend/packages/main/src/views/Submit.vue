@@ -35,10 +35,13 @@ const { t, locale } = useI18n();
 const name = useField<Name>({
   defaultValue: "",
   validate: (value: Name): string => {
-    if (value?.length >= 5) {
-      return "";
+    if (value?.length < 5) {
+      return t("Submit.Name.Error.AtLeast5Chars");
     }
-    return t("Submit.Name.Error.AtLeast5Chars");
+    if (value?.length > 30) {
+      return t("Submit.Name.Error.AtMost30Chars");
+    }
+    return "";
   },
 });
 const dataType = useField<DataType | "">({
@@ -132,10 +135,13 @@ const taskTypeDescription = computed(() => {
 const description = useField<Description>({
   defaultValue: "",
   validate: (value: Description): string => {
-    if (value?.length >= 10) {
-      return "";
+    if (value?.length < 10) {
+      return t("Submit.Description.Error.AtLeast10Chars");
     }
-    return t("Submit.Description.Error.AtLeast10Chars");
+    if (value?.length > 200) {
+      return t("Submit.Description.Error.AtMost200Chars");
+    }
+    return "";
   },
 });
 const files = useField<File[]>({

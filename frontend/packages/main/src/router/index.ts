@@ -35,7 +35,7 @@ const Router = createRouter({
         showInNavBar: true,
         requiredLogin: true,
         keepAlive: true,
-        icon: "mdi-transfer",
+        icon: "mdi-upload",
       },
     },
     {
@@ -133,7 +133,7 @@ const Router = createRouter({
       name: "Language",
       meta: {
         showInNavBar: true,
-        icon: "mdi-earth",
+        icon: "mdi-translate",
       },
       children: [
         {
@@ -142,7 +142,6 @@ const Router = createRouter({
           component: (): Promise<Component> => import("../views/ChangeLanguage.vue"),
           meta: {
             showInNavBar: true,
-            icon: "🇨🇳",
             variant: "outlined",
           },
         },
@@ -152,7 +151,6 @@ const Router = createRouter({
           component: (): Promise<Component> => import("../views/ChangeLanguage.vue"),
           meta: {
             showInNavBar: true,
-            icon: "🇺🇸",
             variant: "outlined",
           },
         },

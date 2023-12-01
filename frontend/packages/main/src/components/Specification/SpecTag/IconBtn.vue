@@ -42,7 +42,7 @@ defineProps({
   color: rgb(var(--v-theme-on-primary));
 
   .responsive {
-    @apply ml-3 mr-4 w-full max-w-[1.25rem] sm:mr-1 sm:max-w-[1.5rem] md:mr-5 md:max-w-[2rem] lg:max-w-[1.5rem];
+    @apply ml-3 mr-4 w-full max-w-[1.25rem] sm:mr-1 sm:max-w-[1.5rem] md:mr-5 md:max-w-[1.8rem] lg:max-w-[1.8rem];
 
     .icon {
       @apply h-full w-full;
