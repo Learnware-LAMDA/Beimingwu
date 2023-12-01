@@ -344,7 +344,6 @@ function init(): void {
 onMounted(() => init());
 
 onActivated(() => {
-  console.log("activated");
   isVerified.value = route.query.is_verified ? route.query.is_verified === "true" : true;
 });
 </script>
