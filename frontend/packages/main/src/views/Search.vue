@@ -50,7 +50,7 @@ const singleRecommendedLearnwareItems = ref<LearnwareCardInfo[]>([]);
 
 const rkmeTypeTable = ref<boolean>(false);
 const loading = ref(false);
-const isVerified = ref<boolean>();
+const isVerified = ref<boolean>(true);
 
 const showError = ref(false);
 const errorMsg = ref("");
@@ -344,6 +344,7 @@ function init(): void {
 onMounted(() => init());
 
 onActivated(() => {
+  console.log("activated");
   isVerified.value = route.query.is_verified ? route.query.is_verified === "true" : true;
 });
 </script>
