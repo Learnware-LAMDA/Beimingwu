@@ -14,7 +14,7 @@ export default {
     Tag: "Tag",
     Title: "Choose the tags (semantic specification)",
     DataType: {
-      DataType: "Data Type",
+      DataType: "Data type",
       Error: {
         NotEmpty: "Data type must not be empty.",
       },
@@ -33,7 +33,7 @@ export default {
       },
     },
     TaskType: {
-      TaskType: "Task Type",
+      TaskType: "Task type",
       Error: {
         NotEmpty: "Task type must not be empty.",
       },
@@ -60,7 +60,7 @@ export default {
       },
     },
     LibraryType: {
-      LibraryType: "Library Type",
+      LibraryType: "Library type",
       Error: {
         NotEmpty: "Library type must not be empty.",
       },
