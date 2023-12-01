@@ -19,7 +19,7 @@ const initKeepAliveIncludes: string[] = Router.getRoutes()
   .map((route) => route.name as string);
 const keepAliveIncludes = computed<string[]>(() => {
   let _keepAliveIncludes = [...initKeepAliveIncludes];
-  if (store.getters.getLoggedIn) {
+  if (!store.getters.getLoggedIn) {
     _keepAliveIncludes = [];
   }
   if (store.getters.getIsEditing) {

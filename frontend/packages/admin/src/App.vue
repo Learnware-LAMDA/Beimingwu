@@ -17,7 +17,18 @@ const showGlobalError = ref(store.getters.getShowGlobalError);
 const initKeepAliveIncludes: string[] = Router.getRoutes()
   .filter((route) => route.meta.keepAlive)
   .map((route) => route.name as string);
-const keepAliveIncludes = ref<string[]>([...initKeepAliveIncludes]);
+const keepAliveIncludes = computed<string[]>(() => {
+  let _keepAliveIncludes = [...initKeepAliveIncludes];
+  if (!store.getters.getLoggedIn) {
+    _keepAliveIncludes = [];
+  }
+  if (store.getters.getIsEditing) {
+    _keepAliveIncludes = [..._keepAliveIncludes.filter((route) => route !== "Submit")];
+  } else {
+    _keepAliveIncludes = [..._keepAliveIncludes.filter((route) => route !== "Submit"), "Submit"];
+  }
+  return _keepAliveIncludes;
+});
 
 const routes = computed<Route[]>(() =>
   Router.options.routes.map((route) => {
