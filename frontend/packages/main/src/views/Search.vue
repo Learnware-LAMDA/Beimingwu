@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, onActivated, watch } from "vue";
 import { watchDebounced } from "@vueuse/core";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
@@ -50,7 +50,7 @@ const singleRecommendedLearnwareItems = ref<LearnwareCardInfo[]>([]);
 
 const rkmeTypeTable = ref<boolean>(false);
 const loading = ref(false);
-const isVerified = ref(route.query.is_verified ? route.query.is_verified === "true" : true);
+const isVerified = ref<boolean>();
 
 const showError = ref(false);
 const errorMsg = ref("");
@@ -342,6 +342,10 @@ function init(): void {
 }
 
 onMounted(() => init());
+
+onActivated(() => {
+  isVerified.value = route.query.is_verified ? route.query.is_verified === "true" : true;
+});
 </script>
 
 <template>
