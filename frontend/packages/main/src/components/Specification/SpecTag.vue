@@ -93,7 +93,10 @@ const taskTypeDescriptionRegression = computed({
         />
       </v-card-actions>
     </v-scroll-y-transition>
-    <data-type-btns v-model="dataType" />
+    <data-type-btns
+      v-model="dataType"
+      :cols="4"
+    />
 
     <template v-if="dataType === 'Table'">
       <v-alert
@@ -116,7 +119,10 @@ const taskTypeDescriptionRegression = computed({
       />
     </template>
 
-    <task-type-btns v-model="taskType" />
+    <task-type-btns
+      v-model="taskType"
+      :cols="4"
+    />
 
     <template v-if="taskType === 'Classification'">
       <v-alert
