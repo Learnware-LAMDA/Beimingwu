@@ -42,4 +42,9 @@ export default defineConfig({
     },
     port: 5173,
   },
+  define: {
+    __VUE_I18N_FULL_INSTALL__: true,
+    __VUE_I18N_LEGACY_API__: true,
+    __INTLIFY_PROD_DEVTOOLS__: false,
+  },
 });
