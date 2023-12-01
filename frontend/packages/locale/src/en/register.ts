@@ -10,8 +10,11 @@ export default {
   Close: "Close",
   Error: {
     UsernameAtLeast2Chars: "Username needs to be at least 2 characters.",
+    UsernameAtMost20Chars: "Username cannot be more than 20 characters.",
     InvalidEmail: "Invalid e-mail address",
+    EmailAtMost50Chars: "E-mail address cannot be more than 50 characters.",
     PasswordAtLeast8Chars: "Password needs to be at least 8 characters.",
+    PasswordAtMost20Chars: "Password cannot be more than 20 characters.",
     PasswordNotEmpty: "Password must not be empty.",
     PasswordNotMatch: "The two passwords you entered do not match.",
     EmailNotAllowed:

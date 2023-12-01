@@ -9,8 +9,11 @@ export default {
   Close: "关闭",
   Error: {
     UsernameAtLeast2Chars: "用户名至少需要 2 个字符",
+    UsernameAtMost20Chars: "用户名不能超过 20 个字符",
     InvalidEmail: "邮箱格式不正确",
+    EmailAtMost50Chars: "邮箱不能超过 50 个字符",
     PasswordAtLeast8Chars: "密码至少需要 8 个字符",
+    PasswordAtMost20Chars: "密码不能超过 20 个字符",
     PasswordNotEmpty: "密码不能为空",
     PasswordNotMatch: "两次输入的密码不一致",
     EmailNotAllowed:

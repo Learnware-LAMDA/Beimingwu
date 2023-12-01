@@ -17,25 +17,25 @@ const router = useRouter();
 const userName = useField<string>({
   defaultValue: "",
   validate: (value) => {
-    if (value?.length >= 2) return "";
-
-    return t("Register.Error.UsernameAtLeast2Chars");
+    if (value?.length < 2) return t("Register.Error.UsernameAtLeast2Chars");
+    if (value?.length > 20) return t("Register.Error.UsernameAtMost20Chars");
+    return "";
   },
 });
 const email = useField<string>({
   defaultValue: "",
   validate: (value) => {
-    if (/^[a-z.-_]+@[a-z.-]+\.[a-z]+$/i.test(value)) return "";
-
-    return t("Register.Error.InvalidEmail");
+    if (!/^[a-z.-_]+@[a-z.-]+\.[a-z]+$/i.test(value)) return t("Register.Error.InvalidEmail");
+    if (value?.length > 50) return t("Register.Error.EmailAtMost50Chars");
+    return "";
   },
 });
 const password = useField({
   defaultValue: "",
   validate: (value) => {
-    if (value?.length >= 8) return "";
-
-    return t("Register.Error.PasswordAtLeast8Chars");
+    if (value?.length < 8) return t("Register.Error.PasswordAtLeast8Chars");
+    if (value?.length > 20) return t("Register.Error.PasswordAtMost20Chars");
+    return "";
   },
 });
 const password2 = useField({
@@ -216,6 +216,7 @@ onUnmounted(() => {
             />
             <v-text-field
               v-model="email.value"
+              :counter="50"
               :label="t('Register.Email')"
               :error-messages="email.errorMessages"
               type="text"
@@ -224,6 +225,7 @@ onUnmounted(() => {
             />
             <v-text-field
               v-model="password.value"
+              :counter="20"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               :type="showPassword ? 'text' : 'password'"
               :label="t('Register.Password')"
