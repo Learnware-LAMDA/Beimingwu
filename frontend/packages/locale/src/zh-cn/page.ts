@@ -13,7 +13,7 @@ export default {
     Logout: "登出",
   },
   Language: {
-    Language: "语言",
+    Language: "",
     Chinese: "中文",
     English: "English",
   },
