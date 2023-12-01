@@ -54,28 +54,6 @@ const routes = computed<Route[]>(() =>
 );
 
 watch(
-  () => store.getters.getLoggedIn,
-  () => {
-    keepAliveIncludes.value = [];
-    setTimeout(() => {
-      keepAliveIncludes.value = [...initKeepAliveIncludes];
-    });
-  },
-);
-watch(
-  () => store.getters.getIsEditing,
-  (editing) => {
-    if (editing) {
-      keepAliveIncludes.value = [...keepAliveIncludes.value.filter((route) => route !== "Submit")];
-    } else {
-      keepAliveIncludes.value = [
-        ...keepAliveIncludes.value.filter((route) => route !== "Submit"),
-        "Submit",
-      ];
-    }
-  },
-);
-watch(
   () => store.getters.getShowGlobalError,
   (val) => {
     showGlobalError.value = val;
