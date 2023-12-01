@@ -7,6 +7,7 @@ export default {
     Submit: "学件上传",
     LearnwareName: "学件",
     LearnwareDescription: "这是一个学件。",
+    Developer: "开发者",
   },
   What: {
     Title: "学件是什么？",
