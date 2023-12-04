@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { computed } from "vue";
 import { useDisplay } from "vuetify";
 
 export interface Btn {
@@ -31,7 +31,14 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(["update:modelValue"]);
 
-const modelValue = ref(props.modelValue);
+const modelValue = computed<string[]>({
+  get() {
+    return props.modelValue;
+  },
+  set(newValue) {
+    emit("update:modelValue", newValue);
+  },
+});
 
 const realCols = computed(() => {
   let { cols } = props;
@@ -59,14 +66,6 @@ function clickBtn(btn: Btn): void {
     }
   }
 }
-
-watch(
-  () => modelValue.value,
-  (newValue) => {
-    emit("update:modelValue", newValue);
-  },
-  { deep: true },
-);
 </script>
 
 <template>
