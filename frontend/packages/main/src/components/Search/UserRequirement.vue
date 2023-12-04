@@ -78,6 +78,8 @@ const tempTaskTypeDescription = ref(
   },
 );
 
+const filterElement = ref<HTMLDivElement | null>(null);
+
 const exampleDialog = ref<boolean>(false);
 const exampleDialogPersistent = ref<boolean>(store.getters.getShowExampleTips);
 const exampleLoading = ref(false);
@@ -200,6 +202,22 @@ const exampleGroups = computed(() => [
     ],
   },
 ]);
+function reset(): void {
+  modelValue.value.id = "";
+  modelValue.value.name = "";
+  modelValue.value.dataType = "";
+  modelValue.value.taskType = "";
+  modelValue.value.libraryType = "";
+  modelValue.value.scenarioList = [];
+  modelValue.value.licenseList = [];
+  modelValue.value.dataTypeDescription = undefined;
+  modelValue.value.taskTypeDescription = undefined;
+  modelValue.value.files = [];
+
+  if (filterElement.value) {
+    filterElement.value.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
 function handleClickShowExample(): void {
   if (driverObj.isActive()) {
     setTimeout(() => {
@@ -294,8 +312,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="sm:border-r-1 flex flex-col">
-    <div class="filter">
+  <div class="sm:border-r-1 relative flex flex-col">
+    <v-btn
+      class="absolute right-4 top-2 z-20 bg-white opacity-40 transition-all hover:opacity-100"
+      icon="mdi-close"
+      variant="flat"
+      @click="reset"
+    />
+    <div
+      ref="filterElement"
+      class="filter"
+    >
       <slot name="prepend" />
       <div class="text-h6 mb-1 mt-2 md:my-2">
         <v-icon
