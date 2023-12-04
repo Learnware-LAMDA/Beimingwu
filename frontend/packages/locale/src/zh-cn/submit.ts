@@ -6,8 +6,8 @@ export default {
     Placeholder: "请输入学件名称",
     Description: "这是您将提交的学件的名称",
     Error: {
-      AtLeast5Chars: "学件名称至少需要 5 个字符",
-      AtMost30Chars: "学件名称不能超过 30 个字符",
+      FewerThan5Chars: "学件名称至少需要 5 个字符",
+      MoreThan50Chars: "学件名称不能超过 50 个字符",
     },
   },
   SemanticSpecification: {
@@ -112,8 +112,8 @@ export default {
     Title: "输入学件的描述",
     Placeholder: "请输入学件的描述",
     Error: {
-      AtLeast10Chars: "描述至少需要 10 个字符",
-      AtMost200Chars: "描述不能超过 200 个字符",
+      FewerThan10Chars: "描述至少需要 10 个字符",
+      MoreThan10000Chars: "描述不能超过 10000 个字符",
     },
   },
   File: {

@@ -6,8 +6,8 @@ export default {
     Placeholder: "Please type the name of your learnware",
     Description: "This is the name of your learnware you will submit",
     Error: {
-      AtLeast5Chars: "Learnware name needs to be at least 5 characters.",
-      AtMost30Chars: "Learnware name cannot be longer than 30 characters.",
+      FewerThan5Chars: "Learnware name needs to be at least 5 characters.",
+      MoreThan50Chars: "Learnware name cannot be longer than 50 characters.",
     },
   },
   SemanticSpecification: {
@@ -112,8 +112,8 @@ export default {
     Title: "Type the description of your learnware",
     Placeholder: "Please type the description of your learnware",
     Error: {
-      AtLeast10Chars: "Description needs to be at least 10 characters.",
-      AtMost200Chars: "Description cannot be longer than 200 characters.",
+      FewerThan10Chars: "Description needs to be at least 10 characters.",
+      MoreThan10000Chars: "Description cannot be longer than 10000 characters.",
     },
   },
   File: {

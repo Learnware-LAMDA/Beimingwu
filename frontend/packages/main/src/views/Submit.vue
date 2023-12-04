@@ -36,10 +36,10 @@ const name = useField<Name>({
   defaultValue: "",
   validate: (value: Name): string => {
     if (value?.length < 5) {
-      return t("Submit.Name.Error.AtLeast5Chars");
+      return t("Submit.Name.Error.FewerThan5Chars");
     }
-    if (value?.length > 30) {
-      return t("Submit.Name.Error.AtMost30Chars");
+    if (value?.length > 50) {
+      return t("Submit.Name.Error.MoreThan50Chars");
     }
     return "";
   },
@@ -136,10 +136,10 @@ const description = useField<Description>({
   defaultValue: "",
   validate: (value: Description): string => {
     if (value?.length < 10) {
-      return t("Submit.Description.Error.AtLeast10Chars");
+      return t("Submit.Description.Error.FewerThan10Chars");
     }
-    if (value?.length > 200) {
-      return t("Submit.Description.Error.AtMost200Chars");
+    if (value?.length > 10000) {
+      return t("Submit.Description.Error.MoreThan10000Chars");
     }
     return "";
   },
@@ -495,7 +495,7 @@ onActivated(init);
                 :placeholder="t('Submit.Name.Placeholder')"
                 append-inner-icon="mdi-close"
                 :error-messages="name.errorMessages"
-                counter="30"
+                :counter="50"
                 @click:append-inner="name.value = ''"
               />
               <span class="text-caption text-grey-darken-1">
@@ -535,7 +535,7 @@ onActivated(init);
                 :label="t('Submit.Description.Description')"
                 :placeholder="t('Submit.Description.Placeholder')"
                 :error-messages="description.errorMessages"
-                counter="200"
+                :counter="10000"
               />
             </div>
           </v-window-item>
