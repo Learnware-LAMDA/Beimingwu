@@ -139,7 +139,7 @@ onMounted(() => {
   <div class="relative bg-gradient-to-b from-sky-700 via-blue-500 to-blue-100">
     <div class="py-20 text-center text-white">
       <big-title>
-        <h1>{{ t("Home.Cover.Beiming") }}</h1>
+        <div>{{ t("Home.Cover.Beiming") }}</div>
       </big-title>
 
       <div class="mx-auto mt-6 max-w-7xl px-10 sm:px-20 md:px-40 lg:px-60">

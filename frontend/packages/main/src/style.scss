@@ -1,6 +1,4 @@
-@forward "vuetify/settings" with (
-  $utilities: (
-    "align-content": false,
+@forward "vuetify/settings" with ($utilities: ("align-content": false,
     "align-items": false,
     "align-self": false,
     "border-bottom": false,
@@ -70,18 +68,31 @@
     "text-overflow": false,
     "text-transform": false,
     "white-space": false,
-  )
-);
+  ));
 
 @use "vuetify";
 
 @tailwind base;
+
+@layer base {
+
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: theme('borderColor.DEFAULT', currentColor);
+  }
+}
+
 @tailwind components;
 @tailwind utilities;
 
 /* width */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 /* Track */

@@ -137,9 +137,9 @@ function closeErrorAlert(): void {
           </v-card-actions>
         </v-scroll-y-transition>
         <v-card-title>
-          <h1 class="text-h5 m-2 my-6 !text-[1.6em] sm:my-2 sm:!text-[1.3em]">
+          <div class="text-h5 m-2 my-6 !text-[1.6em] sm:my-2 sm:!text-[1.3em]">
             {{ t("ChangePassword.ChangePassword") }}
-          </h1>
+          </div>
         </v-card-title>
         <v-card-text>
           <v-form ref="form">

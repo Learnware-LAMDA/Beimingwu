@@ -550,7 +550,7 @@ onActivated(init);
             </div>
             <v-card-text class="py-2 text-sm sm:text-lg">
               <a
-                class="underline"
+                class="text-black underline"
                 :href="`https://docs.bmwu.cloud/${
                   locale === 'zh-cn' ? 'zh-CN' : 'en'
                 }/user-guide/learnware-upload/prepare.html`"
@@ -562,7 +562,7 @@ onActivated(init);
             </v-card-text>
             <v-card-text class="pt-2 text-sm sm:text-lg">
               <a
-                class="underline"
+                class="text-black underline"
                 href="./static/learnware-template.zip"
                 target="_blank"
               >

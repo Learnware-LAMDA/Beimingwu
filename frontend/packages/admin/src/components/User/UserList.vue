@@ -109,7 +109,10 @@ function handleClickSetRole(id: number, role: number): void {
             <div class="my-title">
               <span class="small-title">Username: </span>
               <span class="link">
-                <router-link :to="{ name: 'UserLearnware', query: { user_id: item.id } }">
+                <router-link
+                  class="text-black"
+                  :to="{ name: 'UserLearnware', query: { user_id: item.id } }"
+                >
                   {{ item.username }}
                 </router-link>
               </span>

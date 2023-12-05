@@ -87,7 +87,7 @@ const filteredRoutes = computed<Route[]>(
           >
             <template #activator="{ props: menuProps }">
               <v-btn
-                class="text-body-2 mr-2 !h-full rounded"
+                class="text-body-2 mr-2 !h-full rounded font-medium"
                 :variant="route.meta.variant"
                 :class="route.meta.class"
                 v-bind="menuProps"
@@ -104,7 +104,7 @@ const filteredRoutes = computed<Route[]>(
               <v-list-item
                 v-for="child in route.children"
                 :key="child.name"
-                class="text-body-2 font-bold"
+                class="text-body-2 font-medium"
                 :to="child.path"
               >
                 <v-icon
@@ -121,7 +121,7 @@ const filteredRoutes = computed<Route[]>(
           </v-menu>
           <v-btn
             v-else
-            class="text-body-2 mr-2 !h-full rounded"
+            class="text-body-2 mr-2 !h-full rounded font-medium"
             :variant="route.meta.variant"
             :class="route.meta.class"
           >

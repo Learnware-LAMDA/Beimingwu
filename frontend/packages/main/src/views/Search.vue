@@ -401,7 +401,6 @@ onActivated(() => {
           <v-btn
             v-if="isAdmin"
             block
-            class="mr-2"
             :color="isVerified ? 'primary' : 'error'"
             @click="() => (isVerified = !isVerified)"
           >
