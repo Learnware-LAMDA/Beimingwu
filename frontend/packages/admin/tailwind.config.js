@@ -1,13 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+import tailwindConfig from "../main/tailwind.config";
+
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{vue,js,ts,jsx,tsx}",
-    "../main/src/**/*.{vue,js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-  important: true,
+  ...tailwindConfig,
+  content: [...tailwindConfig.content, "../main/src/**/*.{vue,js,ts,jsx,tsx}"],
 };
