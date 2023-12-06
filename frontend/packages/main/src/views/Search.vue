@@ -4,6 +4,7 @@ import { watchDebounced } from "@vueuse/core";
 import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { marked } from "marked";
 import { searchLearnware } from "../request/engine";
 import { deleteLearnware } from "../request/admin";
 import ConfirmDialog from "../components/Dialogs/ConfirmDialog.vue";
@@ -135,7 +136,11 @@ function fetchByFilterAndPage(
             username: item.username,
             lastModify: item.last_modify,
             name: item.semantic_specification.Name.Values,
-            description: item.semantic_specification.Description.Values,
+            description:
+              new DOMParser().parseFromString(
+                marked(item.semantic_specification.Description.Values, { async: false }) as string,
+                "text/html",
+              ).body.textContent ?? "",
             dataType: item.semantic_specification.Data.Values[0],
             taskType: item.semantic_specification.Task.Values[0],
             libraryType: item.semantic_specification.Library.Values[0],
@@ -153,7 +158,11 @@ function fetchByFilterAndPage(
             username: item.username,
             lastModify: item.last_modify,
             name: item.semantic_specification.Name.Values,
-            description: item.semantic_specification.Description.Values,
+            description:
+              new DOMParser().parseFromString(
+                marked(item.semantic_specification.Description.Values, { async: false }) as string,
+                "text/html",
+              ).body.textContent ?? "",
             dataType: item.semantic_specification.Data.Values[0],
             taskType: item.semantic_specification.Task.Values[0],
             libraryType: item.semantic_specification.Library.Values[0],

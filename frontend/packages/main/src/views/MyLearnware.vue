@@ -4,6 +4,7 @@ import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
+import { marked } from "marked";
 import { deleteLearnware, getLearnwareList } from "../request/user";
 import { listLearnware } from "../request/admin";
 import { downloadLearnwareSync } from "../utils";
@@ -136,7 +137,11 @@ function fetchByFilterAndPage(page: number): void {
             verifyStatus: item.verify_status,
             lastModify: item.last_modify,
             name: item.semantic_specification.Name.Values,
-            description: item.semantic_specification.Description.Values,
+            description:
+              new DOMParser().parseFromString(
+                marked(item.semantic_specification.Description.Values, { async: false }) as string,
+                "text/html",
+              ).body.textContent ?? "",
             dataType: item.semantic_specification.Data.Values[0],
             taskType: item.semantic_specification.Task.Values[0],
             libraryType: item.semantic_specification.Library.Values[0],
