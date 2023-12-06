@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import vuetify from "vite-plugin-vuetify";
 import eslintPlugin from "vite-plugin-eslint";
 import checker from "vite-plugin-checker";
 import svgLoader from "vite-svg-loader";
@@ -16,6 +17,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    vuetify(),
     svgLoader(),
     eslintPlugin({
       cache: false,

@@ -68,6 +68,7 @@ const links = computed(() => [
     >
       <a
         :href="`http://www.beian.miit.gov.cn/`"
+        class="text-black"
         target="_blank"
         rel="noopener noreferrer"
       >

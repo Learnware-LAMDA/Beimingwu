@@ -4,6 +4,7 @@ import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
+import { marked } from "marked";
 import { getRole } from "../request/auth";
 import { addLearnware } from "../request/user";
 import { getLearnwareDetailById } from "../request/engine";
@@ -36,10 +37,10 @@ const name = useField<Name>({
   defaultValue: "",
   validate: (value: Name): string => {
     if (value?.length < 5) {
-      return t("Submit.Name.Error.AtLeast5Chars");
+      return t("Submit.Name.Error.FewerThan5Chars");
     }
-    if (value?.length > 30) {
-      return t("Submit.Name.Error.AtMost30Chars");
+    if (value?.length > 50) {
+      return t("Submit.Name.Error.MoreThan50Chars");
     }
     return "";
   },
@@ -133,13 +134,14 @@ const taskTypeDescription = computed(() => {
   }
 });
 const description = useField<Description>({
-  defaultValue: "",
+  defaultValue:
+    "# Description\n## This is a learnware\n\nThis learnware has the following tree features:\n\n1. feature 1\n2. feature 2\n3. feature 3",
   validate: (value: Description): string => {
     if (value?.length < 10) {
-      return t("Submit.Description.Error.AtLeast10Chars");
+      return t("Submit.Description.Error.FewerThan10Chars");
     }
-    if (value?.length > 200) {
-      return t("Submit.Description.Error.AtMost200Chars");
+    if (value?.length > 10000) {
+      return t("Submit.Description.Error.MoreThan10000Chars");
     }
     return "";
   },
@@ -495,7 +497,7 @@ onActivated(init);
                 :placeholder="t('Submit.Name.Placeholder')"
                 append-inner-icon="mdi-close"
                 :error-messages="name.errorMessages"
-                counter="30"
+                :counter="50"
                 @click:append-inner="name.value = ''"
               />
               <span class="text-caption text-grey-darken-1">
@@ -529,14 +531,21 @@ onActivated(init);
           </v-window-item>
 
           <v-window-item :value="2">
-            <div class="p-4">
-              <v-textarea
-                v-model="description.value"
-                :label="t('Submit.Description.Description')"
-                :placeholder="t('Submit.Description.Placeholder')"
-                :error-messages="description.errorMessages"
-                counter="200"
-              />
+            <div class="grid h-[30rem] p-4 md:grid-cols-2 md:gap-4">
+              <div class="flex-1 overflow-y-auto">
+                <v-textarea
+                  v-model="description.value"
+                  auto-grow
+                  :label="t('Submit.Description.Description')"
+                  :placeholder="t('Submit.Description.Placeholder')"
+                  :error-messages="description.errorMessages"
+                  :counter="10000"
+                />
+              </div>
+              <div
+                class="markdown-content flex-1 overflow-y-auto"
+                v-html="marked(description.value)"
+              ></div>
             </div>
           </v-window-item>
 
@@ -550,7 +559,7 @@ onActivated(init);
             </div>
             <v-card-text class="py-2 text-sm sm:text-lg">
               <a
-                class="underline"
+                class="text-black underline"
                 :href="`https://docs.bmwu.cloud/${
                   locale === 'zh-cn' ? 'zh-CN' : 'en'
                 }/user-guide/learnware-upload/prepare.html`"
@@ -562,7 +571,7 @@ onActivated(init);
             </v-card-text>
             <v-card-text class="pt-2 text-sm sm:text-lg">
               <a
-                class="underline"
+                class="text-black underline"
                 href="./static/learnware-template.zip"
                 target="_blank"
               >
@@ -615,3 +624,21 @@ onActivated(init);
     </submiting-dialog>
   </v-container>
 </template>
+
+<style scoped lang="scss">
+.markdown-content {
+  :deep(ol),
+  :deep(ul) {
+    @apply list-inside;
+  }
+
+  :deep(h1),
+  :deep(h2),
+  :deep(h3),
+  :deep(h4),
+  :deep(h5),
+  :deep(h6) {
+    @apply mb-2 mt-4;
+  }
+}
+</style>

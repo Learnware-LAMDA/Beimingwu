@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, nextTick } from "vue";
-import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useStore } from "vuex";
 import { useDisplay } from "vuetify";
@@ -13,14 +12,7 @@ import ScenarioListBtns from "../Specification/SpecTag/ScenarioList.vue";
 import LicenseTypeBtns from "../Specification/SpecTag/LicenseType.vue";
 import DescriptionInput from "../Specification/DescriptionInput.vue";
 import { saveContentToFile } from "../../utils";
-import type {
-  DataType,
-  TaskType,
-  LibraryType,
-  ScenarioList,
-  LicenseList,
-  Filter,
-} from "@beiming-system/types/learnware";
+import type { Filter } from "@beiming-system/types/learnware";
 import TextBtn from "../../assets/images/specification/dataType/text.svg?component";
 import ImageBtn from "../../assets/images/specification/dataType/image.svg?component";
 import TableBtn from "../../assets/images/specification/dataType/table.svg?component";
@@ -50,25 +42,12 @@ const props = withDefaults(defineProps<Props>(), {
   showExample: true,
 });
 
-const route = useRoute();
-
-const id = ref(route.query.id || "");
-const search = ref(route.query.search || "");
-const dataType = ref<DataType | "">((route.query.dataType?.toString() as DataType) || "");
-const taskType = ref<TaskType | "">((route.query.taskType?.toString() as TaskType) || "");
-const libraryType = ref<LibraryType | "">(
-  (route.query.libraryType?.toString() as LibraryType) || "",
-);
-let tryScenarioList;
-try {
-  tryScenarioList = JSON.parse(route.query.scenarioList?.toString() as string);
-} catch {
-  tryScenarioList = [];
-}
-const scenarioList = ref<ScenarioList>(tryScenarioList);
-const licenseList = ref<LicenseList>([]);
-
-const files = ref<File[]>([]);
+const modelValue = computed<Filter>({
+  get: () => props.modelValue,
+  set: (val) => {
+    emits("update:modelValue", val);
+  },
+});
 
 const heteroDialog = computed({
   get: () => props.heteroDialog,
@@ -77,24 +56,29 @@ const heteroDialog = computed({
   },
 });
 const heteroTab = ref<"dataType" | "taskType">("dataType");
-const dataTypeDescription = ref({
-  Dimension: 7,
-  Description: {
-    0: "gender",
-    1: "age",
-    2: "the description of feature 2",
-    5: "the description of feature 5",
+
+const tempDataTypeDescription = ref(
+  modelValue.value.dataTypeDescription ?? {
+    Dimension: 7,
+    Description: {
+      0: "gender",
+      1: "age",
+      2: "the description of feature 2",
+      5: "the description of feature 5",
+    },
   },
-});
-const taskTypeDescription = ref({
-  Dimension: 2,
-  Description: {
-    0: "the description of label 0",
-    1: "the description of label 1",
+);
+const tempTaskTypeDescription = ref(
+  modelValue.value.taskTypeDescription ?? {
+    Dimension: 2,
+    Description: {
+      0: "the description of label 0",
+      1: "the description of label 1",
+    },
   },
-});
-const tempDataTypeDescription = ref(dataTypeDescription.value);
-const tempTaskTypeDescription = ref(taskTypeDescription.value);
+);
+
+const filterElement = ref<HTMLDivElement | null>(null);
 
 const exampleDialog = ref<boolean>(false);
 const exampleDialogPersistent = ref<boolean>(store.getters.getShowExampleTips);
@@ -109,11 +93,11 @@ const exampleGroups = computed(() => [
         onClick: (): Promise<void> => {
           return downloadAndLoadRKME("./static/table_homo.json", "table_homo.json").then(() => {
             emits("update:isHetero", false);
-            dataType.value = "Table";
-            taskType.value = "";
-            libraryType.value = "";
-            scenarioList.value = [];
-            licenseList.value = [];
+            modelValue.value.dataType = "Table";
+            modelValue.value.taskType = "";
+            modelValue.value.libraryType = "";
+            modelValue.value.scenarioList = [];
+            modelValue.value.licenseList = [];
           });
         },
         onClickDownload: (): Promise<void> => {
@@ -137,12 +121,12 @@ const exampleGroups = computed(() => [
             .then(() => fetch("./static/table_hetero_input.json"))
             .then((res) => res.text())
             .then((text) => {
-              dataType.value = "Table";
-              taskType.value = "";
-              libraryType.value = "";
-              scenarioList.value = [];
-              licenseList.value = [];
-              dataTypeDescription.value = JSON.parse(text);
+              modelValue.value.dataType = "Table";
+              modelValue.value.taskType = "";
+              modelValue.value.libraryType = "";
+              modelValue.value.scenarioList = [];
+              modelValue.value.licenseList = [];
+              modelValue.value.dataTypeDescription = JSON.parse(text);
               tempDataTypeDescription.value = JSON.parse(text);
               heteroDialog.value = false;
               emits("update:isHetero", true);
@@ -174,11 +158,11 @@ const exampleGroups = computed(() => [
         onClick: (): Promise<void> => {
           return downloadAndLoadRKME("./static/image.json", "image.json").then(() => {
             emits("update:isHetero", false);
-            dataType.value = "Image";
-            taskType.value = "";
-            libraryType.value = "";
-            scenarioList.value = [];
-            licenseList.value = [];
+            modelValue.value.dataType = "Image";
+            modelValue.value.taskType = "";
+            modelValue.value.libraryType = "";
+            modelValue.value.scenarioList = [];
+            modelValue.value.licenseList = [];
           });
         },
         onClickDownload: (): Promise<void> => {
@@ -200,11 +184,11 @@ const exampleGroups = computed(() => [
         onClick: (): Promise<void> => {
           return downloadAndLoadRKME("./static/text.json", "text.json").then(() => {
             emits("update:isHetero", false);
-            dataType.value = "Text";
-            taskType.value = "";
-            libraryType.value = "";
-            scenarioList.value = [];
-            licenseList.value = [];
+            modelValue.value.dataType = "Text";
+            modelValue.value.taskType = "";
+            modelValue.value.libraryType = "";
+            modelValue.value.scenarioList = [];
+            modelValue.value.licenseList = [];
           });
         },
         onClickDownload: (): Promise<void> => {
@@ -218,6 +202,22 @@ const exampleGroups = computed(() => [
     ],
   },
 ]);
+function reset(): void {
+  modelValue.value.id = "";
+  modelValue.value.name = "";
+  modelValue.value.dataType = "";
+  modelValue.value.taskType = "";
+  modelValue.value.libraryType = "";
+  modelValue.value.scenarioList = [];
+  modelValue.value.licenseList = [];
+  modelValue.value.dataTypeDescription = undefined;
+  modelValue.value.taskTypeDescription = undefined;
+  modelValue.value.files = [];
+
+  if (filterElement.value) {
+    filterElement.value.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
 function handleClickShowExample(): void {
   if (driverObj.isActive()) {
     setTimeout(() => {
@@ -241,38 +241,18 @@ function downloadAndLoadRKME(url: string, name: string): Promise<void> {
     .then((res) => res.text())
     .then((text) => {
       const file = new File([text], name, { type: "application/json" });
-      files.value = [file];
+      modelValue.value.files = [file];
     });
 }
-
-const requirement = computed(() => ({
-  id: id.value,
-  name: search.value,
-  dataType: dataType.value,
-  taskType: taskType.value,
-  libraryType: libraryType.value,
-  scenarioList: scenarioList.value,
-  licenseList: licenseList.value,
-  files: files.value,
-  dataTypeDescription: dataTypeDescription.value,
-  taskTypeDescription: taskTypeDescription.value,
-}));
 
 watch(
   () => heteroDialog.value,
   (val) => {
     if (!val) {
       emits("update:isHetero", true);
-      dataTypeDescription.value = tempDataTypeDescription.value;
-      taskTypeDescription.value = tempTaskTypeDescription.value;
+      modelValue.value.dataTypeDescription = tempDataTypeDescription.value;
+      modelValue.value.taskTypeDescription = tempTaskTypeDescription.value;
     }
-  },
-);
-
-watch(
-  () => requirement.value,
-  () => {
-    emits("update:modelValue", requirement.value);
   },
 );
 
@@ -332,8 +312,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="sm:border-r-1 flex flex-col">
-    <div class="filter">
+  <div class="relative flex flex-col">
+    <v-btn
+      class="absolute right-4 top-2 z-20 bg-white opacity-40 transition-all hover:opacity-100"
+      icon="mdi-close"
+      variant="flat"
+      @click="reset"
+    />
+    <div
+      ref="filterElement"
+      class="filter"
+    >
       <slot name="prepend" />
       <div class="text-h6 mb-1 mt-2 md:my-2">
         <v-icon
@@ -350,11 +339,11 @@ onMounted(() => {
           {{ t("Search.SearchById") }}
         </div>
         <v-text-field
-          v-model="id"
+          v-model="modelValue.id"
           :label="t('Search.LearnwareId')"
           hide-details
           append-inner-icon="mdi-close"
-          @click:append-inner="id = ''"
+          @click:append-inner="modelValue.id = ''"
         />
       </div>
 
@@ -363,37 +352,37 @@ onMounted(() => {
           {{ t("Search.SearchByName") }}
         </div>
         <v-text-field
-          v-model="search"
+          v-model="modelValue.name"
           :label="t('Search.LearnwareName')"
           hide-details
           append-inner-icon="mdi-close"
-          @click:append-inner="search = ''"
+          @click:append-inner="modelValue.name = ''"
         />
       </div>
 
       <data-type-btns
-        v-model="dataType"
+        v-model="modelValue.dataType"
         :cols="3"
         :md="2"
         :sm="2"
         :xs="2"
       />
       <task-type-btns
-        v-model="taskType"
+        v-model="modelValue.taskType"
         :cols="2"
         :md="2"
         :sm="2"
         :xs="2"
       />
       <library-type-btns
-        v-model="libraryType"
+        v-model="modelValue.libraryType"
         :cols="2"
         :md="2"
         :sm="2"
         :xs="2"
       />
       <scenario-list-btns
-        v-model="scenarioList"
+        v-model="modelValue.scenarioList"
         :cols="2"
         :md="2"
         :sm="2"
@@ -401,7 +390,7 @@ onMounted(() => {
         class="bg-transparent !text-base"
       />
       <license-type-btns
-        v-model="licenseList"
+        v-model="modelValue.licenseList"
         :cols="2"
         :md="2"
         :sm="2"
@@ -639,7 +628,7 @@ onMounted(() => {
       </div>
 
       <file-upload
-        v-model="files"
+        v-model="modelValue.files"
         :height="28"
         :tips="t('Submit.File.DragFileHere', { file: 'JSON' })"
       />
@@ -651,7 +640,7 @@ onMounted(() => {
 .filter {
   @apply w-full p-2 sm:px-5 md:h-full md:overflow-y-auto;
 
-  * {
+  & > * {
     @apply mt-2;
   }
 }

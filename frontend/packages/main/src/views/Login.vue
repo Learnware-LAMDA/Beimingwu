@@ -157,9 +157,9 @@ function onResetPassword(): void {
             </v-card-actions>
           </v-scroll-y-transition>
           <v-card-title>
-            <h1 class="text-h5 sm:text-1.3em m-2 my-6 sm:my-2">
+            <div class="text-h5 sm:text-1.3em m-2 my-6 sm:my-2">
               {{ t("Login.Login") }}
-            </h1>
+            </div>
           </v-card-title>
           <v-card-text>
             <v-form ref="form">
@@ -216,9 +216,9 @@ function onResetPassword(): void {
       </v-card>
       <success-dialog v-model="showResetPasswordDialog">
         <template #msg>
-          <h2 class="mb-8 mt-6 text-lg">
+          <div class="mb-8 mt-6 text-lg">
             {{ t("Login.ResetPasswordSent") }}
-          </h2>
+          </div>
         </template>
 
         <template #buttons>

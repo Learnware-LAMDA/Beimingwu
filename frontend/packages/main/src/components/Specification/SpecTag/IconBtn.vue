@@ -38,7 +38,7 @@ defineProps({
 
 <style scoped lang="scss">
 .btn {
-  @apply flex h-full cursor-pointer items-center justify-start rounded-lg border bg-gray-400 py-4 text-[0.9rem] transition;
+  @apply flex h-full cursor-pointer items-center justify-start rounded-lg border bg-gray-400 py-3 text-[0.9rem] transition;
   color: rgb(var(--v-theme-on-primary));
 
   .responsive {
