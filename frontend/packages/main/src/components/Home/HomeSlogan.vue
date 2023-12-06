@@ -166,7 +166,7 @@ onMounted(() => {
     </div>
 
     <scroll-animate
-      class="h-[300vh]"
+      class="h-[3000px] min-h-[200vh]"
       @progress="handleProgress"
     >
       <template #default>
