@@ -4,6 +4,7 @@ import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
+import { marked } from "marked";
 import { getRole } from "../request/auth";
 import { addLearnware } from "../request/user";
 import { getLearnwareDetailById } from "../request/engine";
@@ -529,14 +530,20 @@ onActivated(init);
           </v-window-item>
 
           <v-window-item :value="2">
-            <div class="p-4">
+            <div class="grid grid-cols-2 gap-2 p-4">
               <v-textarea
                 v-model="description.value"
+                auto-grow
+                class="flex-1"
                 :label="t('Submit.Description.Description')"
                 :placeholder="t('Submit.Description.Placeholder')"
                 :error-messages="description.errorMessages"
                 :counter="10000"
               />
+              <div
+                class="markdown-content flex-1"
+                v-html="marked(description.value)"
+              ></div>
             </div>
           </v-window-item>
 
@@ -615,3 +622,21 @@ onActivated(init);
     </submiting-dialog>
   </v-container>
 </template>
+
+<style scoped lang="scss">
+.markdown-content {
+  :deep(ol),
+  :deep(ul) {
+    @apply list-inside;
+  }
+
+  :deep(h1),
+  :deep(h2),
+  :deep(h3),
+  :deep(h4),
+  :deep(h5),
+  :deep(h6) {
+    @apply mb-2 mt-4;
+  }
+}
+</style>
