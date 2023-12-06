@@ -531,18 +531,19 @@ onActivated(init);
           </v-window-item>
 
           <v-window-item :value="2">
-            <div class="grid p-4 md:grid-cols-2 md:gap-4">
-              <v-textarea
-                v-model="description.value"
-                auto-grow
-                class="flex-1"
-                :label="t('Submit.Description.Description')"
-                :placeholder="t('Submit.Description.Placeholder')"
-                :error-messages="description.errorMessages"
-                :counter="10000"
-              />
+            <div class="grid h-[30rem] p-4 md:grid-cols-2 md:gap-4">
+              <div class="flex-1 overflow-y-auto">
+                <v-textarea
+                  v-model="description.value"
+                  auto-grow
+                  :label="t('Submit.Description.Description')"
+                  :placeholder="t('Submit.Description.Placeholder')"
+                  :error-messages="description.errorMessages"
+                  :counter="10000"
+                />
+              </div>
               <div
-                class="markdown-content flex-1"
+                class="markdown-content flex-1 overflow-y-auto"
                 v-html="marked(description.value)"
               ></div>
             </div>
