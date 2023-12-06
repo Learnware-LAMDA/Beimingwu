@@ -52,8 +52,8 @@ const activeStep = (index: number): void => {
             </div>
           </div>
           <div class="step-title">
-            <h4 class="text-sm md:text-lg">{{ `${stepTitle} ${index + 1}` }}</h4>
-            <h5 class="md:texg-sm text-xs">{{ step.subtitle }}</h5>
+            <div class="text-sm md:text-lg">{{ `${stepTitle} ${index + 1}` }}</div>
+            <div class="md:texg-sm text-xs">{{ step.subtitle }}</div>
           </div>
         </div>
       </div>
