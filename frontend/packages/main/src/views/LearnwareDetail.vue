@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { marked } from "marked";
 import { getLearnwareDetailById } from "../request/engine";
 import { getProfile } from "../request/user";
 import { deleteLearnware } from "../request/user";
@@ -432,7 +433,7 @@ function handleDownload(id: string): void {
             <template v-if="editable">
               <b>{{ t("LearnwareDetail.Logs") }}: </b>
               <span
-                class="cursor-pointer text-blue-500 underline"
+                class="cursor-pointer underline"
                 @click="onLearnwareVerifyLog(learnware.id)"
               >
                 {{ t("LearnwareDetail.ViewLogs") }}
@@ -447,7 +448,10 @@ function handleDownload(id: string): void {
           </div>
           <div>
             <b>{{ t("Submit.Description.Description") }}:</b>
-            {{ learnware.description }}
+            <div
+              class="markdown-content overflow-x-auto break-words"
+              v-html="marked(learnware.description)"
+            ></div>
           </div>
         </div>
       </div>
@@ -468,5 +472,20 @@ function handleDownload(id: string): void {
 <style scoped lang="scss">
 .learnware-container > div {
   @apply my-3;
+}
+.markdown-content {
+  &:global(ol),
+  &:global(ul) {
+    @apply list-inside;
+  }
+
+  &:global(h1),
+  &:global(h2),
+  &:global(h3),
+  &:global(h4),
+  &:global(h5),
+  &:global(h6) {
+    @apply mb-2 mt-4;
+  }
 }
 </style>
