@@ -188,6 +188,15 @@ class UpdateLearnwareApi(flask_restful.Resource):
                 == EasySemanticChecker.INVALID_LEARNWARE
             ):
                 return {"code": 41, "msg": "Semantic specification check failed!"}, 200
+
+            # check sensitive words
+            if context.sensitive_pattern is not None:
+                semantic_str = json.dumps(semantic_specification, ensure_ascii=False)
+                match = context.sensitive_pattern.search(semantic_str)
+                if match is not None:
+                    w = semantic_str[match.start() : match.end()]
+                    return {"code": 51, "msg": f"Sensitive words {w} in semantic specification"}
+                pass
             learnware_path = None
         else:
             learnware_file.seek(0)

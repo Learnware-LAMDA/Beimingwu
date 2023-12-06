@@ -62,6 +62,9 @@ def main():
     sub_thread = threading.Thread(target=redis_utils.subscribe)
     sub_thread.start()
 
+    # Init sensitive words
+    context.init_sensitive_words()
+
     # Init flask
     app.register_blueprint(restful.auth.auth_blueprint, url_prefix="/auth")
     app.register_blueprint(restful.user.user_blueprint, url_prefix="/user")
