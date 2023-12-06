@@ -474,17 +474,17 @@ function handleDownload(id: string): void {
   @apply my-3;
 }
 .markdown-content {
-  &:global(ol),
-  &:global(ul) {
+  :deep(ol),
+  :deep(ul) {
     @apply list-inside;
   }
 
-  &:global(h1),
-  &:global(h2),
-  &:global(h3),
-  &:global(h4),
-  &:global(h5),
-  &:global(h6) {
+  :deep(h1),
+  :deep(h2),
+  :deep(h3),
+  :deep(h4),
+  :deep(h5),
+  :deep(h6) {
     @apply mb-2 mt-4;
   }
 }
