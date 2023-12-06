@@ -134,7 +134,8 @@ const taskTypeDescription = computed(() => {
   }
 });
 const description = useField<Description>({
-  defaultValue: "",
+  defaultValue:
+    "# Description\n## This is a learnware\n\nThis learnware has the following tree features:\n\n1. feature 1\n2. feature 2\n3. feature 3",
   validate: (value: Description): string => {
     if (value?.length < 10) {
       return t("Submit.Description.Error.FewerThan10Chars");
@@ -530,7 +531,7 @@ onActivated(init);
           </v-window-item>
 
           <v-window-item :value="2">
-            <div class="grid grid-cols-2 gap-2 p-4">
+            <div class="grid p-4 md:grid-cols-2 md:gap-4">
               <v-textarea
                 v-model="description.value"
                 auto-grow
