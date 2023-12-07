@@ -5,7 +5,7 @@ import Logo from "../../../public/logo.svg?component";
 
 <template>
   <div class="flex flex-col overflow-hidden rounded-md">
-    <div class="flex h-6 items-center justify-between bg-gray-900">
+    <div class="hidden h-6 items-center justify-between bg-gray-900 sm:flex">
       <div class="flex">
         <div class="ml-2" />
         <div
@@ -77,7 +77,7 @@ import Logo from "../../../public/logo.svg?component";
       </svg>
     </div>
 
-    <div class="flex h-6 items-center bg-gray-700">
+    <div class="hidden h-6 items-center bg-gray-700 sm:flex">
       <div class="text-[0.4rem]">
         <v-icon class="ml-1 p-2"> mdi-arrow-left </v-icon>
         <v-icon class="p-2"> mdi-arrow-right </v-icon>
