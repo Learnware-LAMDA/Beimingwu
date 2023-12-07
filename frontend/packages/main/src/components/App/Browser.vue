@@ -99,8 +99,8 @@ import Logo from "../../../public/logo.svg?component";
     </div>
 
     <div class="flex items-center justify-between border-b border-gray-300 bg-white">
-      <div class="p-2">
-        <logo class="w-20" />
+      <div class="flex h-8 flex-col p-1 px-2">
+        <logo class="w-20 flex-1" />
       </div>
     </div>
 
