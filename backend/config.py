@@ -110,4 +110,7 @@ _DEFAULT_CONFIG = {
     },
     # redis config
     "redis": {"host": "127.0.0.1", "port": 6379},
+    "sensitive_word_file": "",
+    "user_agreement_file": "",
+    "privacy_policy_file": "",
 }
