@@ -312,7 +312,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative flex flex-col">
+  <div class="flex flex-col">
     <v-btn
       class="absolute right-4 top-2 z-20 bg-white opacity-40 transition-all hover:opacity-100"
       icon="mdi-close"
