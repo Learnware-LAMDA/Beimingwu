@@ -61,7 +61,7 @@ const result = [
     ],
     [],
   ),
-  "]",
+  "]<br />",
 ];
 
 export default [
@@ -80,6 +80,13 @@ export default [
       "]",
     ],
     result,
+    reuse: [
+      startWithIn(3),
+      ..."learnware_list = client.load_learnware(learnware_ids)",
+      "<br /><br />",
+      startWithIn(4),
+      ..."y_predict = Reuser(learnware_list).predict(X)",
+    ],
   },
   {
     index: 1,
@@ -165,6 +172,13 @@ export default [
       ..."single_demo(client, data)",
     ],
     result: [..."single_demo_output: ", ...result],
+    reuse: [
+      startWithIn(3),
+      ..."learnware_list = client.load_learnware(learnware_ids)",
+      "<br /><br />",
+      startWithIn(4),
+      ..."y_predict = Reuser(learnware_list).predict(X)",
+    ],
   },
   {
     index: 2,
@@ -250,5 +264,12 @@ export default [
       ..."multi_demo(client, data)",
     ],
     result: [..."multi_demo_output: ", ...result],
+    reuse: [
+      startWithIn(3),
+      ..."learnware_list = client.load_learnware(learnware_ids)",
+      "<br /><br />",
+      startWithIn(4),
+      ..."y_predict = Reuser(learnware_list).predict(X)",
+    ],
   },
 ];

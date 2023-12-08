@@ -78,6 +78,7 @@ const showMultiRecommended = computed(() => easeShowMultiRecommended.value >= 0.
 const isAdmin = ref(false);
 
 const rkmeJsonRef = ref<HTMLDivElement | null>(null);
+const browserRef = ref<HTMLDivElement | null>(null);
 
 const scrollRef = ref<HTMLDivElement | null>(null);
 
@@ -86,8 +87,23 @@ const loading = computed(() => easeLoading.value >= 0.5);
 
 const importProgress = ref(0);
 const resultProgress = ref(0);
+const reuseProgress = ref(0);
 
 const fragmentIndex = ref(0);
+
+const msgs = computed(() => [
+  {
+    id: 0,
+    text: "几行代码",
+    class: "text-7xl",
+  },
+  {
+    id: 1,
+    text: "解决您的任务",
+    class: "text-6xl",
+  },
+]);
+const msgRefs = ref<HTMLDivElement[]>([]);
 
 const progress = ref<number>(0);
 function handleProgress(p: number): void {
@@ -155,7 +171,33 @@ onMounted(() => {
             easing: "linear",
           },
           "-=350",
-        );
+        )
+        .add({
+          targets: browserRef.value,
+          opacity: [1, 0],
+          duration: 100,
+          easing: "linear",
+        })
+        .add({
+          targets: msgRefs.value,
+          translateY: ["200%", "0%"],
+          opacity: [0, 1],
+          duration: 300,
+          easing: "easeInOutQuad",
+          delay: anime.stagger(100),
+        })
+        .add(
+          {
+            targets: reuseProgress,
+            value: [0, 1],
+            easing: "linear",
+            duration: 300,
+          },
+          "-=300",
+        )
+        .add({
+          duration: 500,
+        });
     });
   });
 });
@@ -174,7 +216,7 @@ watch(
 </script>
 
 <template>
-  <div class="relative bg-gradient-to-b from-sky-700 via-blue-500 to-blue-100">
+  <div class="relative bg-sky-700">
     <div class="py-20 text-center text-white">
       <big-title>
         <div>{{ t("Home.Cover.Beiming") }}</div>
@@ -218,7 +260,10 @@ watch(
                 :class="
                   progress === 0
                     ? ['left-1/2 w-full -translate-x-1/2']
-                    : ['left-0 z-10 w-4/5 translate-x-0 md:w-3/5 xl:w-3/5']
+                    : [
+                        'left-0 z-10 w-4/5 translate-x-0 md:w-3/5 xl:w-3/5',
+                        reuseProgress === 0 ? 'top-0' : 'top-1/2 -translate-y-1/2',
+                      ]
                 "
               >
                 <terminal-window
@@ -247,17 +292,26 @@ watch(
                           :fragments="fragment.result"
                           :progress="resultProgress"
                         />
+                        <progressed-code
+                          v-if="resultProgress === 1"
+                          :fragments="fragment.reuse"
+                          :progress="reuseProgress"
+                        />
                       </terminal-code>
                     </template>
                   </div>
                 </terminal-window>
               </div>
               <div
+                ref="browserRef"
                 class="absolute bottom-0 right-0 aspect-[9/16] max-w-7xl transform transition-all duration-500 lg:aspect-video"
                 :class="
                   progress === 0
-                    ? ['right-1/2 top-0 w-full translate-x-1/2']
-                    : ['right-0 top-full w-4/5 -translate-x-0 -translate-y-full md:w-3/5 xl:w-3/5']
+                    ? 'right-1/2 top-0 w-full translate-x-1/2'
+                    : [
+                        'right-0 top-full w-4/5 -translate-x-0 -translate-y-full md:w-3/5 xl:w-3/5',
+                        showMultiRecommended && 'transition-none',
+                      ]
                 "
               >
                 <Browser class="relative h-full">
@@ -405,6 +459,20 @@ watch(
                     </div>
                   </div>
                 </Browser>
+              </div>
+              <div
+                class="absolute right-0 flex h-full w-2/5 flex-col items-center justify-center font-medium text-white"
+              >
+                <div
+                  v-for="msg in msgs"
+                  ref="msgRefs"
+                  :key="msg.id"
+                  class="mb-4"
+                  :class="msg.class"
+                  :style="{ opacity: 0 }"
+                >
+                  {{ msg.text }}
+                </div>
               </div>
             </div>
           </div>
