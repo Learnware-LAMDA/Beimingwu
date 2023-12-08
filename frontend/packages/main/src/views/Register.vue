@@ -10,6 +10,7 @@ import { hex_md5 } from "../utils";
 import collaborationImg from "../assets/images/public/collaboration.svg?url";
 import { resendEmail } from "../request/auth";
 import { useTimeout } from "@beiming-system/hooks";
+import { showUserAgreement, showPrivacyPolicy } from "../request/protocol";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -53,11 +54,14 @@ const showError = ref(false);
 const errorMsg = ref("");
 const success = ref(false);
 const showErrorDialog = ref(false);
+const agreeTerms = ref(false);
 
 const errorTimer = ref<number>();
 const { ok, remain, start: startTimer, stop: stopTimer } = useTimeout(60 * 1000);
 
-const valid = computed(() => userName.valid && email.valid && password.valid && password2.valid);
+const valid = computed(
+  () => userName.valid && email.valid && password.valid && password2.valid && agreeTerms.value,
+);
 
 function submit(): Promise<void> {
   if (!valid.value) return Promise.resolve();
@@ -242,6 +246,30 @@ onUnmounted(() => {
               @keyup.enter="submit"
             />
           </v-form>
+          <v-card-actions class="pa-0 mb-0 p-0">
+            <v-checkbox
+              :label="t('Register.ReadAndAgree')"
+              density="compact"
+              v-model="agreeTerms"
+              hide-details
+            ></v-checkbox>
+            <v-btn
+              target="_blank"
+              variant="link"
+              color="primary"
+              @click="showUserAgreement()"
+            >
+              {{ t("Register.UserAgreement") }}
+            </v-btn>
+            <v-btn
+              target="_blank"
+              variant="link"
+              color="primary"
+              @click="showPrivacyPolicy()"
+            >
+              {{ t("Register.PrivacyPolicy") }}
+            </v-btn>
+          </v-card-actions>
         </v-card-text>
         <v-card-actions>
           <v-btn

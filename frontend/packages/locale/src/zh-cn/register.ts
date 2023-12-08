@@ -7,6 +7,9 @@ export default {
   SentEmail: "我们向您的邮箱发送了一封确认邮件，请点击邮件中的链接完成注册。",
   Resend: "重新发送",
   Close: "关闭",
+  ReadAndAgree: "我已阅读并同意",
+  UserAgreement: "用户协议",
+  PrivacyPolicy: "隐私政策",
   Error: {
     UsernameAtLeast2Chars: "用户名至少需要 2 个字符",
     UsernameAtMost20Chars: "用户名不能超过 20 个字符",
