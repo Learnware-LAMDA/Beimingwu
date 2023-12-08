@@ -7,6 +7,8 @@ export default {
     Submit: "Be A Developer",
     LearnwareName: "Learnware",
     LearnwareDescription: "This is a learnware.",
+    ServeralLinesOfCode: "Solve Your Tasks",
+    SolveYourTasks: "with several lines of code",
     Developer: "Developer",
   },
   What: {

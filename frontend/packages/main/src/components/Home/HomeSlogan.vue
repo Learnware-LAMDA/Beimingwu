@@ -94,12 +94,12 @@ const fragmentIndex = ref(0);
 const msgs = computed(() => [
   {
     id: 0,
-    text: "几行代码",
+    text: t("Home.Cover.ServeralLinesOfCode"),
     class: "text-5xl md:text-6xl lg:text-7xl",
   },
   {
     id: 1,
-    text: "解决您的任务",
+    text: t("Home.Cover.SolveYourTasks"),
     class: "text-3xl md:text-4xl lg:text-6xl",
   },
 ]);
@@ -466,7 +466,7 @@ watch(
                   v-for="msg in msgs"
                   ref="msgRefs"
                   :key="msg.id"
-                  class="mb-4"
+                  class="mb-4 text-center"
                   :class="msg.class"
                   :style="{ opacity: 0 }"
                 >
