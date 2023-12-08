@@ -276,29 +276,28 @@ watch(
                     ref="scrollRef"
                     class="flex-1 overflow-y-hidden break-all bg-gray-800 opacity-90"
                   >
-                    <template
-                      v-for="fragment in [fragments[fragmentIndex]]"
+                    <terminal-code
+                      v-for="fragment in fragments"
+                      v-show="fragmentIndex === fragment.index"
                       :key="fragment.index"
                     >
-                      <terminal-code>
-                        <terminal-ipython-header />
+                      <terminal-ipython-header />
 
-                        <progressed-code
-                          :fragments="fragment.import"
-                          :progress="importProgress"
-                        />
-                        <progressed-code
-                          v-if="importProgress === 1"
-                          :fragments="fragment.result"
-                          :progress="resultProgress"
-                        />
-                        <progressed-code
-                          v-if="resultProgress === 1"
-                          :fragments="fragment.reuse"
-                          :progress="reuseProgress"
-                        />
-                      </terminal-code>
-                    </template>
+                      <progressed-code
+                        :fragments="fragment.import"
+                        :progress="importProgress"
+                      />
+                      <progressed-code
+                        v-if="importProgress === 1"
+                        :fragments="fragment.result"
+                        :progress="resultProgress"
+                      />
+                      <progressed-code
+                        v-if="resultProgress === 1"
+                        :fragments="fragment.reuse"
+                        :progress="reuseProgress"
+                      />
+                    </terminal-code>
                   </div>
                 </terminal-window>
               </div>
