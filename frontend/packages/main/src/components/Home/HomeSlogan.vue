@@ -95,12 +95,12 @@ const msgs = computed(() => [
   {
     id: 0,
     text: "几行代码",
-    class: "text-7xl",
+    class: "text-5xl md:text-6xl lg:text-7xl",
   },
   {
     id: 1,
     text: "解决您的任务",
-    class: "text-6xl",
+    class: "text-3xl md:text-4xl lg:text-6xl",
   },
 ]);
 const msgRefs = ref<HTMLDivElement[]>([]);
@@ -262,7 +262,7 @@ watch(
                     ? ['left-1/2 w-full -translate-x-1/2']
                     : [
                         'left-0 z-10 w-4/5 translate-x-0 md:w-3/5 xl:w-3/5',
-                        reuseProgress === 0 ? 'bottom-0' : 'bottom-1/2 translate-y-1/2',
+                        reuseProgress === 0 ? 'bottom-0' : 'bottom-1/2 w-full translate-y-1/2',
                       ]
                 "
               >
@@ -352,7 +352,7 @@ watch(
                     </div>
 
                     <div
-                      v-if="display.mdAndUp.value || showMultiRecommended || loading"
+                      v-if="display.smAndUp.value || showMultiRecommended || loading"
                       class="flex-1"
                     >
                       <div
@@ -460,7 +460,7 @@ watch(
                 </Browser>
               </div>
               <div
-                class="absolute right-0 flex h-full w-2/5 flex-col items-center justify-center font-medium text-white"
+                class="pointer-events-none absolute right-0 z-20 flex h-full w-full flex-col items-center justify-center font-medium text-white opacity-80 sm:w-2/5"
               >
                 <div
                   v-for="msg in msgs"
