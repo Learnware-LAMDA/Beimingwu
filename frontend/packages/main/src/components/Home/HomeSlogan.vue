@@ -262,7 +262,7 @@ watch(
                     ? ['left-1/2 w-full -translate-x-1/2']
                     : [
                         'left-0 z-10 w-4/5 translate-x-0 md:w-3/5 xl:w-3/5',
-                        reuseProgress === 0 ? 'top-0' : 'top-1/2 -translate-y-1/2',
+                        reuseProgress === 0 ? 'bottom-0' : 'bottom-1/2 translate-y-1/2',
                       ]
                 "
               >
@@ -304,12 +304,12 @@ watch(
               </div>
               <div
                 ref="browserRef"
-                class="absolute bottom-0 right-0 aspect-[9/16] max-w-7xl transform transition-all duration-500 lg:aspect-video"
+                class="absolute right-0 aspect-[9/16] max-w-7xl transform transition-all duration-500 lg:aspect-video"
                 :class="
                   progress === 0
-                    ? 'right-1/2 top-0 w-full translate-x-1/2'
+                    ? 'right-1/2 w-full translate-x-1/2'
                     : [
-                        'right-0 top-full w-4/5 -translate-x-0 -translate-y-full md:w-3/5 xl:w-3/5',
+                        'right-0 w-4/5 -translate-x-0 md:w-3/5 xl:w-3/5',
                         showMultiRecommended && 'transition-none',
                       ]
                 "
