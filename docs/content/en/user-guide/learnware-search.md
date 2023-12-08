@@ -71,8 +71,9 @@ You can search for learnwares in the learnware dock system through semantic spec
 
 ```python
 from learnware.market import BaseUserInfo
+from learnware.specification import generate_semantic_spec
 
-user_semantic = client.create_semantic_specification(
+user_semantic = generate_semantic_spec(
     task_type="Classification"
 )
 user_info = BaseUserInfo(semantic_spec=user_semantic)
@@ -89,7 +90,7 @@ learnware_list = client.search_learnware(user_info, page_size=None)
 By combining both semantic and statistical specifications, you can perform more accurate searches. For example, the following code searches for learnware in tabular data that meet both semantic and statistical specifications:
 
 ```python
-user_semantic = client.create_semantic_specification(
+user_semantic = generate_semantic_spec(
     task_type="Classification",
     scenarios=["Business"],
 )
@@ -126,7 +127,7 @@ input_description = {
         "1": "leaf length",
     },
 }
-user_semantic = client.create_semantic_specification(
+user_semantic = generate_semantic_spec(
     task_type="Classification",
     scenarios=["Business"],
     input_description=input_description,
