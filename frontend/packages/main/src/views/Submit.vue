@@ -135,7 +135,7 @@ const taskTypeDescription = computed(() => {
 });
 const description = useField<Description>({
   defaultValue:
-    "# Description\n## This is a learnware\n\nThis learnware has the following tree features:\n\n1. feature 1\n2. feature 2\n3. feature 3",
+    "# Description\n## This is a learnware\n\nThis learnware has the following three features:\n\n1. feature 1\n2. feature 2\n3. feature 3",
   validate: (value: Description): string => {
     if (value?.length < 10) {
       return t("Submit.Description.Error.FewerThan10Chars");
