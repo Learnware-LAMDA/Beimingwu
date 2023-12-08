@@ -302,7 +302,7 @@ function submit(): Promise<void> {
             router.push({
               path: "/learnwaredetail",
               query: {
-                id: res.data.learnware_id,
+                id: route.query.edit && route.query.id ? route.query.id : res.data.learnware_id,
               },
             });
           }, 1000);
