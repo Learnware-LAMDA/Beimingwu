@@ -4,11 +4,10 @@ import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
-import { marked } from "marked";
 import { getRole } from "../request/auth";
 import { addLearnware } from "../request/user";
 import { getLearnwareDetailById } from "../request/engine";
-import { promiseReadFile, verifyLearnware } from "../utils";
+import { promiseReadFile, verifyLearnware, html2Markdown } from "../utils";
 import type {
   Name,
   DataType,
@@ -544,7 +543,7 @@ onActivated(init);
               </div>
               <div
                 class="markdown-content flex-1 overflow-y-auto"
-                v-html="marked(description.value)"
+                v-html="html2Markdown(description.value)"
               ></div>
             </div>
           </v-window-item>
