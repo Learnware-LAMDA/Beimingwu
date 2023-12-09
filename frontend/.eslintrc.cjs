@@ -30,5 +30,6 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-function-return-type": "error",
     "prettier/prettier": "error",
+    "vue/no-v-html": "off",
   },
 };
