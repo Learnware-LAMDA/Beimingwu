@@ -13,7 +13,7 @@ import UserRequirement from "../Search/UserRequirement.vue";
 import ScrollAnimate from "../App/ScrollAnimate.vue";
 import PageLearnwareList from "../Learnware/PageLearnwareList.vue";
 import MultiRecommendedLearnwareList from "../Learnware/MultiRecommendedLearnwareList.vue";
-import { CODE_FRAGMENTS as fragments } from "../../constants";
+import { COVER_CODE_FRAGMENTS as fragments } from "../../constants";
 import type { Filter, LearnwareCardInfo } from "@beiming-system/types/learnware";
 import anime from "animejs";
 
@@ -246,7 +246,7 @@ watch(
     </div>
 
     <scroll-animate
-      class="h-[3000px] min-h-[200vh]"
+      class="h-[4000px] min-h-[200vh]"
       @progress="handleProgress"
     >
       <template #default>

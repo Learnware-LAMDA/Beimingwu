@@ -1,6 +1,6 @@
 import CODE_COLOR from "./codeColor";
 
-const { green, purple, yellow, pink } = CODE_COLOR;
+const { green, purple, yellow, pink, gray } = CODE_COLOR;
 
 function addColorAndSplit(str: string, color: string): string[] {
   return str.split("").map((c) => `<span style="color: ${color}">${c}</span>`);
@@ -64,7 +64,7 @@ const result = [
   "]<br />",
 ];
 
-export default [
+export const coverCode = [
   {
     index: 0,
     name: "Concept demo",
@@ -270,6 +270,42 @@ export default [
       "<br /><br />",
       startWithIn(5),
       ..."y_predict = Reuser(learnware_list).predict(X)",
+    ],
+  },
+];
+
+export const featureCode = [
+  {
+    index: 0,
+    name: "Load learnware",
+    code: [
+      startWithIn(1),
+      ...addColorAndSplit("# Load learnwares", gray),
+
+      `<br /><br />${startWithIn(2)}`,
+      ...fromImport("learnware.client", "LearnwareClient"),
+
+      `<br /><br />${startWithIn(3)}`,
+      ..."learnware_list = LearnwareClient().load_learnware(",
+      lineContinue() + tab(),
+      ..."leanrware_id=id_list, runnable_option=",
+      ...addColorAndSplit('"docker"', yellow),
+      lineContinue(),
+      ...")",
+
+      `<br /><br />${startWithIn(4)}`,
+      ...addColorAndSplit("# Reuse learnwares", gray),
+
+      `<br /><br />${startWithIn(5)}`,
+      ...fromImport("learnware.reuse", "AveragingReuser"),
+
+      `<br /><br />${startWithIn(6)}`,
+      ..."y_pre = AveragingReuser(",
+      lineContinue() + tab(),
+      ..."learnware_list=learnware_list, mode=",
+      ...addColorAndSplit('"vote_by_label"', yellow),
+      lineContinue(),
+      ...").predict(X)",
     ],
   },
 ];

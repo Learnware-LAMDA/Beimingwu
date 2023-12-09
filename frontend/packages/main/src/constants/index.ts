@@ -1,2 +1,5 @@
 export { default as CODE_COLOR } from "./codeColor";
-export { default as CODE_FRAGMENTS } from "./codeFragments";
+export {
+  coverCode as COVER_CODE_FRAGMENTS,
+  featureCode as FEATURE_CODE_FRAGMENTS,
+} from "./codeFragments";
