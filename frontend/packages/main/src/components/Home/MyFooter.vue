@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+import { showPrivacyPolicy, showUserAgreement } from "../../request/protocol";
 
 const { t } = useI18n();
 
@@ -23,7 +24,25 @@ const links = computed(() => [
     path: "mailto:bmwu-support@lamda.nju.edu.cn",
     tooltips: t("Home.Footer.RightClickToCopy"),
   },
+  {
+    icon: "mdi-pencil-ruler",
+    name: t("Home.Footer.UserAgreement"),
+    click: showUserAgreement,
+    tooltips: "",
+  },
+  {
+    icon: "mdi-home-lock",
+    name: t("Home.Footer.PrivacyPolicy"),
+    click: showPrivacyPolicy,
+    tooltips: "",
+  },
 ]);
+
+function buttonClick(func: (() => void) | undefined): void {
+  if (func !== undefined) {
+    func();
+  }
+}
 </script>
 
 <template>
@@ -31,15 +50,16 @@ const links = computed(() => [
     color="grey-lighten-3"
     class="flex flex-col items-center justify-center"
   >
-    <div>
+    <div class="text-center">
       <v-btn
         v-for="link in links"
         :key="link.name"
-        :href="link.path"
+        :href="link.path === undefined ? undefined : link.path"
         target="_blank"
         class="sm:mx-2"
         variant="text"
         rounded="xl"
+        @click="buttonClick(link.click)"
       >
         <v-icon class="mr-1">
           {{ link.icon }}

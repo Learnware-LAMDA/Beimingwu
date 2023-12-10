@@ -8,6 +8,9 @@ export default {
     "We have sent an email with a confirmation link to your email address. Please follow the link in the email.",
   Resend: "Resend",
   Close: "Close",
+  ReadAndAgree: "Read and Agree to",
+  UserAgreement: "Agreement",
+  PrivacyPolicy: "Privacy",
   Error: {
     UsernameAtLeast2Chars: "Username needs to be at least 2 characters.",
     UsernameAtMost20Chars: "Username cannot be more than 20 characters.",
