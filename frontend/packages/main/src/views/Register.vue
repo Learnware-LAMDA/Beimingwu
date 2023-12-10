@@ -47,6 +47,7 @@ const password2 = useField({
     return t("Register.Error.PasswordNotMatch");
   },
 });
+const agreeTerms = ref(false);
 
 const showPassword = ref(false);
 const showPassword2 = ref(false);
@@ -54,7 +55,6 @@ const showError = ref(false);
 const errorMsg = ref("");
 const success = ref(false);
 const showErrorDialog = ref(false);
-const agreeTerms = ref(false);
 
 const errorTimer = ref<number>();
 const { ok, remain, start: startTimer, stop: stopTimer } = useTimeout(60 * 1000);
@@ -248,9 +248,9 @@ onUnmounted(() => {
           </v-form>
           <v-card-actions class="pa-0 mb-0 p-0">
             <v-checkbox
+              v-model="agreeTerms"
               :label="t('Register.ReadAndAgree')"
               density="compact"
-              v-model="agreeTerms"
               hide-details
             ></v-checkbox>
             <v-btn
