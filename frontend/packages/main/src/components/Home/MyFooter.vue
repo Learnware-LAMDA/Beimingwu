@@ -50,7 +50,7 @@ function buttonClick(func: (() => void) | undefined): void {
     color="grey-lighten-3"
     class="flex flex-col items-center justify-center"
   >
-    <div>
+    <div class="text-center">
       <v-btn
         v-for="link in links"
         :key="link.name"
