@@ -13,7 +13,7 @@ import UserRequirement from "../Search/UserRequirement.vue";
 import ScrollAnimate from "../App/ScrollAnimate.vue";
 import PageLearnwareList from "../Learnware/PageLearnwareList.vue";
 import MultiRecommendedLearnwareList from "../Learnware/MultiRecommendedLearnwareList.vue";
-import { COVER_CODE_FRAGMENTS as fragments } from "../../constants";
+import { getCoverCode } from "../../constants";
 import type { Filter, LearnwareCardInfo } from "@beiming-system/types/learnware";
 import anime from "animejs";
 
@@ -89,6 +89,7 @@ const importProgress = ref(0);
 const resultProgress = ref(0);
 const reuseProgress = ref(0);
 
+const fragments = getCoverCode();
 const fragmentIndex = ref(0);
 
 const msgs = computed(() => [

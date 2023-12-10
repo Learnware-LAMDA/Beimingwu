@@ -1,6 +1,16 @@
 import CODE_COLOR from "./codeColor";
+import { computed, type ComputedRef } from "vue";
+import { useI18n } from "vue-i18n";
 
-const { green, purple, yellow, pink, gray } = CODE_COLOR;
+const { green, purple, yellow, gray } = CODE_COLOR;
+
+export interface CodeFragment {
+  index: number;
+  name: string;
+  import: string[];
+  result: string[];
+  reuse: string[];
+}
 
 function addColorAndSplit(str: string, color: string): string[] {
   return str.split("").map((c) => `<span style="color: ${color}">${c}</span>`);
@@ -29,7 +39,7 @@ function importAs(_import: string, _as: string): string[] {
 }
 
 function lineContinue(): string {
-  return "<br />&nbsp;&nbsp;&nbsp;...:&nbsp;";
+  return `<br />&nbsp;&nbsp;&nbsp;<span style="color: ${green}">...:</span>&nbsp;`;
 }
 
 function tab(): string {
@@ -64,215 +74,164 @@ const result = [
   "]<br />",
 ];
 
-export const coverCode = [
-  {
-    index: 0,
-    name: "Simplified",
-    import: [
-      startWithIn(1),
-      ...fromImport("learnware.client", "LearnwareClient"),
+export function getCoverCode(): ComputedRef<CodeFragment[]> {
+  const { t } = useI18n();
 
-      `<br /><br />${startWithIn(2)}`,
-      ..."learnware_ids = client.search_learnware(user_info)[",
-      ...addColorAndSplit('"single"', yellow),
-      "][",
-      ...addColorAndSplit('"learnware_ids"', yellow),
-      "]",
-    ],
-    result,
-    reuse: [
-      "<br />" + startWithIn(3),
-      ..."learnware_list = client.load_learnware(learnware_ids)",
-      "<br /><br />",
-      startWithIn(4),
-      ..."y_predict = Reuser(learnware_list).predict(X)",
-    ],
-  },
-  {
-    index: 1,
-    name: "Single",
-    import: [
-      startWithIn(1),
-      ...importAs("numpy", "np"),
-      lineContinue(),
-      ...fromImport("learnware.market", "BaseUserInfo"),
-      lineContinue(),
-      ...fromImport("learnware.specification", "generate_stat_spec"),
-      lineContinue(),
-      ...fromImport("learnware.client", "LearnwareClient"),
-      lineContinue(),
-      ...fromImport("learnware.reuse", "AveragingReuser"),
+  return computed(() => [
+    {
+      index: 0,
+      name: "Simplified",
+      import: [
+        startWithIn(1),
+        ...fromImport("learnware", "LearnwareClient"),
 
-      `<br /><br />${startWithIn(2)}`,
-      ...addColorAndSplit("def ", green),
-      ...addColorAndSplit("single_demo", purple),
-      ..."(client, data):",
-      lineContinue() + tab(),
-      ..."rkme = generate_stat_spec(",
-      ...addColorAndSplit("type", green),
-      ...addColorAndSplit("=", green),
-      ...addColorAndSplit('"table"', yellow),
-      ...", X=data)",
+        `<br /><br />${startWithIn(2)}`,
+        ...addColorAndSplit("# " + t("CodeFragments.SearchLearnware"), gray),
+        lineContinue(),
+        ..."learnware_ids = client.search_learnware(user_info)[",
+        ...addColorAndSplit('"single"', yellow),
+        "][",
+        ...addColorAndSplit('"learnware_ids"', yellow),
+        "]",
+      ],
+      result: [..."...", "<br />"],
+      reuse: [
+        "<br />" + startWithIn(3),
+        ...addColorAndSplit("# " + t("CodeFragments.LoadLearnware"), gray),
+        lineContinue(),
+        ..."learnware_list = client.load_learnware(learnware_ids)",
+        "<br />",
 
-      lineContinue() + tab(),
-      ..."user_info = BaseUserInfo(stat_info={rkme.type: rkme})",
+        "<br />" + startWithIn(4),
+        ...addColorAndSplit("# " + t("CodeFragments.ReuseLearnware"), gray),
+        lineContinue(),
+        ..."y_predict = Reuser(learnware_list).predict(X)",
+      ],
+    },
+    {
+      index: 1,
+      name: "Single",
+      import: [
+        startWithIn(1),
+        ...importAs("numpy", "np"),
+        lineContinue(),
+        ...fromImport("learnware.market", "BaseUserInfo"),
+        lineContinue(),
+        ...fromImport("learnware.specification", "generate_stat_spec"),
+        lineContinue(),
+        ...fromImport("learnware.client", "LearnwareClient"),
 
-      lineContinue() + tab() + lineContinue() + tab(),
-      ..."learnware_id = client.search_learnware(user_info)[",
-      ...addColorAndSplit('"single"', yellow),
-      ..."][",
-      ...addColorAndSplit('"learnware_ids"', yellow),
-      ..."][",
-      ...addColorAndSplit("0", green),
-      ..."]",
+        `<br /><br />${startWithIn(2)}`,
+        ...addColorAndSplit("# " + t("CodeFragments.UserPrepare"), gray),
+        lineContinue(),
+        ..."client = LearnwareClient()",
+        lineContinue(),
+        ..."client.login(your_email, your_token)",
+        ..."data = np.random.randn(",
+        ...addColorAndSplit("10000", green),
+        ...", ",
+        ...addColorAndSplit("10", green),
+        ...")",
+        lineContinue(),
+        ..."rkme = generate_stat_spec(",
+        ...addColorAndSplit("type", green),
+        ..."=",
+        ...addColorAndSplit('"table"', yellow),
+        ...", X=data)",
+        lineContinue(),
+        ..."user_info = BaseUserInfo(stat_info={rkme.type: rkme})",
 
-      lineContinue() + tab(),
-      ..."learnware = client.load_learnware(learnware_id=learnware_id, runnable_option=",
-      ...addColorAndSplit('"conda"', yellow),
-      ...")",
+        `<br /><br />${startWithIn(3)}`,
+        ...addColorAndSplit("# " + t("CodeFragments.SearchLearnware"), gray),
+        lineContinue(),
+        ..."learnware_id = client.search_learnware(user_info)[",
+        ...addColorAndSplit('"multiple"', yellow),
+        ..."][",
+        ...addColorAndSplit('"learnware_ids"', yellow),
+        ..."][",
+        ...addColorAndSplit("0", green),
+        ..."]",
+      ],
+      result: [..."single_demo_output: ", ..."00001987"],
+      reuse: [
+        "<br />" + startWithIn(4),
+        ...addColorAndSplit("# " + t("CodeFragments.LoadLearnware"), gray),
+        lineContinue(),
+        ..."learnware = client.load_learnware(learnware_id=learnware_id, runnable_option=",
+        ...addColorAndSplit('"conda"', yellow),
+        ...")",
+        "<br /><br />",
 
-      lineContinue() + tab(),
-      ..."pred_y = learnware.predict(data)",
+        startWithIn(5),
+        ...addColorAndSplit("# " + t("CodeFragments.ReuseLearnware"), gray),
+        lineContinue(),
+        ..."y_predict = learnware.predict(data)",
+      ],
+    },
+    {
+      index: 2,
+      name: "Multiple",
+      import: [
+        startWithIn(1),
+        ...importAs("numpy", "np"),
+        lineContinue(),
+        ...fromImport("learnware.market", "BaseUserInfo"),
+        lineContinue(),
+        ...fromImport("learnware.specification", "generate_stat_spec"),
+        lineContinue(),
+        ...fromImport("learnware.client", "LearnwareClient"),
+        lineContinue(),
+        ...fromImport("learnware.reuse", "AveragingReuser"),
 
-      lineContinue() + tab() + lineContinue() + tab(),
-      ...addColorAndSplit("print", green),
-      ..."(",
-      ...addColorAndSplit('f"single_demo_output: ', yellow),
-      ...addColorAndSplit("{", pink),
-      ..."pred_y",
-      ...addColorAndSplit("}", pink),
-      ...addColorAndSplit('"', yellow),
-      ...")",
-      `<br /><br />${startWithIn(3)}`,
+        `<br /><br />${startWithIn(2)}`,
+        ...addColorAndSplit("# " + t("CodeFragments.UserPrepare"), gray),
+        lineContinue(),
+        ..."client = LearnwareClient()",
+        lineContinue(),
+        ..."client.login(your_email, your_token)",
+        ..."data = np.random.randn(",
+        ...addColorAndSplit("10000", green),
+        ...", ",
+        ...addColorAndSplit("10", green),
+        ...")",
+        lineContinue(),
+        ..."rkme = generate_stat_spec(",
+        ...addColorAndSplit("type", green),
+        ..."=",
+        ...addColorAndSplit('"table"', yellow),
+        ...", X=data)",
+        lineContinue(),
+        ..."user_info = BaseUserInfo(stat_info={rkme.type: rkme})",
 
-      ...addColorAndSplit("if ", green),
-      ...addColorAndSplit(" __name__ ", purple),
-      ..."== ",
-      ...addColorAndSplit('"__main__"', yellow),
+        `<br /><br />${startWithIn(3)}`,
+        ...addColorAndSplit("# " + t("CodeFragments.SearchLearnware"), gray),
+        lineContinue(),
+        ..."learnware_id = client.search_learnware(user_info)[",
+        ...addColorAndSplit('"single"', yellow),
+        ..."][",
+        ...addColorAndSplit('"learnware_ids"', yellow),
+        ..."][",
+        ...addColorAndSplit("0", green),
+        ..."]",
+      ],
+      result: [..."multi_demo_output: ", ...result],
+      reuse: [
+        "<br />" + startWithIn(4),
+        ...addColorAndSplit("# " + t("CodeFragments.LoadLearnware"), gray),
+        lineContinue(),
+        ..."learnware_list = client.load_learnware(learnware_id=learnware_ids, runnable_option=",
+        ...addColorAndSplit('"conda"', yellow),
+        ...")",
+        "<br /><br />",
 
-      lineContinue() + tab(),
-      ..."client = LearnwareClient()",
-
-      lineContinue() + tab(),
-      ..."client.login(",
-      ...addColorAndSplit('"liujd@lamda.nju.edu.cn"', yellow),
-      ...", ",
-      ...addColorAndSplit('"963357f500144a9cb0dde58fa4fd98f6"', yellow),
-      ...")",
-
-      lineContinue() + tab(),
-      ...addColorAndSplit("data", purple),
-      ..." = np.random.randn(",
-      ...addColorAndSplit("10000", yellow),
-      ...", ",
-      ...addColorAndSplit("100", yellow),
-      ...")",
-
-      lineContinue() + tab(),
-      ..."single_demo(client, data)",
-    ],
-    result: [..."single_demo_output: ", ...result],
-    reuse: [
-      "<br />" + startWithIn(4),
-      ..."learnware_list = client.load_learnware(learnware_ids)",
-      "<br /><br />",
-      startWithIn(5),
-      ..."y_predict = Reuser(learnware_list).predict(X)",
-    ],
-  },
-  {
-    index: 2,
-    name: "Multiple",
-    import: [
-      startWithIn(1),
-      ...importAs("numpy", "np"),
-      lineContinue(),
-      ...fromImport("learnware.market", "BaseUserInfo"),
-      lineContinue(),
-      ...fromImport("learnware.specification", "generate_stat_spec"),
-      lineContinue(),
-      ...fromImport("learnware.client", "LearnwareClient"),
-      lineContinue(),
-      ...fromImport("learnware.reuse", "AveragingReuser"),
-
-      `<br /><br />${startWithIn(2)}`,
-      ...addColorAndSplit("def ", green),
-      ...addColorAndSplit("multi_demo", purple),
-      ..."(client, data):",
-      lineContinue() + tab(),
-      ..."rkme = generate_stat_spec(",
-      ...addColorAndSplit("type", green),
-      ...addColorAndSplit("=", green),
-      ...addColorAndSplit('"table"', yellow),
-      ...", X=data)",
-
-      lineContinue() + tab(),
-      ..."user_info = BaseUserInfo(stat_info={rkme.type: rkme})",
-
-      lineContinue() + tab() + lineContinue() + tab(),
-      ..."learnware_id = client.search_learnware(user_info)[",
-      ...addColorAndSplit('"multiple"', yellow),
-      ..."][",
-      ...addColorAndSplit('"learnware_ids"', yellow),
-      ..."][",
-      ...addColorAndSplit("0", green),
-      ..."]",
-
-      lineContinue() + tab(),
-      ..."learnware = client.load_learnware(learnware_id=learnware_id, runnable_option=",
-      ...addColorAndSplit('"conda"', yellow),
-      ...")",
-
-      lineContinue() + tab(),
-      ..."pred_y = learnware.predict(data)",
-
-      lineContinue() + tab() + lineContinue() + tab(),
-      ...addColorAndSplit("print", green),
-      ..."(",
-      ...addColorAndSplit('f"multi_demo_output: ', yellow),
-      ...addColorAndSplit("{", pink),
-      ..."pred_y",
-      ...addColorAndSplit("}", pink),
-      ...addColorAndSplit('"', yellow),
-      ...")",
-      `<br /><br />${startWithIn(3)}`,
-
-      ...addColorAndSplit("if ", green),
-      ...addColorAndSplit(" __name__ ", purple),
-      ..."== ",
-      ...addColorAndSplit('"__main__"', yellow),
-
-      lineContinue() + tab(),
-      ..."client = LearnwareClient()",
-
-      lineContinue() + tab(),
-      ..."client.login(",
-      ...addColorAndSplit('"liujd@lamda.nju.edu.cn"', yellow),
-      ...", ",
-      ...addColorAndSplit('"963357f500144a9cb0dde58fa4fd98f6"', yellow),
-      ...")",
-
-      lineContinue() + tab(),
-      ...addColorAndSplit("data", purple),
-      ..." = np.random.randn(",
-      ...addColorAndSplit("10000", yellow),
-      ...", ",
-      ...addColorAndSplit("100", yellow),
-      ...")",
-
-      lineContinue() + tab(),
-      ..."multi_demo(client, data)",
-    ],
-    result: [..."multi_demo_output: ", ...result],
-    reuse: [
-      "<br />" + startWithIn(4),
-      ..."learnware_list = client.load_learnware(learnware_ids)",
-      "<br /><br />",
-      startWithIn(5),
-      ..."y_predict = Reuser(learnware_list).predict(X)",
-    ],
-  },
-];
+        startWithIn(5),
+        ...addColorAndSplit("# " + t("CodeFragments.ReuseLearnware"), gray),
+        lineContinue(),
+        ..."pred_y = AveragingReuser(learnware_list).predict(data)",
+      ],
+    },
+  ]);
+}
 
 export const featureCode = [
   {
@@ -281,11 +240,9 @@ export const featureCode = [
     code: [
       startWithIn(1),
       ...addColorAndSplit("# Load learnwares", gray),
-
-      `<br /><br />${startWithIn(2)}`,
+      lineContinue(),
       ...fromImport("learnware.client", "LearnwareClient"),
-
-      `<br /><br />${startWithIn(3)}`,
+      lineContinue(),
       ..."learnware_list = LearnwareClient().load_learnware(",
       lineContinue() + tab(),
       ..."leanrware_id=id_list, runnable_option=",
@@ -293,14 +250,12 @@ export const featureCode = [
       lineContinue(),
       ...")",
 
-      `<br /><br />${startWithIn(4)}`,
+      `<br /><br />${startWithIn(2)}`,
       ...addColorAndSplit("# Reuse learnwares", gray),
-
-      `<br /><br />${startWithIn(5)}`,
+      lineContinue(),
       ...fromImport("learnware.reuse", "AveragingReuser"),
-
-      `<br /><br />${startWithIn(6)}`,
-      ..."y_pre = AveragingReuser(",
+      lineContinue(),
+      ..."y_pred = AveragingReuser(",
       lineContinue() + tab(),
       ..."learnware_list=learnware_list, mode=",
       ...addColorAndSplit('"vote_by_label"', yellow),
