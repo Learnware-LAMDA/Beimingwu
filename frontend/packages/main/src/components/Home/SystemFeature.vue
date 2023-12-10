@@ -140,7 +140,7 @@ nextTick(() => {
 </script>
 
 <template>
-  <div class="mx-auto w-full py-20 md:px-10 md:py-32">
+  <div class="mx-auto w-full max-w-[1400px] py-20 md:px-10 md:py-32">
     <scroll-animate
       class="h-[4000px] min-h-[200vh]"
       @progress="handleProgress"
@@ -161,14 +161,14 @@ nextTick(() => {
 
             <div
               ref="reuseRef"
-              class="absolute -z-10 flex w-full flex-col items-center justify-center bg-gray-50"
+              class="absolute -z-10 flex h-full w-full flex-col items-center justify-center bg-gray-50 px-2 py-8 sm:px-0"
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
               <terminal-window
                 title="Python"
                 :model-value="tabIndex"
                 :tabs="tabs"
-                class="aspect-video w-full bg-gray-900"
+                class="w-full flex-1 overflow-hidden bg-gray-900"
               >
                 <terminal-code>
                   <terminal-ipython-header />
@@ -192,7 +192,7 @@ nextTick(() => {
             </div>
           </div>
 
-          <div class="h-main-full absolute w-full flex-1 px-5 sm:static">
+          <div class="h-main-full absolute w-full flex-1 pl-8 sm:static">
             <div class="relative h-full">
               <div
                 ref="smartRecommendationMsgRef"
