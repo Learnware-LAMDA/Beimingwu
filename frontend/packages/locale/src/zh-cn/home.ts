@@ -11,7 +11,7 @@ export default {
     ServeralLinesOfCode: "几行代码",
     SolveYourTasks: "解决您的任务",
     Example: {
-      Brief: "简要示例",
+      Simplified: "简化示例",
       Single: "单模型示例",
       Multiple: "多模型示例",
     },

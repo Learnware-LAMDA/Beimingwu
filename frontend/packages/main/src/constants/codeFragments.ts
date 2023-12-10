@@ -67,7 +67,7 @@ const result = [
 export const coverCode = [
   {
     index: 0,
-    name: "Brief",
+    name: "Simplified",
     import: [
       startWithIn(1),
       ...fromImport("learnware.client", "LearnwareClient"),

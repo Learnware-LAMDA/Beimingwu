@@ -11,9 +11,9 @@ export default {
     SolveYourTasks: "with several lines of code",
     Developer: "Developer",
     Example: {
-      Brief: "Brief Example",
-      Single: "Single Model Example",
-      Multiple: "Multiple Models Example",
+      Simplified: "Simplified demo",
+      Single: "Single learnware demo",
+      Multiple: "Multiple learnwares demo",
     },
   },
   What: {
