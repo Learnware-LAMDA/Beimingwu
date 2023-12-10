@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { marked } from "marked";
+import { html2Markdown } from "../utils";
 import { getLearnwareDetailById } from "../request/engine";
 import { getProfile } from "../request/user";
 import { deleteLearnware } from "../request/user";
@@ -450,7 +450,7 @@ function handleDownload(id: string): void {
             <b>{{ t("Submit.Description.Description") }}:</b>
             <div
               class="markdown-content overflow-x-auto break-words"
-              v-html="marked(learnware.description)"
+              v-html="html2Markdown(learnware.description)"
             ></div>
           </div>
         </div>
