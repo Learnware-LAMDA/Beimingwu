@@ -39,7 +39,10 @@ const modelValue = computed<number>({
     </div>
 
     <!-- tab bar -->
-    <div class="flex border-b border-gray-900 bg-gray-900">
+    <div
+      v-if="tabs.length > 1"
+      class="flex border-b border-gray-900 bg-gray-900"
+    >
       <div
         v-for="(tab, index) in tabs"
         :key="index"
