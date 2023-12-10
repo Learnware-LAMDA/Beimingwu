@@ -67,7 +67,7 @@ const result = [
 export const coverCode = [
   {
     index: 0,
-    name: "Concept demo",
+    name: "Brief",
     import: [
       startWithIn(1),
       ...fromImport("learnware.client", "LearnwareClient"),
@@ -90,7 +90,7 @@ export const coverCode = [
   },
   {
     index: 1,
-    name: "Single demo",
+    name: "Single",
     import: [
       startWithIn(1),
       ...importAs("numpy", "np"),
@@ -182,7 +182,7 @@ export const coverCode = [
   },
   {
     index: 2,
-    name: "Multiple demo",
+    name: "Multiple",
     import: [
       startWithIn(1),
       ...importAs("numpy", "np"),

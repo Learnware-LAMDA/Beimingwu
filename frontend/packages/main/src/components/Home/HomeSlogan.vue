@@ -268,7 +268,7 @@ watch(
               >
                 <terminal-window
                   v-model="fragmentIndex"
-                  :tabs="fragments.map((fragment) => fragment.name)"
+                  :tabs="fragments.map((fragment) => t(`Home.Cover.Example.${fragment.name}`))"
                   class="h-full"
                   title="python"
                 >

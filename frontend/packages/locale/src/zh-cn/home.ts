@@ -10,6 +10,11 @@ export default {
     Developer: "开发者",
     ServeralLinesOfCode: "几行代码",
     SolveYourTasks: "解决您的任务",
+    Example: {
+      Brief: "简要示例",
+      Single: "单模型示例",
+      Multiple: "多模型示例",
+    },
   },
   What: {
     Title: "学件是什么？",

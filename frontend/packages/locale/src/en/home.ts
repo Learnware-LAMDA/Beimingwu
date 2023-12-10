@@ -10,6 +10,11 @@ export default {
     ServeralLinesOfCode: "Solve Your Tasks",
     SolveYourTasks: "with several lines of code",
     Developer: "Developer",
+    Example: {
+      Brief: "Brief Example",
+      Single: "Single Model Example",
+      Multiple: "Multiple Models Example",
+    },
   },
   What: {
     Title: "What is Learnware?",
