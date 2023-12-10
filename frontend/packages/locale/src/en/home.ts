@@ -2,7 +2,7 @@ export default {
   Cover: {
     Beiming: "Beimingwu: A Learnware Dock System",
     Introduction:
-      "Based on the learnware paradigm, Beimingwu systematically covers the entire learnware process from submission to deployment, helping users identify and reuse learnwares without starting from scratch.",
+      "A learnware is composed of a well-performed trained machine learning model and a specification which enables it to be adequately identified and reused according to the requirement of future users who know nothing about the learnware in advance. Beimingwu is a learnware dock system that helps users lacking machine learning resources/skills to solve machine learning tasks by reusing recommended learnwares in a convenient way.",
     Try: "Try It Out",
     Submit: "Be A Developer",
     LearnwareName: "Learnware",
