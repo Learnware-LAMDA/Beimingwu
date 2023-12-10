@@ -40,6 +40,8 @@ Where "email" is your registered email address in the system, and "token" is the
 Next, you need to prepare semantic specifications, here is an example of a "Table Data" for a "Classification Task":
 
 ```python
+from learnware.specification import generate_semantic_spec
+
 # Prepare input description when data_type="Table"
 input_description = {
     "Dimension": 5,
@@ -63,7 +65,7 @@ output_description = {
 }
 
 # Create semantic specification
-semantic_spec = client.create_semantic_specification(
+semantic_spec = generate_semantic_spec(
     name="learnware_example",
     description="Just an example for uploading learnware",
     data_type="Table",

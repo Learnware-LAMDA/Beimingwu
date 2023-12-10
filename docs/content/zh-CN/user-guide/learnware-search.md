@@ -76,8 +76,9 @@ client.login(email="your email", token="your token")
 
 ```python
 from learnware.market import BaseUserInfo
+from learnware.specification import generate_semantic_spec
 
-user_semantic = client.create_semantic_specification(
+user_semantic = generate_semantic_spec(
     task_type="Classification"
 )
 user_info = BaseUserInfo(semantic_spec=user_semantic)
@@ -94,7 +95,7 @@ learnware_list = client.search_learnware(user_info, page_size=None)
 通过将统计规约和语义规约结合起来，您可以进行更加细致的查搜，比如下列代码将在表格型数据中查搜满足您语义规约的学件：
 
 ```python
-user_semantic = client.create_semantic_specification(
+user_semantic = generate_semantic_spec(
     task_type="Classification",
     scenarios=["Business"],
 )
@@ -132,7 +133,7 @@ input_description = {
         "1": "leaf length",
     },
 }
-user_semantic = client.create_semantic_specification(
+user_semantic = generate_semantic_spec(
     task_type="Classification",
     scenarios=["Business"],
     input_description=input_description,
