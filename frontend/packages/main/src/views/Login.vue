@@ -131,7 +131,7 @@ function onResetPassword(): void {
     >
       <v-card
         flat
-        class="mx-auto w-full"
+        class="mx-auto w-full border"
         max-width="500"
       >
         <div class="p-2 sm:p-7">

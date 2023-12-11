@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, onActivated, onMounted } from "vue";
-import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
@@ -25,8 +24,6 @@ import SubmitingDialog from "../components/Dialogs/SubmitingDialog.vue";
 
 const route = useRoute();
 const router = useRouter();
-
-const display = useDisplay();
 
 const store = useStore();
 
@@ -446,8 +443,8 @@ onActivated(init);
 <template>
   <v-container class="sm:p-none h-full p-0">
     <v-card
-      class="relative m-auto w-full max-w-[1000px]"
-      :flat="display.name.value === 'xs'"
+      class="relative m-auto w-full max-w-[1000px] border"
+      flat
     >
       <v-scroll-y-transition>
         <v-card-actions v-if="success">
