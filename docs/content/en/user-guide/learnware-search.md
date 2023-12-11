@@ -77,14 +77,30 @@ user_semantic = generate_semantic_spec(
     task_type="Classification"
 )
 user_info = BaseUserInfo(semantic_spec=user_semantic)
-learnware_list = client.search_learnware(user_info, page_size=None)
+search_result = client.search_learnware(user_info)
 ```
 
-You can also search for learnwares in the learnware dock system through statistical specifications, and all learnwares with similar distribution will be returned through the API. By using the `generate_stat_spec` function mentioned above, you can easily obtain the statistical specification `stat_spec` corresponding to your current task. Then, you can use the following code to retrieve learnwares in the system that satisfies the statistical specification for the same type of data as your task:
+In the above code, `search_result` is of type dict, with the following specific structure (`"single"` and `"multiple"` correspond to the search results for a single learnware and multiple learnwares, respectively):
+```python
+search_result = {
+    "single": {
+        "learnware_ids": List[str],
+        "semantic_specifications": List[dict],
+        "matching": List[float],
+    },
+    "multiple": {
+        "learnware_ids": List[str],
+        "semantic_specifications": List[dict],
+        "matching": float,
+    },
+}
+```
+
+What's more, you can also search for learnwares in the learnware dock system through statistical specifications, and all learnwares with similar distribution will be returned through the API. By using the `generate_stat_spec` function mentioned above, you can easily obtain the statistical specification `stat_spec` corresponding to your current task. Then, you can use the following code to retrieve learnwares in the system that satisfies the statistical specification for the same type of data as your task:
 
 ```python
 user_info = BaseUserInfo(stat_info={stat_spec.type: stat_spec})
-learnware_list = client.search_learnware(user_info, page_size=None)
+search_result = client.search_learnware(user_info)
 ```
 
 By combining both semantic and statistical specifications, you can perform more accurate searches. For example, the following code searches for learnware in tabular data that meet both semantic and statistical specifications:
@@ -98,19 +114,18 @@ rkme_table = generate_stat_spec(type="table", X=train_x)
 user_info = BaseUserInfo(
     semantic_spec=user_semantic, stat_info={rkme_table.type: rkme_table}
 )
-learnware_list = client.search_learnware(user_info, page_size=None)
+search_result = client.search_learnware(user_info)
 ```
 
-Once the learnware search is complete, you can use the following code to download the learnware and configure the environment:
+After the learnware search is completed, you can locally load and use the learnwares through the learnware IDs in `search_result`, as shown in the following example:
 
 ```python
-for temp_learnware in learnware_list:
-    learnware_id = temp_learnware["learnware_id"]
-
-    # you can use the learnware to make predictions now
-    learnware = client.load_learnware(
-        learnware_id=learnware_id, runnable_option="conda"
-    )
+learnware_id = search_result["single"]["learnware_ids"][0]
+learnware = client.load_learnware(
+    learnware_id=learnware_id, runnable_option="conda"
+)
+# test_x is the user's data for prediction
+predict_y = learnware.predict(test_x)
 ```
 
 For more detailed deployment guidance, you can refer to the "[Learnware Deployment](/en/user-guide/learnware-deploy)" page.
@@ -136,5 +151,5 @@ rkme_table = generate_stat_spec(type="table", X=train_x)
 user_info = BaseUserInfo(
     semantic_spec=user_semantic, stat_info={rkme_table.type: rkme_table}
 )
-learnware_list = client.search_learnware(user_info)
+search_result = client.search_learnware(user_info)
 ```
