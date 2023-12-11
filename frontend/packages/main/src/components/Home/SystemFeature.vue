@@ -235,7 +235,7 @@ nextTick(() => {
 <template>
   <div class="mx-auto w-full max-w-[1400px] py-20 md:px-10 md:py-32">
     <scroll-animate
-      class="h-[4000px] min-h-[200vh]"
+      class="h-[6000px] min-h-[200vh]"
       @progress="handleProgress"
     >
       <template #default>
