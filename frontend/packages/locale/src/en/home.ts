@@ -91,6 +91,8 @@ export default {
     About: "About",
     Github: "Github",
     ContactUs: "Contact Us",
+    UserAgreement: "User Agreement",
+    PrivacyPolicy: "Privacy Policy",
     RightClickToCopy: "Right click to copy",
     AllRightsReserved: "All rights reserved",
   },

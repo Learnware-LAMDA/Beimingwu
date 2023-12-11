@@ -6,14 +6,17 @@ import restful.auth
 import restful.user
 import restful.engine
 import restful.admin
+import restful.protocol
 from learnware import market
 import context
 from context import config as C
 import flask_bcrypt
 import flask_jwt_extended
+from flaskext.markdown import Markdown
 import requests
 import hashlib
 import threading
+from datetime import timedelta
 from lib import redis_utils
 
 
@@ -22,10 +25,13 @@ app.secret_key = C.app_secret_key
 app.config["JWT_SECRET_KEY"] = app.secret_key
 app.config["UPLOAD_FOLDER"] = C.upload_path
 app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024 * 1024
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=3)
+
 
 CORS(app)
 bcrypt = flask_bcrypt.Bcrypt(app)
 jwt = flask_jwt_extended.JWTManager(app)
+Markdown(app)
 
 
 @jwt.unauthorized_loader
@@ -61,6 +67,7 @@ def main():
     app.register_blueprint(restful.user.user_blueprint, url_prefix="/user")
     app.register_blueprint(restful.engine.engine_blueprint, url_prefix="/engine")
     app.register_blueprint(restful.admin.admin_blueprint, url_prefix="/admin")
+    app.register_blueprint(restful.protocol.protocol_blueprint, url_prefix="/protocol")
 
     app.run(host=C.listen_address, port=C.listen_port, threaded=True, debug=True, use_reloader=False)
 

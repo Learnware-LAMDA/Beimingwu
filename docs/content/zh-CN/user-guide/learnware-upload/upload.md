@@ -37,6 +37,8 @@ client.login(email="your email", token="your token")
 其中 email 为系统的注册邮箱，token 为访问学件 API 的令牌，可在网页端「个人信息 - 客户端令牌」处生成。
 随后需要准备语义规约，此处以「表格数据」的「分类任务」为例：
 ```py
+from learnware.specification import generate_semantic_spec
+
 # Prepare input description when data_type="Table"
 input_description = {
     "Dimension": 5,
@@ -60,7 +62,7 @@ output_description = {
 }
 
 # Create semantic specification
-semantic_spec = client.create_semantic_specification(
+semantic_spec = generate_semantic_spec(
     name="learnware_example",
     description="Just a example for uploading a learnware",
     data_type="Table",

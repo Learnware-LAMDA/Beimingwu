@@ -4,11 +4,10 @@ import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
-import { marked } from "marked";
 import { getRole } from "../request/auth";
 import { addLearnware } from "../request/user";
 import { getLearnwareDetailById } from "../request/engine";
-import { promiseReadFile, verifyLearnware } from "../utils";
+import { promiseReadFile, verifyLearnware, html2Markdown } from "../utils";
 import type {
   Name,
   DataType,
@@ -135,7 +134,7 @@ const taskTypeDescription = computed(() => {
 });
 const description = useField<Description>({
   defaultValue:
-    "# Description\n## This is a learnware\n\nThis learnware has the following tree features:\n\n1. feature 1\n2. feature 2\n3. feature 3",
+    "# Description\n## This is a learnware\n\nThis learnware has the following three features:\n\n1. feature 1\n2. feature 2\n3. feature 3",
   validate: (value: Description): string => {
     if (value?.length < 10) {
       return t("Submit.Description.Error.FewerThan10Chars");
@@ -302,7 +301,7 @@ function submit(): Promise<void> {
             router.push({
               path: "/learnwaredetail",
               query: {
-                id: res.data.learnware_id,
+                id: route.query.edit && route.query.id ? route.query.id : res.data.learnware_id,
               },
             });
           }, 1000);
@@ -544,7 +543,7 @@ onActivated(init);
               </div>
               <div
                 class="markdown-content flex-1 overflow-y-auto"
-                v-html="marked(description.value)"
+                v-html="html2Markdown(description.value)"
               ></div>
             </div>
           </v-window-item>
