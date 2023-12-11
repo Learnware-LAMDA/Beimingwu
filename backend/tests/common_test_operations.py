@@ -216,6 +216,13 @@ def delete_user_by_email(email):
     pass
 
 
+def check_bytes_same(file1: bytearray, file2: bytearray):
+    md5_1 = hashlib.md5(file1).hexdigest()
+    md5_2 = hashlib.md5(file2).hexdigest()
+
+    return md5_1 == md5_2
+
+
 def cleanup_folder():
     root_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     backend_data_path = os.path.join(root_path, "backend_data")

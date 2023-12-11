@@ -113,4 +113,5 @@ _DEFAULT_CONFIG = {
     "sensitive_word_file": "",
     "user_agreement_file": "",
     "privacy_policy_file": "",
+    "datasets_path": os.path.join(ROOT_DIRPATH, "datasets"),
 }
