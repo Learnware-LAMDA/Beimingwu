@@ -281,6 +281,28 @@ def check_learnware_file(semantic_specification, learnware_file):
                 else:
                     return False, f"data_type must be in ['Table', 'Image', 'Text']"
 
+            # check sensitive words
+            if context.sensitive_pattern is not None:
+                for filname in z_file.namelist():
+                    if any([filname.endswith(suffix) for suffix in (".txt", ".yaml", ".yml", ".json", ".py")]):
+                        with z_file.open(filname) as fin:
+                            file_content = fin.read().decode("utf-8")
+                            match = context.sensitive_pattern.search(file_content)
+                            if match is not None:
+                                w = file_content[match.start() : match.end()]
+                                return False, f"Sensitive words {w} in {filname}"
+                            pass
+                        pass
+                    pass
+
+                semantic_str = json.dumps(semantic_specification, ensure_ascii=False)
+                match = context.sensitive_pattern.search(semantic_str)
+                if match is not None:
+                    w = semantic_str[match.start() : match.end()]
+                    return False, f"Sensitive words {w} in semantic specification"
+                pass
+            pass
+
     except Exception as err:
         return False, f"extract statistical specification error: {err}"
 

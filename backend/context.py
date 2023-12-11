@@ -9,6 +9,7 @@ from learnware.market import instantiate_learnware_market
 from learnware.config import C as leanrware_conf
 import logging
 import redis
+import re
 
 
 database: Database = None
@@ -16,6 +17,7 @@ engine = None
 engine_config = None
 redis_client = None
 stats = 0
+sensitive_pattern = None
 
 config = Config()
 
@@ -79,6 +81,25 @@ def init_logger():
 
     logger.setLevel(logging.DEBUG)
 
+    pass
+
+
+def init_sensitive_words():
+    global sensitive_pattern
+    word_file = config["sensitive_word_file"]
+    sensitive_words = []
+    if os.path.exists(word_file):
+        with open(word_file) as fin:
+            for line in fin:
+                w = line.strip()
+                if len(w) > 0:
+                    sensitive_words.append(re.escape(line.strip()))
+                    pass
+                pass
+            pass
+        pass
+
+    sensitive_pattern = re.compile("|".join(sensitive_words))
     pass
 
 
