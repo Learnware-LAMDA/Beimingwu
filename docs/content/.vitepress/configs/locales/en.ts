@@ -81,6 +81,14 @@ const en: LocaleSpecificConfig & {
         ],
       },
       {
+        text: "User Agreement",
+        link: "/en/user-agreement",
+      },
+      {
+        text: "Privacy Policy",
+        link: "/en/privacy-policy",
+      },
+      {
         text: "Version Announcement",
         link: "/en/versions",
       },

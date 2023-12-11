@@ -81,6 +81,14 @@ const zhCN: LocaleSpecificConfig & {
         ],
       },
       {
+        text: "用户协议",
+        link: "/zh-CN/user-agreement",
+      },
+      {
+        text: "隐私政策",
+        link: "/zh-CN/privacy-policy",
+      },
+      {
         text: "版本公告",
         link: "/zh-CN/versions",
       },
