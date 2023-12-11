@@ -37,6 +37,10 @@ function getProfile(): Promise<{
     });
 }
 
+function checkLoginStatus(): Promise<void> {
+  return getProfile().then(() => {});
+}
+
 function changePassword({
   oldPasswordMd5,
   newPasswordMd5,
@@ -219,6 +223,7 @@ function deleteToken({ token }: { token: string }): Promise<{
 
 export {
   getProfile,
+  checkLoginStatus,
   changePassword,
   deleteLearnware,
   getLearnwareList,
