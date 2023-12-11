@@ -94,7 +94,11 @@ def init_sensitive_words():
             for line in fin:
                 w = line.strip()
                 if len(w) > 0:
-                    sensitive_words.append(re.escape(line.strip()))
+                    if w.isascii():
+                        w = " " + w + " "
+                        pass
+
+                    sensitive_words.append(re.escape(w))
                     pass
                 pass
             pass

@@ -287,19 +287,17 @@ def check_learnware_file(semantic_specification, learnware_file):
                     if any([filname.endswith(suffix) for suffix in (".txt", ".yaml", ".yml", ".json", ".py")]):
                         with z_file.open(filname) as fin:
                             file_content = fin.read().decode("utf-8")
-                            match = context.sensitive_pattern.search(file_content)
-                            if match is not None:
-                                w = file_content[match.start() : match.end()]
-                                return False, f"Sensitive words {w} in {filname}"
+                            matches = common_utils.search_sensitive_words(file_content, context.sensitive_pattern)
+                            if len(matches) > 0:
+                                return False, f"Sensitive words {','.join(matches)} in {filname}"
                             pass
                         pass
                     pass
 
                 semantic_str = json.dumps(semantic_specification, ensure_ascii=False)
-                match = context.sensitive_pattern.search(semantic_str)
-                if match is not None:
-                    w = semantic_str[match.start() : match.end()]
-                    return False, f"Sensitive words {w} in semantic specification"
+                matches = common_utils.search_sensitive_words(semantic_str, context.sensitive_pattern)
+                if len(matches) > 0:
+                    return False, f"Sensitive words {','.join(matches)} in semantic specification"
                 pass
             pass
 
