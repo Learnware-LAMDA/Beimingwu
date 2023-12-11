@@ -2,14 +2,14 @@
 
 ## Special Reminder
 
-Please carefully read and fully understand this agreement. By using this platform, especially the liability warning terms, it is understood that you accept and agree to the terms of this agreement. The liability warning terms are highlighted in bold for your attention. Upon receiving and initiating the use of this platform, it will be deemed that you have accepted and acknowledged the contents of this agreement, and the agreement will take immediate effect. If you disagree with any terms or provisions of this agreement during the reading process, please immediately cease using this platform.
+Please carefully read and fully understand this agreement. By using this platform, especially the liability warning terms, it is understood that you accept and agree to the terms of this agreement. The liability warning terms require your special attention. Upon receiving and initiating the use of this platform, it will be deemed that you have accepted and acknowledged the contents of this agreement, and the agreement will take immediate effect. If you disagree with any terms or provisions of this agreement during the reading process, please immediately cease using this platform.
 
 ## Agreement Content
 
 ### 1. Scope of Application
 
 1. This agreement only applies to the upload and download of data and models on this platform and does not apply to services provided by third parties. When accepting third-party services, you should comply with the user agreements, privacy policies, or similar documents provided by the third party. We are not liable for any improper services or violations by third parties.
-2. For issues related to the processing and protection of personal information during your use of this platform, please refer to our "Privacy Policy."
+2. For issues related to the processing and protection of personal information during your use of this platform, please refer to our ["Privacy Policy"]((/en/privacy-policy)).
 3. This agreement takes effect upon publication, and we have the right to revise or re-establish this agreement at any time due to changes in laws, regulations, policies, or product service upgrades. The updated terms take effect immediately upon publication, and you can review the latest version of the terms on this platform. If you continue to use this platform, it indicates acceptance of the updated terms. If you disagree with changes to the agreement, please stop using this platform immediately.
 4. The index keywords listed before the terms in this agreement are for the purpose of helping you understand the main points expressed in each term and do not affect or limit the meaning or interpretation of the terms. To protect your own rights, it is recommended to carefully read the specific expressions of each term.
 5. All terms in this agreement have independent legal validity. If any term is wholly or partially invalid or unenforceable, it does not affect the validity and enforceability of other terms.
@@ -18,7 +18,7 @@ Please carefully read and fully understand this agreement. By using this platfor
 
 ### 2. User Behavior and Responsibilities
 
-1. All functions provided by this platform require you to register and log in. During the account registration process, you must agree to the terms of the "User Agreement" and "Privacy Policy" and complete the registration as prompted on the page. After successful registration, we will provide you with a user account and corresponding password, which you are responsible for safeguarding. You are legally responsible for all actions performed using your personal user account.
+1. All functions provided by this platform require you to register and log in. During the account registration process, you must agree to the terms of the ["User Agreement"](/en/user-agreement) and ["Privacy Policy"](/en/privacy-policy) and complete the registration as prompted on the page. After successful registration, we will provide you with a user account and corresponding password, which you are responsible for safeguarding. You are legally responsible for all actions performed using your personal user account.
 
 2. You must ensure that the registration information provided is true and valid. We have the right to reasonably review the information you provide. If the information is incorrect or untrue, we have the right to refuse service or unilaterally terminate services provided to you.
 
@@ -66,9 +66,7 @@ Please carefully read and fully understand this agreement. By using this platfor
 
 6. As a contributor to the website, for any content you submit to the website, due to the possibility that third parties may download and use the content in various ways, you hereby grant the website a permanent, global, non-exclusive, royalty-free, and irrevocable intellectual property license and sublicense right to copy, display, perform, authorize, publish, or otherwise use or modify your contributed content and derivative works in any way.
 
-7. If any entity initiates intellectual property litigation against you or another entity (including counterclaims or cross-claims in litigation), alleging that your contributed content (or the work you contributed to) constitutes direct or contributory patent infringement, any license granted under this agreement for that contributed content or work shall terminate
-
-   as of the date of such litigation. You warrant that you have the legal right to grant the above license.
+7. If any entity initiates intellectual property litigation against you or another entity (including counterclaims or cross-claims in litigation), alleging that your contributed content (or the work you contributed to) constitutes direct or contributory patent infringement, any license granted under this agreement for that contributed content or work shall terminate as of the date of such litigation. You warrant that you have the legal right to grant the above license.
 
 8. Any unauthorized acquisition without our written consent or rights holder permission is considered illegal infringement. To promptly and effectively safeguard your legal rights based on this platform, you agree to authorize us to take legal measures in our name or entrust professional third-party organizations to take legal measures on your behalf when we discover that your legal rights (including but not limited to information network transmission rights, copyright, etc.) may be infringed. This authorization includes but is not limited to infringement monitoring, sending warning letters, filing administrative reports, filing lawsuits, applying for arbitration, transferring to investigative authorities, mediation, settlement, etc. Please note that your authorization to us does not imply the existence of any profit-sharing mechanism between us.
 

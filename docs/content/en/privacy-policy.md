@@ -8,9 +8,9 @@ Effective Date: December 05, 2023
 
 When you use our services, we need/may need to collect and use your personal information, including the following two types:
 
-To achieve the basic functions of providing services to you, you must authorize us to collect and use necessary information. If you refuse to provide the corresponding information, you will not be able to use our services normally;
+1. To achieve the basic functions of providing services to you, you must authorize us to collect and use necessary information. If you refuse to provide the corresponding information, you will not be able to use our services normally;
 
-To achieve additional functions of providing services to you, you can choose to authorize us to collect and use information. If you refuse to provide it, you may not be able to use the relevant additional functions or achieve the intended functional effects, but it will not affect your normal use of our basic functions.
+2. To achieve additional functions of providing services to you, you can choose to authorize us to collect and use information. If you refuse to provide it, you may not be able to use the relevant additional functions or achieve the intended functional effects, but it will not affect your normal use of our basic functions.
 
 The information we collect from you will be used for the following purposes:
 
@@ -22,8 +22,6 @@ The information we collect from you will be used for the following purposes:
 We will provide you with specific functional scenarios, including:
 
 ### (1) Account Management
-
-Basic services
 
 When you browse the platform website (whether or not you are registered or logged in), we may automatically collect the following information related to you: your browser type and language, operating system type, and broadband type; your IP address, which can sometimes indicate your geographical location; pages, advertisements, and links you have browsed on the website; user behavior logs; and the access requests you make when visiting the website, along with their dates, times, and referral URLs.
 
@@ -75,45 +73,45 @@ In the event of the platform ceasing operations, we will take reasonable measure
 
 In addition to the usage scenarios mentioned above, we will not share your personal information with companies, organizations, and individuals outside the platform, except in the following cases:
 
-Sharing with explicit consent: With your explicit consent, we will share your personal information with other parties;
+1. Sharing with explicit consent: With your explicit consent, we will share your personal information with other parties;
 
-Sharing in legal situations: We may share your personal information externally in accordance with legal requirements, litigation dispute resolution needs, or requests made by administrative or judicial authorities in accordance with the law;
+2. Sharing in legal situations: We may share your personal information externally in accordance with legal requirements, litigation dispute resolution needs, or requests made by administrative or judicial authorities in accordance with the law;
 
-Sharing with authorized partners: We may entrust trusted partners to provide services, so we may share certain user information with partners to provide better customer service and optimize user experience. We will only share the necessary user information for providing services for legitimate, lawful, necessary, specific, and explicit purposes. Our partners are not authorized to use the shared user information for any other purposes. For companies, organizations, and individuals with whom we share user information, we will sign strict confidentiality agreements and information protection agreements with them, requiring them to process user information in accordance with our instructions, this privacy policy, and any other relevant confidentiality and security measures.
+3. Sharing with authorized partners: We may entrust trusted partners to provide services, so we may share certain user information with partners to provide better customer service and optimize user experience. We will only share the necessary user information for providing services for legitimate, lawful, necessary, specific, and explicit purposes. Our partners are not authorized to use the shared user information for any other purposes. For companies, organizations, and individuals with whom we share user information, we will sign strict confidentiality agreements and information protection agreements with them, requiring them to process user information in accordance with our instructions, this privacy policy, and any other relevant confidentiality and security measures.
 
 ### (2) Transfer
 
 We will not transfer your user information to any company, organization, or individual, except in the following cases:
 
-Transfer with explicit consent: With your explicit consent, we will transfer your user information to other parties;
+1. Transfer with explicit consent: With your explicit consent, we will transfer your user information to other parties;
 
-In the event of a merger, acquisition, or bankruptcy liquidation involving us and other legal entities, or other situations involving mergers, acquisitions, or bankruptcy liquidation, if user information transfer is involved, we will require the new company or organization holding your user information to continue to be bound by this policy. Otherwise, we will require that the company, organization, and individual seek your authorization again.
+2. In the event of a merger, acquisition, or bankruptcy liquidation involving us and other legal entities, or other situations involving mergers, acquisitions, or bankruptcy liquidation, if user information transfer is involved, we will require the new company or organization holding your user information to continue to be bound by this policy. Otherwise, we will require that the company, organization, and individual seek your authorization again.
 
 ### (3) Public Disclosure
 
 We will only publicly disclose your user information in the following situations:
 
-With your explicit consent or based on your active choice, we may publicly disclose your user information;
+1. With your explicit consent or based on your active choice, we may publicly disclose your user information;
 
-To protect the personal and property safety of us, our affiliated companies, users, or the public from infringement, we may disclose your user information in accordance with applicable laws or relevant agreements and rules of this platform.
+2. To protect the personal and property safety of us, our affiliated companies, users, or the public from infringement, we may disclose your user information in accordance with applicable laws or relevant agreements and rules of this platform.
 
 ### (4) Exceptions to Obtaining Authorized Consent for Sharing, Transferring, and Publicly Disclosing User Information
 
 According to relevant laws and regulations, there are situations in which sharing, transferring, and publicly disclosing your user information do not require obtaining your authorized consent in advance:
 
-Related to national security and defense security;
+1. Related to national security and defense security;
 
-Related to public safety, public health, significant public interests;
+2. Related to public safety, public health, significant public interests;
 
-Related to criminal investigations, prosecutions, trials, and judgment executions;
+3. Related to criminal investigations, prosecutions, trials, and judgment executions;
 
-Necessary for protecting the vital interests of you or other individuals such as life, property, etc., but it is difficult to obtain the individual's consent;
+4. Necessary for protecting the vital interests of you or other individuals such as life, property, etc., but it is difficult to obtain the individual's consent;
 
-Personal information that you voluntarily make public;
+5. Personal information that you voluntarily make public;
 
-Collecting personal information from legally publicized information, such as legal news reports, government information disclosure channels, etc.;
+6. Collecting personal information from legally publicized information, such as legal news reports, government information disclosure channels, etc.;
 
-Other situations stipulated by laws and regulations.
+7. Other situations stipulated by laws and regulations.
 
 Please be aware that according to applicable laws, if we process personal information by technical measures and other necessary measures to make the data recipient unable to re-identify specific individuals and cannot be restored, then sharing, transferring, and publicly disclosing such processed data do not require separate notification to you or obtaining your consent.
 
@@ -207,17 +205,17 @@ Because our services and technology are continuously updated and optimized based
 
 For significant changes, we will also provide more prominent notices (including notices through the platform website). Major changes referred to in this policy include but are not limited to:
 
-Significant changes in our service mode, such as the purpose of processing user information, types of user information processed, and ways user information is used;
+1. Significant changes in our service mode, such as the purpose of processing user information, types of user information processed, and ways user information is used;
 
-Major changes in control, organizational structure, etc., such as owner changes caused by business adjustments, bankruptcies, and mergers;
+2. Major changes in control, organizational structure, etc., such as owner changes caused by business adjustments, bankruptcies, and mergers;
 
-Major changes in the main objects of user information sharing, transfer, or public disclosure;
+3. Major changes in the main objects of user information sharing, transfer, or public disclosure;
 
-Major changes in your rights related to the processing of user information and the way they are exercised;
+4. Major changes in your rights related to the processing of user information and the way they are exercised;
 
-Major changes in the department responsible for user information security, contact information, and complaint channels;
+5. Major changes in the department responsible for user information security, contact information, and complaint channels;
 
-When the user information security impact assessment report indicates a high risk.
+6. When the user information security impact assessment report indicates a high risk.
 
 We may temporarily suspend or terminate any functions of the platform website, or we may introduce new features or impose restrictions on certain features or limit access to some or all services. When we make significant changes to the platform that may adversely affect you, we will make reasonable efforts to notify you, and your continued use of the platform indicates your agreement to the updated privacy policy. If you do not agree with the updated privacy policy, please stop using the platform immediately.
 
