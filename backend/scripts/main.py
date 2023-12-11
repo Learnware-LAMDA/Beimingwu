@@ -7,6 +7,7 @@ import restful.user
 import restful.engine
 import restful.admin
 import restful.protocol
+import restful.datasets
 from learnware import market
 import context
 from context import config as C
@@ -71,6 +72,7 @@ def main():
     app.register_blueprint(restful.engine.engine_blueprint, url_prefix="/engine")
     app.register_blueprint(restful.admin.admin_blueprint, url_prefix="/admin")
     app.register_blueprint(restful.protocol.protocol_blueprint, url_prefix="/protocol")
+    app.register_blueprint(restful.datasets.datasets_blueprint, url_prefix="/datasets")
 
     app.run(host=C.listen_address, port=C.listen_port, threaded=True, debug=True, use_reloader=False)
 

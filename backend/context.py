@@ -57,6 +57,7 @@ def init_backend():
     os.makedirs(config.upload_path, exist_ok=True)
     os.makedirs(config.temp_path, exist_ok=True)
     os.makedirs(config.backup_path, exist_ok=True)
+    os.makedirs(config.datasets_path, exist_ok=True)
     pass
 
 

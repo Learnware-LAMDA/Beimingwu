@@ -89,7 +89,7 @@ class TestLearnwareClient(unittest.TestCase):
         user_info = BaseUserInfo()
         stat_spec = RKMEStatSpecification()
         stat_spec.load(os.path.join("tests", "data", "stat.json"))
-        
+
         user_info.update_semantic_spec(testops.test_learnware_semantic_specification_table())
         user_info.update_stat_info(stat_spec.type, stat_spec)
         learnware_list = client.search_learnware(user_info)
@@ -111,7 +111,7 @@ class TestLearnwareClient(unittest.TestCase):
         time.sleep(1)
         user_info = BaseUserInfo()
         user_info.update_semantic_spec(testops.test_learnware_semantic_specification_table())
-        
+
         learnware_list = client.search_learnware(user_info)
 
         self.assertEqual(len(learnware_list), 1)
