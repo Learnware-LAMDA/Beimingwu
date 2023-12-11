@@ -36,22 +36,28 @@ export default {
   },
   Feature: {
     Title: "System Features",
-    Feature1: {
+    Recommendation: {
       Name: "Recommend more effective models with statistical information",
       Description:
         "By utilizing statistical information, Beimingwu can provide more accurate model recommendations for your tasks, which often have better reusability. Even if there is no model in Beimingwu that can solve your problem well, the combination of multiple models may be enough. For tabular tasks, the system initially supports searching (and reusing) models with feature space misalignment.",
       HomoTable: "Homogeneous table examples",
       HeteroTable: "Heterogeneous table examples",
     },
-    Feature2: {
-      Name: "Secure learnware loading and convenient learnware reuse",
+    loadAndReuse: {
+      Name1: "Secure learnware loading and",
+      Name2: "convenient learnware reuse",
       Description:
         "After obtaining the learnware, you don't need to worry about the environment in which the model runs, nor do you need to worry about malicious code and malicious attacks. You can safely load the learnware with one line of code, and the system provides multiple interfaces to help you reuse the learnware to solve the task.",
     },
-    Feature3: {
+    Privacy: {
       Name: "We care about your privacy",
       Description:
         "If you can provide the statistical information of the task, this will help your requirements or models be better matched. The statistical specification can provide the statistical information of the task without leaking your original data. The process of generating the statistical specification is performed locally and the code is open source.",
+    },
+    OpenSource: {
+      Name: "Beimingwu is completely open source",
+      Description:
+        "Beimingwu is the first completely open-source model platform. The engine, front-end, and back-end are completely open-source and support multiple deployment methods. We sincerely invite the community to experience and use the system and jointly develop and improve the system.",
     },
   },
   Why: {

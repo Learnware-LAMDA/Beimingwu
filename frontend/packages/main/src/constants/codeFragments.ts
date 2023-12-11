@@ -237,7 +237,7 @@ export const featureCode = [
   {
     index: 0,
     name: "Load learnware",
-    code: [
+    load: [
       startWithIn(1),
       ...addColorAndSplit("# Load learnwares", gray),
       lineContinue(),
@@ -249,7 +249,8 @@ export const featureCode = [
       ...addColorAndSplit('"docker"', yellow),
       lineContinue(),
       ...")",
-
+    ],
+    reuse: [
       `<br /><br />${startWithIn(2)}`,
       ...addColorAndSplit("# Reuse learnwares", gray),
       lineContinue(),
