@@ -1,10 +1,10 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import store from "@main/store";
 import { Component } from "vue";
 import NProgress from "@main/plugins/nprogress";
 
 const Router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: [
     {
       path: "/",
@@ -118,7 +118,6 @@ const Router = createRouter({
           component: (): Promise<Component> => import("@main/views/ChangeLanguage.vue"),
           meta: {
             showInNavBar: true,
-            icon: "🇨🇳",
             variant: "outlined",
           },
         },
@@ -128,7 +127,6 @@ const Router = createRouter({
           component: (): Promise<Component> => import("@main/views/ChangeLanguage.vue"),
           meta: {
             showInNavBar: true,
-            icon: "🇺🇸",
             variant: "outlined",
           },
         },
