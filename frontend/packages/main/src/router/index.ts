@@ -1,11 +1,11 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import store from "../store";
 import { checkLoginStatus } from "../request/user";
 import type { Component } from "vue";
 import NProgress from "../plugins/nprogress";
 
 const Router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: [
     {
       path: "/",
