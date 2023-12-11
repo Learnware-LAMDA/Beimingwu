@@ -255,7 +255,6 @@ onUnmounted(() => {
             ></v-checkbox>
             <v-btn
               target="_blank"
-              variant="link"
               color="primary"
               @click="showUserAgreement()"
             >
@@ -263,7 +262,6 @@ onUnmounted(() => {
             </v-btn>
             <v-btn
               target="_blank"
-              variant="link"
               color="primary"
               @click="showPrivacyPolicy()"
             >
