@@ -118,7 +118,6 @@ const Router = createRouter({
           component: (): Promise<Component> => import("@main/views/ChangeLanguage.vue"),
           meta: {
             showInNavBar: true,
-            icon: "🇨🇳",
             variant: "outlined",
           },
         },
@@ -128,7 +127,6 @@ const Router = createRouter({
           component: (): Promise<Component> => import("@main/views/ChangeLanguage.vue"),
           meta: {
             showInNavBar: true,
-            icon: "🇺🇸",
             variant: "outlined",
           },
         },
