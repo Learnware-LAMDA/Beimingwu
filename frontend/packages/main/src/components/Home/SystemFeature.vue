@@ -246,6 +246,14 @@ nextTick(() => {
               class="absolute flex w-full flex-col items-center justify-center bg-gray-50"
               style="top: -50%; transform: translateY(-50%)"
             >
+              <div class="p-2 text-lg sm:hidden">
+                <div class="text-2xl font-bold">
+                  {{ t(`Home.Feature.Recommendation.Name`) }}
+                </div>
+                <div class="my-4 text-sm">
+                  {{ t(`Home.Feature.Recommendation.Description`) }}
+                </div>
+              </div>
               <img
                 class="w-full"
                 :src="recommendation"
@@ -257,6 +265,19 @@ nextTick(() => {
               class="absolute -z-10 flex h-full w-full flex-col items-center justify-center bg-gray-50 px-2 py-8 sm:px-0"
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
+              <div class="p-2 text-lg sm:hidden">
+                <div
+                  v-for="i in 2"
+                  :key="i"
+                  class="text-2xl font-bold"
+                >
+                  {{ t(`Home.Feature.loadAndReuse.Name${i}`) }}
+                </div>
+                <div class="my-4 text-sm">
+                  {{ t(`Home.Feature.loadAndReuse.Description`) }}
+                </div>
+              </div>
+
               <terminal-window
                 title="Python"
                 :model-value="tabIndex"
@@ -283,6 +304,14 @@ nextTick(() => {
               class="absolute -z-20 flex w-full flex-col items-center justify-center bg-gray-50"
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
+              <div class="p-2 text-lg sm:hidden">
+                <div class="text-2xl font-bold">
+                  {{ t(`Home.Feature.Privacy.Name`) }}
+                </div>
+                <div class="my-4 text-sm">
+                  {{ t(`Home.Feature.Privacy.Description`) }}
+                </div>
+              </div>
               <v-img
                 :src="process"
                 class="w-full"
@@ -294,11 +323,19 @@ nextTick(() => {
               class="absolute -z-30 flex w-full flex-col items-center justify-center bg-gray-50"
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
+              <div class="p-2 text-lg sm:hidden">
+                <div class="text-2xl font-bold">
+                  {{ t(`Home.Feature.OpenSource.Name`) }}
+                </div>
+                <div class="my-4 text-sm">
+                  {{ t(`Home.Feature.OpenSource.Description`) }}
+                </div>
+              </div>
               <collaboration class="mx-auto w-4/5" />
             </div>
           </div>
 
-          <div class="h-main-full absolute w-full flex-1 pl-8 sm:static">
+          <div class="h-main-full absolute hidden w-full flex-1 pl-8 sm:static sm:block">
             <div class="relative h-full">
               <div
                 ref="recommendationTextRef"
