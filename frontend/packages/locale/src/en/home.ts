@@ -2,12 +2,19 @@ export default {
   Cover: {
     Beiming: "Beimingwu: A Learnware Dock System",
     Introduction:
-      "Based on the learnware paradigm, Beimingwu systematically covers the entire learnware process from submission to deployment, helping users identify and reuse learnwares without starting from scratch.",
+      "A learnware is composed of a well-performed trained machine learning model and a specification which enables it to be adequately identified and reused according to the requirement of future users who know nothing about the learnware in advance. Beimingwu is a learnware dock system that helps users lacking machine learning resources/skills to solve machine learning tasks by reusing recommended learnwares in a convenient way.",
     Try: "Try It Out",
     Submit: "Be A Developer",
     LearnwareName: "Learnware",
     LearnwareDescription: "This is a learnware.",
+    ServeralLinesOfCode: "Solve Your Tasks",
+    SolveYourTasks: "with several lines of code",
     Developer: "Developer",
+    Example: {
+      Simplified: "Simplified demo",
+      Single: "Single learnware demo",
+      Multiple: "Multiple learnwares demo",
+    },
   },
   What: {
     Title: "What is Learnware?",
@@ -19,6 +26,39 @@ export default {
     LearnwareDescription: "This is a learnware.",
     Developer: "Developer",
     Updated: "Updated",
+  },
+  Function: {
+    Title: "What are the main functions of Beimingwu?",
+    SearchAndDeploy:
+      "Search and deploy learnwares: After the user submits the task requirements, Beimingwu will recommend learnwares that are helpful to the user's task according to the learnware specification and guide the user to deploy and reuse them.",
+    Submit:
+      "Submit high-quality learnwares: Developers can spontaneously submit various learnwares to Beimingwu, and the system will check the quality of these learnwares and organize them further.",
+  },
+  Feature: {
+    Title: "System Features",
+    Recommendation: {
+      Name: "Recommend more effective models with statistical information",
+      Description:
+        "By utilizing statistical information, Beimingwu can provide more accurate model recommendations for your tasks, which often have better reusability. Even if there is no model in Beimingwu that can solve your problem well, the combination of multiple models may be enough. For tabular tasks, the system initially supports searching (and reusing) models with feature space misalignment.",
+      HomoTable: "Homogeneous table examples",
+      HeteroTable: "Heterogeneous table examples",
+    },
+    loadAndReuse: {
+      Name1: "Secure learnware loading and",
+      Name2: "convenient learnware reuse",
+      Description:
+        "After obtaining the learnware, you don't need to worry about the environment in which the model runs, nor do you need to worry about malicious code and malicious attacks. You can safely load the learnware with one line of code, and the system provides multiple interfaces to help you reuse the learnware to solve the task.",
+    },
+    Privacy: {
+      Name: "We care about your privacy",
+      Description:
+        "If you can provide the statistical information of the task, this will help your requirements or models be better matched. The statistical specification can provide the statistical information of the task without leaking your original data. The process of generating the statistical specification is performed locally and the code is open source.",
+    },
+    OpenSource: {
+      Name: "Beimingwu is completely open source",
+      Description:
+        "Beimingwu is the first completely open-source model platform. The engine, front-end, and back-end are completely open-source and support multiple deployment methods. We sincerely invite the community to experience and use the system and jointly develop and improve the system.",
+    },
   },
   Why: {
     Title: "Why is a learnware dock system necessary?",

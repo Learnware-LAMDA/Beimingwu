@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import HomeSlogan from "../components/Home/HomeSlogan.vue";
 import WhatIs from "../components/Home/WhatIs.vue";
-import WhyNeed from "../components/Home/WhyNeed.vue";
-import HowWork from "../components/Home/HowWork.vue";
-import SpecIsland from "../components/Home/SpecIsland.vue";
+import MainFunction from "../components/Home/MainFunction.vue";
+import SystemFeature from "../components/Home/SystemFeature.vue";
 import MyFooter from "../components/Home/MyFooter.vue";
 </script>
 
@@ -11,9 +10,8 @@ import MyFooter from "../components/Home/MyFooter.vue";
   <div>
     <home-slogan />
     <what-is />
-    <why-need />
-    <how-work />
-    <spec-island />
+    <main-function />
+    <system-feature />
     <my-footer />
   </div>
 </template>

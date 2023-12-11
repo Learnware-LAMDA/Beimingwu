@@ -75,14 +75,32 @@ const filteredRoutes = computed<Route[]>(
         v-if="!['xs', 'sm'].includes(display.name.value)"
         class="my-3"
       >
-        <router-link
+        <template
           v-for="route in filteredRoutes"
           :key="route.name"
-          class="text-black"
-          :to="route.children ? '' : route.path"
         >
+          <router-link
+            v-if="!route.children"
+            class="text-black"
+            :to="route.path"
+          >
+            <!-- route without children -->
+            <v-btn
+              class="text-body-2 mr-2 !h-full rounded font-medium"
+              :variant="route.meta.variant"
+              :class="route.meta.class"
+            >
+              <v-icon
+                class="mr-1"
+                :icon="route.meta.icon"
+              />
+              {{ route.meta.title }}
+            </v-btn>
+          </router-link>
+
+          <!-- route with children -->
           <v-menu
-            v-if="route.children"
+            v-else
             open-on-hover
           >
             <template #activator="{ props: menuProps }">
@@ -119,19 +137,7 @@ const filteredRoutes = computed<Route[]>(
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-btn
-            v-else
-            class="text-body-2 mr-2 !h-full rounded font-medium"
-            :variant="route.meta.variant"
-            :class="route.meta.class"
-          >
-            <v-icon
-              class="mr-1"
-              :icon="route.meta.icon"
-            />
-            {{ route.meta.title }}
-          </v-btn>
-        </router-link>
+        </template>
       </v-toolbar-items>
     </template>
   </v-app-bar>

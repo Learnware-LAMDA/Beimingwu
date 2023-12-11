@@ -14,6 +14,7 @@ import MyLearnware from "./myLearnware";
 import AllUser from "./allUser";
 import Summary from "./summary";
 import Error from "./error";
+import CodeFragments from "./codeFragments";
 
 export default {
   Page,
@@ -32,4 +33,5 @@ export default {
   AllUser,
   Summary,
   Error,
+  CodeFragments,
 };

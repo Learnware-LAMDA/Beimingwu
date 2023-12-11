@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from "vue";
+import { ref, computed, onMounted, nextTick, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useDisplay } from "vuetify";
 import BigTitle from "../Public/BigTitle.vue";
+import TerminalWindow from "../App/TerminalWindow.vue";
+import TerminalCode from "../App/TerminalCode.vue";
+import TerminalIpythonHeader from "../App/TerminalIpythonHeader.vue";
+import ProgressedCode from "../App/ProgressedCode.vue";
+import Browser from "../App/Browser.vue";
 import UserRequirement from "../Search/UserRequirement.vue";
 import ScrollAnimate from "../App/ScrollAnimate.vue";
 import PageLearnwareList from "../Learnware/PageLearnwareList.vue";
 import MultiRecommendedLearnwareList from "../Learnware/MultiRecommendedLearnwareList.vue";
+import { getCoverCode } from "../../constants";
 import type { Filter, LearnwareCardInfo } from "@beiming-system/types/learnware";
-import LogoNoText from "../../../public/logo-no-text.svg?component";
-import Logo from "../../../public/logo.svg?component";
 import anime from "animejs";
 
 const { t } = useI18n();
@@ -69,16 +73,43 @@ const singleRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
 const singleRecommendedLearnwarePage = ref(1);
 const singleRecommendedLearnwarePageNum = ref(1);
 const singleRecommendedLearnwarePageSize = ref(20);
-const easeLoading = ref(0);
-const loading = computed(() => easeLoading.value >= 0.5);
 const easeShowMultiRecommended = ref(0);
 const showMultiRecommended = computed(() => easeShowMultiRecommended.value >= 0.5);
 const isAdmin = ref(false);
 
 const rkmeJsonRef = ref<HTMLDivElement | null>(null);
+const browserRef = ref<HTMLDivElement | null>(null);
 
-function handleProgress(progress: number): void {
-  t1.seek(t1.duration * progress);
+const scrollRef = ref<HTMLDivElement | null>(null);
+
+const easeLoading = ref(0);
+const loading = computed(() => easeLoading.value >= 0.5);
+
+const importProgress = ref(0);
+const resultProgress = ref(0);
+const reuseProgress = ref(0);
+
+const fragments = getCoverCode();
+const fragmentIndex = ref(0);
+
+const msgs = computed(() => [
+  {
+    id: 0,
+    text: t("Home.Cover.ServeralLinesOfCode"),
+    class: "text-5xl md:text-6xl lg:text-7xl",
+  },
+  {
+    id: 1,
+    text: t("Home.Cover.SolveYourTasks"),
+    class: "text-3xl md:text-4xl lg:text-6xl",
+  },
+]);
+const msgRefs = ref<HTMLDivElement[]>([]);
+
+const progress = ref<number>(0);
+function handleProgress(p: number): void {
+  t1.seek(t1.duration * p);
+  progress.value = p;
 }
 
 const router = useRouter();
@@ -88,11 +119,20 @@ onMounted(() => {
     setTimeout(() => {
       t1.add({
         targets: rkmeJsonRef.value,
-        left: ["100%", (): string => (display.smAndUp.value ? "10%" : "45%")],
-        bottom: ["40%", (): string => (display.smAndUp.value ? "0%" : "50%")],
+        left: ["100%", "10%"],
+        bottom: ["40%", "0%"],
         easing: "linear",
         duration: 500,
       })
+        .add(
+          {
+            targets: importProgress,
+            value: [0, 1],
+            easing: "linear",
+            duration: 600,
+          },
+          "-=500",
+        )
         .add({
           targets: rkmeJsonRef.value,
           opacity: [1, 0],
@@ -112,9 +152,18 @@ onMounted(() => {
         .add({
           targets: easeLoading,
           value: [1, 0],
-          duration: 100,
+          duration: 600,
           easing: "linear",
         })
+        .add(
+          {
+            targets: resultProgress,
+            value: [0, 1],
+            easing: "linear",
+            duration: 350,
+          },
+          "-=650",
+        )
         .add(
           {
             targets: easeShowMultiRecommended,
@@ -122,21 +171,53 @@ onMounted(() => {
             duration: 100,
             easing: "linear",
           },
-          "-=100",
+          "-=350",
         )
         .add({
-          targets: easeShowMultiRecommended,
-          value: [1, 1],
-          duration: 800,
+          targets: browserRef.value,
+          opacity: [1, 0],
+          duration: 100,
           easing: "linear",
+        })
+        .add({
+          targets: msgRefs.value,
+          translateY: ["200%", "0%"],
+          opacity: [0, 1],
+          duration: 300,
+          easing: "easeInOutQuad",
+          delay: anime.stagger(100),
+        })
+        .add(
+          {
+            targets: reuseProgress,
+            value: [0, 1],
+            easing: "linear",
+            duration: 300,
+          },
+          "-=300",
+        )
+        .add({
+          duration: 500,
         });
     });
   });
 });
+
+watch(
+  () => [progress.value, fragmentIndex.value],
+  () => {
+    setTimeout(() => {
+      if (scrollRef.value) {
+        scrollRef.value.scrollTop = scrollRef.value.scrollHeight - scrollRef.value.clientHeight;
+      }
+    });
+  },
+  { deep: true },
+);
 </script>
 
 <template>
-  <div class="relative bg-gradient-to-b from-sky-700 via-blue-500 to-blue-100">
+  <div class="relative bg-sky-700">
     <div class="py-20 text-center text-white">
       <big-title>
         <div>{{ t("Home.Cover.Beiming") }}</div>
@@ -166,220 +247,231 @@ onMounted(() => {
     </div>
 
     <scroll-animate
-      class="h-[300vh]"
+      class="h-[4000px] min-h-[200vh]"
       @progress="handleProgress"
     >
       <template #default>
-        <div class="h-main-full flex w-full flex-col items-center justify-center px-2">
-          <div class="relative flex h-[90vh] w-full max-w-7xl flex-col overflow-hidden rounded-md">
-            <div
-              ref="rkmeJsonRef"
-              class="absolute z-10"
-            >
-              <svg
-                class="w-20"
-                viewBox="-6 -1 37 42"
+        <div
+          class="h-main-full flex w-full flex-col items-center justify-center px-2 transition-all"
+        >
+          <div class="h-[85vh] w-full max-w-[1800px]">
+            <div class="relative h-full">
+              <div
+                class="absolute aspect-[9/16] max-w-7xl transform transition-all duration-500 lg:aspect-video"
+                :class="
+                  progress === 0
+                    ? ['left-1/2 w-full -translate-x-1/2']
+                    : [
+                        'left-0 z-10 w-4/5 translate-x-0 md:w-3/5 xl:w-3/5',
+                        reuseProgress === 0 ? 'bottom-0' : 'bottom-1/2 w-full translate-y-1/2',
+                      ]
+                "
               >
-                <path
-                  d="M0 0 v30 h25 v-21 l-9 -9 h-16 z M15 0 v9 a1 1 0 0 0 1 1 h9"
-                  fill="white"
-                  stroke="black"
-                />
-                <text
-                  x="13"
-                  y="38"
-                  font-size="7"
-                  text-anchor="middle"
-                  fill="black"
+                <terminal-window
+                  v-model="fragmentIndex"
+                  :tabs="fragments.map((fragment) => t(`Home.Cover.Example.${fragment.name}`))"
+                  class="h-full"
+                  title="python"
                 >
-                  RKME.json
-                </text>
-              </svg>
-            </div>
-            <div class="flex h-6 items-center justify-between bg-gray-900">
-              <div class="flex">
-                <div class="ml-2" />
-                <div
-                  v-for="i in 3"
-                  :key="i"
-                  class="my-2 ml-1.5 h-2 w-2 rounded-full bg-gray-800"
-                />
-                <svg
-                  class="ml-2 mt-1 h-5"
-                  viewBox="-1 -1 72 11"
-                >
-                  <defs>
-                    <g id="cross">
-                      <path
-                        d="M 0,0 2,2 M 2,0 0,2"
-                        stroke="white"
-                        stroke-width="0.3"
-                        stroke-linecap="round"
-                      />
-                    </g>
-                  </defs>
-                  <path
-                    d="M0 10 a2 2 0 0 0 2 -2 v-6 a2 2 0 0 1 2 -2 h60 a2 2 0 0 1 2 2 v6 a2 2 0 0 0 2 2"
-                    class="fill-gray-700"
-                  />
-                  <logo-no-text
-                    x="5"
-                    y="2"
-                    height="6"
-                    width="6"
-                  />
-                  <text
-                    x="14"
-                    y="5"
-                    text-anchor="start"
-                    dominant-baseline="middle"
-                    font-size="4"
-                    fill="white"
+                  <div
+                    ref="scrollRef"
+                    class="flex-1 overflow-y-hidden break-all bg-gray-800 opacity-90"
                   >
-                    Beimingwu
-                  </text>
-                  <use
-                    href="#cross"
-                    x="60"
-                    y="4"
-                  />
-                </svg>
-                <svg
-                  class="mr-2 mt-1 w-1.5"
-                  viewBox="0 0 10 10"
-                >
-                  <path
-                    d="M 0 5 10 5 M5 0 5 10"
-                    stroke="white"
-                    stroke-width="1"
-                  />
-                </svg>
-              </div>
-              <svg
-                class="m-1 mr-2 w-1"
-                viewBox="0 0 10 10"
-              >
-                <path
-                  d="M 1,3 5,9 9,3"
-                  stroke="white"
-                  stroke-width="1"
-                  fill="none"
-                />
-              </svg>
-            </div>
+                    <terminal-code
+                      v-for="fragment in fragments"
+                      v-show="fragmentIndex === fragment.index"
+                      :key="fragment.index"
+                    >
+                      <terminal-ipython-header />
 
-            <div class="flex h-6 items-center bg-gray-700">
-              <div class="text-[0.4rem]">
-                <v-icon class="ml-1 p-2"> mdi-arrow-left </v-icon>
-                <v-icon class="p-2"> mdi-arrow-right </v-icon>
-                <v-icon class="p-2"> mdi-reload </v-icon>
-                <v-icon class="p-2"> mdi-home-outline </v-icon>
+                      <progressed-code
+                        :fragments="fragment.import"
+                        :progress="importProgress"
+                      />
+                      <progressed-code
+                        v-if="importProgress === 1"
+                        :fragments="fragment.result"
+                        :progress="resultProgress"
+                      />
+                      <progressed-code
+                        v-if="resultProgress === 1"
+                        :fragments="fragment.reuse"
+                        :progress="reuseProgress"
+                      />
+                    </terminal-code>
+                  </div>
+                </terminal-window>
               </div>
               <div
-                class="flex h-3.5 flex-1 flex-col justify-center rounded-full bg-gray-600 px-1.5 text-left text-[0.3rem]"
+                ref="browserRef"
+                class="absolute right-0 aspect-[9/16] max-w-7xl transform transition-all duration-500 lg:aspect-video"
+                :class="
+                  progress === 0
+                    ? 'right-1/2 w-full translate-x-1/2'
+                    : [
+                        'right-0 w-4/5 -translate-x-0 md:w-3/5 xl:w-3/5',
+                        showMultiRecommended && 'transition-none',
+                      ]
+                "
               >
-                <div class="flex h-full items-center">
-                  <v-icon>mdi-lock</v-icon>
-                  <span class="mx-1 text-[0.4rem]"> bmwu.cloud </span>
-                </div>
-              </div>
-              <div class="text-[0.4rem]">
-                <v-icon class="p-2"> mdi-magnify </v-icon>
-                <v-icon class="p-2"> mdi-dots-horizontal </v-icon>
-              </div>
-            </div>
+                <Browser class="relative h-full">
+                  <div
+                    ref="rkmeJsonRef"
+                    class="absolute z-10"
+                  >
+                    <svg
+                      class="w-20"
+                      viewBox="-6 -1 37 42"
+                    >
+                      <path
+                        d="M0 0 v30 h25 v-21 l-9 -9 h-16 z M15 0 v9 a1 1 0 0 0 1 1 h9"
+                        fill="white"
+                        stroke="black"
+                      />
+                      <text
+                        x="13"
+                        y="38"
+                        font-size="7"
+                        text-anchor="middle"
+                        fill="black"
+                      >
+                        RKME.json
+                      </text>
+                    </svg>
+                  </div>
 
-            <div class="flex items-center justify-between border-b border-gray-300 bg-white">
-              <div class="p-2">
-                <logo class="w-20" />
-              </div>
-            </div>
+                  <div class="flex flex-1 justify-start overflow-hidden bg-gray-200">
+                    <div
+                      v-if="display.mdAndUp.value || (!showMultiRecommended && !loading)"
+                      class="no-scroll h-full w-full min-w-[5rem] sm:w-1/4"
+                    >
+                      <user-requirement
+                        v-model="filters"
+                        :show-example="false"
+                        class="relative h-[150%] w-[150%] origin-top-left scale-[calc(100%/1.5)] transform md:h-[300%] md:w-[300%] md:scale-[calc(100%/3)] xl:h-[200%] xl:w-[200%] xl:scale-[calc(100%/2)]"
+                      />
+                    </div>
 
-            <div class="flex-1 justify-start overflow-hidden bg-gray-200 md:flex">
-              <div class="no-scroll h-[40%] md:h-full md:w-1/4 md:min-w-[20rem]">
-                <user-requirement
-                  v-model="filters"
-                  :show-example="false"
-                  class="h-[200%] w-[200%] origin-top-left scale-50 transform md:h-[150%] md:w-[150%] md:scale-[calc(200%/3)]"
-                />
+                    <div
+                      v-if="display.smAndUp.value || showMultiRecommended || loading"
+                      class="flex-1"
+                    >
+                      <div
+                        class="w-[200%] origin-top-left scale-[calc(100%/2)] transform overflow-hidden md:w-[300%] md:scale-[calc(100%/3)] xl:w-[200%] xl:scale-[calc(100%/2)]"
+                        disabled="true"
+                      >
+                        <v-card
+                          v-if="showMultiRecommended"
+                          flat
+                          class="mt-4 bg-transparent sm:mt-2"
+                        >
+                          <v-card-title
+                            v-if="!multiRecommendedTips"
+                            class="text-h5 text-base md:text-xl"
+                          >
+                            <v-icon>mdi-hexagon-multiple</v-icon>
+                            {{ t("Search.RecommendedMultipleLearnware") }}
+                          </v-card-title>
+                          <v-card-text
+                            v-if="multiRecommendedTips"
+                            class="px-2 py-0"
+                          >
+                            <v-alert
+                              v-model="multiRecommendedTips"
+                              closable
+                              color="success"
+                            >
+                              <template #prepend>
+                                <v-icon
+                                  icon="mdi-hexagon-multiple"
+                                  :size="display.smAndUp.value ? 'x-large' : 'small'"
+                                />
+                              </template>
+                              <template #title>
+                                <span class="text-base md:text-xl">
+                                  {{ t("Search.RecommendedMultipleLearnware") }}</span
+                                >
+                              </template>
+                              <template #text>
+                                <span class="text-xs md:text-base">
+                                  {{ t("Search.RecommendedMultipleLearnwareTips") }}
+                                </span>
+                              </template>
+                            </v-alert>
+                          </v-card-text>
+                          <multi-recommended-learnware-list
+                            :items="multiRecommendedLearnwareItems"
+                            :match-score="multiRecommendedMatchScore"
+                            :filters="filters"
+                            :loading="loading"
+                          />
+                        </v-card>
+                        <v-card
+                          flat
+                          class="mt-4 bg-transparent sm:m-0"
+                        >
+                          <v-card-title
+                            v-if="showMultiRecommended && !singleRecommendedTips"
+                            class="text-h5 text-base md:text-xl"
+                          >
+                            <v-icon>mdi-hexagon</v-icon>
+                            {{ t("Search.RecommendedSingleLearnware") }}
+                          </v-card-title>
+                          <v-card-text
+                            v-if="showMultiRecommended && singleRecommendedTips"
+                            class="px-2 py-0"
+                          >
+                            <v-alert
+                              v-model="singleRecommendedTips"
+                              closable
+                              color="info"
+                            >
+                              <template #prepend>
+                                <v-icon
+                                  icon="mdi-hexagon"
+                                  :size="display.smAndUp.value ? 'x-large' : 'default'"
+                                />
+                              </template>
+                              <template #title>
+                                <span class="text-base md:text-xl">
+                                  {{ t("Search.RecommendedSingleLearnware") }}
+                                </span>
+                              </template>
+                              <template #text>
+                                <span class="text-xs md:text-base">
+                                  {{ t("Search.RecommendedSingleLearnwareTips") }}
+                                </span>
+                              </template>
+                            </v-alert>
+                          </v-card-text>
+                          <page-learnware-list
+                            :items="singleRecommendedLearnwareItems"
+                            :filters="filters"
+                            :page="singleRecommendedLearnwarePage"
+                            :page-num="singleRecommendedLearnwarePageNum"
+                            :page-size="singleRecommendedLearnwarePageSize"
+                            :loading="loading"
+                            :is-admin="isAdmin"
+                            :show-pagination="singleRecommendedLearnwarePageNum > 1"
+                          />
+                        </v-card>
+                      </div>
+                    </div>
+                  </div>
+                </Browser>
               </div>
-
-              <div class="flex-1">
+              <div
+                class="pointer-events-none absolute right-0 z-20 flex h-full w-full flex-col items-center justify-center font-medium text-white opacity-80 sm:w-2/5"
+              >
                 <div
-                  class="w-[150%] origin-top-left scale-[calc(200%/3)] transform"
-                  disabled="true"
+                  v-for="msg in msgs"
+                  ref="msgRefs"
+                  :key="msg.id"
+                  class="mb-4 text-center"
+                  :class="msg.class"
+                  :style="{ opacity: 0 }"
                 >
-                  <v-card
-                    v-if="showMultiRecommended"
-                    flat
-                    class="mt-4 bg-transparent sm:m-2"
-                  >
-                    <v-card-title v-if="!multiRecommendedTips">
-                      {{ t("Search.RecommendedMultipleLearnware") }}
-                    </v-card-title>
-                    <v-card-text
-                      v-if="multiRecommendedTips"
-                      class="!p-2"
-                    >
-                      <v-alert
-                        v-model="multiRecommendedTips"
-                        :title="t('Search.RecommendedMultipleLearnware')"
-                        :text="t('Search.RecommendedMultipleLearnwareTips')"
-                        closable
-                        color="success"
-                      >
-                        <template #prepend>
-                          <v-icon
-                            icon="mdi-hexagon-multiple"
-                            size="x-large"
-                          />
-                        </template>
-                      </v-alert>
-                    </v-card-text>
-                    <multi-recommended-learnware-list
-                      :items="multiRecommendedLearnwareItems"
-                      :match-score="multiRecommendedMatchScore"
-                      :filters="filters"
-                      :loading="loading"
-                    />
-                  </v-card>
-                  <v-card
-                    flat
-                    class="mt-4 bg-transparent sm:m-2"
-                  >
-                    <v-card-title v-if="showMultiRecommended && !singleRecommendedTips">
-                      {{ t("Search.RecommendedSingleLearnware") }}
-                    </v-card-title>
-                    <v-card-text
-                      v-if="showMultiRecommended && singleRecommendedTips"
-                      class="!p-2"
-                    >
-                      <v-alert
-                        v-model="singleRecommendedTips"
-                        :title="t('Search.RecommendedSingleLearnware')"
-                        :text="t('Search.RecommendedSingleLearnwareTips')"
-                        closable
-                        color="info"
-                      >
-                        <template #prepend>
-                          <v-icon
-                            icon="mdi-hexagon"
-                            size="x-large"
-                          />
-                        </template>
-                      </v-alert>
-                    </v-card-text>
-                    <page-learnware-list
-                      :items="singleRecommendedLearnwareItems"
-                      :filters="filters"
-                      :page="singleRecommendedLearnwarePage"
-                      :page-num="singleRecommendedLearnwarePageNum"
-                      :page-size="singleRecommendedLearnwarePageSize"
-                      :loading="loading"
-                      :is-admin="isAdmin"
-                      :show-pagination="singleRecommendedLearnwarePageNum > 1"
-                    />
-                  </v-card>
+                  {{ msg.text }}
                 </div>
               </div>
             </div>
@@ -391,7 +483,7 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-:global(.no-scroll .filter) {
+.no-scroll :deep(.filter) {
   overflow: hidden !important;
 }
 </style>
