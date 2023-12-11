@@ -11,7 +11,7 @@ pip install learnware
 
 Additionally, to ensure the latest `learnware` package, you can also specify the version and mirror source during installation:
 ```bash
-pip install learnware==0.2.0.7 -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install learnware==0.2.0.8 -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ## Install from Source Code

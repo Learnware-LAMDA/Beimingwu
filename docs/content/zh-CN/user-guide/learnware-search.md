@@ -28,8 +28,6 @@ stat_spec.save("stat.json")
 
 查搜完成后，系统将显示单学件的查搜结果，在部分情况下，系统还会显示多学件组合的查搜结果。您可以根据需求下载相应的学件（组）。
 
-
-
 ### 异构表格查搜
 
 对于表格数据，常规查搜仅能在特征空间维度相同的学件中进行查搜，当学件基座系统中没有维度相匹配的学件时，常规查搜将返回空结果。当您提交的为表格类型的统计规约，页面将弹出提示，提醒您可以开启异构查搜。
@@ -82,14 +80,29 @@ user_semantic = generate_semantic_spec(
     task_type="Classification"
 )
 user_info = BaseUserInfo(semantic_spec=user_semantic)
-learnware_list = client.search_learnware(user_info, page_size=None)
+search_result = client.search_learnware(user_info)
+```
+上述代码中 `search_result` 为 dict 类型，具体结构如下（`"single"` 和 `"multiple"` 分别对应单学件和多学件的查搜结果）：
+```python
+search_result = {
+    "single": {
+        "learnware_ids": List[str],
+        "semantic_specifications": List[dict],
+        "matching": List[float],
+    },
+    "multiple": {
+        "learnware_ids": List[str],
+        "semantic_specifications": List[dict],
+        "matching": float,
+    },
+}
 ```
 
-您也可以通过统计规约在学件基座系统中查搜学件，所有分布相似的学件都将通过 API 返回。通过上述提到的 `generate_stat_spec` 函数，您可以便捷地得到您当前任务对应的统计规约 `stat_spec`，随后通过下列代码即可得到系统中同一类型数据下满足您任务统计规约的学件：
+另外，您也可以通过统计规约在学件基座系统中查搜学件，所有分布相似的学件都将通过 API 返回。通过上述提到的 `generate_stat_spec` 函数，您可以便捷地得到您当前任务对应的统计规约 `stat_spec`，随后通过下列代码即可得到系统中同一类型数据下满足您任务统计规约的学件：
 
 ```python
 user_info = BaseUserInfo(stat_info={stat_spec.type: stat_spec})
-learnware_list = client.search_learnware(user_info, page_size=None)
+search_result = client.search_learnware(user_info)
 ```
 
 通过将统计规约和语义规约结合起来，您可以进行更加细致的查搜，比如下列代码将在表格型数据中查搜满足您语义规约的学件：
@@ -103,19 +116,18 @@ rkme_table = generate_stat_spec(type="table", X=train_x)
 user_info = BaseUserInfo(
     semantic_spec=user_semantic, stat_info={rkme_table.type: rkme_table}
 )
-learnware_list = client.search_learnware(user_info, page_size=None)
+search_result = client.search_learnware(user_info)
 ```
 
-当学件查搜完成后，您可以通过下列代码完成学件的下载及环境的配置：
+当学件查搜完成后，您可以通过 `search_result` 中的学件 ID 本地加载和使用学件，可参考下述示例：
 
 ```python
-for temp_learnware in learnware_list:
-    learnware_id = temp_learnware["learnware_id"]
-
-    # you can use the learnware to make prediction now
-    learnware = client.load_learnware(
-        learnware_id=learnware_id, runnable_option="conda"
-    )
+learnware_id = search_result["single"]["learnware_ids"][0]
+learnware = client.load_learnware(
+    learnware_id=learnware_id, runnable_option="conda"
+)
+# test_x is the user's data for prediction
+predict_y = learnware.predict(test_x)
 ```
 
 更详细的部署指南可查看：[学件部署](/zh-CN/user-guide/learnware-deploy)。
@@ -142,5 +154,5 @@ rkme_table = generate_stat_spec(type="table", X=train_x)
 user_info = BaseUserInfo(
     semantic_spec=user_semantic, stat_info={rkme_table.type: rkme_table}
 )
-learnware_list = client.search_learnware(user_info)
+search_result = client.search_learnware(user_info)
 ```
