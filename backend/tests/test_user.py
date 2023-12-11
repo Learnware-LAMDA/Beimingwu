@@ -110,8 +110,6 @@ class TestUser(unittest.TestCase):
         self.assertEqual(result["data"]["total_pages"], 1)
         self.assertEqual(result["data"]["learnware_list"][0]["learnware_id"], learnware_id)
 
-        result = testops.url_request("user/delete_learnware", {"learnware_id": learnware_id}, headers=headers)
-
         self.assertEqual(result["code"], 0)
 
         result = testops.url_request(
@@ -120,6 +118,7 @@ class TestUser(unittest.TestCase):
 
         self.assertEqual(result["code"], 0)
         self.assertEqual(len(result["data"]["learnware_list"]), 0)
+        testops.delete_learnware(learnware_id, headers)
 
         pass
 
@@ -144,6 +143,17 @@ class TestUser(unittest.TestCase):
         learnware_info, _ = dbops.get_learnware_list(by="learnware_id", value=learnware_id)
         learnware_info = learnware_info[0]
         self.assertEqual(learnware_info["verify_status"], "WAITING")
+
+        learnware_file = open(os.path.join("tests", "data", "test_learnware.zip"), "rb")
+        files = {"learnware_file": learnware_file}
+        result = testops.url_request(
+            "user/add_learnware",
+            {"semantic_specification": json.dumps(semantic_specification)},
+            files=files,
+            headers=headers,
+        )
+        self.assertEqual(result["code"], 61)
+        learnware_file.close()
 
         testops.delete_learnware(learnware_id, headers)
         pass
@@ -394,7 +404,6 @@ class TestUser(unittest.TestCase):
 
         result = testops.url_request("user/list_token", {}, headers=headers)
 
-        print(result)
         self.assertEqual(result["code"], 0)
         self.assertEqual(len(result["data"]["token_list"]), 0)
         pass

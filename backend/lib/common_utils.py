@@ -1,6 +1,7 @@
 import zipfile
 import os
 import shutil
+import hashlib
 
 
 def get_top_folder_in_zip(zfile: zipfile.ZipFile):
@@ -94,3 +95,20 @@ def search_sensitive_words(text, sensitive_pattern):
         pass
 
     return ret
+
+
+def get_file_hash(filename: str) -> str:
+    """
+    Get the md5 value of a file.
+    """
+
+    md5 = hashlib.md5()
+    with open(filename, "rb") as fin:
+        while True:
+            data = fin.read(1024 * 1024)
+            if len(data) == 0:
+                break
+            md5.update(data)
+            pass
+        pass
+    return md5.hexdigest()

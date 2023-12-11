@@ -140,11 +140,18 @@ class AddLearnwareApi(flask_restful.Resource):
             os.mkdir(C.upload_path)
 
         learnware_path = context.get_learnware_verify_file_path(learnware_id)
-
         learnware_file.seek(0)
         learnware_file.save(learnware_path)
 
+        file_hash = common_utils.get_file_hash(learnware_path)
+        if database.get_learnware_id_by_file_hash(file_hash) is not None:
+            return {"code": 61, "msg": "Learnware file already exist."}, 200
+
         result, retcd = common_functions.add_learnware(learnware_path, semantic_specification, learnware_id)
+
+        if result["code"] == 0:
+            database.add_file_hash(learnware_id, file_hash)
+            pass
 
         return result, retcd
 
@@ -201,6 +208,10 @@ class UpdateLearnwareApi(flask_restful.Resource):
         else:
             learnware_file.seek(0)
             learnware_file.save(learnware_path)
+            file_hash = common_utils.get_file_hash(learnware_path)
+            learnware_id_by_file_hash = database.get_learnware_id_by_file_hash(file_hash)
+            if learnware_id_by_file_hash is not None and learnware_id_by_file_hash != learnware_id:
+                return {"code": 61, "msg": "Learnware file already exist."}, 200
             check_result, msg = engine_helper.check_learnware_file(semantic_specification, learnware_path)
             if not check_result:
                 return {"code": 51, "msg": msg}, 200
@@ -319,6 +330,12 @@ class ChunkedUpload(flask_restful.Resource):
         chunk_begin = int(request.form["chunk_begin"])
         file_path = os.path.join(context.config.upload_path, file_hash)
 
+        if chunk_begin == 0:
+            # it is first chunk
+            if database.get_learnware_id_by_file_hash(file_hash) is not None:
+                return {"code": 51, "msg": "Learnware file already exist."}, 200
+            pass
+
         os.makedirs(context.config.upload_path, exist_ok=True)
 
         with open(file_path, "ab+") as fout:
@@ -338,19 +355,28 @@ class AddLearnwareUploaded(flask_restful.Resource):
     def post(self):
         body = request.get_json()
         semantic_specification_str = body.get("semantic_specification")
+        file_hash = body["file_hash"]
 
         semantic_specification, err_msg = engine_helper.parse_semantic_specification(semantic_specification_str)
         if semantic_specification is None:
             return {"code": 41, "msg": err_msg}, 200
 
         learnware_id = database.get_next_learnware_id()
-        src_file_path = os.path.join(context.config.upload_path, body["file_hash"])
+
+        if database.get_learnware_id_by_file_hash(file_hash) is not None:
+            return {"code": 61, "msg": "Learnware file already exist."}, 200
+
+        src_file_path = os.path.join(context.config.upload_path, file_hash)
         dst_file_path = context.get_learnware_verify_file_path(learnware_id)
 
         os.rename(src_file_path, dst_file_path)
         learnware_path = dst_file_path
 
         result, retcd = common_functions.add_learnware(learnware_path, semantic_specification, learnware_id)
+
+        if result["code"] == 0:
+            database.add_file_hash(learnware_id, file_hash)
+            pass
 
         return result, retcd
 

@@ -347,6 +347,7 @@ def get_learnware_owners(learnware_ids):
 
 def remove_learnware(by, value):
     context.database.execute(f"DELETE FROM tb_user_learnware_relation WHERE {by} = :{by}", {by: value})
+    context.database.execute(f"DELETE FROM tb_learnware_hash WHERE {by} = :{by}", {by: value})
     return 1
 
 
@@ -595,6 +596,27 @@ def get_user_id_by_learnware(learnware_id):
 def update_user_role(user_id, role):
     result = context.database.execute(
         "UPDATE tb_user SET role = :role WHERE id = :user_id", {"user_id": user_id, "role": role}
+    )
+    pass
+
+
+def get_learnware_id_by_file_hash(file_hash):
+    result = context.database.execute(
+        "SELECT learnware_id FROM tb_learnware_hash WHERE file_hash = :file_hash", {"file_hash": file_hash}
+    )
+
+    if len(result) == 0:
+        return None
+    else:
+        return result[0][0]
+
+
+def add_file_hash(learnware_id, file_hash):
+    context.database.execute(
+        """INSERT INTO tb_learnware_hash (learnware_id, file_hash) VALUES (:learnware_id, :file_hash)
+           ON CONFLICT(learnware_id) DO UPDATE set file_hash=:file_hash
+        """,
+        {"learnware_id": learnware_id, "file_hash": file_hash},
     )
     pass
 

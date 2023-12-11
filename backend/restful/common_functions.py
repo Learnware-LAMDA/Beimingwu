@@ -7,6 +7,7 @@ from learnware.market import BaseChecker
 import context
 import os
 from lib import redis_utils
+from lib import common_utils
 
 
 def add_learnware(learnware_path, semantic_specification, learnware_id):
