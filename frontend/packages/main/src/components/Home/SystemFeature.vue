@@ -5,8 +5,8 @@ import anime from "animejs";
 import TerminalWindow from "../App/TerminalWindow.vue";
 import TerminalCode from "../App/TerminalCode.vue";
 import TerminalIpythonHeader from "../App/TerminalIpythonHeader.vue";
+import SearchDemo from "../App/SearchDemo.vue";
 import ScrollAnimate from "../App/ScrollAnimate.vue";
-import recommendation from "../../assets/images/home/smart-recommendation.png?url";
 import { FEATURE_CODE_FRAGMENTS } from "../../constants";
 import ProgressedCode from "../App/ProgressedCode.vue";
 import process from "../../assets/images/home/process.svg?url";
@@ -243,20 +243,21 @@ nextTick(() => {
           <div class="h-main-full relative w-full sm:w-2/3">
             <div
               ref="recommendationRef"
-              class="absolute flex w-full flex-col items-center justify-center bg-gray-50"
+              class="absolute flex h-full w-full flex-col items-center justify-center bg-gray-50"
               style="top: -50%; transform: translateY(-50%)"
             >
               <div class="p-2 text-lg sm:hidden">
                 <div class="text-2xl font-bold">
-                  {{ t(`Home.Feature.Recommendation.Name`) }}
+                  {{ t("Home.Feature.Recommendation.Name") }}
                 </div>
                 <div class="my-4 text-sm">
-                  {{ t(`Home.Feature.Recommendation.Description`) }}
+                  {{ t("Home.Feature.Recommendation.Description") }}
                 </div>
               </div>
-              <img
-                class="w-full"
-                :src="recommendation"
+              <search-demo
+                class="aspect-[5/3] w-full"
+                :show-multi-recommended="true"
+                :loading="false"
               />
             </div>
 
@@ -282,7 +283,7 @@ nextTick(() => {
                 title="Python"
                 :model-value="tabIndex"
                 :tabs="tabs"
-                class="w-full flex-1 overflow-hidden bg-gray-900"
+                class="aspect-[5/3] w-full overflow-hidden bg-gray-900"
               >
                 <terminal-code>
                   <terminal-ipython-header />
@@ -342,10 +343,12 @@ nextTick(() => {
                 class="absolute w-full px-5 md:px-0"
                 style="top: 50%; transform: translateY(-50%); opacity: 0"
               >
-                <div class="text-base font-medium md:text-lg lg:text-2xl xl:text-3xl">
+                <div
+                  class="text-lg font-medium md:text-2xl lg:text-3xl lg:leading-[2.5rem] xl:text-4xl xl:leading-[3rem]"
+                >
                   {{ t(`Home.Feature.Recommendation.Name`) }}
                 </div>
-                <div class="mt-5 text-xs lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
+                <div class="mt-5 text-sm lg:mt-7 lg:text-base xl:mt-10 xl:text-lg">
                   {{ t(`Home.Feature.Recommendation.Description`) }}
                 </div>
               </div>
@@ -358,7 +361,7 @@ nextTick(() => {
                   v-for="i in 2"
                   :key="i"
                   ref="loadAndReuseTitleRefs"
-                  class="text-base font-medium md:text-lg lg:text-2xl xl:text-3xl"
+                  class="text-lg font-medium md:text-2xl lg:text-3xl lg:leading-[2.5rem] xl:text-4xl xl:leading-[3rem]"
                   style="opacity: 0"
                 >
                   {{ t(`Home.Feature.loadAndReuse.Name${i}`) }}
@@ -376,7 +379,9 @@ nextTick(() => {
                 class="absolute w-full px-5 md:px-0"
                 style="top: 50%; transform: translateY(-50%); opacity: 0"
               >
-                <div class="text-base font-medium md:text-lg lg:text-2xl xl:text-3xl">
+                <div
+                  class="text-lg font-medium md:text-2xl lg:text-3xl lg:leading-[2.5rem] xl:text-4xl xl:leading-[3rem]"
+                >
                   {{ t(`Home.Feature.Privacy.Name`) }}
                 </div>
                 <div class="mt-5 text-xs lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
@@ -388,7 +393,9 @@ nextTick(() => {
                 class="absolute w-full px-5 md:px-0"
                 style="top: 50%; transform: translateY(-50%); opacity: 0"
               >
-                <div class="text-base font-medium md:text-lg lg:text-2xl xl:text-3xl">
+                <div
+                  class="text-lg font-medium md:text-2xl lg:text-3xl lg:leading-[2.5rem] xl:text-4xl xl:leading-[3rem]"
+                >
                   {{ t(`Home.Feature.OpenSource.Name`) }}
                 </div>
                 <div class="mt-5 text-xs lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
