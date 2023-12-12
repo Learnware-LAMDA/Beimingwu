@@ -218,6 +218,8 @@ class Summary(flask_restful.Resource):
 
         count_detail = engine_helper.get_learnware_count_detail()
 
+        count_queued = database.get_learnware_count_queued_or_processing()
+
         result = {
             "code": 0,
             "msg": "Get summary success.",
@@ -229,6 +231,7 @@ class Summary(flask_restful.Resource):
                 "count_learnware_awaiting_storage": count_unverified_learnware_not_in_engine,
                 "count_download": count_download,
                 "count_detail": count_detail,
+                "count_queued": count_queued,
             },
         }
 
