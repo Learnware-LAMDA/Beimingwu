@@ -5,5 +5,6 @@ export default {
   UnverifiedLearnwareCount: "Unverified Learnware Count",
   AwaitingStorageLearnwareCount: "Awaiting Storage Learnware Count",
   DownloadCount: "Download Count",
+  QueuedCount: "Queued Count",
   Chart: "Chart",
 };

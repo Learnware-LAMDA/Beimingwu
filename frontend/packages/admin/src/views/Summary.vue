@@ -25,6 +25,7 @@ const countVerifiedLearnware = ref(0);
 const countUnverifiedLearnware = ref(0);
 const countLearnwareAwaitingStorage = ref(0);
 const countDownload = ref(0);
+const countQueued = ref(0);
 const countDetail = ref<CountDetail>();
 
 const options = ref({
@@ -72,6 +73,11 @@ const numberItems = computed(() => {
       icon: "mdi-download",
       value: countDownload.value,
     },
+    {
+      title: t("Summary.QueuedCount"),
+      icon: "mdi-clock-end",
+      value: countQueued.value,
+    },
   ];
 });
 
@@ -95,6 +101,7 @@ function fetchSummary(): void {
           count_verified_learnware: number;
           count_unverified_learnware: number;
           count_learnware_awaiting_storage: number;
+          count_queued: number;
           count_detail: CountDetail;
         };
       }) => {
@@ -105,6 +112,7 @@ function fetchSummary(): void {
           countUnverifiedLearnware.value = res.data.count_unverified_learnware;
           countLearnwareAwaitingStorage.value = res.data.count_learnware_awaiting_storage;
           countDownload.value = res.data.count_download;
+          countQueued.value = res.data.count_queued;
           countDetail.value = res.data.count_detail;
         } else if (res.code === 11) {
           Router.push("/login");
