@@ -25,6 +25,7 @@ const countVerifiedLearnware = ref(0);
 const countUnverifiedLearnware = ref(0);
 const countLearnwareAwaitingStorage = ref(0);
 const countDownload = ref(0);
+const countSearch = ref(0);
 const countQueued = ref(0);
 const countDetail = ref<CountDetail>();
 
@@ -74,6 +75,11 @@ const numberItems = computed(() => {
       value: countDownload.value,
     },
     {
+      title: t("Summary.SearchCount"),
+      icon: "mdi-magnify",
+      value: countSearch.value,
+    },
+    {
       title: t("Summary.QueuedCount"),
       icon: "mdi-clock-end",
       value: countQueued.value,
@@ -98,6 +104,7 @@ function fetchSummary(): void {
           count_verified_user: number;
           count_unverified_user: number;
           count_download: number;
+          count_search: number;
           count_verified_learnware: number;
           count_unverified_learnware: number;
           count_learnware_awaiting_storage: number;
@@ -112,6 +119,7 @@ function fetchSummary(): void {
           countUnverifiedLearnware.value = res.data.count_unverified_learnware;
           countLearnwareAwaitingStorage.value = res.data.count_learnware_awaiting_storage;
           countDownload.value = res.data.count_download;
+          countSearch.value = res.data.count_search;
           countQueued.value = res.data.count_queued;
           countDetail.value = res.data.count_detail;
         } else if (res.code === 11) {
