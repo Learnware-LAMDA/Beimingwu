@@ -1,6 +1,6 @@
 import { checkedFetch, useProgressedFetch } from "../utils";
 import { getSemanticSpecification } from "../engine";
-import { BACKEND_URL } from "..";
+import { BACKEND_URL } from "../../constants";
 import type {
   Name,
   DataType,

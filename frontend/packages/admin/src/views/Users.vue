@@ -6,7 +6,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { fetchex, saveContentToFile } from "../utils";
-import { BACKEND_URL } from "@main/request";
+import { BACKEND_URL } from "@main/constants";
 import SuccessDialog from "@main/components/Dialogs/SuccessDialog.vue";
 import ConfirmDialog from "@main/components/Dialogs/ConfirmDialog.vue";
 import PageUserList from "@admin/components/User/PageUserList.vue";
