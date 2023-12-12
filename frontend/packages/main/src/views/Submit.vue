@@ -27,7 +27,7 @@ const router = useRouter();
 
 const store = useStore();
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 const name = useField<Name>({
   defaultValue: "",
@@ -556,9 +556,7 @@ onActivated(init);
             <v-card-text class="py-2 text-sm sm:text-lg">
               <a
                 class="text-black underline"
-                :href="`https://docs.bmwu.cloud/${
-                  locale === 'zh-cn' ? 'zh-CN' : 'en'
-                }/user-guide/learnware-upload/prepare.html`"
+                :href="t('Url.Docs.PrepareLearnwareGuide')"
                 target="_blank"
               >
                 {{ t("Submit.File.ClickHere") }}

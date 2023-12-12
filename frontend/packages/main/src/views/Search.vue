@@ -27,7 +27,7 @@ const display = useDisplay();
 const route = useRoute();
 const router = useRouter();
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 const filters = ref<Filter>({
   id: "",
@@ -386,7 +386,7 @@ onActivated(() => {
         >
           <a
             class="underline"
-            href="https://docs.bmwu.cloud/zh-CN/user-guide/learnware-deploy.html"
+            :href="t('Url.Docs.DeployLearnwareGuide')"
             target="_blank"
           >
             {{ t("Search.ClickHere") }}
@@ -431,11 +431,7 @@ onActivated(() => {
           {{ t("Search.HeterogeneousNotWorkingTips") }}
           <a
             class="underline"
-            :href="
-              locale === 'zh-cn'
-                ? 'https://docs.bmwu.cloud/zh-CN/user-guide/learnware-search.html#%E5%BC%82%E6%9E%84%E8%A1%A8%E6%A0%BC%E6%9F%A5%E6%90%9C'
-                : 'https://docs.bmwu.cloud/en/user-guide/learnware-search.html#heterogeneous-table-search'
-            "
+            :href="t('Url.HeteroSearchGuide')"
             target="_blank"
           >
             {{ t("Search.HeterogeneousNotWorkingTips2") }}
