@@ -431,7 +431,7 @@ onActivated(() => {
           {{ t("Search.HeterogeneousNotWorkingTips") }}
           <a
             class="underline"
-            :href="t('Url.HeteroSearchGuide')"
+            :href="t('Url.Docs.HeteroSearchGuide')"
             target="_blank"
           >
             {{ t("Search.HeterogeneousNotWorkingTips2") }}
