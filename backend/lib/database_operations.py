@@ -569,7 +569,11 @@ def get_learnware_count_unverified():
 def get_download_count():
     result = context.database.execute("SELECT COUNT(1) FROM tb_log WHERE name = 'download_learnware'")
     return result[0][0]
-    pass
+
+
+def get_search_count():
+    result = context.database.execute("SELECT COUNT(1) FROM tb_log WHERE name = 'search_learnware'")
+    return result[0][0]
 
 
 def get_learnware_count_queued_or_processing():
