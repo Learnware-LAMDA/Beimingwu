@@ -24,20 +24,21 @@ function emitConfirm(): void {
     v-model="dialog"
     class="mx-auto w-full max-w-[600px]"
   >
-    <v-card class="mx-2">
-      <v-card-title class="m-2 flex">
+    <v-card>
+      <div class="flex p-5 text-lg font-medium sm:text-xl">
         <v-icon
+          class="mr-1"
           icon="mdi-alert"
           color="red"
         />
         <slot name="title" />
-      </v-card-title>
-      <v-card-text>
+      </div>
+      <div class="p-4">
         <slot name="text" />
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer class="flex-1" />
+      </div>
+      <div class="flex justify-end space-x-2 p-4">
         <v-btn
+          variant="flat"
           class="bg-red"
           @click="() => emitConfirm()"
         >
@@ -49,7 +50,7 @@ function emitConfirm(): void {
         >
           Cancel
         </v-btn>
-      </v-card-actions>
+      </div>
     </v-card>
   </v-dialog>
 </template>

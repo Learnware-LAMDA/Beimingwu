@@ -372,8 +372,8 @@ onActivated(() => {
       @confirm="() => resetPassword(Number(resetId))"
     >
       <template #title>
-        Confirm to reset password of &nbsp; <b>{{ resetName }}</b
-        >?
+        Confirm to reset password of&nbsp;
+        <b> {{ resetName }} </b>?
       </template>
       <template #text>
         Password of user <b>{{ resetName }}</b> will be reset <i>permanently</i>. Do you really want
@@ -406,8 +406,8 @@ onActivated(() => {
       @confirm="() => deleteUser(Number(deleteId))"
     >
       <template #title>
-        Confirm to delete &nbsp; <b>{{ deleteName }}</b
-        >?
+        Confirm to delete&nbsp;
+        <b> {{ deleteName }} </b>?
       </template>
       <template #text>
         User <b>{{ deleteName }}</b> will be deleted in the user list <i>permanently</i>. Do you
