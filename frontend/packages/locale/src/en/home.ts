@@ -7,8 +7,8 @@ export default {
     Submit: "Be A Developer",
     LearnwareName: "Learnware",
     LearnwareDescription: "This is a learnware.",
-    ServeralLinesOfCode: "Solve Your Tasks",
-    SolveYourTasks: "with several lines of code",
+    ServeralLinesOfCode: "Solve Tasks",
+    SolveYourTasks: "with a few lines",
     Developer: "Developer",
     Example: {
       Simplified: "Simplified demo",

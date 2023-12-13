@@ -38,12 +38,12 @@ const msgs = computed(() => [
   {
     id: 0,
     text: t("Home.Cover.ServeralLinesOfCode"),
-    class: "text-5xl md:text-6xl lg:text-7xl",
+    class: "text-5xl md:text-6xl lg:text-6xl xl:text-7xl",
   },
   {
     id: 1,
     text: t("Home.Cover.SolveYourTasks"),
-    class: "text-3xl md:text-4xl lg:text-6xl",
+    class: "text-3xl md:text-4xl lg:text-5xl xl:text-6xl",
   },
 ]);
 const msgRefs = ref<HTMLDivElement[]>([]);
