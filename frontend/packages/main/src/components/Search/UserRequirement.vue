@@ -313,12 +313,26 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col">
-    <v-btn
-      class="absolute right-4 top-2 z-20 bg-white opacity-40 transition-all hover:opacity-100"
-      icon="mdi-close"
-      variant="flat"
-      @click="reset"
-    />
+    <v-scale-transition>
+      <v-btn
+        v-if="
+          modelValue.id ||
+          modelValue.name ||
+          modelValue.dataType ||
+          modelValue.taskType ||
+          modelValue.libraryType ||
+          modelValue.scenarioList.length ||
+          modelValue.licenseList.length ||
+          modelValue.files.length
+        "
+        icon
+        class="absolute right-4 top-2 z-20 bg-gray-400 transition-all"
+        variant="flat"
+        @click="reset"
+      >
+        <v-icon color="white">mdi-refresh</v-icon>
+      </v-btn>
+    </v-scale-transition>
     <div
       ref="filterElement"
       class="filter"
