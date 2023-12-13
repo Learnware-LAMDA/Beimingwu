@@ -201,7 +201,7 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
         ...addColorAndSplit('"learnware_ids"', yellow),
         ..."]",
       ],
-      result: [startWithOut(3), ..."Search Result: ['00002018', '00002016', '00002017']"],
+      result: [startWithOut(3), ..."Search result: ['00002018', '00002016', '00002017']"],
       reuse: [
         "<br />" + startWithIn(4),
         ...addColorAndSplit("# " + t("CodeFragments.LoadLearnware"), gray),
