@@ -150,7 +150,7 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
         ..."y_pred = learnware.predict(data)",
         lineContinue(),
         ..."accuracy_score(y_pred, target)",
-        "<br /><br />",
+        "<br />",
 
         startWithOut(5),
         ..."Classification accuracy: 100%",
@@ -219,7 +219,7 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
         ...").predict(data)",
         lineContinue(),
         ..."accuracy_score(y_pred, target)",
-        "<br /><br />",
+        "<br />",
 
         startWithOut(5),
         ..."Classification accuracy: 100%",
