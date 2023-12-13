@@ -72,6 +72,7 @@ _DEFAULT_CONFIG = {
     "upload_path": UPLOAD_PATH,
     "temp_path": TEMP_PATH,
     "backup_path": BACKUP_PATH,
+    "log_path": os.path.join(DATA_PATH, "logs"),
     "backup_max_count": 7,
     "remove_upload_file": False,
     "register_email_patterns": [""],
