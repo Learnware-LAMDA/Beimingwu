@@ -1,4 +1,5 @@
-import { BACKEND_URL, checkedFetch } from "../request";
+import { checkedFetch } from "../request";
+import { BACKEND_URL } from "../constants";
 
 function downloadLearnwareSync(id: string): Promise<void> {
   return checkedFetch(`${BACKEND_URL}/engine/generate_download_token`, {

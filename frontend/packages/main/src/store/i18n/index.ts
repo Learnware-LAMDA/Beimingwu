@@ -1,8 +1,8 @@
-import i18n from "../../i18n";
+import i18n, { type Language } from "../../i18n";
 import dayjs from "dayjs";
 
 interface I18nLocaleState {
-  locale: string;
+  locale: Language;
 }
 
 const i18nLocale = {
@@ -10,14 +10,14 @@ const i18nLocale = {
     locale: "zh-cn",
   },
   mutations: {
-    setLocale(state: I18nLocaleState, locale: string): void {
+    setLocale(state: I18nLocaleState, locale: Language): void {
       state.locale = locale;
       i18n.global.locale.value = locale;
       dayjs.locale(locale);
     },
   },
   getters: {
-    getLocale(state: I18nLocaleState): string {
+    getLocale(state: I18nLocaleState): Language {
       return state.locale;
     },
   },

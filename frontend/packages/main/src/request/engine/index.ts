@@ -15,7 +15,7 @@ import type {
   LearnwareDetailInfoWithUserId,
   LearnwareSearchInfo,
 } from "@beiming-system/types/response";
-import { BACKEND_URL } from "..";
+import { BACKEND_URL } from "../../constants";
 
 const BASE_URL = BACKEND_URL + "/engine";
 

@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n";
 import { Pie } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { fetchex } from "../utils";
-import { BACKEND_URL } from "@main/request";
+import { BACKEND_URL } from "@main/constants";
 import Router from "../router";
 import type { DataType, TaskType, LibraryType, Scenario } from "@beiming-system/types/learnware";
 

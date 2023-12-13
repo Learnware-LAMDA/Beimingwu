@@ -10,6 +10,7 @@ import { resolve } from "path";
 export default defineConfig({
   resolve: {
     alias: {
+      "@main": resolve(__dirname, "../main/src"),
       "@beiming-system/types": resolve("../types/src/index"),
       "@beiming-system/hooks": resolve("../hooks/src/index"),
       "@beiming-system/locale": resolve("../locale/src/index"),

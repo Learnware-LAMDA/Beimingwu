@@ -3,12 +3,10 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
 const router = useRouter();
-const { locale } = useI18n();
+const { t } = useI18n();
 
 router.go(-1);
-location.href = `https://docs.bmwu.cloud${
-  locale.value.toLocaleLowerCase() === "zh-cn" ? "/zh-CN/" : ""
-}`;
+location.href = t("Url.Docs.Home");
 </script>
 
 <template>
