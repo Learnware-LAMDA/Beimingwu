@@ -45,7 +45,7 @@ class TestEngine(unittest.TestCase):
         testops.delete_learnware(TestEngine.learnware_id, headers)
         TestEngine.server_process.kill()
         TestEngine.server_process.join()
-        testops.cleanup_folder()
+        # testops.cleanup_folder()
         pass
 
     def login(self, email="test@localhost", password="test"):
@@ -223,7 +223,7 @@ class TestEngine(unittest.TestCase):
         pass
 
     def test_download_learnware_unverified(self):
-        learnware_id = testops.add_test_learnware_unverified("test@localhost", "test", "test_learnware.zip")
+        learnware_id = testops.add_test_learnware_unverified("test@localhost", "test", "test_learnware2.zip")
         headers = self.login()
         result = testops.url_request(
             "engine/download_learnware",
@@ -238,14 +238,14 @@ class TestEngine(unittest.TestCase):
             f.write(result.content)
             pass
 
-        learnware_filename = os.path.join("tests", "data", "test_learnware.zip")
+        learnware_filename = os.path.join("tests", "data", "test_learnware2.zip")
         self.assertEqual(os.path.getsize(downloaded_filename), os.path.getsize(learnware_filename))
 
         os.remove(downloaded_filename)
         pass
 
     def test_download_learnware_unverified_not_owner(self):
-        learnware_id = testops.add_test_learnware_unverified("test@localhost", "test", "test_learnware.zip")
+        learnware_id = testops.add_test_learnware_unverified("test@localhost", "test", "test_learnware2.zip")
         headers = self.login(email="test2@localhost")
         result = testops.url_request(
             "engine/download_learnware",
@@ -280,7 +280,7 @@ class TestEngine(unittest.TestCase):
     def test_download_by_token(
         self,
     ):
-        learnware_id = testops.add_test_learnware("test@localhost", "test", "test_learnware.zip")
+        learnware_id = testops.add_test_learnware("test@localhost", "test", "test_learnware2.zip")
         headers = self.login()
         result = testops.url_request(
             "engine/generate_download_token",
@@ -302,7 +302,7 @@ class TestEngine(unittest.TestCase):
             f.write(result.content)
             pass
 
-        learnware_filename = os.path.join("tests", "data", "test_learnware.zip")
+        learnware_filename = os.path.join("tests", "data", "test_learnware2.zip")
         self.assertEqual(os.path.getsize(downloaded_filename), os.path.getsize(learnware_filename))
 
         os.remove(downloaded_filename)
@@ -312,7 +312,7 @@ class TestEngine(unittest.TestCase):
     def test_download_by_token_unverified_not_owner(
         self,
     ):
-        learnware_id = testops.add_test_learnware_unverified("test@localhost", "test", "test_learnware.zip")
+        learnware_id = testops.add_test_learnware_unverified("test@localhost", "test", "test_learnware2.zip")
         headers = self.login(email="test2@localhost")
         result = testops.url_request(
             "engine/generate_download_token",

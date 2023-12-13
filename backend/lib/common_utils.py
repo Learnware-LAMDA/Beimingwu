@@ -44,59 +44,6 @@ def delete_folder_content(path):
     pass
 
 
-def search_sensitive_words(text, sensitive_pattern):
-    """
-    Search sensitive words in text.
-    """
-    stopwords = set(
-        [
-            "!",
-            '"',
-            "#",
-            "$",
-            "%",
-            "&",
-            "'",
-            "(",
-            ")",
-            "*",
-            "+",
-            ",",
-            "-",
-            ".",
-            "/",
-            ":",
-            ";",
-            "<",
-            "=",
-            ">",
-            ">>",
-            "?",
-            "@",
-            "[",
-            "\\",
-            "]",
-            "^",
-            "}",
-            "~",
-        ]
-    )
-
-    if sensitive_pattern is None:
-        return []
-
-    for ch in stopwords:
-        text = text.replace(ch, " ")
-        pass
-
-    ret = []
-    for m in sensitive_pattern.finditer(text):
-        ret.append(m.group(0).strip())
-        pass
-
-    return ret
-
-
 def get_file_hash(filename: str) -> str:
     """
     Get the md5 value of a file.

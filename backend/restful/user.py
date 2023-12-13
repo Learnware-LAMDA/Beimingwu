@@ -20,6 +20,7 @@ import lib.data_utils as data_utils
 import uuid
 from . import common_functions
 from lib import redis_utils
+from lib import sensitive_words_utils
 from lib import common_utils
 
 
@@ -200,7 +201,7 @@ class UpdateLearnwareApi(flask_restful.Resource):
             # check sensitive words
             if context.sensitive_pattern is not None:
                 semantic_str = json.dumps(semantic_specification, ensure_ascii=False)
-                matches = common_utils.search_sensitive_words(semantic_str, context.sensitive_pattern)
+                matches = sensitive_words_utils.search_sensitive_words(semantic_str, context.sensitive_pattern)
                 if len(matches) > 0:
                     return {"code": 51, "msg": f"Sensitive words {','.join(matches)} in semantic specification"}
                 pass
