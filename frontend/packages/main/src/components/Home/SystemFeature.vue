@@ -372,7 +372,7 @@ watch(
                 >
                   {{ t(`Home.Feature.Recommendation.Name`) }}
                 </div>
-                <div class="mt-5 text-sm lg:mt-7 lg:text-base xl:mt-10 xl:text-lg">
+                <div class="mt-5 text-xs text-gray-500 lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
                   {{ t(`Home.Feature.Recommendation.Description`) }}
                 </div>
               </div>
@@ -392,7 +392,7 @@ watch(
                 </div>
                 <div
                   ref="loadAndReuseDescriptionTextRef"
-                  class="mt-5 text-xs lg:mt-7 lg:text-sm xl:mt-10 xl:text-base"
+                  class="mt-5 text-xs text-gray-500 lg:mt-7 lg:text-sm xl:mt-10 xl:text-base"
                   style="opacity: 0"
                 >
                   {{ t(`Home.Feature.loadAndReuse.Description`) }}
@@ -408,7 +408,7 @@ watch(
                 >
                   {{ t(`Home.Feature.Privacy.Name`) }}
                 </div>
-                <div class="mt-5 text-xs lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
+                <div class="mt-5 text-xs text-gray-500 lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
                   {{ t(`Home.Feature.Privacy.Description`) }}
                 </div>
               </div>
@@ -422,7 +422,7 @@ watch(
                 >
                   {{ t(`Home.Feature.OpenSource.Name`) }}
                 </div>
-                <div class="mt-5 text-xs lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
+                <div class="mt-5 text-xs text-gray-500 lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
                   {{ t(`Home.Feature.OpenSource.Description`) }}
                 </div>
               </div>
