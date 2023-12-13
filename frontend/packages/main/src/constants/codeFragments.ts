@@ -2,7 +2,7 @@ import CODE_COLOR from "./codeColor";
 import { computed, type ComputedRef } from "vue";
 import { useI18n } from "vue-i18n";
 
-const { green, purple, yellow, gray } = CODE_COLOR;
+const { green, purple, yellow, gray, red } = CODE_COLOR;
 
 export interface CodeFragment {
   index: number;
@@ -20,6 +20,10 @@ function startWithIn(index: number): string {
   return `<b style='color: ${green}'>In [${index}]:&nbsp;</b>`;
 }
 
+function startWithOut(index: number): string {
+  return `<b style='color: ${red}'>Out[${index}]:&nbsp;</b>`;
+}
+
 function fromImport(from: string, _import: string): string[] {
   return [
     ...addColorAndSplit("from ", green),
@@ -29,6 +33,7 @@ function fromImport(from: string, _import: string): string[] {
   ];
 }
 
+/*
 function importAs(_import: string, _as: string): string[] {
   return [
     ...addColorAndSplit("import ", green),
@@ -37,6 +42,7 @@ function importAs(_import: string, _as: string): string[] {
     ...addColorAndSplit(_as, purple),
   ];
 }
+*/
 
 function lineContinue(): string {
   return `<br />&nbsp;&nbsp;&nbsp;<span style="color: ${green}">...:</span>&nbsp;`;
@@ -45,34 +51,6 @@ function lineContinue(): string {
 function tab(): string {
   return "&nbsp;&nbsp;&nbsp;&nbsp;";
 }
-
-// python list
-const result = [
-  "[",
-  ...[
-    "00001987",
-    "00001986",
-    "00001982",
-    "00001981",
-    "00001980",
-    "00001979",
-    "00001978",
-    "00001975",
-    "00001974",
-    "00001973",
-  ].reduce(
-    (acc: string[], cur: string, index: number): string[] => [
-      ...acc,
-      "'",
-      ...Array.from(cur),
-      "'",
-      index < 9 ? "," : "",
-      index < 9 ? "<br />" : "",
-    ],
-    [],
-  ),
-  "]<br />",
-];
 
 export function getCoverCode(): ComputedRef<CodeFragment[]> {
   const { t } = useI18n();
@@ -83,25 +61,32 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
       name: "Simplified",
       import: [
         startWithIn(1),
-        ...fromImport("learnware", "LearnwareClient"),
+        ...fromImport("learnware", "LearnwareClient, BaseUserInfo, Reuser"),
 
         `<br /><br />${startWithIn(2)}`,
+        ...addColorAndSplit("# " + t("CodeFragments.UserPrepare"), gray),
+        lineContinue(),
+        ..."client = LearnwareClient()",
+        lineContinue(),
+        ..."user_info = BaseUserInfo(...)",
+
+        `<br /><br />${startWithIn(3)}`,
         ...addColorAndSplit("# " + t("CodeFragments.SearchLearnware"), gray),
         lineContinue(),
         ..."learnware_ids = client.search_learnware(user_info)",
       ],
-      result: [..."...", "<br />"],
+      result: [""],
       reuse: [
-        "<br />" + startWithIn(3),
+        "<br />" + startWithIn(4),
         ...addColorAndSplit("# " + t("CodeFragments.LoadLearnware"), gray),
         lineContinue(),
         ..."learnware_list = client.load_learnware(learnware_ids)",
         "<br />",
 
-        "<br />" + startWithIn(4),
+        "<br />" + startWithIn(5),
         ...addColorAndSplit("# " + t("CodeFragments.ReuseLearnware"), gray),
         lineContinue(),
-        ..."y_predict = Reuser(learnware_list).predict(X)",
+        ..."y_pred = Reuser(learnware_list).predict(X)",
       ],
     },
     {
@@ -109,13 +94,15 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
       name: "Single",
       import: [
         startWithIn(1),
-        ...importAs("numpy", "np"),
-        lineContinue(),
         ...fromImport("learnware.market", "BaseUserInfo"),
         lineContinue(),
         ...fromImport("learnware.specification", "generate_stat_spec"),
         lineContinue(),
         ...fromImport("learnware.client", "LearnwareClient"),
+        lineContinue(),
+        ...fromImport("sklearn.datasets", "load_iris"),
+        lineContinue(),
+        ...fromImport("sklearn.metrics", "accuracy_score"),
 
         `<br /><br />${startWithIn(2)}`,
         ...addColorAndSplit("# " + t("CodeFragments.UserPrepare"), gray),
@@ -123,10 +110,9 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
         ..."client = LearnwareClient()",
         lineContinue(),
         ..."client.login(your_email, your_token)",
-        ..."data = np.random.randn(",
-        ...addColorAndSplit("10000", green),
-        ...", ",
-        ...addColorAndSplit("10", green),
+        lineContinue(),
+        ..."data, target = load_iris(return_X_y=",
+        ...addColorAndSplit("True", green),
         ...")",
         lineContinue(),
         ..."rkme = generate_stat_spec(",
@@ -148,7 +134,7 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
         ...addColorAndSplit("0", green),
         ..."]",
       ],
-      result: [..."single_demo_output: ", ..."00001987"],
+      result: [startWithOut(3), ..."Search result: '00001987'"],
       reuse: [
         "<br />" + startWithIn(4),
         ...addColorAndSplit("# " + t("CodeFragments.LoadLearnware"), gray),
@@ -161,7 +147,13 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
         startWithIn(5),
         ...addColorAndSplit("# " + t("CodeFragments.ReuseLearnware"), gray),
         lineContinue(),
-        ..."y_predict = learnware.predict(data)",
+        ..."y_pred = learnware.predict(data)",
+        lineContinue(),
+        ..."accuracy_score(y_pred, target)",
+        "<br /><br />",
+
+        startWithOut(5),
+        ..."Classification accuracy: 100%",
       ],
     },
     {
@@ -169,8 +161,6 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
       name: "Multiple",
       import: [
         startWithIn(1),
-        ...importAs("numpy", "np"),
-        lineContinue(),
         ...fromImport("learnware.market", "BaseUserInfo"),
         lineContinue(),
         ...fromImport("learnware.specification", "generate_stat_spec"),
@@ -178,6 +168,10 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
         ...fromImport("learnware.client", "LearnwareClient"),
         lineContinue(),
         ...fromImport("learnware.reuse", "AveragingReuser"),
+        lineContinue(),
+        ...fromImport("sklearn.datasets", "load_digits"),
+        lineContinue(),
+        ...fromImport("sklearn.metrics", "accuracy_score"),
 
         `<br /><br />${startWithIn(2)}`,
         ...addColorAndSplit("# " + t("CodeFragments.UserPrepare"), gray),
@@ -185,10 +179,9 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
         ..."client = LearnwareClient()",
         lineContinue(),
         ..."client.login(your_email, your_token)",
-        ..."data = np.random.randn(",
-        ...addColorAndSplit("10000", green),
-        ...", ",
-        ...addColorAndSplit("10", green),
+        lineContinue(),
+        ..."data, target = load_digits(return_X_y=",
+        ...addColorAndSplit("True", green),
         ...")",
         lineContinue(),
         ..."rkme = generate_stat_spec(",
@@ -202,15 +195,13 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
         `<br /><br />${startWithIn(3)}`,
         ...addColorAndSplit("# " + t("CodeFragments.SearchLearnware"), gray),
         lineContinue(),
-        ..."learnware_id = client.search_learnware(user_info)[",
+        ..."learnware_ids = client.search_learnware(user_info)[",
         ...addColorAndSplit('"multiple"', yellow),
         ..."][",
         ...addColorAndSplit('"learnware_ids"', yellow),
-        ..."][",
-        ...addColorAndSplit("0", green),
         ..."]",
       ],
-      result: [..."multi_demo_output: ", ...result],
+      result: [startWithOut(3), ..."Search Result: ['00002018', '00002016', '00002017']"],
       reuse: [
         "<br />" + startWithIn(4),
         ...addColorAndSplit("# " + t("CodeFragments.LoadLearnware"), gray),
@@ -223,7 +214,15 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
         startWithIn(5),
         ...addColorAndSplit("# " + t("CodeFragments.ReuseLearnware"), gray),
         lineContinue(),
-        ..."pred_y = AveragingReuser(learnware_list).predict(data)",
+        ..."y_pred = AveragingReuser(learnware_list, mode=",
+        ...addColorAndSplit('"vote_by_label"', yellow),
+        ...").predict(data)",
+        lineContinue(),
+        ..."accuracy_score(y_pred, target)",
+        "<br /><br />",
+
+        startWithOut(5),
+        ..."Classification accuracy: 100%",
       ],
     },
   ]);
