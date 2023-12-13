@@ -237,6 +237,9 @@ class UpdateLearnwareApi(flask_restful.Resource):
             pass
 
         database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
+        if learnware_file is not None:
+            database.add_file_hash(learnware_id, file_hash)
+            pass
 
         return {"code": 0, "msg": "success"}, 200
 
