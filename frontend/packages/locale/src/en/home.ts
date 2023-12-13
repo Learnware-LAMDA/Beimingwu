@@ -29,10 +29,16 @@ export default {
   },
   Function: {
     Title: "What are the main functions of Beimingwu?",
-    SearchAndDeploy:
-      "Search and deploy learnwares: After the user submits the task requirements, Beimingwu will recommend learnwares that are helpful to the user's task according to the learnware specification and guide the user to deploy and reuse them.",
-    Submit:
-      "Submit high-quality learnwares: Developers can spontaneously submit various learnwares to Beimingwu, and the system will check the quality of these learnwares and organize them further.",
+    SearchAndDeploy: {
+      Title: "Search and deploy learnwares: ",
+      Description:
+        "After the user submits the task requirements, Beimingwu will recommend learnwares that are helpful to the user's task according to the learnware specification and guide the user to deploy and reuse them.",
+    },
+    Submit: {
+      Title: "Submit high-quality learnwares: ",
+      Description:
+        "Developers can spontaneously submit various learnwares to Beimingwu, and the system will check the quality of these learnwares and organize them further.",
+    },
   },
   Feature: {
     Title: "System Features",

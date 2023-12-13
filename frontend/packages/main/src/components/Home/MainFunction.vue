@@ -8,14 +8,15 @@ const { t } = useI18n();
 <template>
   <div class="mx-auto w-full max-w-[1200px] py-20 md:px-10 md:py-32">
     <div class="my-8 px-5 md:px-0">
-      <div class="my-5 text-3xl lg:my-7 lg:text-4xl xl:my-10 xl:text-5xl">
+      <div class="my-5 text-3xl font-medium lg:my-7 lg:text-4xl xl:my-10 xl:text-4xl">
         {{ t("Home.Function.Title") }}
       </div>
       <p class="text-gray-500">
-        {{ t("Home.Function.SearchAndDeploy") }}
+        <b> {{ t("Home.Function.SearchAndDeploy.Title") }} </b
+        >{{ t("Home.Function.SearchAndDeploy.Description") }}
       </p>
       <p class="text-gray-500">
-        {{ t("Home.Function.Submit") }}
+        <b> {{ t("Home.Function.Submit.Title") }} </b>{{ t("Home.Function.Submit.Description") }}
       </p>
     </div>
 

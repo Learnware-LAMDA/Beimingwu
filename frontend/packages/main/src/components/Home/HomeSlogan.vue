@@ -199,7 +199,7 @@ watch(
           <div class="h-[85vh] w-full max-w-[1800px]">
             <div class="relative h-full">
               <div
-                class="absolute aspect-[9/16] max-w-7xl transform transition-all duration-500 lg:aspect-video"
+                class="absolute aspect-[10/16] max-w-7xl transform transition-all duration-500 lg:aspect-video"
                 :class="
                   progress === 0
                     ? ['right-1/2 w-full translate-x-1/2']
@@ -289,7 +289,7 @@ watch(
                 </div>
               </div>
               <div
-                class="pointer-events-none absolute left-0 z-20 flex h-full w-full flex-col items-center justify-center font-medium text-white opacity-80 sm:w-2/5"
+                class="pointer-events-none absolute left-0 z-20 flex h-full w-full flex-col items-center justify-center font-medium text-white opacity-80 md:w-2/5"
               >
                 <div
                   v-for="msg in msgs"

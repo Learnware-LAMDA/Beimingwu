@@ -638,7 +638,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .filter {
-  @apply w-full p-2 sm:px-5 md:h-full md:overflow-y-auto;
+  @apply w-full flex-1 overflow-y-auto p-2 sm:px-5 md:h-full;
 
   & > * {
     @apply mt-2;

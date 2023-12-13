@@ -46,7 +46,7 @@ const modelValue = computed<number>({
       <div
         v-for="(tab, index) in tabs"
         :key="index"
-        class="flex-1 cursor-pointer border-gray-600 py-1 text-center text-xs text-white"
+        class="flex-1 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap border-gray-600 px-2 py-1 text-center text-xs text-white"
         :class="[
           modelValue === index ? 'rounded-t bg-gray-700' : 'bg-gray-800',
           index > 0 ? 'border-s' : '',

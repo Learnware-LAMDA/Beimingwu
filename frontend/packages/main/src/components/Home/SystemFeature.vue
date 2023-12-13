@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick } from "vue";
+import { ref, nextTick, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import anime from "animejs";
 import TerminalWindow from "../App/TerminalWindow.vue";
@@ -18,6 +18,8 @@ const FEATURE_CODE_FRAGMENTS = getFeatureCode();
 
 const recommendationRef = ref<HTMLDivElement | null>(null);
 const recommendationTextRef = ref<HTMLDivElement | null>(null);
+
+const scrollRef = ref<HTMLDivElement | null>(null);
 
 const loadAndReuseRef = ref<HTMLDivElement | null>(null);
 const loadAndReuseTextRef = ref<HTMLDivElement | null>(null);
@@ -38,8 +40,11 @@ const tabIndex = ref(0);
 
 const t1 = anime.timeline({ autoplay: false });
 
-function handleProgress(progress: number): void {
-  t1.seek(t1.duration * progress);
+const progress = ref<number>(0);
+
+function handleProgress(_progress: number): void {
+  progress.value = _progress;
+  t1.seek(t1.duration * _progress);
 }
 
 nextTick(() => {
@@ -232,6 +237,18 @@ nextTick(() => {
       3600,
     );
 });
+
+watch(
+  () => progress.value,
+  () => {
+    setTimeout(() => {
+      if (scrollRef.value) {
+        scrollRef.value.scrollTop = scrollRef.value.scrollHeight - scrollRef.value.clientHeight;
+      }
+    });
+  },
+  { deep: true },
+);
 </script>
 
 <template>
@@ -249,7 +266,7 @@ nextTick(() => {
               style="top: -50%; transform: translateY(-50%)"
             >
               <div class="p-2 text-lg sm:hidden">
-                <div class="text-2xl font-bold">
+                <div class="text-3xl font-medium">
                   {{ t("Home.Feature.Recommendation.Name") }}
                 </div>
                 <div class="my-4 text-sm">
@@ -272,7 +289,7 @@ nextTick(() => {
                 <div
                   v-for="i in 2"
                   :key="i"
-                  class="text-2xl font-bold"
+                  class="text-3xl font-medium"
                 >
                   {{ t(`Home.Feature.loadAndReuse.Name${i}`) }}
                 </div>
@@ -287,18 +304,23 @@ nextTick(() => {
                 :tabs="tabs"
                 class="aspect-[5/3] w-full overflow-hidden bg-gray-900"
               >
-                <terminal-code>
-                  <terminal-ipython-header />
-                  <progressed-code
-                    :progress="loadProgress"
-                    :fragments="FEATURE_CODE_FRAGMENTS[0].load"
-                  />
-                  <progressed-code
-                    v-if="loadProgress === 1"
-                    :progress="reuseProgress"
-                    :fragments="FEATURE_CODE_FRAGMENTS[0].reuse"
-                  />
-                </terminal-code>
+                <div
+                  ref="scrollRef"
+                  class="flex-1 overflow-y-hidden break-all bg-gray-800 opacity-90"
+                >
+                  <terminal-code>
+                    <terminal-ipython-header />
+                    <progressed-code
+                      :progress="loadProgress"
+                      :fragments="FEATURE_CODE_FRAGMENTS[0].load"
+                    />
+                    <progressed-code
+                      v-if="loadProgress === 1"
+                      :progress="reuseProgress"
+                      :fragments="FEATURE_CODE_FRAGMENTS[0].reuse"
+                    />
+                  </terminal-code>
+                </div>
               </terminal-window>
             </div>
 
@@ -308,7 +330,7 @@ nextTick(() => {
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
               <div class="p-2 text-lg sm:hidden">
-                <div class="text-2xl font-bold">
+                <div class="text-3xl font-medium">
                   {{ t(`Home.Feature.Privacy.Name`) }}
                 </div>
                 <div class="my-4 text-sm">
@@ -327,7 +349,7 @@ nextTick(() => {
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
               <div class="p-2 text-lg sm:hidden">
-                <div class="text-2xl font-bold">
+                <div class="text-3xl font-medium">
                   {{ t(`Home.Feature.OpenSource.Name`) }}
                 </div>
                 <div class="my-4 text-sm">
