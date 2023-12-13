@@ -15,6 +15,7 @@ import AllUser from "./allUser";
 import Summary from "./summary";
 import Error from "./error";
 import CodeFragments from "./codeFragments";
+import Url from "./url";
 
 export default {
   Page,
@@ -34,4 +35,5 @@ export default {
   Summary,
   Error,
   CodeFragments,
+  Url,
 };

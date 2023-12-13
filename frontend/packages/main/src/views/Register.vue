@@ -10,7 +10,6 @@ import { hex_md5 } from "../utils";
 import collaborationImg from "../assets/images/public/collaboration.svg?url";
 import { resendEmail } from "../request/auth";
 import { useTimeout } from "@beiming-system/hooks";
-import { showUserAgreement, showPrivacyPolicy } from "../request/protocol";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -123,6 +122,14 @@ function onResend(): Promise<void> {
     });
 }
 
+function handeClickShowUserAgreement(): void {
+  window.open(t("Url.Docs.UserAgreement"));
+}
+
+function handeClickShowPrivacyPolicy(): void {
+  window.open(t("Url.Docs.PrivacyPolicy"));
+}
+
 onUnmounted(() => {
   stopTimer();
 });
@@ -193,7 +200,7 @@ onUnmounted(() => {
 
       <v-card
         flat
-        class="mx-auto w-full p-2 sm:p-6"
+        class="mx-auto w-full border p-2 sm:p-6"
         max-width="500"
       >
         <v-scroll-y-transition>
@@ -256,14 +263,14 @@ onUnmounted(() => {
             <v-btn
               target="_blank"
               color="primary"
-              @click="showUserAgreement()"
+              @click="handeClickShowUserAgreement"
             >
               {{ t("Register.UserAgreement") }}
             </v-btn>
             <v-btn
               target="_blank"
               color="primary"
-              @click="showPrivacyPolicy()"
+              @click="handeClickShowPrivacyPolicy"
             >
               {{ t("Register.PrivacyPolicy") }}
             </v-btn>

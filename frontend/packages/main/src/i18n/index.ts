@@ -17,4 +17,5 @@ const i18n = createI18n({
   messages,
 });
 
+export type Language = keyof typeof messages;
 export default i18n;

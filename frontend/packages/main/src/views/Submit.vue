@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, onActivated, onMounted } from "vue";
-import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
@@ -26,11 +25,9 @@ import SubmitingDialog from "../components/Dialogs/SubmitingDialog.vue";
 const route = useRoute();
 const router = useRouter();
 
-const display = useDisplay();
-
 const store = useStore();
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 const name = useField<Name>({
   defaultValue: "",
@@ -446,8 +443,8 @@ onActivated(init);
 <template>
   <v-container class="sm:p-none h-full p-0">
     <v-card
-      class="relative m-auto w-full max-w-[1000px]"
-      :flat="display.name.value === 'xs'"
+      class="relative m-auto w-full max-w-[1000px] border"
+      flat
     >
       <v-scroll-y-transition>
         <v-card-actions v-if="success">
@@ -559,9 +556,7 @@ onActivated(init);
             <v-card-text class="py-2 text-sm sm:text-lg">
               <a
                 class="text-black underline"
-                :href="`https://docs.bmwu.cloud/${
-                  locale === 'zh-cn' ? 'zh-CN' : 'en'
-                }/user-guide/learnware-upload/prepare.html`"
+                :href="t('Url.Docs.PrepareLearnwareGuide')"
                 target="_blank"
               >
                 {{ t("Submit.File.ClickHere") }}

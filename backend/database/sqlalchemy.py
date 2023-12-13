@@ -70,7 +70,7 @@ class Log(DeclarativeBase):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     create_time = Column(DateTime, nullable=False)
-    name = Column(String(255), nullable=False)
+    name = Column(String(255), nullable=False, index=True)
     info = Column(Text, nullable=True)
 
     __table_args__ = (Index("idx_name_create_time", name, create_time), {})

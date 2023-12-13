@@ -1,10 +1,11 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import store from "../store";
+import { checkLoginStatus } from "../request/user";
 import type { Component } from "vue";
 import NProgress from "../plugins/nprogress";
 
 const Router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: [
     {
       path: "/",
@@ -189,22 +190,23 @@ const Router = createRouter({
   },
 });
 
-Router.beforeEach((to, from, next) => {
+Router.beforeEach(async (to, from, next) => {
   NProgress.start();
 
   if (from.name === to.name) {
     return next(false);
   }
   if (to.matched.some((record) => record.meta.requiredLogin)) {
-    if (store && !store.getters.getLoggedIn) {
+    try {
+      await checkLoginStatus();
+      next();
+    } catch (e) {
       store.commit("setShowGlobalError", true);
       store.commit("setGlobalErrorMsg", "Please login first.");
       next({
         path: "/login",
         query: { redirect: to.fullPath },
       });
-    } else {
-      next();
     }
   } else {
     next();

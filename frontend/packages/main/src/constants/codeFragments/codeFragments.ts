@@ -228,35 +228,41 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
   ]);
 }
 
-export const featureCode = [
-  {
-    index: 0,
-    name: "Load learnware",
-    load: [
-      startWithIn(1),
-      ...addColorAndSplit("# Load learnwares", gray),
-      lineContinue(),
-      ...fromImport("learnware.client", "LearnwareClient"),
-      lineContinue(),
-      ..."learnware_list = LearnwareClient().load_learnware(",
-      lineContinue() + tab(),
-      ..."leanrware_id=id_list, runnable_option=",
-      ...addColorAndSplit('"docker"', yellow),
-      lineContinue(),
-      ...")",
-    ],
-    reuse: [
-      `<br /><br />${startWithIn(2)}`,
-      ...addColorAndSplit("# Reuse learnwares", gray),
-      lineContinue(),
-      ...fromImport("learnware.reuse", "AveragingReuser"),
-      lineContinue(),
-      ..."y_pred = AveragingReuser(",
-      lineContinue() + tab(),
-      ..."learnware_list=learnware_list, mode=",
-      ...addColorAndSplit('"vote_by_label"', yellow),
-      lineContinue(),
-      ...").predict(X)",
-    ],
-  },
-];
+export function getFeatureCode(): ComputedRef<
+  { index: number; name: string; load: string[]; reuse: string[] }[]
+> {
+  const { t } = useI18n();
+
+  return computed(() => [
+    {
+      index: 0,
+      name: "Load learnware",
+      load: [
+        startWithIn(1),
+        ...addColorAndSplit("# " + t("CodeFragments.LoadLearnware"), gray),
+        lineContinue(),
+        ...fromImport("learnware.client", "LearnwareClient"),
+        lineContinue(),
+        ..."learnware_list = LearnwareClient().load_learnware(",
+        lineContinue() + tab(),
+        ..."leanrware_id=id_list, runnable_option=",
+        ...addColorAndSplit('"docker"', yellow),
+        lineContinue(),
+        ...")",
+      ],
+      reuse: [
+        `<br /><br />${startWithIn(2)}`,
+        ...addColorAndSplit("# " + t("CodeFragments.ReuseLearnware"), gray),
+        lineContinue(),
+        ...fromImport("learnware.reuse", "AveragingReuser"),
+        lineContinue(),
+        ..."y_pred = AveragingReuser(",
+        lineContinue() + tab(),
+        ..."learnware_list=learnware_list, mode=",
+        ...addColorAndSplit('"vote_by_label"', yellow),
+        lineContinue(),
+        ...").predict(X)",
+      ],
+    },
+  ]);
+}

@@ -1,5 +1,5 @@
 import { checkedFetch } from "../utils";
-import { BACKEND_URL } from "..";
+import { BACKEND_URL } from "../../constants";
 
 const BASE_URL = BACKEND_URL + "/auth";
 

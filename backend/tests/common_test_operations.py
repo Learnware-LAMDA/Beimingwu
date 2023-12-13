@@ -11,6 +11,7 @@ from learnware.market import BaseChecker
 import shutil
 import hashlib
 from lib import redis_utils
+import learnware.config as learnware_conf
 
 
 def clear_db():
@@ -93,33 +94,7 @@ def login(email, password, hash_password=False):
 
 
 def test_learnware_semantic_specification():
-    semantic_specification = dict()
-
-    semantic_specification["Input"] = {"Dimension": 64, "Description": {"0": "f0", "1": "f1"}}
-    semantic_specification["Output"] = {"Dimension": 10, "Description": {"0": "c0"}}
-    semantic_specification["Data"] = {"Type": "Class", "Values": ["Table"]}
-    semantic_specification["Task"] = {"Type": "Class", "Values": ["Classification"]}
-    semantic_specification["Library"] = {"Type": "Class", "Values": ["Scikit-learn"]}
-    semantic_specification["Scenario"] = {"Type": "Tag", "Values": ["Business"]}
-    semantic_specification["Name"] = {"Type": "String", "Values": "Test Classification"}
-    semantic_specification["Description"] = {"Type": "String", "Values": "just a test"}
-
-    return semantic_specification
-
-
-def test_learnware_semantic_specification_ex():
-    semantic_specification = dict()
-
-    semantic_specification["Input"] = {"Dimension": 64, "Description": {"0": "f0", "1": "f1"}}
-    semantic_specification["Output"] = {"Dimension": 10, "Description": {"0": "c0"}}
-    semantic_specification["Data"] = {"Type": "Class", "Values": ["Table"]}
-    semantic_specification["Task"] = {"Type": "Class", "Values": ["Classification"]}
-    semantic_specification["Library"] = {"Type": "Class", "Values": ["Scikit-learn"]}
-    semantic_specification["Scenario"] = {"Type": "Tag", "Values": ["Business"]}
-    semantic_specification["Name"] = {"Type": "String", "Values": "Test Classification"}
-    semantic_specification["Description"] = {"Type": "String", "Values": "just a test"}
-
-    return semantic_specification
+    return test_learnware_semantic_specification_table()
 
 
 def test_learnware_semantic_specification_table():
@@ -133,6 +108,7 @@ def test_learnware_semantic_specification_table():
     semantic_specification["Scenario"] = {"Type": "Tag", "Values": ["Business"]}
     semantic_specification["Name"] = {"Type": "String", "Values": "Test Classification"}
     semantic_specification["Description"] = {"Type": "String", "Values": "just a test"}
+    semantic_specification["License"] = {"Type": "Class", "Values": ["Apache-2.0"]}
 
     return semantic_specification
 
@@ -157,7 +133,7 @@ def add_learnware_to_engine(learnware_id, headers):
 
 def add_test_learnware(email, password, learnware_filename="test_learnware.zip") -> str:
     headers = login(email, password)
-    semantic_specification = test_learnware_semantic_specification_ex()
+    semantic_specification = test_learnware_semantic_specification()
 
     learnware_file = open(os.path.join("tests", "data", learnware_filename), "rb")
     files = {"learnware_file": learnware_file}
@@ -240,10 +216,17 @@ def delete_user_by_email(email):
     pass
 
 
+def check_bytes_same(file1: bytearray, file2: bytearray):
+    md5_1 = hashlib.md5(file1).hexdigest()
+    md5_2 = hashlib.md5(file2).hexdigest()
+
+    return md5_1 == md5_2
+
+
 def cleanup_folder():
     root_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     backend_data_path = os.path.join(root_path, "backend_data")
-    learnware_data_path = os.path.join(os.path.expanduser("~"), ".learnware")
+    learnware_data_path = learnware_conf.ROOT_DIRPATH
     subpaths = ["learnware_pool", "database"]
 
     if os.path.exists(backend_data_path):

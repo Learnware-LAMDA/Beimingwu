@@ -113,7 +113,7 @@ function closeErrorAlert(): void {
     >
       <v-card
         flat
-        class="mx-auto w-full p-2 sm:p-7"
+        class="mx-auto w-full border p-2 sm:p-7"
         max-width="500"
       >
         <v-scroll-y-transition>

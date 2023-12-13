@@ -1,6 +1,6 @@
 import { checkedFetch, useProgressedFetch } from "../utils";
 import { getSemanticSpecification } from "../engine";
-import { BACKEND_URL } from "..";
+import { BACKEND_URL } from "../../constants";
 import type {
   Name,
   DataType,
@@ -35,6 +35,10 @@ function getProfile(): Promise<{
       }
       throw new Error(json.msg);
     });
+}
+
+function checkLoginStatus(): Promise<void> {
+  return getProfile().then(() => {});
 }
 
 function changePassword({
@@ -219,6 +223,7 @@ function deleteToken({ token }: { token: string }): Promise<{
 
 export {
   getProfile,
+  checkLoginStatus,
   changePassword,
   deleteLearnware,
   getLearnwareList,

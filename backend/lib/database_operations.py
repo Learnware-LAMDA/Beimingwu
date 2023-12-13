@@ -569,6 +569,22 @@ def get_learnware_count_unverified():
 def get_download_count():
     result = context.database.execute("SELECT COUNT(1) FROM tb_log WHERE name = 'download_learnware'")
     return result[0][0]
+
+
+def get_search_count():
+    result = context.database.execute("SELECT COUNT(1) FROM tb_log WHERE name = 'search_learnware'")
+    return result[0][0]
+
+
+def get_learnware_count_queued_or_processing():
+    result = context.database.execute(
+        "SELECT COUNT(1) FROM tb_user_learnware_relation WHERE verify_status = :verify_processing OR verify_status = :verify_queue",
+        {
+            "verify_processing": LearnwareVerifyStatus.PROCESSING.value,
+            "verify_queue": LearnwareVerifyStatus.QUEUE.value,
+        },
+    )
+    return result[0][0]
     pass
 
 

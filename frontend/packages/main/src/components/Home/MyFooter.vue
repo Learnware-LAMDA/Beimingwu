@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { showPrivacyPolicy, showUserAgreement } from "../../request/protocol";
 
 const { t } = useI18n();
 
@@ -27,13 +26,17 @@ const links = computed(() => [
   {
     icon: "mdi-pencil-ruler",
     name: t("Home.Footer.UserAgreement"),
-    click: showUserAgreement,
+    click: (): void => {
+      window.open(t("Url.Docs.UserAgreement"));
+    },
     tooltips: "",
   },
   {
     icon: "mdi-home-lock",
     name: t("Home.Footer.PrivacyPolicy"),
-    click: showPrivacyPolicy,
+    click: (): void => {
+      window.open(t("Url.Docs.PrivacyPolicy"));
+    },
     tooltips: "",
   },
 ]);

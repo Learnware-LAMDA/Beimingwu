@@ -7,12 +7,14 @@ import TerminalCode from "../App/TerminalCode.vue";
 import TerminalIpythonHeader from "../App/TerminalIpythonHeader.vue";
 import SearchDemo from "../App/SearchDemo.vue";
 import ScrollAnimate from "../App/ScrollAnimate.vue";
-import { FEATURE_CODE_FRAGMENTS } from "../../constants";
+import { getFeatureCode } from "../../constants";
 import ProgressedCode from "../App/ProgressedCode.vue";
 import process from "../../assets/images/home/process.svg?url";
 import collaboration from "../../assets/images/home/collaboration.svg?component";
 
 const { t } = useI18n();
+
+const FEATURE_CODE_FRAGMENTS = getFeatureCode();
 
 const recommendationRef = ref<HTMLDivElement | null>(null);
 const recommendationTextRef = ref<HTMLDivElement | null>(null);

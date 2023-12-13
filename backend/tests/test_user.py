@@ -16,6 +16,7 @@ import datetime
 class TestUser(unittest.TestCase):
     def setUpClass() -> None:
         testops.cleanup_folder()
+        testops.set_config("sensitive_word_file", os.path.join("tests", "data", "sensitive_word.txt"))
         unittest.TestCase.setUpClass()
         TestUser.server_process = multiprocessing.Process(target=main.main)
         TestUser.server_process.start()
@@ -23,6 +24,7 @@ class TestUser(unittest.TestCase):
         context.init_database()
         context.init_engine()
         context.init_redis()
+        context.init_sensitive_words()
         testops.clear_db()
         TestUser.username = "test"
         TestUser.email = "test@localhost"
@@ -395,6 +397,27 @@ class TestUser(unittest.TestCase):
         print(result)
         self.assertEqual(result["code"], 0)
         self.assertEqual(len(result["data"]["token_list"]), 0)
+        pass
+
+    def test_add_learnware_contain_badword(self):
+        headers = testops.login(TestUser.email, TestUser.password)
+        semantic_specification = testops.test_learnware_semantic_specification()
+
+        semantic_specification["Description"]["Values"] += "黄色小电影"
+
+        learnware_file = open(os.path.join("tests", "data", "test_learnware.zip"), "rb")
+        files = {"learnware_file": learnware_file}
+
+        # print(semantic_specification)
+        result = testops.url_request(
+            "user/add_learnware",
+            {"semantic_specification": json.dumps(semantic_specification)},
+            files=files,
+            headers=headers,
+        )
+
+        learnware_file.close()
+        self.assertEqual(result["code"], 51)
         pass
 
 

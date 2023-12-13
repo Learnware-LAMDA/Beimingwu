@@ -210,6 +210,15 @@ class SearchLearnware(flask_restful.Resource):
         self.set_learnware_info(result["data"]["learnware_list_single"])
         self.set_learnware_info(result["data"]["learnware_list_multi"])
 
+        dbops.add_log(
+            name="search_learnware",
+            info=json.dumps(
+                {
+                    "user_id": user_id,
+                }
+            ),
+        )
+
         return result, 200
         pass
 
