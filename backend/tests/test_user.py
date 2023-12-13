@@ -11,6 +11,7 @@ from database.base import LearnwareVerifyStatus
 import time
 import json
 import datetime
+from lib import common_utils
 
 
 class TestUser(unittest.TestCase):
@@ -312,6 +313,9 @@ class TestUser(unittest.TestCase):
         learnware_info = result["data"]["learnware_list"][0]
         self.assertEqual(learnware_info["verify_status"], "WAITING")
         self.assertTrue(os.path.exists(context.get_learnware_verify_file_path(learnware_id)))
+        # check file hash is updated
+        file_hash = common_utils.get_file_hash(os.path.join("tests", "data", "test_learnware2.zip"))
+        self.assertEqual(dbops.get_learnware_id_by_file_hash(file_hash), learnware_id)
 
         response = testops.url_request(
             "engine/download_learnware",
