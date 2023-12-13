@@ -15,6 +15,7 @@ export interface Props {
   filters?: Filter;
   showDownload?: boolean;
   isAdmin?: boolean;
+  to?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -30,6 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
   }),
   showDownload: true,
   isAdmin: false,
+  to: "",
 });
 
 const emit = defineEmits(["click:download", "click:edit", "click:delete"]);
@@ -76,216 +78,170 @@ function handleClickDelete(id: string): void {
 <template>
   <v-card
     flat
-    :density="greaterThanXs ? 'comfortable' : 'compact'"
-    class="card py-2"
+    :to="to"
+    :class="to ? 'cursor-pointer' : ''"
   >
-    <v-card-title
-      class="my-title flex"
-      :class="item.username ? '' : 'items-center'"
-    >
-      <v-avatar
-        :size="greaterThanSm ? 'default' : 'small'"
-        class="mr-2 rounded-[0]"
+    <div class="rounded border-b p-4 sm:border sm:hover:border sm:hover:border-gray-400">
+      <div
+        class="flex text-base font-bold lg:text-lg xl:text-xl"
+        :class="item.username ? '' : 'items-center'"
       >
-        <component
-          :is="avatar"
-          :class="item.username ? 'w-10' : 'w-4/5'"
-          class="opacity-70"
-        />
-      </v-avatar>
-      <div class="flex-1 overflow-hidden">
-        <div class="w-full truncate text-base md:text-xl">
-          {{ item.name }}
+        <v-avatar
+          :size="greaterThanSm ? 'default' : 'small'"
+          class="mr-2 rounded-[0]"
+        >
+          <component
+            :is="avatar"
+            :class="item.username ? 'w-10' : 'w-4/5'"
+            class="opacity-70"
+          />
+        </v-avatar>
+        <div class="flex-1 overflow-hidden">
+          <div class="w-full truncate text-base md:text-xl">
+            {{ item.name }}
+          </div>
+          <div
+            v-if="item.username"
+            class="text-xs text-gray-600 md:text-sm"
+          >
+            {{ item.username }}
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="color: red">
+          {{
+            item.verifyStatus != undefined && item.verifyStatus != "SUCCESS"
+              ? t("Learnware.Unverified")
+              : ""
+          }}
+        </div>
+      </div>
+      <div class="mt-3 flex flex-wrap items-center space-x-2 pb-2 pt-0 text-gray-700">
+        <div
+          class="rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          :class="
+            filters && filters.dataType && filters.dataType.includes(item.dataType)
+              ? 'bg-primary'
+              : undefined
+          "
+        >
+          {{ t(`Submit.SemanticSpecification.DataType.Type.${item.dataType}`) }}
         </div>
         <div
-          v-if="item.username"
-          class="text-xs text-gray-600 md:text-sm"
+          class="rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          :class="
+            filters && filters.taskType && filters.taskType.includes(item.taskType)
+              ? 'bg-primary'
+              : undefined
+          "
         >
-          {{ item.username }}
+          {{
+            t(
+              `Submit.SemanticSpecification.TaskType.Type.${item.taskType.replace(
+                "Others",
+                "OtherTask",
+              )}`,
+            )
+          }}
+        </div>
+        <div
+          class="rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          :class="
+            filters && filters.libraryType && filters.libraryType.includes(item.libraryType)
+              ? 'bg-primary'
+              : undefined
+          "
+        >
+          {{
+            t(
+              `Submit.SemanticSpecification.LibraryType.Type.${item.libraryType.replace(
+                "Others",
+                "OtherLibrary",
+              )}`,
+            )
+          }}
+        </div>
+        <div
+          v-for="(scenario, i) in item.scenarioList"
+          :key="i"
+          class="rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          :class="
+            filters && filters.scenarioList && filters.scenarioList.includes(scenario)
+              ? 'bg-orange-600'
+              : undefined
+          "
+        >
+          {{
+            t(
+              `Submit.SemanticSpecification.Scenario.Type.${scenario.replace(
+                "Others",
+                "OtherScenario",
+              )}`,
+            )
+          }}
+        </div>
+        <div
+          v-for="(license, i) in item.licenseList"
+          :key="i"
+          class="rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          :class="
+            filters && filters.licenseList && filters.licenseList.includes(license)
+              ? 'bg-orange-600'
+              : undefined
+          "
+        >
+          {{
+            license === "Others"
+              ? t("Submit.SemanticSpecification.License.Type.OtherLicense")
+              : license
+          }}
         </div>
       </div>
-    </v-card-title>
-
-    <v-card-subtitle>
-      <div style="color: red">
-        {{
-          item.verifyStatus != undefined && item.verifyStatus != "SUCCESS"
-            ? t("Learnware.Unverified")
-            : ""
-        }}
-      </div>
-    </v-card-subtitle>
-    <v-card-text class="card-text">
-      <div
-        class="label"
-        :class="
-          filters && filters.dataType && filters.dataType.includes(item.dataType)
-            ? 'active'
-            : undefined
-        "
-      >
-        {{ t(`Submit.SemanticSpecification.DataType.Type.${item.dataType}`) }}
-      </div>
-      <div
-        class="label"
-        :class="
-          filters && filters.taskType && filters.taskType.includes(item.taskType)
-            ? 'active'
-            : undefined
-        "
-      >
-        {{
-          t(
-            `Submit.SemanticSpecification.TaskType.Type.${item.taskType.replace(
-              "Others",
-              "OtherTask",
-            )}`,
-          )
-        }}
-      </div>
-      <div
-        class="label"
-        :class="
-          filters && filters.libraryType && filters.libraryType.includes(item.libraryType)
-            ? 'active'
-            : undefined
-        "
-      >
-        {{
-          t(
-            `Submit.SemanticSpecification.LibraryType.Type.${item.libraryType.replace(
-              "Others",
-              "OtherLibrary",
-            )}`,
-          )
-        }}
-      </div>
-      <div
-        v-for="(scenario, i) in item.scenarioList"
-        :key="i"
-        class="scenario"
-        :class="
-          filters && filters.scenarioList && filters.scenarioList.includes(scenario)
-            ? 'active'
-            : undefined
-        "
-      >
-        {{
-          t(
-            `Submit.SemanticSpecification.Scenario.Type.${scenario.replace(
-              "Others",
-              "OtherScenario",
-            )}`,
-          )
-        }}
-      </div>
-      <div
-        v-for="(license, i) in item.licenseList"
-        :key="i"
-        class="license"
-        :class="
-          filters && filters.licenseList && filters.licenseList.includes(license)
-            ? 'active'
-            : undefined
-        "
-      >
-        {{
-          license === "Others"
-            ? t("Submit.SemanticSpecification.License.Type.OtherLicense")
-            : license
-        }}
-      </div>
-    </v-card-text>
-    <v-card-text class="card-text">
-      <div class="description">
+      <div class="mt-1 overflow-hidden truncate whitespace-nowrap pb-2 pt-0 text-sm text-gray-700">
         {{ item.description }}
       </div>
-    </v-card-text>
-    <v-card-text class="flex items-end justify-between py-2">
-      <div>
-        <div
-          v-if="item.matchScore && item.matchScore >= 0"
-          class="text-base lg:text-lg xl:text-lg"
-        >
-          {{ t("Search.SpecificationScore") }}:
-          <span :style="`color: ${getColorByScore(item.matchScore)}`">{{ item.matchScore }}</span>
+      <div class="mt-2 flex items-end justify-between">
+        <div>
+          <div
+            v-if="item.matchScore && item.matchScore >= 0"
+            class="text-base lg:text-lg xl:text-lg"
+          >
+            {{ t("Search.SpecificationScore") }}:
+            <span :style="`color: ${getColorByScore(item.matchScore)}`">{{ item.matchScore }}</span>
+          </div>
+          <span class="text-xs text-gray-500">
+            {{ t("Search.Updated") }} {{ dayjs.utc(item.lastModify.replace(" UTC", "")).fromNow() }}
+          </span>
         </div>
-        <span class="text-xs text-gray-500">
-          {{ t("Search.Updated") }} {{ dayjs.utc(item.lastModify.replace(" UTC", "")).fromNow() }}
-        </span>
-      </div>
 
-      <div class="flex items-center">
-        <div class="actions -mb-2 -mr-3">
-          <v-btn
-            v-if="showDownload"
-            variant="flat"
-            icon="mdi-download"
-            :size="greaterThanXs ? undefined : 'small'"
-            @click.stop.prevent="() => handleClickDownload(item.id)"
-          />
-          <v-btn
-            v-if="isAdmin"
-            variant="flat"
-            icon="mdi-pencil"
-            :size="greaterThanXs ? undefined : 'small'"
-            @click.stop.prevent="() => handleClickEdit(item.id)"
-          />
-          <v-btn
-            v-if="isAdmin"
-            variant="flat"
-            icon="mdi-delete"
-            :size="greaterThanXs ? undefined : 'small'"
-            @click.stop.prevent="handleClickDelete(item.id)"
-          />
+        <div class="flex items-center">
+          <div class="actions -mb-2 -mr-3">
+            <v-btn
+              v-if="showDownload"
+              variant="flat"
+              icon="mdi-download"
+              :size="greaterThanXs ? undefined : 'small'"
+              @click.stop.prevent="() => handleClickDownload(item.id)"
+            />
+            <v-btn
+              v-if="isAdmin"
+              variant="flat"
+              icon="mdi-pencil"
+              :size="greaterThanXs ? undefined : 'small'"
+              @click.stop.prevent="() => handleClickEdit(item.id)"
+            />
+            <v-btn
+              v-if="isAdmin"
+              variant="flat"
+              icon="mdi-delete"
+              :size="greaterThanXs ? undefined : 'small'"
+              @click.stop.prevent="handleClickDelete(item.id)"
+            />
+          </div>
         </div>
       </div>
-    </v-card-text>
+    </div>
   </v-card>
 </template>
-
-<style scoped lang="scss">
-.card {
-  @apply border-b sm:border sm:hover:border sm:hover:border-purple-500;
-
-  .first-row {
-    @apply flex items-start justify-between;
-
-    .my-title {
-      @apply text-base lg:text-lg xl:text-xl;
-    }
-  }
-
-  .card-text {
-    @apply flex flex-wrap items-center pb-2 pt-0 text-gray-700;
-
-    * {
-      @apply mr-2 mt-1;
-    }
-
-    .label {
-      @apply rounded border-gray-700 bg-gray-400 px-2 text-xs text-white;
-    }
-
-    .scenario,
-    .license {
-      @apply rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white;
-      &.active {
-        @apply bg-orange-600;
-      }
-    }
-
-    .label.active {
-      background: rgb(var(--v-theme-primary));
-    }
-
-    .description {
-      @apply truncate;
-    }
-  }
-
-  .placeholder {
-    @apply opacity-0;
-  }
-}
-</style>

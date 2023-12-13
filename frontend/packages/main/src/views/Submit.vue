@@ -441,171 +441,173 @@ onActivated(init);
 </script>
 
 <template>
-  <v-container class="sm:p-none h-full p-0">
+  <div class="h-full">
     <v-card
-      class="relative m-auto w-full max-w-[1000px] border"
+      class="relative m-auto w-full max-w-[1000px]"
       flat
     >
-      <v-scroll-y-transition>
-        <v-card-actions v-if="success">
-          <v-alert
-            closable
-            :text="t('Submit.Success')"
-            type="success"
-            @click:close="success = false"
-          />
-        </v-card-actions>
-      </v-scroll-y-transition>
-      <v-scroll-y-transition>
-        <v-card-actions v-if="showError">
-          <v-alert
-            closable
-            :text="errorMsg"
-            type="error"
-            @click:close="showError = false"
-          />
-        </v-card-actions>
-      </v-scroll-y-transition>
-      <v-stepper-title
-        class="mb-5 mt-2 w-full"
-        :step-title="t('Submit.Step')"
-        :steps="steps"
-        :current-step="currentStep"
-        @active-step="activeStep"
-      />
+      <div class="border">
+        <v-scroll-y-transition>
+          <v-card-actions v-if="success">
+            <v-alert
+              closable
+              :text="t('Submit.Success')"
+              type="success"
+              @click:close="success = false"
+            />
+          </v-card-actions>
+        </v-scroll-y-transition>
+        <v-scroll-y-transition>
+          <v-card-actions v-if="showError">
+            <v-alert
+              closable
+              :text="errorMsg"
+              type="error"
+              @click:close="showError = false"
+            />
+          </v-card-actions>
+        </v-scroll-y-transition>
+        <v-stepper-title
+          class="mb-5 mt-2 w-full"
+          :step-title="t('Submit.Step')"
+          :steps="steps"
+          :current-step="currentStep"
+          @active-step="activeStep"
+        />
 
-      <v-divider class="border-black" />
+        <v-divider class="border-black" />
 
-      <div class="mx-auto w-full pt-2 sm:px-2 sm:pb-2">
-        <v-card-title class="text-1.2rem sm:pb-none pb-0 md:text-2xl">
-          <span>{{ steps[currentStep].title }}</span>
-        </v-card-title>
+        <div class="mx-auto w-full pt-2 sm:px-2 sm:pb-2">
+          <div class="text-1.2rem sm:pb-none p-2 px-4 pb-0 font-medium md:text-2xl">
+            <span>{{ steps[currentStep].title }}</span>
+          </div>
 
-        <v-window
-          v-model="currentStep"
-          :touch="{ left: () => {}, right: () => {} }"
-        >
-          <v-window-item :value="0">
-            <v-card-text>
-              <v-text-field
-                v-model="name.value"
-                :label="t('Submit.Name.Name')"
-                :placeholder="t('Submit.Name.Placeholder')"
-                append-inner-icon="mdi-close"
-                :error-messages="name.errorMessages"
-                :counter="50"
-                @click:append-inner="name.value = ''"
-              />
-              <span class="text-caption text-grey-darken-1">
-                {{ t("Submit.Name.Description") }}
-              </span>
-            </v-card-text>
-          </v-window-item>
+          <v-window
+            v-model="currentStep"
+            :touch="{ left: () => {}, right: () => {} }"
+          >
+            <v-window-item :value="0">
+              <v-card-text>
+                <v-text-field
+                  v-model="name.value"
+                  :label="t('Submit.Name.Name')"
+                  :placeholder="t('Submit.Name.Placeholder')"
+                  append-inner-icon="mdi-close"
+                  :error-messages="name.errorMessages"
+                  :counter="50"
+                  @click:append-inner="name.value = ''"
+                />
+                <span class="text-caption text-grey-darken-1">
+                  {{ t("Submit.Name.Description") }}
+                </span>
+              </v-card-text>
+            </v-window-item>
 
-          <v-window-item :value="1">
-            <v-card-text class="pt-0">
-              <spec-tag
-                v-model:data-type="dataType.value"
-                v-model:task-type="taskType.value"
-                v-model:library-type="libraryType.value"
-                v-model:scenario-list="scenarioList.value"
-                v-model:license-list="licenseList.value"
-                v-model:data-type-description="dataTypeDescription.value"
-                v-model:task-type-description-classification="
-                  taskTypeDescriptionClassification.value
-                "
-                v-model:task-type-description-regression="taskTypeDescriptionRegression.value"
-                :error-messages="
-                  dataType.errorMessages ||
-                  taskType.errorMessages ||
-                  libraryType.errorMessages ||
-                  scenarioList.errorMessages ||
-                  licenseList.errorMessages
-                "
-              />
-            </v-card-text>
-          </v-window-item>
-
-          <v-window-item :value="2">
-            <div class="grid h-[30rem] p-4 md:grid-cols-2 md:gap-4">
-              <div class="flex-1 overflow-y-auto">
-                <v-textarea
-                  v-model="description.value"
-                  auto-grow
-                  :label="t('Submit.Description.Description')"
-                  :placeholder="t('Submit.Description.Placeholder')"
-                  :error-messages="description.errorMessages"
-                  :counter="10000"
+            <v-window-item :value="1">
+              <div class="px-4">
+                <spec-tag
+                  v-model:data-type="dataType.value"
+                  v-model:task-type="taskType.value"
+                  v-model:library-type="libraryType.value"
+                  v-model:scenario-list="scenarioList.value"
+                  v-model:license-list="licenseList.value"
+                  v-model:data-type-description="dataTypeDescription.value"
+                  v-model:task-type-description-classification="
+                    taskTypeDescriptionClassification.value
+                  "
+                  v-model:task-type-description-regression="taskTypeDescriptionRegression.value"
+                  :error-messages="
+                    dataType.errorMessages ||
+                    taskType.errorMessages ||
+                    libraryType.errorMessages ||
+                    scenarioList.errorMessages ||
+                    licenseList.errorMessages
+                  "
                 />
               </div>
-              <div
-                class="markdown-content flex-1 overflow-y-auto"
-                v-html="html2Markdown(description.value)"
-              ></div>
-            </div>
-          </v-window-item>
+            </v-window-item>
 
-          <v-window-item :value="3">
-            <div class="m-auto p-4">
-              <file-upload
-                v-model="files.value"
-                :error-messages="files.errorMessages"
-                :tips="t('Submit.File.DragFileHere', { file: 'zip' })"
-              />
-            </div>
-            <v-card-text class="py-2 text-sm sm:text-lg">
-              <a
-                class="text-black underline"
-                :href="t('Url.Docs.PrepareLearnwareGuide')"
-                target="_blank"
-              >
-                {{ t("Submit.File.ClickHere") }}
-              </a>
-              {{ t("Submit.File.ForInstructionsOnHowToCreateTheRequiredZipFile") }}
-            </v-card-text>
-            <v-card-text class="pt-2 text-sm sm:text-lg">
-              <a
-                class="text-black underline"
-                href="./static/learnware-template.zip"
-                target="_blank"
-              >
-                {{ t("Submit.File.ClickHere") }}
-              </a>
-              {{ t("Submit.File.ToDownloadTemplate") }}
-            </v-card-text>
-          </v-window-item>
-        </v-window>
+            <v-window-item :value="2">
+              <div class="grid h-[30rem] p-4 md:grid-cols-2 md:gap-4">
+                <div class="flex-1 overflow-y-auto">
+                  <v-textarea
+                    v-model="description.value"
+                    auto-grow
+                    :label="t('Submit.Description.Description')"
+                    :placeholder="t('Submit.Description.Placeholder')"
+                    :error-messages="description.errorMessages"
+                    :counter="10000"
+                  />
+                </div>
+                <div
+                  class="markdown-content flex-1 overflow-y-auto"
+                  v-html="html2Markdown(description.value)"
+                ></div>
+              </div>
+            </v-window-item>
 
-        <v-divider />
+            <v-window-item :value="3">
+              <div class="m-auto p-4">
+                <file-upload
+                  v-model="files.value"
+                  :error-messages="files.errorMessages"
+                  :tips="t('Submit.File.DragFileHere', { file: 'zip' })"
+                />
+              </div>
+              <div class="px-4 py-2 text-sm sm:text-lg">
+                <a
+                  class="text-black underline"
+                  :href="t('Url.Docs.PrepareLearnwareGuide')"
+                  target="_blank"
+                >
+                  {{ t("Submit.File.ClickHere") }}
+                </a>
+                {{ t("Submit.File.ForInstructionsOnHowToCreateTheRequiredZipFile") }}
+              </div>
+              <div class="px-4 py-2 text-sm sm:text-lg">
+                <a
+                  class="text-black underline"
+                  href="./static/learnware-template.zip"
+                  target="_blank"
+                >
+                  {{ t("Submit.File.ClickHere") }}
+                </a>
+                {{ t("Submit.File.ToDownloadTemplate") }}
+              </div>
+            </v-window-item>
+          </v-window>
 
-        <v-card-actions>
-          <v-btn
-            v-if="currentStep > 0"
-            variant="outlined"
-            @click="PrevStep"
-          >
-            {{ t("Submit.Navigation.PreviousStep") }}
-          </v-btn>
-          <v-spacer class="flex-1" />
-          <v-btn
-            v-if="currentStep < steps.length - 1"
-            color="primary"
-            variant="flat"
-            :disabled="!allowChangePage"
-            @click="nextStep"
-          >
-            {{ t("Submit.Navigation.NextStep") }}
-          </v-btn>
-          <v-btn
-            v-else
-            color="primary"
-            variant="flat"
-            :disabled="submiting || !valid"
-            @click="submit"
-          >
-            {{ t("Submit.Navigation.Finish") }}
-          </v-btn>
-        </v-card-actions>
+          <v-divider />
+
+          <v-card-actions>
+            <v-btn
+              v-if="currentStep > 0"
+              variant="outlined"
+              @click="PrevStep"
+            >
+              {{ t("Submit.Navigation.PreviousStep") }}
+            </v-btn>
+            <v-spacer class="flex-1" />
+            <v-btn
+              v-if="currentStep < steps.length - 1"
+              color="primary"
+              variant="flat"
+              :disabled="!allowChangePage"
+              @click="nextStep"
+            >
+              {{ t("Submit.Navigation.NextStep") }}
+            </v-btn>
+            <v-btn
+              v-else
+              color="primary"
+              variant="flat"
+              :disabled="submiting || !valid"
+              @click="submit"
+            >
+              {{ t("Submit.Navigation.Finish") }}
+            </v-btn>
+          </v-card-actions>
+        </div>
       </div>
     </v-card>
     <submiting-dialog
@@ -616,7 +618,7 @@ onActivated(init);
         <span>{{ t("Submit.Submiting") }}</span>
       </template>
     </submiting-dialog>
-  </v-container>
+  </div>
 </template>
 
 <style scoped lang="scss">

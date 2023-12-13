@@ -22,10 +22,10 @@ const dialog = ref(true);
   <v-dialog
     v-model="dialog"
     persistent
-    class="dialog"
+    class="w-full max-w-[600px]"
   >
-    <v-card class="p-2">
-      <v-card-title class="main">
+    <div class="bg-white p-2">
+      <v-card-title class="mb-4 text-center">
         <slot name="title" />
       </v-card-title>
       <v-progress-linear
@@ -35,18 +35,6 @@ const dialog = ref(true);
         height="5"
         class="mb-4"
       />
-    </v-card>
+    </div>
   </v-dialog>
 </template>
-
-<style scoped lang="scss">
-.dialog {
-  @apply w-full max-w-[600px];
-  .main {
-    @apply mb-4 text-center;
-    .svg {
-      @apply m-auto w-1/5;
-    }
-  }
-}
-</style>
