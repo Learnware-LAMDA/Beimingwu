@@ -204,7 +204,7 @@ watch(
                   progress === 0
                     ? ['left-1/2 w-full -translate-x-1/2']
                     : [
-                        'left-0 z-10 w-4/5 translate-x-0 md:w-3/5 xl:w-3/5',
+                        'right-0 z-10 w-4/5 translate-x-0 md:w-3/5 xl:w-3/5',
                         reuseProgress === 0 ? 'bottom-0' : 'bottom-1/2 w-full translate-y-1/2',
                       ]
                 "
@@ -246,12 +246,12 @@ watch(
               </div>
               <div
                 ref="browserRef"
-                class="absolute right-0 aspect-[9/16] max-w-7xl transform transition-all duration-500 lg:aspect-video"
+                class="absolute aspect-[9/16] max-w-7xl transform transition-all duration-500 lg:aspect-video"
                 :class="
                   progress === 0
-                    ? 'right-1/2 w-full translate-x-1/2'
+                    ? 'left-1/2 w-full -translate-x-1/2'
                     : [
-                        'right-0 w-4/5 -translate-x-0 md:w-3/5 xl:w-3/5',
+                        'left-0 w-4/5 -translate-x-0 md:w-3/5 xl:w-3/5',
                         showMultiRecommended && 'transition-none',
                       ]
                 "
@@ -289,7 +289,7 @@ watch(
                 </div>
               </div>
               <div
-                class="pointer-events-none absolute right-0 z-20 flex h-full w-full flex-col items-center justify-center font-medium text-white opacity-80 sm:w-2/5"
+                class="pointer-events-none absolute left-0 z-20 flex h-full w-full flex-col items-center justify-center font-medium text-white opacity-80 sm:w-2/5"
               >
                 <div
                   v-for="msg in msgs"
