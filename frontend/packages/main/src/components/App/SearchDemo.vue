@@ -12,12 +12,12 @@ const { t } = useI18n();
 
 const display = useDisplay();
 
-defineProps<{
+const props = defineProps<{
   loading: boolean;
   showMultiRecommended: boolean;
 }>();
 
-const filters = ref<Filter>({
+const filters = computed<Filter>(() => ({
   id: "",
   name: "",
   dataType: "",
@@ -25,8 +25,8 @@ const filters = ref<Filter>({
   libraryType: "",
   scenarioList: [],
   licenseList: [],
-  files: [],
-});
+  files: props.loading || props.showMultiRecommended ? [new File([], "RKME.json")] : [],
+}));
 const multiRecommendedTips = ref(true);
 const multiRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
   Array.from(
