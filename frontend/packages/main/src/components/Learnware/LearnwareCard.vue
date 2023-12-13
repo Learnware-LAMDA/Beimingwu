@@ -109,16 +109,16 @@ function handleClickDelete(id: string): void {
         </div>
       </div>
 
-      <div>
-        <div style="color: red">
-          {{
-            item.verifyStatus != undefined && item.verifyStatus != "SUCCESS"
-              ? t("Learnware.Unverified")
-              : ""
-          }}
-        </div>
-      </div>
-      <div class="mt-3 flex flex-wrap items-center space-x-2 pb-2 pt-0 text-gray-700">
+      <v-chip
+        v-if="item.verifyStatus && item.verifyStatus != 'SUCCESS'"
+        prepend-icon="mdi-alert-circle-outline"
+        color="error"
+        class="my-1"
+      >
+        {{ t("Learnware.Unverified") }}
+      </v-chip>
+
+      <div class="mb-1 mt-3 flex flex-wrap items-center space-x-2 pb-2 pt-0 text-gray-700">
         <div
           class="rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
           :class="
@@ -202,6 +202,7 @@ function handleClickDelete(id: string): void {
       <div class="mt-1 overflow-hidden truncate whitespace-nowrap pb-2 pt-0 text-sm text-gray-700">
         {{ item.description }}
       </div>
+
       <div class="mt-2 flex items-end justify-between">
         <div>
           <div
