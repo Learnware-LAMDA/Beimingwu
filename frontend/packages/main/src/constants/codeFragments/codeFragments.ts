@@ -75,7 +75,7 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
         lineContinue(),
         ..."learnware_ids = client.search_learnware(user_info)",
       ],
-      result: [""],
+      result: [..."Searching..."],
       reuse: [
         "<br />" + startWithIn(4),
         ...addColorAndSplit("# " + t("CodeFragments.LoadLearnware"), gray),
