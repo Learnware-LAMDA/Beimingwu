@@ -77,6 +77,16 @@ class Log(DeclarativeBase):
     pass
 
 
+class LearnwareHash(DeclarativeBase):
+    __tablename__ = "tb_learnware_hash"
+
+    learnware_id = Column(Text, nullable=False, index=True)
+    file_hash = Column(String(32), nullable=False, index=True)
+
+    __table_args__ = (PrimaryKeyConstraint(learnware_id), {})
+    pass
+
+
 class DatabaseHelper(object):
     @classmethod
     def create_from_url(cls, url: str) -> "DatabaseHelper":

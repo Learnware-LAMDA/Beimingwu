@@ -62,8 +62,14 @@ class TestLearnwareClient(unittest.TestCase):
             os.path.join("tests", "data", "test_learnware.zip"), testops.test_learnware_semantic_specification_table()
         )
 
+        with self.assertRaises(Exception):
+            client.upload_learnware(
+                os.path.join("tests", "data", "test_learnware.zip"),
+                testops.test_learnware_semantic_specification_table(),
+            )
+            pass
+
         learnware_list = client.list_learnware()
-        print(learnware_list)
 
         self.assertEqual(len(learnware_list), 1)
         with tempfile.NamedTemporaryFile(prefix="test_download_learnware_", suffix=".zip") as ftemp:
