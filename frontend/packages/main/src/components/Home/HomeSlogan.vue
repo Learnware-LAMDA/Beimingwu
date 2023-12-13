@@ -202,7 +202,7 @@ watch(
                 class="absolute aspect-[9/16] max-w-7xl transform transition-all duration-500 lg:aspect-video"
                 :class="
                   progress === 0
-                    ? ['left-1/2 w-full -translate-x-1/2']
+                    ? ['right-1/2 w-full translate-x-1/2']
                     : [
                         'right-0 z-10 w-4/5 translate-x-0 md:w-3/5 xl:w-3/5',
                         reuseProgress === 0 ? 'bottom-0' : 'bottom-1/2 w-full translate-y-1/2',
