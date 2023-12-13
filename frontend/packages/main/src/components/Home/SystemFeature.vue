@@ -9,8 +9,9 @@ import SearchDemo from "../App/SearchDemo.vue";
 import ScrollAnimate from "../App/ScrollAnimate.vue";
 import { getFeatureCode } from "../../constants";
 import ProgressedCode from "../App/ProgressedCode.vue";
-import process from "../../assets/images/home/process.svg?url";
-import collaboration from "../../assets/images/home/collaboration.svg?component";
+import rkme from "@main/assets/images/home/rkme.svg?component";
+import RawData from "@main/assets/images/home/raw-data.svg?component";
+import collaboration from "@main/assets/images/home/collaboration.svg?component";
 
 const { t } = useI18n();
 
@@ -337,10 +338,82 @@ watch(
                   {{ t(`Home.Feature.Privacy.Description`) }}
                 </div>
               </div>
-              <v-img
-                :src="process"
+
+              <svg
                 class="w-full"
-              />
+                viewBox="0 0 400 200"
+              >
+                <defs>
+                  <marker
+                    id="arrow"
+                    viewBox="0 0 10 10"
+                    refX="5"
+                    refY="5"
+                    markerWidth="6"
+                    markerHeight="6"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M 0 0 L 10 5 L 0 10 z" />
+                  </marker>
+                </defs>
+                <raw-data
+                  x="0"
+                  y="0"
+                  width="200"
+                  height="200"
+                />
+                <rkme
+                  x="200"
+                  y="0"
+                  width="200"
+                  height="200"
+                />
+                <path
+                  d="M150 70 s100 -100 200 0"
+                  fill="none"
+                  stroke="black"
+                  stroke-dasharray="3"
+                  marker-end="url(#arrow)"
+                >
+                  <animate
+                    attributeName="stroke-dashoffset"
+                    from="6"
+                    to="0"
+                    dur="500ms"
+                    repeatCount="indefinite"
+                  />
+                </path>
+                <path
+                  d="M95 85 s100 -100 200 0"
+                  fill="none"
+                  stroke="black"
+                  stroke-dasharray="3"
+                  marker-end="url(#arrow)"
+                >
+                  <animate
+                    attributeName="stroke-dashoffset"
+                    from="6"
+                    to="0"
+                    dur="500ms"
+                    repeatCount="indefinite"
+                  />
+                </path>
+                <path
+                  d="M55 130 s100 -100 200 0"
+                  fill="none"
+                  stroke="black"
+                  stroke-dasharray="3"
+                  marker-end="url(#arrow)"
+                >
+                  <animate
+                    attributeName="stroke-dashoffset"
+                    from="6"
+                    to="0"
+                    dur="500ms"
+                    repeatCount="indefinite"
+                  />
+                </path>
+              </svg>
             </div>
 
             <div
