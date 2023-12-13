@@ -207,6 +207,7 @@ class Summary(flask_restful.Resource):
 
         count_verified_learnware = database.get_learnware_count_verified()
         count_download = database.get_download_count()
+        count_search = database.get_search_count()
 
         count_unverified_learnware_total = database.get_learnware_count_unverified()
         count_unverified_learnware_in_engine = len(
@@ -218,6 +219,8 @@ class Summary(flask_restful.Resource):
 
         count_detail = engine_helper.get_learnware_count_detail()
 
+        count_queued = database.get_learnware_count_queued_or_processing()
+
         result = {
             "code": 0,
             "msg": "Get summary success.",
@@ -228,7 +231,9 @@ class Summary(flask_restful.Resource):
                 "count_unverified_learnware": count_unverified_learnware_in_engine,
                 "count_learnware_awaiting_storage": count_unverified_learnware_not_in_engine,
                 "count_download": count_download,
+                "count_search": count_search,
                 "count_detail": count_detail,
+                "count_queued": count_queued,
             },
         }
 
