@@ -119,7 +119,6 @@ function handleClickDelete(id: string): void {
                 ? 'mdi-check'
                 : 'mdi-alert'
           "
-          size="large"
           :color="
             item.verifyStatus === 'FAIL'
               ? 'error'
