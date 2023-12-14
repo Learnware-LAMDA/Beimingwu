@@ -444,16 +444,16 @@ onActivated(() => {
         flat
         class="mt-4 bg-transparent sm:mt-2"
       >
-        <v-card-title
+        <div
           v-if="!multiRecommendedTips"
           class="text-h5 text-base md:text-xl"
         >
           <v-icon>mdi-hexagon-multiple</v-icon>
           {{ t("Search.RecommendedMultipleLearnware") }}
-        </v-card-title>
-        <v-card-text
+        </div>
+        <div
           v-if="multiRecommendedTips"
-          class="px-2 py-0"
+          class="px-2"
         >
           <v-alert
             v-model="multiRecommendedTips"
@@ -463,7 +463,7 @@ onActivated(() => {
             <template #prepend>
               <v-icon
                 icon="mdi-hexagon-multiple"
-                :size="display.smAndUp.value ? 'x-large' : 'small'"
+                :size="display.smAndUp.value ? 'large' : 'small'"
               />
             </template>
             <template #title>
@@ -472,12 +472,12 @@ onActivated(() => {
               >
             </template>
             <template #text>
-              <span class="text-xs md:text-base">
+              <span class="text-xs leading-tight md:text-base">
                 {{ t("Search.RecommendedMultipleLearnwareTips") }}
               </span>
             </template>
           </v-alert>
-        </v-card-text>
+        </div>
         <multi-recommended-learnware-list
           :items="multiRecommendedLearnwareItems"
           :match-score="multiRecommendedMatchScore"
@@ -491,14 +491,14 @@ onActivated(() => {
         flat
         class="mt-4 bg-transparent sm:m-0"
       >
-        <v-card-title
+        <div
           v-if="showMultiRecommended && !singleRecommendedTips"
           class="text-h5 text-base md:text-xl"
         >
           <v-icon>mdi-hexagon</v-icon>
           {{ t("Search.RecommendedSingleLearnware") }}
-        </v-card-title>
-        <v-card-text
+        </div>
+        <div
           v-if="showMultiRecommended && singleRecommendedTips"
           class="px-2 py-0"
         >
@@ -524,7 +524,7 @@ onActivated(() => {
               </span>
             </template>
           </v-alert>
-        </v-card-text>
+        </div>
         <page-learnware-list
           :items="singleRecommendedLearnwareItems"
           :filters="filters"

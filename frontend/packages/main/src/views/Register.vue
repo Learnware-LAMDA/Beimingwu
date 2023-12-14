@@ -200,93 +200,96 @@ onUnmounted(() => {
 
       <v-card
         flat
-        class="mx-auto w-full border p-2 sm:p-6"
-        max-width="500"
+        class="mx-auto w-full max-w-[500px]"
       >
-        <v-scroll-y-transition>
-          <v-alert
-            v-if="showError"
-            type="error"
-          >
-            {{ errorMsg }}
-          </v-alert>
-        </v-scroll-y-transition>
+        <div class="rounded border p-2 sm:p-6">
+          <v-scroll-y-transition>
+            <v-alert
+              v-if="showError"
+              type="error"
+            >
+              {{ errorMsg }}
+            </v-alert>
+          </v-scroll-y-transition>
 
-        <v-card-title>
-          <div class="text-h5 sm:text-1.3em m-2 my-6 sm:my-2">
-            {{ t("Register.Register") }}
-          </div>
-        </v-card-title>
-        <v-card-text>
-          <v-form>
-            <v-text-field
-              v-model="userName.value"
-              :label="t('Register.Username')"
-              :counter="20"
-              :error-messages="userName.errorMessages"
-            />
-            <v-text-field
-              v-model="email.value"
-              :counter="50"
-              :label="t('Register.Email')"
-              :error-messages="email.errorMessages"
-              type="text"
-              name="login"
-              autocomplete="username"
-            />
-            <v-text-field
-              v-model="password.value"
-              :counter="20"
-              :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPassword ? 'text' : 'password'"
-              :label="t('Register.Password')"
-              :error-messages="password.errorMessages"
-              @click:append="showPassword = !showPassword"
-            />
-            <v-text-field
-              v-model="password2.value"
-              :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPassword2 ? 'text' : 'password'"
-              :label="t('Register.ConfirmPassword')"
-              :error-messages="password2.errorMessages"
-              @click:append="showPassword2 = !showPassword2"
-              @keyup.enter="submit"
-            />
-          </v-form>
-          <v-card-actions class="pa-0 mb-0 p-0">
-            <v-checkbox
-              v-model="agreeTerms"
-              :label="t('Register.ReadAndAgree')"
-              density="compact"
-              hide-details
-            ></v-checkbox>
+          <v-card-title>
+            <div class="text-h5 sm:text-1.3em m-2 my-6 sm:my-2">
+              {{ t("Register.Register") }}
+            </div>
+          </v-card-title>
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                v-model="userName.value"
+                :label="t('Register.Username')"
+                :counter="20"
+                :error-messages="userName.errorMessages"
+              />
+              <v-text-field
+                v-model="email.value"
+                :counter="50"
+                :label="t('Register.Email')"
+                :error-messages="email.errorMessages"
+                type="text"
+                name="login"
+                autocomplete="username"
+              />
+              <v-text-field
+                v-model="password.value"
+                :counter="20"
+                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showPassword ? 'text' : 'password'"
+                :label="t('Register.Password')"
+                :error-messages="password.errorMessages"
+                @click:append="showPassword = !showPassword"
+              />
+              <v-text-field
+                v-model="password2.value"
+                :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showPassword2 ? 'text' : 'password'"
+                :label="t('Register.ConfirmPassword')"
+                :error-messages="password2.errorMessages"
+                @click:append="showPassword2 = !showPassword2"
+                @keyup.enter="submit"
+              />
+            </v-form>
+            <div class="flex">
+              <v-checkbox
+                v-model="agreeTerms"
+                :label="t('Register.ReadAndAgree')"
+                density="compact"
+                hide-details
+              ></v-checkbox>
+              <v-btn
+                target="_blank"
+                color="primary"
+                variant="text"
+                @click="handeClickShowUserAgreement"
+              >
+                {{ t("Register.UserAgreement") }}
+              </v-btn>
+              <v-btn
+                target="_blank"
+                color="primary"
+                variant="text"
+                @click="handeClickShowPrivacyPolicy"
+              >
+                {{ t("Register.PrivacyPolicy") }}
+              </v-btn>
+            </div>
+          </v-card-text>
+          <v-card-actions>
             <v-btn
-              target="_blank"
-              color="primary"
-              @click="handeClickShowUserAgreement"
+              block
+              class="bg-primary py-5"
+              color="white"
+              :disabled="!valid"
+              @click="submit"
             >
-              {{ t("Register.UserAgreement") }}
-            </v-btn>
-            <v-btn
-              target="_blank"
-              color="primary"
-              @click="handeClickShowPrivacyPolicy"
-            >
-              {{ t("Register.PrivacyPolicy") }}
+              {{ t("Register.Register") }}
             </v-btn>
           </v-card-actions>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            block
-            class="bg-primary py-5"
-            color="white"
-            :disabled="!valid"
-            @click="submit"
-          >
-            {{ t("Register.Register") }}
-          </v-btn>
-        </v-card-actions>
+        </div>
       </v-card>
     </div>
   </div>

@@ -73,24 +73,26 @@ function getColorByScore(score: number): string {
 <template>
   <div
     v-if="!loading"
-    class="m-2 rounded-md p-2 hover:border-purple-500 md:rounded-lg"
+    class="m-2 rounded-md p-2 hover:border-gray-400 md:rounded-lg"
     :class="items.length > 0 ? ['border'] : []"
   >
     <div
       v-if="items.length > 0"
       class="flex justify-between"
     >
-      <v-card-title
+      <div
         v-if="matchScore"
-        class="score text-base md:text-lg xl:text-xl"
+        class="score iems-center flex flex-col justify-center p-2 px-4 text-base font-medium md:text-lg xl:text-xl"
       >
-        {{ t("Search.TotalSpecificationScore") }}
-        <span
-          class="ml-1 lg:ml-2"
-          :style="`color: ${getColorByScore(matchScore)}`"
-          >{{ matchScore }}</span
-        >
-      </v-card-title>
+        <div>
+          {{ t("Search.TotalSpecificationScore") }}
+          <span
+            class="ml-1 lg:ml-2"
+            :style="`color: ${getColorByScore(matchScore)}`"
+            >{{ matchScore }}</span
+          >
+        </div>
+      </div>
       <v-btn
         variant="flat"
         :size="display.mdAndUp ? 'x-large' : 'large'"

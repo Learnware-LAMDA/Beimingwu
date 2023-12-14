@@ -128,23 +128,23 @@ const vOffset = {
 </script>
 
 <template>
-  <div class="md:py-30 mx-auto w-full max-w-[1200px] py-20 md:px-10">
-    <div class="px-5 md:px-0">
-      <div class="my-5 text-3xl lg:my-7 lg:text-4xl xl:my-10 xl:text-5xl">
-        {{ t("Home.What.Title") }}
-      </div>
-      <p class="text-gray-500">
-        {{ t("Home.What.Description") }}
-      </p>
-    </div>
-
+  <div class="md:py-30 mx-auto w-full max-w-[1400px] py-20 md:px-10">
     <scroll-animate
       class="h-[6000px] min-h-[200vh]"
       @progress="handleProgress"
     >
-      <div class="h-main-full flex flex-col items-center justify-center">
+      <div class="h-main-full flex flex-col items-center justify-center sm:flex-row">
+        <div class="px-5 sm:max-w-[30%] md:px-0">
+          <div class="text-3xl font-medium lg:text-4xl xl:text-4xl">
+            {{ t("Home.What.Title") }}
+          </div>
+          <p class="mt-5 text-gray-500 xl:mt-10">
+            {{ t("Home.What.Description") }}
+          </p>
+        </div>
+
         <svg
-          class="w-full"
+          class="mt-8 w-full sm:mt-0"
           viewBox="0 0 1600 910"
         >
           <defs>

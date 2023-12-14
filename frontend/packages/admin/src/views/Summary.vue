@@ -215,16 +215,17 @@ onMounted(() => {
         v-for="item in numberItems"
         :key="item.title"
         flat
-        class="border-b md:border"
         :to="item.to"
       >
-        <v-card-title>
-          <v-icon>{{ item.icon }}</v-icon>
-          {{ item.title }}
-        </v-card-title>
-        <v-card-text class="text-h3 my-8 text-center font-bold">
-          {{ item.value }}
-        </v-card-text>
+        <div class="rounded border-b md:border">
+          <div class="p-4 pb-0 text-xl font-medium">
+            <v-icon>{{ item.icon }}</v-icon>
+            {{ item.title }}
+          </div>
+          <div class="text-h3 my-8 text-center font-bold">
+            {{ item.value }}
+          </div>
+        </div>
       </v-card>
     </div>
 

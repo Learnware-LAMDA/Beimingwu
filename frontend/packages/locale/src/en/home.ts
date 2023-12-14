@@ -2,13 +2,13 @@ export default {
   Cover: {
     Beiming: "Beimingwu: A Learnware Dock System",
     Introduction:
-      "A learnware is composed of a well-performed trained machine learning model and a specification which enables it to be adequately identified and reused according to the requirement of future users who know nothing about the learnware in advance. Beimingwu is a learnware dock system that helps users lacking machine learning resources/skills to solve machine learning tasks by reusing recommended learnwares in a convenient way.",
+      "A learnware is composed of a well-performed trained model and a specification describing model ability. Beimingwu system helps users solve tasks by reusing recommended learnwares conveniently.",
     Try: "Try It Out",
     Submit: "Be A Developer",
     LearnwareName: "Learnware",
     LearnwareDescription: "This is a learnware.",
-    ServeralLinesOfCode: "Solve Your Tasks",
-    SolveYourTasks: "with several lines of code",
+    ServeralLinesOfCode: "Solve Tasks",
+    SolveYourTasks: "with a few lines",
     Developer: "Developer",
     Example: {
       Simplified: "Simplified demo",
@@ -19,7 +19,7 @@ export default {
   What: {
     Title: "What is Learnware?",
     Description:
-      "A learnware is a well-performed trained machine learning model with a specification which enables it to be adequately identified to reuse according to the requirement of future users who know nothing about the learnware in advance.",
+      "A learnware is a well-performed trained model with a specification describing its capabilities. The specification includes a semantic specification in text and a statistical specification sketching the model's statistical information.",
     RKMESpecification: "RKME specification",
     SpecificationSpace: "Specification space",
     Learnware: "Learnware",
@@ -29,17 +29,23 @@ export default {
   },
   Function: {
     Title: "What are the main functions of Beimingwu?",
-    SearchAndDeploy:
-      "Search and deploy learnwares: After the user submits the task requirements, Beimingwu will recommend learnwares that are helpful to the user's task according to the learnware specification and guide the user to deploy and reuse them.",
-    Submit:
-      "Submit high-quality learnwares: Developers can spontaneously submit various learnwares to Beimingwu, and the system will check the quality of these learnwares and organize them further.",
+    SearchAndDeploy: {
+      Title: "Search and deploy learnwares: ",
+      Description:
+        "After the user submits the task requirements, Beimingwu will recommend learnwares that are helpful to the user's task according to the learnware specification and guide the user to deploy and reuse them.",
+    },
+    Submit: {
+      Title: "Submit high-quality learnwares: ",
+      Description:
+        "Developers can spontaneously submit various learnwares to Beimingwu, and the system will check the quality of these learnwares and organize them further.",
+    },
   },
   Feature: {
     Title: "System Features",
     Recommendation: {
-      Name: "Recommend more effective models with statistical information",
+      Name: "Recommend more effective models with Statistical information",
       Description:
-        "By utilizing statistical information, Beimingwu can provide more accurate model recommendations for your tasks, which often have better reusability. Even if there is no model in Beimingwu that can solve your problem well, the combination of multiple models may be enough. For tabular tasks, the system initially supports searching (and reusing) models with feature space misalignment.",
+      "Beimingwu uses statistics to offer precise recommendation. If no single model fits, combining several might work. The system also supports searching and reusing misaligned feature space models for tabular tasks.",
       HomoTable: "Homogeneous table examples",
       HeteroTable: "Heterogeneous table examples",
     },
@@ -47,17 +53,17 @@ export default {
       Name1: "Secure learnware loading and",
       Name2: "convenient learnware reuse",
       Description:
-        "After obtaining the learnware, you don't need to worry about the environment in which the model runs, nor do you need to worry about malicious code and malicious attacks. You can safely load the learnware with one line of code, and the system provides multiple interfaces to help you reuse the learnware to solve the task.",
+      "Once you acquire the learnware, there's no concern about the model's environment or security threats. It can be safely loaded with a single line of code, and the system offers various interfaces for model reuse.",
     },
     Privacy: {
       Name: "We care about your privacy",
       Description:
-        "If you can provide the statistical information of the task, this will help your requirements or models be better matched. The statistical specification can provide the statistical information of the task without leaking your original data. The process of generating the statistical specification is performed locally and the code is open source.",
+        "Providing task statistics helps match your needs or models more effectively. The statistical specification shares task statistics without exposing original data. This generation is local and the code is open source.",
     },
     OpenSource: {
       Name: "Beimingwu is completely open source",
       Description:
-        "Beimingwu is the first completely open-source model platform. The engine, front-end, and back-end are completely open-source and support multiple deployment methods. We sincerely invite the community to experience and use the system and jointly develop and improve the system.",
+        "Beimingwu is the first fully open-source model platform, offering various deployment options. We warmly welcome the community to try and collaboratively enhance the system.",
     },
   },
   Why: {

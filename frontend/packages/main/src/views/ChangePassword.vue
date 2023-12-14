@@ -113,73 +113,74 @@ function closeErrorAlert(): void {
     >
       <v-card
         flat
-        class="mx-auto w-full border p-2 sm:p-7"
-        max-width="500"
+        class="w-full max-w-[500px]"
       >
-        <v-scroll-y-transition>
-          <v-card-actions v-if="showError">
-            <v-alert
-              v-model="showError"
-              closable
-              :text="errorMsg"
-              type="error"
-              @click:close="() => closeErrorAlert"
-            />
+        <div class="mx-auto w-full border p-2 sm:p-7">
+          <v-scroll-y-transition>
+            <v-card-actions v-if="showError">
+              <v-alert
+                v-model="showError"
+                closable
+                :text="errorMsg"
+                type="error"
+                @click:close="() => closeErrorAlert"
+              />
+            </v-card-actions>
+          </v-scroll-y-transition>
+          <v-scroll-y-transition>
+            <v-card-actions v-if="success">
+              <v-alert
+                closable
+                :text="t('ChangePassword.Success')"
+                type="success"
+              />
+            </v-card-actions>
+          </v-scroll-y-transition>
+          <v-card-title>
+            <div class="text-h5 m-2 my-6 !text-[1.6em] sm:my-2 sm:!text-[1.3em]">
+              {{ t("ChangePassword.ChangePassword") }}
+            </div>
+          </v-card-title>
+          <v-card-text>
+            <v-form ref="form">
+              <v-text-field
+                v-model="oldPassword.value"
+                :append-icon="showOldPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showOldPassword ? 'text' : 'password'"
+                :label="t('ChangePassword.OldPassword')"
+                :error-messages="oldPassword.errorMessages"
+                @click:append="showOldPassword = !showOldPassword"
+              />
+              <v-text-field
+                v-model="newPassword.value"
+                :append-icon="showNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showNewPassword ? 'text' : 'password'"
+                :label="t('ChangePassword.NewPassword')"
+                :error-messages="newPassword.errorMessages"
+                @click:append="showNewPassword = !showNewPassword"
+              />
+              <v-text-field
+                v-model="newPassword2.value"
+                :append-icon="showNewPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showNewPassword2 ? 'text' : 'password'"
+                :label="t('ChangePassword.ConfirmNewPassword')"
+                :error-messages="newPassword2.errorMessages"
+                @click:append="showNewPassword2 = !showNewPassword2"
+              />
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              block
+              class="bg-primary py-5"
+              color="white"
+              :disabled="!valid"
+              @click="change"
+            >
+              {{ t("ChangePassword.Change") }}
+            </v-btn>
           </v-card-actions>
-        </v-scroll-y-transition>
-        <v-scroll-y-transition>
-          <v-card-actions v-if="success">
-            <v-alert
-              closable
-              :text="t('ChangePassword.Success')"
-              type="success"
-            />
-          </v-card-actions>
-        </v-scroll-y-transition>
-        <v-card-title>
-          <div class="text-h5 m-2 my-6 !text-[1.6em] sm:my-2 sm:!text-[1.3em]">
-            {{ t("ChangePassword.ChangePassword") }}
-          </div>
-        </v-card-title>
-        <v-card-text>
-          <v-form ref="form">
-            <v-text-field
-              v-model="oldPassword.value"
-              :append-icon="showOldPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showOldPassword ? 'text' : 'password'"
-              :label="t('ChangePassword.OldPassword')"
-              :error-messages="oldPassword.errorMessages"
-              @click:append="showOldPassword = !showOldPassword"
-            />
-            <v-text-field
-              v-model="newPassword.value"
-              :append-icon="showNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showNewPassword ? 'text' : 'password'"
-              :label="t('ChangePassword.NewPassword')"
-              :error-messages="newPassword.errorMessages"
-              @click:append="showNewPassword = !showNewPassword"
-            />
-            <v-text-field
-              v-model="newPassword2.value"
-              :append-icon="showNewPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showNewPassword2 ? 'text' : 'password'"
-              :label="t('ChangePassword.ConfirmNewPassword')"
-              :error-messages="newPassword2.errorMessages"
-              @click:append="showNewPassword2 = !showNewPassword2"
-            />
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            block
-            class="bg-primary py-5"
-            color="white"
-            :disabled="!valid"
-            @click="change"
-          >
-            {{ t("ChangePassword.Change") }}
-          </v-btn>
-        </v-card-actions>
+        </div>
       </v-card>
     </div>
   </div>

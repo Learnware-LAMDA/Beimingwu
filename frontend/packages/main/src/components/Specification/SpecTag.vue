@@ -100,7 +100,7 @@ const taskTypeDescriptionRegression = computed({
 
     <template v-if="dataType === 'Table'">
       <v-alert
-        class="mt-3"
+        class="mt-3 text-xs sm:text-sm"
         type="info"
         color="primary"
         closable
@@ -126,7 +126,7 @@ const taskTypeDescriptionRegression = computed({
 
     <template v-if="taskType === 'Classification'">
       <v-alert
-        class="mt-3"
+        class="mt-3 text-xs sm:text-sm"
         type="info"
         color="primary"
         closable
@@ -147,7 +147,7 @@ const taskTypeDescriptionRegression = computed({
 
     <template v-if="taskType === 'Regression'">
       <v-alert
-        class="mt-3"
+        class="mt-3 text-xs sm:text-sm"
         type="info"
         color="primary"
         closable

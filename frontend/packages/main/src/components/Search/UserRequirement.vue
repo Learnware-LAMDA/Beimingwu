@@ -313,12 +313,26 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col">
-    <v-btn
-      class="absolute right-4 top-2 z-20 bg-white opacity-40 transition-all hover:opacity-100"
-      icon="mdi-close"
-      variant="flat"
-      @click="reset"
-    />
+    <v-scale-transition>
+      <v-btn
+        v-if="
+          modelValue.id ||
+          modelValue.name ||
+          modelValue.dataType ||
+          modelValue.taskType ||
+          modelValue.libraryType ||
+          modelValue.scenarioList.length ||
+          modelValue.licenseList.length ||
+          modelValue.files.length
+        "
+        icon
+        class="absolute right-4 top-2 z-20 bg-gray-400 transition-all"
+        variant="flat"
+        @click="reset"
+      >
+        <v-icon color="white">mdi-refresh</v-icon>
+      </v-btn>
+    </v-scale-transition>
     <div
       ref="filterElement"
       class="filter"
@@ -444,90 +458,91 @@ onMounted(() => {
         </v-card>
 
         <v-dialog
-          v-if="true"
           v-model="heteroDialog"
           width="1024"
         >
-          <v-card class="p-4 md:p-8 md:pt-4">
-            <div>
-              <v-tabs
-                v-model="heteroTab"
-                align-tabs="center"
-              >
-                <v-tab value="dataType">
-                  {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
-                </v-tab>
-                <v-tab value="taskType">
-                  {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
-                </v-tab>
-              </v-tabs>
-            </div>
-
-            <v-window
-              v-model="heteroTab"
-              class="overflow-y-auto md:overflow-y-hidden"
-            >
-              <v-window-item value="dataType">
-                <div class="flex justify-between">
-                  <div class="text-h4 mt-2 text-2xl font-semibold md:text-3xl xl:text-4xl">
+          <v-card>
+            <div class="p-4 md:p-8 md:pt-4">
+              <div>
+                <v-tabs
+                  v-model="heteroTab"
+                  align-tabs="center"
+                >
+                  <v-tab value="dataType">
                     {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
-                  </div>
-                  <v-btn
-                    icon="mdi-download"
-                    variant="flat"
-                    :size="display.smAndUp.value ? 'default' : 'small'"
-                    @click="
-                      () =>
-                        saveContentToFile(
-                          JSON.stringify(tempDataTypeDescription, undefined, 2),
-                          'text/json',
-                          'dataTypeDescription.json',
-                        )
-                    "
-                  />
-                </div>
-                <description-input
-                  v-model="tempDataTypeDescription"
-                  :name="t('Submit.SemanticSpecification.DataType.DescriptionInput.Name')"
-                  class="mt-4"
-                />
-              </v-window-item>
-
-              <v-window-item value="taskType">
-                <div class="flex justify-between">
-                  <div class="text-h4 mt-4 text-2xl font-semibold md:text-3xl xl:text-4xl">
+                  </v-tab>
+                  <v-tab value="taskType">
                     {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
-                  </div>
-                  <v-btn
-                    icon="mdi-download"
-                    variant="flat"
-                    @click="
-                      () =>
-                        saveContentToFile(
-                          JSON.stringify(tempTaskTypeDescription, undefined, 2),
-                          'text/json',
-                          'dataTypeDescription.json',
-                        )
-                    "
-                  />
-                </div>
-                <description-input
-                  v-model="tempTaskTypeDescription"
-                  :name="t('Submit.SemanticSpecification.TaskType.DescriptionOutput.Name')"
-                  class="mt-4"
-                />
-              </v-window-item>
-            </v-window>
+                  </v-tab>
+                </v-tabs>
+              </div>
 
-            <div class="mt-4 flex justify-end">
-              <v-btn
-                color="primary"
-                rounded
-                variant="flat"
-                @click="heteroDialog = false"
+              <v-window
+                v-model="heteroTab"
+                class="overflow-y-auto md:overflow-y-hidden"
               >
-                {{ t("Public.Finish") }}
-              </v-btn>
+                <v-window-item value="dataType">
+                  <div class="flex justify-between">
+                    <div class="text-h4 mt-2 text-2xl font-semibold md:text-3xl xl:text-4xl">
+                      {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
+                    </div>
+                    <v-btn
+                      icon="mdi-download"
+                      variant="flat"
+                      :size="display.smAndUp.value ? 'default' : 'small'"
+                      @click="
+                        () =>
+                          saveContentToFile(
+                            JSON.stringify(tempDataTypeDescription, undefined, 2),
+                            'text/json',
+                            'dataTypeDescription.json',
+                          )
+                      "
+                    />
+                  </div>
+                  <description-input
+                    v-model="tempDataTypeDescription"
+                    :name="t('Submit.SemanticSpecification.DataType.DescriptionInput.Name')"
+                    class="mt-4"
+                  />
+                </v-window-item>
+
+                <v-window-item value="taskType">
+                  <div class="flex justify-between">
+                    <div class="text-h4 mt-4 text-2xl font-semibold md:text-3xl xl:text-4xl">
+                      {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
+                    </div>
+                    <v-btn
+                      icon="mdi-download"
+                      variant="flat"
+                      @click="
+                        () =>
+                          saveContentToFile(
+                            JSON.stringify(tempTaskTypeDescription, undefined, 2),
+                            'text/json',
+                            'dataTypeDescription.json',
+                          )
+                      "
+                    />
+                  </div>
+                  <description-input
+                    v-model="tempTaskTypeDescription"
+                    :name="t('Submit.SemanticSpecification.TaskType.DescriptionOutput.Name')"
+                    class="mt-4"
+                  />
+                </v-window-item>
+              </v-window>
+
+              <div class="mt-4 flex justify-end">
+                <v-btn
+                  color="primary"
+                  rounded
+                  variant="flat"
+                  @click="heteroDialog = false"
+                >
+                  {{ t("Public.Finish") }}
+                </v-btn>
+              </div>
             </div>
           </v-card>
         </v-dialog>
@@ -563,66 +578,68 @@ onMounted(() => {
           <v-card
             id="example-dialog"
             flat
-            class="p-4 md:p-6"
             :loading="exampleLoading"
           >
-            <div class="flex items-start justify-between">
-              <span class="text-xl md:text-4xl">
-                {{ t("Search.Example.Examples") }}
-              </span>
-              <v-btn
-                variant="flat"
-                icon="mdi-close"
-                :size="display.smAndUp.value ? 'default' : 'x-small'"
-                @click="exampleDialog = false"
-              />
-            </div>
-            <div class="my-1 text-xs text-gray-500 md:text-lg">
-              {{ t("Search.Example.ExamplesDescription") }}
-            </div>
-
-            <template
-              v-for="(group, i) in exampleGroups"
-              :key="i"
-            >
-              <div class="text-h6 mt-2 text-sm md:my-2 md:text-xl">
-                {{ group.name }}
+            <div class="p-4 md:p-6">
+              <div class="flex items-start justify-between">
+                <span class="text-xl md:text-4xl">
+                  {{ t("Search.Example.Examples") }}
+                </span>
+                <v-btn
+                  variant="flat"
+                  icon="mdi-close"
+                  :size="display.smAndUp.value ? 'default' : 'x-small'"
+                  @click="exampleDialog = false"
+                />
               </div>
-              <div
-                v-for="(example, j) in group.examples"
-                :key="example.name"
-                class="flex items-center"
+              <div class="my-1 text-xs text-gray-500 md:text-lg">
+                {{ t("Search.Example.ExamplesDescription") }}
+              </div>
+
+              <template
+                v-for="(group, i) in exampleGroups"
+                :key="i"
               >
-                <v-card
-                  :id="`example-card-${i}-${j}`"
-                  flat
-                  class="my-1 flex flex-1 items-center rounded-md border p-3 md:my-2 md:p-4"
-                  @click="
-                    () =>
-                      useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
-                  "
+                <div class="text-h6 mt-2 text-sm md:my-2 md:text-xl">
+                  {{ group.name }}
+                </div>
+                <div
+                  v-for="(example, j) in group.examples"
+                  :key="example.name"
+                  class="flex items-center"
                 >
-                  <div class="flex items-center">
-                    <component
-                      :is="example.icon"
-                      class="w-4 md:w-8"
-                    />
-                    <div class="ml-2 text-center text-xs md:ml-3 md:text-lg">
-                      {{ example.name }}
+                  <div
+                    :id="`example-card-${i}-${j}`"
+                    v-ripple
+                    flat
+                    class="my-1 flex flex-1 cursor-pointer items-center rounded-md border p-3 transition-all hover:bg-gray-100 md:my-2 md:p-4"
+                    @click="
+                      () =>
+                        useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
+                    "
+                  >
+                    <div class="flex items-center">
+                      <component
+                        :is="example.icon"
+                        class="w-4 md:w-8"
+                      />
+                      <div class="ml-2 text-center text-xs md:ml-3 md:text-lg">
+                        {{ example.name }}
+                      </div>
                     </div>
                   </div>
-                </v-card>
-                <div>
-                  <v-btn
-                    variant="flat"
-                    icon="mdi-download"
-                    color="transparent"
-                    :size="display.smAndUp.value ? 'default' : 'x-small'"
-                    @click.stop="() => useExampleOnClick(example.onClickDownload)()"
-                  />
+                  <div>
+                    <v-btn
+                      variant="flat"
+                      icon="mdi-download"
+                      color="transparent"
+                      :size="display.smAndUp.value ? 'default' : 'x-small'"
+                      @click.stop="() => useExampleOnClick(example.onClickDownload)()"
+                    />
+                  </div>
                 </div>
-              </div>
-            </template>
+              </template>
+            </div>
           </v-card>
         </v-dialog>
       </div>
@@ -638,7 +655,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .filter {
-  @apply w-full p-2 sm:px-5 md:h-full md:overflow-y-auto;
+  @apply w-full flex-1 overflow-y-auto p-2 sm:px-5 md:h-full;
 
   & > * {
     @apply mt-2;

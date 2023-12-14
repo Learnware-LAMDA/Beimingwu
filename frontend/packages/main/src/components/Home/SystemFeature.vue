@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick } from "vue";
+import { ref, nextTick, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import anime from "animejs";
 import TerminalWindow from "../App/TerminalWindow.vue";
@@ -9,8 +9,9 @@ import SearchDemo from "../App/SearchDemo.vue";
 import ScrollAnimate from "../App/ScrollAnimate.vue";
 import { getFeatureCode } from "../../constants";
 import ProgressedCode from "../App/ProgressedCode.vue";
-import process from "../../assets/images/home/process.svg?url";
-import collaboration from "../../assets/images/home/collaboration.svg?component";
+import rkme from "@main/assets/images/home/rkme.svg?component";
+import RawData from "@main/assets/images/home/raw-data.svg?component";
+import collaboration from "@main/assets/images/home/collaboration.svg?component";
 
 const { t } = useI18n();
 
@@ -18,6 +19,8 @@ const FEATURE_CODE_FRAGMENTS = getFeatureCode();
 
 const recommendationRef = ref<HTMLDivElement | null>(null);
 const recommendationTextRef = ref<HTMLDivElement | null>(null);
+
+const scrollRef = ref<HTMLDivElement | null>(null);
 
 const loadAndReuseRef = ref<HTMLDivElement | null>(null);
 const loadAndReuseTextRef = ref<HTMLDivElement | null>(null);
@@ -38,8 +41,11 @@ const tabIndex = ref(0);
 
 const t1 = anime.timeline({ autoplay: false });
 
-function handleProgress(progress: number): void {
-  t1.seek(t1.duration * progress);
+const progress = ref<number>(0);
+
+function handleProgress(_progress: number): void {
+  progress.value = _progress;
+  t1.seek(t1.duration * _progress);
 }
 
 nextTick(() => {
@@ -232,6 +238,18 @@ nextTick(() => {
       3600,
     );
 });
+
+watch(
+  () => progress.value,
+  () => {
+    setTimeout(() => {
+      if (scrollRef.value) {
+        scrollRef.value.scrollTop = scrollRef.value.scrollHeight - scrollRef.value.clientHeight;
+      }
+    });
+  },
+  { deep: true },
+);
 </script>
 
 <template>
@@ -249,7 +267,7 @@ nextTick(() => {
               style="top: -50%; transform: translateY(-50%)"
             >
               <div class="p-2 text-lg sm:hidden">
-                <div class="text-2xl font-bold">
+                <div class="text-3xl font-medium">
                   {{ t("Home.Feature.Recommendation.Name") }}
                 </div>
                 <div class="my-4 text-sm">
@@ -272,7 +290,7 @@ nextTick(() => {
                 <div
                   v-for="i in 2"
                   :key="i"
-                  class="text-2xl font-bold"
+                  class="text-3xl font-medium"
                 >
                   {{ t(`Home.Feature.loadAndReuse.Name${i}`) }}
                 </div>
@@ -287,18 +305,23 @@ nextTick(() => {
                 :tabs="tabs"
                 class="aspect-[5/3] w-full overflow-hidden bg-gray-900"
               >
-                <terminal-code>
-                  <terminal-ipython-header />
-                  <progressed-code
-                    :progress="loadProgress"
-                    :fragments="FEATURE_CODE_FRAGMENTS[0].load"
-                  />
-                  <progressed-code
-                    v-if="loadProgress === 1"
-                    :progress="reuseProgress"
-                    :fragments="FEATURE_CODE_FRAGMENTS[0].reuse"
-                  />
-                </terminal-code>
+                <div
+                  ref="scrollRef"
+                  class="flex-1 overflow-y-hidden break-all bg-gray-800 opacity-90"
+                >
+                  <terminal-code>
+                    <terminal-ipython-header />
+                    <progressed-code
+                      :progress="loadProgress"
+                      :fragments="FEATURE_CODE_FRAGMENTS[0].load"
+                    />
+                    <progressed-code
+                      v-if="loadProgress === 1"
+                      :progress="reuseProgress"
+                      :fragments="FEATURE_CODE_FRAGMENTS[0].reuse"
+                    />
+                  </terminal-code>
+                </div>
               </terminal-window>
             </div>
 
@@ -308,17 +331,89 @@ nextTick(() => {
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
               <div class="p-2 text-lg sm:hidden">
-                <div class="text-2xl font-bold">
+                <div class="text-3xl font-medium">
                   {{ t(`Home.Feature.Privacy.Name`) }}
                 </div>
                 <div class="my-4 text-sm">
                   {{ t(`Home.Feature.Privacy.Description`) }}
                 </div>
               </div>
-              <v-img
-                :src="process"
+
+              <svg
                 class="w-full"
-              />
+                viewBox="0 0 400 200"
+              >
+                <defs>
+                  <marker
+                    id="arrow"
+                    viewBox="0 0 10 10"
+                    refX="5"
+                    refY="5"
+                    markerWidth="6"
+                    markerHeight="6"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M 0 0 L 10 5 L 0 10 z" />
+                  </marker>
+                </defs>
+                <raw-data
+                  x="0"
+                  y="0"
+                  width="200"
+                  height="200"
+                />
+                <rkme
+                  x="200"
+                  y="0"
+                  width="200"
+                  height="200"
+                />
+                <path
+                  d="M150 70 s100 -100 200 0"
+                  fill="none"
+                  stroke="black"
+                  stroke-dasharray="3"
+                  marker-end="url(#arrow)"
+                >
+                  <animate
+                    attributeName="stroke-dashoffset"
+                    from="6"
+                    to="0"
+                    dur="500ms"
+                    repeatCount="indefinite"
+                  />
+                </path>
+                <path
+                  d="M95 85 s100 -100 200 0"
+                  fill="none"
+                  stroke="black"
+                  stroke-dasharray="3"
+                  marker-end="url(#arrow)"
+                >
+                  <animate
+                    attributeName="stroke-dashoffset"
+                    from="6"
+                    to="0"
+                    dur="500ms"
+                    repeatCount="indefinite"
+                  />
+                </path>
+                <path
+                  d="M55 130 s100 -100 200 0"
+                  fill="none"
+                  stroke="black"
+                  stroke-dasharray="3"
+                  marker-end="url(#arrow)"
+                >
+                  <animate
+                    attributeName="stroke-dashoffset"
+                    from="6"
+                    to="0"
+                    dur="500ms"
+                    repeatCount="indefinite"
+                  />
+                </path>
+              </svg>
             </div>
 
             <div
@@ -327,7 +422,7 @@ nextTick(() => {
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
               <div class="p-2 text-lg sm:hidden">
-                <div class="text-2xl font-bold">
+                <div class="text-3xl font-medium">
                   {{ t(`Home.Feature.OpenSource.Name`) }}
                 </div>
                 <div class="my-4 text-sm">
@@ -350,7 +445,7 @@ nextTick(() => {
                 >
                   {{ t(`Home.Feature.Recommendation.Name`) }}
                 </div>
-                <div class="mt-5 text-sm lg:mt-7 lg:text-base xl:mt-10 xl:text-lg">
+                <div class="mt-5 text-xs text-gray-500 lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
                   {{ t(`Home.Feature.Recommendation.Description`) }}
                 </div>
               </div>
@@ -370,7 +465,7 @@ nextTick(() => {
                 </div>
                 <div
                   ref="loadAndReuseDescriptionTextRef"
-                  class="mt-5 text-xs lg:mt-7 lg:text-sm xl:mt-10 xl:text-base"
+                  class="mt-5 text-xs text-gray-500 lg:mt-7 lg:text-sm xl:mt-10 xl:text-base"
                   style="opacity: 0"
                 >
                   {{ t(`Home.Feature.loadAndReuse.Description`) }}
@@ -386,7 +481,7 @@ nextTick(() => {
                 >
                   {{ t(`Home.Feature.Privacy.Name`) }}
                 </div>
-                <div class="mt-5 text-xs lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
+                <div class="mt-5 text-xs text-gray-500 lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
                   {{ t(`Home.Feature.Privacy.Description`) }}
                 </div>
               </div>
@@ -400,7 +495,7 @@ nextTick(() => {
                 >
                   {{ t(`Home.Feature.OpenSource.Name`) }}
                 </div>
-                <div class="mt-5 text-xs lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
+                <div class="mt-5 text-xs text-gray-500 lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
                   {{ t(`Home.Feature.OpenSource.Description`) }}
                 </div>
               </div>
