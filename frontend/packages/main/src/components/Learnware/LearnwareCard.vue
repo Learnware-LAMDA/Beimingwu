@@ -109,16 +109,23 @@ function handleClickDelete(id: string): void {
         </div>
       </div>
 
-      <v-chip
-        v-if="item.verifyStatus && item.verifyStatus != 'SUCCESS'"
-        prepend-icon="mdi-alert-circle-outline"
-        color="error"
-        class="my-1"
-      >
-        {{ t("Learnware.Unverified") }}
-      </v-chip>
+      <template v-if="item.verifyStatus">
+        <v-chip
+          prepend-icon="mdi-alert-circle-outline"
+          :color="
+            item.verifyStatus === 'FAIL'
+              ? 'error'
+              : item.verifyStatus === 'SUCCESS'
+                ? 'success'
+                : 'warning'
+          "
+          class="my-1"
+        >
+          {{ t(`Learnware.VerifyStatus.${item.verifyStatus}`) }}
+        </v-chip>
+      </template>
 
-      <div class="flex flex-wrap items-center space-x-2 pb-2 pt-0 text-gray-700">
+      <div class="mt-2 flex flex-wrap items-center space-x-2 pb-2 pt-0 text-gray-700">
         <div
           class="my-1 rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
           :class="
