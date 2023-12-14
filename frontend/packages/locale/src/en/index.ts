@@ -16,6 +16,7 @@ import Summary from "./summary";
 import Error from "./error";
 import CodeFragments from "./codeFragments";
 import Url from "./url";
+import Router from "./router";
 
 export default {
   Page,
@@ -36,4 +37,5 @@ export default {
   Error,
   CodeFragments,
   Url,
+  Router,
 };
