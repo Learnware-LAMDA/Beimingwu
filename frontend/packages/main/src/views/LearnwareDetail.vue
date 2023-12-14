@@ -346,7 +346,7 @@ function handleDownload(id: string): void {
       </div>
 
       <!-- feature/label description -->
-      <div class="space-y-2 text-lg">
+      <div class="rounded border p-2">
         <template
           v-if="
             learnware.dataType === 'Table' ||
@@ -494,13 +494,13 @@ function handleDownload(id: string): void {
             </div>
           </v-expand-transition>
         </template>
-
-        <!-- description -->
-        <div
-          class="markdown-content overflow-x-auto break-words"
-          v-html="html2Markdown(learnware.description)"
-        />
       </div>
+
+      <!-- description -->
+      <div
+        class="markdown-content overflow-x-auto break-words"
+        v-html="html2Markdown(learnware.description)"
+      />
     </template>
   </div>
 </template>
