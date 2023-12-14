@@ -44,6 +44,9 @@ const loading = ref(false);
 
 const editable = ref(false);
 
+const showDescription = ref(false);
+const descriptionTab = ref<string>("");
+
 const showDeleteDialog = ref(false);
 const deleteId = ref("");
 const deleteName = ref("");
@@ -73,6 +76,8 @@ function getLearnwareDetail(id: string): Promise<void> {
               scenarioList: learnwareInfo.semantic_specification.Scenario.Values,
               licenseList: learnwareInfo.semantic_specification.License.Values,
             };
+            descriptionTab.value =
+              learnwareInfo.semantic_specification.Data.Values[0] === "Table" ? "data" : "task";
             return learnwareInfo.user_id;
           }
           return;
@@ -205,13 +210,8 @@ function handleDownload(id: string): void {
       </v-scroll-y-transition>
 
       <div class="justify-between sm:flex">
-        <div class="flex-1 overflow-hidden break-all">
-          <div class="text-h3 text-3xl lg:text-5xl">
-            {{ learnware.name }}
-          </div>
-          <div class="my-4">
-            {{ learnware.id }}
-          </div>
+        <div class="flex-1 break-all text-3xl lg:text-5xl">
+          {{ learnware.name }}
         </div>
         <div class="flex justify-end">
           <v-btn
@@ -240,217 +240,255 @@ function handleDownload(id: string): void {
         </div>
       </div>
 
+      <div class="justify-between sm:mt-4 sm:flex">
+        <div class="text-lg">
+          {{ learnware.id }}
+        </div>
+        <div class="text-base">
+          {{ t("LearnwareDetail.LastModified") }}:
+          {{
+            dayjs.utc(learnware.lastModify.replace(" UTC", "")).tz().format("YYYY-MM-DD HH:mm:ss")
+          }}
+          <template v-if="editable">
+            <span
+              class="cursor-pointer underline"
+              @click="onLearnwareVerifyLog(learnware.id)"
+            >
+              {{ t("LearnwareDetail.ViewLogs") }}
+            </span>
+          </template>
+        </div>
+      </div>
+
+      <v-chip
+        prepend-icon="mdi-alert-circle-outline"
+        size="large"
+        :color="
+          learnware.verifyStatus === 'FAIL'
+            ? 'error'
+            : learnware.verifyStatus === 'SUCCESS'
+              ? 'success'
+              : 'warning'
+        "
+        class="mt-4"
+      >
+        {{ t(`Learnware.VerifyStatus.${learnware.verifyStatus}`) }}
+      </v-chip>
+
+      <div class="mt-2 flex flex-wrap items-center space-x-2 pb-2 pt-0 text-sm">
+        <v-chip
+          label
+          class="my-1"
+        >
+          {{ t(`Submit.SemanticSpecification.DataType.Type.${learnware.dataType}`) }}
+        </v-chip>
+        <v-chip
+          label
+          class="my-1"
+        >
+          {{
+            t(
+              `Submit.SemanticSpecification.TaskType.Type.${learnware.taskType.replace(
+                "Others",
+                "OtherTask",
+              )}`,
+            )
+          }}
+        </v-chip>
+        <v-chip class="my-1">
+          {{
+            t(
+              `Submit.SemanticSpecification.LibraryType.Type.${learnware.libraryType.replace(
+                "Others",
+                "OtherLibrary",
+              )}`,
+            )
+          }}
+        </v-chip>
+        <v-chip
+          v-for="(scenario, i) in learnware.scenarioList"
+          :key="i"
+          class="my-1"
+        >
+          {{
+            t(
+              `Submit.SemanticSpecification.Scenario.Type.${scenario.replace(
+                "Others",
+                "OtherScenario",
+              )}`,
+            )
+          }}
+        </v-chip>
+        <v-chip
+          v-for="(license, i) in learnware.licenseList"
+          :key="i"
+          class="my-1"
+        >
+          {{
+            license === "Others"
+              ? t("Submit.SemanticSpecification.License.Type.OtherLicense")
+              : license
+          }}
+        </v-chip>
+      </div>
+
       <div
         v-if="learnware"
         class="min-h-full w-full"
         flat
       >
         <div class="learnware-container text-lg">
-          <v-expansion-panels
-            v-if="learnware.dataType === 'Table'"
-            class="mt-2"
+          <template
+            v-if="
+              learnware.dataType === 'Table' ||
+              ['Classification', 'Regression'].includes(learnware.taskType)
+            "
           >
-            <v-expansion-panel elevation="0">
-              <div class="rounded-lg border">
-                <v-expansion-panel-title>
-                  <span class="text-lg">
-                    <b>{{ t("Submit.SemanticSpecification.DataType.DataType") }}:</b>
-                    {{
-                      learnware.dataType &&
-                      t(`Submit.SemanticSpecification.DataType.Type.${learnware.dataType}`)
-                    }}
-                  </span>
-                </v-expansion-panel-title>
-                <v-expansion-panel-text>
-                  <div class="flex border-y py-3 font-bold">
-                    <div class="w-20">
-                      {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
-                    </div>
-                    <div class="w-full">
-                      {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Description") }}
-                    </div>
-                  </div>
-                  <div v-if="learnware.input.Dimension < 8">
-                    <div
-                      v-for="[key, val] in Object.entries(learnware.input.Description)"
-                      :key="key"
-                    >
-                      <div class="flex border-b px-1 py-2">
-                        <div class="w-20">
-                          {{ key }}
-                        </div>
-                        <div class="w-full">
-                          {{ val }}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <v-virtual-scroll
-                    v-else
-                    :items="Object.entries(learnware.input.Description)"
-                    :height="300"
+            <div
+              class="cursor-pointer text-base"
+              @click="showDescription = !showDescription"
+            >
+              <v-icon
+                class="transition"
+                :class="{ 'rotate-90': showDescription }"
+              >
+                mdi-chevron-right
+              </v-icon>
+              {{ t("LearnwareDetail.FeatureLabelDescription") }}
+            </div>
+            <v-expand-transition>
+              <div
+                v-if="showDescription"
+                class="text-base"
+              >
+                <v-tabs v-model="descriptionTab">
+                  <v-tab
+                    v-if="learnware.dataType === 'Table'"
+                    value="data"
                   >
-                    <template #default="{ item }">
-                      <div class="flex border-b px-1 py-2">
-                        <div class="w-20">
-                          {{ Number(item[0]) }}
-                        </div>
-                        <div class="w-full">
-                          {{ item[1] }}
-                        </div>
-                      </div>
-                    </template>
-                  </v-virtual-scroll>
-                </v-expansion-panel-text>
-              </div>
-            </v-expansion-panel>
-          </v-expansion-panels>
-
-          <div v-else>
-            <b>{{ t("Submit.SemanticSpecification.DataType.DataType") }}:</b>
-            {{
-              learnware.dataType &&
-              t(`Submit.SemanticSpecification.DataType.Type.${learnware.dataType}`)
-            }}
-          </div>
-
-          <v-expansion-panels v-if="['Classification', 'Regression'].includes(learnware.taskType)">
-            <v-expansion-panel elevation="0">
-              <div class="rounded-lg border">
-                <v-expansion-panel-title>
-                  <span class="text-lg">
-                    <b>{{ t("Submit.SemanticSpecification.TaskType.TaskType") }}:</b>
-                    {{
-                      learnware.taskType &&
-                      t(`Submit.SemanticSpecification.TaskType.Type.${learnware.taskType}`)
-                    }}
-                  </span>
-                </v-expansion-panel-title>
-                <v-expansion-panel-text>
-                  <div
+                    {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
+                  </v-tab>
+                  <v-tab
                     v-if="
                       ['Classification', 'Regression', 'Feature Extraction'].includes(
                         learnware.taskType,
                       )
                     "
-                    class="mt-2"
+                    value="task"
                   >
-                    <div class="flex border-y py-3 font-bold">
-                      <div class="w-20">
-                        {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
-                      </div>
-                      <div class="w-full">
-                        {{
-                          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Description")
-                        }}
-                      </div>
-                    </div>
-                    <div v-if="learnware.output.Dimension < 8">
-                      <div
-                        v-for="[key, val] in Object.entries(learnware.output.Description)"
-                        :key="key"
-                      >
-                        <div class="flex border-b px-1 py-2">
-                          <div class="w-20">
-                            {{ key }}
-                          </div>
-                          <div class="w-full">
-                            {{ val }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <v-virtual-scroll
-                      v-else
-                      :items="Object.entries(learnware.output.Description)"
-                      :height="300"
+                    {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
+                  </v-tab>
+                </v-tabs>
+
+                <v-window v-model="descriptionTab">
+                  <v-window-item value="data">
+                    <div
+                      v-if="learnware.dataType === 'Table'"
+                      class="mt-2"
                     >
-                      <template #default="{ item }">
-                        <div class="flex border-b px-1 py-2">
-                          <div class="w-20">
-                            {{ Number(item[0]) }}
-                          </div>
-                          <div class="w-full">
-                            {{ item[1] }}
+                      <div class="flex border-y py-3 font-bold">
+                        <div class="w-20">
+                          {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
+                        </div>
+                        <div class="w-full">
+                          {{
+                            t("Submit.SemanticSpecification.DataType.DescriptionInput.Description")
+                          }}
+                        </div>
+                      </div>
+                      <div v-if="learnware.input.Dimension < 8">
+                        <div
+                          v-for="[key, val] in Object.entries(learnware.input.Description)"
+                          :key="key"
+                        >
+                          <div class="flex border-b px-1 py-2">
+                            <div class="w-20">
+                              {{ key }}
+                            </div>
+                            <div class="w-full">
+                              {{ val }}
+                            </div>
                           </div>
                         </div>
-                      </template>
-                    </v-virtual-scroll>
-                  </div>
-                </v-expansion-panel-text>
+                      </div>
+                      <v-virtual-scroll
+                        v-else
+                        :items="Object.entries(learnware.input.Description)"
+                        :height="300"
+                      >
+                        <template #default="{ item }">
+                          <div class="flex border-b px-1 py-2">
+                            <div class="w-20">
+                              {{ Number(item[0]) }}
+                            </div>
+                            <div class="w-full">
+                              {{ item[1] }}
+                            </div>
+                          </div>
+                        </template>
+                      </v-virtual-scroll>
+                    </div>
+                  </v-window-item>
+                  <v-window-item value="task">
+                    <div
+                      v-if="
+                        ['Classification', 'Regression', 'Feature Extraction'].includes(
+                          learnware.taskType,
+                        )
+                      "
+                      class="mt-2"
+                    >
+                      <div class="flex border-y py-3 font-bold">
+                        <div class="w-20">
+                          {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
+                        </div>
+                        <div class="w-full">
+                          {{
+                            t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Description")
+                          }}
+                        </div>
+                      </div>
+                      <div v-if="learnware.output.Dimension < 8">
+                        <div
+                          v-for="[key, val] in Object.entries(learnware.output.Description)"
+                          :key="key"
+                        >
+                          <div class="flex border-b px-1 py-2">
+                            <div class="w-20">
+                              {{ key }}
+                            </div>
+                            <div class="w-full">
+                              {{ val }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <v-virtual-scroll
+                        v-else
+                        :items="Object.entries(learnware.output.Description)"
+                        :height="300"
+                      >
+                        <template #default="{ item }">
+                          <div class="flex border-b px-1 py-2">
+                            <div class="w-20">
+                              {{ Number(item[0]) }}
+                            </div>
+                            <div class="w-full">
+                              {{ item[1] }}
+                            </div>
+                          </div>
+                        </template>
+                      </v-virtual-scroll>
+                    </div>
+                  </v-window-item>
+                </v-window>
               </div>
-            </v-expansion-panel>
-          </v-expansion-panels>
-
-          <div v-else>
-            <b>{{ t("Submit.SemanticSpecification.TaskType.TaskType") }}:</b>
-            {{
-              learnware.taskType &&
-              t(`Submit.SemanticSpecification.TaskType.Type.${learnware.taskType}`)
-            }}
-          </div>
-
-          <div>
-            <b>{{ t("Submit.SemanticSpecification.LibraryType.LibraryType") }}:</b>
-            {{
-              learnware.libraryType &&
-              t(`Submit.SemanticSpecification.LibraryType.Type.${learnware.libraryType}`)
-            }}
-          </div>
-          <div>
-            <b>{{ t("Submit.SemanticSpecification.Scenario.Scenario") }}:</b>
-            <span
-              v-for="(scenario, i) in learnware.scenarioList"
-              :key="i"
-              class="active ml-1"
-            >
-              {{ t(`Submit.SemanticSpecification.Scenario.Type.${scenario}`) }}
-            </span>
-          </div>
-          <div>
-            <b>{{ t("Submit.SemanticSpecification.License.License") }}:</b>
-            <span
-              v-for="(license, i) in learnware.licenseList"
-              :key="i"
-              class="active ml-1"
-            >
-              {{
-                license === "Others"
-                  ? t(`Submit.SemanticSpecification.License.Type.OtherLicense`)
-                  : license
-              }}
-            </span>
-          </div>
-          <div>
-            <b>{{ t("LearnwareDetail.VerifyStatus.VerifyStatus") }}: </b>
-            {{
-              learnware.verifyStatus && t(`LearnwareDetail.VerifyStatus.${learnware.verifyStatus}`)
-            }}
-          </div>
-          <div>
-            <template v-if="editable">
-              <b>{{ t("LearnwareDetail.Logs") }}: </b>
-              <span
-                class="cursor-pointer underline"
-                @click="onLearnwareVerifyLog(learnware.id)"
-              >
-                {{ t("LearnwareDetail.ViewLogs") }}
-              </span>
-            </template>
-          </div>
-          <div>
-            <b> {{ t("LearnwareDetail.LastModified") }}: </b>
-            {{
-              dayjs.utc(learnware.lastModify.replace(" UTC", "")).tz().format("YYYY-MM-DD HH:mm:ss")
-            }}
-          </div>
-          <div>
-            <b>{{ t("Submit.Description.Description") }}:</b>
-            <div
-              class="markdown-content overflow-x-auto break-words"
-              v-html="html2Markdown(learnware.description)"
-            ></div>
-          </div>
+            </v-expand-transition>
+          </template>
+          <div
+            class="markdown-content overflow-x-auto break-words"
+            v-html="html2Markdown(learnware.description)"
+          />
         </div>
       </div>
       <v-overlay
