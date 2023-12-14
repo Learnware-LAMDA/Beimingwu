@@ -9,7 +9,7 @@ withDefaults(defineProps<Props>(), {
   host: "localhost",
 });
 
-const date = new Date().toString();
+const date = new Date().toString().replace(/\s\(.*\)/, "");
 const time = new Date().toLocaleTimeString();
 </script>
 

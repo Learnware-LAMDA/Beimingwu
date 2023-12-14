@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import store from "../store";
+import i18n from "@main/i18n";
 import { checkLoginStatus } from "../request/user";
 import type { Component } from "vue";
 import NProgress from "../plugins/nprogress";
@@ -202,7 +203,7 @@ Router.beforeEach(async (to, from, next) => {
       next();
     } catch (e) {
       store.commit("setShowGlobalError", true);
-      store.commit("setGlobalErrorMsg", "Please login first.");
+      store.commit("setGlobalErrorMsg", i18n.global.t("Router.LoginFirst"));
       next({
         path: "/login",
         query: { redirect: to.fullPath },

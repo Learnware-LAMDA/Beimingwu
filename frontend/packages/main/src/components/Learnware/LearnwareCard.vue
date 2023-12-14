@@ -107,20 +107,33 @@ function handleClickDelete(id: string): void {
             {{ item.username }}
           </div>
         </div>
+
+        <template v-if="item.verifyStatus">
+          <v-chip
+            v-if="item.verifyStatus"
+            :prepend-icon="
+              item.verifyStatus === 'FAIL'
+                ? 'mdi-close'
+                : item.verifyStatus === 'SUCCESS'
+                  ? 'mdi-check'
+                  : 'mdi-alert'
+            "
+            :color="
+              item.verifyStatus === 'FAIL'
+                ? 'error'
+                : item.verifyStatus === 'SUCCESS'
+                  ? 'success'
+                  : 'warning'
+            "
+          >
+            {{ t(`Learnware.VerifyStatus.${item.verifyStatus}`) }}
+          </v-chip>
+        </template>
       </div>
 
-      <v-chip
-        v-if="item.verifyStatus && item.verifyStatus != 'SUCCESS'"
-        prepend-icon="mdi-alert-circle-outline"
-        color="error"
-        class="my-1"
-      >
-        {{ t("Learnware.Unverified") }}
-      </v-chip>
-
-      <div class="mb-1 mt-3 flex flex-wrap items-center space-x-2 pb-2 pt-0 text-gray-700">
+      <div class="mt-2 flex flex-wrap items-center space-x-2 pb-2 pt-0 text-gray-700">
         <div
-          class="rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          class="my-1 rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
           :class="
             filters && filters.dataType && filters.dataType.includes(item.dataType)
               ? 'bg-primary'
@@ -130,7 +143,7 @@ function handleClickDelete(id: string): void {
           {{ t(`Submit.SemanticSpecification.DataType.Type.${item.dataType}`) }}
         </div>
         <div
-          class="rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          class="my-1 rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
           :class="
             filters && filters.taskType && filters.taskType.includes(item.taskType)
               ? 'bg-primary'
@@ -147,7 +160,7 @@ function handleClickDelete(id: string): void {
           }}
         </div>
         <div
-          class="rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          class="my-1 rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
           :class="
             filters && filters.libraryType && filters.libraryType.includes(item.libraryType)
               ? 'bg-primary'
@@ -166,7 +179,7 @@ function handleClickDelete(id: string): void {
         <div
           v-for="(scenario, i) in item.scenarioList"
           :key="i"
-          class="rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          class="my-1 rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white"
           :class="
             filters && filters.scenarioList && filters.scenarioList.includes(scenario)
               ? 'bg-orange-600'
@@ -185,7 +198,7 @@ function handleClickDelete(id: string): void {
         <div
           v-for="(license, i) in item.licenseList"
           :key="i"
-          class="rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          class="my-1 rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white"
           :class="
             filters && filters.licenseList && filters.licenseList.includes(license)
               ? 'bg-orange-600'

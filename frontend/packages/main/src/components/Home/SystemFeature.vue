@@ -345,7 +345,7 @@ watch(
               >
                 <defs>
                   <marker
-                    id="arrow"
+                    id="arrow-green"
                     viewBox="0 0 10 10"
                     refX="5"
                     refY="5"
@@ -353,7 +353,38 @@ watch(
                     markerHeight="6"
                     orient="auto-start-reverse"
                   >
-                    <path d="M 0 0 L 10 5 L 0 10 z" />
+                    <path
+                      d="M 0 0 L 10 5 L 0 10 z"
+                      fill="#2CA02C"
+                    />
+                  </marker>
+                  <marker
+                    id="arrow-blue"
+                    viewBox="0 0 10 10"
+                    refX="5"
+                    refY="5"
+                    markerWidth="6"
+                    markerHeight="6"
+                    orient="auto-start-reverse"
+                  >
+                    <path
+                      d="M 0 0 L 10 5 L 0 10 z"
+                      fill="#1F77B4"
+                    />
+                  </marker>
+                  <marker
+                    id="arrow-orange"
+                    viewBox="0 0 10 10"
+                    refX="5"
+                    refY="5"
+                    markerWidth="6"
+                    markerHeight="6"
+                    orient="auto-start-reverse"
+                  >
+                    <path
+                      d="M 0 0 L 10 5 L 0 10 z"
+                      fill="#FF7F0E"
+                    />
                   </marker>
                 </defs>
                 <raw-data
@@ -369,11 +400,12 @@ watch(
                   height="200"
                 />
                 <path
-                  d="M150 70 s100 -100 200 0"
+                  d="M158 78 S253 -2 348 68"
                   fill="none"
-                  stroke="black"
+                  color="#2CA02C"
+                  stroke="#2CA02C"
                   stroke-dasharray="3"
-                  marker-end="url(#arrow)"
+                  marker-end="url(#arrow-green)"
                 >
                   <animate
                     attributeName="stroke-dashoffset"
@@ -384,11 +416,11 @@ watch(
                   />
                 </path>
                 <path
-                  d="M95 85 s100 -100 200 0"
+                  d="M97 75 S141 -5 285 75"
                   fill="none"
-                  stroke="black"
+                  stroke="#FF7F0E"
                   stroke-dasharray="3"
-                  marker-end="url(#arrow)"
+                  marker-end="url(#arrow-orange)"
                 >
                   <animate
                     attributeName="stroke-dashoffset"
@@ -399,11 +431,11 @@ watch(
                   />
                 </path>
                 <path
-                  d="M55 130 s100 -100 200 0"
+                  d="M56 140 S151 60 246 126"
                   fill="none"
-                  stroke="black"
+                  stroke="#1F77B4"
                   stroke-dasharray="3"
-                  marker-end="url(#arrow)"
+                  marker-end="url(#arrow-blue)"
                 >
                   <animate
                     attributeName="stroke-dashoffset"
