@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useField } from "@beiming-system/hooks";
 import { login, sendResetPasswordEmail } from "../request/auth";
 import SuccessDialog from "../components/Dialogs/SuccessDialog.vue";
@@ -13,6 +13,7 @@ const store = useStore();
 
 const { t } = useI18n();
 
+const route = useRoute();
 const router = useRouter();
 
 const email = useField<string>({
@@ -55,7 +56,11 @@ function submit(): Promise<void> {
           success.value = true;
           setTimeout(() => {
             store.dispatch("login");
-            router.push("/");
+            if (route.query.redirect) {
+              router.push(route.query.redirect as string);
+            } else {
+              router.push("/");
+            }
           }, 1000);
 
           localStorage.setItem("token", res.data.token);
