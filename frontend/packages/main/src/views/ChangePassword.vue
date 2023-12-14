@@ -6,7 +6,7 @@ import { useField } from "@beiming-system/hooks";
 import { useI18n } from "vue-i18n";
 import { changePassword } from "../request/user";
 import { hex_md5 } from "../utils";
-import collaborationImg from "../assets/images/public/collaboration.svg?url";
+import AuthPage from "@main/components/AuthPage.vue";
 
 const store = useStore();
 
@@ -98,90 +98,70 @@ function closeErrorAlert(): void {
 </script>
 
 <template>
-  <div class="flex h-full bg-gray-100">
-    <div
-      class="hidden h-full w-full md:block"
-      :style="{
-        background: `url(${collaborationImg})`,
-        backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center center',
-      }"
-    />
-    <div
-      class="fill-height md:text-md flex w-full flex-row items-center justify-center p-2 text-xs sm:text-sm"
-    >
-      <v-card
-        flat
-        class="w-full max-w-[500px]"
+  <auth-page>
+    <v-scroll-y-transition>
+      <v-card-actions v-if="showError">
+        <v-alert
+          v-model="showError"
+          closable
+          :text="errorMsg"
+          type="error"
+          @click:close="() => closeErrorAlert"
+        />
+      </v-card-actions>
+    </v-scroll-y-transition>
+    <v-scroll-y-transition>
+      <v-card-actions v-if="success">
+        <v-alert
+          closable
+          :text="t('ChangePassword.Success')"
+          type="success"
+        />
+      </v-card-actions>
+    </v-scroll-y-transition>
+    <v-card-title>
+      <div class="text-h5 m-2 my-6 !text-[1.6em] sm:my-2 sm:!text-[1.3em]">
+        {{ t("ChangePassword.ChangePassword") }}
+      </div>
+    </v-card-title>
+    <v-card-text>
+      <v-form ref="form">
+        <v-text-field
+          v-model="oldPassword.value"
+          :append-icon="showOldPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="showOldPassword ? 'text' : 'password'"
+          :label="t('ChangePassword.OldPassword')"
+          :error-messages="oldPassword.errorMessages"
+          @click:append="showOldPassword = !showOldPassword"
+        />
+        <v-text-field
+          v-model="newPassword.value"
+          :append-icon="showNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="showNewPassword ? 'text' : 'password'"
+          :label="t('ChangePassword.NewPassword')"
+          :error-messages="newPassword.errorMessages"
+          @click:append="showNewPassword = !showNewPassword"
+        />
+        <v-text-field
+          v-model="newPassword2.value"
+          :append-icon="showNewPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="showNewPassword2 ? 'text' : 'password'"
+          :label="t('ChangePassword.ConfirmNewPassword')"
+          :error-messages="newPassword2.errorMessages"
+          @click:append="showNewPassword2 = !showNewPassword2"
+        />
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn
+        block
+        class="bg-primary py-5"
+        color="white"
+        :disabled="!valid"
+        @click="change"
       >
-        <div class="mx-auto w-full border p-2 sm:p-7">
-          <v-scroll-y-transition>
-            <v-card-actions v-if="showError">
-              <v-alert
-                v-model="showError"
-                closable
-                :text="errorMsg"
-                type="error"
-                @click:close="() => closeErrorAlert"
-              />
-            </v-card-actions>
-          </v-scroll-y-transition>
-          <v-scroll-y-transition>
-            <v-card-actions v-if="success">
-              <v-alert
-                closable
-                :text="t('ChangePassword.Success')"
-                type="success"
-              />
-            </v-card-actions>
-          </v-scroll-y-transition>
-          <v-card-title>
-            <div class="text-h5 m-2 my-6 !text-[1.6em] sm:my-2 sm:!text-[1.3em]">
-              {{ t("ChangePassword.ChangePassword") }}
-            </div>
-          </v-card-title>
-          <v-card-text>
-            <v-form ref="form">
-              <v-text-field
-                v-model="oldPassword.value"
-                :append-icon="showOldPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="showOldPassword ? 'text' : 'password'"
-                :label="t('ChangePassword.OldPassword')"
-                :error-messages="oldPassword.errorMessages"
-                @click:append="showOldPassword = !showOldPassword"
-              />
-              <v-text-field
-                v-model="newPassword.value"
-                :append-icon="showNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="showNewPassword ? 'text' : 'password'"
-                :label="t('ChangePassword.NewPassword')"
-                :error-messages="newPassword.errorMessages"
-                @click:append="showNewPassword = !showNewPassword"
-              />
-              <v-text-field
-                v-model="newPassword2.value"
-                :append-icon="showNewPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="showNewPassword2 ? 'text' : 'password'"
-                :label="t('ChangePassword.ConfirmNewPassword')"
-                :error-messages="newPassword2.errorMessages"
-                @click:append="showNewPassword2 = !showNewPassword2"
-              />
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              block
-              class="bg-primary py-5"
-              color="white"
-              :disabled="!valid"
-              @click="change"
-            >
-              {{ t("ChangePassword.Change") }}
-            </v-btn>
-          </v-card-actions>
-        </div>
-      </v-card>
-    </div>
-  </div>
+        {{ t("ChangePassword.Change") }}
+      </v-btn>
+    </v-card-actions>
+  </auth-page>
 </template>

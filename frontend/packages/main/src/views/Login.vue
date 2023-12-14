@@ -7,7 +7,7 @@ import { useField } from "@beiming-system/hooks";
 import { login, sendResetPasswordEmail } from "../request/auth";
 import SuccessDialog from "../components/Dialogs/SuccessDialog.vue";
 import { hex_md5 } from "../utils";
-import collaborationImg from "../assets/images/public/collaboration.svg?url";
+import AuthPage from "@main/components/AuthPage.vue";
 
 const store = useStore();
 
@@ -116,124 +116,104 @@ function onResetPassword(): void {
 </script>
 
 <template>
-  <div class="flex h-full bg-gray-100">
-    <div
-      class="hidden h-full w-full md:block"
-      :style="{
-        background: `url(${collaborationImg})`,
-        backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center center',
-      }"
-    />
-    <div
-      class="fill-height md:text-md flex w-full flex-row items-center justify-center p-2 text-xs sm:text-sm"
-    >
-      <v-card
-        flat
-        class="mx-auto w-full border"
-        max-width="500"
-      >
-        <div class="p-2 sm:p-7">
-          <v-scroll-y-transition>
-            <v-card-actions v-if="showError">
-              <v-alert
-                v-model="showError"
-                closable
-                :text="errorMsg"
-                type="error"
-                @click:close="closeErrorAlert"
-              />
-            </v-card-actions>
-          </v-scroll-y-transition>
-          <v-scroll-y-transition>
-            <v-card-actions v-if="success">
-              <v-alert
-                closable
-                class="text-sm md:text-base"
-                :text="t('Login.Success')"
-                type="success"
-              />
-            </v-card-actions>
-          </v-scroll-y-transition>
-          <v-card-title>
-            <div class="text-h5 sm:text-1.3em m-2 my-6 sm:my-2">
-              {{ t("Login.Login") }}
-            </div>
-          </v-card-title>
-          <v-card-text>
-            <v-form ref="form">
-              <v-text-field
-                v-model="email.value"
-                :label="t('Login.Email')"
-                :error-messages="email.errorMessages"
-                type="text"
-                name="login"
-                autocomplete="username"
-              />
-              <v-text-field
-                v-model="password.value"
-                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="showPassword ? 'text' : 'password'"
-                :label="t('Login.Password')"
-                :error-messages="password.errorMessages"
-                @click:append="showPassword = !showPassword"
-                @keyup.enter="submit"
-              />
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              block
-              class="bg-primary py-5"
-              color="white"
-              :disabled="!valid"
-              @click="submit"
-            >
-              {{ t("Login.Login") }}
-            </v-btn>
-          </v-card-actions>
-          <v-card-actions>
-            {{ t("Login.NoAccount") }}
-            <v-spacer class="flex-1" />
-            <v-btn
-              variant="text"
-              color="primary"
-              @click="router.push('/register')"
-            >
-              {{ t("Login.RegisterFirst") }}
-            </v-btn>
-            <v-btn
-              v-if="showResetPassword"
-              variant="text"
-              color="primary"
-              @click="onResetPassword"
-            >
-              {{ t("Login.ResetPassword") }}
-            </v-btn>
-          </v-card-actions>
+  <auth-page>
+    <success-dialog v-model="showResetPasswordDialog">
+      <template #msg>
+        <div class="mb-8 mt-6 text-lg">
+          {{ t("Login.ResetPasswordSent") }}
         </div>
-      </v-card>
-      <success-dialog v-model="showResetPasswordDialog">
-        <template #msg>
-          <div class="mb-8 mt-6 text-lg">
-            {{ t("Login.ResetPasswordSent") }}
-          </div>
-        </template>
+      </template>
 
-        <template #buttons>
-          <v-btn
-            class="text-none"
-            color="primary"
-            rounded
-            variant="outlined"
-            width="90"
-            @click="() => (showResetPasswordDialog = false)"
-          >
-            Close
-          </v-btn>
-        </template>
-      </success-dialog>
-    </div>
-  </div>
+      <template #buttons>
+        <v-btn
+          class="text-none"
+          color="primary"
+          rounded
+          variant="outlined"
+          width="90"
+          @click="() => (showResetPasswordDialog = false)"
+        >
+          Close
+        </v-btn>
+      </template>
+    </success-dialog>
+
+    <v-scroll-y-transition>
+      <v-card-actions v-if="showError">
+        <v-alert
+          v-model="showError"
+          closable
+          :text="errorMsg"
+          type="error"
+          @click:close="closeErrorAlert"
+        />
+      </v-card-actions>
+    </v-scroll-y-transition>
+    <v-scroll-y-transition>
+      <v-card-actions v-if="success">
+        <v-alert
+          closable
+          class="text-sm md:text-base"
+          :text="t('Login.Success')"
+          type="success"
+        />
+      </v-card-actions>
+    </v-scroll-y-transition>
+    <v-card-title>
+      <div class="text-h5 sm:text-1.3em m-2 my-6 sm:my-2">
+        {{ t("Login.Login") }}
+      </div>
+    </v-card-title>
+    <v-card-text>
+      <v-form ref="form">
+        <v-text-field
+          v-model="email.value"
+          :label="t('Login.Email')"
+          :error-messages="email.errorMessages"
+          type="text"
+          name="login"
+          autocomplete="username"
+        />
+        <v-text-field
+          v-model="password.value"
+          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="showPassword ? 'text' : 'password'"
+          :label="t('Login.Password')"
+          :error-messages="password.errorMessages"
+          @click:append="showPassword = !showPassword"
+          @keyup.enter="submit"
+        />
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn
+        block
+        class="bg-primary py-5"
+        color="white"
+        :disabled="!valid"
+        @click="submit"
+      >
+        {{ t("Login.Login") }}
+      </v-btn>
+    </v-card-actions>
+    <v-card-actions>
+      {{ t("Login.NoAccount") }}
+      <v-spacer class="flex-1" />
+      <v-btn
+        variant="text"
+        color="primary"
+        @click="router.push('/register')"
+      >
+        {{ t("Login.RegisterFirst") }}
+      </v-btn>
+      <v-btn
+        v-if="showResetPassword"
+        variant="text"
+        color="primary"
+        @click="onResetPassword"
+      >
+        {{ t("Login.ResetPassword") }}
+      </v-btn>
+    </v-card-actions>
+  </auth-page>
 </template>
