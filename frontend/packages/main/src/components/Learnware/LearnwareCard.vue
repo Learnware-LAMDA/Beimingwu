@@ -111,7 +111,15 @@ function handleClickDelete(id: string): void {
 
       <template v-if="item.verifyStatus">
         <v-chip
-          prepend-icon="mdi-alert-circle-outline"
+          v-if="item.verifyStatus"
+          :prepend-icon="
+            item.verifyStatus === 'FAIL'
+              ? 'mdi-close'
+              : item.verifyStatus === 'SUCCESS'
+                ? 'mdi-check'
+                : 'mdi-alert'
+          "
+          size="large"
           :color="
             item.verifyStatus === 'FAIL'
               ? 'error'
@@ -119,7 +127,7 @@ function handleClickDelete(id: string): void {
                 ? 'success'
                 : 'warning'
           "
-          class="my-1"
+          class="mt-4"
         >
           {{ t(`Learnware.VerifyStatus.${item.verifyStatus}`) }}
         </v-chip>

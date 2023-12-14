@@ -267,7 +267,13 @@ function handleDownload(id: string): void {
       <!-- verify status -->
       <v-chip
         v-if="learnware.verifyStatus"
-        :prepend-icon="learnware.verifyStatus === 'FAIL' ? 'mdi-close' : 'mdi-check'"
+        :prepend-icon="
+          learnware.verifyStatus === 'FAIL'
+            ? 'mdi-close'
+            : learnware.verifyStatus === 'SUCCESS'
+              ? 'mdi-check'
+              : 'mdi-alert'
+        "
         size="large"
         :color="
           learnware.verifyStatus === 'FAIL'
