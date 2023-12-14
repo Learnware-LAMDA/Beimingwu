@@ -107,30 +107,29 @@ function handleClickDelete(id: string): void {
             {{ item.username }}
           </div>
         </div>
-      </div>
 
-      <template v-if="item.verifyStatus">
-        <v-chip
-          v-if="item.verifyStatus"
-          :prepend-icon="
-            item.verifyStatus === 'FAIL'
-              ? 'mdi-close'
-              : item.verifyStatus === 'SUCCESS'
-                ? 'mdi-check'
-                : 'mdi-alert'
-          "
-          :color="
-            item.verifyStatus === 'FAIL'
-              ? 'error'
-              : item.verifyStatus === 'SUCCESS'
-                ? 'success'
-                : 'warning'
-          "
-          class="mt-4"
-        >
-          {{ t(`Learnware.VerifyStatus.${item.verifyStatus}`) }}
-        </v-chip>
-      </template>
+        <template v-if="item.verifyStatus">
+          <v-chip
+            v-if="item.verifyStatus"
+            :prepend-icon="
+              item.verifyStatus === 'FAIL'
+                ? 'mdi-close'
+                : item.verifyStatus === 'SUCCESS'
+                  ? 'mdi-check'
+                  : 'mdi-alert'
+            "
+            :color="
+              item.verifyStatus === 'FAIL'
+                ? 'error'
+                : item.verifyStatus === 'SUCCESS'
+                  ? 'success'
+                  : 'warning'
+            "
+          >
+            {{ t(`Learnware.VerifyStatus.${item.verifyStatus}`) }}
+          </v-chip>
+        </template>
+      </div>
 
       <div class="mt-2 flex flex-wrap items-center space-x-2 pb-2 pt-0 text-gray-700">
         <div
