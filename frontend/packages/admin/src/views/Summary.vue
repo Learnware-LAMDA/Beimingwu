@@ -222,7 +222,7 @@ onMounted(() => {
             <v-icon>{{ item.icon }}</v-icon>
             {{ item.title }}
           </div>
-          <div class="text-h3 my-8 text-center font-bold">
+          <div class="my-8 text-center text-5xl font-bold">
             {{ item.value }}
           </div>
         </div>

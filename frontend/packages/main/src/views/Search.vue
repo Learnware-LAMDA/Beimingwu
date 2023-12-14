@@ -445,13 +445,6 @@ onActivated(() => {
         class="mt-4 bg-transparent sm:mt-2"
       >
         <div
-          v-if="!multiRecommendedTips"
-          class="text-h5 text-base md:text-xl"
-        >
-          <v-icon>mdi-hexagon-multiple</v-icon>
-          {{ t("Search.RecommendedMultipleLearnware") }}
-        </div>
-        <div
           v-if="multiRecommendedTips"
           class="px-2"
         >
@@ -478,6 +471,13 @@ onActivated(() => {
             </template>
           </v-alert>
         </div>
+        <div
+          v-else
+          class="p-2 text-base font-medium md:text-xl"
+        >
+          <v-icon>mdi-hexagon-multiple</v-icon>
+          {{ t("Search.RecommendedMultipleLearnware") }}
+        </div>
         <multi-recommended-learnware-list
           :items="multiRecommendedLearnwareItems"
           :match-score="multiRecommendedMatchScore"
@@ -491,40 +491,42 @@ onActivated(() => {
         flat
         class="mt-4 bg-transparent sm:m-0"
       >
-        <div
-          v-if="showMultiRecommended && !singleRecommendedTips"
-          class="text-h5 text-base md:text-xl"
-        >
-          <v-icon>mdi-hexagon</v-icon>
-          {{ t("Search.RecommendedSingleLearnware") }}
-        </div>
-        <div
-          v-if="showMultiRecommended && singleRecommendedTips"
-          class="px-2 py-0"
-        >
-          <v-alert
-            v-model="singleRecommendedTips"
-            closable
-            color="info"
+        <template v-if="showMultiRecommended">
+          <div
+            v-if="singleRecommendedTips"
+            class="px-2 py-0"
           >
-            <template #prepend>
-              <v-icon
-                icon="mdi-hexagon"
-                :size="display.smAndUp.value ? 'x-large' : 'default'"
-              />
-            </template>
-            <template #title>
-              <span class="text-base md:text-xl">
-                {{ t("Search.RecommendedSingleLearnware") }}
-              </span>
-            </template>
-            <template #text>
-              <span class="text-xs md:text-base">
-                {{ t("Search.RecommendedSingleLearnwareTips") }}
-              </span>
-            </template>
-          </v-alert>
-        </div>
+            <v-alert
+              v-model="singleRecommendedTips"
+              closable
+              color="info"
+            >
+              <template #prepend>
+                <v-icon
+                  icon="mdi-hexagon"
+                  :size="display.smAndUp.value ? 'x-large' : 'default'"
+                />
+              </template>
+              <template #title>
+                <span class="text-base md:text-xl">
+                  {{ t("Search.RecommendedSingleLearnware") }}
+                </span>
+              </template>
+              <template #text>
+                <span class="text-xs md:text-base">
+                  {{ t("Search.RecommendedSingleLearnwareTips") }}
+                </span>
+              </template>
+            </v-alert>
+          </div>
+          <div
+            v-else
+            class="p-2 text-base font-medium md:text-xl"
+          >
+            <v-icon>mdi-hexagon</v-icon>
+            {{ t("Search.RecommendedSingleLearnware") }}
+          </div>
+        </template>
         <page-learnware-list
           :items="singleRecommendedLearnwareItems"
           :filters="filters"

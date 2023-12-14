@@ -93,20 +93,12 @@ const singleRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
             flat
             class="mt-4 bg-transparent sm:mt-2"
           >
-            <v-card-title
-              v-if="!multiRecommendedTips"
-              class="text-h5 text-base md:text-xl"
-            >
-              <v-icon>mdi-hexagon-multiple</v-icon>
-              {{ t("Search.RecommendedMultipleLearnware") }}
-            </v-card-title>
             <v-card-text
               v-if="multiRecommendedTips"
               class="px-2 py-0"
             >
               <v-alert
                 :model-value="true"
-                closable
                 color="success"
               >
                 <template #prepend>
@@ -127,6 +119,14 @@ const singleRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
                 </template>
               </v-alert>
             </v-card-text>
+            <v-card-title
+              v-else
+              class="text-base md:text-xl"
+            >
+              <v-icon>mdi-hexagon-multiple</v-icon>
+              {{ t("Search.RecommendedMultipleLearnware") }}
+            </v-card-title>
+
             <multi-recommended-learnware-list
               :items="multiRecommendedLearnwareItems"
               :match-score="0"
@@ -140,7 +140,7 @@ const singleRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
           >
             <v-card-title
               v-if="showMultiRecommended && !singleRecommendedTips"
-              class="text-h5 text-base md:text-xl"
+              class="text-base md:text-xl"
             >
               <v-icon>mdi-hexagon</v-icon>
               {{ t("Search.RecommendedSingleLearnware") }}
@@ -150,8 +150,7 @@ const singleRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
               class="px-2 py-0"
             >
               <v-alert
-                v-model="singleRecommendedTips"
-                closable
+                :model-value="true"
                 color="info"
               >
                 <template #prepend>
