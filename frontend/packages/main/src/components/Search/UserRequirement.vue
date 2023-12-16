@@ -342,7 +342,6 @@ onMounted(() => {
         <v-icon
           class="!mt-0 mr-3"
           icon="mdi-tag-text"
-          color="black"
           size="small"
         />
         {{ t("Search.ChooseSemanticRequirement") }}
@@ -420,7 +419,6 @@ onMounted(() => {
           <v-icon
             class="mr-3"
             icon="mdi-vector-difference"
-            color="black"
             size="small"
           />
           {{ t("Search.UploadHeterogeneousRequirement") }}
@@ -552,7 +550,6 @@ onMounted(() => {
         <v-icon
           class="mr-3"
           icon="mdi-upload"
-          color="black"
           size="small"
         />
         {{ t("Search.UploadStatisticalRequirement") }}

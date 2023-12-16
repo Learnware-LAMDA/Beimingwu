@@ -159,7 +159,7 @@ watch(
 </script>
 
 <template>
-  <div class="relative bg-sky-700">
+  <div class="relative bg-sky-700 dark:bg-black">
     <div class="py-20 text-center text-white">
       <big-title>
         <div>{{ t("Home.Cover.Beiming") }}</div>

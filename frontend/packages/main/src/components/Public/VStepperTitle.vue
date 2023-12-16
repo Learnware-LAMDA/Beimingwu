@@ -72,7 +72,7 @@ const activeStep = (index: number): void => {
       @apply mx-2 flex cursor-pointer flex-col items-center;
 
       .icon {
-        @apply bg-white p-1 md:p-3;
+        @apply p-1 md:p-3;
 
         .circle {
           @apply flex items-center justify-center rounded-full p-3;

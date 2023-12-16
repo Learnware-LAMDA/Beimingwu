@@ -8,10 +8,11 @@ import type { Route } from "@beiming-system/types/route";
 
 export interface Props {
   modelValue: boolean;
+  dark: boolean;
   routes: Route[];
 }
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "click:dark"]);
 const router = useRouter();
 
 const props = defineProps<Props>();
@@ -52,7 +53,7 @@ const filteredRoutes = computed<Route[]>(
 <template>
   <v-app-bar
     flat
-    class="!border-b bg-white"
+    class="border-b"
   >
     <div class="prepend">
       <v-app-bar-nav-icon
@@ -79,24 +80,18 @@ const filteredRoutes = computed<Route[]>(
           v-for="route in filteredRoutes"
           :key="route.name"
         >
-          <router-link
+          <v-list-item
             v-if="!route.children"
-            class="text-black"
+            class="rounded text-sm font-medium"
             :to="route.path"
           >
             <!-- route without children -->
-            <v-btn
-              class="text-body-2 mr-2 !h-full rounded font-medium"
-              :variant="route.meta.variant"
-              :class="route.meta.class"
-            >
-              <v-icon
-                class="mr-1"
-                :icon="route.meta.icon"
-              />
-              {{ route.meta.title }}
-            </v-btn>
-          </router-link>
+            <v-icon
+              class="mr-1"
+              :icon="route.meta.icon"
+            />
+            {{ route.meta.title }}
+          </v-list-item>
 
           <!-- route with children -->
           <v-menu
@@ -105,9 +100,10 @@ const filteredRoutes = computed<Route[]>(
           >
             <template #activator="{ props: menuProps }">
               <v-btn
-                class="text-body-2 mr-2 !h-full rounded font-medium"
+                class="mr-2 h-full text-sm font-medium normal-case"
                 :variant="route.meta.variant"
                 :class="route.meta.class"
+                rounded="md"
                 v-bind="menuProps"
               >
                 <v-icon
@@ -122,7 +118,7 @@ const filteredRoutes = computed<Route[]>(
               <v-list-item
                 v-for="child in route.children"
                 :key="child.name"
-                class="text-body-2 font-medium"
+                class="text-sm font-medium"
                 :to="child.path"
               >
                 <v-icon
@@ -139,6 +135,12 @@ const filteredRoutes = computed<Route[]>(
           </v-menu>
         </template>
       </v-toolbar-items>
+
+      <v-btn
+        variant="flat"
+        :icon="dark ? 'mdi-weather-night' : 'mdi-weather-sunny'"
+        @click="() => emit('click:dark')"
+      />
     </template>
   </v-app-bar>
 </template>

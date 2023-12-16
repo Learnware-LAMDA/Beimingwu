@@ -93,7 +93,7 @@ function handleClickDelete(id: string): void {
           <component
             :is="avatar"
             :class="item.username ? 'w-10' : 'w-4/5'"
-            class="opacity-70"
+            class="fill-black opacity-70 dark:fill-white dark:opacity-100"
           />
         </v-avatar>
         <div class="flex-1 overflow-hidden">
@@ -102,7 +102,7 @@ function handleClickDelete(id: string): void {
           </div>
           <div
             v-if="item.username"
-            class="text-xs text-gray-600 md:text-sm"
+            class="text-xs text-gray-600 dark:text-gray-400 md:text-sm"
           >
             {{ item.username }}
           </div>
@@ -133,7 +133,7 @@ function handleClickDelete(id: string): void {
 
       <div class="mt-2 flex flex-wrap items-center space-x-2 pb-2 pt-0 text-gray-700">
         <div
-          class="my-1 rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          class="my-1 rounded border-gray-700 bg-gray-400 px-2 text-xs text-white dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300"
           :class="
             filters && filters.dataType && filters.dataType.includes(item.dataType)
               ? 'bg-primary'
@@ -143,7 +143,7 @@ function handleClickDelete(id: string): void {
           {{ t(`Submit.SemanticSpecification.DataType.Type.${item.dataType}`) }}
         </div>
         <div
-          class="my-1 rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          class="my-1 rounded border-gray-700 bg-gray-400 px-2 text-xs text-white dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300"
           :class="
             filters && filters.taskType && filters.taskType.includes(item.taskType)
               ? 'bg-primary'
@@ -160,7 +160,7 @@ function handleClickDelete(id: string): void {
           }}
         </div>
         <div
-          class="my-1 rounded border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          class="my-1 rounded border-gray-700 bg-gray-400 px-2 text-xs text-white dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300"
           :class="
             filters && filters.libraryType && filters.libraryType.includes(item.libraryType)
               ? 'bg-primary'
@@ -179,7 +179,7 @@ function handleClickDelete(id: string): void {
         <div
           v-for="(scenario, i) in item.scenarioList"
           :key="i"
-          class="my-1 rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          class="my-1 rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300"
           :class="
             filters && filters.scenarioList && filters.scenarioList.includes(scenario)
               ? 'bg-orange-600'
@@ -198,7 +198,7 @@ function handleClickDelete(id: string): void {
         <div
           v-for="(license, i) in item.licenseList"
           :key="i"
-          class="my-1 rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white"
+          class="my-1 rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300"
           :class="
             filters && filters.licenseList && filters.licenseList.includes(license)
               ? 'bg-orange-600'
@@ -212,7 +212,9 @@ function handleClickDelete(id: string): void {
           }}
         </div>
       </div>
-      <div class="mt-1 overflow-hidden truncate whitespace-nowrap pb-2 pt-0 text-sm text-gray-700">
+      <div
+        class="mt-1 overflow-hidden truncate whitespace-nowrap pb-2 pt-0 text-sm text-gray-700 dark:text-gray-300"
+      >
         {{ item.description }}
       </div>
 
@@ -225,7 +227,7 @@ function handleClickDelete(id: string): void {
             {{ t("Search.SpecificationScore") }}:
             <span :style="`color: ${getColorByScore(item.matchScore)}`">{{ item.matchScore }}</span>
           </div>
-          <span class="text-xs text-gray-500">
+          <span class="text-xs text-gray-500 dark:text-gray-400">
             {{ t("Search.Updated") }} {{ dayjs.utc(item.lastModify.replace(" UTC", "")).fromNow() }}
           </span>
         </div>

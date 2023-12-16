@@ -138,7 +138,7 @@ const vOffset = {
           <div class="text-3xl font-medium lg:text-4xl xl:text-4xl">
             {{ t("Home.What.Title") }}
           </div>
-          <p class="mt-5 text-gray-500 xl:mt-10">
+          <p class="mt-5 text-gray-600 dark:text-gray-300 xl:mt-10">
             {{ t("Home.What.Description") }}
           </p>
         </div>
@@ -198,7 +198,7 @@ const vOffset = {
             >
               <path
                 d="M 0 0 L 6 2 L 0 4 L 1 2 z"
-                class="fill-gray-800"
+                class="fill-gray-800 dark:fill-gray-200"
               />
             </marker>
 
@@ -208,11 +208,11 @@ const vOffset = {
             >
               <path
                 d="M 0 0 L 2 0 L 2 2 L 0 2 z"
-                class="fill-gray-800"
+                class="fill-gray-800 dark:fill-gray-200"
               />
               <path
                 d="M 0 0 L 2 2 M 2 0 L 0 2"
-                class="stroke-gray-800 stroke-[1]"
+                class="stroke-gray-800 stroke-[1] dark:stroke-gray-200"
               />
             </pattern>
 
@@ -225,6 +225,7 @@ const vOffset = {
             >
               <path
                 d="M 0 5 L 0 29.585938 L 11.15625 18.429688 L 15.460938 24.890625 L 20.328125 23.914063 L 24.414063 28 L 30.320313 28 L 37.320313 33 L 50 33 L 50 5 Z M 37.5 14 C 39.433594 14 41 15.566406 41 17.5 C 41 19.433594 39.433594 21 37.5 21 C 35.566406 21 34 19.433594 34 17.5 C 34 15.566406 35.566406 14 37.5 14 Z M 10.84375 21.570313 L 0 32.414063 L 0 45 L 50 45 L 50 35 L 36.679688 35 L 29.679688 30 L 23.585938 30 L 19.671875 26.085938 L 14.539063 27.109375 Z"
+                class="fill-black dark:fill-white"
               />
             </svg>
             <svg
@@ -236,6 +237,7 @@ const vOffset = {
             >
               <path
                 d="M55 15c1.657 0 3 1.343 3 3v9H46V15H55zM52 23c1.104 0 2-.895 2-2 0-1.105-.896-2-2-2s-2 .895-2 2C50 22.105 50.896 23 52 23zM30 27V15h12v12H30zM36 19c-1.104 0-2 .895-2 2 0 1.105.896 2 2 2s2-.895 2-2C38 19.895 37.104 19 36 19zM14 18c0-1.657 1.343-3 3-3h9v12H14V18zM20 19c-1.104 0-2 .895-2 2 0 1.105.896 2 2 2s2-.895 2-2C22 19.895 21.104 19 20 19zM14 43V31h12v12H14zM20 35c-1.104 0-2 .895-2 2 0 1.105.896 2 2 2s2-.895 2-2C22 35.895 21.104 35 20 35zM14 56v-9h12v12h-9C15.343 59 14 57.657 14 56zM20 51c-1.104 0-2 .895-2 2 0 1.105.896 2 2 2s2-.895 2-2C22 51.895 21.104 51 20 51zM30 59V47h12v12H30zM46 59V47h12v9c0 1.657-1.343 3-3 3H46zM46 43V31h12v12H46zM30 43V31h12v12H30z"
+                class="fill-black dark:fill-white"
               />
             </svg>
 
@@ -255,7 +257,7 @@ const vOffset = {
                 width="770"
                 height="290"
                 rx="10"
-                fill="white"
+                class="fill-white dark:fill-black"
               />
               <text
                 x="110"
@@ -263,6 +265,7 @@ const vOffset = {
                 font-size="30"
                 text-anchor="start"
                 dominant-baseline="hanging"
+                class="fill-black dark:fill-white"
               >
                 {{ t("Home.What.Learnware") }}
               </text>
@@ -272,7 +275,7 @@ const vOffset = {
                 font-size="18"
                 text-anchor="start"
                 dominant-baseline="hanging"
-                class="fill-gray-700"
+                class="fill-gray-700 dark:fill-gray-300"
               >
                 {{ t("Home.What.Developer") }}
               </text>
@@ -282,7 +285,7 @@ const vOffset = {
                 width="90"
                 height="30"
                 rx="3"
-                class="fill-gray-400"
+                class="fill-gray-400 dark:fill-gray-600"
               />
               <rect
                 x="140"
@@ -290,13 +293,13 @@ const vOffset = {
                 :width="(locale as Language) === 'en' ? 150 : 90"
                 height="30"
                 rx="3"
-                class="fill-gray-400"
+                class="fill-gray-400 dark:fill-gray-600"
               />
               <text
                 :x="(locale as Language) === 'en' ? 215 : 185"
                 :y="115"
                 font-size="20"
-                class="fill-white"
+                class="fill-white dark:fill-black"
                 text-anchor="middle"
                 dominant-baseline="middle"
               >
@@ -307,7 +310,7 @@ const vOffset = {
                 x="30"
                 y="170"
                 font-size="25"
-                class="fill-black"
+                class="fill-black dark:fill-white"
                 text-anchor="start"
                 dominant-baseline="middle"
               >
@@ -318,7 +321,7 @@ const vOffset = {
                 x="30"
                 y="260"
                 font-size="20"
-                class="fill-gray"
+                class="fill-black dark:fill-white"
                 text-anchor="start"
                 dominant-baseline="middle"
               >
@@ -351,13 +354,13 @@ const vOffset = {
           >
             <path
               d="M 1100 600 h 350"
-              class="fill-none stroke-gray-800 stroke-[6]"
+              class="fill-none stroke-gray-800 stroke-[6] dark:stroke-gray-100"
               stroke-linecap="round"
               marker-end="url(#arrow)"
             />
             <path
               d="M 1150 670 v -350"
-              class="fill-none stroke-gray-800 stroke-[6]"
+              class="fill-none stroke-gray-800 stroke-[6] dark:stroke-gray-100"
               stroke-linecap="round"
               marker-end="url(#arrow)"
             />
@@ -369,7 +372,13 @@ const vOffset = {
               :cx="[1320, 1285, 1325][i - 1]"
               :cy="[515, 540, 580][i - 1]"
               r="0"
-              :class="['fill-blue-600', 'fill-green-800', 'fill-red-700'][i - 1]"
+              :class="
+                [
+                  'fill-blue-600 dark:fill-blue-400',
+                  'fill-green-800 dark:fill-green-200',
+                  'fill-red-700 dark:fill-red-300',
+                ][i - 1]
+              "
             />
 
             <text
@@ -377,6 +386,7 @@ const vOffset = {
               y="720"
               font-size="30"
               text-anchor="middle"
+              class="fill-black dark:fill-white"
             >
               {{ t("Home.What.SpecificationSpace") }}
             </text>
@@ -389,7 +399,13 @@ const vOffset = {
             :cx="[1238, 1200, 1233][i - 1]"
             :cy="[492, 518, 557][i - 1]"
             r="8"
-            :class="['fill-blue-600', 'fill-green-800', 'fill-red-700'][i - 1]"
+            :class="
+              [
+                'fill-blue-600 dark:fill-blue-400',
+                'fill-green-800 dark:fill-green-200',
+                'fill-red-700 dark:fill-red-300',
+              ][i - 1]
+            "
             opacity="0"
           />
 
@@ -407,7 +423,13 @@ const vOffset = {
               ][i - 1]
             "
             class="fill-none stroke-[4]"
-            :class="['stroke-blue-600', 'stroke-green-800', 'stroke-red-800'][i - 1]"
+            :class="
+              [
+                'stroke-blue-600 dark:stroke-blue-400',
+                'stroke-green-800 dark:stroke-green-200',
+                'stroke-red-800 dark:stroke-red-200',
+              ][i - 1]
+            "
             stroke-linecap="round"
           />
 
@@ -453,7 +475,7 @@ const vOffset = {
               x="475"
               :y="125 + 300 * (i - 1)"
               font-size="20"
-              class="fill-white"
+              class="fill-white dark:fill-black"
               text-anchor="middle"
               dominant-baseline="middle"
             >
@@ -475,7 +497,7 @@ const vOffset = {
             :d="`M 400 ${
               300 * (i - 1) + 20
             } a 10 10 0 0 1 10 -10 h750 a 10 10 0 0 1 10 10 v 270 a 10 10 0 0 1 -10 10 h-750 a 10 10 0 0 1 -10 -10 z`"
-            class="fill-none stroke-black stroke-[2]"
+            class="fill-none stroke-black stroke-[2] dark:stroke-white"
           />
         </svg>
       </div>

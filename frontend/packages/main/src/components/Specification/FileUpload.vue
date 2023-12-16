@@ -52,7 +52,7 @@ const files = computed({
 <template>
   <div
     v-ripple
-    class="flex-column relative flex cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-500 hover:bg-gray-200"
+    class="flex-column relative flex cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-500 transition hover:bg-gray-200 dark:hover:bg-gray-700"
     :class="{ 'border-dashed': dragging }"
     :style="{ height: Number(height) / 4 + 'rem' }"
     @dragover.prevent

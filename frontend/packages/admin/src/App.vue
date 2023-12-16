@@ -14,6 +14,11 @@ const { t } = useI18n();
 const drawerOpen = ref(false);
 const showGlobalError = ref(store.getters.getShowGlobalError);
 
+const dark = computed<boolean>({
+  get: () => store.getters.getDark,
+  set: () => store.commit("toggleDark"),
+});
+
 const initKeepAliveIncludes: string[] = Router.getRoutes()
   .filter((route) => route.meta.keepAlive)
   .map((route) => route.name as string);
@@ -69,6 +74,7 @@ watch(
   <v-app>
     <app-bar
       v-model="drawerOpen"
+      v-model:dark="dark"
       :routes="routes"
     />
 

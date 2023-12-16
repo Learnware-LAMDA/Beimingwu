@@ -130,7 +130,7 @@ const modelValue = computed({
     <template #btn="{ title, icon, active, onClick }">
       <div
         :class="{ 'bg-orange-600': active }"
-        class="flex cursor-pointer items-center rounded-[2em] bg-gray-400 p-3 pl-4 text-xs text-white sm:text-sm lg:text-base"
+        class="flex cursor-pointer items-center rounded-[2em] bg-gray-400 p-3 pl-4 text-xs text-white dark:border dark:border-white dark:bg-gray-600 sm:text-sm lg:text-base"
         @click="onClick"
       >
         <v-icon

@@ -68,7 +68,7 @@ const singleRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
 
 <template>
   <Browser>
-    <div class="flex flex-1 justify-start overflow-hidden bg-gray-200">
+    <div class="flex flex-1 justify-start overflow-hidden bg-gray-100 dark:bg-gray-800">
       <div
         v-if="display.mdAndUp.value || (!showMultiRecommended && !loading)"
         class="no-scroll h-full w-full min-w-[5rem] sm:w-1/4"
