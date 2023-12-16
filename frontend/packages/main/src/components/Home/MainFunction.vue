@@ -1,8 +1,15 @@
 <script setup lang="ts">
-import process from "../../assets/images/home/process.svg?url";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+import { useDisplay } from "vuetify";
+import process from "../../assets/images/home/process.svg?url";
+import procresHorizontal from "../../assets/images/home/process-horizontal.svg?url";
 
 const { t } = useI18n();
+
+const display = useDisplay();
+
+const imgSrc = computed(() => (display.smAndDown.value ? procresHorizontal : process));
 </script>
 
 <template>
@@ -20,11 +27,8 @@ const { t } = useI18n();
       </p>
     </div>
 
-    <div class="">
-      <div class="">
-        <v-img :src="process" />
-      </div>
-      <div></div>
+    <div class="px-5 sm:px-0">
+      <v-img :src="imgSrc" />
     </div>
   </div>
 </template>
