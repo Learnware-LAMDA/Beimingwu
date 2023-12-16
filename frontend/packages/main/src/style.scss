@@ -1,6 +1,6 @@
 @forward "vuetify/settings" with (
   $utilities: false,
-  $colors: false
+  $color-pack: false,
 );
 
 @use "vuetify";
