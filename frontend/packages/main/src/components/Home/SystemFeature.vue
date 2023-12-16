@@ -275,6 +275,7 @@ watch(
               class="absolute flex h-full w-full flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-0"
               style="top: -50%; transform: translateY(-50%)"
             >
+              <!--Show in mobile-->
               <div class="text-lg sm:hidden">
                 <div class="text-2xl font-medium">
                   {{ t("Home.Feature.Recommendation.Name") }}
@@ -283,6 +284,7 @@ watch(
                   {{ t("Home.Feature.Recommendation.Description") }}
                 </div>
               </div>
+
               <search-demo
                 class="aspect-[5/3] w-full"
                 :show-multi-recommended="true"
@@ -295,6 +297,7 @@ watch(
               class="absolute -z-10 flex h-full w-full flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-0"
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
+              <!--Show in mobile-->
               <div class="text-lg sm:hidden">
                 <div
                   v-for="i in 2"
@@ -339,6 +342,7 @@ watch(
               class="absolute -z-20 flex h-full w-full flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-0"
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
+              <!--Show in mobile-->
               <div class="text-lg sm:hidden">
                 <div class="text-2xl font-medium">
                   {{ t(`Home.Feature.Privacy.Name`) }}
@@ -462,6 +466,7 @@ watch(
               class="absolute -z-30 flex h-full w-full flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-0"
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
+              <!--Show in mobile-->
               <div class="text-lg sm:hidden">
                 <div class="text-2xl font-medium">
                   {{ t(`Home.Feature.OpenSource.Name`) }}
@@ -470,10 +475,12 @@ watch(
                   {{ t(`Home.Feature.OpenSource.Description`) }}
                 </div>
               </div>
+
               <collaboration class="mx-auto w-4/5" />
             </div>
           </div>
 
+          <!-- Show in iPad and larger -->
           <div class="h-main-full absolute hidden w-full flex-1 pl-8 sm:static sm:block">
             <div class="relative h-full">
               <div
@@ -481,9 +488,7 @@ watch(
                 class="absolute w-full px-5 md:px-0"
                 style="top: 50%; transform: translateY(-50%); opacity: 0"
               >
-                <div
-                  class="text-lg font-medium md:text-2xl lg:text-3xl lg:leading-[2.5rem] xl:text-4xl xl:leading-[3rem]"
-                >
+                <div class="text-lg font-medium md:text-xl lg:text-2xl xl:text-3xl">
                   {{ t(`Home.Feature.Recommendation.Name`) }}
                 </div>
                 <div class="mt-5 text-xs text-gray-500 lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
@@ -499,7 +504,7 @@ watch(
                   v-for="i in 2"
                   :key="i"
                   ref="loadAndReuseTitleRefs"
-                  class="text-lg font-medium md:text-2xl lg:text-3xl lg:leading-[2.5rem] xl:text-4xl xl:leading-[3rem]"
+                  class="mb-1 text-lg font-medium md:text-xl lg:text-2xl xl:text-3xl"
                   style="opacity: 0"
                 >
                   {{ t(`Home.Feature.loadAndReuse.Name${i}`) }}
@@ -517,9 +522,7 @@ watch(
                 class="absolute w-full px-5 md:px-0"
                 style="top: 50%; transform: translateY(-50%); opacity: 0"
               >
-                <div
-                  class="text-lg font-medium md:text-2xl lg:text-3xl lg:leading-[2.5rem] xl:text-4xl xl:leading-[3rem]"
-                >
+                <div class="text-lg font-medium md:text-xl lg:text-2xl xl:text-3xl">
                   {{ t(`Home.Feature.Privacy.Name`) }}
                 </div>
                 <div class="mt-5 text-xs text-gray-500 lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
@@ -531,9 +534,7 @@ watch(
                 class="absolute w-full px-5 md:px-0"
                 style="top: 50%; transform: translateY(-50%); opacity: 0"
               >
-                <div
-                  class="text-lg font-medium md:text-2xl lg:text-3xl lg:leading-[2.5rem] xl:text-4xl xl:leading-[3rem]"
-                >
+                <div class="text-lg font-medium md:text-xl lg:text-2xl xl:text-3xl">
                   {{ t(`Home.Feature.OpenSource.Name`) }}
                 </div>
                 <div class="mt-5 text-xs text-gray-500 lg:mt-7 lg:text-sm xl:mt-10 xl:text-base">
