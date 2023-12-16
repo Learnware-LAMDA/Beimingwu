@@ -96,7 +96,7 @@ function getColorByScore(score: number): string {
       <v-btn
         variant="flat"
         :size="display.mdAndUp ? 'x-large' : 'large'"
-        class="text-body-2 border px-4"
+        class="border px-4 text-sm"
         @click.stop="() => downloadAll()"
       >
         <span v-if="!downloading">

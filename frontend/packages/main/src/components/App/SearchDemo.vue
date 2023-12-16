@@ -88,7 +88,7 @@ const singleRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
           class="w-[200%] origin-top-left scale-[calc(100%/2)] transform overflow-hidden md:w-[300%] md:scale-[calc(100%/3)] xl:w-[200%] xl:scale-[calc(100%/2)]"
           disabled="true"
         >
-          <v-card
+          <div
             v-if="showMultiRecommended"
             flat
             class="mt-4 bg-transparent sm:mt-2"
@@ -133,8 +133,8 @@ const singleRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
               :filters="filters"
               :loading="loading"
             />
-          </v-card>
-          <v-card
+          </div>
+          <div
             flat
             class="mt-4 bg-transparent sm:m-0"
           >
@@ -181,7 +181,7 @@ const singleRecommendedLearnwareItems = computed<LearnwareCardInfo[]>(() =>
               :is-admin="false"
               :show-pagination="false"
             />
-          </v-card>
+          </div>
         </div>
       </div>
     </div>

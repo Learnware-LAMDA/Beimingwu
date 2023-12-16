@@ -88,7 +88,7 @@ function buttonClick(func: (() => void) | undefined): void {
     >
       <a
         :href="`http://www.beian.miit.gov.cn/`"
-        class="dark:text-white"
+        class="text-black dark:text-white"
         target="_blank"
         rel="noopener noreferrer"
       >

@@ -40,7 +40,7 @@ const activeStep = (index: number): void => {
           <div class="icon">
             <div
               class="circle"
-              :class="isStepActive(index) ? 'bg-primary' : 'bg-grey-lighten-1'"
+              :class="isStepActive(index) ? 'bg-primary' : 'bg-gray-400'"
             >
               <v-icon
                 :icon="step.icon"

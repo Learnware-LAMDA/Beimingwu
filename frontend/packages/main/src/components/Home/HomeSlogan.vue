@@ -171,7 +171,7 @@ watch(
 
       <div class="flex justify-center pt-10">
         <v-btn
-          class="mx-3 bg-white"
+          class="mx-3 bg-white text-black"
           size="large"
           @click="router.push('/search')"
         >
