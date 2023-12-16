@@ -41,7 +41,9 @@ export default {
     },
   },
   Feature: {
-    Title: "系统特性",
+    Title: "北冥坞系统有哪些特点？",
+    Description:
+      "通过对学件的系统组织，北冥坞系统能够帮助用户额外使用任务的统计信息进行精准地学件查搜，帮助用户安全地部署学件，便捷地复用学件；并且充分保护用户的数据隐私。",
     Recommendation: {
       Name: "利用统计信息的查搜能推荐更有效的模型",
       Description:
