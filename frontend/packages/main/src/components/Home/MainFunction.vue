@@ -27,8 +27,11 @@ const imgSrc = computed(() => (display.smAndDown.value ? procresHorizontal : pro
       </p>
     </div>
 
-    <div class="px-5 sm:px-0">
-      <v-img :src="imgSrc" />
+    <div class="bg-white px-5 sm:px-0">
+      <v-img
+        class="max-h-screen"
+        :src="imgSrc"
+      />
     </div>
   </div>
 </template>
