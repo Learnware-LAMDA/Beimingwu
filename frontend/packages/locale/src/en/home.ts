@@ -41,7 +41,7 @@ export default {
     },
   },
   Feature: {
-    Title: "System Features",
+    Title: "What are the features of Beimingwu?",
     Recommendation: {
       Name: "Recommend more effective models with Statistical information",
       Description:

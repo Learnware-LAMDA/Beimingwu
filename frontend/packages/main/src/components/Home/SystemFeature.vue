@@ -254,6 +254,15 @@ watch(
 
 <template>
   <div class="mx-auto w-full max-w-[1400px] py-20 md:px-10 md:py-32">
+    <div class="my-8 px-5 md:px-0">
+      <div class="my-5 text-3xl font-medium lg:my-7 lg:text-4xl xl:my-10 xl:text-4xl">
+        {{ t("Home.Feature.Title") }}
+      </div>
+      <p class="text-gray-500">
+        通过对学件的系统组织，北冥坞系统能够帮助用户额外使用任务的统计信息进行精准地学件查搜，帮助用户安全地部署学件，便捷地复用学件；并且充分保护用户的数据隐私。
+      </p>
+    </div>
+
     <scroll-animate
       class="h-[6000px] min-h-[200vh]"
       @progress="handleProgress"
@@ -263,11 +272,11 @@ watch(
           <div class="h-main-full relative w-full sm:w-2/3">
             <div
               ref="recommendationRef"
-              class="absolute flex h-full w-full flex-col items-center justify-center bg-gray-50"
+              class="absolute flex h-full w-full flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-0"
               style="top: -50%; transform: translateY(-50%)"
             >
-              <div class="p-2 text-lg sm:hidden">
-                <div class="text-3xl font-medium">
+              <div class="text-lg sm:hidden">
+                <div class="text-2xl font-medium">
                   {{ t("Home.Feature.Recommendation.Name") }}
                 </div>
                 <div class="my-4 text-sm">
@@ -283,14 +292,14 @@ watch(
 
             <div
               ref="loadAndReuseRef"
-              class="absolute -z-10 flex h-full w-full flex-col items-center justify-center bg-gray-50 px-2 py-8 sm:px-0"
+              class="absolute -z-10 flex h-full w-full flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-0"
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
-              <div class="p-2 text-lg sm:hidden">
+              <div class="text-lg sm:hidden">
                 <div
                   v-for="i in 2"
                   :key="i"
-                  class="text-3xl font-medium"
+                  class="text-2xl font-medium"
                 >
                   {{ t(`Home.Feature.loadAndReuse.Name${i}`) }}
                 </div>
@@ -327,11 +336,11 @@ watch(
 
             <div
               ref="privacyRef"
-              class="absolute -z-20 flex w-full flex-col items-center justify-center bg-gray-50"
+              class="absolute -z-20 flex h-full w-full flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-0"
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
-              <div class="p-2 text-lg sm:hidden">
-                <div class="text-3xl font-medium">
+              <div class="text-lg sm:hidden">
+                <div class="text-2xl font-medium">
                   {{ t(`Home.Feature.Privacy.Name`) }}
                 </div>
                 <div class="my-4 text-sm">
@@ -450,11 +459,11 @@ watch(
 
             <div
               ref="openSourceRef"
-              class="absolute -z-30 flex w-full flex-col items-center justify-center bg-gray-50"
+              class="absolute -z-30 flex h-full w-full flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-0"
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
-              <div class="p-2 text-lg sm:hidden">
-                <div class="text-3xl font-medium">
+              <div class="text-lg sm:hidden">
+                <div class="text-2xl font-medium">
                   {{ t(`Home.Feature.OpenSource.Name`) }}
                 </div>
                 <div class="my-4 text-sm">

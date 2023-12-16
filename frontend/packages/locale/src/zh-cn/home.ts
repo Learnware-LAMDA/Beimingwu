@@ -41,7 +41,7 @@ export default {
     },
   },
   Feature: {
-    Title: "系统特性",
+    Title: "北冥坞系统有哪些特点？",
     Recommendation: {
       Name: "利用统计信息的查搜能推荐更有效的模型",
       Description:
