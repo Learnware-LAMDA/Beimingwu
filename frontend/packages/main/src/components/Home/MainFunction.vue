@@ -6,7 +6,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="mx-auto w-full max-w-[1200px] py-20 md:px-10 md:py-32">
+  <div class="mx-auto w-full max-w-[1400px] py-20 md:px-10 md:py-32">
     <div class="my-8 px-5 md:px-0">
       <div class="my-5 text-3xl font-medium lg:my-7 lg:text-4xl xl:my-10 xl:text-4xl">
         {{ t("Home.Function.Title") }}
