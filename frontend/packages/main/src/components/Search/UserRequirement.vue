@@ -338,7 +338,7 @@ onMounted(() => {
       class="filter"
     >
       <slot name="prepend" />
-      <div class="text-h6 mb-1 mt-2 md:my-2">
+      <div class="mb-6 mt-2 text-xl font-medium">
         <v-icon
           class="!mt-0 mr-3"
           icon="mdi-tag-text"
@@ -348,7 +348,7 @@ onMounted(() => {
       </div>
 
       <div v-if="isAdmin">
-        <div class="text-h6 mb-3 mt-7 !text-base">
+        <div class="my-3 text-base font-medium md:mb-5 md:mt-7">
           {{ t("Search.SearchById") }}
         </div>
         <v-text-field
@@ -361,7 +361,7 @@ onMounted(() => {
       </div>
 
       <div>
-        <div class="text-h6 mb-3 mt-4 !text-base">
+        <div class="my-3 text-base font-medium md:mb-5 md:mt-7">
           {{ t("Search.SearchByName") }}
         </div>
         <v-text-field
@@ -415,13 +415,12 @@ onMounted(() => {
 
     <div class="border-t-1 border-gray-300 p-4 pt-0">
       <template v-if="allowHetero">
-        <div class="text-h6 mb-5 mt-3 w-full truncate transition-all">
+        <div class="my-3 truncate text-xl font-medium md:mb-5">
           <v-icon
             class="mr-3"
             icon="mdi-vector-difference"
             size="small"
-          />
-          {{ t("Search.UploadHeterogeneousRequirement") }}
+          />{{ t("Search.UploadHeterogeneousRequirement") }}
         </div>
 
         <v-card
@@ -481,7 +480,7 @@ onMounted(() => {
               >
                 <v-window-item value="dataType">
                   <div class="flex justify-between">
-                    <div class="text-h4 mt-2 text-2xl font-semibold md:text-3xl xl:text-4xl">
+                    <div class="mt-2 text-xl font-semibold md:text-2xl xl:text-3xl">
                       {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
                     </div>
                     <v-btn
@@ -507,7 +506,7 @@ onMounted(() => {
 
                 <v-window-item value="taskType">
                   <div class="flex justify-between">
-                    <div class="text-h4 mt-4 text-2xl font-semibold md:text-3xl xl:text-4xl">
+                    <div class="mt-2 text-xl font-semibold md:text-2xl xl:text-3xl">
                       {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
                     </div>
                     <v-btn
@@ -546,7 +545,7 @@ onMounted(() => {
         </v-dialog>
       </template>
 
-      <div class="text-h6 mb-5 mt-3 flex w-full items-center truncate transition-all">
+      <div class="my-3 flex w-full items-center truncate text-xl font-medium md:mb-5 md:mt-7">
         <v-icon
           class="mr-3"
           icon="mdi-upload"
@@ -597,7 +596,7 @@ onMounted(() => {
                 v-for="(group, i) in exampleGroups"
                 :key="i"
               >
-                <div class="text-h6 mt-2 text-sm md:my-2 md:text-xl">
+                <div class="mt-2 text-sm font-medium md:my-2 md:text-xl">
                   {{ group.name }}
                 </div>
                 <div

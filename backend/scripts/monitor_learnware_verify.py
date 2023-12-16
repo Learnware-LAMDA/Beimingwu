@@ -171,7 +171,7 @@ def worker_process_func(q: queue.Queue, env: dict):
 
 def main(num_worker):
     context.init_database()
-    context.init_logger()
+    context.init_logger(target="file")
     context.init_engine()
     context.init_redis()
 

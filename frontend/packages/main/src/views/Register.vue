@@ -195,7 +195,7 @@ onUnmounted(() => {
     </v-scroll-y-transition>
 
     <v-card-title>
-      <div class="text-h5 sm:text-1.3em m-2 my-6 sm:my-2">
+      <div class="m-2 my-6 text-[1.6em] font-normal sm:my-2 sm:text-[1.3em]">
         {{ t("Register.Register") }}
       </div>
     </v-card-title>

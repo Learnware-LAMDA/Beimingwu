@@ -70,7 +70,7 @@ function clickBtn(btn: Btn): void {
 
 <template>
   <div>
-    <div class="my-3 text-base font-bold md:mb-5 md:mt-7">
+    <div class="my-3 text-base font-medium md:mb-5 md:mt-7">
       {{ title }}
     </div>
     <div

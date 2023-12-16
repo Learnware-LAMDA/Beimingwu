@@ -4,12 +4,14 @@
 import os
 from config import Config
 from database import Database, SQLAlchemy
+from typing import List
 
 from learnware.market import instantiate_learnware_market
 from learnware.config import C as leanrware_conf
 import logging
 import redis
 import re
+import concurrent_log_handler
 
 
 database: Database = None
@@ -21,7 +23,26 @@ sensitive_pattern = None
 
 config = Config()
 
-logger = logging.getLogger("learnware-backend")
+logger = logging.getLogger("")
+
+
+class MyConcurrentTimedRotatingFileHandler(concurrent_log_handler.ConcurrentTimedRotatingFileHandler):
+    def getFilesToDelete(self) -> List[str]:
+        dirName, baseName = os.path.split(self.baseFilename)
+        fileNames = os.listdir(dirName)
+        results = []
+        for fileName in fileNames:
+            if fileName.startswith(baseName):
+                results.append(os.path.join(dirName, fileName))
+                pass
+            pass
+        results.sort()
+
+        if self.backupCount <= 0:
+            return results
+        else:
+            return results[: -self.backupCount]
+        pass
 
 
 def init_database(admin_password: str = None):
@@ -58,6 +79,7 @@ def init_backend():
     os.makedirs(config.temp_path, exist_ok=True)
     os.makedirs(config.backup_path, exist_ok=True)
     os.makedirs(config.datasets_path, exist_ok=True)
+    os.makedirs(config.log_path, exist_ok=True)
     pass
 
 
@@ -68,17 +90,30 @@ def init_redis():
     pass
 
 
-def init_logger():
+def init_logger(target="console"):
     global config, logger
 
     if len(logger.handlers) > 0:
         pass
-    else:
+    elif target == "console":
         handler = logging.StreamHandler()
-        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
+    elif target == "file":
+        log_path = config["log_path"]
+        hostname = os.environ.get("HOSTNAME")
+        if hostname is None:
+            hostname = "learnware-backend"
+            pass
+
+        filename = os.path.join(log_path, f"{hostname}.log")
+        handler = MyConcurrentTimedRotatingFileHandler(
+            filename=filename, when="d", interval=1, backupCount=180, encoding="utf-8"
+        )
         pass
+
+    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    handler.setFormatter(formatter)
+    handler.setLevel(logging.DEBUG)
+    logger.addHandler(handler)
 
     logger.setLevel(logging.DEBUG)
 

@@ -83,7 +83,7 @@ function handleClickDelete(id: string): void {
   >
     <div class="rounded border-b p-4 sm:border sm:hover:border sm:hover:border-gray-400">
       <div
-        class="flex text-base font-bold lg:text-lg xl:text-xl"
+        class="flex text-base font-medium lg:text-lg xl:text-xl"
         :class="item.username ? '' : 'items-center'"
       >
         <v-avatar

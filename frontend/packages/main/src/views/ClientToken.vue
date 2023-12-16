@@ -118,7 +118,7 @@ onActivated(() => {
     <div class="rounded border">
       <div class="flex items-center p-4">
         <v-icon> mdi-key </v-icon>
-        <div class="text-h4 ml-3">
+        <div class="ml-3 text-3xl">
           {{ t("ClientToken.Title") }}
         </div>
       </div>
