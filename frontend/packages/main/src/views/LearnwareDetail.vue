@@ -346,154 +346,149 @@ function handleDownload(id: string): void {
       </div>
 
       <!-- feature/label description -->
-      <div class="rounded border p-2">
-        <template
-          v-if="
-            learnware.dataType === 'Table' ||
-            ['Classification', 'Regression'].includes(learnware.taskType)
-          "
+      <div
+        v-if="
+          learnware.dataType === 'Table' ||
+          ['Classification', 'Regression'].includes(learnware.taskType)
+        "
+        class="rounded border p-2"
+      >
+        <div
+          class="cursor-pointer text-base"
+          @click="showDescription = !showDescription"
         >
-          <div
-            class="cursor-pointer text-base"
-            @click="showDescription = !showDescription"
+          <v-icon
+            class="transition"
+            :class="{ 'rotate-90': showDescription }"
           >
-            <v-icon
-              class="transition"
-              :class="{ 'rotate-90': showDescription }"
-            >
-              mdi-chevron-right
-            </v-icon>
-            {{ t("LearnwareDetail.FeatureLabelDescription") }}
-          </div>
-          <v-expand-transition>
-            <div
-              v-if="showDescription"
-              class="text-base"
-            >
-              <v-tabs v-model="descriptionTab">
-                <v-tab
+            mdi-chevron-right
+          </v-icon>
+          {{ t("LearnwareDetail.FeatureLabelDescription") }}
+        </div>
+        <v-expand-transition>
+          <div
+            v-if="showDescription"
+            class="text-base"
+          >
+            <v-tabs v-model="descriptionTab">
+              <v-tab
+                v-if="learnware.dataType === 'Table'"
+                value="data"
+              >
+                {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
+              </v-tab>
+              <v-tab
+                v-if="
+                  ['Classification', 'Regression', 'Feature Extraction'].includes(
+                    learnware.taskType,
+                  )
+                "
+                value="task"
+              >
+                {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
+              </v-tab>
+            </v-tabs>
+
+            <v-window v-model="descriptionTab">
+              <v-window-item value="data">
+                <div
                   v-if="learnware.dataType === 'Table'"
-                  value="data"
+                  class="mt-2"
                 >
-                  {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
-                </v-tab>
-                <v-tab
+                  <div class="flex border-y py-3 font-bold">
+                    <div class="w-20">
+                      {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
+                    </div>
+                    <div class="w-full">
+                      {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Description") }}
+                    </div>
+                  </div>
+                  <div v-if="learnware.input.Dimension < 8">
+                    <div
+                      v-for="[key, val] in Object.entries(learnware.input.Description)"
+                      :key="key"
+                    >
+                      <div class="flex border-b px-1 py-2">
+                        <div class="w-20">
+                          {{ key }}
+                        </div>
+                        <div class="w-full">
+                          {{ val }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <v-virtual-scroll
+                    v-else
+                    :items="Object.entries(learnware.input.Description)"
+                    :height="300"
+                  >
+                    <template #default="{ item }">
+                      <div class="flex border-b px-1 py-2">
+                        <div class="w-20">
+                          {{ Number(item[0]) }}
+                        </div>
+                        <div class="w-full">
+                          {{ item[1] }}
+                        </div>
+                      </div>
+                    </template>
+                  </v-virtual-scroll>
+                </div>
+              </v-window-item>
+              <v-window-item value="task">
+                <div
                   v-if="
                     ['Classification', 'Regression', 'Feature Extraction'].includes(
                       learnware.taskType,
                     )
                   "
-                  value="task"
+                  class="mt-2"
                 >
-                  {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
-                </v-tab>
-              </v-tabs>
-
-              <v-window v-model="descriptionTab">
-                <v-window-item value="data">
-                  <div
-                    v-if="learnware.dataType === 'Table'"
-                    class="mt-2"
-                  >
-                    <div class="flex border-y py-3 font-bold">
-                      <div class="w-20">
-                        {{ t("Submit.SemanticSpecification.DataType.DescriptionInput.Name") }}
-                      </div>
-                      <div class="w-full">
-                        {{
-                          t("Submit.SemanticSpecification.DataType.DescriptionInput.Description")
-                        }}
-                      </div>
+                  <div class="flex border-y py-3 font-bold">
+                    <div class="w-20">
+                      {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
                     </div>
-                    <div v-if="learnware.input.Dimension < 8">
-                      <div
-                        v-for="[key, val] in Object.entries(learnware.input.Description)"
-                        :key="key"
-                      >
-                        <div class="flex border-b px-1 py-2">
-                          <div class="w-20">
-                            {{ key }}
-                          </div>
-                          <div class="w-full">
-                            {{ val }}
-                          </div>
-                        </div>
-                      </div>
+                    <div class="w-full">
+                      {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Description") }}
                     </div>
-                    <v-virtual-scroll
-                      v-else
-                      :items="Object.entries(learnware.input.Description)"
-                      :height="300"
-                    >
-                      <template #default="{ item }">
-                        <div class="flex border-b px-1 py-2">
-                          <div class="w-20">
-                            {{ Number(item[0]) }}
-                          </div>
-                          <div class="w-full">
-                            {{ item[1] }}
-                          </div>
-                        </div>
-                      </template>
-                    </v-virtual-scroll>
                   </div>
-                </v-window-item>
-                <v-window-item value="task">
-                  <div
-                    v-if="
-                      ['Classification', 'Regression', 'Feature Extraction'].includes(
-                        learnware.taskType,
-                      )
-                    "
-                    class="mt-2"
-                  >
-                    <div class="flex border-y py-3 font-bold">
-                      <div class="w-20">
-                        {{ t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Name") }}
-                      </div>
-                      <div class="w-full">
-                        {{
-                          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.Description")
-                        }}
-                      </div>
-                    </div>
-                    <div v-if="learnware.output.Dimension < 8">
-                      <div
-                        v-for="[key, val] in Object.entries(learnware.output.Description)"
-                        :key="key"
-                      >
-                        <div class="flex border-b px-1 py-2">
-                          <div class="w-20">
-                            {{ key }}
-                          </div>
-                          <div class="w-full">
-                            {{ val }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <v-virtual-scroll
-                      v-else
-                      :items="Object.entries(learnware.output.Description)"
-                      :height="300"
+                  <div v-if="learnware.output.Dimension < 8">
+                    <div
+                      v-for="[key, val] in Object.entries(learnware.output.Description)"
+                      :key="key"
                     >
-                      <template #default="{ item }">
-                        <div class="flex border-b px-1 py-2">
-                          <div class="w-20">
-                            {{ Number(item[0]) }}
-                          </div>
-                          <div class="w-full">
-                            {{ item[1] }}
-                          </div>
+                      <div class="flex border-b px-1 py-2">
+                        <div class="w-20">
+                          {{ key }}
                         </div>
-                      </template>
-                    </v-virtual-scroll>
+                        <div class="w-full">
+                          {{ val }}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </v-window-item>
-              </v-window>
-            </div>
-          </v-expand-transition>
-        </template>
+                  <v-virtual-scroll
+                    v-else
+                    :items="Object.entries(learnware.output.Description)"
+                    :height="300"
+                  >
+                    <template #default="{ item }">
+                      <div class="flex border-b px-1 py-2">
+                        <div class="w-20">
+                          {{ Number(item[0]) }}
+                        </div>
+                        <div class="w-full">
+                          {{ item[1] }}
+                        </div>
+                      </div>
+                    </template>
+                  </v-virtual-scroll>
+                </div>
+              </v-window-item>
+            </v-window>
+          </div>
+        </v-expand-transition>
       </div>
 
       <!-- description -->
