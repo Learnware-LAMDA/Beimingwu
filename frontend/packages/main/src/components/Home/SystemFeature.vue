@@ -259,7 +259,7 @@ watch(
         {{ t("Home.Feature.Title") }}
       </div>
       <p class="text-gray-500">
-        通过对学件的系统组织，北冥坞系统能够帮助用户额外使用任务的统计信息进行精准地学件查搜，帮助用户安全地部署学件，便捷地复用学件；并且充分保护用户的数据隐私。
+        {{ t("Home.Feature.Description") }}
       </p>
     </div>
 

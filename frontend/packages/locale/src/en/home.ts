@@ -42,10 +42,12 @@ export default {
   },
   Feature: {
     Title: "What are the features of Beimingwu?",
+    Description:
+      "Through the systematic organization of learnwares, Beimingwu can help users precisely search learnwares with the help of task statistics, safely deploy learnwares, and conveniently reuse learnwares; and fully protect user data privacy.",
     Recommendation: {
       Name: "Recommend more effective models with Statistical information",
       Description:
-      "Beimingwu uses statistics to offer precise recommendation. If no single model fits, combining several might work. The system also supports searching and reusing misaligned feature space models for tabular tasks.",
+        "Beimingwu uses statistics to offer precise recommendation. If no single model fits, combining several might work. The system also supports searching and reusing misaligned feature space models for tabular tasks.",
       HomoTable: "Homogeneous table examples",
       HeteroTable: "Heterogeneous table examples",
     },
@@ -53,7 +55,7 @@ export default {
       Name1: "Secure learnware loading and",
       Name2: "convenient learnware reuse",
       Description:
-      "Once you acquire the learnware, there's no concern about the model's environment or security threats. It can be safely loaded with a single line of code, and the system offers various interfaces for model reuse.",
+        "Once you acquire the learnware, there's no concern about the model's environment or security threats. It can be safely loaded with a single line of code, and the system offers various interfaces for model reuse.",
     },
     Privacy: {
       Name: "We care about your privacy",
