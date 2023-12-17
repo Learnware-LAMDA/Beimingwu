@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   cols: 4,
   md: 4,
   sm: 2,
-  xs: 1,
+  xs: 2,
 });
 
 const items = computed<
