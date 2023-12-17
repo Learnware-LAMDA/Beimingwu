@@ -4,6 +4,7 @@ import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import learnwareLogo from "/logo.svg?url";
+import learnwareLogoNoText from "/logo-no-text.svg?url";
 import type { Route } from "@beiming-system/types/route";
 import type { Language } from "@main/i18n";
 
@@ -22,6 +23,8 @@ const props = defineProps<Props>();
 const display = useDisplay();
 
 const store = useStore();
+
+const logoSrc = computed(() => (display.name.value === "xs" ? learnwareLogoNoText : learnwareLogo));
 
 function routeFilter(route: Route): boolean {
   if (route.meta.showInNavBar) {
@@ -68,14 +71,14 @@ const filteredRoutes = computed<Route[]>(
       >
         <img
           class="logo-img"
-          :src="learnwareLogo"
+          :src="logoSrc"
         />
       </div>
     </div>
 
     <template #append>
       <v-toolbar-items
-        v-if="!['xs', 'sm'].includes(display.name.value)"
+        v-if="display.mdAndUp.value"
         class="my-3"
       >
         <template
@@ -136,37 +139,37 @@ const filteredRoutes = computed<Route[]>(
             </v-list>
           </v-menu>
         </template>
-
-        <!-- language switcher -->
-        <v-menu
-          v-if="languages && languages.length > 0"
-          open-on-hover
-        >
-          <template #activator="{ props: menuProps }">
-            <v-btn
-              class="mr-2 h-full text-sm font-medium normal-case tracking-tight"
-              rounded="md"
-              v-bind="menuProps"
-            >
-              <v-icon
-                class="mr-1"
-                icon="mdi-translate"
-              />
-              <v-icon>mdi-chevron-down</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item
-              v-for="language in languages"
-              :key="language.name"
-              class="text-sm font-medium tracking-tight"
-              @click="() => emit('updateLanguage', language)"
-            >
-              {{ language.title }}
-            </v-list-item>
-          </v-list>
-        </v-menu>
       </v-toolbar-items>
+
+      <!-- language switcher -->
+      <v-menu
+        v-if="languages && languages.length > 0"
+        open-on-hover
+      >
+        <template #activator="{ props: menuProps }">
+          <v-btn
+            class="mr-2 h-full text-sm font-medium normal-case tracking-tight"
+            rounded="md"
+            v-bind="menuProps"
+          >
+            <v-icon
+              class="mr-1"
+              icon="mdi-translate"
+            />
+            <v-icon>mdi-chevron-down</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="language in languages"
+            :key="language.name"
+            class="text-sm font-medium tracking-tight"
+            @click="() => emit('updateLanguage', language)"
+          >
+            {{ language.title }}
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
       <v-btn
         variant="flat"
