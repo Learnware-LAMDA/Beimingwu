@@ -102,6 +102,7 @@ const filteredRoutes = computed<Route[]>(
           <v-menu
             v-else
             open-on-hover
+            open-on-click
           >
             <template #activator="{ props: menuProps }">
               <v-btn
@@ -145,6 +146,7 @@ const filteredRoutes = computed<Route[]>(
       <v-menu
         v-if="languages && languages.length > 0"
         open-on-hover
+        open-on-click
       >
         <template #activator="{ props: menuProps }">
           <v-btn
