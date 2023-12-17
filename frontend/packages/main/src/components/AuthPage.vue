@@ -3,7 +3,7 @@ import collaborationImg from "../assets/images/public/collaboration.svg?url";
 </script>
 
 <template>
-  <div class="flex h-full bg-gray-100">
+  <div class="flex h-full">
     <div
       class="hidden h-full flex-1 md:block"
       :style="{
@@ -14,7 +14,7 @@ import collaborationImg from "../assets/images/public/collaboration.svg?url";
       }"
     />
     <div
-      class="fill-height md:text-md flex flex-1 flex-row items-center justify-center bg-gray-100 p-2 text-xs sm:text-sm"
+      class="fill-height md:text-md flex flex-1 flex-row items-center justify-center p-2 text-xs sm:text-sm"
     >
       <v-card
         flat

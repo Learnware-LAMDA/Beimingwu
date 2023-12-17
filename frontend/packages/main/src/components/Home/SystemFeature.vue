@@ -272,7 +272,7 @@ watch(
           <div class="h-main-full relative w-full sm:w-2/3">
             <div
               ref="recommendationRef"
-              class="absolute flex h-full w-full flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-0"
+              class="bg-background absolute flex h-full w-full flex-col items-center justify-center px-4 py-8 sm:px-0"
               style="top: -50%; transform: translateY(-50%)"
             >
               <!--Show in mobile-->
@@ -294,7 +294,7 @@ watch(
 
             <div
               ref="loadAndReuseRef"
-              class="absolute -z-10 flex h-full w-full flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-0"
+              class="bg-background absolute -z-10 flex h-full w-full flex-col items-center justify-center px-4 py-8 sm:px-0"
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
               <!--Show in mobile-->
@@ -339,7 +339,7 @@ watch(
 
             <div
               ref="privacyRef"
-              class="absolute -z-20 flex h-full w-full flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-0"
+              class="bg-background absolute -z-20 flex h-full w-full flex-col items-center justify-center px-4 py-8 sm:px-0"
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
               <!--Show in mobile-->
@@ -463,7 +463,7 @@ watch(
 
             <div
               ref="openSourceRef"
-              class="absolute -z-30 flex h-full w-full flex-col items-center justify-center bg-gray-50 px-4 py-8 sm:px-0"
+              class="bg-background absolute -z-30 flex h-full w-full flex-col items-center justify-center px-4 py-8 sm:px-0"
               style="top: 50%; transform: translateY(-50%); opacity: 0"
             >
               <!--Show in mobile-->

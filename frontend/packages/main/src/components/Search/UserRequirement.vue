@@ -312,7 +312,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col">
+  <div class="bg-surface-light dark:bg-surface-dark flex flex-col">
     <v-scale-transition>
       <v-btn
         v-if="
@@ -326,7 +326,7 @@ onMounted(() => {
           modelValue.files.length
         "
         icon
-        class="absolute right-4 top-2 z-20 bg-gray-400 transition-all"
+        class="bg-inactive-light dark:bg-inactive-dark absolute right-4 top-2 z-20 transition-all"
         variant="flat"
         @click="reset"
       >
@@ -588,7 +588,7 @@ onMounted(() => {
                   @click="exampleDialog = false"
                 />
               </div>
-              <div class="my-1 text-xs text-gray-500 md:text-lg">
+              <div class="my-1 text-xs text-gray-500 dark:text-gray-300 md:text-lg">
                 {{ t("Search.Example.ExamplesDescription") }}
               </div>
 
@@ -608,7 +608,7 @@ onMounted(() => {
                     :id="`example-card-${i}-${j}`"
                     v-ripple
                     flat
-                    class="my-1 flex flex-1 cursor-pointer items-center rounded-md border p-3 transition-all hover:bg-gray-100 md:my-2 md:p-4"
+                    class="dark:hover:bg-active-dark hover:bg-active-light bg-inactive-light dark:bg-inactive-dark my-1 flex flex-1 cursor-pointer items-center rounded-md border p-3 transition-all md:my-2 md:p-4"
                     @click="
                       () =>
                         useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
@@ -617,7 +617,7 @@ onMounted(() => {
                     <div class="flex items-center">
                       <component
                         :is="example.icon"
-                        class="w-4 md:w-8"
+                        class="w-4 fill-black dark:fill-white md:w-8"
                       />
                       <div class="ml-2 text-center text-xs md:ml-3 md:text-lg">
                         {{ example.name }}

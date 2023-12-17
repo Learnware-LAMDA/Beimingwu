@@ -90,7 +90,7 @@ watch(
         :routes="routes"
       />
 
-      <v-main class="bg-gray-50 dark:bg-gray-950">
+      <v-main class="bg-background dark:bg-background-dark">
         <router-view v-slot="{ Component }">
           <transition
             name="fade"

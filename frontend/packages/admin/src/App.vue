@@ -16,8 +16,9 @@ const showGlobalError = ref(store.getters.getShowGlobalError);
 
 const dark = computed<boolean>({
   get: () => store.getters.getDark,
-  set: () => store.commit("toggleDark"),
+  set: () => store.dispatch("toggleDark"),
 });
+document.documentElement.classList.toggle("dark", dark.value);
 
 const initKeepAliveIncludes: string[] = Router.getRoutes()
   .filter((route) => route.meta.keepAlive)
@@ -71,47 +72,50 @@ watch(
 </script>
 
 <template>
-  <v-app>
-    <app-bar
-      v-model="drawerOpen"
-      v-model:dark="dark"
-      :routes="routes"
-    />
+  <v-theme-provider :theme="dark ? 'dark' : 'default'">
+    <v-app>
+      <app-bar
+        v-model="drawerOpen"
+        v-model:dark="dark"
+        :routes="routes"
+        @click:dark="dark = !dark"
+      />
 
-    <nav-drawer
-      v-model="drawerOpen"
-      :routes="routes"
-    />
+      <nav-drawer
+        v-model="drawerOpen"
+        :routes="routes"
+      />
 
-    <v-main class="bg-gray-100 bg-opacity-50">
-      <router-view v-slot="{ Component }">
-        <transition
-          name="fade"
-          mode="out-in"
-        >
-          <keep-alive :include="keepAliveIncludes">
-            <component :is="Component" />
-          </keep-alive>
-        </transition>
-      </router-view>
-    </v-main>
+      <v-main class="bg-background">
+        <router-view v-slot="{ Component }">
+          <transition
+            name="fade"
+            mode="out-in"
+          >
+            <keep-alive :include="keepAliveIncludes">
+              <component :is="Component" />
+            </keep-alive>
+          </transition>
+        </router-view>
+      </v-main>
 
-    <v-snackbar
-      v-model="showGlobalError"
-      :timeout="2000"
-    >
-      {{ store.getters.getGlobalErrorMsg }}
-      <template #actions>
-        <v-btn
-          color="blue"
-          variant="text"
-          @click="store.commit('setShowGlobalError', false)"
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
-  </v-app>
+      <v-snackbar
+        v-model="showGlobalError"
+        :timeout="2000"
+      >
+        {{ store.getters.getGlobalErrorMsg }}
+        <template #actions>
+          <v-btn
+            color="blue"
+            variant="text"
+            @click="store.commit('setShowGlobalError', false)"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </v-app>
+  </v-theme-provider>
 </template>
 
 <style scoped>

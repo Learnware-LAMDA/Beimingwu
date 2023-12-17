@@ -1,6 +1,6 @@
 @forward "vuetify/settings" with (
   $utilities: false,
-  $color-pack: false,
+  $color-pack: false
 );
 
 @use "vuetify";
@@ -11,10 +11,7 @@
   *,
   ::before,
   ::after {
-    box-sizing: border-box;
-    border-width: 0;
-    border-style: solid;
-    border-color: theme("borderColor.DEFAULT", currentColor);
+    @apply box-border border-0 border-solid border-gray-300 dark:border-gray-600;
   }
 }
 
@@ -29,17 +26,29 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  @apply rounded bg-gray-100 dark:bg-gray-900;
+  @apply rounded bg-gray-100;
+}
+
+.dark ::-webkit-scrollbar-track {
+  @apply bg-gray-600;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  @apply rounded bg-gray-400 dark:bg-gray-600;
+  @apply rounded bg-gray-400;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-gray-400;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-600 dark:bg-gray-400;
+  @apply bg-gray-600;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-300;
 }
 
 .h-main-full {

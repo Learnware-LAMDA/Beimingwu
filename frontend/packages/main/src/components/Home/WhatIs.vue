@@ -257,7 +257,7 @@ const vOffset = {
                 width="770"
                 height="290"
                 rx="10"
-                class="fill-white dark:fill-black"
+                class="fill-surface dark:fill-surface-dark"
               />
               <text
                 x="110"

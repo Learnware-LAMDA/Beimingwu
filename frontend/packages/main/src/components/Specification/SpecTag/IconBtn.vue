@@ -38,15 +38,13 @@ defineProps({
 
 <style scoped lang="scss">
 .btn {
-  @apply flex h-full cursor-pointer items-center justify-start rounded-lg border bg-gray-400 py-3 text-[0.9rem] transition dark:bg-black;
-  color: rgb(var(--v-theme-on-primary));
+  @apply dark:bg-inactive-dark bg-inactive-light flex h-full cursor-pointer items-center justify-start rounded-lg border py-3 text-[0.9rem] text-white transition dark:border  dark:text-gray-300;
 
   .responsive {
     @apply ml-3 mr-4 w-full max-w-[1.25rem] sm:mr-1 sm:max-w-[1.5rem] md:mr-5 md:max-w-[1.8rem] lg:max-w-[1.8rem];
 
     .icon {
-      @apply h-full w-full;
-      fill: rgb(var(--v-theme-on-primary));
+      @apply h-full w-full fill-white dark:fill-gray-300;
     }
   }
 
@@ -57,6 +55,6 @@ defineProps({
 }
 
 .btn.active {
-  background-color: rgb(var(--v-theme-primary));
+  @apply bg-primary-light dark:bg-primary-dark;
 }
 </style>

@@ -179,10 +179,10 @@ function handleClickDelete(id: string): void {
         <div
           v-for="(scenario, i) in item.scenarioList"
           :key="i"
-          class="my-1 rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300"
+          class="bg-inactive-light dark:bg-inactive-dark my-1 rounded-[1em] border-gray-700 px-2 text-xs text-white dark:border-gray-500 dark:text-gray-300"
           :class="
             filters && filters.scenarioList && filters.scenarioList.includes(scenario)
-              ? 'bg-orange-600'
+              ? 'bg-secondary'
               : undefined
           "
         >
@@ -198,10 +198,10 @@ function handleClickDelete(id: string): void {
         <div
           v-for="(license, i) in item.licenseList"
           :key="i"
-          class="my-1 rounded-[1em] border-gray-700 bg-gray-400 px-2 text-xs text-white dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300"
+          class="bg-inactive-light dark:bg-inactive-dark my-1 rounded-[1em] px-2 text-xs text-white dark:border-gray-500"
           :class="
             filters && filters.licenseList && filters.licenseList.includes(license)
-              ? 'bg-orange-600'
+              ? 'bg-secondary'
               : undefined
           "
         >

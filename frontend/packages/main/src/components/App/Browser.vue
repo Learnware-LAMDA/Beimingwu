@@ -4,7 +4,7 @@ import Logo from "../../../public/logo.svg?component";
 </script>
 
 <template>
-  <div class="flex flex-col overflow-hidden rounded-md">
+  <div class="flex flex-col overflow-hidden rounded-md border">
     <div class="hidden h-6 items-center justify-between bg-gray-900 sm:flex">
       <div class="flex">
         <div class="ml-2" />

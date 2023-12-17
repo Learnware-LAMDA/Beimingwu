@@ -4,7 +4,7 @@ import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
 import { downloadMultipleLearnwaresSync } from "../../utils/download";
 import LearnwareCard from "./LearnwareCard.vue";
-import oopsImg from "../../assets/images/public/oops.svg?url";
+import oopsImg from "../../assets/images/public/oops.svg?component";
 import type { LearnwareCardInfo, Filter } from "@beiming-system/types/learnware";
 
 export interface Props {
@@ -136,10 +136,10 @@ function getColorByScore(score: number): string {
         flat
         class="no-learnware"
       >
-        <v-img
-          class="oops-img"
+        <oops-img
+          class="oops-img block"
           width="100"
-          :src="oopsImg"
+          height="100"
         />
         {{ t("Learnware.OopsThereNoLearnware") }}
       </div>
@@ -221,7 +221,7 @@ function getColorByScore(score: number): string {
     @apply w-full py-5 text-center text-2xl;
 
     .oops-img {
-      @apply mx-auto;
+      @apply mx-auto fill-gray-800 dark:fill-gray-300;
     }
   }
 }
