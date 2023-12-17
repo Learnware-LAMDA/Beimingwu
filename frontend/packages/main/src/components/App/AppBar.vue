@@ -5,14 +5,16 @@ import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import learnwareLogo from "/logo.svg?url";
 import type { Route } from "@beiming-system/types/route";
+import type { Language } from "@main/i18n";
 
 export interface Props {
   modelValue: boolean;
   dark: boolean;
   routes: Route[];
+  languages?: Language[];
 }
 
-const emit = defineEmits(["update:modelValue", "click:dark"]);
+const emit = defineEmits(["update:modelValue", "click:dark", "updateLanguage"]);
 const router = useRouter();
 
 const props = defineProps<Props>();
@@ -134,6 +136,36 @@ const filteredRoutes = computed<Route[]>(
             </v-list>
           </v-menu>
         </template>
+
+        <!-- language switcher -->
+        <v-menu
+          v-if="languages && languages.length > 0"
+          open-on-hover
+        >
+          <template #activator="{ props: menuProps }">
+            <v-btn
+              class="mr-2 h-full text-sm font-medium normal-case tracking-tight"
+              rounded="md"
+              v-bind="menuProps"
+            >
+              <v-icon
+                class="mr-1"
+                icon="mdi-translate"
+              />
+              <v-icon>mdi-chevron-down</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="language in languages"
+              :key="language.name"
+              class="text-sm font-medium tracking-tight"
+              @click="() => emit('updateLanguage', language)"
+            >
+              {{ language.title }}
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-toolbar-items>
 
       <v-btn

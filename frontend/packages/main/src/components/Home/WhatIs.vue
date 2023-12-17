@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
-import type { Language } from "@main/i18n";
+import type { LanguageName } from "@main/i18n";
 import ScrollAnimate from "../App/ScrollAnimate.vue";
 import process from "../../assets/images/home/two-stage.svg?component";
 import anime from "animejs";
@@ -290,13 +290,13 @@ const vOffset = {
               <rect
                 x="140"
                 y="100"
-                :width="(locale as Language) === 'en' ? 150 : 90"
+                :width="(locale as LanguageName) === 'en' ? 150 : 90"
                 height="30"
                 rx="3"
                 class="fill-gray-400 dark:fill-gray-600"
               />
               <text
-                :x="(locale as Language) === 'en' ? 215 : 185"
+                :x="(locale as LanguageName) === 'en' ? 215 : 185"
                 :y="115"
                 font-size="20"
                 class="fill-white dark:fill-black"
