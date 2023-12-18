@@ -545,14 +545,15 @@ onMounted(() => {
         </v-dialog>
       </template>
 
-      <div class="my-3 flex w-full items-center truncate text-xl font-medium md:mb-5 md:mt-7">
+      <div class="my-3 flex w-full items-center text-xl font-medium md:mb-5 md:mt-7">
         <v-icon
           class="mr-3"
           icon="mdi-upload"
           size="small"
         />
-        {{ t("Search.UploadStatisticalRequirement") }}
-        <v-spacer class="flex-1" />
+        <p class="flex-1 overflow-hidden truncate">
+          {{ t("Search.UploadStatisticalRequirement") }}
+        </p>
 
         <v-dialog
           v-if="showExample"
@@ -619,7 +620,7 @@ onMounted(() => {
                         :is="example.icon"
                         class="w-4 fill-black dark:fill-white md:w-8"
                       />
-                      <div class="ml-2 text-center text-xs md:ml-3 md:text-lg">
+                      <div class="ml-4 text-left text-xs md:ml-4 md:text-lg">
                         {{ example.name }}
                       </div>
                     </div>
