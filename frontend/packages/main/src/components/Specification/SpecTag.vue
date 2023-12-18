@@ -21,9 +21,9 @@ export interface Props {
   libraryType: LibraryType | "";
   scenarioList: ScenarioList;
   licenseList: LicenseList;
-  dataTypeDescription: string;
-  taskTypeDescriptionClassification: string;
-  taskTypeDescriptionRegression: string;
+  inputDescription: string;
+  outputDescriptionClassification: string;
+  outputDescriptionRegression: string;
   errorMessages?: string;
 }
 
@@ -35,9 +35,9 @@ const emits = defineEmits([
   "update:libraryType",
   "update:scenarioList",
   "update:licenseList",
-  "update:dataTypeDescription",
-  "update:taskTypeDescriptionClassification",
-  "update:taskTypeDescriptionRegression",
+  "update:inputDescription",
+  "update:outputDescriptionClassification",
+  "update:outputDescriptionRegression",
 ]);
 
 const props = withDefaults(defineProps<Props>(), {
@@ -64,17 +64,17 @@ const licenseList = computed({
   get: () => props.licenseList,
   set: (val) => emits("update:licenseList", val),
 });
-const dataTypeDescription = computed({
-  get: () => JSON.parse(props.dataTypeDescription),
-  set: (val) => emits("update:dataTypeDescription", JSON.stringify(val)),
+const inputDescription = computed({
+  get: () => JSON.parse(props.inputDescription),
+  set: (val) => emits("update:inputDescription", JSON.stringify(val)),
 });
-const taskTypeDescriptionClassification = computed({
-  get: () => JSON.parse(props.taskTypeDescriptionClassification),
-  set: (val) => emits("update:taskTypeDescriptionClassification", JSON.stringify(val)),
+const outputDescriptionClassification = computed({
+  get: () => JSON.parse(props.outputDescriptionClassification),
+  set: (val) => emits("update:outputDescriptionClassification", JSON.stringify(val)),
 });
-const taskTypeDescriptionRegression = computed({
-  get: () => JSON.parse(props.taskTypeDescriptionRegression),
-  set: (val) => emits("update:taskTypeDescriptionRegression", JSON.stringify(val)),
+const outputDescriptionRegression = computed({
+  get: () => JSON.parse(props.outputDescriptionRegression),
+  set: (val) => emits("update:outputDescriptionRegression", JSON.stringify(val)),
 });
 </script>
 
@@ -106,14 +106,14 @@ const taskTypeDescriptionRegression = computed({
         closable
       >
         <span class="hidden sm:inline">{{
-          t("Submit.SemanticSpecification.DataType.DescriptionInput.FeatureTips")
+          t("Submit.SemanticSpecification.DataType.DescriptionInput.InputTips")
         }}</span>
         <span class="sm:hidden">{{
-          t("Submit.SemanticSpecification.DataType.DescriptionInput.FeatureTipsSmall")
+          t("Submit.SemanticSpecification.DataType.DescriptionInput.InputTipsSmall")
         }}</span>
       </v-alert>
       <description-input
-        v-model="dataTypeDescription"
+        v-model="inputDescription"
         :name="t('Submit.SemanticSpecification.DataType.DescriptionInput.Name')"
         class="mt-3"
       />
@@ -132,14 +132,14 @@ const taskTypeDescriptionRegression = computed({
         closable
       >
         <span class="hidden sm:inline">{{
-          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTipsClassification")
+          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.OutputTipsClassification")
         }}</span>
         <span class="sm:hidden">{{
-          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTipsSmallClassification")
+          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.OutputTipsSmallClassification")
         }}</span>
       </v-alert>
       <description-input
-        v-model="taskTypeDescriptionClassification"
+        v-model="outputDescriptionClassification"
         :name="t('Submit.SemanticSpecification.TaskType.DescriptionOutput.Name')"
         class="mt-3"
       />
@@ -153,14 +153,14 @@ const taskTypeDescriptionRegression = computed({
         closable
       >
         <span class="hidden sm:inline">{{
-          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTipsRegression")
+          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.OutputTipsRegression")
         }}</span>
         <span class="sm:hidden">{{
-          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.LabelTipsSmallRegression")
+          t("Submit.SemanticSpecification.TaskType.DescriptionOutput.OutputTipsSmallRegression")
         }}</span>
       </v-alert>
       <description-input
-        v-model="taskTypeDescriptionRegression"
+        v-model="outputDescriptionRegression"
         :name="t('Submit.SemanticSpecification.TaskType.DescriptionOutput.Name')"
         class="mt-3"
       />

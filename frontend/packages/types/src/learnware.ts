@@ -42,11 +42,11 @@ export type License =
   | "Others";
 export type LicenseList = License[];
 export type Description = string;
-export type DataTypeDescription = {
+export type InputDescription = {
   Dimension: number;
   Description: Record<number, string>;
 };
-export type TaskTypeDescription = {
+export type OutputDescription = {
   Dimension: number;
   Description: Record<number, string>;
 };
@@ -74,8 +74,8 @@ export interface SemanticSpecification {
   Description: {
     Values: Description;
   };
-  Input: DataTypeDescription;
-  Output: TaskTypeDescription;
+  Input: InputDescription;
+  Output: OutputDescription;
 }
 
 export interface LearnwareInfo {
@@ -97,8 +97,8 @@ export interface LearnwareDetailInfo extends LearnwareInfo {
 export interface LearnwareDetailInfoWithDescription extends LearnwareInfo {
   lastModify: string;
   verifyStatus: string;
-  input: DataTypeDescription;
-  output: TaskTypeDescription;
+  input: InputDescription;
+  output: OutputDescription;
 }
 
 export interface LearnwareSingleSearchInfo extends LearnwareInfo {
@@ -128,6 +128,6 @@ export interface Filter {
   scenarioList: ScenarioList;
   licenseList: LicenseList;
   files: Files;
-  dataTypeDescription?: DataTypeDescription;
-  taskTypeDescription?: TaskTypeDescription;
+  inputDescription?: InputDescription;
+  outputDescription?: OutputDescription;
 }

@@ -8,8 +8,8 @@ import type {
   LicenseList,
   Files,
   SemanticSpecification,
-  DataTypeDescription,
-  TaskTypeDescription,
+  InputDescription,
+  OutputDescription,
 } from "@beiming-system/types/learnware";
 import type {
   LearnwareDetailInfoWithUserId,
@@ -64,8 +64,8 @@ function searchLearnware({
   scenarioList: ScenarioList;
   licenseList: LicenseList;
   files: Files;
-  input?: DataTypeDescription;
-  output?: TaskTypeDescription;
+  input?: InputDescription;
+  output?: OutputDescription;
   isVerified: boolean;
   page: number;
   limit: number;

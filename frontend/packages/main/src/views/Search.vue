@@ -38,8 +38,8 @@ const filters = ref<Filter>({
   scenarioList: [],
   licenseList: [],
   files: [],
-  dataTypeDescription: { Dimension: 0, Description: {} },
-  taskTypeDescription: { Dimension: 0, Description: {} },
+  inputDescription: { Dimension: 0, Description: {} },
+  outputDescription: { Dimension: 0, Description: {} },
 });
 
 const multiRecommendedLearnwareItems = ref<LearnwareCardInfo[]>([]);
@@ -118,8 +118,8 @@ function fetchByFilterAndPage(
     licenseList: filters.licenseList,
     files: filters.files,
     isVerified,
-    input: isHetero ? filters.dataTypeDescription : undefined,
-    output: isHetero ? filters.taskTypeDescription : undefined,
+    input: isHetero ? filters.inputDescription : undefined,
+    output: isHetero ? filters.outputDescription : undefined,
     page,
     limit: singleRecommendedLearnwarePageSize.value,
   })

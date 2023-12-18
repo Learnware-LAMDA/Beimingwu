@@ -114,8 +114,8 @@ function addLearnware({
   libraryType,
   scenarioList,
   licenseList,
-  dataTypeDescription,
-  taskTypeDescription,
+  inputDescription,
+  outputDescription,
   description,
   files,
   learnwareId,
@@ -128,8 +128,8 @@ function addLearnware({
   libraryType: LibraryType;
   scenarioList: ScenarioList;
   licenseList: LicenseList;
-  dataTypeDescription: string;
-  taskTypeDescription: string;
+  inputDescription: string;
+  outputDescription: string;
   description: Description;
   files: Files;
   learnwareId: string;
@@ -147,8 +147,8 @@ function addLearnware({
       semanticSpec.Scenario.Values = scenarioList;
       semanticSpec.License.Values = licenseList;
       semanticSpec.Description.Values = description;
-      semanticSpec.Input = JSON.parse(dataTypeDescription);
-      semanticSpec.Output = JSON.parse(taskTypeDescription);
+      semanticSpec.Input = JSON.parse(inputDescription);
+      semanticSpec.Output = JSON.parse(outputDescription);
 
       const fd = new FormData();
       fd.append("learnware_file", files[0].size === 0 ? "" : files[0]);
