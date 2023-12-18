@@ -149,7 +149,7 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
         lineContinue(),
         ..."y_pred = learnware.predict(data)",
         lineContinue(),
-        ..."accuracy_score(y_pred, target)",
+        ..."accuracy_score(target, y_pred)",
         "<br />",
 
         startWithOut(5),
@@ -218,7 +218,7 @@ export function getCoverCode(): ComputedRef<CodeFragment[]> {
         ...addColorAndSplit('"vote_by_label"', yellow),
         ...").predict(data)",
         lineContinue(),
-        ..."accuracy_score(y_pred, target)",
+        ..."accuracy_score(target, y_pred)",
         "<br />",
 
         startWithOut(5),
