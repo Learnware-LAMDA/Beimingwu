@@ -608,7 +608,7 @@ onMounted(() => {
                     :id="`example-card-${i}-${j}`"
                     v-ripple
                     flat
-                    class="dark:hover:bg-active-dark hover:bg-active-light bg-inactive-light dark:bg-inactive-dark my-1 flex flex-1 cursor-pointer items-center rounded-md border p-3 transition-all md:my-2 md:p-4"
+                    class="dark:hover:bg-active-dark hover:bg-active-light dark:bg-inactive-dark my-1 flex flex-1 cursor-pointer items-center rounded-md border p-3 transition-all md:my-2 md:p-4"
                     @click="
                       () =>
                         useExampleOnClick(example.onClick)().finally(() => (exampleDialog = false))
