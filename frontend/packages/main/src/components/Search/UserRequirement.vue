@@ -57,8 +57,8 @@ const heteroDialog = computed({
 });
 const heteroTab = ref<"dataType" | "taskType">("dataType");
 
-const tempDataTypeDescription = ref(
-  modelValue.value.dataTypeDescription ?? {
+const tempInputDescription = ref(
+  modelValue.value.inputDescription ?? {
     Dimension: 7,
     Description: {
       0: "gender",
@@ -68,8 +68,8 @@ const tempDataTypeDescription = ref(
     },
   },
 );
-const tempTaskTypeDescription = ref(
-  modelValue.value.taskTypeDescription ?? {
+const tempOutputDescription = ref(
+  modelValue.value.outputDescription ?? {
     Dimension: 2,
     Description: {
       0: "the description of label 0",
@@ -126,8 +126,8 @@ const exampleGroups = computed(() => [
               modelValue.value.libraryType = "";
               modelValue.value.scenarioList = [];
               modelValue.value.licenseList = [];
-              modelValue.value.dataTypeDescription = JSON.parse(text);
-              tempDataTypeDescription.value = JSON.parse(text);
+              modelValue.value.inputDescription = JSON.parse(text);
+              tempInputDescription.value = JSON.parse(text);
               heteroDialog.value = false;
               emits("update:isHetero", true);
             });
@@ -210,8 +210,8 @@ function reset(): void {
   modelValue.value.libraryType = "";
   modelValue.value.scenarioList = [];
   modelValue.value.licenseList = [];
-  modelValue.value.dataTypeDescription = undefined;
-  modelValue.value.taskTypeDescription = undefined;
+  modelValue.value.inputDescription = undefined;
+  modelValue.value.outputDescription = undefined;
   modelValue.value.files = [];
 
   if (filterElement.value) {
@@ -250,8 +250,8 @@ watch(
   (val) => {
     if (!val) {
       emits("update:isHetero", true);
-      modelValue.value.dataTypeDescription = tempDataTypeDescription.value;
-      modelValue.value.taskTypeDescription = tempTaskTypeDescription.value;
+      modelValue.value.inputDescription = tempInputDescription.value;
+      modelValue.value.outputDescription = tempOutputDescription.value;
     }
   },
 );
@@ -490,15 +490,15 @@ onMounted(() => {
                       @click="
                         () =>
                           saveContentToFile(
-                            JSON.stringify(tempDataTypeDescription, undefined, 2),
+                            JSON.stringify(tempInputDescription, undefined, 2),
                             'text/json',
-                            'dataTypeDescription.json',
+                            'inputDescription.json',
                           )
                       "
                     />
                   </div>
                   <description-input
-                    v-model="tempDataTypeDescription"
+                    v-model="tempInputDescription"
                     :name="t('Submit.SemanticSpecification.DataType.DescriptionInput.Name')"
                     class="mt-4"
                   />
@@ -515,15 +515,15 @@ onMounted(() => {
                       @click="
                         () =>
                           saveContentToFile(
-                            JSON.stringify(tempTaskTypeDescription, undefined, 2),
+                            JSON.stringify(tempOutputDescription, undefined, 2),
                             'text/json',
-                            'dataTypeDescription.json',
+                            'outputDescription.json',
                           )
                       "
                     />
                   </div>
                   <description-input
-                    v-model="tempTaskTypeDescription"
+                    v-model="tempOutputDescription"
                     :name="t('Submit.SemanticSpecification.TaskType.DescriptionOutput.Name')"
                     class="mt-4"
                   />

@@ -363,7 +363,7 @@ function handleDownload(id: string): void {
           >
             mdi-chevron-right
           </v-icon>
-          {{ t("LearnwareDetail.FeatureLabelDescription") }}
+          {{ t("LearnwareDetail.InputOutputDescription") }}
         </div>
         <v-expand-transition>
           <div

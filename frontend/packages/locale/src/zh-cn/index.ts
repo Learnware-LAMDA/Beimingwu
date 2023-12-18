@@ -37,5 +37,5 @@ export default {
   Error,
   CodeFragments,
   Url,
-  Router
+  Router,
 };

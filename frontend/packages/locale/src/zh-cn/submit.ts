@@ -24,11 +24,11 @@ export default {
         Text: "文本",
       },
       DescriptionInput: {
-        Name: "特征",
+        Name: "输入",
         Description: "描述",
-        FeatureTips:
+        InputTips:
           "请在左侧为每个特征填写描述，或在右侧粘贴 JSON 对象。描述清楚每一维特征有助于您的学件应用异构特征空间的任务。",
-        FeatureTipsSmall:
+        InputTipsSmall:
           "请为每个特征填写描述或粘贴 JSON 对象。描述清楚每个特征有助于您的学件应用异构特征空间的任务。",
       },
     },
@@ -49,13 +49,13 @@ export default {
       DescriptionOutput: {
         Name: "输出",
         Description: "描述",
-        LabelTipsClassification:
+        OutputTipsClassification:
           "请在左侧为每个分类标记（从 0 开始编号）填写描述，或在右侧粘贴 JSON 对象。描述清楚每一维输出有助于您的学件应用异构输出空间的任务。",
-        LabelTipsSmallClassification:
+        OutputTipsSmallClassification:
           "请为每个分类标记（从 0 开始编号）填写描述或粘贴 JSON 对象。描述清楚每一维输出有助于您的学件应用异构输出空间的任务。",
-        LabelTipsRegression:
+        OutputTipsRegression:
           "请在左侧为每个输出维度填写描述，或在右侧粘贴 JSON 对象。描述清楚每一维输出有助于您的学件应用异构输出空间的任务。",
-        LabelTipsSmallRegression:
+        OutputTipsSmallRegression:
           "请为每个输出维度填写描述或粘贴 JSON 对象。描述清楚每一维输出有助于您的学件应用异构输出空间的任务。",
       },
     },

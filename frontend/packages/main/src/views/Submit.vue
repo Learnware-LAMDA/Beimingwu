@@ -86,7 +86,7 @@ const licenseList = useField<LicenseList>({
     return t("Submit.SemanticSpecification.License.Error.NotEmpty");
   },
 });
-const dataTypeDescription = useField<string>({
+const inputDescription = useField<string>({
   defaultValue: JSON.stringify({
     Dimension: 7,
     Description: {
@@ -97,7 +97,7 @@ const dataTypeDescription = useField<string>({
     },
   }),
 });
-const taskTypeDescriptionClassification = useField<string>({
+const outputDescriptionClassification = useField<string>({
   defaultValue: JSON.stringify({
     Dimension: 3,
     Description: {
@@ -107,7 +107,7 @@ const taskTypeDescriptionClassification = useField<string>({
     },
   }),
 });
-const taskTypeDescriptionRegression = useField<string>({
+const outputDescriptionRegression = useField<string>({
   defaultValue: JSON.stringify({
     Dimension: 1,
     Description: {
@@ -115,11 +115,11 @@ const taskTypeDescriptionRegression = useField<string>({
     },
   }),
 });
-const taskTypeDescription = computed(() => {
+const outputDescription = computed(() => {
   if (taskType.value === "Classification") {
-    return taskTypeDescriptionClassification.value;
+    return outputDescriptionClassification.value;
   } else if (taskType.value === "Regression") {
-    return taskTypeDescriptionRegression.value;
+    return outputDescriptionRegression.value;
   } else {
     return JSON.stringify({
       Dimension: 1,
@@ -278,8 +278,8 @@ function submit(): Promise<void> {
     libraryType: libraryType.value as LibraryType,
     scenarioList: scenarioList.value,
     licenseList: licenseList.value,
-    dataTypeDescription: dataTypeDescription.value,
-    taskTypeDescription: taskTypeDescription.value,
+    inputDescription: inputDescription.value,
+    outputDescription: outputDescription.value,
     description: description.value,
     files: files.value,
     learnwareId: String(route.query.id),
@@ -392,9 +392,9 @@ function checkIsEditMode(): undefined | Promise<void> {
             scenarioList.value = semanticSpec.Scenario.Values;
             licenseList.value = semanticSpec.License.Values;
             if (semanticSpec.Input) {
-              dataTypeDescription.value = JSON.stringify(semanticSpec.Input);
+              inputDescription.value = JSON.stringify(semanticSpec.Input);
             } else {
-              dataTypeDescription.value = JSON.stringify({
+              inputDescription.value = JSON.stringify({
                 Dimension: 2,
                 Description: {
                   0: "You have not provided a description of the input data",
@@ -403,10 +403,10 @@ function checkIsEditMode(): undefined | Promise<void> {
               });
             }
             if (semanticSpec.Output.Dimension && semanticSpec.Output.Description) {
-              taskTypeDescriptionClassification.value = taskTypeDescriptionRegression.value =
+              outputDescriptionClassification.value = outputDescriptionRegression.value =
                 JSON.stringify(semanticSpec.Output);
             } else {
-              taskTypeDescriptionClassification.value = taskTypeDescriptionRegression.value =
+              outputDescriptionClassification.value = outputDescriptionRegression.value =
                 JSON.stringify({
                   Dimension: 2,
                   Description: {
@@ -511,11 +511,9 @@ onActivated(init);
                   v-model:library-type="libraryType.value"
                   v-model:scenario-list="scenarioList.value"
                   v-model:license-list="licenseList.value"
-                  v-model:data-type-description="dataTypeDescription.value"
-                  v-model:task-type-description-classification="
-                    taskTypeDescriptionClassification.value
-                  "
-                  v-model:task-type-description-regression="taskTypeDescriptionRegression.value"
+                  v-model:input-description="inputDescription.value"
+                  v-model:output-description-classification="outputDescriptionClassification.value"
+                  v-model:output-description-regression="outputDescriptionRegression.value"
                   :error-messages="
                     dataType.errorMessages ||
                     taskType.errorMessages ||
