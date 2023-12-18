@@ -104,34 +104,6 @@ const Router = createRouter({
         },
       ],
     },
-    {
-      path: "/language",
-      name: "Language",
-      meta: {
-        showInNavBar: true,
-        icon: "mdi-translate",
-      },
-      children: [
-        {
-          path: "/language/zh-cn",
-          name: "Chinese",
-          component: (): Promise<Component> => import("@main/views/ChangeLanguage.vue"),
-          meta: {
-            showInNavBar: true,
-            variant: "outlined",
-          },
-        },
-        {
-          path: "/language/en",
-          name: "English",
-          component: (): Promise<Component> => import("@main/views/ChangeLanguage.vue"),
-          meta: {
-            showInNavBar: true,
-            variant: "outlined",
-          },
-        },
-      ],
-    },
   ],
 });
 

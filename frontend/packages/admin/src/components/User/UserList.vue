@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useI18n } from "vue-i18n";
-import oopsImg from "/oops.svg?url";
+import oopsImg from "@main/assets/images/public/oops.svg?component";
 import type { User } from "@beiming-system/types/user";
 
 const emits = defineEmits(["click:reset", "click:delete", "click:export", "click:setRole"]);
@@ -59,7 +59,7 @@ function handleClickSetRole(id: number, role: number): void {
 
 <template>
   <div
-    class="user-list-container"
+    class="user-list-container bg-surface dark:bg-surface-dark"
     :class="items.length === 0 ? ['grid-cols-1', 'h-full'] : null"
     :style="{ gridTemplateColumns: `repeat(${realCols}, minmax(0, 1fr))` }"
   >
@@ -110,7 +110,7 @@ function handleClickSetRole(id: number, role: number): void {
               <span class="small-title">Username: </span>
               <span class="link">
                 <router-link
-                  class="text-black"
+                  class="text-gray-800 dark:text-gray-200"
                   :to="{ name: 'UserLearnware', query: { user_id: item.id } }"
                 >
                   {{ item.username }}
@@ -154,12 +154,12 @@ function handleClickSetRole(id: number, role: number): void {
       flat
       class="no-user"
     >
-      {{ t("AllUser.OopsNoUser") }}
-      <v-img
-        class="oops-img"
+      <oops-img
+        class="oops-img block"
         width="100"
-        :src="oopsImg"
+        height="100"
       />
+      {{ t("AllUser.OopsNoUser") }}
     </div>
   </div>
 </template>
@@ -210,7 +210,7 @@ function handleClickSetRole(id: number, role: number): void {
     @apply bottom-0 flex w-full flex-col items-center justify-center text-2xl;
 
     .oops-img {
-      @apply mx-auto;
+      @apply mx-auto fill-gray-800 dark:fill-gray-300;
     }
   }
 }

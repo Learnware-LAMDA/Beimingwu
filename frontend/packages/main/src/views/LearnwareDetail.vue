@@ -170,7 +170,7 @@ function handleDownload(id: string): void {
 </script>
 
 <template>
-  <div class="relative mx-auto min-h-full max-w-[1200px] bg-white p-4 sm:min-h-0 sm:p-6">
+  <v-sheet class="relative mx-auto min-h-full max-w-[1200px] border p-4 sm:min-h-0 sm:p-6">
     <v-scroll-y-transition
       class="fixed left-0 right-0 z-10"
       style="top: var(--v-layout-top)"
@@ -497,7 +497,7 @@ function handleDownload(id: string): void {
         v-html="html2Markdown(learnware.description)"
       />
     </template>
-  </div>
+  </v-sheet>
 </template>
 
 <style scoped lang="scss">

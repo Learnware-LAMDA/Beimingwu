@@ -12,11 +12,6 @@ export default {
     ClientToken: "Client Token",
     Logout: "Logout",
   },
-  Language: {
-    Language: "",
-    Chinese: "中文",
-    English: "English",
-  },
   LearnwareDetail: "Learnware Detail",
   Summary: "Summary",
   Learnwares: "All Learnwares",

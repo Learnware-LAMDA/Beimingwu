@@ -12,11 +12,6 @@ export default {
     ClientToken: "客户端令牌",
     Logout: "登出",
   },
-  Language: {
-    Language: "",
-    Chinese: "中文",
-    English: "English",
-  },
   LearnwareDetail: "学件详情",
   Summary: "概览",
   Learnwares: "所有学件",

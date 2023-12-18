@@ -4,14 +4,18 @@ import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import learnwareLogo from "/logo.svg?url";
+import learnwareLogoNoText from "/logo-no-text.svg?url";
 import type { Route } from "@beiming-system/types/route";
+import type { Language } from "@main/i18n";
 
 export interface Props {
   modelValue: boolean;
+  dark: boolean;
   routes: Route[];
+  languages?: Language[];
 }
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "click:dark", "updateLanguage"]);
 const router = useRouter();
 
 const props = defineProps<Props>();
@@ -19,6 +23,8 @@ const props = defineProps<Props>();
 const display = useDisplay();
 
 const store = useStore();
+
+const logoSrc = computed(() => (display.name.value === "xs" ? learnwareLogoNoText : learnwareLogo));
 
 function routeFilter(route: Route): boolean {
   if (route.meta.showInNavBar) {
@@ -52,7 +58,7 @@ const filteredRoutes = computed<Route[]>(
 <template>
   <v-app-bar
     flat
-    class="!border-b bg-white"
+    class="border-b"
   >
     <div class="prepend">
       <v-app-bar-nav-icon
@@ -65,49 +71,45 @@ const filteredRoutes = computed<Route[]>(
       >
         <img
           class="logo-img"
-          :src="learnwareLogo"
+          :src="logoSrc"
         />
       </div>
     </div>
 
     <template #append>
       <v-toolbar-items
-        v-if="!['xs', 'sm'].includes(display.name.value)"
+        v-if="display.mdAndUp.value"
         class="my-3"
       >
         <template
           v-for="route in filteredRoutes"
           :key="route.name"
         >
-          <router-link
+          <v-list-item
             v-if="!route.children"
-            class="text-black"
+            class="rounded text-sm font-medium tracking-tight"
             :to="route.path"
           >
             <!-- route without children -->
-            <v-btn
-              class="text-body-2 mr-2 !h-full rounded font-medium"
-              :variant="route.meta.variant"
-              :class="route.meta.class"
-            >
-              <v-icon
-                class="mr-1"
-                :icon="route.meta.icon"
-              />
-              {{ route.meta.title }}
-            </v-btn>
-          </router-link>
+            <v-icon
+              class="mr-1"
+              :icon="route.meta.icon"
+            />
+            {{ route.meta.title }}
+          </v-list-item>
 
           <!-- route with children -->
           <v-menu
             v-else
-            open-on-hover
+            :open-on-hover="display.mdAndUp.value"
+            :open-on-click="display.smAndDown.value"
           >
             <template #activator="{ props: menuProps }">
               <v-btn
-                class="text-body-2 mr-2 !h-full rounded font-medium"
+                class="mr-2 h-full text-sm font-medium normal-case tracking-tight"
                 :variant="route.meta.variant"
                 :class="route.meta.class"
+                rounded="md"
                 v-bind="menuProps"
               >
                 <v-icon
@@ -122,7 +124,7 @@ const filteredRoutes = computed<Route[]>(
               <v-list-item
                 v-for="child in route.children"
                 :key="child.name"
-                class="text-body-2 font-medium"
+                class="text-sm font-medium tracking-tight"
                 :to="child.path"
               >
                 <v-icon
@@ -139,6 +141,43 @@ const filteredRoutes = computed<Route[]>(
           </v-menu>
         </template>
       </v-toolbar-items>
+
+      <!-- language switcher -->
+      <v-menu
+        v-if="languages && languages.length > 0"
+        :open-on-hover="display.mdAndUp.value"
+        :open-on-click="display.smAndDown.value"
+      >
+        <template #activator="{ props: menuProps }">
+          <v-btn
+            class="mr-2 h-full text-sm font-medium normal-case tracking-tight"
+            rounded="md"
+            v-bind="menuProps"
+          >
+            <v-icon
+              class="mr-1"
+              icon="mdi-translate"
+            />
+            <v-icon>mdi-chevron-down</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="language in languages"
+            :key="language.name"
+            class="text-sm font-medium tracking-tight"
+            @click="() => emit('updateLanguage', language)"
+          >
+            {{ language.title }}
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <v-btn
+        variant="flat"
+        :icon="dark ? 'mdi-weather-night' : 'mdi-weather-sunny'"
+        @click="() => emit('click:dark')"
+      />
     </template>
   </v-app-bar>
 </template>

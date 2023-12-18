@@ -40,7 +40,11 @@ const activeStep = (index: number): void => {
           <div class="icon">
             <div
               class="circle"
-              :class="isStepActive(index) ? 'bg-primary' : 'bg-grey-lighten-1'"
+              :class="
+                isStepActive(index)
+                  ? 'bg-primary-light dark:bg-primary-dark'
+                  : 'bg-inactive dark:bg-inactive-dark'
+              "
             >
               <v-icon
                 :icon="step.icon"
@@ -69,10 +73,10 @@ const activeStep = (index: number): void => {
     @apply flex items-center justify-between md:mx-5;
 
     .step {
-      @apply mx-2 flex cursor-pointer flex-col items-center;
+      @apply bg-surface-light dark:bg-surface-dark mx-2 flex cursor-pointer flex-col items-center;
 
       .icon {
-        @apply bg-white p-1 md:p-3;
+        @apply p-1 md:p-3;
 
         .circle {
           @apply flex items-center justify-center rounded-full p-3;

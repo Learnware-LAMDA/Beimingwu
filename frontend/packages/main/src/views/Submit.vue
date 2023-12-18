@@ -556,7 +556,7 @@ onActivated(init);
               </div>
               <div class="px-4 py-2 text-sm sm:text-lg">
                 <a
-                  class="text-black underline"
+                  class="text-black underline dark:text-white"
                   :href="t('Url.Docs.PrepareLearnwareGuide')"
                   target="_blank"
                 >
@@ -566,7 +566,7 @@ onActivated(init);
               </div>
               <div class="px-4 py-2 text-sm sm:text-lg">
                 <a
-                  class="text-black underline"
+                  class="text-black underline dark:text-white"
                   href="./static/learnware-template.zip"
                   target="_blank"
                 >

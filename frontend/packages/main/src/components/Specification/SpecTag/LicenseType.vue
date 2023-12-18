@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
   cols: 4,
   md: 4,
   sm: 2,
-  xs: 1,
+  xs: 2,
 });
 
 const items: {
@@ -77,8 +77,8 @@ const modelValue = computed({
   >
     <template #btn="{ title, icon, active, onClick }">
       <div
-        :class="{ 'bg-orange-600': active }"
-        class="flex cursor-pointer items-center rounded-[2em] bg-gray-400 p-3 pl-4 text-xs text-white sm:text-sm lg:text-base"
+        :class="{ 'bg-secondary-light dark:bg-secondary-dark': active }"
+        class="bg-inactive-light dark:bg-inactive-dark flex cursor-pointer items-center rounded-[2em] p-3 pl-4 text-xs text-white sm:text-sm lg:text-base"
         @click="onClick"
       >
         <v-icon

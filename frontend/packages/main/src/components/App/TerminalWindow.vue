@@ -22,7 +22,7 @@ const modelValue = computed<number>({
 </script>
 
 <template>
-  <div class="flex flex-col overflow-y-hidden rounded-md">
+  <div class="flex flex-col overflow-y-hidden rounded-md border">
     <div class="relative flex h-7 items-center bg-gray-900">
       <div class="absolute flex">
         <div

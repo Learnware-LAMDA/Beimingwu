@@ -6,16 +6,32 @@ const messages = {
   "zh-cn": zhCn,
 };
 
-const language =
-  JSON.parse(localStorage.getItem("vuex") || "{}")?.i18n?.locale ||
-  (navigator.language || "en").toLocaleLowerCase();
-
 const i18n = createI18n({
   legacy: false,
-  locale: language || "en",
+  locale:
+    JSON.parse(localStorage.getItem("vuex") || "{}")?.i18n?.locale ||
+    (navigator.language || "en").toLocaleLowerCase() ||
+    "en",
   fallbackLocale: "en",
   messages,
 });
 
-export type Language = keyof typeof messages;
+export type LanguageName = "en" | "zh-cn";
+export type LanguageTitle = "English" | "中文";
+export interface Language {
+  name: LanguageName;
+  title: LanguageTitle;
+}
+
+export const languages: Language[] = [
+  {
+    name: "en",
+    title: "English",
+  },
+  {
+    name: "zh-cn",
+    title: "中文",
+  },
+];
+
 export default i18n;

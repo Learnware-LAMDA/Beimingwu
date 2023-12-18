@@ -49,10 +49,7 @@ function buttonClick(func: (() => void) | undefined): void {
 </script>
 
 <template>
-  <v-footer
-    color="grey-lighten-3"
-    class="flex flex-col items-center justify-center"
-  >
+  <v-footer class="flex flex-col items-center justify-center">
     <div class="text-center">
       <v-btn
         v-for="link in links"
@@ -86,12 +83,12 @@ function buttonClick(func: (() => void) | undefined): void {
     </div>
     <!--ICP-->
     <div
-      class="mt-4 text-center"
+      class="mt-4 text-center dark:text-white"
       cols="12"
     >
       <a
         :href="`http://www.beian.miit.gov.cn/`"
-        class="text-black"
+        class="text-black dark:text-white"
         target="_blank"
         rel="noopener noreferrer"
       >

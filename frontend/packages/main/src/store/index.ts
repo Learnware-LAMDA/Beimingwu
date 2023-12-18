@@ -5,6 +5,7 @@ import error from "./error";
 import user from "./user";
 import i18n from "./i18n";
 import exampleTips from "./exampleTips";
+import dark from "./dark";
 
 export default new Vuex.Store({
   modules: {
@@ -13,6 +14,7 @@ export default new Vuex.Store({
     user,
     i18n,
     exampleTips,
+    dark,
   },
   plugins: [new VuexPersistence().plugin],
 });

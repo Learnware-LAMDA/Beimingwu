@@ -1,27 +1,30 @@
 import "@mdi/font/css/materialdesignicons.css"; // Ensure you are using css-loader
 import { createVuetify } from "vuetify";
+import tailwindConfig from "../../tailwind.config";
 
-const myCustomLightTheme = {
+const lightColors = Object.fromEntries(
+  Object.entries(tailwindConfig.theme.extend.colors).map(([key, value]) => [key, value.light]),
+);
+const darkColors = Object.fromEntries(
+  Object.entries(tailwindConfig.theme.extend.colors).map(([key, value]) => [key, value.dark]),
+);
+
+const light = {
   dark: false,
-  colors: {
-    background: "#FFFFFF",
-    surface: "#FFFFFF",
-    primary: "#6200EE",
-    "primary-darken-1": "#3700B3",
-    secondary: "#03DAC6",
-    "secondary-darken-1": "#018786",
-    error: "#B00020",
-    info: "#2196F3",
-    success: "#4CAF50",
-    warning: "#FB8C00",
-  },
+  colors: lightColors,
+};
+
+const dark = {
+  dark: true,
+  colors: darkColors,
 };
 
 export default createVuetify({
   theme: {
-    defaultTheme: "myCustomLightTheme",
+    defaultTheme: "light",
     themes: {
-      myCustomLightTheme,
+      light,
+      dark,
     },
   },
 });

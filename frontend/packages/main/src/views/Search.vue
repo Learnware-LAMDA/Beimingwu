@@ -439,7 +439,7 @@ onActivated(() => {
         </v-alert>
       </div>
 
-      <v-card
+      <div
         v-if="showMultiRecommended"
         flat
         class="mt-4 bg-transparent sm:mt-2"
@@ -486,8 +486,9 @@ onActivated(() => {
           @page-change="pageChange"
           @download="() => showDeployTips()"
         />
-      </v-card>
-      <v-card
+      </div>
+
+      <div
         flat
         class="mt-4 bg-transparent sm:m-0"
       >
@@ -541,7 +542,7 @@ onActivated(() => {
           @click:edit="(id) => handleClickEdit(id)"
           @click:delete="(id) => handleClickDelete(id)"
         />
-      </v-card>
+      </div>
 
       <div
         v-if="remindHetero"

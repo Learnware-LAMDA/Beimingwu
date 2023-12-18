@@ -159,8 +159,8 @@ watch(
 </script>
 
 <template>
-  <div class="relative bg-sky-700">
-    <div class="py-20 text-center text-white">
+  <div class="dark:bg-background-dark bg-primary-light relative text-white">
+    <div class="py-20 text-center">
       <big-title>
         <div>{{ t("Home.Cover.Beiming") }}</div>
       </big-title>
@@ -171,8 +171,9 @@ watch(
 
       <div class="flex justify-center pt-10">
         <v-btn
-          class="mx-3 bg-white"
+          class="dark:text-primary-light mx-3 text-black"
           size="large"
+          variant="flat"
           @click="router.push('/search')"
         >
           {{ t("Home.Cover.Try") }}
@@ -275,7 +276,7 @@ watch(
                         y="38"
                         font-size="7"
                         text-anchor="middle"
-                        fill="black"
+                        class="fill-black dark:fill-white"
                       >
                         RKME.json
                       </text>
@@ -289,7 +290,7 @@ watch(
                 </div>
               </div>
               <div
-                class="pointer-events-none absolute left-0 z-20 flex h-full w-full flex-col items-center justify-center font-medium text-white opacity-80 md:w-2/5"
+                class="pointer-events-none absolute left-0 z-20 flex h-full w-full flex-col items-center justify-center font-medium opacity-80 md:w-2/5"
               >
                 <div
                   v-for="msg in msgs"
