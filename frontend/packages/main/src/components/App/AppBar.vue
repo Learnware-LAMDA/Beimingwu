@@ -101,8 +101,8 @@ const filteredRoutes = computed<Route[]>(
           <!-- route with children -->
           <v-menu
             v-else
-            open-on-hover
-            open-on-click
+            :open-on-hover="display.mdAndUp.value"
+            :open-on-click="display.smAndDown.value"
           >
             <template #activator="{ props: menuProps }">
               <v-btn
@@ -145,8 +145,8 @@ const filteredRoutes = computed<Route[]>(
       <!-- language switcher -->
       <v-menu
         v-if="languages && languages.length > 0"
-        open-on-hover
-        open-on-click
+        :open-on-hover="display.mdAndUp.value"
+        :open-on-click="display.smAndDown.value"
       >
         <template #activator="{ props: menuProps }">
           <v-btn
