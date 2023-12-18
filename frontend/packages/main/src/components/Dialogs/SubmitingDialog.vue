@@ -24,8 +24,8 @@ const dialog = ref(true);
     persistent
     class="w-full max-w-[600px]"
   >
-    <div class="bg-white p-2">
-      <v-card-title class="mb-4 text-center">
+    <div class="bg-surface-light dark:bg-surface-dark p-2">
+      <v-card-title class="mb-4 text-center text-black dark:text-white">
         <slot name="title" />
       </v-card-title>
       <v-progress-linear
