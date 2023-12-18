@@ -285,7 +285,7 @@ const vOffset = {
                 width="90"
                 height="30"
                 rx="3"
-                class="fill-gray-400 dark:fill-gray-600"
+                class="fill-inactive-light dark:fill-inactive-dark"
               />
               <rect
                 x="140"
@@ -293,13 +293,13 @@ const vOffset = {
                 :width="(locale as LanguageName) === 'en' ? 150 : 90"
                 height="30"
                 rx="3"
-                class="fill-gray-400 dark:fill-gray-600"
+                class="fill-inactive-light dark:fill-inactive-dark"
               />
               <text
                 :x="(locale as LanguageName) === 'en' ? 215 : 185"
                 :y="115"
                 font-size="20"
-                class="fill-white dark:fill-black"
+                class="fill-white"
                 text-anchor="middle"
                 dominant-baseline="middle"
               >
@@ -475,7 +475,7 @@ const vOffset = {
               x="475"
               :y="125 + 300 * (i - 1)"
               font-size="20"
-              class="fill-white dark:fill-black"
+              class="fill-white"
               text-anchor="middle"
               dominant-baseline="middle"
             >
