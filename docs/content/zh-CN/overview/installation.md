@@ -11,7 +11,7 @@ pip install learnware
 
 此外，为确保安装的 `learnware` 包为最新版本，也可通过指定版本和镜像源的方式进行安装：
 ```bash
-pip install learnware==0.2.0.8 -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install learnware==0.2.0.9 -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ## 通过源码安装
