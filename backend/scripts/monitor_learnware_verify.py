@@ -19,6 +19,7 @@ from learnware.market import CondaChecker, EasyStatChecker, EasySemanticChecker
 from learnware.learnware import get_learnware_from_dirpath
 import traceback
 from lib import redis_utils
+from lib import sensitive_words_utils
 
 
 def verify_learnware_with_conda_checker(
@@ -26,6 +27,8 @@ def verify_learnware_with_conda_checker(
 ) -> Tuple[bool, str]:
     verify_sucess = True
     command_output = "Success"
+
+    # verify initiate
     try:
         learnware = get_learnware_from_dirpath(
             id=learnware_id, semantic_spec=semantic_specification, learnware_dirpath=learnware_path, ignore_error=False
@@ -36,6 +39,7 @@ def verify_learnware_with_conda_checker(
         command_output += "\r\n" + traceback.format_exc()
         return verify_sucess, command_output
 
+    # verify easy checker
     try:
         semantic_checker = EasySemanticChecker()
         check_result, check_message = semantic_checker(learnware=learnware)
@@ -56,6 +60,32 @@ def verify_learnware_with_conda_checker(
         verify_sucess = False
         command_output = f"Statistical checker runtime error"
         command_output += "\r\n" + traceback.format_exc()
+
+    if not verify_sucess:
+        return verify_sucess, command_output
+
+    # verify sensitive words
+    if context.sensitive_pattern is not None:
+        for filname in os.listdir(learnware_path):
+            if any([filname.endswith(suffix) for suffix in (".txt", ".yaml", ".yml", ".json", ".py")]):
+                with open(os.path.join(learnware_path, filname), "rb") as fin:
+                    try:
+                        file_content = fin.read().decode("utf-8")
+                    except Exception as e:
+                        continue
+
+                    matches = sensitive_words_utils.search_sensitive_words(file_content, context.sensitive_pattern)
+                    if len(matches) > 0:
+                        return False, f"Sensitive words {','.join(matches)} in {filname}"
+                    pass
+                pass
+            pass
+
+        semantic_str = json.dumps(semantic_specification, ensure_ascii=False)
+        matches = sensitive_words_utils.search_sensitive_words(semantic_str, context.sensitive_pattern)
+        if len(matches) > 0:
+            return False, f"Sensitive words {','.join(matches)} in semantic specification"
+        pass
 
     return verify_sucess, command_output
 
@@ -174,6 +204,7 @@ def main(num_worker):
     context.init_logger(target="file")
     context.init_engine()
     context.init_redis()
+    context.init_sensitive_words()
 
     if len(context.config["verify_proxy"]) > 0:
         context.logger.info("set proxy: " + context.config["verify_proxy"])

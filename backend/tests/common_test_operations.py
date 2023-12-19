@@ -159,9 +159,13 @@ def add_test_learnware(email, password, learnware_filename="test_learnware.zip")
     return learnware_id
 
 
-def add_test_learnware_unverified(email, password, learnware_filename="test_learnware.zip") -> str:
+def add_test_learnware_unverified(
+    email, password, learnware_filename="test_learnware.zip", semantic_specification=None
+) -> str:
     headers = login(email, password)
-    semantic_specification = test_learnware_semantic_specification()
+    if semantic_specification is None:
+        semantic_specification = test_learnware_semantic_specification()
+        pass
 
     learnware_file = open(os.path.join("tests", "data", learnware_filename), "rb")
     files = {"learnware_file": learnware_file}
