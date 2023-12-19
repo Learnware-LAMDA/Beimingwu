@@ -8,7 +8,7 @@ Effective Date: December 05, 2023
 
 When you use our services, we need/may need to collect and use your personal information, including the following two types:
 
-1. To achieve the basic functions of providing services to you, you must authorize us to collect and use necessary information. If you refuse to provide the corresponding information, you will not be able to use our services normally;
+1. **To achieve the basic functions of providing services to you, you must authorize us to collect and use necessary information. If you refuse to provide the corresponding information, you will not be able to use our services normally;**
 
 2. To achieve additional functions of providing services to you, you can choose to authorize us to collect and use information. If you refuse to provide it, you may not be able to use the relevant additional functions or achieve the intended functional effects, but it will not affect your normal use of our basic functions.
 
@@ -23,7 +23,7 @@ We will provide you with specific functional scenarios, including:
 
 ### (1) Account Management
 
-When you browse the platform website (whether or not you are registered or logged in), we may automatically collect the following information related to you: your browser type and language, operating system type, and broadband type; your IP address, which can sometimes indicate your geographical location; pages, advertisements, and links you have browsed on the website; user behavior logs; and the access requests you make when visiting the website, along with their dates, times, and referral URLs.
+**When you browse the platform website (whether or not you are registered or logged in), we may automatically collect the following information related to you: your browser type and language, operating system type, and broadband type; your IP address, which can sometimes indicate your geographical location; pages, advertisements, and links you have browsed on the website; user behavior logs; and the access requests you make when visiting the website, along with their dates, times, and referral URLs.**
 
 To ensure that we are providing services to you personally, we may verify your identity based on the information you provide.
 
@@ -31,37 +31,37 @@ To ensure that we are providing services to you personally, we may verify your i
 
 When you contact us or submit after-sales, dispute resolution applications, we need you to provide necessary personal information to verify your user identity for the security of your account and system.
 
-For the convenience of contacting you, assisting you in solving problems promptly, or recording the handling solutions and results of related issues, we may save your communications, communication/call records, and related content (including account information, other information you provide to prove relevant facts, or contact information you leave). If you consult, complain, or provide suggestions regarding specific issues, we will use your account information.
+**For the convenience of contacting you, assisting you in solving problems promptly, or recording the handling solutions and results of related issues, we may save your communications, communication/call records, and related content (including account information, other information you provide to prove relevant facts, or contact information you leave). If you consult, complain, or provide suggestions regarding specific issues, we will use your account information.**
 
-For the reasonable needs of providing services and improving service quality, we may also use other information from you, including information you provide when contacting customer service and questionnaire reply information you send to us.
+**For the reasonable needs of providing services and improving service quality, we may also use other information from you, including information you provide when contacting customer service and questionnaire reply information you send to us.**
 
 ### (3) Other Rules for Collecting and Using Personal Information
 
-If the information you provide contains personal information of other users, you must ensure that you have obtained legal authorization before providing this personal information to the platform. If we use the information for purposes not specified in this privacy policy or use information collected for specific purposes for other purposes, we will obtain your consent in advance.
+If the information you provide contains personal data of other users, before submitting such information to this platform, you must ensure that you have obtained legal authorization. Any legal consequences arising from your failure to obtain proper authorization will be your responsibility. If we use the information for purposes not specified in this privacy policy or if we intend to use the information collected for a specific purpose for any other purposes, we will seek your prior consent.
 
 If we indirectly obtain your information from third parties, we will explicitly request the third party in writing to clarify the source of the personal information and whether they have obtained your legal authorization for collecting, processing, and providing your personal information before collecting. Except in cases expressly permitted by law, we will only collect your personal information from third parties after confirming that the third party has obtained your authorized consent. If the third party's authorization scope cannot cover our processing and use purposes, we will protect your personal information obtained indirectly by our professional security team through measures such as security reinforcement (including sensitive information reporting, sensitive information encryption storage, access control, etc.). We will use protection measures and methods for indirectly obtained personal information that are not lower than those for our own user personal information.
 
-Exceptions to obtaining authorized consent. According to relevant laws and regulations, we may collect and use your personal information without your authorized consent in the following circumstances:
+**Exceptions to obtaining authorized consent. According to relevant laws and regulations, we may collect and use your personal information without your authorized consent in the following circumstances:**
 
-(1) Related to our fulfillment of obligations stipulated by laws and regulations;
+(1) **Related to our fulfillment of obligations stipulated by laws and regulations;**
 
-(2) Directly related to national security and defense security;
+(2) **Directly related to national security and defense security;**
 
-(3) Directly related to public safety, public health, and significant public interests;
+(3) **Directly related to public safety, public health, and significant public interests;**
 
-(4) Directly related to criminal investigations, prosecutions, trials, and enforcement of judgments by judicial or administrative law enforcement;
+(4) **Directly related to criminal investigations, prosecutions, trials, and enforcement of judgments by judicial or administrative law enforcement;**
 
-(5) Necessary for protecting the vital interests of you or other individuals such as life, property, etc., but it is difficult to obtain your consent;
+(5) **Necessary for protecting the vital interests of you or other individuals such as life, property, etc., but it is difficult to obtain your consent;**
 
-(6) Personal information that you voluntarily make public;
+(6) **Personal information that you voluntarily make public;**
 
-(7) Personal information collected from legally publicized information, such as legal news reports, government information disclosure channels, etc.
+(7) **Personal information collected from legally publicized information, such as legal news reports, government information disclosure channels, etc.**
 
-(8) Necessary for the conclusion and performance of relevant agreements or other written documents with you;
+(8) **Necessary for the conclusion and performance of relevant agreements or other written documents with you;**
 
-(9) Necessary for the safe and stable operation of the services provided, such as discovering and handling service faults;
+(9) **Necessary for the safe and stable operation of the services provided, such as discovering and handling service faults;**
 
-(10) Other circumstances stipulated by laws and regulations.
+(10) **Other circumstances stipulated by laws and regulations.**
 
 Please be aware that according to applicable laws, if we process personal information by technical measures and other necessary measures to make the data recipient unable to re-identify specific individuals and cannot be restored, or if we may de-identify the collected information for research, statistical analysis, and prediction, used to improve the platform's content and layout, and enhance our services (including using anonymous data for machine learning or model algorithm training), the use of such processed data does not require separate notification to you or obtain your consent.
 
@@ -97,23 +97,23 @@ We will only publicly disclose your user information in the following situations
 
 ### (4) Exceptions to Obtaining Authorized Consent for Sharing, Transferring, and Publicly Disclosing User Information
 
-According to relevant laws and regulations, there are situations in which sharing, transferring, and publicly disclosing your user information do not require obtaining your authorized consent in advance:
+**According to relevant laws and regulations, there are situations in which sharing, transferring, and publicly disclosing your user information do not require obtaining your authorized consent in advance:**
 
-1. Related to national security and defense security;
+1. **Related to national security and defense security;**
 
-2. Related to public safety, public health, significant public interests;
+2. **Related to public safety, public health, significant public interests;**
 
-3. Related to criminal investigations, prosecutions, trials, and judgment executions;
+3. **Related to criminal investigations, prosecutions, trials, and judgment executions;**
 
-4. Necessary for protecting the vital interests of you or other individuals such as life, property, etc., but it is difficult to obtain the individual's consent;
+4. **Necessary for protecting the vital interests of you or other individuals such as life, property, etc., but it is difficult to obtain the individual's consent;**
 
-5. Personal information that you voluntarily make public;
+5. **Personal information that you voluntarily make public;**
 
-6. Collecting personal information from legally publicized information, such as legal news reports, government information disclosure channels, etc.;
+6. **Collecting personal information from legally publicized information, such as legal news reports, government information disclosure channels, etc.;**
 
-7. Other situations stipulated by laws and regulations.
+7. **Other situations stipulated by laws and regulations.**
 
-Please be aware that according to applicable laws, if we process personal information by technical measures and other necessary measures to make the data recipient unable to re-identify specific individuals and cannot be restored, then sharing, transferring, and publicly disclosing such processed data do not require separate notification to you or obtaining your consent.
+**Please be aware that according to applicable laws, if we process personal information by technical measures and other necessary measures to make the data recipient unable to re-identify specific individuals and cannot be restored, then sharing, transferring, and publicly disclosing such processed data do not require separate notification to you or obtaining your consent.**
 
 ## 3. How We Store and Protect Your Personal Information Security
 
@@ -137,7 +137,7 @@ In the event of an unfortunate user information security incident (such as leaka
 
 ### (5) You Should Also Protect Your Account Security
 
-Please note that the information you voluntarily share or even publicly disclose when using this platform may involve your or others' personal information, including sensitive information. Please consider carefully whether to share or publicly disclose such information when using this platform.
+Please note that the information you voluntarily share or publicly disclose while using this platform may involve personal data, including sensitive information, pertaining to yourself or others. Please exercise caution and carefully consider whether to share or publicly disclose such information while using this platform. **Any legal consequences arising from your voluntary public disclosure or sharing of personal information are solely your individual responsibility.**
 
 ## 4. How You Can Manage Your Personal Information
 
@@ -183,9 +183,9 @@ To ensure the normal operation of the website, provide you with a more relaxed b
 
 If your browser or browser add-ons allow, you can modify the acceptance or rejection of our Cookies. However, if you do so, it may affect your secure access to our website in certain situations, and you may need to change user settings each time you visit our website.
 
-### (2) Use of Cookie-Like Technologies
+### **(2) Use of Cookie-Like Technologies**
 
-In addition to Cookies, we may also use other similar technologies on the website, such as web beacons, pixel tags, ETags, and more. For example, emails we send to you may contain links to content on our website. If you click on such a link, we will track this click to help us understand your service preferences and improve the user service experience proactively. Web beacons are usually transparent images embedded in websites or emails. With pixel tags in emails, we can know whether the email has been opened. If you do not want your activities to be tracked in this way, you can unsubscribe from our mailing list at any time.
+**In addition to Cookies, we may also use other similar technologies on the website, such as web beacons, pixel tags, ETags, and more. For example, emails we send to you may contain links to content on our website. If you click on such a link, we will track this click to help us understand your service preferences and improve the user service experience proactively. Web beacons are usually transparent images embedded in websites or emails. With pixel tags in emails, we can know whether the email has been opened. If you do not want your activities to be tracked in this way, you can unsubscribe from our mailing list at any time.**
 
 ETags (Entity Tags) are HTTP protocol headers transmitted behind the scenes between internet browsers and servers and can replace Cookies. ETags can help us avoid unnecessary server loads, improve service efficiency, save resources and energy. At the same time, we may use ETags to record your identity so that we can better understand and improve our products or services. Most browsers provide users with the ability to clear browser cache data, and you can perform corresponding data clearing operations in the browser settings. However, please note that if you disable ETags, you may not be able to enjoy a relatively better product or service experience.
 
@@ -200,6 +200,8 @@ Please note that if you are under 14 years old, you and your guardian should car
 If you are the parent or other guardian of a minor, please pay attention to whether the minor you are supervising is using our services with your authorized consent. If you have any questions about the personal information of the minor you are supervising, please contact us through the contact information provided in Article 8 of this policy.
 
 ## 7. How This Privacy Policy Is Updated
+
+**Please carefully and thoroughly read the bolded and black-font sections of this agreement. If, due to personal reasons or negligence on your part, you fail to carefully read the content of this section, all consequences arising from this omission will be your responsibility.**
 
 Because our services and technology are continuously updated and optimized based on the needs of you and other users, we may update our privacy policy to inform you of specific changes when new services and business processes are changed. However, without your explicit consent, we will not restrict your rights according to the rights you should enjoy under this policy. We will post any changes to this policy on the website.
 
