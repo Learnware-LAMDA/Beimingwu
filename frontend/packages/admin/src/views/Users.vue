@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, onActivated } from "vue";
+import { ref, computed, onMounted, onActivated } from "vue";
 import { watchDebounced } from "@vueuse/core";
 import { useDisplay } from "vuetify";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { fetchex, saveContentToFile } from "../utils";
 import { BACKEND_URL } from "@main/constants";
@@ -15,6 +15,7 @@ import type { User, Filter } from "@beiming-system/types/user";
 const display = useDisplay();
 
 const store = useStore();
+const route = useRoute();
 const router = useRouter();
 
 const { t } = useI18n();
@@ -41,16 +42,16 @@ const errorTimer = ref<number>();
 
 const userName = ref("");
 const email = ref("");
-const verifyStatus = ref<string[]>(["Verified", "Unverified"]);
-const allVerifyStatus = ref<string[]>(["Verified", "Unverified"]);
+const verifyStatus = ref<string[]>(["verified", "unverified"]);
+const allVerifyStatus = ref<string[]>(["verified", "unverified"]);
 const isVerified = computed(() => {
-  if (verifyStatus.value.includes("Verified") && verifyStatus.value.includes("Unverified")) {
+  if (verifyStatus.value.includes("verified") && verifyStatus.value.includes("unverified")) {
     return undefined;
   }
-  if (verifyStatus.value.includes("Verified")) {
+  if (verifyStatus.value.includes("verified")) {
     return true;
   }
-  if (verifyStatus.value.includes("Unverified")) {
+  if (verifyStatus.value.includes("unverified")) {
     return false;
   }
   return undefined;
@@ -376,8 +377,18 @@ watchDebounced(
   { deep: true, debounce: 300 },
 );
 
-onActivated(() => {
+onMounted(() => {
   fetchByFilterAndPage(filters.value, page.value);
+});
+
+onActivated(() => {
+  if (route.query.is_verified) {
+    if (route.query.is_verified === "true") {
+      verifyStatus.value = ["verified"];
+    } else if (route.query.is_verified === "false") {
+      verifyStatus.value = ["unverified"];
+    }
+  }
 });
 </script>
 
@@ -494,7 +505,7 @@ onActivated(() => {
           >
             <template #selection="data">
               <v-chip :key="data.item.value">
-                {{ t(`AllUser.${data.item.value}`) }}
+                {{ t(`AllUser.${data.item.value[0].toUpperCase()}${data.item.value.slice(1)}`) }}
               </v-chip>
             </template>
           </v-combobox>

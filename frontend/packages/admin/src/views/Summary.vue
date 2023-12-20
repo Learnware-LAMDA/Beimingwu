@@ -44,13 +44,13 @@ const numberItems = computed(() => {
       title: t("Summary.VerifiedUserCount"),
       icon: "mdi-account",
       value: countVerifiedUser.value,
-      to: "/alluser",
+      to: "/alluser?is_verified=true",
     },
     {
       title: t("Summary.UnverifiedUserCount"),
       icon: "mdi-account",
       value: countUnverifiedUser.value,
-      to: "/alluser",
+      to: "/alluser?is_verified=false",
     },
     {
       title: t("Summary.VerifiedLearnwareCount"),
