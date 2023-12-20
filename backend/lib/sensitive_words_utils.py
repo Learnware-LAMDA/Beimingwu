@@ -56,7 +56,9 @@ def search_sensitive_words(text, sensitive_pattern):
         pass
     ret = []
     for m in sensitive_pattern.finditer(text):
-        ret.append(m.group(0).strip())
+        tmp_str = m.group(0).strip()
+        if len(tmp_str):
+            ret.append(tmp_str)
         pass
 
     return ret
