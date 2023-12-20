@@ -356,7 +356,7 @@ def remove_user(by, value):
     return 1
 
 
-def get_all_user_list(columns, limit=None, page=None, username=None, email=None):
+def get_all_user_list(columns, limit=None, page=None, username=None, email=None, is_verified=None):
     column_str = ", ".join(columns)
     query = f"""
         SELECT
@@ -371,15 +371,23 @@ def get_all_user_list(columns, limit=None, page=None, username=None, email=None)
 
     like_suffix = ""
     group_suffix = f"GROUP BY {column_str}"
-    if username is not None or email is not None:
-        if username is None or email is None:
-            like_suffix = "WHERE "
-            if username is not None:
-                like_suffix += f"username LIKE '%{username}%'"
-            if email is not None:
-                like_suffix += f"email LIKE '%{email}%'"
-        else:
-            like_suffix = f"WHERE username LIKE '%{username}%' AND email LIKE '%{email}%'"
+
+    username_suffix = None if username is None else f"LOWER(username) LIKE LOWER('%{username}%')"
+    email_suffix = None if email is None else f"LOWER(email) LIKE LOWER('%{email}%')"
+    is_verified_suffix = None
+    if is_verified is not None:
+        tmp_str = "NOT " if is_verified == True else ""
+        is_verified_suffix = f"email_confirm_time IS {tmp_str}NULL"
+
+    if username_suffix is not None or email_suffix is not None or is_verified_suffix is not None:
+        like_suffix, AND_flag = "WHERE ", False
+        for item in [username_suffix, email_suffix, is_verified_suffix]:
+            if item is not None:
+                if AND_flag:
+                    like_suffix += " AND "
+                like_suffix += item
+                AND_flag = True
+
     page_suffix = "" if limit is None or page is None else f"LIMIT {limit} OFFSET {limit * page}"
     order = "ORDER BY id DESC"
     rows = context.database.execute(
