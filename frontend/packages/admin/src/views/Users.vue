@@ -41,6 +41,20 @@ const errorTimer = ref<number>();
 
 const userName = ref("");
 const email = ref("");
+const verifyStatus = ref<string[]>(["Verified", "Unverified"]);
+const allVerifyStatus = ref<string[]>(["Verified", "Unverified"]);
+const isVerified = computed(() => {
+  if (verifyStatus.value.includes("Verified") && verifyStatus.value.includes("Unverified")) {
+    return undefined;
+  }
+  if (verifyStatus.value.includes("Verified")) {
+    return true;
+  }
+  if (verifyStatus.value.includes("Unverified")) {
+    return false;
+  }
+  return undefined;
+});
 
 const page = ref(1);
 const pageSize = ref(Math.ceil(display.height.value / 900) * 10);
@@ -49,9 +63,10 @@ const userItems = ref<User[]>([]);
 
 const loading = ref(false);
 
-const filters = computed(() => ({
+const filters = computed<Filter>(() => ({
   userName: userName.value,
   email: email.value,
+  verifyStatus: isVerified.value,
 }));
 
 function fetchByFilterAndPage(filters: Filter, page: number): Promise<void> {
@@ -66,6 +81,7 @@ function fetchByFilterAndPage(filters: Filter, page: number): Promise<void> {
     body: JSON.stringify({
       username: filters.userName,
       email: filters.email,
+      is_verified: filters.verifyStatus,
       limit: pageSize.value,
       page: page - 1,
     }),
@@ -345,7 +361,7 @@ async function handleClickExport(): Promise<void> {
 watchDebounced(
   () => filters.value,
   () => (page.value = 1),
-  { deep: true, debounce: 300 },
+  { deep: true, debounce: 500 },
 );
 
 watchDebounced(
@@ -444,35 +460,45 @@ onActivated(() => {
       flat
       class="search"
     >
-      <div class="search-row">
-        <v-card-title>
-          <span class="hidden sm:inline">
-            {{ t("AllUser.SearchByUsername") }}
-          </span>
-          <v-spacer class="flex-1" />
+      <v-card-title>
+        {{ t("AllUser.Search") }}
+      </v-card-title>
+      <div class="grid grid-cols-1 lg:grid-cols-[3fr_3fr_2fr]">
+        <div class="p-2">
           <v-text-field
             v-model="userName"
-            :label="t('AllUser.Username')"
-            single-line
+            :label="t('AllUser.SearchByUsername')"
             hide-details
             append-inner-icon="mdi-close"
             @click:append-inner="userName = ''"
           />
-        </v-card-title>
-        <v-card-title>
-          <span class="hidden sm:inline">
-            {{ t("AllUser.SearchByEmail") }}
-          </span>
+        </div>
+        <div class="p-2">
           <v-spacer class="flex-1" />
           <v-text-field
             v-model="email"
-            :label="t('AllUser.Email')"
-            single-line
+            :label="t('AllUser.SearchByEmail')"
             hide-details
             append-inner-icon="mdi-close"
             @click:append-inner="email = ''"
           />
-        </v-card-title>
+        </div>
+
+        <div class="p-2">
+          <v-combobox
+            v-model="verifyStatus"
+            :items="allVerifyStatus"
+            :label="t('AllUser.VerifyStatus')"
+            multiple
+            hide-details
+          >
+            <template #selection="data">
+              <v-chip :key="data.item.value">
+                {{ t(`AllUser.${data.item.value}`) }}
+              </v-chip>
+            </template>
+          </v-combobox>
+        </div>
       </div>
     </v-card>
     <page-user-list
@@ -501,10 +527,6 @@ onActivated(() => {
 
   .search {
     @apply z-50 mt-3 w-full max-w-[1500px] border;
-
-    .search-row {
-      @apply grid grid-cols-2;
-    }
   }
 }
 </style>

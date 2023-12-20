@@ -6,6 +6,7 @@ import Router from "./router";
 import NavDrawer from "@main/components/App/NavDrawer.vue";
 import AppBar from "@main/components/App/AppBar.vue";
 import type { Route } from "@beiming-system/types/route";
+import { languages } from "@main/i18n";
 
 const store = useStore();
 
@@ -78,7 +79,9 @@ watch(
         v-model="drawerOpen"
         v-model:dark="dark"
         :routes="routes"
+        :languages="languages"
         @click:dark="dark = !dark"
+        @update-language="(language) => store.commit('setLocale', language.name)"
       />
 
       <nav-drawer

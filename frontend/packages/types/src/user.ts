@@ -1,6 +1,7 @@
 export interface Filter {
   userName: string;
   email: string;
+  verifyStatus?: boolean;
 }
 
 export interface User {
