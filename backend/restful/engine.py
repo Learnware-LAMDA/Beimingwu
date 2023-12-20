@@ -84,7 +84,7 @@ class SearchLearnware(flask_restful.Resource):
         if learnware_id is not None:
             if user_id is None or not dbops.check_user_admin(user_id):
                 return {"code": 61, "msg": "cannot search learnware by id."}, 200
-            semantic_specification["learnware_id"] = learnware_id
+            semantic_specification["learnware_id"] = {"Values": learnware_id, "Type": "String"}
 
         if statistical_str is None:
             status, msg, ret = adv_engine.search_learnware_by_semantic(

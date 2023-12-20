@@ -40,7 +40,6 @@ class TestEngine(unittest.TestCase):
     def tearDown(
         self,
     ) -> None:
-        unittest.TestCase.tearDownClass()
         headers = testops.login("test@localhost", "test")
         testops.delete_learnware(TestEngine.learnware_id, headers)
         TestEngine.server_process.kill()
@@ -167,7 +166,7 @@ class TestEngine(unittest.TestCase):
         pass
 
     def test_search_verified_learnware_use_id(self):
-        headers = self.login()
+        headers = self.login("admin@localhost", hashlib.md5("admin".encode("utf-8")).hexdigest())
         sematic_specification = testops.test_learnware_semantic_specification()
         result = testops.url_request(
             "engine/search_learnware",
