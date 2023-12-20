@@ -64,13 +64,7 @@ def get_learnware_by_id(ids):
     return learneare_list
 
 
-def search_learnware(semantic_str, statistical_str, user_id, check_status=None):
-    # Load semantic specification
-    try:
-        semantic_specification = json.loads(semantic_str)
-    except:
-        return False, "Semantic specification error", None
-
+def search_learnware(semantic_specification, statistical_str, user_id, check_status=None):
     # Load statistical specification
     # statistical_name = f"{int(time.time())}_" + hashlib.md5(statistical_str).hexdigest() + ".json"
     statistical_name = uuid.uuid4().hex + ".json"
@@ -131,13 +125,7 @@ def search_learnware(semantic_str, statistical_str, user_id, check_status=None):
     return True, "", (matching, single_learnware_list, multi_score, multi_learnware, is_hetero)
 
 
-def search_learnware_by_semantic(semantic_str, user_id, check_status=None):
-    # Load semantic specification
-    try:
-        semantic_specification = json.loads(semantic_str)
-    except:
-        return False, "Semantic specification error", None
-
+def search_learnware_by_semantic(semantic_specification, user_id, check_status=None):
     # Search Learnware
     info = market.BaseUserInfo(
         id=user_id,
