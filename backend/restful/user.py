@@ -211,12 +211,16 @@ class UpdateLearnwareApi(flask_restful.Resource):
         database.update_learnware_timestamp(learnware_id)
 
         if learnware_in_engine:
+            check_status = EasySemanticChecker.NONUSABLE_LEARNWARE
+            if learnware_file is None and verify_status == LearnwareVerifyStatus.SUCCESS.value:
+                check_status = EasySemanticChecker.USABLE_LEARWARE
+
             context.engine.update_learnware(
                 id=learnware_id,
                 zip_path=learnware_path,
                 semantic_spec=semantic_specification,
                 checker_names=[],
-                check_status=EasySemanticChecker.NONUSABLE_LEARNWARE,
+                check_status=check_status,
             )
 
             redis_utils.publish_reload_learnware(learnware_id)
@@ -226,8 +230,8 @@ class UpdateLearnwareApi(flask_restful.Resource):
                 pass
             pass
 
-        database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
         if learnware_file is not None:
+            database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
             database.add_file_hash(learnware_id, file_hash)
             pass
 
