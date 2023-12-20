@@ -137,9 +137,8 @@ def init_sensitive_words():
                     pass
                 pass
             pass
+        sensitive_pattern = re.compile("(" + "|".join(sensitive_words) + ")")
         pass
-
-    sensitive_pattern = re.compile("(" + "|".join(sensitive_words) + ")")
     pass
 
 
