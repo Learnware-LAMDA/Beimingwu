@@ -40,7 +40,6 @@ class TestEngine(unittest.TestCase):
     def tearDown(
         self,
     ) -> None:
-        unittest.TestCase.tearDownClass()
         headers = testops.login("test@localhost", "test")
         testops.delete_learnware(TestEngine.learnware_id, headers)
         TestEngine.server_process.kill()
