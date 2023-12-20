@@ -42,7 +42,7 @@ const errorTimer = ref<number>();
 
 const userName = ref("");
 const email = ref("");
-const verifyStatus = ref<string[]>(["verified", "unverified"]);
+const verifyStatus = ref<string[]>([]);
 const allVerifyStatus = ref<string[]>(["verified", "unverified"]);
 const isVerified = computed(() => {
   if (verifyStatus.value.includes("verified") && verifyStatus.value.includes("unverified")) {
@@ -507,6 +507,27 @@ onActivated(() => {
               <v-chip :key="data.item.value">
                 {{ t(`AllUser.${data.item.value[0].toUpperCase()}${data.item.value.slice(1)}`) }}
               </v-chip>
+            </template>
+            <template #item="{ item, props }">
+              <v-list-item
+                density="compact"
+                v-bind="{
+                  ...props,
+                  title: t(
+                    `AllUser.${(props.value as string)[0].toUpperCase()}${(
+                      props.value as string
+                    ).slice(1)}`,
+                  ),
+                }"
+              >
+                <template #prepend>
+                  <v-checkbox
+                    :model-value="verifyStatus.includes(item.value)"
+                    density="comfortable"
+                    hide-details
+                  />
+                </template>
+              </v-list-item>
             </template>
           </v-combobox>
         </div>
