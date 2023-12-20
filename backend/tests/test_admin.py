@@ -138,7 +138,7 @@ class TestAdmin(unittest.TestCase):
         pass
 
     def test_delete_learnware(self):
-        learnware_id = testops.add_test_learnware_unverified("test@localhost", "test")
+        learnware_id = testops.add_test_learnware_unverified("test@localhost", "test", "test_learnware2.zip")
 
         headers = testops.login("admin@localhost", TestAdmin.password, hash_password=True)
         result = testops.url_request("admin/delete_learnware", {"learnware_id": learnware_id}, headers=headers)
