@@ -93,11 +93,15 @@ class TestEngine(unittest.TestCase):
     def test_search_unverified_learnware(self):
         headers = self.login("admin@localhost", hashlib.md5("admin".encode("utf-8")).hexdigest())
         sematic_specification = testops.test_learnware_semantic_specification()
+        learnware_file = open(os.path.join("tests", "data", "test_learnware.zip"), "rb")
+        files = {"learnware_file": learnware_file}
         result = testops.url_request(
             "user/update_learnware",
             data={"learnware_id": TestEngine.learnware_id, "semantic_specification": json.dumps(sematic_specification)},
+            files=files,
             headers=headers,
         )
+        learnware_file.close()
 
         test_learnware_path = os.path.join("tests", "data", "test_learnware.zip")
 
@@ -182,11 +186,15 @@ class TestEngine(unittest.TestCase):
     def test_search_unverified_learnware_use_id(self):
         headers = self.login("admin@localhost", hashlib.md5("admin".encode("utf-8")).hexdigest())
         sematic_specification = testops.test_learnware_semantic_specification()
+        learnware_file = open(os.path.join("tests", "data", "test_learnware.zip"), "rb")
+        files = {"learnware_file": learnware_file}
         result = testops.url_request(
             "user/update_learnware",
             data={"learnware_id": TestEngine.learnware_id, "semantic_specification": json.dumps(sematic_specification)},
+            files=files,
             headers=headers,
         )
+        learnware_file.close()
         result = testops.url_request(
             "engine/search_learnware",
             data={
