@@ -504,7 +504,10 @@ onActivated(() => {
             hide-details
           >
             <template #selection="data">
-              <v-chip :key="data.item.value">
+              <v-chip
+                :key="data.item.value"
+                size="small"
+              >
                 {{ t(`AllUser.${data.item.value[0].toUpperCase()}${data.item.value.slice(1)}`) }}
               </v-chip>
             </template>
