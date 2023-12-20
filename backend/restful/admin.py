@@ -28,6 +28,7 @@ class ListUser(flask_restful.Resource):
         # Get like parameters
         username = None if data is None or "username" not in data else data["username"]
         email = None if data is None or "email" not in data else data["email"]
+        is_verified = None if data is None or "is_verified" not in data else data["is_verified"]
 
         # Return whole user list directly
         if data is None or "limit" not in data:
@@ -45,7 +46,12 @@ class ListUser(flask_restful.Resource):
         page = 0 if "page" not in data else data["page"]
 
         ret, cnt = database.get_all_user_list(
-            columns=["id", "username", "email", "role"], limit=limit, page=page, username=username, email=email
+            columns=["id", "username", "email", "role"],
+            limit=limit,
+            page=page,
+            username=username,
+            email=email,
+            is_verified=is_verified,
         )
         result = {
             "code": 0,

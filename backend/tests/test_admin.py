@@ -43,6 +43,17 @@ class TestAdmin(unittest.TestCase):
 
         pass
 
+    def test_list_verified_user(
+        self,
+    ):
+        headers = testops.login("admin@localhost", TestAdmin.password, hash_password=True)
+        result = testops.url_request("admin/list_user", {"page": 0, "limit": 10, "is_verified": True}, headers=headers)
+
+        self.assertEqual(result["code"], 0)
+        self.assertEqual(len(result["data"]["user_list"]), 2)
+
+        pass
+
     def test_delete_user(
         self,
     ):
