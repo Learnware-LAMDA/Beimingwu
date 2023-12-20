@@ -45,8 +45,10 @@ class TestEngine(unittest.TestCase):
         testops.delete_learnware(TestEngine.learnware_id, headers)
         TestEngine.server_process.kill()
         TestEngine.server_process.join()
-        # testops.cleanup_folder()
         pass
+
+    def tearDownClass() -> None:
+        testops.cleanup_folder()
 
     def login(self, email="test@localhost", password="test"):
         return testops.login(email, password)
