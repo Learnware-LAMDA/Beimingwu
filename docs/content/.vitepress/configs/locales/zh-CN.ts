@@ -44,8 +44,12 @@ const zhCN: LocaleSpecificConfig & {
                 link: "/zh-CN/user-guide/learnware-upload/prepare",
               },
               {
-                text: "如何上传学件？",
-                link: "/zh-CN/user-guide/learnware-upload/upload",
+                text: "通过网页端上传",
+                link: "/zh-CN/user-guide/learnware-upload/upload-web",
+              },
+              {
+                text: "通过客户端上传",
+                link: "/zh-CN/user-guide/learnware-upload/upload-client",
               },
             ],
           },
