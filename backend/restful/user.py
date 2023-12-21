@@ -171,6 +171,8 @@ class UpdateLearnwareApi(flask_restful.Resource):
         user_id = flask_jwt_extended.get_jwt_identity()
 
         learnware_info = database.get_learnware_by_learnware_id(learnware_id)
+        if learnware_info is None:
+            return {"code": 71, "msg": "Learnware id does not exist."}, 200
 
         if user_id != learnware_info["user_id"] and not database.check_user_admin(user_id):
             return {"code": 31, "msg": "Permission denied."}, 200
@@ -211,9 +213,19 @@ class UpdateLearnwareApi(flask_restful.Resource):
         database.update_learnware_timestamp(learnware_id)
 
         if learnware_in_engine:
-            check_status = EasySemanticChecker.NONUSABLE_LEARNWARE
-            if learnware_file is None and verify_status == LearnwareVerifyStatus.SUCCESS.value:
-                check_status = EasySemanticChecker.USABLE_LEARWARE
+            check_flag, check_status = True, EasySemanticChecker.NONUSABLE_LEARNWARE
+
+            old_semantic_specification = data_utils.get_learnware_semantic_specification(learnware_info)
+            if (
+                learnware_file is None
+                and old_semantic_specification.get("Data", {}) == semantic_specification.get("Data", {})
+                and old_semantic_specification.get("Task", {}) == semantic_specification.get("Task", {})
+                and old_semantic_specification.get("Input", {}) == semantic_specification.get("Input", {})
+                and old_semantic_specification.get("Output", {}) == semantic_specification.get("Output", {})
+            ):
+                check_flag = False
+                if verify_status == LearnwareVerifyStatus.SUCCESS.value:
+                    check_status = EasySemanticChecker.USABLE_LEARWARE
 
             context.engine.update_learnware(
                 id=learnware_id,
@@ -222,16 +234,15 @@ class UpdateLearnwareApi(flask_restful.Resource):
                 checker_names=[],
                 check_status=check_status,
             )
-
             redis_utils.publish_reload_learnware(learnware_id)
+            if check_flag:
+                database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
         else:
             with open(learnware_semantic_spec_path, "w") as f:
                 json.dump(semantic_specification, f)
-                pass
-            pass
+            database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
 
         if learnware_file is not None:
-            database.update_learnware_verify_result(learnware_id, LearnwareVerifyStatus.WAITING, "")
             database.add_file_hash(learnware_id, file_hash)
             pass
 
