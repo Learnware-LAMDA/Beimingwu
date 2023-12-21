@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LogoNoText from "../../../public/logo-no-text.svg?component";
+import LogoNoText from "../../../public/logo_no_text.svg?component";
 import Logo from "../../../public/logo.svg?component";
 </script>
 

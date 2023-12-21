@@ -1,15 +1,37 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDisplay } from "vuetify";
-import process from "../../assets/images/home/process.svg?url";
-import procresHorizontal from "../../assets/images/home/process-horizontal.svg?url";
+import { computedAsync } from "@vueuse/core";
+import type { LanguageName } from "@main/i18n";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const display = useDisplay();
 
-const imgSrc = computed(() => (display.smAndDown.value ? procresHorizontal : process));
+const urlMap: Record<"mobile" | "desktop", Record<LanguageName, string>> = {
+  mobile: {
+    en: "../../assets/images/home/process_horizontal.svg?url",
+    "zh-cn": "../../assets/images/home/process_horizontal_zhcn.svg?url",
+  },
+  desktop: {
+    en: "../../assets/images/home/process.svg?url",
+    "zh-cn": "../../assets/images/home/process_zhcn.svg?url",
+  },
+};
+
+const imgSrc = computedAsync<string>(async () => {
+  const { default: src } = await import(
+    display.smAndDown.value
+      ? locale.value === "en"
+        ? urlMap.mobile.en
+        : urlMap.mobile["zh-cn"]
+      : locale.value === "en"
+        ? urlMap.desktop.en
+        : urlMap.desktop["zh-cn"]
+  );
+  console.log(src);
+  return src;
+});
 </script>
 
 <template>
