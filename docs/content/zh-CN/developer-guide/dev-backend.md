@@ -1,7 +1,7 @@
 # 北冥坞系统后端开发指南
 
 ## 后端架构图
-![](../../public/architecture_zh.svg)
+![image](../../public/dev-backend/architecture-zh-CN.svg)
 ## 功能开发
 ### 技术栈
 Flask + SqlAlchemy + Redis
