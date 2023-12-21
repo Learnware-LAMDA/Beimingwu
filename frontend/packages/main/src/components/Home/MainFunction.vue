@@ -8,28 +8,28 @@ const { t, locale } = useI18n();
 
 const display = useDisplay();
 
-const urlMap: Record<"mobile" | "desktop", Record<LanguageName, string>> = {
+const urlMap: Record<
+  "mobile" | "desktop",
+  Record<LanguageName, Promise<typeof import("*?url")>>
+> = {
   mobile: {
-    en: "../../assets/images/home/process_horizontal.svg?url",
-    "zh-cn": "../../assets/images/home/process_horizontal_zhcn.svg?url",
+    en: import("../../assets/images/home/process_horizontal.svg?url"),
+    "zh-cn": import("../../assets/images/home/process_horizontal_zhcn.svg?url"),
   },
   desktop: {
-    en: "../../assets/images/home/process.svg?url",
-    "zh-cn": "../../assets/images/home/process_zhcn.svg?url",
+    en: import("../../assets/images/home/process.svg?url"),
+    "zh-cn": import("../../assets/images/home/process_zhcn.svg?url"),
   },
 };
 
 const imgSrc = computedAsync<string>(async () => {
-  const { default: src } = await import(
-    display.smAndDown.value
-      ? locale.value === "en"
-        ? urlMap.mobile.en
-        : urlMap.mobile["zh-cn"]
-      : locale.value === "en"
-        ? urlMap.desktop.en
-        : urlMap.desktop["zh-cn"]
-  );
-  console.log(src);
+  const { default: src } = await (display.smAndDown.value
+    ? locale.value === "en"
+      ? urlMap.mobile.en
+      : urlMap.mobile["zh-cn"]
+    : locale.value === "en"
+      ? urlMap.desktop.en
+      : urlMap.desktop["zh-cn"]);
   return src;
 });
 </script>
