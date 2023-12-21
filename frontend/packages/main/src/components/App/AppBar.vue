@@ -24,9 +24,9 @@ const display = useDisplay();
 const store = useStore();
 
 const logoSrc = computedAsync<string>(async () => {
-  const { default: src } = await import(
-    `/${display.smAndDown.value ? "logo_no_text.svg" : "logo.svg"}?url`
-  );
+  const { default: src } = display.smAndDown.value
+    ? await import("/logo_no_text.svg?url")
+    : await import("/logo.svg?url");
   return src;
 });
 
