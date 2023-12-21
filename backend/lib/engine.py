@@ -244,6 +244,29 @@ def check_semantic_spec(semantic_specification):
     return True, ""
 
 
+def check_data_type(semantic_specification, statistical_specification):
+    data_type = semantic_specification["Data"]["Values"][0]
+
+    if data_type == "Table":
+        if statistical_specification.type != "RKMETableSpecification":
+            return False, f"data type does not match statistical specition type"
+        else:
+            dim_table = int(semantic_specification["Input"]["Dimension"])
+            dim_rkme = statistical_specification.get_z().shape[1]
+            if dim_table != dim_rkme:
+                return False, f"dimension of table is {dim_table}, dimension of rkme is {dim_rkme}"
+    elif data_type == "Image":
+        if statistical_specification.type != "RKMEImageSpecification":
+            return False, f"data type does not match statistical specition type"
+    elif data_type == "Text":
+        if statistical_specification.type != "RKMETextSpecification":
+            return False, f"data type does not match statistical specition type"
+    else:
+        return False, f"data_type must be in ['Table', 'Image', 'Text']"
+
+    return True, ""
+
+
 def check_learnware_file(semantic_specification, learnware_file):
     # Check file extension
     suffix = os.path.splitext(learnware_file)[1]
@@ -280,24 +303,10 @@ def check_learnware_file(semantic_specification, learnware_file):
                 z_file.extract(member, temp_dir.name)
                 stat_spec["file_name"] = os.path.join(temp_dir.name, member)
                 stat_spec_obj = get_stat_spec_from_config(stat_spec)
-                data_type = semantic_specification["Data"]["Values"][0]
 
-                if data_type == "Table":
-                    if stat_spec_obj.type != "RKMETableSpecification":
-                        return False, f"data type does not match statistical specition type"
-                    else:
-                        dim_table = int(semantic_specification["Input"]["Dimension"])
-                        dim_rkme = stat_spec_obj.get_z().shape[1]
-                        if dim_table != dim_rkme:
-                            return False, f"dimension of table is {dim_table}, dimension of rkme is {dim_rkme}"
-                elif data_type == "Image":
-                    if stat_spec_obj.type != "RKMEImageSpecification":
-                        return False, f"data type does not match statistical specition type"
-                elif data_type == "Text":
-                    if stat_spec_obj.type != "RKMETextSpecification":
-                        return False, f"data type does not match statistical specition type"
-                else:
-                    return False, f"data_type must be in ['Table', 'Image', 'Text']"
+                result, msg = check_data_type(semantic_specification, stat_spec_obj)
+                if result == False:
+                    return result, msg
 
     except Exception as err:
         return False, f"extract statistical specification error: {err}"
