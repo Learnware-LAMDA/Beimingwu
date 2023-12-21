@@ -1,7 +1,7 @@
 # Backend Dev Guide
 
 ## Backend Architecture
-![Architecture](../../public/architecture_en.svg)
+![image](../../public/dev-backend/architecture-en.svg)
 
 ## Feature Development
 ### Technology Stack

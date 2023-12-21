@@ -36,7 +36,7 @@ As shown in the diagram below, the system workflow consists of two stages:
 - **Submitting Stage**: Developers voluntarily submit various learnwares to the learnware dock system, and the system conducts quality checks and further organization of these learnwares.
 - **Deploying Stage**: When users submit task requirements, the learnware dock system automatically selects whether to recommend a single learnware or a combination of multiple learnwares and provides efficient deployment methods. Whether it's a single learnware or a combination of multiple learnwares, the system offers convenient learnware reuse interfaces.
 
-![Fig_design](.../../../../public/learnware_workflow.svg)
+![image](.../../../../public/overview/learnware_workflow.svg)
 
 ### Specification World
 
@@ -44,7 +44,7 @@ Specification is the core component of the learnware dock system, linking all pr
 
 Learnwares from different feature/label spaces form numerous islands of specifications, and all these islands together constitute the "specification world" in the learnware dock system. In the specification world, if connections between different islands can be discovered and established, the corresponding islands of specification can be merged.
 
-![Fig_world](../../public/specification_world.jpg)
+![image](../../public/overview/specification_world.jpg)
 
 When searching in the learnware dock system, the system first identifies specific islands of specifications based on semantic specifications in user requirements, and then it accurately recognizes learnwares on the specification islands through statistical specifications in user requirements.
 

@@ -9,7 +9,7 @@
 
 通过语义信息查搜时，您可以填写目标学件的信息，系统将在学件的名称和描述字段中进行查搜；你也可以通过标签进行筛选。
 
-![image-20231112143044054](../../public/semantic_search.png)
+![image](../../public/quick-start/semantic-search-zh-CN.jpg)
 
 通过统计信息进行查搜时，您需要提交任务的统计信息。我们提供的工具将在保护您数据隐私的情况下在本地为您生成任务的近似统计信息。通过下列代码，您可以轻松生成任务的近似统计信息。
 
@@ -23,12 +23,12 @@ spec.save("stat.json")
 
 通过上传统计信息的json文件，系统会匹配统计信息接近的学件。您可以通过学件卡片左下角的下载按钮进行学件zip包的下载。
 
-![image-20231112144212142](../../public/stat_search_single.png)
+![image](../../public/quick-start/stat-search-single-zh-CN.jpg)
 
 
 某些情况下，多个学件组合在一起的统计信息会更加接近您的任务，系统会将这些学件打包推荐给您。您可以通过右上角的“下载全部”按钮进行一键下载。
 
-![image-20231112144018312](../../public/stat_search_multiple.png)
+![image](../../public/quick-start/stat-search-multiple-zh-CN.jpg)
 
 ## 学件部署
 
