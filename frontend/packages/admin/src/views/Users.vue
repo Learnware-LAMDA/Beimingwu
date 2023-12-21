@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, onActivated } from "vue";
+import { ref, computed, onMounted, onActivated } from "vue";
 import { watchDebounced } from "@vueuse/core";
 import { useDisplay } from "vuetify";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { fetchex, saveContentToFile } from "../utils";
 import { BACKEND_URL } from "@main/constants";
@@ -15,6 +15,7 @@ import type { User, Filter } from "@beiming-system/types/user";
 const display = useDisplay();
 
 const store = useStore();
+const route = useRoute();
 const router = useRouter();
 
 const { t } = useI18n();
@@ -41,6 +42,20 @@ const errorTimer = ref<number>();
 
 const userName = ref("");
 const email = ref("");
+const verifyStatus = ref<string[]>([]);
+const allVerifyStatus = ref<string[]>(["verified", "unverified"]);
+const isVerified = computed(() => {
+  if (verifyStatus.value.includes("verified") && verifyStatus.value.includes("unverified")) {
+    return undefined;
+  }
+  if (verifyStatus.value.includes("verified")) {
+    return true;
+  }
+  if (verifyStatus.value.includes("unverified")) {
+    return false;
+  }
+  return undefined;
+});
 
 const page = ref(1);
 const pageSize = ref(Math.ceil(display.height.value / 900) * 10);
@@ -49,9 +64,10 @@ const userItems = ref<User[]>([]);
 
 const loading = ref(false);
 
-const filters = computed(() => ({
+const filters = computed<Filter>(() => ({
   userName: userName.value,
   email: email.value,
+  verifyStatus: isVerified.value,
 }));
 
 function fetchByFilterAndPage(filters: Filter, page: number): Promise<void> {
@@ -66,6 +82,7 @@ function fetchByFilterAndPage(filters: Filter, page: number): Promise<void> {
     body: JSON.stringify({
       username: filters.userName,
       email: filters.email,
+      is_verified: filters.verifyStatus,
       limit: pageSize.value,
       page: page - 1,
     }),
@@ -345,7 +362,7 @@ async function handleClickExport(): Promise<void> {
 watchDebounced(
   () => filters.value,
   () => (page.value = 1),
-  { deep: true, debounce: 300 },
+  { deep: true, debounce: 500 },
 );
 
 watchDebounced(
@@ -360,8 +377,18 @@ watchDebounced(
   { deep: true, debounce: 300 },
 );
 
-onActivated(() => {
+onMounted(() => {
   fetchByFilterAndPage(filters.value, page.value);
+});
+
+onActivated(() => {
+  if (route.query.is_verified) {
+    if (route.query.is_verified === "true") {
+      verifyStatus.value = ["verified"];
+    } else if (route.query.is_verified === "false") {
+      verifyStatus.value = ["unverified"];
+    }
+  }
 });
 </script>
 
@@ -444,35 +471,69 @@ onActivated(() => {
       flat
       class="search"
     >
-      <div class="search-row">
-        <v-card-title>
-          <span class="hidden sm:inline">
-            {{ t("AllUser.SearchByUsername") }}
-          </span>
-          <v-spacer class="flex-1" />
+      <v-card-title>
+        {{ t("AllUser.Search") }}
+      </v-card-title>
+      <div class="grid grid-cols-1 lg:grid-cols-[3fr_3fr_2fr]">
+        <div class="p-2">
           <v-text-field
             v-model="userName"
-            :label="t('AllUser.Username')"
-            single-line
+            :label="t('AllUser.SearchByUsername')"
             hide-details
             append-inner-icon="mdi-close"
             @click:append-inner="userName = ''"
           />
-        </v-card-title>
-        <v-card-title>
-          <span class="hidden sm:inline">
-            {{ t("AllUser.SearchByEmail") }}
-          </span>
+        </div>
+        <div class="p-2">
           <v-spacer class="flex-1" />
           <v-text-field
             v-model="email"
-            :label="t('AllUser.Email')"
-            single-line
+            :label="t('AllUser.SearchByEmail')"
             hide-details
             append-inner-icon="mdi-close"
             @click:append-inner="email = ''"
           />
-        </v-card-title>
+        </div>
+
+        <div class="p-2">
+          <v-combobox
+            v-model="verifyStatus"
+            :items="allVerifyStatus"
+            :label="t('AllUser.VerifyStatus')"
+            multiple
+            hide-details
+          >
+            <template #selection="data">
+              <v-chip
+                :key="data.item.value"
+                size="small"
+              >
+                {{ t(`AllUser.${data.item.value[0].toUpperCase()}${data.item.value.slice(1)}`) }}
+              </v-chip>
+            </template>
+            <template #item="{ item, props }">
+              <v-list-item
+                density="compact"
+                v-bind="{
+                  ...props,
+                  title: t(
+                    `AllUser.${(props.value as string)[0].toUpperCase()}${(
+                      props.value as string
+                    ).slice(1)}`,
+                  ),
+                }"
+              >
+                <template #prepend>
+                  <v-checkbox
+                    :model-value="verifyStatus.includes(item.value)"
+                    density="comfortable"
+                    hide-details
+                  />
+                </template>
+              </v-list-item>
+            </template>
+          </v-combobox>
+        </div>
       </div>
     </v-card>
     <page-user-list
@@ -501,10 +562,6 @@ onActivated(() => {
 
   .search {
     @apply z-50 mt-3 w-full max-w-[1500px] border;
-
-    .search-row {
-      @apply grid grid-cols-2;
-    }
   }
 }
 </style>

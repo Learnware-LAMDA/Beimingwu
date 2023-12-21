@@ -1,6 +1,8 @@
 export default {
+  Search: "Search",
   Username: "Username",
   Email: "Email",
+  VerifyStatus: "Verify Status",
   Verified: "Verified",
   Unverified: "Unverified",
   SearchByUsername: "Search by username",
