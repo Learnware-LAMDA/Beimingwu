@@ -43,7 +43,7 @@ export default {
   Feature: {
     Title: "What are the features of Beimingwu?",
     Description:
-      "Through the systematic organization of learnwares, Beimingwu can help users precisely search learnwares with the help of task statistics, safely deploy learnwares, and conveniently reuse learnwares; and fully protect user data privacy.",
+      "Through the systematic organization of learnwares, Beimingwu system can help the user precisely search learnwares with the help of task statistical requirement while ensuring data privacy, it also helps user safely load and conveniently reuse learnwares.",
     Recommendation: {
       Name: "Recommend more effective models with Statistical information",
       Description:
