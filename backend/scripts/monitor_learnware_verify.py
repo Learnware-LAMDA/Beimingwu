@@ -10,6 +10,7 @@ import functools
 import lib.command_executor as command_executor
 from database.base import LearnwareVerifyStatus
 from learnware.market import BaseChecker
+from learnware.market.utils import parse_specification_type
 import json
 import tempfile
 import lib.engine as engine_utils
@@ -41,14 +42,24 @@ def verify_learnware_with_conda_checker(
 
     # verify easy checker
     try:
+        # check semantic spec
         semantic_checker = EasySemanticChecker()
         check_result, check_message = semantic_checker(learnware=learnware)
         if check_result == EasySemanticChecker.INVALID_LEARNWARE:
             verify_sucess = False
             command_output = "semantic checker does not pass"
             command_output += "\n" + check_message
-            pass
 
+        # check data type & stat spec type
+        spec_type = parse_specification_type(learnware.get_specification().stat_spec)
+        stat_spec_obj = learnware.get_specification().get_stat_spec_by_name(spec_type)
+        check_result, check_message = engine_utils.check_data_type(semantic_specification, stat_spec_obj)
+        if check_result == False:
+            verify_sucess = False
+            command_output = "Data type checker does not pass"
+            command_output += "\n" + check_message
+
+        # check stat spec
         stat_checker = CondaChecker(inner_checker=EasyStatChecker())
         check_result, check_message = stat_checker(learnware=learnware)
         if verify_sucess and check_result == EasyStatChecker.INVALID_LEARNWARE:
