@@ -74,40 +74,30 @@ class SearchLearnware(flask_restful.Resource):
         else:
             check_status = BaseChecker.USABLE_LEARWARE
 
-        # Cached Search learnware
-        if learnware_id is not None:
-            # TODO: requires administrator rights
-            try:
-                status, msg = True, ""
-                learnware = context.engine.get_learnware_by_ids(learnware_id)
-                if learnware is None:
-                    ret = (None, [], None, None)
-                else:
-                    verify_status = dbops.get_learnware_verify_status(learnware_id)
-                    if verify_status == LearnwareVerifyStatus.SUCCESS.value:
-                        verify_status = "true"
-                    else:
-                        verify_status = "false"
+        # Load semantic specification
+        try:
+            semantic_specification = json.loads(semantic_str)
+        except:
+            return {"code": 41, "msg": "Semantic specification error"}, 200
 
-                    if verify_status == is_verified:
-                        ret = (None, [learnware], None, None)
-                    else:
-                        ret = (None, [], None, None)
-            except Exception as err:
-                status, msg, ret = False, str(err), None
+        # Learnware id search
+        if learnware_id is not None:
+            if user_id is None or not dbops.check_user_admin(user_id):
+                return {"code": 61, "msg": "cannot search learnware by id."}, 200
+            semantic_specification["learnware_id"] = {"Values": learnware_id, "Type": "String"}
+
+        if statistical_str is None:
+            status, msg, ret = adv_engine.search_learnware_by_semantic(
+                semantic_specification, user_id, check_status=check_status
+            )
         else:
-            if statistical_str is None:
-                status, msg, ret = adv_engine.search_learnware_by_semantic(
-                    semantic_str, user_id, check_status=check_status
-                )
-            else:
-                status, msg, ret = adv_engine.search_learnware(
-                    semantic_str, statistical_str, user_id, check_status=check_status
-                )
-                if ret is not None:
-                    is_hetero = ret[-1]
-                    ret = ret[:-1]
-                pass
+            status, msg, ret = adv_engine.search_learnware(
+                semantic_specification, statistical_str, user_id, check_status=check_status
+            )
+            if ret is not None:
+                is_hetero = ret[-1]
+                ret = ret[:-1]
+            pass
 
         print(msg)
         try:

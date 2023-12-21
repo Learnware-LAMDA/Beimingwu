@@ -254,13 +254,13 @@ class TestUser(unittest.TestCase):
 
         self.assertEqual(result["code"], 0)
         result = testops.url_request(
-            "user/list_learnware", {"page": 0, "limit": 10, "is_verified": False}, headers=headers
+            "user/list_learnware", {"page": 0, "limit": 10, "is_verified": True}, headers=headers
         )
 
         self.assertEqual(result["code"], 0)
         learnware_info = result["data"]["learnware_list"][0]
         self.assertEqual(learnware_info["semantic_specification"]["Name"]["Values"], "Test Classification 2")
-        assert learnware_info["verify_status"] != "SUCCESS"
+        assert learnware_info["verify_status"] == "SUCCESS"
 
         testops.delete_learnware(learnware_id, headers)
         pass

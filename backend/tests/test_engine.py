@@ -40,13 +40,14 @@ class TestEngine(unittest.TestCase):
     def tearDown(
         self,
     ) -> None:
-        unittest.TestCase.tearDownClass()
         headers = testops.login("test@localhost", "test")
         testops.delete_learnware(TestEngine.learnware_id, headers)
         TestEngine.server_process.kill()
         TestEngine.server_process.join()
-        # testops.cleanup_folder()
         pass
+
+    def tearDownClass() -> None:
+        testops.cleanup_folder()
 
     def login(self, email="test@localhost", password="test"):
         return testops.login(email, password)
@@ -92,11 +93,15 @@ class TestEngine(unittest.TestCase):
     def test_search_unverified_learnware(self):
         headers = self.login("admin@localhost", hashlib.md5("admin".encode("utf-8")).hexdigest())
         sematic_specification = testops.test_learnware_semantic_specification()
+        learnware_file = open(os.path.join("tests", "data", "test_learnware.zip"), "rb")
+        files = {"learnware_file": learnware_file}
         result = testops.url_request(
             "user/update_learnware",
             data={"learnware_id": TestEngine.learnware_id, "semantic_specification": json.dumps(sematic_specification)},
+            files=files,
             headers=headers,
         )
+        learnware_file.close()
 
         test_learnware_path = os.path.join("tests", "data", "test_learnware.zip")
 
@@ -165,7 +170,7 @@ class TestEngine(unittest.TestCase):
         pass
 
     def test_search_verified_learnware_use_id(self):
-        headers = self.login()
+        headers = self.login("admin@localhost", hashlib.md5("admin".encode("utf-8")).hexdigest())
         sematic_specification = testops.test_learnware_semantic_specification()
         result = testops.url_request(
             "engine/search_learnware",
@@ -181,11 +186,15 @@ class TestEngine(unittest.TestCase):
     def test_search_unverified_learnware_use_id(self):
         headers = self.login("admin@localhost", hashlib.md5("admin".encode("utf-8")).hexdigest())
         sematic_specification = testops.test_learnware_semantic_specification()
+        learnware_file = open(os.path.join("tests", "data", "test_learnware.zip"), "rb")
+        files = {"learnware_file": learnware_file}
         result = testops.url_request(
             "user/update_learnware",
             data={"learnware_id": TestEngine.learnware_id, "semantic_specification": json.dumps(sematic_specification)},
+            files=files,
             headers=headers,
         )
+        learnware_file.close()
         result = testops.url_request(
             "engine/search_learnware",
             data={

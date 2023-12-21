@@ -64,13 +64,7 @@ def get_learnware_by_id(ids):
     return learneare_list
 
 
-def search_learnware(semantic_str, statistical_str, user_id, check_status=None):
-    # Load semantic specification
-    try:
-        semantic_specification = json.loads(semantic_str)
-    except:
-        return False, "Semantic specification error", None
-
+def search_learnware(semantic_specification, statistical_str, user_id, check_status=None):
     # Load statistical specification
     # statistical_name = f"{int(time.time())}_" + hashlib.md5(statistical_str).hexdigest() + ".json"
     statistical_name = uuid.uuid4().hex + ".json"
@@ -131,13 +125,7 @@ def search_learnware(semantic_str, statistical_str, user_id, check_status=None):
     return True, "", (matching, single_learnware_list, multi_score, multi_learnware, is_hetero)
 
 
-def search_learnware_by_semantic(semantic_str, user_id, check_status=None):
-    # Load semantic specification
-    try:
-        semantic_specification = json.loads(semantic_str)
-    except:
-        return False, "Semantic specification error", None
-
+def search_learnware_by_semantic(semantic_specification, user_id, check_status=None):
     # Search Learnware
     info = market.BaseUserInfo(
         id=user_id,
@@ -224,6 +212,38 @@ def parse_semantic_specification(semantic_str):
     )
 
 
+def check_semantic_spec(semantic_specification):
+    try:
+        # Check semantic_specification
+        result, msg = market.EasySemanticChecker.check_semantic_spec(semantic_specification)
+        if result == market.EasySemanticChecker.INVALID_LEARNWARE:
+            return False, msg
+
+        # Name length check
+        if len(semantic_specification["Name"]["Values"]) < 5:
+            return False, f"Name length is less than 5"
+        if len(semantic_specification["Name"]["Values"]) > 50:
+            return False, f"Name length is more than 50"
+
+        # Description length check
+        if len(semantic_specification["Description"]["Values"]) < 10:
+            return False, f"Description length is less than 10"
+        if len(semantic_specification["Description"]["Values"]) > 10000:
+            return False, f"Description length is more than 10000"
+
+        # Check sensitive words
+        if context.sensitive_pattern is not None:
+            semantic_str = json.dumps(semantic_specification, ensure_ascii=False)
+            matches = sensitive_words_utils.search_sensitive_words(semantic_str, context.sensitive_pattern)
+            if len(matches) > 0:
+                return False, f"Sensitive words {','.join(matches)} in semantic specification"
+
+    except Exception as err:
+        return False, f"semantic specification error: {err}"
+
+    return True, ""
+
+
 def check_learnware_file(semantic_specification, learnware_file):
     # Check file extension
     suffix = os.path.splitext(learnware_file)[1]
@@ -234,12 +254,9 @@ def check_learnware_file(semantic_specification, learnware_file):
     temp_dir = tempfile.TemporaryDirectory(prefix="learnware_check_file_")
 
     try:
-        # Check semantic_specification
-        if (
-            market.EasySemanticChecker.check_semantic_spec(semantic_specification)[0]
-            == market.EasySemanticChecker.INVALID_LEARNWARE
-        ):
-            return False, f"Semantic specification check failed!"
+        result, msg = check_semantic_spec(semantic_specification)
+        if result == False:
+            return result, msg
 
         with zipfile.ZipFile(learnware_file, "r") as z_file:
             top_folder = common_utils.get_top_folder_in_zip(z_file)
@@ -281,15 +298,6 @@ def check_learnware_file(semantic_specification, learnware_file):
                         return False, f"data type does not match statistical specition type"
                 else:
                     return False, f"data_type must be in ['Table', 'Image', 'Text']"
-
-            # check sensitive words
-            if context.sensitive_pattern is not None:
-                semantic_str = json.dumps(semantic_specification, ensure_ascii=False)
-                matches = sensitive_words_utils.search_sensitive_words(semantic_str, context.sensitive_pattern)
-                if len(matches) > 0:
-                    return False, f"Sensitive words {','.join(matches)} in semantic specification"
-                pass
-            pass
 
     except Exception as err:
         return False, f"extract statistical specification error: {err}"
