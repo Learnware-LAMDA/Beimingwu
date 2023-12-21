@@ -36,7 +36,7 @@ As shown in the diagram below, the system workflow consists of two stages:
 - **Submitting Stage**: Developers voluntarily submit various learnwares to the learnware dock system, and the system conducts quality checks and further organization of these learnwares.
 - **Deploying Stage**: When users submit task requirements, the learnware dock system automatically selects whether to recommend a single learnware or a combination of multiple learnwares and provides efficient deployment methods. Whether it's a single learnware or a combination of multiple learnwares, the system offers convenient learnware reuse interfaces.
 
-![Fig_design](.../../../../public/learnware_workflow.svg)
+![Fig_design](.../../../../public/learnware_workflow_en.svg)
 
 ### Specification World
 
