@@ -133,6 +133,11 @@ class UploadDataset(flask_restx.Resource):
         if file is None:
             return {"code": 12, "msg": "file is required."}
 
+        file_path = file_path.strip()
+        if len(file_path) == 0:
+            file_path = "."
+            pass
+
         datasets_path = context.config["datasets_path"]
         fullpath = os.path.join(datasets_path, file_path)
         os.makedirs(os.path.dirname(fullpath), exist_ok=True)

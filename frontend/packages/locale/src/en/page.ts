@@ -16,4 +16,5 @@ export default {
   Summary: "Summary",
   Learnwares: "All Learnwares",
   Users: "All Users",
+  Datasets: "Datasets",
 };
