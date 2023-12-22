@@ -39,7 +39,7 @@ function emitConfirm(): void {
       <div class="flex justify-end space-x-2 p-4">
         <v-btn
           variant="flat"
-          class="bg-red"
+          color="warning"
           @click="() => emitConfirm()"
         >
           Confirm
