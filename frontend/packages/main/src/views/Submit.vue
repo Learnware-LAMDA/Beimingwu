@@ -410,7 +410,7 @@ function checkIsEditMode(): undefined | Promise<void> {
             libraryType.value = semanticSpec.Library.Values[0];
             scenarioList.value = semanticSpec.Scenario.Values;
             licenseList.value = semanticSpec.License.Values;
-            if (semanticSpec.Input) {
+            if (semanticSpec.Input.Dimension && semanticSpec.Input.Description) {
               inputDescription.value = JSON.stringify(semanticSpec.Input);
             } else {
               inputDescription.value = JSON.stringify({
