@@ -236,7 +236,7 @@ def check_semantic_spec(semantic_specification):
             sub_semantic = semantic_specification.copy()
             sub_semantic["Input"] = {}
             sub_semantic["Output"] = {}
-            semantic_str = json.dumps(semantic_specification, ensure_ascii=False)
+            semantic_str = json.dumps(sub_semantic, ensure_ascii=False)
             matches = sensitive_words_utils.search_sensitive_words(semantic_str, context.sensitive_pattern)
             if len(matches) > 0:
                 return False, f"Sensitive words {','.join(matches)} in semantic specification"
