@@ -2,6 +2,10 @@ export default {
   Step: "步骤",
   Name: {
     Name: "名称",
+    Step: {
+      Title: "步骤 1",
+      SubTitle: "名称",
+    },
     Title: "输入学件名称",
     Placeholder: "请输入学件名称",
     Description: "这是您将提交的学件的名称",
@@ -11,7 +15,10 @@ export default {
     },
   },
   SemanticSpecification: {
-    Tag: "标签",
+    Step: {
+      Title: "步骤 2",
+      SubTitle: "标签",
+    },
     Title: "选择学件的标签（语义规约）",
     DataType: {
       DataType: "数据类型",
@@ -109,6 +116,10 @@ export default {
   },
   Description: {
     Description: "描述",
+    Step: {
+      Title: "步骤 3",
+      SubTitle: "描述",
+    },
     Title: "输入学件的描述",
     Placeholder: "请输入学件的描述",
     Error: {
@@ -117,7 +128,10 @@ export default {
     },
   },
   File: {
-    File: "文件",
+    Step: {
+      Title: "步骤 4",
+      SubTitle: "文件",
+    },
     Title: "上传模型和统计规约",
     DragFileHere: "拖拽 {file} 文件到此处",
     ClickHere: "点击此处",
