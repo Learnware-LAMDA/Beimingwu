@@ -12,7 +12,7 @@ const Router = createRouter({
       component: (): Promise<Component> => import("@admin/views/Summary.vue"),
       meta: {
         showInNavBar: true,
-        icon: "mdi-eye",
+        icon: "mdi-chart-areaspline",
       },
     },
     {
@@ -26,7 +26,7 @@ const Router = createRouter({
         showInNavBar: true,
         requiredLogin: true,
         keepAlive: true,
-        icon: "mdi-file-eye",
+        icon: "mdi-magnify",
       },
     },
     {
@@ -48,7 +48,7 @@ const Router = createRouter({
         showInNavBar: true,
         requiredLogin: true,
         keepAlive: true,
-        icon: "mdi-file-eye",
+        icon: "mdi-account-multiple",
       },
     },
     {
@@ -59,7 +59,7 @@ const Router = createRouter({
         showInNavBar: true,
         requiredLogin: true,
         keepAlive: true,
-        icon: "mdi-file-eye",
+        icon: "mdi-database",
       },
     },
     {
