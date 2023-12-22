@@ -5,6 +5,7 @@ import flask_jwt_extended
 import os
 from restful.auth import admin_login_required
 import shutil
+import werkzeug.datastructures
 
 
 datasets_blueprint = Blueprint("Datasets-API", __name__)
@@ -18,7 +19,7 @@ class DatasetsList(flask_restx.Resource):
         datasets_path = context.config["datasets_path"]
         return_list = []
 
-        datasets = os.listdir(datasets_path)
+        datasets = sorted(os.listdir(datasets_path))
 
         for dataset in datasets:
             if dataset.startswith("."):
@@ -28,7 +29,7 @@ class DatasetsList(flask_restx.Resource):
             if not os.path.isdir(dataset_path):
                 continue
 
-            filenames = os.listdir(dataset_path)
+            filenames = sorted(os.listdir(dataset_path))
             for filename in filenames:
                 if filename.startswith("."):
                     continue
@@ -50,11 +51,14 @@ class DatasetsList(flask_restx.Resource):
 class DatasetsDownload(flask_restx.Resource):
     def get(self):
         dataset_name = request.args.get("dataset")
+        if ".." in dataset_name:
+            return {"code": 11, "msg": "Dataset not found.", "data": {}}
+
         dataset_path = os.path.abspath(os.path.join(context.config["datasets_path"], dataset_name))
 
         if not os.path.exists(dataset_path):
             result = {
-                "code": 11,
+                "code": 12,
                 "msg": "Dataset not found.",
                 "data": {},
             }
@@ -92,7 +96,7 @@ class DatasetsDelete(flask_restx.Resource):
 class AddDatasetUploaded(flask_restx.Resource):
     parser = flask_restx.reqparse.RequestParser()
     parser.add_argument("file_hash", type=str, location="json")
-    parser.add_argument("semantic_specifiction", type=str, location="json")
+    parser.add_argument("filename", type=str, location="json")
 
     @flask_jwt_extended.jwt_required()
     @admin_login_required
@@ -112,7 +116,38 @@ class AddDatasetUploaded(flask_restx.Resource):
     pass
 
 
+class UploadDataset(flask_restx.Resource):
+    parser = flask_restx.reqparse.RequestParser()
+    parser.add_argument("file_path", type=str, location="form")
+    parser.add_argument("file", type=werkzeug.datastructures.FileStorage, location="files")
+
+    @flask_jwt_extended.jwt_required()
+    @admin_login_required
+    @api.expect(parser)
+    def post(self):
+        file_path = request.form.get("file_path")
+        file = request.files.get("file")
+
+        if file_path is None:
+            return {"code": 11, "msg": "file_path is required."}
+        if file is None:
+            return {"code": 12, "msg": "file is required."}
+
+        file_path = file_path.strip()
+        if len(file_path) == 0:
+            file_path = "."
+            pass
+
+        datasets_path = context.config["datasets_path"]
+        fullpath = os.path.join(datasets_path, file_path)
+        os.makedirs(os.path.dirname(fullpath), exist_ok=True)
+        file.save(fullpath)
+
+        return {"code": 0, "msg": "success."}
+
+
 api.add_resource(DatasetsList, "/list_datasets")
 api.add_resource(DatasetsDownload, "/download_datasets")
 api.add_resource(DatasetsDelete, "/delete_datasets")
 api.add_resource(AddDatasetUploaded, "/add_dataset_uploaded")
+api.add_resource(UploadDataset, "/upload_dataset")

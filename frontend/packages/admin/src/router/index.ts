@@ -52,6 +52,17 @@ const Router = createRouter({
       },
     },
     {
+      path: "/datasets",
+      name: "Datasets",
+      component: (): Promise<Component> => import("@admin/views/Datasets.vue"),
+      meta: {
+        showInNavBar: true,
+        requiredLogin: true,
+        keepAlive: true,
+        icon: "mdi-file-eye",
+      },
+    },
+    {
       path: "/learnwaredetail",
       name: "LearnwareDetail",
       component: (): Promise<Component> => import("@main/views/LearnwareDetail.vue"),

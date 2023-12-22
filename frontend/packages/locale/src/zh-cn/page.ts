@@ -16,4 +16,5 @@ export default {
   Summary: "概览",
   Learnwares: "所有学件",
   Users: "所有用户",
+  Datasets: "数据集",
 };
