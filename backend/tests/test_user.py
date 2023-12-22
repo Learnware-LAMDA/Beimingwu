@@ -44,6 +44,7 @@ class TestUser(unittest.TestCase):
         unittest.TestCase.tearDownClass()
         TestUser.server_process.kill()
         testops.cleanup_folder()
+        testops.reset_config()
         pass
 
     def test_profile(self):

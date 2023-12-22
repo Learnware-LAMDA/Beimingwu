@@ -251,3 +251,7 @@ def reset_config():
 
 def set_config(key, value):
     C.update({key: value})
+    with open("config.json", "w") as fout:
+        json.dump(C.__dict__["_config"], fout, indent=4)
+        pass
+    pass
