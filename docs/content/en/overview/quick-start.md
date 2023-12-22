@@ -8,7 +8,7 @@ In Beimingwu, learnwares can be searched using both semantic information and sta
 
 When searching with semantic information, you can fill in the information about your target learnware, and the system will search in the names and descriptions of learnwares. You can also filter by tags.
 
-![image-20231112143044054](../../public/semantic_search.png)
+![image](../../public/quick-start/semantic-search-en.jpg)
 
 When searching with statistical information, you need to submit the statistical information of the task. The tools we provide will generate approximate statistical information for your task locally while protecting your data privacy. With the following code, you can easily generate approximate statistical information for your task.
 
@@ -22,11 +22,11 @@ spec.save("stat.json")
 
 By uploading the JSON file containing statistical information, the system will match learnware with similar statistical information. You can download the learnware zip by clicking on the download button in the lower left corner of the learnware card.
 
-![image-20231112144212142](../../public/stat_search_single.png)
+![image](../../public/quick-start/stat-search-single-en.jpg)
 
 In some cases, combining multiple learnwares with similar statistical information may be more suitable for your task. The system will recommend these learnwares as a package to you. You can download all of them with the "Download All" button in the upper right corner.
 
-![image-20231112144018312](../../public/stat_search_multiple.png)
+![image](../../public/quick-start/stat-search-multiple-en.jpg)
 
 ## Learnware Deployment
 

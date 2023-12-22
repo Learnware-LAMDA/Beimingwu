@@ -40,12 +40,16 @@ const en: LocaleSpecificConfig & {
             collapsed: true,
             items: [
               {
-                text: "How to Prepare a Learnware?",
+                text: "Learnware Preparation",
                 link: "/en/user-guide/learnware-upload/prepare",
               },
               {
-                text: "How to Upload a Learnware?",
-                link: "/en/user-guide/learnware-upload/upload",
+                text: "Upload via Web Interface",
+                link: "/en/user-guide/learnware-upload/upload-web",
+              },
+              {
+                text: "Upload via Client Interface",
+                link: "/en/user-guide/learnware-upload/upload-client",
               },
             ],
           },
