@@ -29,7 +29,7 @@ function emitConfirm(): void {
         <v-icon
           class="mr-1"
           icon="mdi-alert"
-          color="red"
+          color="warning"
         />
         <slot name="title" />
       </div>
