@@ -17,6 +17,7 @@ import Error from "./error";
 import CodeFragments from "./codeFragments";
 import Url from "./url";
 import Router from "./router";
+import Datasets from "./datasets";
 
 export default {
   Page,
@@ -38,4 +39,5 @@ export default {
   CodeFragments,
   Url,
   Router,
+  Datasets,
 };
