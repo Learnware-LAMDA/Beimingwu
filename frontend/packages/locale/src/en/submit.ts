@@ -2,6 +2,10 @@ export default {
   Step: "Step",
   Name: {
     Name: "Name",
+    Step: {
+      Title: "Step 1",
+      SubTitle: "Name",
+    },
     Title: "Type the name of your learnware",
     Placeholder: "Please type the name of your learnware",
     Description: "This is the name of your learnware you will submit",
@@ -11,7 +15,10 @@ export default {
     },
   },
   SemanticSpecification: {
-    Tag: "Tag",
+    Step: {
+      Title: "Step 2",
+      SubTitle: "Tag",
+    },
     Title: "Choose the tags (semantic specification)",
     DataType: {
       DataType: "Data type",
@@ -109,6 +116,10 @@ export default {
   },
   Description: {
     Description: "Description",
+    Step: {
+      Title: "Step 3",
+      SubTitle: "Description",
+    },
     Title: "Type the description of your learnware",
     Placeholder: "Please type the description of your learnware",
     Error: {
@@ -117,7 +128,10 @@ export default {
     },
   },
   File: {
-    File: "File",
+    Step: {
+      Title: "Step 4",
+      SubTitle: "File",
+    },
     Title: "Upload your model & statistical specification",
     DragFileHere: "Drag {file} file here",
     ClickHere: "Click here",

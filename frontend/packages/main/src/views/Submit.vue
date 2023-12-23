@@ -176,25 +176,41 @@ const uploadProgress = ref(0);
 
 const steps = computed(() => [
   {
-    title: t("Submit.Name.Title"),
-    subtitle: t("Submit.Name.Name"),
+    title: t("Submit.Name.Step.Title"),
+    subtitle: t("Submit.Name.Step.SubTitle"),
     icon: "mdi-rename",
+    check: name.valid,
   },
   {
-    title: t("Submit.SemanticSpecification.Title"),
-    subtitle: t("Submit.SemanticSpecification.Tag"),
+    title: t("Submit.SemanticSpecification.Step.Title"),
+    subtitle: t("Submit.SemanticSpecification.Step.SubTitle"),
     icon: "mdi-label-multiple",
+    check:
+      dataType.valid &&
+      taskType.valid &&
+      libraryType.valid &&
+      scenarioList.valid &&
+      licenseList.valid,
   },
   {
-    title: t("Submit.Description.Title"),
-    subtitle: t("Submit.Description.Description"),
+    title: t("Submit.Description.Step.Title"),
+    subtitle: t("Submit.Description.Step.SubTitle"),
     icon: "mdi-image-text",
+    check: description.valid,
   },
   {
-    title: t("Submit.File.Title"),
-    subtitle: t("Submit.File.File"),
+    title: t("Submit.File.Step.Title"),
+    subtitle: t("Submit.File.Step.SubTitle"),
     icon: "mdi-paperclip-plus",
+    check: files.valid,
   },
+]);
+
+const windowTitle = computed(() => [
+  t("Submit.Name.Title"),
+  t("Submit.SemanticSpecification.Title"),
+  t("Submit.Description.Title"),
+  t("Submit.File.Title"),
 ]);
 
 const valid = computed(
@@ -208,8 +224,10 @@ const valid = computed(
     description.valid &&
     files.valid,
 );
-const allowChangePage = computed(() => {
-  switch (currentStep.value) {
+const allowNextPage = computed(() => checkStepValid(currentStep.value));
+
+function checkStepValid(step: number): boolean {
+  switch (step) {
     case 0: {
       return name.valid;
     }
@@ -232,13 +250,14 @@ const allowChangePage = computed(() => {
       return false;
     }
   }
-});
+}
 
 function activeStep(index: number): void {
   if (
-    valid.value ||
-    index < currentStep.value ||
-    (allowChangePage.value && index <= currentStep.value + 1)
+    new Array(index)
+      .fill(0)
+      .map((_, i) => checkStepValid(i))
+      .every((valid) => valid)
   ) {
     currentStep.value = index;
   }
@@ -391,7 +410,7 @@ function checkIsEditMode(): undefined | Promise<void> {
             libraryType.value = semanticSpec.Library.Values[0];
             scenarioList.value = semanticSpec.Scenario.Values;
             licenseList.value = semanticSpec.License.Values;
-            if (semanticSpec.Input) {
+            if (semanticSpec.Input.Dimension && semanticSpec.Input.Description) {
               inputDescription.value = JSON.stringify(semanticSpec.Input);
             } else {
               inputDescription.value = JSON.stringify({
@@ -468,18 +487,16 @@ onActivated(init);
           </v-card-actions>
         </v-scroll-y-transition>
         <v-stepper-title
-          class="mb-5 mt-2 w-full"
+          v-model="currentStep"
+          class="mb-5 mt-2 w-full border-b"
           :step-title="t('Submit.Step')"
           :steps="steps"
-          :current-step="currentStep"
           @active-step="activeStep"
         />
 
-        <v-divider class="border-black" />
-
         <div class="mx-auto w-full pt-2 sm:px-2 sm:pb-2">
           <div class="text-1.2rem sm:pb-none p-2 px-4 pb-0 font-medium md:text-2xl">
-            <span>{{ steps[currentStep].title }}</span>
+            <span>{{ windowTitle[currentStep] }}</span>
           </div>
 
           <v-window
@@ -590,7 +607,7 @@ onActivated(init);
               v-if="currentStep < steps.length - 1"
               color="primary"
               variant="flat"
-              :disabled="!allowChangePage"
+              :disabled="!allowNextPage"
               @click="nextStep"
             >
               {{ t("Submit.Navigation.NextStep") }}

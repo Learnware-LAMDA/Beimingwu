@@ -3,24 +3,28 @@ import { computed } from "vue";
 import { useDisplay } from "vuetify";
 
 export interface Props {
-  currentStep: number;
+  modelValue: number;
   stepTitle: string;
   steps: {
     icon: string;
     title: string;
     subtitle: string;
+    check: boolean;
   }[];
 }
 
 const display = useDisplay();
 
-const greaterThanMd = computed(() => ["lg", "xl"].includes(display.name.value));
-
-const emit = defineEmits(["active-step"]);
+const emit = defineEmits(["active-step", "update:modelValue"]);
 
 const props = defineProps<Props>();
 
-const isStepActive = (index: number): boolean => props.currentStep === index;
+const modelValue = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
+
+const isStepActive = (index: number): boolean => modelValue.value === index;
 
 const activeStep = (index: number): void => {
   emit("active-step", index);
@@ -39,17 +43,17 @@ const activeStep = (index: number): void => {
         >
           <div class="icon">
             <div
-              class="circle"
-              :class="
-                isStepActive(index)
-                  ? 'bg-primary-light dark:bg-primary-dark'
-                  : 'bg-inactive dark:bg-inactive-dark'
-              "
+              class="circle box-border transition-all duration-300"
+              :class="[
+                { 'bg-primary dark:bg-primary-dark': isStepActive(index) && !step.check },
+                { 'bg-inactive dark:bg-inactive-dark': !isStepActive(index) && !step.check },
+                { 'bg-success dark:bg-success-dark': step.check },
+              ]"
             >
               <v-icon
-                :icon="step.icon"
+                :icon="step.check && !isStepActive(index) ? 'mdi-check' : step.icon"
                 color="white"
-                :size="greaterThanMd ? '1.5rem' : '1rem'"
+                :size="display.mdAndUp.value ? '1.5rem' : '1rem'"
               >
               </v-icon>
               <div class="divider-line"></div>
