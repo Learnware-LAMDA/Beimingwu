@@ -17,7 +17,7 @@ class DatasetsList(flask_restx.Resource):
     def post(self):
         # Return list of datasets
         datasets_path = context.config["datasets_path"]
-        return_list = []
+        return_dict = {}
 
         datasets = sorted(os.listdir(datasets_path))
 
@@ -30,20 +30,19 @@ class DatasetsList(flask_restx.Resource):
                 continue
 
             filenames = sorted(os.listdir(dataset_path))
+            file_list = []
             for filename in filenames:
-                if filename.startswith("."):
-                    continue
-
-                filename_path = os.path.join(dataset_path, filename)
-                if os.path.isfile(filename_path):
-                    return_list.append(os.path.join(dataset, filename))
-                pass
-            pass
+                if not filename.startswith("."):
+                    filename_path = os.path.join(dataset_path, filename)
+                    if os.path.isfile(filename_path):
+                        file_list.append(filename)
+            if len(file_list):
+                return_dict[dataset] = file_list
 
         result = {
             "code": 0,
             "msg": "success.",
-            "data": {"datasets": return_list},
+            "data": {"datasets": return_dict},
         }
         return result
 
