@@ -3,8 +3,7 @@ import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import learnwareLogo from "/logo.svg?url";
-import learnwareLogoNoText from "/logo-no-text.svg?url";
+import { computedAsync } from "@vueuse/core";
 import type { Route } from "@beiming-system/types/route";
 import type { Language } from "@main/i18n";
 
@@ -24,7 +23,12 @@ const display = useDisplay();
 
 const store = useStore();
 
-const logoSrc = computed(() => (display.name.value === "xs" ? learnwareLogoNoText : learnwareLogo));
+const logoSrc = computedAsync<string>(async () => {
+  const { default: src } = display.smAndDown.value
+    ? await import("/logo_no_text.svg?url")
+    : await import("/logo.svg?url");
+  return src;
+});
 
 function routeFilter(route: Route): boolean {
   if (route.meta.showInNavBar) {
