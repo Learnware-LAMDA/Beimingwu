@@ -29,6 +29,7 @@ services:
      - redis_data:/data
   backend:
     image: lamda/bm-system-backend:0.0.1
+    dockerfile: Dockerfile_backend
     container_name: learnware-backend
     restart: always
     networks:
@@ -41,6 +42,7 @@ services:
   frontend:
     container_name: learnware-frontend
     image: lamda/bm-system-frontend:0.0.1
+    dockerfile: Dockerfile_frontend
     stdin_open: true
     tty: true
     restart: always
