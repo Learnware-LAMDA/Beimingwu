@@ -44,7 +44,7 @@ Specification is the core component of the learnware dock system, linking all pr
 
 Learnwares from different feature/label spaces form numerous islands of specifications, and all these islands together constitute the "specification world" in the learnware dock system. In the specification world, if connections between different islands can be discovered and established, the corresponding islands of specification can be merged.
 
-![image](../../public/overview/specification-world.jpg)
+![image](../../public/overview/specification-world-en.svg)
 
 When searching in the learnware dock system, the system first identifies specific islands of specifications based on semantic specifications in user requirements, and then it accurately recognizes learnwares on the specification islands through statistical specifications in user requirements.
 
