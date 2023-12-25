@@ -66,9 +66,7 @@ const files = computed({
       class="pointer-events-none absolute inset-0 rounded-lg bg-gray-500 opacity-25"
     />
 
-    <div
-      class="pointer-events-none flex max-w-full items-center justify-center text-base md:text-xl"
-    >
+    <div class="pointer-events-none flex max-w-full items-center justify-center">
       <p v-if="files.length === 0">
         <v-icon
           class="mr-1"

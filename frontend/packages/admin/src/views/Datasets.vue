@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { ref, onActivated } from "vue";
+import { ref, computed, onActivated } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { fetchex } from "../utils";
+import { useField } from "@beiming-system/hooks";
 import { BACKEND_URL } from "@main/constants";
 import { useProgressedFetch } from "@main/request/utils";
+import FileUpload from "@main/components/Specification/FileUpload.vue";
 import SubmitingDialog from "@main/components/Dialogs/SubmitingDialog.vue";
+import ConfirmDialog from "@main/components/Dialogs/ConfirmDialog.vue";
 
 const store = useStore();
 const router = useRouter();
@@ -15,8 +18,34 @@ const { t } = useI18n();
 
 const showUploadDialog = ref(false);
 
-const datasetFiles = ref<File[] | undefined>(undefined);
-const remoteFolder = ref<string>("");
+const remoteFolder = useField<string>({
+  defaultValue: "",
+  defaultValid: false,
+  validate: (value) => {
+    if (!value || value.length === 0) {
+      return t("Datasets.RemoteFolder.Error.Empty");
+    }
+    return "";
+  },
+});
+const datasetFiles = useField<File[]>({
+  defaultValue: [],
+  defaultValid: false,
+  validate: (files) => {
+    if (!files || files.length === 0) {
+      return t("Datasets.DatasetFiles.Error.Empty");
+    }
+    return "";
+  },
+});
+
+const valid = computed(() => {
+  return remoteFolder.valid && datasetFiles.valid;
+});
+
+const showDeleteDialog = ref(false);
+const deleteItem = ref("");
+
 const submiting = ref(false);
 const uploadProgress = ref(0);
 
@@ -189,58 +218,18 @@ function uploadDataset(): void {
     });
 }
 
+function handleClickDelete(item: string): void {
+  showDeleteDialog.value = true;
+  deleteItem.value = item;
+}
+
 onActivated(() => {
   fetchItems();
 });
 </script>
 
 <template>
-  <div class="main-container">
-    <v-dialog
-      v-model="showUploadDialog"
-      max-width="600"
-    >
-      <v-card>
-        <v-card-title class="text-h5">
-          {{ "Upload Dataset" }}
-        </v-card-title>
-        <v-card-text>
-          <div class="flat">
-            {{ "Remote Folder" }}
-            <v-text-field
-              v-model="remoteFolder"
-              label="Remote Folder"
-              hint="The remote folder to store the dataset."
-              single-line
-            />
-          </div>
-        </v-card-text>
-        <v-card-text>
-          {{ "Dataset File" }}
-          <v-file-input
-            v-model="datasetFiles"
-            :rules="[(v) => !!v || 'File is required']"
-            label="Dataset"
-            variant="outlined"
-          />
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="blue-darken-1"
-            @click="showUploadDialog = false"
-          >
-            {{ "Cancel" }}
-          </v-btn>
-          <v-btn
-            color="blue-darken-1"
-            @click="uploadDataset"
-          >
-            {{ "Upload" }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+  <div class="main-container mt-1">
     <v-scroll-y-transition class="fixed left-0 right-0 z-50">
       <v-card-actions v-if="showError">
         <v-alert
@@ -252,30 +241,30 @@ onActivated(() => {
         />
       </v-card-actions>
     </v-scroll-y-transition>
-    <v-card
-      flat
-      class="search"
-    >
-      <v-card-actions>
-        <div>
-          <v-btn
-            append-icon="mdi-upload"
-            variant="outlined"
-            @click="showUploadDialog = true"
-          >
-            {{ "Upload Dataset" }}
-          </v-btn>
-        </div>
-      </v-card-actions>
-    </v-card>
+
     <submiting-dialog
       v-if="submiting"
       :progress="uploadProgress"
     >
       <template #title>
-        <span>{{ "Uploading" }}</span>
+        <span>{{ t("Datasets.Uploading") }}</span>
       </template>
     </submiting-dialog>
+
+    <confirm-dialog
+      v-model="showDeleteDialog"
+      @confirm="() => deleteDataset(deleteItem)"
+    >
+      <template #title>
+        Confirm to delete&nbsp;
+        <b> {{ deleteItem }} </b>?
+      </template>
+      <template #text>
+        Dataset <b>{{ deleteItem }}</b> will be deleted in the server <i>permanently</i>. Do you
+        really want to delete?
+      </template>
+    </confirm-dialog>
+
     <div
       class="user-list-container bg-surface dark:bg-surface-dark"
       :class="datasetItems.length === 0 ? ['grid-cols-1', 'h-full'] : null"
@@ -290,19 +279,69 @@ onActivated(() => {
           <div class="row">
             <div class="columns">
               <div class="my-title">
-                {{ "Dataset Files" }}
+                {{ t("Datasets.DatasetFiles.Label") }}
               </div>
             </div>
-            <v-card-actions class="actions">
+            <div class="flex items-center justify-end">
               <v-btn
                 class="opacity-0"
                 icon="mdi-lock-reset"
               />
-              <v-btn
-                class="opacity-0"
-                icon="mdi-lock-reset"
-              />
-            </v-card-actions>
+              <v-dialog
+                v-model="showUploadDialog"
+                max-width="600"
+              >
+                <template #activator="{ props: dialogProps }">
+                  <v-btn
+                    variant="flat"
+                    v-bind="dialogProps"
+                    icon="mdi-upload"
+                  >
+                  </v-btn>
+                </template>
+                <v-card>
+                  <div class="p-2">
+                    <v-card-title>
+                      {{ t("Datasets.UploadDataset") }}
+                    </v-card-title>
+                    <v-card-text>
+                      <div class="flat">
+                        <v-text-field
+                          v-model="remoteFolder.value"
+                          :label="t('Datasets.RemoteFolder.Label')"
+                          :hint="t('Datasets.RemoteFolder.Hint')"
+                        />
+                      </div>
+                    </v-card-text>
+
+                    <v-card-text>
+                      <file-upload
+                        v-model="datasetFiles.value"
+                        class="text-3xl"
+                        :tips="t('Datasets.DatasetFiles.Tips')"
+                        :error-messages="datasetFiles.errorMessages"
+                      />
+                    </v-card-text>
+                    <div class="flex justify-end space-x-2 px-4 py-2">
+                      <v-spacer />
+                      <v-btn
+                        :disabled="!valid"
+                        color="primary"
+                        @click="uploadDataset"
+                      >
+                        {{ t("Datasets.Upload") }}
+                      </v-btn>
+                      <v-btn
+                        variant="outlined"
+                        @click="showUploadDialog = false"
+                      >
+                        {{ t("Datasets.Cancel") }}
+                      </v-btn>
+                    </div>
+                  </div>
+                </v-card>
+              </v-dialog>
+            </div>
           </div>
         </div>
         <div
@@ -312,20 +351,22 @@ onActivated(() => {
         >
           <div class="row">
             <div class="columns">
-              <div class="my-title">
+              <div>
                 {{ item }}
               </div>
             </div>
-            <v-card-actions class="actions">
+            <div class="flex items-center justify-end">
               <v-btn
+                variant="flat"
                 icon="mdi-download"
                 @click.stop="() => downloadDataset(item)"
               />
               <v-btn
+                variant="flat"
                 icon="mdi-delete"
-                @click.stop="() => deleteDataset(item)"
+                @click.stop="() => handleClickDelete(item)"
               />
-            </v-card-actions>
+            </div>
           </div>
         </div>
       </TransitionGroup>
@@ -340,7 +381,7 @@ onActivated(() => {
         width="100"
         height="100"
       />
-      {{ t("Dataset.OopsNoUser") }}
+      {{ t("Dataset.OopsNoDatasetsFound") }}
     </div>
   </div>
 </template>
@@ -362,19 +403,14 @@ onActivated(() => {
   @apply relative p-1;
 
   .item:nth-child(1) {
-    @apply hidden border-t sm:block;
-
+    @apply border-t;
     .columns {
       @apply font-bold;
     }
   }
 
-  .item:nth-child(2) {
-    @apply border-t sm:border-t-0;
-  }
-
   .item {
-    @apply border border-t-0 px-3 py-3 sm:py-0;
+    @apply border border-t-0 px-3;
 
     .row {
       @apply flex items-center;
@@ -383,18 +419,11 @@ onActivated(() => {
         @apply grid w-full sm:grid-cols-[3fr,3fr,1fr,1fr,1fr];
 
         .my-title {
-          @apply text-sm sm:flex sm:flex-col sm:items-start sm:justify-center lg:text-lg xl:text-base;
-          .link {
-            @apply underline;
-          }
+          @apply text-sm sm:flex sm:flex-col sm:items-start sm:justify-center lg:text-lg;
           .small-title {
             @apply font-bold sm:hidden;
           }
         }
-      }
-
-      .actions {
-        @apply justify-end p-0;
       }
     }
   }
