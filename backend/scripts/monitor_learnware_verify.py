@@ -205,6 +205,8 @@ def worker_process_func(q: queue.Queue, env: dict):
                 pass
             pass
 
+        repack_hash = common_utils.get_file_hash(learnware_zippath)
+        dbops.add_repack_hash(learnware_id, repack_hash)
         dbops.update_learnware_verify_result(learnware_id, verify_status, command_output)
         redis_utils.publish_reload_learnware(learnware_id)
         context.logger.info(f"Finish to verify learnware: {learnware_id}")

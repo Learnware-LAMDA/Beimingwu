@@ -81,7 +81,8 @@ class LearnwareHash(DeclarativeBase):
     __tablename__ = "tb_learnware_hash"
 
     learnware_id = Column(Text, nullable=False, index=True)
-    file_hash = Column(String(32), nullable=False, index=True)
+    file_hash = Column(String(32), nullable=True, index=True)
+    repack_hash = Column(String(32), nullable=True, index=True)
 
     __table_args__ = (PrimaryKeyConstraint(learnware_id), {})
     pass
