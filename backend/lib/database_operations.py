@@ -626,7 +626,8 @@ def update_user_role(user_id, role):
 
 def get_learnware_id_by_file_hash(file_hash):
     result = context.database.execute(
-        "SELECT learnware_id FROM tb_learnware_hash WHERE file_hash = :file_hash", {"file_hash": file_hash}
+        "SELECT learnware_id FROM tb_learnware_hash WHERE file_hash = :file_hash OR repack_hash = :file_hash",
+        {"file_hash": file_hash},
     )
 
     if len(result) == 0:
@@ -641,6 +642,16 @@ def add_file_hash(learnware_id, file_hash):
            ON CONFLICT(learnware_id) DO UPDATE set file_hash=:file_hash
         """,
         {"learnware_id": learnware_id, "file_hash": file_hash},
+    )
+    pass
+
+
+def add_repack_hash(learnware_id, repack_hash):
+    context.database.execute(
+        """INSERT INTO tb_learnware_hash (learnware_id, repack_hash) VALUES (:learnware_id, :repack_hash)
+           ON CONFLICT(learnware_id) DO UPDATE set repack_hash=:repack_hash
+        """,
+        {"learnware_id": learnware_id, "repack_hash": repack_hash},
     )
     pass
 
