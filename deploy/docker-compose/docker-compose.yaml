@@ -42,6 +42,7 @@ services:
       - '5173:5173'
   monitor:
     image: lamda/bm-system-backend:0.0.1
+    command: python3 scripts/monitor_learnware_verify.py
     build:
       context: .
       dockerfile: Dockerfile_backend
