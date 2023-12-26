@@ -23,7 +23,17 @@ from lib import redis_utils
 from lib import sensitive_words_utils
 
 
-def verify_learnware_with_conda_checker(
+def get_stat_checker():
+    checker_type = context.config["learnware_checker_type"]
+
+    if checker_type == "conda":
+        return CondaChecker(inner_checker=EasyStatChecker())
+    if checker_type == "kubernetes":
+        return engine_utils.OfflineChecker("EasyStatChecker")
+    pass
+
+
+def verify_learnware_with_checker(
     learnware_id: str, learnware_path: str, semantic_specification: dict
 ) -> Tuple[bool, str]:
     verify_sucess = True
@@ -60,9 +70,9 @@ def verify_learnware_with_conda_checker(
             command_output += "\n" + check_message
 
         # check stat spec
-        stat_checker = CondaChecker(inner_checker=EasyStatChecker())
+        stat_checker = get_stat_checker()
         check_result, check_message = stat_checker(learnware=learnware)
-        if verify_sucess and check_result == EasyStatChecker.INVALID_LEARNWARE:
+        if verify_sucess and check_result != BaseChecker.USABLE_LEARNWARE:
             verify_sucess = False
             command_output = "conda checker does not pass"
             command_output += "\n" + check_message
@@ -136,7 +146,7 @@ def worker_process_func(q: queue.Queue, env: dict):
                         learnware_filename, extract_path, learnware_id, semantic_specification
                     )
 
-                    verify_success, command_output = verify_learnware_with_conda_checker(
+                    verify_success, command_output = verify_learnware_with_checker(
                         learnware_id, extract_path, semantic_specification
                     )
                     # the learnware my be deleted
@@ -170,7 +180,7 @@ def worker_process_func(q: queue.Queue, env: dict):
                 os.remove(learnware_zippath)
                 learnware.utils.zip_learnware_folder(learnware_dirpath, learnware_zippath)
 
-                verify_success, command_output = verify_learnware_with_conda_checker(
+                verify_success, command_output = verify_learnware_with_checker(
                     learnware_id, learnware_dirpath, semantic_specification
                 )
                 pass

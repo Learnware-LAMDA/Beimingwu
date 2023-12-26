@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: learnware-role
+  namespace: learnware
+rules:
+- apiGroups: ["", "apps", "batch"]
+  resources: [ "jobs", "pods" "pods/log"]
+  verbs: [ "create", "get", "list", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: learnware-role-binding
+  namespace: learnware
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: learnware-role
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: learnware

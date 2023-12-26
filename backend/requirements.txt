@@ -41,3 +41,4 @@ pysocks
 redis
 fast_pytorch_kmeans
 concurrent-log-handler
+kubernetes

@@ -3,23 +3,74 @@ from context import config as C
 
 from learnware import market, specification
 from learnware.market.heterogeneous import utils as learnware_utils
+from learnware.learnware import Learnware
+from learnware.learnware.utils import get_stat_spec_from_config
+from learnware.config import C as learnware_config
+from learnware.client.utils import install_environment, system_execute
+from learnware.market import BaseChecker
 from flask import jsonify, g
 from datetime import datetime, timedelta
 from collections import defaultdict
 import functools
-import os, json, time
-import hashlib
+import os
+import json
 import traceback
 import tempfile
 import zipfile
 import learnware.config
 import yaml
-from learnware.learnware.utils import get_stat_spec_from_config
-from learnware.config import C as learnware_config
 from . import common_utils
 from . import sensitive_words_utils
+from . import kubernetes_utils
 import uuid
 import shutil
+from typing import Tuple
+import shortuuid
+
+
+class OfflineChecker(market.BaseChecker):
+    def __init__(self, inner_checker_class_name, **kwargs):
+        self.inner_checker_class_name = inner_checker_class_name
+        super(OfflineChecker, self).__init__(**kwargs)
+
+    def __call__(self, learnware: Learnware) -> Tuple[int, str]:
+        # 1. install environment
+        env_root = context.config["env_path"]
+
+        with tempfile.TemporaryDirectory(prefix="env_", dir=env_root) as env_path:
+            try:
+                install_environment(learnware.get_dirpath(), None, conda_prefix=env_path)
+                # default environment did not install torch
+                system_execute(
+                    args=[
+                        "conda",
+                        "run",
+                        "--prefix",
+                        env_path,
+                        "--no-capture-output",
+                        "python",
+                        "-m",
+                        "pip",
+                        "install",
+                        "torch",
+                    ]
+                )
+
+                # 2. check learnware with pod
+                check_status, message = kubernetes_utils.run_check(
+                    env_path, learnware.get_dirpath(), self.inner_checker_class_name
+                )
+            except Exception as e:
+                check_status = False
+                message = f"kubernetes error: {e}"
+                pass
+
+            if check_status:
+                check_result = BaseChecker.USABLE_LEARNWARE
+            else:
+                check_result = BaseChecker.NONUSABLE_LEARNWARE
+
+            return check_result, message
 
 
 def cache(seconds: int, maxsize: int = 128, typed: bool = False):
