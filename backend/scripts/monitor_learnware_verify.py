@@ -197,6 +197,11 @@ def worker_process_func(q: queue.Queue, env: dict):
             learnware_id, learnware_zippath, semantic_specification, [], learnware_check_status
         )
 
+        repack_hash = common_utils.get_file_hash(learnware_zippath)
+        dbops.add_repack_hash(learnware_id, repack_hash)
+        dbops.update_learnware_verify_result(learnware_id, verify_status, command_output)
+        redis_utils.publish_reload_learnware(learnware_id)
+        
         if verify_status == LearnwareVerifyStatus.SUCCESS:
             if learnware_filename is not None:
                 os.remove(learnware_filename)
@@ -204,11 +209,6 @@ def worker_process_func(q: queue.Queue, env: dict):
                 os.remove(learnware_processed_filename)
                 pass
             pass
-
-        repack_hash = common_utils.get_file_hash(learnware_zippath)
-        dbops.add_repack_hash(learnware_id, repack_hash)
-        dbops.update_learnware_verify_result(learnware_id, verify_status, command_output)
-        redis_utils.publish_reload_learnware(learnware_id)
         context.logger.info(f"Finish to verify learnware: {learnware_id}")
 
 
