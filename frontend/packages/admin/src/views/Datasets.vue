@@ -10,6 +10,8 @@ import { useProgressedFetch } from "@main/request/utils";
 import FileUpload from "@main/components/Specification/FileUpload.vue";
 import SubmitingDialog from "@main/components/Dialogs/SubmitingDialog.vue";
 import ConfirmDialog from "@main/components/Dialogs/ConfirmDialog.vue";
+import TreeView from "@main/components/Public/TreeView.vue";
+import OopsImg from "@main/assets/images/public/oops.svg?component";
 
 const store = useStore();
 const router = useRouter();
@@ -53,7 +55,7 @@ const showError = ref(false);
 const errorMsg = ref("");
 const errorTimer = ref<number>();
 
-const datasetItems = ref<string[]>([]);
+const datasetItems = ref<Record<string, string[]>>({});
 
 const loading = ref(false);
 
@@ -80,11 +82,13 @@ function fetchItems(): Promise<void> {
         code: number;
         msg: string;
         data: {
-          datasets: string[];
+          datasets: Record<string, string[]>;
         };
       }) => {
         if (res.code === 0) {
           if (res.data && res.data.datasets) {
+            remoteFolder.value = "";
+            datasetFiles.value = [];
             return res;
           }
         }
@@ -97,12 +101,13 @@ function fetchItems(): Promise<void> {
     )
     .then((res) => {
       datasetItems.value = res.data.datasets;
-      loading.value = false;
     })
     .catch((err) => {
-      loading.value = false;
       showError.value = true;
       errorMsg.value = err.message;
+    })
+    .finally(() => {
+      loading.value = false;
     });
 }
 
@@ -148,8 +153,8 @@ function deleteDataset(dataset_name: string): Promise<void> {
     });
 }
 
-function downloadDataset(dataset_name: string): void {
-  window.open(BACKEND_URL + "/datasets/download_datasets?dataset=" + dataset_name);
+function downloadDataset(path: string, name: string): void {
+  window.open(`${BACKEND_URL}/datasets/download_datasets?dataset=${path}/${name}`);
 }
 
 function onProgress(progress: number): void {
@@ -192,7 +197,6 @@ function uploadDataset(): void {
     })
     .then((res: Response) => res.json())
     .then((res: { code: number; msg: string }) => {
-      submiting.value = false;
       if (res.code === 0) {
         return res;
       }
@@ -205,7 +209,6 @@ function uploadDataset(): void {
       fetchItems();
     })
     .catch((err: { message: string }) => {
-      submiting.value = false;
       console.error(err);
       showError.value = true;
       errorMsg.value = err.message;
@@ -215,12 +218,15 @@ function uploadDataset(): void {
           showError.value = false;
         }, 3000),
       );
+    })
+    .finally(() => {
+      submiting.value = false;
     });
 }
 
-function handleClickDelete(item: string): void {
+function handleClickDelete(path: string, name: string): void {
   showDeleteDialog.value = true;
-  deleteItem.value = item;
+  deleteItem.value = `${path}/${name}`;
 }
 
 onActivated(() => {
@@ -229,7 +235,9 @@ onActivated(() => {
 </script>
 
 <template>
-  <div class="main-container mt-1">
+  <div
+    class="bg-surface-light dark:bg-surface-dark mx-auto mt-1 w-full max-w-[1500px] overflow-hidden"
+  >
     <v-scroll-y-transition class="fixed left-0 right-0 z-50">
       <v-card-actions v-if="showError">
         <v-alert
@@ -256,184 +264,166 @@ onActivated(() => {
       @confirm="() => deleteDataset(deleteItem)"
     >
       <template #title>
-        Confirm to delete&nbsp;
-        <b> {{ deleteItem }} </b>?
+        <span class="truncate">
+          Confirm to delete
+          <b> {{ deleteItem }} </b>
+        </span>
+        ?
       </template>
       <template #text>
-        Dataset <b>{{ deleteItem }}</b> will be deleted in the server <i>permanently</i>. Do you
-        really want to delete?
+        Dataset <b class="break-all">{{ deleteItem }}</b> will be deleted in the server
+        <i>permanently</i>. Do you really want to delete?
       </template>
     </confirm-dialog>
 
     <div
-      class="user-list-container bg-surface dark:bg-surface-dark"
-      :class="datasetItems.length === 0 ? ['grid-cols-1', 'h-full'] : null"
+      class="relative p-1"
+      :class="Object.values(datasetItems).length === 0 ? ['grid-cols-1', 'h-full'] : null"
       :style="{ gridTemplateColumns: `repeat(2, minmax(0, 1fr))` }"
     >
-      <TransitionGroup name="fade">
-        <div
-          v-if="datasetItems && datasetItems.length > 0"
-          flat
-          class="item"
-        >
-          <div class="row">
-            <div class="columns">
-              <div class="my-title">
-                {{ t("Datasets.DatasetFiles.Label") }}
-              </div>
-            </div>
-            <div class="flex items-center justify-end">
-              <v-btn
-                class="opacity-0"
-                icon="mdi-lock-reset"
-              />
-              <v-dialog
-                v-model="showUploadDialog"
-                max-width="600"
-              >
-                <template #activator="{ props: dialogProps }">
-                  <v-btn
-                    variant="flat"
-                    v-bind="dialogProps"
-                    icon="mdi-upload"
-                  >
-                  </v-btn>
-                </template>
-                <v-card>
-                  <div class="p-2">
-                    <v-card-title>
-                      {{ t("Datasets.UploadDataset") }}
-                    </v-card-title>
-                    <v-card-text>
-                      <div class="flat">
-                        <v-text-field
-                          v-model="remoteFolder.value"
-                          :label="t('Datasets.RemoteFolder.Label')"
-                          :hint="t('Datasets.RemoteFolder.Hint')"
-                        />
-                      </div>
-                    </v-card-text>
+      <div>
+        <div class="flex items-center justify-between">
+          <div class="p-3 text-xl font-medium sm:flex sm:flex-col lg:text-2xl">
+            {{ t("Datasets.DatasetFiles.Label") }}
+          </div>
 
-                    <v-card-text>
-                      <file-upload
-                        v-model="datasetFiles.value"
-                        class="text-3xl"
-                        :tips="t('Datasets.DatasetFiles.Tips')"
-                        :error-messages="datasetFiles.errorMessages"
+          <div class="flex items-center justify-end">
+            <v-dialog
+              v-model="showUploadDialog"
+              max-width="600"
+            >
+              <template #activator="{ props: dialogProps }">
+                <v-btn
+                  variant="flat"
+                  v-bind="dialogProps"
+                  icon="mdi-upload"
+                >
+                </v-btn>
+              </template>
+              <v-card>
+                <div class="p-2">
+                  <v-card-title>
+                    {{ t("Datasets.UploadDataset") }}
+                  </v-card-title>
+                  <v-card-text>
+                    <div class="flat">
+                      <v-text-field
+                        v-model="remoteFolder.value"
+                        :label="t('Datasets.RemoteFolder.Label')"
+                        :hint="t('Datasets.RemoteFolder.Hint')"
                       />
-                    </v-card-text>
-                    <div class="flex justify-end space-x-2 px-4 py-2">
-                      <v-spacer />
-                      <v-btn
-                        :disabled="!valid"
-                        color="primary"
-                        @click="uploadDataset"
-                      >
-                        {{ t("Datasets.Upload") }}
-                      </v-btn>
-                      <v-btn
-                        variant="outlined"
-                        @click="showUploadDialog = false"
-                      >
-                        {{ t("Datasets.Cancel") }}
-                      </v-btn>
                     </div>
+                  </v-card-text>
+
+                  <v-card-text>
+                    <file-upload
+                      v-model="datasetFiles.value"
+                      :tips="t('Datasets.DatasetFiles.Tips')"
+                      :error-messages="datasetFiles.errorMessages"
+                    />
+                  </v-card-text>
+                  <div class="flex justify-end space-x-2 px-4 py-2">
+                    <v-spacer />
+                    <v-btn
+                      :disabled="!valid"
+                      color="primary"
+                      @click="uploadDataset"
+                    >
+                      {{ t("Datasets.Upload") }}
+                    </v-btn>
+                    <v-btn
+                      variant="outlined"
+                      @click="showUploadDialog = false"
+                    >
+                      {{ t("Datasets.Cancel") }}
+                    </v-btn>
                   </div>
-                </v-card>
-              </v-dialog>
-            </div>
+                </div>
+              </v-card>
+            </v-dialog>
           </div>
         </div>
-        <div
-          v-for="(item, i) in datasetItems"
-          :key="i"
-          class="item"
+      </div>
+
+      <template v-if="Object.values(datasetItems).length > 0">
+        <TreeView
+          v-for="(items, folder) in datasetItems"
+          :key="folder"
+          :title="folder"
+          :items="items"
+          title-icon="mdi-folder"
         >
-          <div class="row">
-            <div class="columns">
-              <div>
+          <template #title="{ showDetails, toggleDetails }">
+            <h3
+              class="hover:bg-active-light dark:bg-active-dark flex cursor-pointer items-center p-1"
+              @click="() => toggleDetails()"
+            >
+              <v-icon
+                class="transition"
+                :class="{ 'rotate-90': showDetails }"
+                >mdi-chevron-right</v-icon
+              >
+              <v-icon>mdi-folder</v-icon>
+              <span class="ms-2 overflow-hidden truncate">{{ folder }}</span>
+
+              <div class="flex-1" />
+
+              <v-btn
+                variant="flat"
+                icon="mdi-upload"
+                color="transparent"
+                @click.stop="
+                  () => {
+                    remoteFolder.value = folder;
+                    showUploadDialog = true;
+                  }
+                "
+              />
+            </h3>
+          </template>
+
+          <template #items="{ item }">
+            <div
+              class="hover:bg-active-light dark:hover:bg-active-dark ms-4 flex items-center justify-between border-s"
+            >
+              <div class="flex h-4 w-4 flex-col justify-center">
+                <div class="border-t" />
+              </div>
+              <div class="flex-1 overflow-hidden truncate py-3 pl-1">
+                <v-icon>mdi-file</v-icon>
                 {{ item }}
               </div>
+              <div class="flex items-center justify-end">
+                <v-btn
+                  variant="flat"
+                  icon="mdi-download"
+                  color="transparent"
+                  @click.stop="() => downloadDataset(folder, item)"
+                />
+                <v-btn
+                  variant="flat"
+                  icon="mdi-delete"
+                  color="transparent"
+                  @click.stop="() => handleClickDelete(folder, item)"
+                />
+              </div>
             </div>
-            <div class="flex items-center justify-end">
-              <v-btn
-                variant="flat"
-                icon="mdi-download"
-                @click.stop="() => downloadDataset(item)"
-              />
-              <v-btn
-                variant="flat"
-                icon="mdi-delete"
-                @click.stop="() => handleClickDelete(item)"
-              />
-            </div>
-          </div>
-        </div>
-      </TransitionGroup>
-    </div>
-    <div
-      v-if="datasetItems.length === 0"
-      flat
-      class="no-user"
-    >
-      <oops-img
-        class="oops-img block"
-        width="100"
-        height="100"
-      />
-      {{ t("Dataset.OopsNoDatasetsFound") }}
+          </template>
+        </TreeView>
+      </template>
+
+      <div
+        v-else
+        flat
+        class="bottom-0 flex w-full flex-col items-center justify-center text-2xl"
+      >
+        <oops-img
+          class="mx-auto block fill-gray-800 dark:fill-gray-300"
+          width="100"
+          height="100"
+        />
+        {{ t("Datasets.OopsNoDatasetsFound") }}
+      </div>
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.main-container {
-  @apply mx-auto h-full w-full max-w-[1500px] overflow-hidden;
-
-  .search {
-    @apply mt-3 w-full max-w-[1500px] border;
-
-    .table-action {
-      @apply grid grid-cols-2;
-    }
-  }
-}
-
-.user-list-container {
-  @apply relative p-1;
-
-  .item:nth-child(1) {
-    @apply border-t;
-    .columns {
-      @apply font-bold;
-    }
-  }
-
-  .item {
-    @apply border border-t-0 px-3;
-
-    .row {
-      @apply flex items-center;
-
-      .columns {
-        @apply grid w-full sm:grid-cols-[3fr,3fr,1fr,1fr,1fr];
-
-        .my-title {
-          @apply text-sm sm:flex sm:flex-col sm:items-start sm:justify-center lg:text-lg;
-          .small-title {
-            @apply font-bold sm:hidden;
-          }
-        }
-      }
-    }
-  }
-
-  .no-user {
-    @apply bottom-0 flex w-full flex-col items-center justify-center text-2xl;
-
-    .oops-img {
-      @apply mx-auto fill-gray-800 dark:fill-gray-300;
-    }
-  }
-}
-</style>
