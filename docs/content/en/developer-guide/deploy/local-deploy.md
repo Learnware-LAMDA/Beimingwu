@@ -5,7 +5,7 @@ Visit the [Docker official website](https://docs.docker.com/compose/install/#ins
 
 ## Deploy Using Docker Compose
 
-Download the [backend code](https://github.com/Learnware-LAMDA/Beiming-System.git) and navigate to the `deploy/docker_compose` directory。
+Download the [backend code](https://github.com/Learnware-LAMDA/Beiming-System.git) and navigate to the `deploy/docker_compose` directory.
 
 ### prepare files
 prepare miniconda installation file
@@ -47,9 +47,9 @@ admin frontend: http://127.0.0.1:5174
 
 frontend: http://127.0.0.1:5173
 
-default admin account:</br>
-username: admin@localhost 
-password: admin
+default admin account:
+- username: admin@localhost 
+- password: admin
 
 ### stop container
 ```shell
