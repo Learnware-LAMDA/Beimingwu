@@ -46,9 +46,9 @@ fce2f3102e62   redis                                  "docker-entrypoint.s…"  
 
 前端页面: http://127.0.0.1:5173
 
-默认管理员账户:</br>
-用户名: admin@localhost 
-密码: admin
+默认管理员账户:
+- 用户名: admin@localhost 
+- 密码: admin
 
 ### 卸载
 ```shell
