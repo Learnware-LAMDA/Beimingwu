@@ -1,0 +1,31 @@
+FROM node:18-alpine as build
+
+# suppose current folder contains these files:
+#   Beiming-System (required): Beiming-System source code folder
+#   nginx.conf (optional): config file for a specific deployment
+
+
+COPY ./Beiming-System/frontend /learnware-frontend/
+COPY env* /learnware-frontend/packages/main/.env
+WORKDIR /learnware-frontend
+
+RUN npm install -g pnpm
+RUN pnpm config set registry https://registry.npmmirror.com/
+RUN pnpm install
+RUN pnpm run build:main
+
+RUN echo "https://mirrors.aliyun.com/alpine/v3.14/main" > /etc/apk/repositories
+RUN apk --no-cache add zip
+COPY ./Beiming-System/deploy/static /learnware-frontend/static
+# COPY ./static/* /learnware-frontend/static/
+RUN zip -j /learnware-frontend/static/learnware-template.zip /learnware-frontend/static/learnware-template/*
+
+FROM nginx:latest
+
+COPY --from=build /learnware-frontend/ /learnware-frontend/
+
+EXPOSE 5173
+
+COPY nginx.conf /etc/nginx/
+
+CMD ["nginx", "-g", "daemon off;"]

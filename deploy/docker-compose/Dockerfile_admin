@@ -1,0 +1,19 @@
+FROM node:18-alpine as build
+
+COPY Beiming-System/frontend /learnware-frontend/
+WORKDIR /learnware-frontend
+
+RUN npm install -g pnpm
+RUN pnpm config set registry https://registry.npmmirror.com/
+RUN pnpm install
+RUN pnpm run build:admin
+
+FROM nginx:latest
+
+COPY --from=build /learnware-frontend/ /learnware-frontend/
+
+EXPOSE 5173
+
+COPY ./nginx_admin.conf /etc/nginx/nginx.conf
+
+CMD ["nginx", "-g", "daemon off;"]
