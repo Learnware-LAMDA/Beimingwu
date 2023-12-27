@@ -225,7 +225,7 @@ class UpdateLearnwareApi(flask_restful.Resource):
             ):
                 check_flag = False
                 if verify_status == LearnwareVerifyStatus.SUCCESS.value:
-                    check_status = EasySemanticChecker.USABLE_LEARWARE
+                    check_status = EasySemanticChecker.USABLE_LEARNWARE
 
             context.engine.update_learnware(
                 id=learnware_id,

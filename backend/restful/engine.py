@@ -72,7 +72,7 @@ class SearchLearnware(flask_restful.Resource):
 
             check_status = BaseChecker.NONUSABLE_LEARNWARE
         else:
-            check_status = BaseChecker.USABLE_LEARWARE
+            check_status = BaseChecker.USABLE_LEARNWARE
 
         # Load semantic specification
         try:
