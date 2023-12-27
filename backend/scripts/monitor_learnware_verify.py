@@ -188,7 +188,7 @@ def worker_process_func(q: queue.Queue, env: dict):
 
         if verify_success:
             verify_status = LearnwareVerifyStatus.SUCCESS
-            learnware_check_status = BaseChecker.USABLE_LEARWARE
+            learnware_check_status = BaseChecker.USABLE_LEARNWARE
         else:
             verify_status = LearnwareVerifyStatus.FAIL
             pass
@@ -201,7 +201,7 @@ def worker_process_func(q: queue.Queue, env: dict):
         dbops.add_repack_hash(learnware_id, repack_hash)
         dbops.update_learnware_verify_result(learnware_id, verify_status, command_output)
         redis_utils.publish_reload_learnware(learnware_id)
-        
+
         if verify_status == LearnwareVerifyStatus.SUCCESS:
             if learnware_filename is not None:
                 os.remove(learnware_filename)
