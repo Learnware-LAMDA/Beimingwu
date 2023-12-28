@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: learnwarre-check-{{NAME}}
+  namespace: learnware
+  labels:
+    role: learnware-check
+spec:
+  restartPolicy: Never
+  containers:
+  - name: learnware-check
+    image: {{IMAGE}}
+    command: ['sh', '-c', 'conda run --prefix {{ENV_PATH}} python3 scripts/verify_learnware_script.py --learnware_path {{LEARNWARE_PATH}} --checker_name {{CHECKER_NAME}}']
+    volumeMounts:
+    - name: backend-data
+      mountPath: "/backend_data"
+    - name: learnware-storage
+      mountPath: /root/.learnware
+  volumes:
+  - name: backend-data
+    persistentVolumeClaim:
+      claimName: backend-data
+  - name: learnware-storage
+    persistentVolumeClaim:
+      claimName: learnware-storage

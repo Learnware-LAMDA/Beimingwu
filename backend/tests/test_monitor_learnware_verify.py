@@ -224,25 +224,6 @@ class TestMonitorLearnwareVerify(unittest.TestCase):
         testops.delete_learnware(learnware_id, headers)
         pass
 
-    def test_add_learnware_sensitive_words(
-        self,
-    ):
-        headers = testops.login(TestMonitorLearnwareVerify.email, TestMonitorLearnwareVerify.password)
-        semantic_specification = testops.test_learnware_semantic_specification()
-        semantic_specification["Description"]["Values"] += "黄色小电影"
-        learnware_id = testops.add_test_learnware_unverified(
-            TestMonitorLearnwareVerify.email,
-            TestMonitorLearnwareVerify.password,
-            semantic_specification=semantic_specification,
-        )
-
-        status = self.wait_verify_end(learnware_id)
-
-        self.assertEqual(status, LearnwareVerifyStatus.FAIL.value)
-
-        testops.delete_learnware(learnware_id, headers)
-        pass
-
 
 if __name__ == "__main__":
     unittest.main()

@@ -115,4 +115,6 @@ _DEFAULT_CONFIG = {
     "user_agreement_file": "",
     "privacy_policy_file": "",
     "datasets_path": os.path.join(DATA_PATH, "datasets"),
+    "env_path": os.path.join(DATA_PATH, "envs"),
+    "learnware_checker_type": "conda"
 }

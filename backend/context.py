@@ -80,6 +80,7 @@ def init_backend():
     os.makedirs(config.backup_path, exist_ok=True)
     os.makedirs(config.datasets_path, exist_ok=True)
     os.makedirs(config.log_path, exist_ok=True)
+    os.makedirs(config.env_path, exist_ok=True)
     pass
 
 
