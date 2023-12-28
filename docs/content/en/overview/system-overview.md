@@ -1,6 +1,6 @@
 # Beimingwu: A Learnware Dock System
 
-Beimingwu is based on the Learnware paradigm, which systematically implements the entire process of learnware from submission to deployment, helping users effectively search and reuse learnwares without the need to build machine learning models from scratch.
+Beimingwu is based on the learnware paradigm, which systematically implements the entire process of learnware from submission to deployment, helping users effectively search and reuse learnwares without the need to build machine learning models from scratch.
 
 ## What is Learnware?
 
