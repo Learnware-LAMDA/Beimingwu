@@ -42,6 +42,11 @@ def on_unauthorized(error_message: str) -> requests.Response:
     pass
 
 
+@app.route("/healthz")
+def healthz():
+    return "OK"
+
+
 def main():
     context.init_backend()
 
