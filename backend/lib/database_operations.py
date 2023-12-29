@@ -567,6 +567,7 @@ def get_learnware_count_verified():
     result = context.database.execute(
         "SELECT COUNT(1) FROM tb_user_learnware_relation WHERE verify_status = :verify_status",
         {"verify_status": LearnwareVerifyStatus.SUCCESS.value},
+        read_only=True,
     )
     return result[0][0]
     pass
@@ -576,18 +577,19 @@ def get_learnware_count_unverified():
     result = context.database.execute(
         "SELECT COUNT(1) FROM tb_user_learnware_relation WHERE verify_status <> :verify_status",
         {"verify_status": LearnwareVerifyStatus.SUCCESS.value},
+        read_only=True,
     )
     return result[0][0]
     pass
 
 
 def get_download_count():
-    result = context.database.execute("SELECT COUNT(1) FROM tb_log WHERE name = 'download_learnware'")
+    result = context.database.execute("SELECT COUNT(1) FROM tb_log WHERE name = 'download_learnware'", read_only=True)
     return result[0][0]
 
 
 def get_search_count():
-    result = context.database.execute("SELECT COUNT(1) FROM tb_log WHERE name = 'search_learnware'")
+    result = context.database.execute("SELECT COUNT(1) FROM tb_log WHERE name = 'search_learnware'", read_only=True)
     return result[0][0]
 
 
@@ -598,6 +600,7 @@ def get_learnware_count_queued_or_processing():
             "verify_processing": LearnwareVerifyStatus.PROCESSING.value,
             "verify_queue": LearnwareVerifyStatus.QUEUE.value,
         },
+        read_only=True,
     )
     return result[0][0]
     pass
@@ -636,6 +639,7 @@ def get_learnware_id_by_file_hash(file_hash):
     result = context.database.execute(
         "SELECT learnware_id FROM tb_learnware_hash WHERE file_hash = :file_hash OR repack_hash = :file_hash",
         {"file_hash": file_hash},
+        read_only=True,
     )
 
     if len(result) == 0:
