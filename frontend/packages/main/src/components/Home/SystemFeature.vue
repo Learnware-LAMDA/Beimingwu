@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, nextTick, watch } from "vue";
+import { computedAsync } from "@vueuse/core";
 import { useI18n } from "vue-i18n";
 import anime from "animejs";
 import TerminalWindow from "../App/TerminalWindow.vue";
@@ -9,11 +10,10 @@ import SearchDemo from "../App/SearchDemo.vue";
 import ScrollAnimate from "../App/ScrollAnimate.vue";
 import { getFeatureCode } from "../../constants";
 import ProgressedCode from "../App/ProgressedCode.vue";
-import rkme from "@main/assets/images/home/rkme.svg?component";
-import RawData from "@main/assets/images/home/raw-data.svg?component";
 import collaboration from "@main/assets/images/home/collaboration.svg?component";
+import type { LanguageName } from "@main/i18n";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const FEATURE_CODE_FRAGMENTS = getFeatureCode();
 
@@ -42,6 +42,23 @@ const tabIndex = ref(0);
 const t1 = anime.timeline({ autoplay: false });
 
 const progress = ref<number>(0);
+
+const rawDataURLImports = {
+  en: import("../../assets/images/home/raw_data.svg?url"),
+  "zh-cn": import("../../assets/images/home/raw_data_zhcn.svg?url"),
+};
+const rkmeUrlImports = {
+  en: import("../../assets/images/home/rkme.svg?url"),
+  "zh-cn": import("../../assets/images/home/rkme_zhcn.svg?url"),
+};
+const rawDataURL = computedAsync(async () => {
+  const { default: url } = await rawDataURLImports[locale.value as LanguageName];
+  return url;
+});
+const rkmeUrl = computedAsync(async () => {
+  const { default: url } = await rkmeUrlImports[locale.value as LanguageName];
+  return url;
+});
 
 function handleProgress(_progress: number): void {
   progress.value = _progress;
@@ -352,113 +369,107 @@ watch(
                 </div>
               </div>
 
-              <svg
-                class="w-full"
-                viewBox="0 0 400 200"
-              >
-                <defs>
-                  <marker
-                    id="arrow-green"
-                    viewBox="0 0 10 10"
-                    refX="5"
-                    refY="5"
-                    markerWidth="6"
-                    markerHeight="6"
-                    orient="auto-start-reverse"
-                  >
-                    <path
-                      d="M 0 0 L 10 5 L 0 10 z"
-                      fill="#2CA02C"
-                    />
-                  </marker>
-                  <marker
-                    id="arrow-blue"
-                    viewBox="0 0 10 10"
-                    refX="5"
-                    refY="5"
-                    markerWidth="6"
-                    markerHeight="6"
-                    orient="auto-start-reverse"
-                  >
-                    <path
-                      d="M 0 0 L 10 5 L 0 10 z"
-                      fill="#1F77B4"
-                    />
-                  </marker>
-                  <marker
-                    id="arrow-orange"
-                    viewBox="0 0 10 10"
-                    refX="5"
-                    refY="5"
-                    markerWidth="6"
-                    markerHeight="6"
-                    orient="auto-start-reverse"
-                  >
-                    <path
-                      d="M 0 0 L 10 5 L 0 10 z"
-                      fill="#FF7F0E"
-                    />
-                  </marker>
-                </defs>
-                <raw-data
-                  x="0"
-                  y="0"
-                  width="200"
-                  height="200"
-                />
-                <rkme
-                  x="200"
-                  y="0"
-                  width="200"
-                  height="200"
-                />
-                <path
-                  d="M158 78 S253 -2 348 68"
-                  fill="none"
-                  color="#2CA02C"
-                  stroke="#2CA02C"
-                  stroke-dasharray="3"
-                  marker-end="url(#arrow-green)"
+              <div class="relative flex aspect-[2] w-full">
+                <v-img :src="rawDataURL" />
+                <v-img :src="rkmeUrl" />
+
+                <svg
+                  class="absolute left-0 top-0 w-full"
+                  viewBox="0 0 400 200"
                 >
-                  <animate
-                    attributeName="stroke-dashoffset"
-                    from="6"
-                    to="0"
-                    dur="500ms"
-                    repeatCount="indefinite"
-                  />
-                </path>
-                <path
-                  d="M97 75 S141 -5 285 75"
-                  fill="none"
-                  stroke="#FF7F0E"
-                  stroke-dasharray="3"
-                  marker-end="url(#arrow-orange)"
-                >
-                  <animate
-                    attributeName="stroke-dashoffset"
-                    from="6"
-                    to="0"
-                    dur="500ms"
-                    repeatCount="indefinite"
-                  />
-                </path>
-                <path
-                  d="M56 140 S151 60 246 126"
-                  fill="none"
-                  stroke="#1F77B4"
-                  stroke-dasharray="3"
-                  marker-end="url(#arrow-blue)"
-                >
-                  <animate
-                    attributeName="stroke-dashoffset"
-                    from="6"
-                    to="0"
-                    dur="500ms"
-                    repeatCount="indefinite"
-                  />
-                </path>
-              </svg>
+                  <defs>
+                    <marker
+                      id="arrow-green"
+                      viewBox="0 0 10 10"
+                      refX="5"
+                      refY="5"
+                      markerWidth="6"
+                      markerHeight="6"
+                      orient="auto-start-reverse"
+                    >
+                      <path
+                        d="M 0 0 L 10 5 L 0 10 z"
+                        fill="#2CA02C"
+                      />
+                    </marker>
+                    <marker
+                      id="arrow-blue"
+                      viewBox="0 0 10 10"
+                      refX="5"
+                      refY="5"
+                      markerWidth="6"
+                      markerHeight="6"
+                      orient="auto-start-reverse"
+                    >
+                      <path
+                        d="M 0 0 L 10 5 L 0 10 z"
+                        fill="#1F77B4"
+                      />
+                    </marker>
+                    <marker
+                      id="arrow-orange"
+                      viewBox="0 0 10 10"
+                      refX="5"
+                      refY="5"
+                      markerWidth="6"
+                      markerHeight="6"
+                      orient="auto-start-reverse"
+                    >
+                      <path
+                        d="M 0 0 L 10 5 L 0 10 z"
+                        fill="#FF7F0E"
+                      />
+                    </marker>
+                  </defs>
+
+                  <path
+                    d="M158 78 S253 -2 348 68"
+                    fill="none"
+                    color="#2CA02C"
+                    stroke="#2CA02C"
+                    stroke-dasharray="3"
+                    marker-end="url(#arrow-green)"
+                  >
+                    <animate
+                      attributeName="stroke-dashoffset"
+                      from="6"
+                      to="0"
+                      dur="500ms"
+                      repeatCount="indefinite"
+                    />
+                  </path>
+                  <path
+                    d="M97 75 S141 -5 285 75"
+                    fill="none"
+                    stroke="#FF7F0E"
+                    stroke-dasharray="3"
+                    marker-end="url(#arrow-orange)"
+                  >
+                    <animate
+                      attributeName="stroke-dashoffset"
+                      from="6"
+                      to="0"
+                      dur="500ms"
+                      repeatCount="indefinite"
+                    />
+                  </path>
+                  <path
+                    d="M56 140 S151 60 246 126"
+                    fill="none"
+                    stroke="#1F77B4"
+                    stroke-dasharray="3"
+                    marker-end="url(#arrow-blue)"
+                  >
+                    <animate
+                      attributeName="stroke-dashoffset"
+                      from="6"
+                      to="0"
+                      dur="500ms"
+                      repeatCount="indefinite"
+                    />
+                  </path>
+                </svg>
+              </div>
             </div>
 
             <div
