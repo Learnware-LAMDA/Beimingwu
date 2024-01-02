@@ -52,13 +52,13 @@ export default {
       HeteroTable: "Heterogeneous table examples",
     },
     loadAndReuse: {
-      Name1: "Secure learnware loading and",
-      Name2: "convenient learnware reuse",
+      Name1: "Secure learnware loading",
+      Name2: "Convenient learnware reuse",
       Description:
         "Once the user acquire the learnware, there's no concern about the model's environment or security threats. It can be safely loaded with a single line of code, and the system offers various interfaces for model reuse.",
     },
     Privacy: {
-      Name: "Not leak raw data, protect data privacy",
+      Name: "Not leaking raw data, protecting data privacy",
       Description:
         "Providing task statistics helps match user's needs or models more effectively. The statistical specification shares task statistics without exposing original data. This generation is local and the code is open source.",
     },
