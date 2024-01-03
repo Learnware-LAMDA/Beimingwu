@@ -212,6 +212,9 @@ class SQLAlchemy(Database):
 
     def __init__(self, config, admin_password):
         self.url = config["url"]
+        self.url_read = config["url_read"]
+        self.engine = None
+        self.engine_read = None
         self.install(admin_password)
         pass
 
@@ -224,6 +227,7 @@ class SQLAlchemy(Database):
 
             helper.create_database(self.url)
             self.engine = create_engine(self.url, future=True)
+            self.engine_read = create_engine(self.url_read, future=True)
 
             # create all tables
             DeclarativeBase.metadata.create_all(self.engine)
@@ -235,11 +239,16 @@ class SQLAlchemy(Database):
 
         else:
             self.engine = create_engine(self.url, future=True)
+            self.engine_read = create_engine(self.url_read, future=True)
             pass
 
-    def execute(self, sql, params=None, conn=None):
+    def execute(self, sql, params=None, conn=None, read_only=False):
         if conn is None:
-            conn_ = self.engine.connect()
+            if read_only:
+                conn_ = self.engine_read.connect()
+            else:
+                conn_ = self.engine.connect()
+                pass
             pass
         else:
             conn_ = conn

@@ -79,6 +79,7 @@ _DEFAULT_CONFIG = {
     # Database config
     "database": {
         "type": "sqlalchemy",
+        "url_read": f"sqlite:///{SQLITE_PATH}",
         "url": f"sqlite:///{SQLITE_PATH}",
     },
     # Engine config
