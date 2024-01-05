@@ -3,7 +3,7 @@ import { ref, onMounted, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
 import type { LanguageName } from "@main/i18n";
 import ScrollAnimate from "../App/ScrollAnimate.vue";
-import process from "../../assets/images/home/two-stage.svg?component";
+import process from "../../assets/images/home/tasks.svg?component";
 import anime from "animejs";
 
 const { t, locale } = useI18n();
@@ -163,26 +163,29 @@ const vOffset = {
               />
             </clipPath>
 
-            <process id="process" />
+            <process
+              id="process"
+              width="500px"
+            />
             <g id="task1">
               <use
                 href="#process"
-                x="-160"
-                y="-90"
+                x="0"
+                y="-50"
               />
             </g>
             <g id="task2">
               <use
                 href="#process"
-                x="-160"
-                y="-345"
+                x="0"
+                y="-310"
               />
             </g>
             <g id="task3">
               <use
                 href="#process"
-                x="-160"
-                y="-600"
+                x="0"
+                y="-645"
               />
             </g>
 
