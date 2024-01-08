@@ -1,6 +1,6 @@
-# Beiming System Docs
+# Beimingwu System Docs
 
-## Setup
+## Environment Setup
 
 1. Install `nvm`
 
@@ -23,8 +23,7 @@ nvm install node
 npm install -g pnpm
 ```
 
-4. Install dependencies
-   Make sure you are in the root directory `Beiming-System/docs/` of this project.
+4. Install dependencies: Make sure you are in the root directory `Beiming-System/docs/` of this project.
 
 ```bash
 pnpm install
