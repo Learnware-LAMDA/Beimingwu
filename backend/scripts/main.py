@@ -47,7 +47,7 @@ def healthz():
     return "OK"
 
 
-def main():
+def create_app():
     context.init_backend()
 
     # Init database
@@ -79,7 +79,12 @@ def main():
     app.register_blueprint(restful.admin.admin_blueprint, url_prefix="/admin")
     app.register_blueprint(restful.datasets.datasets_blueprint, url_prefix="/datasets")
 
-    app.run(host=C.listen_address, port=C.listen_port, threaded=False, debug=True, use_reloader=False)
+    return app
+
+
+def main():
+    app = create_app()
+    app.run(host=C.listen_address, port=C.listen_port, threaded=True, debug=True, use_reloader=False)
 
 
 if __name__ == "__main__":
