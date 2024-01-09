@@ -181,8 +181,7 @@ nvm install node
 npm install -g pnpm
 ```
 
-4. 安装依赖
-   确保你在项目的根目录 `Beiming-System/docs/` 下。
+4. 安装依赖: 确保你在项目的根目录 `Beiming-System/docs/` 下。
 
 ```bash
 pnpm install

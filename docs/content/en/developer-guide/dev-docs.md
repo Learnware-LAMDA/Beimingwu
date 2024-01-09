@@ -181,8 +181,7 @@ nvm install node
 npm install -g pnpm
 ```
 
-4. Install Dependencies
-   Make sure you are in the project's root directory `Beiming-System/docs/`.
+4. Install Dependencies: Make sure you are in the project's root directory `Beiming-System/docs/`.
 
 ```bash
 pnpm install

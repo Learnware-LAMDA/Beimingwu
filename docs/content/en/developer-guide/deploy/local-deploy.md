@@ -7,13 +7,13 @@ Visit the [Docker official website](https://docs.docker.com/compose/install/#ins
 
 Download the [backend code](https://github.com/Learnware-LAMDA/Beiming-System.git) and navigate to the `deploy/docker_compose` directory.
 
-### prepare files
-prepare miniconda installation file
+## Prepare Files
+Prepare miniconda installation file
 ```shell
 wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.9.0-0-Linux-x86_64.sh -O miniconda_install.sh
 ```
 
-prepare source code
+Prepare source code
 ```shell
 mkdir -p Beiming-System/deploy/
 cp -r ../../backend Beiming-System/
@@ -22,17 +22,17 @@ cp -r ../static Beiming-System/deploy/
 git clone https://github.com/Learnware-LAMDA/Learnware.git
 ```
 
-### build image
+## Build Image
 ```shell
 sudo docker compose -f docker-compose.yaml build
 ```
 
-### run docker container
+## Run Docker Container
 ```shell
 sudo docker compose -f docker-compose.yaml -p learnwaresingle up -d
 ```
 
-### check container status
+## Check Container Status
 ```shell
 $ sudo docker ps | grep learnware
 f8faeefbcad7   lamda/bm-system-backend:0.0.1          "/opt/nvidia/nvidia_…"   6 seconds ago   Up 4 seconds   8088/tcp                                            learnware-monitor
@@ -42,7 +42,7 @@ f8faeefbcad7   lamda/bm-system-backend:0.0.1          "/opt/nvidia/nvidia_…"  
 fce2f3102e62   redis                                  "docker-entrypoint.s…"   6 seconds ago   Up 4 seconds   6379/tcp                                            learnware-redis
 ```
 
-### visite the website
+## Visite the Website
 admin frontend: http://127.0.0.1:5174
 
 frontend: http://127.0.0.1:5173
@@ -51,7 +51,7 @@ default admin account:
 - username: admin@localhost 
 - password: admin
 
-### stop container
+## Stop Container
 ```shell
 sudo docker compose -f docker-compose.yaml -p learnwaresingle down
 ```
