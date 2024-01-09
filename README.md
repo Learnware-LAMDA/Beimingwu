@@ -50,7 +50,9 @@ As shown in the diagram below, Beimingwu systematically implements the core proc
 - **Submitting Stage**: The system includes multiple detection mechanisms to ensure the quality of uploaded learnwares. Additionally, the system trains a heterogeneous engine based on existing learnware specifications in the system to merge different specification islands and assign new specifications to learnwares. With more learnwares are submitted, the heterogeneous engine will continue to update, achieving continuous iteration of learnware specifications and building a more precise specification world.
 - **Deploying Stage**: After users upload task requirements, the system automatically selects whether to recommend a single learnware or multiple learnware combinations and provides efficient deployment methods. Whether it's a single learnware or a combination of multiple learnwares, the system offers convenient learnware reuse tools.
 
-![image](docs/content/public/overview/learnware-workflow-en.svg)
+<div align=center>
+  <img src="docs/content/public/overview/learnware-workflow-en.svg" width="700" height="auto" style="max-width: 100%;"/>
+</div>
 
 In addition, the Beimingwu system also has the following features:
 
@@ -73,7 +75,9 @@ The functionalities of the four layers are described as follows:
 - `System Backend Layer`: Enable industrial-level deployment of Beimingwu, offering stable online deployment and providing extensive backend APIs for frontend and client interactions.
 - `User Interface Layer`: Comprise a web-based frontend and a command-line client for user convenience and interaction.
 
-![image](docs/content/public/overview/beimingwu-architecture-en.svg)
+<div align=center>
+  <img src="docs/content/public/overview/beimingwu-architecture-en.svg" width="700" height="auto" style="max-width: 100%;"/>
+</div>
 
 ### Project Structure
 
