@@ -21,12 +21,12 @@ spec = generate_stat_spec(type=data_type, X=test_x)
 spec.save("stat.json")
 ```
 
-通过上传统计信息的json文件，系统会匹配统计信息接近的学件。您可以通过学件卡片左下角的下载按钮进行学件zip包的下载。
+通过上传统计信息的 JSON 文件，系统会匹配统计信息接近的学件。您可以通过学件卡片左下角的下载按钮进行学件 zip 包的下载。
 
 ![image](../../public/quick-start/stat-search-single-zh-CN.jpg)
 
 
-某些情况下，多个学件组合在一起的统计信息会更加接近您的任务，系统会将这些学件打包推荐给您。您可以通过右上角的“下载全部”按钮进行一键下载。
+某些情况下，多个学件组合在一起的统计信息会更加接近您的任务，系统会将这些学件打包推荐给您。您可以通过右上角的 “下载全部” 按钮进行一键下载。
 
 ![image](../../public/quick-start/stat-search-multiple-zh-CN.jpg)
 
