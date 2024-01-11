@@ -8,7 +8,9 @@ const links = computed(() => [
   {
     icon: "mdi-information",
     name: t("Home.Footer.About"),
-    path: "https://www.lamda.nju.edu.cn",
+    click: (): void => {
+      window.open(t("Url.Docs.AboutUs"));
+    },
     tooltips: "",
   },
   {
