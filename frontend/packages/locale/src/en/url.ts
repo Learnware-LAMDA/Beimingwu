@@ -8,5 +8,6 @@ export default {
     HeteroSearchGuide: `${BASE_URL}user-guide/learnware-search.html#heterogeneous-table-search`,
     UserAgreement: `${BASE_URL}user-agreement.html`,
     PrivacyPolicy: `${BASE_URL}privacy-policy.html`,
+    AboutUs: `${BASE_URL}about-us.html`,
   },
 };
