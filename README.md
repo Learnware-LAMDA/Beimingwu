@@ -187,14 +187,31 @@ y_pred = AveragingReuser(learnware_list, mode="vote_by_label").predict(data)
 print(f"Classification accuracy: {accuracy_score(target, y_pred)}")
 ```
 
+# Citation
+
+If you use our project in your research or work, we kindly request that you cite the following papers:
+
+```bibtex
+@article{zhou2022learnware,
+  author = {Zhou, Zhi-Hua and Tan, Zhi-Hao},
+  title = {Learnware: Small Models Do Big},
+  journal = {SCIENCE CHINA Information Sciences},
+  year = {2024},
+  volume = {67},
+  number = {1},
+  pages = {1--12},
+}
+```
+
+Please acknowledge the use of our project by citing these papers in your work. Thank you for your support!
+
 # About
 
 ## How to Contribute
 
 Beimingwu is still young and may contain bugs and issues. We highly value and encourage contributions from the community. For detailed development guidelines, please consult our [Developer Guide](https://docs.bmwu.cloud/en/developer-guide/structure-and-guidelines.html). We kindly request that contributors adhere to the provided [Development Standards](https://docs.bmwu.cloud/en/developer-guide/structure-and-guidelines.html#development-standards) when participating in the project. Your valuable contributions are greatly appreciated.
 
-## Contact us
+## About Us
 
-If you encounter any problems or have suggestions while using [Beimingwu](https://bmwu.cloud/), please don't hesitate to contact us:
-
-- Email: bmwu-support@lamda.nju.edu.cn
+The Beimingwu repository is developed and maintained by the LAMDA Beimingwu R&D Team.
+To learn more about our team, please visit the [Team Overview](https://docs.bmwu.cloud/en/about-us.html).
