@@ -124,6 +124,8 @@ In some cases, combining multiple learnwares with similar statistical informatio
 
 Beimingwu offers a complete workflow from learnware search to learnware deployment. Below are two specific examples.
 
+Please note that to execute the following examples, you need to first [register](https://bmwu.cloud/register) in the Beimingwu system and obtain a user email and client token.
+
 ### Single Learnware Demo
 
 The following demo illustrates the complete process of using Beimingwu to search for a single learnware for predicting the classic machine learning dataset Iris. This process includes statistical specification generation, single learnware search, learnware deployment, and the final calculation of prediction accuracy.
