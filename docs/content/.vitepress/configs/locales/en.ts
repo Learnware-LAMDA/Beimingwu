@@ -101,8 +101,8 @@ const en: LocaleSpecificConfig & {
         link: "/en/common-questions",
       },
       {
-        text: "Contact Us",
-        link: "/en/contact-us",
+        text: "About Us",
+        link: "/en/about-us",
       },
     ],
 

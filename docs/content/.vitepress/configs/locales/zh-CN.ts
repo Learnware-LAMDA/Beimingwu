@@ -101,8 +101,8 @@ const zhCN: LocaleSpecificConfig & {
         link: "/zh-CN/common-questions",
       },
       {
-        text: "联系我们",
-        link: "/zh-CN/contact-us",
+        text: "关于我们",
+        link: "/zh-CN/about-us",
       },
     ],
 
