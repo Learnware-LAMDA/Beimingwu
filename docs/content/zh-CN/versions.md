@@ -15,8 +15,8 @@
 
 ### v1.0 研发团队
 
-- 总负责：<a href="http://cs.nju.edu.cn/zhouzh" style="text-decoration: none; color: inherit;">周志华</a>、<a href="http://www.lamda.nju.edu.cn/yuy" style="text-decoration: none; color: inherit;">俞扬</a>
-- 研发总负责：<a href="http://www.lamda.nju.edu.cn/tanzh/" style="text-decoration: none; color: inherit;">谭志豪</a>
+- 系统总负责：<a href="http://cs.nju.edu.cn/zhouzh" style="text-decoration: none; color: inherit;">周志华</a>、<a href="http://www.lamda.nju.edu.cn/yuy" style="text-decoration: none; color: inherit;">俞扬</a>
+- 系统研发总负责：<a href="http://www.lamda.nju.edu.cn/tanzh/" style="text-decoration: none; color: inherit;">谭志豪</a>
 - 系统总架构与开发：<a href="http://www.lamda.nju.edu.cn/liujd/" style="text-decoration: none; color: inherit;">刘建东</a>
 - 引擎架构与开发：<a href="http://www.lamda.nju.edu.cn/bixd/" style="text-decoration: none; color: inherit;">毕晓栋</a>
 - 引擎算法研发：<a href="http://www.lamda.nju.edu.cn/tanp/" style="text-decoration: none; color: inherit;">谭鹏</a>
