@@ -4,7 +4,9 @@ The project is developed based on Flask + SqlAlchemy + Redis, serving as the bac
 
 ## Backend Architecture
 
-![image](../docs/content/public/dev-backend/architecture-en.svg)
+<div align=center>
+  <img src="../docs/content/public/dev-backend/architecture-en.svg" width="650" height="auto" style="max-width: 100%;"/>
+</div>
 
 ## Feature Development
 
