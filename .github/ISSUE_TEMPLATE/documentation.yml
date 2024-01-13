@@ -1,0 +1,12 @@
+name: "\U0001F4D6 Documentation"
+description: Report an issue related to documentation
+labels: [ "documentation" ]
+body:
+  - type: textarea
+    id: description
+    validations:
+      required: true
+    attributes:
+      label: Description
+      description: |
+        A clear description of the issue related to documentation.
