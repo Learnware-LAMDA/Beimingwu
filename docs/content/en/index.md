@@ -31,7 +31,7 @@ features:
   - title: Data Privacy Protection
     details: The Beimingwu system ensures data privacy as the uploading, searching, and deployment of learnware doesn't require uploading local data.
     icon: { src: "/icons/data-privacy-protection.svg" }
-  - title: Fully Open Source System
+  - title: Open Source System
     details: The Beimingwu system is open source and the learnware package is highly extensible and easy to integrate with new features.
-    icon: { src: "/icons/fully-open-source-system.svg" }
+    icon: { src: "/icons/open-source-system.svg" }
 ---
