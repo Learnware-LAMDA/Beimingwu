@@ -63,9 +63,9 @@ export default {
         "Providing task statistics helps match user's needs or models more effectively. The statistical specification shares task statistics without exposing original data. This generation is local and the code is open source.",
     },
     OpenSource: {
-      Name: "Beimingwu is completely open source",
+      Name: "Beimingwu is open source to the community",
       Description:
-        "Beimingwu is the first fully open-source model platform, offering various deployment options. We warmly welcome the community to try and collaboratively enhance the system.",
+        "Beimingwu is the first open-source model platform, offering various deployment options. We warmly welcome the community to try and collaboratively enhance the system.",
     },
   },
   Why: {

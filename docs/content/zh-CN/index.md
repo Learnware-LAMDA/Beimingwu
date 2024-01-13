@@ -31,7 +31,7 @@ features:
   - title: 数据隐私保护
     details: 北冥坞系统涉及的学件上传、查搜、部署均无需用户上传本地数据，确保用户数据隐私。
     icon: { src: "/icons/data-privacy-protection.svg" }
-  - title: 系统完全开源
-    details: 北冥坞系统所有的源码全部开源，其中的 learnware 包高度可扩展，易于集成新特性和新功能。
-    icon: { src: "/icons/fully-open-source-system.svg" }
+  - title: 面向社区开源
+    details: 北冥坞系统面向社区开源，其中的 learnware 包高度可扩展，易于集成新特性和新功能。
+    icon: { src: "/icons/open-source-system.svg" }
 ---

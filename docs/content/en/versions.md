@@ -11,7 +11,7 @@ The Beimingwu learnware dock system v1.0 version is the first system-level imple
 3. **Diverse Learnware Search**: The Beimingwu system supports both semantic specification and statistical specification search, covering data types including tables, images, and text. Additionally, for tabular tasks, the system also supports the search of heterogeneous table learnwares.
 4. **Local Learnware Deployment**: The Beimingwu system provides tools for learnware deployment and reuse in the `learnware` Python package, helping users to deploy and reuse learnwares conveniently and securely.
 5. **Data Privacy Protection**: The learnware uploading, searching, and deployment of the Beimingwu system don't require users to upload local data, and all involved statistical specifications are generated locally by users, ensuring data privacy.
-6. **Fully Open Source System**: All source code of the Beimingwu system, including the `learnware` Python package and frontend and backend codes, are completely open source.
+6. **Open Source System**: The source code of the Beimingwu system, including the `learnware` Python package and frontend and backend codes, are open source.
 
 ### v1.0 R&D Team
 
