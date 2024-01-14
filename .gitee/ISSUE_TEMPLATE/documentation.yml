@@ -1,0 +1,12 @@
+name: "\U0001F4D6 文档"
+description: 提交与文档相关的问题
+labels: [ "documentation" ]
+body:
+  - type: textarea
+    id: description
+    validations:
+      required: true
+    attributes:
+      label: 具体描述
+      description: |
+        请清晰地描述你的问题.

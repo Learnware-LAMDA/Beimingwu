@@ -1,0 +1,30 @@
+name: "\U0001F680 功能建议"
+description: 提交关于北冥坞系统新功能的建议
+labels: [ "feature" ]
+body:
+  - type: textarea
+    id: feature-request
+    validations:
+      required: true
+    attributes:
+      label: 功能建议
+      description: |
+        对所建议功能的清晰且简洁的描述. 请提供相关论文和代码的链接 (如果有).
+
+  - type: textarea
+    id: motivation
+    validations:
+      required: true
+    attributes:
+      label: 动机
+      description: |
+        请概述建议该功能的动机. 你的建议是否与某个问题有关? 如果这与另一个 Gitee 问题有关, 请在此处给出相关链接.
+
+  - type: textarea
+    id: contribution
+    validations:
+      required: true
+    attributes:
+      label: 你的贡献
+      description: |
+        你是否可以提供帮助, 例如提交 PR? 提交前请确保已阅读 [开发者指南](https://docs.bmwu.cloud/zh-CN/developer-guide/structure-and-guidelines.html).
