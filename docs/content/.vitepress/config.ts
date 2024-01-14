@@ -46,6 +46,7 @@ export default defineConfig({
         replaceComponent(/^.*\/VPNavBar\.vue$/, "./components/NavBar.vue"),
         replaceComponent(/^.*\/VPNavBarTranslations\.vue$/, "./components/NavBarTranslations.vue"),
         replaceComponent(/^.*\/VPLocalSearchBox\.vue$/, "./components/LocalSearchBox.vue"),
+        replaceComponent(/^.*\/support\/socialIcons$/, "./lib/socialIcons.ts"),
       ],
     },
   },
