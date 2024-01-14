@@ -29,8 +29,8 @@
     <h3 align="center">Beimingwu: The First Learnware Dock System</h3>
     <h3 align="center">A Systematic Implementation of Learnware Paradigm</h3>
     <h3 align="center">
-        <b>English</b> |
-        <a href="README_zh.md">中文</a>
+        <a href="README_zh.md">中文</a> |
+        <b>English</b>
     </h3>
 </p>
 
