@@ -108,7 +108,7 @@ const zhCN: LocaleSpecificConfig & {
 
     outline: { label: "大纲" },
 
-    socialLinks: [{ icon: "github", link: "https://github.com/Learnware-LAMDA/Beiming-System" }],
+    socialLinks: [{ icon: "gitee", link: "https://gitee.com/beimingwu/beimingwu" }],
   },
 };
 

@@ -108,7 +108,7 @@ const en: LocaleSpecificConfig & {
 
     outline: { label: "Outline" },
 
-    socialLinks: [{ icon: "github", link: "https://github.com/Learnware-LAMDA/Beiming-System" }],
+    socialLinks: [{ icon: "gitee", link: "https://gitee.com/beimingwu/beimingwu" }],
   },
 };
 
