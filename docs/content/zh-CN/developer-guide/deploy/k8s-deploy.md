@@ -43,8 +43,8 @@ kubectl create -f https://raw.githubusercontent.com/spotahome/redis-operator/${R
 ## 部署后端
 ### 下载部署文件
 ```shell
-git clone https://github.com/Learnware-LAMDA/Beiming-System.git
-cd Beiming-System/deploy/kubernetes
+git clone https://gitee.com/beimingwu/beimingwu.git
+cd Beimingwu/deploy/kubernetes
 ```
 ### 设置配置文件
 设置后端的配置文件 `config.json`：

@@ -48,8 +48,8 @@ kubectl create -f https://raw.githubusercontent.com/spotahome/redis-operator/${R
 ## Deploy Backend
 ### Download Deployment Files
 ```shell
-git clone https://github.com/Learnware-LAMDA/Beiming-System.git
-cd Beiming-System/deploy/kubernetes
+git clone https://gitee.com/beimingwu/beimingwu.git
+cd Beimingwu/deploy/kubernetes
 ```
 
 ### Configure Files

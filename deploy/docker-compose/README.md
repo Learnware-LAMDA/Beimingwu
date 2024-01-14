@@ -11,11 +11,11 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.9.0-0-Linux-x86_64.s
 
 Prepare source code
 ```shell
-mkdir -p Beiming-System/deploy/
-cp -r ../../backend Beiming-System/
-cp -r ../../frontend Beiming-System/
-cp -r ../static Beiming-System/deploy/
-git clone https://github.com/Learnware-LAMDA/Learnware.git
+mkdir -p Beimingwu/deploy/
+cp -r ../../backend Beimingwu/
+cp -r ../../frontend Beimingwu/
+cp -r ../static Beimingwu/deploy/
+git clone https://gitee.com/beimingwu/learnware
 ```
 
 ## Build Image

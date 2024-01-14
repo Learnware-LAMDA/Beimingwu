@@ -3,7 +3,7 @@ FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu20.04
 # suppose current folder contains these files:
 #   miniconda_install.sh (required): conda install file, should be python3.8
 #   pip.conf (optional): pip config file, if you are in China, you may need this
-#   Beiming-System (required): Beiming-System source code folder
+#   Beimingwu (required): Beimingwu source code folder
 #   Learnware (required): Learnware source code folder
 #   config.json (optional): config file for a specific deployment
 #   swords.txt (optional): sensitive words file
@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y libffi-dev libssl-dev \
   ca-certificates sqlite3 xz-utils zlib1g-dev lsb-release wget gnupg
 
 COPY ./pip.conf* /etc/
-ADD ./Beiming-System/backend/requirements.txt /
+ADD ./Beimingwu/backend/requirements.txt /
 
 RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 RUN wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | tee /etc/apt/trusted.gpg.d/postgres.asc
@@ -27,8 +27,8 @@ RUN apt-get update && apt-get install -y postgresql-client
 
 RUN echo ${PATH}
 RUN python3 -m pip install -r /requirements.txt
-COPY ./Beiming-System/backend /learnware-backend/
-COPY ./Beiming-System/deploy/kubernetes/learnware-check.yaml /learnware-backend/
+COPY ./Beimingwu/backend /learnware-backend/
+COPY ./Beimingwu/deploy/kubernetes/learnware-check.yaml /learnware-backend/
 COPY ./Learnware /learnware/
 
 WORKDIR /learnware-backend
