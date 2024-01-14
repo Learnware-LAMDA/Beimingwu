@@ -6,7 +6,7 @@
 ## Pre-Submission Checklist
 <!---  Put an `x` in the boxes as follows. --->
 - [ ] This PR fixes a typo or improves the docs (you can dismiss the other checks if that's the case).
-- [ ] Have you followed the commit format and configured the hooks as outlined in the [development standards](https://docs.beiming.cloud/en/developer-guide/structure-and-guidelines.html#development-standards)?
+- [ ] Have you followed the commit format and configured the hooks as outlined in the [development standards](https://docs.bmwu.cloud/en/developer-guide/structure-and-guidelines.html#development-standards)?
 - [ ] Was this discussed/approved via a Github issue? Please provide a link
       to the issue.
 - [ ] If you modified the backend project, have you passed the relevant tests in `backend/tests`?

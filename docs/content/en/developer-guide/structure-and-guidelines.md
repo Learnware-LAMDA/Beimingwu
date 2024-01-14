@@ -1,6 +1,6 @@
 # Project Structure and Guidelines
 
-The Beimingwu system adopts a `Monorepo` code management approach, and the [code repository](https://github.com/Learnware-LAMDA/Beiming-System) contains four sub-projects:
+The Beimingwu system adopts a `Monorepo` code management approach, and the [code repository](https://gitee.com/beimingwu/beimingwu) contains four sub-projects:
 - **Frontend**: Provides the interface and functionality for user interaction with the learnware dock system, including the main system and administrator system.
 - **Backend**: Responsible for handling dock system's operation logic and data operations, ensuring system stability and high performance.
 - **Docs**: Maintains system documentation, including user guides, development guides, etc., ensuring system usability.

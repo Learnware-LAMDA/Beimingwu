@@ -16,9 +16,9 @@ pip install learnware==0.2.0.9 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 ## Install from Source Code
 
-The source code for the `learnware` package is also available on both [Gitee](https://gitee.com/Learnware-LAMDA/Learnware) and [Github](https://github.com/Learnware-LAMDA/Learnware) platforms. Users can download the source code from either platform for installation. Here is an example when using the Github platform:
+The source code for the `learnware` package is also available on [Gitee](https://gitee.com/beimingwu/beimingwu) platform. Users can download the source code from either platform for installation. Here is an example when using the Github platform:
 ```bash
-git clone https://github.com/Learnware-LAMDA/Learnware.git
+git clone https://gitee.com/beimingwu/beimingwu
 cd Learnware
 git fetch origin main
 git checkout main

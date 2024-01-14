@@ -5,34 +5,34 @@
 </div>
 
 <p align="center">
-    <a href="https://github.com/Learnware-LAMDA/Beimingwu/blob/main/LICENSE">
-        <img alt="GitHub" src="https://img.shields.io/github/license/Learnware-LAMDA/Beimingwu?color=blue">
+    <a href="LICENSE">
+        <img alt="LICENSE" src="https://img.shields.io/pypi/l/learnware?color=blue">
     </a>
     <a href="https://bmwu.cloud/">
         <img alt="Website" src="https://img.shields.io/website/http/docs.bmwu.cloud?down_color=red&down_message=offline&up_message=online">
     </a>
-    <a href="https://github.com/Learnware-LAMDA/Beimingwu/issues">
-        <img alt="Open issues" src="https://isitmaintained.com/badge/open/Learnware-LAMDA/Beimingwu.svg">
+    <a href="https://pypi.org/project/learnware/#history">
+        <img alt="PypI Versions" src="https://img.shields.io/pypi/v/learnware">
     </a>
-    <a href="https://GitHub.com/Learnware-LAMDA/Beimingwu/pull/">
-        <img alt="GitHub pull-requests" src="https://img.shields.io/github/issues-pr/Learnware-LAMDA/Beimingwu.svg">
-    </a>
-    <a href="https://GitHub.com/Learnware-LAMDA/Beimingwu/commit/">
-        <img alt="GitHub latest commit" src="https://badgen.net/github/last-commit/Learnware-LAMDA/Beimingwu">
+    <a href="https://pypi.org/project/learnware/#files">
+        <img alt="Platform" src="https://img.shields.io/badge/platform-linux%20%7C%20windows%20%7C%20macos-lightgrey">
     </a>
     <a href="https://docs.bmwu.cloud/">
         <img alt="Docs Status" src="https://img.shields.io/website/http/docs.bmwu.cloud?down_color=red&down_message=failing&up_message=success&label=docs">
     </a>
+    <a href="https://img.shields.io/pypi/dm/example-package">
+        <img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/example-package">
+    </a>
 </p>
 
-<h3 align="center">
-    <p>北冥坞：学件基座系统</p>
-    <p>学件范式的首次系统级实现</p>
-    <p>
-        <a href="https://github.com/Learnware-LAMDA/Beimingwu/blob/main/README.md">English</a> |
+<p>
+    <h3 align="center">北冥坞：学件基座系统</h3>
+    <h3 align="center">学件范式的首次系统级实现</h3>
+    <h3 align="center">
+        <a href="README.md">English</a> |
         <b>中文</b>
-    </p>
-</h3>
+    </h3>
+</p>
 
 # 简介
 
@@ -83,15 +83,15 @@
 ### 项目结构
 
 基于上述系统架构，北冥坞项目一共包含如下五个子项目：
-- [`系统引擎`](https://github.com/Learnware-LAMDA/Learnware)：实现了学件范式中的核心组件和算法，并提供了一个基于命令行的客户端以便于用户交互，同时将其作为 [learnware](https://pypi.org/project/learnware/) 包发布。
-- [`系统前端`](https://github.com/Learnware-LAMDA/Beimingwu/tree/main/frontend)：提供了用户与系统交互的界面和功能，包括主系统和管理员系统。
-- [`系统后端`](https://github.com/Learnware-LAMDA/Beimingwu/tree/main/backend)：负责处理系统的运行逻辑和数据操作，确保系统的稳定性和高性能。
-- [`系统文档`](https://github.com/Learnware-LAMDA/Beimingwu/tree/main/docs)：维护系统的文档，包括用户指南、开发指南等，确保系统的易用性。
-- [`系统部署`](https://github.com/Learnware-LAMDA/Beimingwu/tree/main/deploy)：负责管理系统的部署配置，包括前后端的部署文件。
+- [`系统引擎`](https://gitee.com/beimingwu/learnware)：实现了学件范式中的核心组件和算法，并提供了一个基于命令行的客户端以便于用户交互，同时将其作为 [learnware](https://pypi.org/project/learnware/) 包发布。
+- [`系统前端`](https://gitee.com/beimingwu/beimingwu/tree/main/frontend)：提供了用户与系统交互的界面和功能，包括主系统和管理员系统。
+- [`系统后端`](https://gitee.com/beimingwu/beimingwu/tree/main/backend)：负责处理系统的运行逻辑和数据操作，确保系统的稳定性和高性能。
+- [`系统文档`](https://gitee.com/beimingwu/beimingwu/tree/main/docs)：维护系统的文档，包括用户指南、开发指南等，确保系统的易用性。
+- [`系统部署`](https://gitee.com/beimingwu/beimingwu/tree/main/deploy)：负责管理系统的部署配置，包括前后端的部署文件。
 
 # 快速上手
 
-欢迎体验[北冥坞系统](https://bmwu.cloud/)！下述内容将帮你快速探索系统网站上的学件查搜功能，并基于 [learnware](https://github.com/Learnware-LAMDA/Learnware) 包提供两个从学件查搜至学件部署的应用案例。
+欢迎体验[北冥坞系统](https://bmwu.cloud/)！下述内容将帮你快速探索系统网站上的学件查搜功能，并基于 [learnware](https://gitee.com/beimingwu/learnware) 包提供两个从学件查搜至学件部署的应用案例。
 
 learnware 包的安装可参考：[环境安装](docs/content/zh-CN/overview/installation.md)。
 
