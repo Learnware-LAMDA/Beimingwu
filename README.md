@@ -5,34 +5,34 @@
 </div>
 
 <p align="center">
-    <a href="https://github.com/Learnware-LAMDA/Beimingwu/blob/main/LICENSE">
-        <img alt="GitHub" src="https://img.shields.io/github/license/Learnware-LAMDA/Beimingwu?color=blue">
+    <a href="LICENSE">
+        <img alt="LICENSE" src="https://img.shields.io/pypi/l/learnware?color=blue">
     </a>
     <a href="https://bmwu.cloud/">
         <img alt="Website" src="https://img.shields.io/website/http/docs.bmwu.cloud?down_color=red&down_message=offline&up_message=online">
     </a>
-    <a href="https://github.com/Learnware-LAMDA/Beimingwu/issues">
-        <img alt="Open issues" src="https://isitmaintained.com/badge/open/Learnware-LAMDA/Beimingwu.svg">
+    <a href="https://pypi.org/project/learnware/#history">
+        <img alt="PypI Versions" src="https://img.shields.io/pypi/v/learnware">
     </a>
-    <a href="https://GitHub.com/Learnware-LAMDA/Beimingwu/pull/">
-        <img alt="GitHub pull-requests" src="https://img.shields.io/github/issues-pr/Learnware-LAMDA/Beimingwu.svg">
-    </a>
-    <a href="https://GitHub.com/Learnware-LAMDA/Beimingwu/commit/">
-        <img alt="GitHub latest commit" src="https://badgen.net/github/last-commit/Learnware-LAMDA/Beimingwu">
+    <a href="https://pypi.org/project/learnware/#files">
+        <img alt="Platform" src="https://img.shields.io/badge/platform-linux%20%7C%20windows%20%7C%20macos-lightgrey">
     </a>
     <a href="https://docs.bmwu.cloud/">
         <img alt="Docs Status" src="https://img.shields.io/website/http/docs.bmwu.cloud?down_color=red&down_message=failing&up_message=success&label=docs">
     </a>
+    <a href="https://img.shields.io/pypi/dm/example-package">
+        <img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/example-package">
+    </a>
 </p>
 
-<h3 align="center">
-    <p>Beimingwu: The First Learnware Dock System</p>
-    <p>A Systematic Implementation of Learnware Paradigm</p>
-    <p>
+<p>
+    <h3 align="center">Beimingwu: The First Learnware Dock System</h3>
+    <h3 align="center">A Systematic Implementation of Learnware Paradigm</h3>
+    <h3 align="center">
         <b>English</b> |
-        <a href="https://github.com/Learnware-LAMDA/Beimingwu/blob/main/README_zh.md">中文</a>
-    </p>
-</h3>
+        <a href="README_zh.md">中文</a>
+    </h3>
+</p>
 
 # Introduction
 
@@ -82,15 +82,15 @@ The functionalities of the four layers are described as follows:
 ### Project Structure
 
 Based on the system architecture, Beimingwu is developed with five sub-projects:
-- [`Engine`](https://github.com/Learnware-LAMDA/Learnware): Encompassing core components and algorithms within the learnware paradigm, and providing a command-line client for user interaction, it has been releasead as the [learnware](https://pypi.org/project/learnware/) package.
-- [`Frontend`](https://github.com/Learnware-LAMDA/Beimingwu/tree/main/frontend): Provide the interface and functionality for user interaction with the learnware dock system, including the main system and administrator system.
-- [`Backend`](https://github.com/Learnware-LAMDA/Beimingwu/tree/main/backend): Responsible for handling the dock system's operation logic and data operations, it ensures system stability and high performance.
-- [`Docs`](https://github.com/Learnware-LAMDA/Beimingwu/tree/main/docs): Maintain system documentation, including user guides, development guides, etc., ensuring system usability.
-- [`Deploy`](https://github.com/Learnware-LAMDA/Beimingwu/tree/main/deploy): Manage the system deployment configuration, including frontend and backend deployment files.
+- [`Engine`](https://gitee.com/beimingwu/learnware): Encompassing core components and algorithms within the learnware paradigm, and providing a command-line client for user interaction, it has been releasead as the [learnware](https://pypi.org/project/learnware/) package.
+- [`Frontend`](https://gitee.com/beimingwu/beimingwu/tree/main/frontend): Provide the interface and functionality for user interaction with the learnware dock system, including the main system and administrator system.
+- [`Backend`](https://gitee.com/beimingwu/beimingwu/tree/main/backend): Responsible for handling the dock system's operation logic and data operations, it ensures system stability and high performance.
+- [`Docs`](https://gitee.com/beimingwu/beimingwu/tree/main/docs): Maintain system documentation, including user guides, development guides, etc., ensuring system usability.
+- [`Deploy`](https://gitee.com/beimingwu/beimingwu/tree/main/deploy): Manage the system deployment configuration, including frontend and backend deployment files.
 
 # Quick Start
 
-Welcome to experience [Beimingwu](https://bmwu.cloud/). The following instructions will assist you in quickly exploring the search functionality on the system website and provide two demo cases from learnware search to learnware deployment using the [learnware](https://github.com/Learnware-LAMDA/Learnware) package.
+Welcome to experience [Beimingwu](https://bmwu.cloud/). The following instructions will assist you in quickly exploring the search functionality on the system website and provide two demo cases from learnware search to learnware deployment using the [learnware](https://gitee.com/beimingwu/learnware) package.
 
 The installation instructions for the learnware package can be found here: [Installation Guide](docs/content/en/overview/installation.md).
 
