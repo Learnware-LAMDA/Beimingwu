@@ -190,7 +190,7 @@ y_pred = AveragingReuser(learnware_list, mode="vote_by_label").predict(data)
 print(f"Classification accuracy: {accuracy_score(target, y_pred)}")
 ```
 
-# Citation
+# 引用
 
 如果你在研究或工作中使用了我们的项目，请引用下述论文，感谢你的支持！
 
