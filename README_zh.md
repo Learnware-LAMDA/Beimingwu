@@ -29,8 +29,8 @@
     <h3 align="center">北冥坞：学件基座系统</h3>
     <h3 align="center">学件范式的首次系统级实现</h3>
     <h3 align="center">
-        <a href="README.md">English</a> |
-        <b>中文</b>
+        <b>中文</b> |
+        <a href="README.md">English</a>
     </h3>
 </p>
 
