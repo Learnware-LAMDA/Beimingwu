@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+import gitee from "@main/assets/images/home/gitee.svg?url";
 
 const { t } = useI18n();
 
@@ -14,9 +15,9 @@ const links = computed(() => [
     tooltips: "",
   },
   {
-    icon: "mdi-github",
-    name: t("Home.Footer.Github"),
-    path: "https://github.com/Learnware-LAMDA",
+    icon: gitee,
+    name: t("Home.Footer.Gitee"),
+    path: "https://gitee.com/beimingwu/beimingwu",
     tooltips: "",
   },
   {
@@ -63,9 +64,19 @@ function buttonClick(func: (() => void) | undefined): void {
         rounded="xl"
         @click="buttonClick(link.click)"
       >
-        <v-icon class="mr-1">
+        <v-icon
+          v-if="link.icon.startsWith('mdi-')"
+          class="mr-1"
+        >
           {{ link.icon }}
         </v-icon>
+        <v-img
+          v-else
+          :src="link.icon"
+          width="20"
+          height="20"
+          class="mr-1"
+        />
         {{ link.name }}
         <v-tooltip
           v-if="link.tooltips"

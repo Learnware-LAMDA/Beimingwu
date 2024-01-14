@@ -97,7 +97,7 @@ export default {
   },
   Footer: {
     About: "About",
-    Github: "Github",
+    Gitee: "Gitee",
     ContactUs: "Contact Us",
     UserAgreement: "User Agreement",
     PrivacyPolicy: "Privacy Policy",
