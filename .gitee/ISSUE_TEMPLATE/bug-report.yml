@@ -1,0 +1,38 @@
+name: "\U0001F41B 错误报告"
+description: 提交错误报告以帮助我们改进北冥坞系统
+body:
+  - type: textarea
+    id: system-info
+    attributes:
+      label: 系统配置
+      description: 请与我们分享你的系统配置信息.
+      placeholder: learnware 版本, 使用的平台, python 版本, ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    validations:
+      required: true
+    attributes:
+      label: 可复现示例
+      description: |
+        请提供可以复现你遇到的问题的代码示例. 它可以是 Colab 链接或一个代码片段.
+        如果你有代码片段或相关错误消息，请在此处提供.
+        提示: 请使用代码标签正确格式化代码, 可以参考 [代码块指南](https://help.github.com/en/github/writing-on-github/creating-and-highlighting-code-blocks#syntax-highlighting).
+        请不要使用截图, 因为截图很难阅读且无法复制代码.
+
+      placeholder: |
+        复现的步骤:
+          
+          1.
+          2.
+          3.
+          
+  - type: textarea
+    id: expected-behavior
+    validations:
+      required: true
+    attributes:
+      label: 期望结果
+      description: "请描述上述代码示例, 期望产生的结果."

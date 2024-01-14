@@ -1,0 +1,12 @@
+name: "\U00002753 问题 & 帮助"
+description: 是否有相关问题? 我们可以提供帮助
+labels: [ "question" ]
+body:
+  - type: textarea
+    id: question
+    validations:
+      required: true
+    attributes:
+      label: 具体描述
+      description: |
+        我们真诚地建议你仔细阅读我们项目的文档. 之后如果仍有相关困惑, 请在此问题下清晰地描述你的问题.
