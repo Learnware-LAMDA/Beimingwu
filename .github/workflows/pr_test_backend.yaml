@@ -1,0 +1,27 @@
+name: pr-test-backend
+run-name: ${{ github.actor }} is running backend tests
+on:
+  push:
+    branches: [ add_pr_test_backend ]
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+jobs:
+  run_tests:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.8'
+        cache: 'pip' # caching pip dependencies
+    - uses: shogo82148/actions-setup-redis@v1
+      with:
+        redis-version: "6.x"
+    - name: Install dependencies
+      run: pip install -r backend/requirements.txt
+    - name: Run tests
+      run: |
+        cd backend
+        PYTHONPATH=. python3 tests/test_user.py
