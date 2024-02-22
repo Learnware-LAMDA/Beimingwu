@@ -302,6 +302,7 @@ async function handleClickExport(): Promise<void> {
         username: filters.value.userName,
         email: filters.value.email,
         limit: pageSize.value,
+        is_verified: filters.value.verifyStatus,
         page: _page - 1,
       }),
     })

@@ -5,11 +5,13 @@ export default {
   Password: "密码",
   ConfirmPassword: "确认密码",
   SentEmail: "我们向您的邮箱发送了一封确认邮件，请点击邮件中的链接完成注册。",
+  NotReceived: "若长时间未收到注册邮件，可联系bmwu-support{'@'}lamda.nju.edu.cn。",
   Resend: "重新发送",
   Close: "关闭",
   ReadAndAgree: "我已阅读并同意",
   UserAgreement: "用户协议",
   PrivacyPolicy: "隐私政策",
+  OnlyEduEmail: "由于系统资源有限，现仅支持教育邮箱注册。非教育邮箱可联系bmwu-support{'@'}lamda.nju.edu.cn 进行申请。",
   Error: {
     UsernameAtLeast2Chars: "用户名至少需要 2 个字符",
     UsernameAtMost20Chars: "用户名不能超过 20 个字符",

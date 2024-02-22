@@ -317,7 +317,7 @@ watch(
               <!--Show in mobile-->
               <div class="text-lg sm:hidden">
                 <div
-                  v-for="i in 2"
+                  v-for="i in 1"
                   :key="i"
                   class="text-2xl font-medium"
                 >

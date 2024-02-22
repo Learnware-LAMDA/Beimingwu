@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import gitee from "@main/assets/images/home/gitee.svg?url";
 
 const { t } = useI18n();
 
@@ -15,9 +14,9 @@ const links = computed(() => [
     tooltips: "",
   },
   {
-    icon: gitee,
-    name: t("Home.Footer.Gitee"),
-    path: "https://gitee.com/beimingwu/beimingwu",
+    icon: "mdi-git",
+    name: t("Home.Footer.Git"),
+    path: "https://www.gitlink.org.cn/beimingwu/beimingwu",
     tooltips: "",
   },
   {

@@ -19,7 +19,7 @@ const router = useRouter();
 const email = useField<string>({
   defaultValue: "",
   validate: (value) => {
-    if (!/^[a-z.-_]+@([a-z.-]+\.[a-z]+|localhost)$/i.test(value)) {
+    if (!/^[a-z.-_]+@([a-z0-9.-]+\.[a-z]+|localhost)$/i.test(value)) {
       return t("Login.Error.InvalidEmail");
     }
     return "";

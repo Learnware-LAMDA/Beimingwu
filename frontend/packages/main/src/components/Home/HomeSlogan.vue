@@ -167,6 +167,28 @@ watch(
 
       <div class="mx-auto mt-6 max-w-7xl px-10 sm:px-20 md:px-40 lg:px-60">
         {{ t("Home.Cover.Introduction") }}
+        <a
+          :href="`https://arxiv.org/pdf/2401.14427.pdf`"
+          class="text-white dark:text-white"
+          target="_blank"
+        >
+          {{ t("Home.Cover.PaperLinkDescription") }}
+        </a>
+      </div>
+
+      <div class="mx-auto mt-1 max-w-7xl px-10 sm:px-20 md:px-40 lg:px-60">
+        {{ t("Home.Cover.CodeRepo.Description") }}
+        <a
+          :href="`https://www.gitlink.org.cn/beimingwu/beimingwu`"
+          class="text-white dark:text-white"
+          target="_blank"
+          >{{ t("Home.Cover.CodeRepo.Beimingwu") }}</a
+        >,&nbsp;<a
+          :href="`https://www.gitlink.org.cn/beimingwu/learnware`"
+          class="text-white dark:text-white"
+          target="_blank"
+          >{{ t("Home.Cover.CodeRepo.Learnware") }}</a
+        >
       </div>
 
       <div class="flex justify-center pt-10">

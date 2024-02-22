@@ -41,6 +41,9 @@ const imgSrc = computedAsync<string>(async () => {
         {{ t("Home.Function.Title") }}
       </div>
       <p class="text-gray-500">
+        {{ t("Home.Function.Description") }}
+      </p>
+      <p class="text-gray-500">
         <b> {{ t("Home.Function.SearchAndDeploy.Title") }} </b
         >{{ t("Home.Function.SearchAndDeploy.Description") }}
       </p>

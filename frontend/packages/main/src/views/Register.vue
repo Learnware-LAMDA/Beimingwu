@@ -25,7 +25,7 @@ const userName = useField<string>({
 const email = useField<string>({
   defaultValue: "",
   validate: (value) => {
-    if (!/^[a-z.-_]+@[a-z.-]+\.[a-z]+$/i.test(value)) return t("Register.Error.InvalidEmail");
+    if (!/^[a-z.-_]+@[a-z0-9.-]+\.[a-z]+$/i.test(value)) return t("Register.Error.InvalidEmail");
     if (value?.length > 50) return t("Register.Error.EmailAtMost50Chars");
     return "";
   },
@@ -141,6 +141,12 @@ onUnmounted(() => {
       <template #msg>
         <div class="mb-8 mt-6 text-lg">
           {{ t("Register.SentEmail") }}
+          <div
+            class="mb-8 mt-6 text-lg"
+            style="margin-top: 0"
+          >
+            {{ t("Register.NotReceived") }}
+          </div>
         </div>
       </template>
       <template #buttons>
@@ -199,6 +205,11 @@ onUnmounted(() => {
         {{ t("Register.Register") }}
       </div>
     </v-card-title>
+    <v-card-text>
+      <div class="mx-2">
+        {{ t("Register.OnlyEduEmail") }}
+      </div>
+    </v-card-text>
     <v-card-text>
       <v-form>
         <v-text-field

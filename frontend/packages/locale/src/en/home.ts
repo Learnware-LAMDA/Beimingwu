@@ -2,12 +2,18 @@ export default {
   Cover: {
     Beiming: "Beimingwu: A Learnware Dock System",
     Introduction:
-      "A learnware is composed of a well-performed trained model and a specification describing model ability. Beimingwu system helps users solve tasks by reusing recommended learnwares conveniently.",
+      'Beimingwu is the first systematic open-source implementation of learnware dock system, providing a preliminary research platform for learnware studies. Developers worldwide can submit their models freely to the learnware dock. They can generate specifications for the model with the help of Beimingwu without disclosing their raw data, and then the model and specification can be assembled into a learnware, which will be accommodated in the learnware dock. Future users can solve their tasks by submitting their requirements and reusing helpful learnwares returned by Beimingwu, while also not disclosing their own data. It is anticipated that after Beimingwu accumulates millions of learnwares, an "emergent" behavior may occur: machine learning tasks that have never been specifically tackled may be solved by assembling and reusing some existing learnwares. For more in-depth information, you can access the complete paper here: ',
+    PaperLinkDescription: "Paper Link",
+    CodeRepo: {
+      Description: "Beimingwu is completely open-source. The related code repositories can be accessed by clicking: ",
+      Beimingwu: "System Frontend & Backend",
+      Learnware: "System Engine & Toolkit",
+    },
     Try: "Try It Out",
     Submit: "Be A Developer",
     LearnwareName: "Learnware",
     LearnwareDescription: "This is a learnware.",
-    ServeralLinesOfCode: "Solve Tasks",
+    ServeralLinesOfCode: "Solve Machine Learning Tasks",
     SolveYourTasks: "with a few lines",
     Developer: "Developer",
     Example: {
@@ -29,6 +35,8 @@ export default {
   },
   Function: {
     Title: "What are the main functions of Beimingwu?",
+    Description:
+      "The Beimingwu learnware dock system, serving as a preliminary research platform for the learnware paradigm, systematically accomplishes the entire process of learnware from submission to deployment as follows:",
     SearchAndDeploy: {
       Title: "Search and deploy learnwares: ",
       Description:
@@ -37,35 +45,35 @@ export default {
     Submit: {
       Title: "Submit high-quality learnwares: ",
       Description:
-        "Developers can spontaneously submit various learnwares to Beimingwu, and the system will check the quality of these learnwares and organize them further.",
+        "Developers can submit various learnwares to Beimingwu freely, and the system will check the quality of these learnwares and organize them further.",
     },
   },
   Feature: {
     Title: "What are the features of Beimingwu?",
     Description:
-      "Through the systematic organization of learnwares, Beimingwu system can help the user precisely search learnwares with the help of task statistical requirement while ensuring data privacy, it also helps user safely load and conveniently reuse learnwares.",
+      "The learnware dock system Beimingwu enables users to search learnware(s) using additional task-related statistical information, facilitating convenient deployment and reuse of learnwares, while not disclosing user's original data. Its scalable architecture offers a rich set of interfaces, supporting implementation of newly developed algorithms in research of learnware specifications, searching, organization, and reuse.",
     Recommendation: {
-      Name: "Recommend more effective models with Statistical information",
+      Name: "Recommend models with statistical specification",
       Description:
-        "Beimingwu uses statistics to offer precise recommendation. If no single model fits, combining several might work. The system also supports searching and reusing misaligned feature space models for tabular tasks.",
+        "Except for natural language descriptions, Beimingwu can utilize statistical information of tasks to recommend more targeted models. Besides, Beimingwu preliminarily supports searching and reusing models from different feature spaces for tabular tasks with baseline algorithm.",
       HomoTable: "Homogeneous table examples",
       HeteroTable: "Heterogeneous table examples",
     },
     loadAndReuse: {
-      Name1: "Secure learnware loading",
-      Name2: "Convenient learnware reuse",
+      Name1: "A unified way to load and reuse learnwares conveniently",
+      Name2: "",
       Description:
-        "Once the user acquire the learnware, there's no concern about the model's environment or security threats. It can be safely loaded with a single line of code, and the system offers various interfaces for model reuse.",
+        "After the user obtains the learnwares from Beimingwu, Beimingwu allows for effortless deployment of arbitrary learnwares in a unified way based on containerized isolation, with little concerns about environment compatibility and safety. Also, Beimingwu provides several baseline reuse methods in a uniform format for convenient usage.",
     },
     Privacy: {
-      Name: "Not leaking raw data, protecting data privacy",
+      Name: "Not disclosing user's raw data",
       Description:
-        "Providing task statistics helps match user's needs or models more effectively. The statistical specification shares task statistics without exposing original data. This generation is local and the code is open source.",
+        "To search helpful learnwares based on statistical information, instead of uploading raw data, user can generate and submit the statistical specification using API, which captures the data distribution while not disclosing the raw data.",
     },
     OpenSource: {
-      Name: "Beimingwu is open source to the community",
+      Name: "Completely open-source: co-building the learnware ecosystem",
       Description:
-        "Beimingwu is the first open-source model platform, offering various deployment options. We warmly welcome the community to try and collaboratively enhance the system.",
+        "Beimingwu is completely open-source. As the algorithms improve and the number of learnware increases, the capability of Beimingwu to solve tasks will be constantly enhanced. Beimingwu is still young, and we sincerely invite the open-source community to join us in developing and perfecting the system, uploading various models, and researching and improving learnware-related algorithms.",
     },
   },
   Why: {
@@ -97,7 +105,7 @@ export default {
   },
   Footer: {
     About: "About",
-    Gitee: "Gitee",
+    Git: "GitLink",
     ContactUs: "Contact Us",
     UserAgreement: "User Agreement",
     PrivacyPolicy: "Privacy Policy",
