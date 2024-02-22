@@ -11,14 +11,14 @@ pip install learnware
 
 Additionally, to ensure the latest `learnware` package, you can also specify the version and mirror source during installation:
 ```bash
-pip install learnware==0.2.0.9 -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install learnware==0.3.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ## Install from Source Code
 
-The source code for the `learnware` package is also available on [Gitee](https://gitee.com/beimingwu/beimingwu) platform. Users can download the source code from either platform for installation. Here is an example when using the Github platform:
+The source code of the `learnware` package is available on the [GitLink](https://www.gitlink.org.cn/beimingwu/learnware) platform, and users can download the source code for installation using the following code:
 ```bash
-git clone https://gitee.com/beimingwu/beimingwu
+git clone https://gitlink.org.cn/beimingwu/learnware.git
 cd Learnware
 git fetch origin main
 git checkout main

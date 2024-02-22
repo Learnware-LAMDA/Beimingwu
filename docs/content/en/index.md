@@ -5,7 +5,7 @@ title: Home
 hero:
   name: "Beimingwu:"
   text: "A Learnware Dock System"
-  tagline: The first systematic implementation of the learnware paradigm, enabling effective learnware search and reuse without building machine learning models from scratch.
+  tagline: Beimingwu, as the first systematic open-source implementation of learnware, offers a preliminary research platform for learnware-related studies, and aims to help users efficiently solve machine learning tasks without starting from scratch.
   image: /logo-no-text.svg
   actions:
     - theme: brand
@@ -23,13 +23,13 @@ features:
     details: The Beimingwu system incorporates multiple detection mechanisms to ensure the quality of each learnware in the system.
     icon: { src: "/icons/learnware-quality-detector.svg" }
   - title: Diverse Learnware Search
-    details: The Beimingwu system supports semantic & statistical search on various data types, enabling heterogeneous tabular learnware search.
+    details: The Beimingwu system facilitates semantic & statistical search across various data types and also preliminarily supports heterogeneous tabular learnware search.
     icon: { src: "/icons/diverse-learnware-search.svg" }
   - title: Local Learnware Deployment
-    details: The Beimingwu system provides tools for learnware deployment, helping users to deploy and reuse learnwares conveniently and securely.
+    details: The Beimingwu system allows for effortless and safe deployment and reuse of arbitrary learnwares in a unified way.
     icon: { src: "/icons/local-learnware-deployment.svg" }
-  - title: Data Privacy Protection
-    details: The Beimingwu system ensures data privacy as the uploading, searching, and deployment of learnware doesn't require uploading local data.
+  - title: Raw Data Protection
+    details: The learnware submission, identification, and deployment of the Beimingwu system doesn't require users to upload raw data.
     icon: { src: "/icons/data-privacy-protection.svg" }
   - title: Open Source System
     details: The Beimingwu system is open source and the learnware package is highly extensible and easy to integrate with new features.

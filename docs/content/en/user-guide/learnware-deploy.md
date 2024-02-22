@@ -22,7 +22,7 @@ learnware = client.load_learnware(
 )
 ```
 
-When the user wants to load multiple learnwares according to the id list `learnware_ids`, this can be accomplished with the following code:
+When the user wants to load multiple learnwares according to the id list `learnware_ids`, it can be accomplished with the following code:
 ```python
 learnware_ids = ["00000082", "00000120"]
 learnware_list = client.load_learnware(
@@ -30,17 +30,17 @@ learnware_list = client.load_learnware(
 )
 ```
 
-The `runnable_option` parameter has three options (default `None`), each for a specific learnware environment loading method:
+The `runnable_option` parameter includes three options (default is `None`), each corresponding to a specific learnware deployment method:
 
 - `None`: Load only learnware specifications and basic information; run the learnware using the current `learnware` package's Python environment.
 - `"conda"`: Install a separate `conda` virtual environment for each learnware (automatically deleted after execution); run each learnware independently within its virtual environment.
 - `"docker"`: Install a `conda` virtual environment inside a Docker container (automatically destroyed after execution); run each learnware independently within the container (requires Docker privileges).
 
-It's important to note that while the system makes every effort to ensure the security of each learnware, the `None` and `"conda"` modes are **not secure** if there are any malicious learnwares. If the user cannot guarantee the security of the learnware they want to load, it's recommended to use the `"docker"` mode to load the learnware.
+It's important to note that while the system makes every effort to ensure the security of each learnware, the `None` and `"conda"` modes are **not secure** if there are any malicious learnwares. If the user cannot guarantee the security of the learnware they want to load, it's recommended to use the **relatively secure** `"docker"` mode to load the learnware.
 
 ### Loading Learnware from a ZIP File
 
-In addition to loading learnware by ID, users can also load a learnware from a zip file downloaded from the web:
+In addition to loading learnware by ID, users can also load a learnware from a zip file downloaded from the web frontend:
 
 ```python
 learnware_path = "learnware.zip"
@@ -49,7 +49,7 @@ learnware = client.load_learnware(
 )
 ```
 
-When the user wants to load multiple learnwares according to the zip path list `learnware_paths`, this can be achieved with the following code:
+When the user wants to load multiple learnwares according to the zip path list `learnware_paths`, it can be achieved with the following code:
 ```python
 learnware_paths = ["learnware1.zip", "learnware2.zip"]
 learnware_list = client.load_learnware(
@@ -69,15 +69,15 @@ predict_y = learnware.predict(test_x)
 
 ## Homogeneous Learnware Reuse Methods
 
-In addition to using learnwares directly, users can further make predictions on unlabeled data using learnware reuse methods provided by the system.
+In addition to using learnwares directly, users can further make predictions on unlabeled data using basic learnware reuse methods provided by the system.
 
-There are two main categories of reuse methods: (1) direct reuse and (2) reuse based on a small amount of labeled data.
+There are two main categories of reuse methods: (1) data-free reusers which reuse learnwares directly and (2) data-dependent reusers which reuse learnwares with a small amount of labeled data.
 
-### Direct Reuse of Learnware
+### Data-Free Reusers
 
-Two methods for direct reuse of learnwares are provided: `JobSelector` and `Averaging`.
+Two methods for direct reuse of learnwares are provided: `JobSelectorReuser` and `AveragingReuser`.
 
-- `JobSelector` selects different learnwares for different data by training a classifier. Here's how to use it:
+- `JobSelectorReuser` selects different learnwares for different data by training a classifier. Here's how to use it:
 
 ```python
 from learnware.reuse import JobSelectorReuser
@@ -90,7 +90,7 @@ reuse_job_selector = JobSelectorReuser(learnware_list=learnware_list)
 predict_y = reuse_job_selector.predict(user_data=test_x)
 ```
 
-- `Averaging` uses an ensemble method to make predictions. The `mode` parameter specifies the specific ensemble method:
+- `AveragingReuser` uses an ensemble method to make predictions. The `mode` parameter specifies the specific ensemble method:
 
 ```python
 from learnware.reuse import AveragingReuser
@@ -107,13 +107,13 @@ reuse_ensemble = AveragingReuser(
 ensemble_predict_y = reuse_ensemble.predict(user_data=test_x)
 ```
 
-For more detailed usage and explanations, please refer to the [Learnware Package Reuse Methods Introduction](#).
+For more detailed usage and explanations, please refer to the [Learnware Package Data-Free Reuse Methods Introduction](https://learnware.readthedocs.io/en/latest/components/learnware.html#direct-reuse-of-learnware).
 
-### Reusing Learnware with Labeled Data
+### Data-Dependent Reusers
 
-When users have a small amount of labeled data, the system provides two methods: `EnsemblePruning` and `FeatureAugmentReuser` to help reuse learnwares.
+When users have a small amount of labeled data, the system provides two methods: `EnsemblePruningReuser` and `FeatureAugmentReuser` to help adapt the learnwares.
 
-- `EnsemblePruning` selectively integrates learnwares to choose the ones that are most suitable for the user's task:
+- `EnsemblePruningReuser` selects a subset of suitable learnwares using a multi-objective evolutionary algorithm and uses an average ensemble for prediction:
 
 ```python
 from learnware.reuse import EnsemblePruningReuser
@@ -129,9 +129,7 @@ reuse_ensemble_pruning.fit(val_X=val_X, val_y=val_y)
 predict_y = reuse_job_selector.predict(user_data=test_x)
 ```
 
-For more detailed usage and explanations, please refer to the [Learnware Package Reuse Methods Introduction](#).
-
-- `FeatureAugmentReuser` helps users reuse learnwares by augmenting features. The output of the original learnware is concatenated with the user's task features, and a simple model is trained on the labeled data (logistic regression for classification tasks and ridge regression for regression tasks):
+- `FeatureAugmentReuser` enhances user task features by incorporating predictions from learnwares, subsequently training a simple model (logistic regression for classification tasks and ridge regression for regression tasks):
 
 ```python
 from learnware.reuse import FeatureAugmentReuser
@@ -146,6 +144,8 @@ augment_reuser = FeatureAugmentReuser(
 augment_reuser.fit(val_X, val_y)
 predict_y = augment_reuser.predict(user_data=test_x)
 ```
+
+For more detailed usage and explanations, please refer to the [Learnware Package Data-Dependent Reuse Methods Introduction](https://learnware.readthedocs.io/en/latest/components/learnware.html#reuse-learnware-with-labeled-data).
 
 ## Heterogeneous Learnware Reuse Methods
 
@@ -165,7 +165,7 @@ hetero_learnware.align(user_spec, val_x, val_y)
 predict_y = hetero_learnware.predict(user_data=test_x)
 ```
 
-If you want to reuse multiple heterogeneous learnwares, you can combine `HeteroMapAlignLearnware` with the homogeneous reuse methods `Averaging` and `EnsemblePruning` as mentioned before:
+If you want to reuse multiple heterogeneous learnwares, you can combine `HeteroMapAlignLearnware` with the homogeneous reuse methods `AveragingReuser` and `EnsemblePruningReuser` as mentioned before:
 
 ```python
 hetero_learnware_list = []

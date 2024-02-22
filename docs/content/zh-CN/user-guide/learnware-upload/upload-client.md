@@ -2,7 +2,7 @@
 
 在北冥坞系统中，学件既可以从网页端上传，也可以使用 `learnware` Python 包进行上传，即使用客户端上传。
 
-接下来，我们将对使用 `learnware` 包上传的部分进行介绍，首先需要登录：
+接下来，我们将介绍如何使用 `learnware` 包上传学件。首先需要登录：
 ```py
 from learnware.client import LearnwareClient, SemanticSpecificationKey
 
@@ -14,7 +14,7 @@ client.login(email="your email", token="your token")
 
 ## 准备语义规约
 
-成功登录后需要准备语义规约，此处以「表格数据」的「分类任务」为例：
+成功登录后，您需要准备语义规约，此处以「表格数据」的「分类任务」为例：
 ```py
 from learnware.specification import generate_semantic_spec
 
@@ -48,6 +48,7 @@ semantic_spec = generate_semantic_spec(
     task_type="Classification",
     library_type="Scikit-learn",
     scenarios=["Business", "Financial"],
+    license=["Apache-2.0"],
     input_description=input_description,
     output_description=output_description,
 )
@@ -59,17 +60,16 @@ semantic_spec = generate_semantic_spec(
 - scenarios 必须为 `key=SemanticSpecificationKey.SENARIOES` 对应结果的子集。
 
 另外，需要注意：
-- 如果 data\_type 为 `"Table"`，则需要填写模型输入数据的每一维特征语义，使上传的学件可用于异构特征空间的任务；
-- 如果 task\_type 为 `"Classification"`，则需要填写模型输出标记的语义（预测标记从 0 开始编号），使上传的学件可用于异构输出空间的分类任务；
-- 如果 task\_type 为 `"Regression"`，则需要填写模型输出的每一维语义，使上传的学件可用于异构输出空间的回归任务；
+- 如果 data\_type 为 `"Table"`，则需要填写模型输入数据的每一维特征语义，使上传的学件可用于特征空间不对齐的任务；
+- 如果 task\_type 为 `"Classification"`，则需要填写模型输出标记的语义（预测标记从 0 开始编号），使上传的学件可用于输出空间不对齐的分类任务；
+- 如果 task\_type 为 `"Regression"`，则需要填写模型输出的每一维语义，使上传的学件可用于输出空间不对齐的回归任务；
 
 ## 学件上传
 
-最后，填写语义规约和学件 zip 包路径，即可实现学件上传。
+接下来，填写语义规约和学件 zip 包路径，您即可完成学件上传。
 
-学件 zip 包的准备可查看：[如何准备一个学件？](/zh-CN/user-guide/learnware-upload/prepare)
+关于学件 zip 包的准备，请参考指南：[如何准备一个学件？](/zh-CN/user-guide/learnware-upload/prepare)。 在上传前，建议您先对学件进行本地验证，代码示例如下：
 
-记得在上传前先对学件进行验证，代码示例如下：
 ```py
 # Prepare your learnware zip file
 zip_path = "your learnware zip"
@@ -85,6 +85,4 @@ learnware_id = client.upload_learnware(
 )
 ```
 
-学件上传成功后，可以在「个人信息 - 我的学件」处看到上传的学件。
-
-学件上传后，后台会对学件进行检查。检查通过后，学件的标签将变为「验证成功」，且上传的学件会在系统中出现。
+学件上传后，您可以在「个人信息 - 我的学件」页面看到上传的学件。系统后台会自动将该学件加入验证队列，以检验学件是否符合规范。如果学件通过验证，其标签会变为「验证成功」，并出现在系统中。

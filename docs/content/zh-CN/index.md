@@ -5,7 +5,7 @@ title: 主页
 hero:
   name: "北冥坞：学件基座系统"
   # text: "系统文档"
-  tagline: 学件范式的首次系统性实现，帮助用户有效查搜和复用学件，而无需从零开始构建机器学习模型。
+  tagline: 学件的第一个系统性开源实现，为学件相关研究提供了一个初步科研平台。该系统旨在帮助用户高效解决机器学习任务，而无需从零开始构建模型。
   image: /logo-no-text.svg
   actions:
     - theme: brand
@@ -23,13 +23,13 @@ features:
     details: 北冥坞系统内置了多重检测机制，以确保系统中每个学件的质量符合要求。
     icon: { src: "/icons/learnware-quality-detector.svg" }
   - title: 学件多样查搜
-    details: 北冥坞系统同时支持语义规约和统计规约的查搜，支持多种数据类型，表格数据额外支持异构查搜。
+    details: 北冥坞系统同时支持语义规约和统计规约的查搜，支持多种数据类型，表格数据初步支持异构查搜。
     icon: { src: "/icons/diverse-learnware-search.svg" }
   - title: 学件本地部署
-    details: 北冥坞系统提供学件部署与复用工具，帮助用户便捷、安全的部署与复用学件。
+    details: 北冥坞系统提供学件部署与复用工具，帮助用户以统一方式便捷地部署与复用学件。
     icon: { src: "/icons/local-learnware-deployment.svg" }
-  - title: 数据隐私保护
-    details: 北冥坞系统涉及的学件上传、查搜、部署均无需用户上传本地数据，确保用户数据隐私。
+  - title: 保护原始数据
+    details: 北冥坞系统支持学件的上传、查搜、部署和复用，整个过程中用户无需暴露本地数据。
     icon: { src: "/icons/data-privacy-protection.svg" }
   - title: 面向社区开源
     details: 北冥坞系统面向社区开源，其中的 learnware 包高度可扩展，易于集成新特性和新功能。

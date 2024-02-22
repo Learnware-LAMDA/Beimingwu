@@ -1,16 +1,19 @@
 # Project Structure and Guidelines
 
-The Beimingwu system adopts a `Monorepo` code management approach, and the [code repository](https://gitee.com/beimingwu/beimingwu) contains four sub-projects:
-- **Frontend**: Provides the interface and functionality for user interaction with the learnware dock system, including the main system and administrator system.
-- **Backend**: Responsible for handling dock system's operation logic and data operations, ensuring system stability and high performance.
-- **Docs**: Maintains system documentation, including user guides, development guides, etc., ensuring system usability.
-- **Deploy**: Manages the system deployment configuration, including frontend and backend deployment files.
+Beimingwu learnware dock system is developed with five sub-projects:
+- **Engine**: Encompassing core components and algorithms within the learnware paradigm, and providing a command-line client for user interaction, it has been releasead as the `learnware` package.
+- **Frontend**: Provide the interface and functionality for user interaction with the learnware dock system, including the main system and administrator system.
+- **Backend**: Responsible for handling the dock system's operation logic and data operations, it ensures system stability and high performance.
+- **Docs**: Maintain system documentation, including user guides, development guides, etc., ensuring system usability.
+- **Deploy**: Manage the system deployment configuration, including frontend and backend deployment files.
 
-The following sections detail the specific structure and development standards of the entire project.
+The `Engine` is implemented in a separate `Learnware` [code repository](https://www.gitlink.org.cn/beimingwu/learnware) and is configured with its own [project documentation](https://learnware.readthedocs.io/en/latest/).
 
-## Project Structure
+The remaining four sub-projects are implemented within the `Beimingwu` [code repository](https://www.gitlink.org.cn/beimingwu/beimingwu) and are managed using a `Monorepo` approach. The following sections will provide details on the specific structure and development guidelines for the `Beimingwu` code repository.
 
-The project is divided into four sub-projects: frontend, backend, deploy, and docs, each independent of the others.
+## Beimingwu Project Structure
+
+The `Beimingwu` code repository consists of four sub-projects: frontend, backend, deploy, and docs, each independent of the others.
 
 ### Frontend Project Structure
 ```shell
@@ -117,7 +120,7 @@ The project is divided into four sub-projects: frontend, backend, deploy, and do
     │   └── tsconfig.json # Project configuration
 ```
 
-## Development Standards
+## Beimingwu Development Standards
 
 As we use a `Monorepo` code management approach, standardizing `commit` formats and project development standards is very important. The following text will mainly introduce `hooks` configuration, code submission standards, and frontend and backend development standards.
 

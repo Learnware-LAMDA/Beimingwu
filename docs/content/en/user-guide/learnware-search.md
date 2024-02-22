@@ -1,6 +1,6 @@
-# How to Search for Learnwares?
+# How to Search for Learnware(s)?
 
-In the Beimingwu system, you can search for learnwares through the web interface or the `learnware` package.
+In the Beimingwu system, you can search for learnware(s) through the web interface or the `learnware` package.
 
 Next, we will introduce these two methods separately.
 
@@ -67,7 +67,7 @@ Where "email" is your registered email for the system, and "token" is the token 
 
 Similar to the web interface search, the `learnware` package supports semantic specification search, statistical specification search, and a combination of semantic and statistical specification search.
 
-You can search for learnwares in the learnware dock system through semantic specifications, and all learnwares that meet the semantic specifications will be returned via the API. For example, the following code retrieves all learnware in the system with a task type of "Classification":
+You can search for learnware(s) in the learnware dock system through semantic specifications, and all learnwares that meet the semantic specifications will be returned via the API. For example, the following code retrieves all learnware in the system with a task type of "Classification":
 
 ```python
 from learnware.market import BaseUserInfo
@@ -96,14 +96,14 @@ search_result = {
 }
 ```
 
-What's more, you can also search for learnwares in the learnware dock system through statistical specifications, and all learnwares with similar distribution will be returned through the API. By using the `generate_stat_spec` function mentioned above, you can easily obtain the statistical specification `stat_spec` corresponding to your current task. Then, you can use the following code to retrieve learnwares in the system that satisfies the statistical specification for the same type of data as your task:
+Moreover, you can also search for learnware(s) in the learnware dock system through statistical specifications, and more targeted learnwares for your task will be returned through the API. Using the `generate_stat_spec` function mentioned above, you can generate your task's statistical specification `stat_spec`. Then, you can use the following code to easily obtain suitable learnware(s) identified by the system for your specific task:
 
 ```python
 user_info = BaseUserInfo(stat_info={stat_spec.type: stat_spec})
 search_result = client.search_learnware(user_info)
 ```
 
-By combining both semantic and statistical specifications, you can perform more accurate searches. For example, the following code searches for learnware in tabular data that meet both semantic and statistical specifications:
+By combining both semantic and statistical specifications, you can perform more accurate searches. For instance, the code below demonstrates how to search for learnware(s) in tabular data that satisfy both the semantic and statistical specifications:
 
 ```python
 user_semantic = generate_semantic_spec(
@@ -132,7 +132,7 @@ For more detailed deployment guidance, you can refer to the "[Learnware Deployme
 
 ### Heterogeneous Table Search
 
-When you provide a statistical specification for tabular data, the task type is "Classification" or "Regression," and your semantic specification includes descriptions for each dimension, the system will automatically enable heterogeneous table search. It won't only search in the tabular learnwares with same dimensions. The following code will perform heterogeneous table search through the API:
+For tabular tasks, if the task type is "Classification" or "Regression", and you have provided a statistical specification along with descriptions for each feature dimension in the semantic specification, the system will enable heterogeneous table search. This is designed to support searching models from different feature spaces preliminarily. The following code example shows how to perform a heterogeneous table search via the API:
 
 ```python
 input_description = {

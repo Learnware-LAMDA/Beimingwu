@@ -1,6 +1,6 @@
 # Quick Start
 
-Welcome to Beimingwu learnware dock system! The following content will help you quickly experience the system, including learnware search and deployment.
+Welcome to Beimingwu learnware dock system! The following content will help you quickly experience the system, mainly including learnware search and deployment.
 
 ## Learnware Search
 
@@ -10,7 +10,7 @@ When searching with semantic information, you can fill in the information about 
 
 ![image](../../public/quick-start/semantic-search-en.jpg)
 
-When searching with statistical information, you need to submit the statistical information of the task. The tools we provide will generate approximate statistical information for your task locally while protecting your data privacy. With the following code, you can easily generate approximate statistical information for your task.
+When searching with statistical information, you need to generate and submit a statistical specification, which captures the data distribution while not disclosing your original data. Using the API we provided, you can easily generate this statistical specification locally.
 
 ```python
 from learnware.specification import generate_stat_spec
@@ -24,7 +24,7 @@ By uploading the JSON file containing statistical information, the system will m
 
 ![image](../../public/quick-start/stat-search-single-en.jpg)
 
-In some cases, combining multiple learnwares with similar statistical information may be more suitable for your task. The system will recommend these learnwares as a package to you. You can download all of them with the "Download All" button in the upper right corner.
+In some cases, assembling multiple helpful learnwares may be more beneficial for your task. The system will accordingly recommend a combination of these learnwares as a package. You can download the package using the "Download All" button in the upper right corner.
 
 ![image](../../public/quick-start/stat-search-multiple-en.jpg)
 
@@ -44,3 +44,21 @@ learnware = client.load_learnware(
 # Use the learnware to make predictions on data
 pred_y = learnware.predict(test_x)
 ```
+
+<!--
+
+## Demo Videos
+
+The following videos provide a more comprehensive demonstration of how to use the Beiming Wu system to solve a machine learning task:
+
+<div style="padding: 56.25% 0 0 0; position: relative"><div style="height:100%;left:0;position:absolute;top:0;width:100%"><iframe height="100%" width="100%;" src="https://embed.wave.video/S2zG1ZbUaRpEo8UG" frameborder="0" allow="autoplay; fullscreen" scrolling="no"></iframe></div></div>
+
+For more information, you can refer to the "[Learnware Search](https://docs.beiming.cloud/en/user-guide/learnware-search.html)" and "[Learnware Deployment](https://docs.beiming.cloud/en/user-guide/learnware-deploy.html)" sections.
+
+If you're interested in sharing your model with the Beiming Wu system, you can quickly get started with the following video:
+
+<div style="padding: 56.25% 0 0 0; position: relative"><div style="height:100%;left:0;position:absolute;top:0;width:100%"><iframe height="100%" width="100%;" src="https://embed.wave.video/JcMSmDcgTJep5zPo" frameborder="0" allow="autoplay; fullscreen" scrolling="no"></iframe></div></div>
+
+For more details, please refer to the "[Learnware Preparation](https://docs.beiming.cloud/en/user-guide/learnware-upload/prepare.html)," "[Uploading via Web Interface](https://docs.beiming.cloud/en/user-guide/learnware-upload/upload-web.html)," and "[Uploading via Client Interface](https://docs.beiming.cloud/en/user-guide/learnware-upload/upload-client.html)" sections.
+
+-->

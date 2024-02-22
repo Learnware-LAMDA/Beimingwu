@@ -15,7 +15,7 @@ Where "email" is your registered email address in the system, and "token" is the
 
 ## Prepare Semantic Specification
 
-After successfully logging in, you need to prepare the semantic specification. Here is an example of a "Table Data" for a "Classification Task":
+After successfully logging in, your next step is to prepare the semantic specification. For instance, here's an example of "Table Data" in a "Classification Task":
 
 ```python
 from learnware.specification import generate_semantic_spec
@@ -50,6 +50,7 @@ semantic_spec = generate_semantic_spec(
     task_type="Classification",
     library_type="Scikit-learn",
     scenarios=["Business", "Financial"],
+    license=["Apache-2.0"],
     input_description=input_description,
     output_description=output_description,
 )

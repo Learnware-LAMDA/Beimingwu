@@ -70,7 +70,7 @@ client.login(email="your email", token="your token")
 
 与网页端查搜相对应，learnware 包也支持语义规约查搜、统计规约查搜、语义规约 + 统计规约的混合查搜。
 
-您可以通过语义规约在学件基座系统中查搜学件，所有符合语义规约的学件都将通过API返回。例如，下列代码将得到系统中所有任务类型为分类的学件：
+您可以通过语义规约在学件基座系统中查搜学件，所有符合语义规约的学件都将通过 API 返回。例如，下列代码将得到系统中所有任务类型为分类的学件：
 
 ```python
 from learnware.market import BaseUserInfo
@@ -98,14 +98,14 @@ search_result = {
 }
 ```
 
-另外，您也可以通过统计规约在学件基座系统中查搜学件，所有分布相似的学件都将通过 API 返回。通过上述提到的 `generate_stat_spec` 函数，您可以便捷地得到您当前任务对应的统计规约 `stat_spec`，随后通过下列代码即可得到系统中同一类型数据下满足您任务统计规约的学件：
+您也可以通过统计规约在学件基座系统中查搜学件，这些模型往往具有更好的针对性，并将通过 API 返回。利用上述提到的 `generate_stat_spec` 函数，您可以生成当前任务的统计规约 `stat_spec`，随后使用下列代码获取系统中符合该统计规约的同数据类型的学件：
 
 ```python
 user_info = BaseUserInfo(stat_info={stat_spec.type: stat_spec})
 search_result = client.search_learnware(user_info)
 ```
 
-通过将统计规约和语义规约结合起来，您可以进行更加细致的查搜，比如下列代码将在表格型数据中查搜满足您语义规约的学件：
+通过将统计规约和语义规约结合起来，您可以进行更加细致的查搜。例如，以下代码演示了如何在表格型学件中查搜同时满足您任务语义规约和统计规约的学件：
 
 ```python
 user_semantic = generate_semantic_spec(
@@ -119,7 +119,7 @@ user_info = BaseUserInfo(
 search_result = client.search_learnware(user_info)
 ```
 
-当学件查搜完成后，您可以通过 `search_result` 中的学件 ID 本地加载和使用学件，可参考下述示例：
+当学件查搜完成后，您可以通过 `search_result` 中的学件 ID 本地加载和使用学件：
 
 ```python
 learnware_id = search_result["single"]["learnware_ids"][0]
@@ -135,7 +135,7 @@ predict_y = learnware.predict(test_x)
 
 ### 异构表格查搜
 
-当您提供表格型数据的统计规约，任务类型为“分类”或者“回归”，并且在语义规约中包含了每一维特征语义维度的描述时，系统将自行开启异构表格查搜，而不仅仅是在维度相匹配的数据类型为表格的学件中进行查搜。以下代码将进行通过 API 进行异构表格查搜：
+对于表格型任务，如果任务类型为“分类”或者回归，并且您提供了统计规约、在语义规约中包含了每个维度特征的语义描述，系统会自动启动异构表格查搜，以匹配和推荐特征空间不对齐的模型。以下代码示例展示了如何通过 API 执行异构表格查搜：
 
 ```python
 input_description = {

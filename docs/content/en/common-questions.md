@@ -2,12 +2,12 @@
 
 ### Q1: How does the Beimingwu system protect user data privacy?
 
-A1: In the Beimingwu system, the uploading, searching, and deployment of learnwares do not require users to upload local data. The statistical specifications are generated locally by the user and do not expose original data, ensuring data privacy.
+A1: In the Beimingwu system, the uploading, searching, and deployment of learnwares do not require users to upload local data. The statistical specifications are generated locally by the user using open-source API and do not compromise the raw data's security.
 
 
 ### Q2: How does the Beimingwu system ensure the safety of deploying learnware?
 
-A2: We make every effort to verify the safety of each learnware and provide tools for deploying learnware within a docker container.
+A2: We make every effort to verify the safety of each learnware and provide interfaces for deploying learnware within a docker container.
 
 
 ### Q3: What types of data does the Beimingwu system support for learnware?

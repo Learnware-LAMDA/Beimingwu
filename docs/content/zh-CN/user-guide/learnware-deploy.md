@@ -13,7 +13,7 @@ client = LearnwareClient()
 
 ### 根据学件 `id` 载入学件
 
-假设用户已知需要载入的学件对应的 `id`，那么可以使用如下代码载入对应的学件和环境：
+假设用户已知需要载入的学件对应的 `id`，那么可以使用如下代码载入相应的学件和环境：
 
 ```python
 learnware_id = "00000082"
@@ -36,12 +36,12 @@ learnware_list = client.load_learnware(
 - `"conda"`：为每个学件安装独立的 `conda` 虚拟环境（运行结束后自动删除），在虚拟环境内独立运行每个学件；
 - `"docker"`：在 `docker` 容器内安装 `conda` 虚拟环境（运行结束后自动销毁），在容器内独立运行每个学件（用户需要有 `docker` 权限）。
 
-需要注意的是，尽管系统已尽最大努力确保每个学件的安全，但如果仍有包含恶意代码的漏网之鱼，则 `None` 和 `"conda"` 两种模式是**不安全**的。如果用户不能确保需要加载的学件的安全性，请使用 `"docker"` 模式载入学件。
+需要注意的是，尽管系统已尽最大努力确保每个学件的安全，但如果仍有包含恶意代码的漏网之鱼，则 `None` 和 `"conda"` 两种模式是**不安全**的。如果用户不能确保需要加载的学件的安全性，请使用**较为安全** `"docker"` 模式载入学件。
 
 
 ### 根据学件 `zip` 文件载入学件
 
-除了根据学件 `id` 载入学件，用户还可以使用从网页端下载的 `zip` 文件载入学件：
+除了根据学件 `id` 载入学件，用户还可以从网页端下载的 `zip` 文件中载入学件：
 
 ```python
 learnware_path = "learnware.zip"
@@ -60,7 +60,7 @@ learnware_list = client.load_learnware(
 
 ### 调用学件
 
-按上述方式加载学件后，可直接调用学件的 `predict(X)` 接口进行预测，具体代码如下：
+按上述方式加载学件后，您可以直接调用学件的 `predict(X)` 接口进行预测，具体代码如下：
 ```python
 # test_x 是用户任务的待预测数据, predict_y 是学件的预测结果
 learnware = client.load_learnware(learnware_id=learnware_id)
@@ -76,9 +76,9 @@ predict_y = learnware.predict(test_x)
 
 ### 直接复用学件
 
-我们提供了 `JobSelector` 和 `Averaging` 两种直接复用学件的方法:
+我们提供了 `JobSelectorReuser` 和 `AveragingReuser` 两种直接复用学件的方法:
 
-- `JobSelector` 通过训练分类器为不同的数据选择不同的学件进行预测，具体代码如下：
+- `JobSelectorReuser` 通过训练分类器为不同的数据选择合适的学件进行预测，具体代码如下：
 
 ```python
 from learnware.reuse import JobSelectorReuser
@@ -90,7 +90,7 @@ reuse_job_selector = JobSelectorReuser(learnware_list=learnware_list)
 predict_y = reuse_job_selector.predict(user_data=test_x)
 ```
 
-- `Averaging` 使用平均集成的方法进行学件复用，其中 `mode` 表示具体的集成方式：
+- `AveragingReuser` 使用平均集成的方法进行学件复用，其中 `mode` 表示具体的集成方式：
 
 ```python
 from learnware.reuse import AveragingReuser
@@ -104,13 +104,13 @@ reuse_ensemble = AveragingReuser(
 ensemble_predict_y = reuse_ensemble.predict(user_data=test_x)
 ```
 
-更详细的使用方法和原理介绍请参考：[Learnware 包复用方法介绍](#)。
+更详细的使用方法和原理介绍请参考：[Learnware 包直接复用方法介绍](https://learnware.readthedocs.io/en/latest/components/learnware.html#direct-reuse-of-learnware)。
 
 ### 使用有标记数据复用学件
 
-当用户有少量有标记数据时，我们提供了`EnsemblePruning`和`FeatureAugmentReuser`两种方法帮助用户复用学件。
+当用户有少量有标记数据时，我们提供了 `EnsemblePruningReuser` 和 `FeatureAugmentReuser` 两种方法帮助用户复用学件。
 
--  `EnsemblePruning` 通过选择性集成的方法选择更适合用户任务的学件：
+- `EnsemblePruningReuser` 通过多目标演化算法挑选适合用户任务的学件组，并进行平均集成：
 
 ```python
 from learnware.reuse import EnsemblePruningReuser
@@ -126,9 +126,7 @@ reuse_ensemble_pruning.fit(val_X=val_X, val_y=val_y)
 predict_y = reuse_job_selector.predict(user_data=test_x) 
 ```
 
-更详细的使用方法和原理介绍请参考：[Learnware 包复用方法介绍](#)。
-
-- `FeatureAugmentReuser`通过特征增广的方式帮助用户复用学件，原始学件的输出会拼接到用户任务的特征上，并基于有标记数据训练一个简单的模型（分类任务为logistics regression，回归任务为ridge）：
+- `FeatureAugmentReuser` 通过特征增广的方式帮助用户复用学件，原始学件的输出会拼接到用户任务的特征上，并使用增广后的有标记数据训练一个简单的模型（分类任务为logistics regression，回归任务为ridge）：
 
 ```python
 from learnware.reuse import FeatureAugmentReuser
@@ -143,6 +141,8 @@ augment_reuser = FeatureAugmentReuser(
 augment_reuser.fit(val_X, val_y)
 predict_y = augment_reuser.predict(user_data=test_x) 
 ```
+
+更详细的使用方法和原理介绍请参考：[Learnware 包使用有标记数据复用方法介绍](https://learnware.readthedocs.io/en/latest/components/learnware.html#reuse-learnware-with-labeled-data)。
 
 ## 异构学件复用方法
 
@@ -161,7 +161,7 @@ hetero_learnware.align(user_spec, val_x, val_y)
 predict_y = hetero_learnware.predict(user_data=test_x)
 ```
 
-如果想要复用多个异构学件，可以将 `HeteroMapAlignLearnware` 和上文介绍的同构复用方法 `Averaging`、`EnsemblePruning` 相结合：
+如果想要复用多个异构学件，可以将 `HeteroMapAlignLearnware` 和上文介绍的同构复用方法 `AveragingReuser`、`EnsemblePruningReuser` 相结合：
 
 ```python
 hetero_learnware_list = []

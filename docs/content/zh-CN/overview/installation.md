@@ -11,14 +11,14 @@ pip install learnware
 
 此外，为确保安装的 `learnware` 包为最新版本，也可通过指定版本和镜像源的方式进行安装：
 ```bash
-pip install learnware==0.2.0.9 -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install learnware==0.3.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ## 通过源码安装
 
-`learnware` 包的源代码发布在 [Gitee](https://gitee.com/beimingwu/beimingwu) 平台上，用户也可以从任一平台下载源代码进行安装。以 Github 平台为例：
+`learnware` 包的源代码发布在 [GitLink](https://www.gitlink.org.cn/beimingwu/learnware) 平台上，用户可按下述方式通过源代码进行安装：
 ```bash
-git clone https://gitee.com/beimingwu/beimingwu
+git clone https://gitlink.org.cn/beimingwu/learnware.git
 cd Learnware
 git fetch origin main
 git checkout main

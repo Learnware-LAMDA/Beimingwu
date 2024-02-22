@@ -24,7 +24,7 @@ If there are many dimensions, consider using a large language model to analyze t
 
 ![image](../../../public/upload/step2-1-en.jpg)
 
-Next is selecting the "Task type" involved in the learnware. If `Classification` is chosen, you need to provide the semantics of model output labels (prediction labels start from 0), making the uploaded learnware suitable for classification tasks with heterogeneous output spaces.
+Next, you'll select the "Task type" for your learnware. If `Classification` is chosen, you need to provide the semantics of model output labels (prediction labels start from 0), making the uploaded learnware suitable for classification tasks with heterogeneous output spaces.
 
 If `Regression` is chosen, you need to specify the semantics of each dimension of the model output, making the uploaded learnware suitable for regression tasks with heterogeneous output spaces.
 
