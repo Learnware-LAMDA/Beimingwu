@@ -106,6 +106,7 @@ export default {
   Footer: {
     About: "关于我们",
     Git: "GitLink",
+    GitHub: "GitHub",
     ContactUs: "联系我们",
     UserAgreement: "用户协议",
     PrivacyPolicy: "隐私政策",

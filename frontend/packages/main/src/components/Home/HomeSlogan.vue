@@ -179,15 +179,15 @@ watch(
       <div class="mx-auto mt-1 max-w-7xl px-10 sm:px-20 md:px-40 lg:px-60">
         {{ t("Home.Cover.CodeRepo.Description") }}
         <a
-          :href="`https://www.gitlink.org.cn/beimingwu/beimingwu`"
+          :href="`https://www.gitlink.org.cn/beimingwu`"
           class="text-white dark:text-white"
           target="_blank"
-          >{{ t("Home.Cover.CodeRepo.Beimingwu") }}</a
+          >GitLink</a
         >,&nbsp;<a
-          :href="`https://www.gitlink.org.cn/beimingwu/learnware`"
+          :href="`https://github.com/Learnware-LAMDA`"
           class="text-white dark:text-white"
           target="_blank"
-          >{{ t("Home.Cover.CodeRepo.Learnware") }}</a
+          >Github</a
         >
       </div>
 
