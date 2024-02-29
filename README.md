@@ -84,15 +84,15 @@ The functionalities of the four layers are described as follows:
 ### Project Structure
 
 Based on the system architecture, Beimingwu is developed with five sub-projects:
-- [`Engine`](https://www.gitlink.org.cn/beimingwu/learnware): Encompassing core components and algorithms within the learnware paradigm, and providing a command-line client for user interaction, it has been releasead as the [learnware](https://pypi.org/project/learnware/) package.
-- [`Frontend`](https://www.gitlink.org.cn/beimingwu/beimingwu/tree/main/frontend): Provide the interface and functionality for user interaction with the learnware dock system, including the main system and administrator system.
-- [`Backend`](https://www.gitlink.org.cn/beimingwu/beimingwu/tree/main/backend): Responsible for handling the dock system's operation logic and data operations, it ensures system stability and high performance.
-- [`Docs`](https://www.gitlink.org.cn/beimingwu/beimingwu/tree/main/docs): Maintain system documentation, including user guides, development guides, etc., ensuring system usability.
-- [`Deploy`](https://www.gitlink.org.cn/beimingwu/beimingwu/tree/main/deploy): Manage the system deployment configuration, including frontend and backend deployment files.
+- [`Engine`](https://github.com/Learnware-LAMDA/Learnware): Encompassing core components and algorithms within the learnware paradigm, and providing a command-line client for user interaction, it has been releasead as the [learnware](https://pypi.org/project/learnware/) package.
+- [`Frontend`](https://github.com/Learnware-LAMDA/Beimingwu/tree/main/frontend): Provide the interface and functionality for user interaction with the learnware dock system, including the main system and administrator system.
+- [`Backend`](https://github.com/Learnware-LAMDA/Beimingwu/tree/main/backend): Responsible for handling the dock system's operation logic and data operations, it ensures system stability and high performance.
+- [`Docs`](https://github.com/Learnware-LAMDA/Beimingwu/tree/main/docs): Maintain system documentation, including user guides, development guides, etc., ensuring system usability.
+- [`Deploy`](https://github.com/Learnware-LAMDA/Beimingwu/tree/main/deploy): Manage the system deployment configuration, including frontend and backend deployment files.
 
 # Quick Start
 
-Welcome to experience [Beimingwu](https://bmwu.cloud/). The following instructions will assist you in quickly exploring the search functionality on the system website and provide two demo cases from learnware search to learnware deployment using the [learnware](https://www.gitlink.org.cn/beimingwu/learnware) package.
+Welcome to experience [Beimingwu](https://bmwu.cloud/). The following instructions will assist you in quickly exploring the search functionality on the system website and provide two demo cases from learnware search to learnware deployment using the [learnware](https://github.com/Learnware-LAMDA/Learnware) package.
 
 The installation instructions for the learnware package can be found here: [Installation Guide](docs/content/en/overview/installation.md).
 

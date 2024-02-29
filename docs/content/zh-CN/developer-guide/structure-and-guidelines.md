@@ -7,9 +7,9 @@
 - **系统文档**：维护系统的文档，包括用户指南、开发指南等，确保系统的易用性。
 - **系统部署**：负责管理系统的部署配置，包括前后端的部署文件。
 
-其中「系统引擎」实现于独立的 `Learnware` [代码仓库](https://www.gitlink.org.cn/beimingwu/learnware)中，并配置了独立的[项目文档](https://learnware.readthedocs.io/en/latest/)。
+其中「系统引擎」实现于独立的 `Learnware` [代码仓库](https://github.com/Learnware-LAMDA/Learnware)中，并配置了独立的[项目文档](https://learnware.readthedocs.io/en/latest/)。
 
-其余四个子项目则实现于 `Beimingwu` [代码仓库](https://www.gitlink.org.cn/beimingwu/beimingwu)中，并采用 `Monorepo` 的方式进行管理。下文将介绍 `Beimingwu` 代码仓库的具体结构与开发规范。
+其余四个子项目则实现于 `Beimingwu` [代码仓库](https://github.com/Learnware-LAMDA/Beimingwu)中，并采用 `Monorepo` 的方式进行管理。下文将介绍 `Beimingwu` 代码仓库的具体结构与开发规范。
 
 ## Beimingwu 项目结构
 

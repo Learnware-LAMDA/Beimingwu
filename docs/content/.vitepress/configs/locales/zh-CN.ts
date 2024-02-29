@@ -108,7 +108,10 @@ const zhCN: LocaleSpecificConfig & {
 
     outline: { label: "大纲" },
 
-    socialLinks: [{ icon: "gitee", link: "https://gitee.com/beimingwu/beimingwu" }],
+    socialLinks: [
+      { icon: "git", link: "https://www.gitlink.org.cn/beimingwu/beimingwu" },
+      { icon: "github", link: "https://github.com/learnware-lamda/Beimingwu" },
+    ],
   },
 };
 

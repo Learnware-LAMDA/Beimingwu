@@ -16,9 +16,9 @@ pip install learnware==0.3.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 ## 通过源码安装
 
-`learnware` 包的源代码发布在 [GitLink](https://www.gitlink.org.cn/beimingwu/learnware) 平台上，用户可按下述方式通过源代码进行安装：
+`learnware` 包的源代码同时发布在 [GitLink](https://www.gitlink.org.cn/beimingwu/learnware) 和 [Github](https://github.com/Learnware-LAMDA/Learnware) 平台上。以 Github 平台为例，用户可按下述方式通过源代码安装：
 ```bash
-git clone https://gitlink.org.cn/beimingwu/learnware.git
+git clone https://github.com/Learnware-LAMDA/Learnware.git
 cd Learnware
 git fetch origin main
 git checkout main
