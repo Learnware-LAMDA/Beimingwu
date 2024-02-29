@@ -5,7 +5,7 @@ Visit the [Docker official website](https://docs.docker.com/compose/install/#ins
 
 ## Deploy Using Docker Compose
 
-Download the [backend code](https://www.gitlink.org.cn/beimingwu/beimingwu) and navigate to the `deploy/docker_compose` directory.
+Download the [backend code](https://github.com/Learnware-LAMDA/Beimingwu/tree/main) and navigate to the `deploy/docker_compose` directory.
 
 ## Prepare Files
 Prepare miniconda installation file
@@ -19,7 +19,7 @@ mkdir -p Beimingwu/deploy/
 cp -r ../../backend Beimingwu/
 cp -r ../../frontend Beimingwu/
 cp -r ../static Beimingwu/deploy/
-git clone https://gitlink.org.cn/beimingwu/learnware.git
+git clone https://github.com/Learnware-LAMDA/Learnware.git
 ```
 
 ## Build Image

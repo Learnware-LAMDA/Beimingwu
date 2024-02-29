@@ -7,9 +7,9 @@ Beimingwu learnware dock system is developed with five sub-projects:
 - **Docs**: Maintain system documentation, including user guides, development guides, etc., ensuring system usability.
 - **Deploy**: Manage the system deployment configuration, including frontend and backend deployment files.
 
-The `Engine` is implemented in a separate `Learnware` [code repository](https://www.gitlink.org.cn/beimingwu/learnware) and is configured with its own [project documentation](https://learnware.readthedocs.io/en/latest/).
+The `Engine` is implemented in a separate `Learnware` [code repository](https://github.com/Learnware-LAMDA/Learnware) and is configured with its own [project documentation](https://learnware.readthedocs.io/en/latest/).
 
-The remaining four sub-projects are implemented within the `Beimingwu` [code repository](https://www.gitlink.org.cn/beimingwu/beimingwu) and are managed using a `Monorepo` approach. The following sections will provide details on the specific structure and development guidelines for the `Beimingwu` code repository.
+The remaining four sub-projects are implemented within the `Beimingwu` [code repository](https://github.com/Learnware-LAMDA/Beimingwu) and are managed using a `Monorepo` approach. The following sections will provide details on the specific structure and development guidelines for the `Beimingwu` code repository.
 
 ## Beimingwu Project Structure
 

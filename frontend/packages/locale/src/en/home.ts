@@ -106,6 +106,7 @@ export default {
   Footer: {
     About: "About",
     Git: "GitLink",
+    GitHub: "GitHub",
     ContactUs: "Contact Us",
     UserAgreement: "User Agreement",
     PrivacyPolicy: "Privacy Policy",

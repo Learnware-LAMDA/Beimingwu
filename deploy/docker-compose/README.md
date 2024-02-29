@@ -15,7 +15,7 @@ mkdir -p Beimingwu/deploy/
 cp -r ../../backend Beimingwu/
 cp -r ../../frontend Beimingwu/
 cp -r ../static Beimingwu/deploy/
-git clone https://gitee.com/beimingwu/learnware
+git clone https://github.com/Learnware-LAMDA/Learnware.git
 ```
 
 ## Build Image

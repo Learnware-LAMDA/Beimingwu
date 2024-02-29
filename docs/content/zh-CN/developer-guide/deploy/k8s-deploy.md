@@ -43,7 +43,7 @@ kubectl create -f https://raw.githubusercontent.com/spotahome/redis-operator/${R
 ## 部署后端
 ### 下载部署文件
 ```shell
-git clone https://gitlink.org.cn/beimingwu/beimingwu.git
+git clone https://github.com/Learnware-LAMDA/Beimingwu.git
 cd Beimingwu/deploy/kubernetes
 ```
 ### 设置配置文件

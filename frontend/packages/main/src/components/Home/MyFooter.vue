@@ -20,6 +20,12 @@ const links = computed(() => [
     tooltips: "",
   },
   {
+    icon: "mdi-github",
+    name: t("Home.Footer.GitHub"),
+    path: "https://github.com/learnware-lamda/Beimingwu",
+    tooltips: "",
+  },
+  {
     icon: "mdi-email",
     name: t("Home.Footer.ContactUs"),
     path: "mailto:bmwu-support@lamda.nju.edu.cn",

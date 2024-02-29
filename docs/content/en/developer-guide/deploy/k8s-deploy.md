@@ -48,7 +48,7 @@ kubectl create -f https://raw.githubusercontent.com/spotahome/redis-operator/${R
 ## Deploy Backend
 ### Download Deployment Files
 ```shell
-git clone https://gitlink.org.cn/beimingwu/beimingwu.git
+git clone https://github.com/Learnware-LAMDA/Beimingwu.git
 cd Beimingwu/deploy/kubernetes
 ```
 
