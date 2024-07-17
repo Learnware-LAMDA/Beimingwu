@@ -65,7 +65,7 @@
 - **保护原始数据**：北冥坞系统所涉及的学件上传、查搜、部署均无需用户泄露原始数据，生成统计规约的过程在用户本地进行且代码公开。
 - **面向社区开源**：北冥坞系统面向社区开源，包括 `learnware` Python 包与前后端代码。其中 `leanrware` 包高度可扩展，未来新的规约设计、学件系统设计、学件查搜和复用方法都能轻松集成进来。
 
-[![介绍视频](https://img.youtube.com/vi/oUwBf2IxCeU/0.jpg)](https://www.youtube.com/watch?v=oUwBf2IxCeU)
+[![介绍视频](docs/content/public/overview/youtube-cover.png)](https://www.youtube.com/watch?v=oUwBf2IxCeU)
 
 
 ## 北冥坞系统是如何组织的？

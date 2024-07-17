@@ -65,7 +65,7 @@ In addition, the Beimingwu system also has the following features:
 - **Raw Data Protection**: The Beimingwu system operations, including learnware submission, identification, and deployment, do not require users to upload raw data. All relevant statistical specifications are generated locally by users using open-source API.
 - **Open Source System**: The Beimingwu system's source code is open-source, including the `learnware` Python package and frontend/backend code. The `learnware` package is highly extensible, making it easy to integrate new specification designs, learnware system designs, and learnware reuse methods in the future.
 
-[![Introduction Video](https://img.youtube.com/vi/oUwBf2IxCeU/0.jpg)](https://www.youtube.com/watch?v=oUwBf2IxCeU)
+[![Introduction Video](docs/content/public/overview/youtube-cover.png)](https://www.youtube.com/watch?v=oUwBf2IxCeU)
 
 ## How is Beimingwu organized?
 
