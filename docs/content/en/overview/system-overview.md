@@ -86,3 +86,9 @@ In addition, the Beimingwu system also has the following features:
 - **Open Source System**: The Beimingwu system's source code is open-source, including the `learnware` Python package and frontend/backend code. The `learnware` package is highly extensible, making it easy to integrate new specification designs, learnware system designs, and learnware reuse methods in the future.
 
 Building the learnware paradigm requires collective efforts from the community. As the first learnware dock system, Beimingwu is still in its early stages, with much room for improvement in related technologies. We sincerely invite the community to upload models, collaborate in system development, and engage in research and enhancements in learnware algorithms. Your valuable feedback is essential for the continuous improvement of the system.
+
+## System Introduction
+
+The video below provides an overview of the Beimingwu system:
+
+<div style="padding: 56.25% 0 0 0; position: relative"><div style="height:100%;left:0;position:absolute;top:0;width:100%"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/oUwBf2IxCeU?si=6o28PUF-mRgoMXB5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>

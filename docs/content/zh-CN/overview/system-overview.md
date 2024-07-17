@@ -87,6 +87,12 @@
 
 学件范式的构建需要社区的共同努力。作为首个学件基座系统，北冥坞还很年轻，相关技术仍有很大的改进空间。我们诚邀大家基于北冥坞系统上传模型、共同开发完善系统，或进行学件相关算法的研究与改进，为系统的持续改进提出宝贵意见。
 
+## 系统介绍
+
+在下面的视频中，我们将简要介绍北冥坞系统：
+
+<div style="padding: 56.25% 0 0 0; position: relative"><div style="height:100%;left:0;position:absolute;top:0;width:100%"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/oUwBf2IxCeU?si=6o28PUF-mRgoMXB5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>
+
 ## 案例演示
 
 在下列视频中，我们将展示北冥坞系统如何在一个实际应用场景中提供可能的解决方案：
