@@ -2,10 +2,12 @@ export default {
   Cover: {
     Beiming: "Beimingwu: A Learnware Dock System",
     Introduction:
-      'Beimingwu is the first systematic open-source implementation of learnware dock system, providing a preliminary research platform for learnware studies. Developers worldwide can submit their models freely to the learnware dock. They can generate specifications for the model with the help of Beimingwu without disclosing their raw data, and then the model and specification can be assembled into a learnware, which will be accommodated in the learnware dock. Future users can solve their tasks by submitting their requirements and reusing helpful learnwares returned by Beimingwu, while also not disclosing their own data. It is anticipated that after Beimingwu accumulates millions of learnwares, an "emergent" behavior may occur: machine learning tasks that have never been specifically tackled may be solved by assembling and reusing some existing learnwares. For more in-depth information, you can access the complete paper here: ',
+      'Beimingwu is the first systematic open-source implementation of learnware dock system, providing a preliminary research platform for learnware studies. Developers worldwide can submit their models freely to the learnware dock. They can generate specifications for the model with the help of Beimingwu without disclosing their raw data, and then the model and specification can be assembled into a learnware, which will be accommodated in the learnware dock. Future users can solve their tasks by submitting their requirements and reusing helpful learnwares returned by Beimingwu, while also not disclosing their own data. It is anticipated that after Beimingwu accumulates millions of learnwares, an "emergent" behavior may occur: machine learning tasks that have never been specifically tackled may be solved by assembling and reusing some existing learnwares. For more in-depth information, you can refer to the: ',
+    VideoIntroduction: "Video Introduction",
     PaperLinkDescription: "Paper Link",
     CodeRepo: {
-      Description: "Beimingwu is completely open-source. The related code repositories can be accessed by clicking: ",
+      Description:
+        "Beimingwu is completely open-source. The related code repositories can be accessed by clicking: ",
       Beimingwu: "System Frontend & Backend",
       Learnware: "System Engine & Toolkit",
     },

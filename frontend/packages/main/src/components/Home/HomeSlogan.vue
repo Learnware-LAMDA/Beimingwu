@@ -167,13 +167,22 @@ watch(
 
       <div class="mx-auto mt-6 max-w-7xl px-10 sm:px-20 md:px-40 lg:px-60">
         {{ t("Home.Cover.Introduction") }}
-        <a
-          :href="`https://arxiv.org/pdf/2401.14427.pdf`"
-          class="text-white dark:text-white"
-          target="_blank"
-        >
-          {{ t("Home.Cover.PaperLinkDescription") }}
-        </a>
+        <span class="whitespace-nowrap">
+          <a
+            href="https://www.youtube.com/watch?v=oUwBf2IxCeU"
+            class="text-white dark:text-white"
+            target="_blank"
+          >
+            {{ t("Home.Cover.VideoIntroduction") }} </a
+          >,
+          <a
+            href="https://arxiv.org/pdf/2401.14427.pdf"
+            class="text-white dark:text-white"
+            target="_blank"
+          >
+            {{ t("Home.Cover.PaperLinkDescription") }}
+          </a>
+        </span>
       </div>
 
       <div class="mx-auto mt-1 max-w-7xl px-10 sm:px-20 md:px-40 lg:px-60">
